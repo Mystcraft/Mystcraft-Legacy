@@ -1,0 +1,19 @@
+<project name="Mystcraft" default="build-dev">
+	<property name="ProjectName" value="Mystcraft"/>
+	<property name="projectname" value="mystcraft"/>
+
+	<property name="dir.output" value="./build/libs/"/>
+
+	<property name="ftp.server" value="ftp.binarymage.com"/>
+	<property name="ftp.user" value="xcompwiz"/>
+	<property name="ftp.pass" value="***REMOVED***"/>
+	<property name="ftp.dir" value="public_html/${projectname}/publish/"/>
+
+	<target name="deploy-ftp">
+		<property file="build.properties"/>
+		<ftp server="${ftp.server}" userid="${ftp.user}" password="${ftp.pass}" remotedir="${ftp.dir}">
+			<fileset file="${dir.output}/${projectname}-${version.mc}-${version.super}.${version.major}.${version.minor}.${version.build}-api.jar"/>
+			<fileset file="${dir.output}/${projectname}-${version.mc}-${version.super}.${version.major}.${version.minor}.${version.build}-dev.jar"/>
+		</ftp>
+	</target>
+</project>

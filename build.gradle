@@ -1,0 +1,247 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		maven {
+			name = "forge"
+			url = "http://files.minecraftforge.net/maven"
+		}
+		maven {
+			name = "sonatype"
+			url = "https://oss.sonatype.org/content/repositories/snapshots/"
+		}
+	}
+	dependencies {
+		classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+	}
+}
+
+apply plugin: 'forge'
+
+// define some stuff.  hereby referenced as project.varName
+ext.configFile = file "build.properties"
+ext.smallChangelog = file("changes.txt")
+ext.releaseChangelog = file("changelog.txt")
+ext.userHome = System.properties["user.home"]
+
+configFile.withReader {
+	// read config. it shall from now on be referenced as simply config or as project.config
+	def prop = new Properties()
+	prop.load(it)
+	ext.config = new ConfigSlurper().parse prop
+}
+
+version = "${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"
+
+group = "com.xcompwiz.mystcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "mystcraft"
+
+// Setup the forge minecraft plugin data. Specify the preferred forge/minecraft version here
+minecraft {
+	version = "1.7.2-10.12.1.1085"
+	assetDir = "eclipse/run/client/assets"
+
+	replace "@VERSION@", project.version
+}
+
+// add the api source folder
+sourceSets {
+	api {
+		java {
+			srcDir 'src/mystapi/java'
+		}
+	}
+}
+
+// this sets our output jar to have a 'tag' of 'universal' on it
+// It also adds the minecraft version in a custom version name
+// The result is files named <projectname>-<mcversion>-<version>.jar
+jar {
+	classifier = project.version
+	version = project.minecraft.version
+	includeEmptyDirs = false
+	from sourceSets.api.output
+}
+
+processResources
+{
+	// this will ensure that this task is redone when the versions change.
+	inputs.property "version", {"${project.version}"}
+	inputs.property "mcversion", {project.minecraft.version}
+
+	// replace stuff in mcmod.info, nothing else
+	from(sourceSets.main.resources.srcDirs) {
+		include 'mcmod.info'
+
+		// replace version and mcversion
+		expand 'version':"${project.version}", 'mcversion':project.minecraft.version
+	}
+
+	// copy everything else, thats not the mcmod.info
+	from(sourceSets.main.resources.srcDirs) {
+		exclude 'mcmod.info'
+	}
+}
+
+// -------------
+// extra jars
+// -------------
+
+// because the normal output has been made to be obfuscated
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    from sourceSets.api.output
+    classifier = 'dev'
+	version = "${project.minecraft.version}-${project.version}"
+}
+
+task apiJar(type: Jar) {
+    from sourceSets.api.java
+    classifier = 'api'
+	version = "${project.minecraft.version}-${project.version}"
+}
+
+task srcJar(type: Jar) {
+    from sourceSets.main.java
+    classifier = 'src'
+	version = "${project.minecraft.version}-${project.version}"
+}
+
+build.dependsOn apiJar, devJar
+
+// specify artifacts to be uploaded
+artifacts {
+	// the default jar is already here by default
+	archives devJar
+	archives apiJar
+	archives srcJar
+}
+
+// ---------------------------
+// Changelog and Deployments
+// ---------------------------
+
+task("updateChangelog") {
+	inputs.file project.smallChangelog
+	inputs.file project.releaseChangelog
+	outputs.file project.smallChangelog
+	outputs.file project.releaseChangelog
+
+	doLast {
+		def small = project.smallChangelog
+		def release = project.releaseChangelog
+
+		release.text = "[${project.version}]\n${small.text}\n${release.text}"
+		small.text = ""
+	}
+}
+
+task "deploy" // creates it for later
+
+def deployments = [
+	'local' : "${project.userHome}/AppData/Roaming/.minecraft/F1.7.2/mods",
+	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
+	'patron': {"C:/Users/Zach/Google Drive/Mystcraft Patreon Builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
+	'FC2'   : "F:/Seafile/incoming/ForgeCraft2/mods"
+]
+
+deployments.each { name, dir ->
+	def deployer = task("deploy-${name}", type: Copy) {
+		//from project.configurations.archives  // jars, API jars, whatever
+
+		from {project.tasks.jar.getArchivePath()} // just release jar
+		into dir
+		dependsOn "reobf"
+	}
+
+	project.tasks.deploy.dependsOn deployer
+
+	def deleter = task("clean-${name}") << {
+		fileTree(dir).each { file ->
+			if (!file.isDirectory() && file.name.startsWith(project.archivesBaseName))
+				file.delete()
+		}
+	}
+
+	deployer.dependsOn deleter
+}
+
+def APIDeploys = [
+	'dev': {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
+]
+
+APIDeploys.each { name, dir ->
+	def deployer = task("deploy-api-${name}", type: Copy) {
+		from {project.tasks.apiJar.getArchivePath()} // the API
+		from {project.tasks.devJar.getArchivePath()} // the dev jar
+		into dir
+		dependsOn "apiJar", "devJar"
+	}
+
+	project.tasks.deploy.dependsOn deployer
+}
+
+def changelogDeploys = [
+	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds"},
+	'patron': {"C:/Users/Zach/Google Drive/Mystcraft Patreon Builds"},
+	'FC2'   : "${project.userHome}/Dropbox/PahiCraft/Docs/Change Logs"
+]
+
+changelogDeploys.each { name, dir ->
+	def deployer = task("deploy-changelog-${name}", type: Copy) {
+		from project.releaseChangelog
+		into dir
+		mustRunAfter "updateChangelog"
+	}
+
+	project.tasks.deploy.dependsOn deployer
+}
+
+// ----------------------
+// Incrementer handling
+// ----------------------
+
+import java.text.DecimalFormat
+def formatter = new DecimalFormat('00')
+
+// increment tasks
+def types = ["super", "major", "minor", "build"]
+types.eachWithIndex { type, index ->
+	def incrementer = task("increment-${type}").doLast {
+		// increment
+		int newNum = (config.version[type.toLowerCase()].toString().toInteger()) + 1
+		config.version[type.toLowerCase()] = index == 3 ? formatter.format(newNum) : "$newNum"
+		// set lower #'s to 0
+		types.eachWithIndex { type2, index2 ->
+			if (index2 > index) {
+				if (index2 == 3)
+					config.version[type2.toLowerCase()] = '00'
+				else
+					config.version[type2.toLowerCase()] = '0'
+			}
+		}
+
+		// write back to the file
+		configFile.withWriter {
+			config.toProperties().store(it, "")
+		}
+		project.version = "${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"
+		jar.classifier = "${project.version}"
+		devJar.version = "${project.minecraft.version}-${project.version}"
+		apiJar.version = "${project.minecraft.version}-${project.version}"
+		srcJar.version = "${project.minecraft.version}-${project.version}"
+		project.tasks.sourceMainJava.replace "@VERSION@", project.version
+	}
+
+	task("deploy-$type") {
+		dependsOn incrementer, project.tasks.updateChangelog, project.tasks.deploy
+		group = "Mystcraft"
+		description = "Increments ${type.toLowerCase()} by 1 and the deploys the artifacts"
+	}
+
+	project.tasks.sourceMainJava.mustRunAfter incrementer
+	project.tasks.updateChangelog.mustRunAfter incrementer
+	project.tasks.deploy.mustRunAfter incrementer
+	project.tasks.uploadArchives.mustRunAfter incrementer
+	project.tasks.processResources.mustRunAfter incrementer
+	project.tasks.compileApiJava.mustRunAfter incrementer
+}

@@ -1,0 +1,16 @@
+[
+{
+  "modid" : "Mystcraft",
+  "name" : "Mystcraft",
+  "url" : "http://binarymage.com",
+  "credits" : "Made by XCompWiz. Thanks to: Unorthodox, SamuelWolve, Veovis, Forgecraft",
+  "authors": [
+    "XCompWiz"
+  ],
+  "description": "Mystcraft brings elements from the Myst series of games and books to Minecraft, as well as allowing players to actually write and travel to their own Ages.",
+  "logoFile" : "/mystcraft_logo.png",
+  "updateUrl" : "http://binarymage.com",
+  "parent" : "",
+  "screenshots": []
+}
+]

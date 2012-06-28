@@ -1,0 +1,50 @@
+{
+	"linking.pop": {
+		"category": "player",
+		"sounds": [
+			"linking/pop"
+		]
+	},
+	"linking.link": {
+		"category": "player",
+		"sounds": [
+			"linking/link"
+		]
+	},
+	"linking.link-disarm": {
+		"category": "player",
+		"sounds": [
+			"linking/link-disarm"
+		]
+	},
+	"linking.link-following": {
+		"category": "player",
+		"sounds": [
+			"linking/link-following"
+		]
+	},
+	"linking.link-intra": {
+		"category": "player",
+		"sounds": [
+			"linking/link-intra"
+		]
+	},
+	"linking.link-fissure": {
+		"category": "player",
+		"sounds": [
+			"linking/link-fissure"
+		]
+	},
+	"linking.link-portal": {
+		"category": "player",
+		"sounds": [
+			"linking/link-portal"
+		]
+	},
+	"entity.meteor.roar": {
+		"category": "hostile",
+		"sounds": [
+			"entity/meteor/roar"
+		]
+	}
+}

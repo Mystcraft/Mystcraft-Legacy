@@ -1,0 +1,430 @@
+package com.xcompwiz.mystcraft;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import net.minecraft.command.ServerCommandManager;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.storage.MapStorage;
+import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+
+import com.google.common.collect.ImmutableList;
+import com.xcompwiz.mystcraft.api.MystAPI;
+import com.xcompwiz.mystcraft.api.MystObjects;
+import com.xcompwiz.mystcraft.api.MystAPI.IMystAPIProvider;
+import com.xcompwiz.mystcraft.command.CommandCreateAgebook;
+import com.xcompwiz.mystcraft.command.CommandCreateDim;
+import com.xcompwiz.mystcraft.command.CommandMystPermissions;
+import com.xcompwiz.mystcraft.command.CommandRegenerateChunk;
+import com.xcompwiz.mystcraft.command.CommandSpawnMeteor;
+import com.xcompwiz.mystcraft.command.CommandTPX;
+import com.xcompwiz.mystcraft.command.CommandTime;
+import com.xcompwiz.mystcraft.command.CommandToggleDownfall;
+import com.xcompwiz.mystcraft.command.CommandToggleWorldInstability;
+import com.xcompwiz.mystcraft.config.MystConfig;
+import com.xcompwiz.mystcraft.core.IMCHandler;
+import com.xcompwiz.mystcraft.core.InternalAPI;
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
+import com.xcompwiz.mystcraft.core.MystcraftEventHandler;
+import com.xcompwiz.mystcraft.data.AchievementsMyst;
+import com.xcompwiz.mystcraft.data.GrammarRules;
+import com.xcompwiz.mystcraft.data.InkEffects;
+import com.xcompwiz.mystcraft.data.LoaderBlocks;
+import com.xcompwiz.mystcraft.data.LoaderFluids;
+import com.xcompwiz.mystcraft.data.LoaderItems;
+import com.xcompwiz.mystcraft.data.LoaderLinkEffects;
+import com.xcompwiz.mystcraft.data.LoaderRecipes;
+import com.xcompwiz.mystcraft.data.SymbolData;
+import com.xcompwiz.mystcraft.data.SymbolDataFluids;
+import com.xcompwiz.mystcraft.data.SymbolPoemData;
+import com.xcompwiz.mystcraft.data.SymbolRarityData;
+import com.xcompwiz.mystcraft.data.SymbolRules;
+import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
+import com.xcompwiz.mystcraft.instability.InstabilityData;
+import com.xcompwiz.mystcraft.instability.InstabilityManager;
+import com.xcompwiz.mystcraft.item.ItemInkVial;
+import com.xcompwiz.mystcraft.linking.LinkListenerBasic;
+import com.xcompwiz.mystcraft.linking.LinkListenerEffects;
+import com.xcompwiz.mystcraft.linking.LinkListenerForgeServer;
+import com.xcompwiz.mystcraft.linking.LinkListenerPermissions;
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
+import com.xcompwiz.mystcraft.network.MPacketActivateItem;
+import com.xcompwiz.mystcraft.network.MPacketAgeData;
+import com.xcompwiz.mystcraft.network.MPacketConfigs;
+import com.xcompwiz.mystcraft.network.MPacketDimensions;
+import com.xcompwiz.mystcraft.network.MPacketExplosion;
+import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
+import com.xcompwiz.mystcraft.network.MPacketMessage;
+import com.xcompwiz.mystcraft.network.MPacketOpenWindow;
+import com.xcompwiz.mystcraft.network.MPacketParticles;
+import com.xcompwiz.mystcraft.network.MPacketSpawnLightningBolt;
+import com.xcompwiz.mystcraft.network.MystcraftConnectionHandler;
+import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
+import com.xcompwiz.mystcraft.page.Page;
+import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.symbol.SymbolManager;
+import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
+import com.xcompwiz.mystcraft.treasure.TreasureGenBooster;
+import com.xcompwiz.mystcraft.treasure.TreasureGenWrapper;
+import com.xcompwiz.mystcraft.villager.IMerchantRecipeProvider;
+import com.xcompwiz.mystcraft.villager.MerchantRecipeProviderBooster;
+import com.xcompwiz.mystcraft.villager.MerchantRecipeProviderSymbol;
+import com.xcompwiz.mystcraft.villager.VillageCreationHandlerArchivistHouse;
+import com.xcompwiz.mystcraft.villager.VillagerArchivist;
+import com.xcompwiz.mystcraft.world.WorldProviderMyst;
+import com.xcompwiz.mystcraft.world.gen.structure.ComponentScatteredFeatureSmallLibrary;
+import com.xcompwiz.mystcraft.world.gen.structure.ComponentVillageArchivistHouse;
+import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
+import com.xcompwiz.mystcraft.world.gen.structure.StructureScatteredFeatureStartMyst;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.VillagerRegistry;
+
+@Mod(modid = MystObjects.MystcraftModId, version = "@VERSION@", name = "Mystcraft", useMetadata = true, dependencies = "required-after:Forge@[10.12.1.1083,)")
+public class Mystcraft implements IMystAPIProvider {
+
+	@Instance(MystObjects.MystcraftModId)
+	public static Mystcraft				instance;
+
+	@SidedProxy(clientSide = "com.xcompwiz.mystcraft.client.MystcraftClientProxy", serverSide = "com.xcompwiz.mystcraft.core.MystcraftCommonProxy")
+	public static MystcraftCommonProxy	sidedProxy;
+
+	public static Integer				difficulty;
+
+	public static boolean				instabilityEnabled	= true;
+	public static boolean				renderlabels		= false;
+	public static boolean				fastRainbows		= true;
+	private static boolean				spawnmeteorEnabled	= false;
+	public static boolean				respawnInAges		= true;
+	public static boolean				villageDeskGen		= true;
+
+	private static int					ent_link_id;
+	private static int					ent_gravblock_id;
+	private static int					ent_meteor_id;
+
+	public static boolean				serverLabels;
+
+	public static int					providerId;
+	public static Collection<Integer>	registeredDims;
+
+	public static int					archivistId;
+	private VillagerArchivist			archivist;
+
+	public static int					inkcost				= 50;
+	public static Set<String>			validInks;
+
+	public static MapStorage			clientStorage		= null;
+
+	public static boolean				debugGrammar		= false;
+
+	@Override
+	public MystAPI getAPIInstance() {
+		//Determine which mod is requesting the API container instance
+		ModContainer container = Loader.instance().activeModContainer();
+		return InternalAPI.getAPIInstance(container.getModId());
+	}
+
+	@EventHandler
+	public void load(FMLPreInitializationEvent event) {
+		// Init API
+		InternalAPI.initAPI();
+
+		// Init packet handling
+		MystcraftPacketHandler.registerPacketHandler(new MPacketDimensions()); // 10
+		MystcraftPacketHandler.registerPacketHandler(new MPacketConfigs()); // 25
+		MystcraftPacketHandler.registerPacketHandler(new MPacketParticles()); // 20
+		MystcraftPacketHandler.registerPacketHandler(new MPacketMessage()); // 132
+		MystcraftPacketHandler.registerPacketHandler(new MPacketGuiMessage()); // 140
+		MystcraftPacketHandler.registerPacketHandler(new MPacketOpenWindow()); // 134
+		MystcraftPacketHandler.registerPacketHandler(new MPacketActivateItem()); // 137
+		MystcraftPacketHandler.registerPacketHandler(new MPacketAgeData()); // 135
+		MystcraftPacketHandler.registerPacketHandler(new MPacketExplosion()); // 100
+		MystcraftPacketHandler.registerPacketHandler(new MPacketSpawnLightningBolt()); // 101
+
+		FMLCommonHandler.instance().bus().register(new MystcraftConnectionHandler());
+		MystcraftPacketHandler.bus = NetworkRegistry.INSTANCE.newEventDrivenChannel(MystcraftPacketHandler.CHANNEL);
+		MystcraftPacketHandler.bus.register(new MystcraftPacketHandler());
+
+		// Register Event Handler
+		MinecraftForge.EVENT_BUS.register(new MystcraftEventHandler());
+
+		// Load configs
+		File configroot = event.getSuggestedConfigurationFile().getParentFile();
+		File configfile = new File(configroot, "mystcraft/core.cfg");
+
+		File oldconfigfile = new File(configroot, "Mystcraft.txt");
+		if (oldconfigfile.exists()) {
+			configfile.getParentFile().mkdirs();
+			if (!configfile.exists()) oldconfigfile.renameTo(configfile);
+		}
+
+		MystConfig config = new MystConfig(configfile);
+		SymbolManager.setConfig(new MystConfig(new File(configroot, "mystcraft/symbols.cfg")));
+		InstabilityManager.setConfig(new MystConfig(new File(configroot, "mystcraft/instabilities.cfg")));
+		SymbolDataFluids.setConfig(config);
+
+		spawnmeteorEnabled = config.get(MystConfig.CATEGORY_GENERAL, "options.command.spawnmeteor.enabled", spawnmeteorEnabled).getBoolean(spawnmeteorEnabled);
+
+		difficulty = toInteger(config.get(MystConfig.CATEGORY_GENERAL, "options.difficultyoverride", "").getString());
+		instabilityEnabled = config.get(MystConfig.CATEGORY_GENERAL, "options.instability", instabilityEnabled).getBoolean(instabilityEnabled);
+		renderlabels = config.get(MystConfig.CATEGORY_GENERAL, "options.renderlabels", renderlabels).getBoolean(renderlabels);
+		fastRainbows = config.get(MystConfig.CATEGORY_GENERAL, "options.fastRainbows", fastRainbows).getBoolean(fastRainbows);
+		respawnInAges = config.get(MystConfig.CATEGORY_GENERAL, "options.respawnInAges", respawnInAges).getBoolean(respawnInAges);
+		villageDeskGen = config.get(MystConfig.CATEGORY_GENERAL, "options.villageDeskGen", villageDeskGen).getBoolean(villageDeskGen);
+		serverLabels = renderlabels;
+
+		archivistId = config.get(MystConfig.CATEGORY_GENERAL, "villager.archivist.id", 1210950779).getInt();
+		providerId = config.get(MystConfig.CATEGORY_GENERAL, "options.providerId", 1210950779).getInt();
+
+		LoaderFluids.loadConfigs(config);
+		LoaderItems.loadConfigs(config);
+		LoaderBlocks.loadConfigs(config);
+		LoaderRecipes.loadConfigs(config);
+		LoaderLinkEffects.setConfig(config);
+
+		ent_link_id = config.get(MystConfig.CATEGORY_ENTITY, "entity.book.id", 219).getInt();
+		ent_gravblock_id = config.get(MystConfig.CATEGORY_ENTITY, "entity.falling.id", 218).getInt();
+		ent_meteor_id = config.get(MystConfig.CATEGORY_ENTITY, "entity.meteor.id", 217).getInt();
+
+		if (config.hasChanged()) config.save();
+
+		MapGenStructureIO.registerStructure(StructureScatteredFeatureStartMyst.class, MapGenScatteredFeatureMyst.stringId);
+		MapGenStructureIO.func_143031_a(ComponentScatteredFeatureSmallLibrary.class, "TeMystSL");
+		MapGenStructureIO.func_143031_a(ComponentVillageArchivistHouse.class, "ViMystAH");
+
+		// Pre-init symbol system
+		InstabilityData.loadDebugConfigs(config);
+		SymbolRemappings.initialize();
+		GrammarRules.initialize();
+
+		// Bind dim provider to id
+		DimensionManager.registerProviderType(Mystcraft.providerId, WorldProviderMyst.class, false);
+
+		sidedProxy.preinit();
+
+		// Link Listeners
+		MinecraftForge.EVENT_BUS.register(new LinkListenerBasic());
+		MinecraftForge.EVENT_BUS.register(new LinkListenerPermissions());
+		MinecraftForge.EVENT_BUS.register(new LinkListenerEffects());
+		MinecraftForge.EVENT_BUS.register(new LinkListenerForgeServer());
+
+		// Init Items/Blocks
+		LoaderFluids.init();
+		LoaderItems.init();
+		LoaderBlocks.init();
+		InkEffects.init();
+
+		FluidContainerRegistry.registerFluidContainer(LoaderFluids.black_ink, new ItemStack(ItemInkVial.instance, 1, 0), new ItemStack(Items.glass_bottle));
+
+		// Init Achievements
+		AchievementsMyst.init();
+	}
+
+	private static Integer toInteger(String value) {
+		try {
+			return Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return null;
+		}
+	}
+
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
+		// Init Recipes
+		LoaderRecipes.addRecipes(CraftingManager.getInstance());
+
+		// Init TileEntities
+		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityLectern.class, "LinkbookLectern");
+		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityBookstand.class, "LinkbookStand");
+		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityStarFissure.class, "StarFissure");
+		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityDesk.class, "WritingDesk");
+		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle.class, "CrystalBlock");
+		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier.class, "LinkModifier");
+		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder.class, "myst.BookBinder");
+		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer.class, "myst.InkMixer");
+
+		// Init Entities
+		EntityRegistry.registerModEntity(com.xcompwiz.mystcraft.entity.EntityLinkbook.class, "myst.book", ent_link_id, this, 64, 10, true);
+		EntityRegistry.registerModEntity(com.xcompwiz.mystcraft.entity.EntityFallingBlock.class, "myst.block", ent_gravblock_id, this, 16, 60, false);
+		EntityRegistry.registerModEntity(com.xcompwiz.mystcraft.entity.EntityMeteor.class, "myst.meteor", ent_meteor_id, this, 192, 30, false);
+
+		// Init Symbol System
+		SymbolData.initialize();
+		SymbolPoemData.initialize();
+		SymbolRarityData.initialize();
+		SymbolRules.initialize();
+		//register instability data 
+		InstabilityData.initialize();
+
+		// Init Archivist
+		if (archivistEnabled()) {
+			archivist = new VillagerArchivist();
+			VillagerRegistry.instance().registerVillagerId(archivistId);
+			VillagerRegistry.instance().registerVillageTradeHandler(archivistId, archivist);
+		}
+		VillagerRegistry.instance().registerVillageCreationHandler(new VillageCreationHandlerArchivistHouse());
+
+		// Client-Side: Register visuals
+		sidedProxy.init();
+	}
+
+	public static boolean archivistEnabled() {
+		return archivistId != 0;
+	}
+
+	@EventHandler
+	public void handleIMC(IMCEvent event) {
+		ImmutableList<IMCMessage> messages = event.getMessages();
+		IMCHandler.process(messages);
+	}
+
+	@EventHandler
+	public void modsLoaded(FMLPostInitializationEvent event) {
+		sidedProxy.postInit();
+		SymbolData.generateBiomeSymbols();
+		SymbolDataFluids.initialize();
+		SymbolRules.register();
+
+		// Treasure object
+		ChestGenHooks treasureinfo = ChestGenHooks.getInfo(MystObjects.MYST_TREASURE);
+		treasureinfo.setMin(4);
+		treasureinfo.setMax(8);
+		treasureinfo.addItem(new WeightedRandomChestContent(Items.book, 0, 1, 8, 50));
+		treasureinfo.addItem(new WeightedRandomChestContent(Items.paper, 0, 1, 32, 50));
+		treasureinfo.addItem(new TreasureGenBooster(11, 3, 1, 1000));
+		// 11 commons, 3 uncommon, 1 rare, and a basic land
+		if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderBooster(11, 3, 1));
+
+		TreasureGenWrapper mystTreasureSub = new TreasureGenWrapper(MystObjects.MYST_TREASURE, 10);
+		ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(mystTreasureSub);
+		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(mystTreasureSub);
+		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(mystTreasureSub);
+		ChestGenHooks.getInfo(ChestGenHooks.STRONGHOLD_LIBRARY).addItem(mystTreasureSub);
+
+		sidedProxy.createCreativeTabs();
+
+		// Create pages for all symbols for symbol tab, treasure gen, and
+		// merchant handler
+		ArrayList<IAgeSymbol> symbols = SymbolManager.getAgeSymbols();
+		for (IAgeSymbol symbol : symbols) {
+			// Create treasure gen entry
+			int maxStack = SymbolManager.getSymbolTreasureMaxStack(symbol);
+			int chance = SymbolManager.getSymbolTreasureChance(symbol);
+			if (chance != 0 && maxStack != 0) treasureinfo.addItem(new WeightedRandomChestContent(Page.createSymbolPage(symbol.identifier()), 1, maxStack, chance));
+
+			// Merchant recipe entry
+			if (archivist != null && SymbolManager.isSymbolTradable(symbol.identifier())) {
+				IMerchantRecipeProvider merchantrecipe = new MerchantRecipeProviderSymbol(symbol);
+				archivist.registerRecipe(merchantrecipe);
+			}
+		}
+
+		GrammarGenerator.buildShortestPaths();
+	}
+
+	@EventHandler
+	public void serverStart(FMLServerStartingEvent event) {
+		MinecraftServer mcserver = event.getServer();
+		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandTPX());
+		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandCreateDim());
+		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandCreateAgebook());
+		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandToggleWorldInstability());
+		if (spawnmeteorEnabled) ((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandSpawnMeteor());
+		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandToggleDownfall());
+		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandTime());
+		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandMystPermissions());
+		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandRegenerateChunk());
+		registerDimensions(mcserver.worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
+		LinkListenerPermissions.loadState();
+	}
+
+	@EventHandler
+	public void serverStop(FMLServerStoppedEvent event) {
+		unregisterDimensions();
+		Mystcraft.clientStorage = null;
+	}
+
+	public static MapStorage getStorage(boolean isServer) {
+		World overworld = null;
+		if (isServer) {
+			overworld = DimensionManager.getWorld(0);
+		}
+		if (overworld == null) {
+			if (clientStorage == null) throw new RuntimeException("Client-Side Storage Missing (Attempted as " + (isServer ? "server" : "remote") + ")");
+			return clientStorage;
+		}
+		return overworld.mapStorage;
+	}
+
+	public static long getLevelSeed(boolean isServer) {
+		if (!isServer) return 0;
+		MinecraftServer mcServer = MinecraftServer.getServer();
+		if (mcServer == null) return 0;
+		return mcServer.worldServerForDimension(0).getSeed();
+	}
+
+	private static List<Integer> getExistingAgeList(File dataDir) {
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		File[] var2 = dataDir.listFiles();
+		int var4 = var2.length;
+
+		for (int var5 = 0; var5 < var4; ++var5) {
+			File var6 = var2[var5];
+
+			if (var6.getName().startsWith("agedata_") && var6.getName().endsWith(".dat")) {
+				try {
+					String dimStr = var6.getName();
+					dimStr = dimStr.substring(8, dimStr.length() - 4);
+					list.add(Integer.parseInt(dimStr));
+				} catch (Exception e) {
+					LoggerUtils.warn("Error parsing dim id from " + var6.getName());
+				}
+			}
+		}
+
+		return list;
+	}
+
+	public static void unregisterDimensions() {
+		if (registeredDims == null) return;
+		for (Integer dimId : registeredDims) {
+			DimensionManager.unregisterDimension(dimId);
+		}
+		registeredDims = null;
+	}
+
+	public static void registerDimensions(File worldSaveDir) {
+		registeredDims = Mystcraft.getExistingAgeList(worldSaveDir);
+		for (Integer dimId : registeredDims) {
+			DimensionManager.registerDimension(dimId, providerId);
+		}
+	}
+}

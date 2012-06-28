@@ -1,0 +1,23 @@
+package com.xcompwiz.mystcraft.symbol.modifiers;
+
+import com.xcompwiz.mystcraft.symbol.ColorGradient;
+import com.xcompwiz.mystcraft.symbol.Modifier;
+import com.xcompwiz.mystcraft.symbol.ModifierUtils;
+import com.xcompwiz.mystcraft.symbol.SymbolBase;
+import com.xcompwiz.mystcraft.world.IAgeController;
+
+public class ModifierHorizonColor extends SymbolBase {
+	@Override
+	public void registerLogic(IAgeController controller, long seed) {
+		ColorGradient sunset = controller.popModifier(ModifierUtils.SUNSET).asGradient();
+		if (sunset == null) sunset = new ColorGradient(); // Create sunset gradient if invalid
+		ColorGradient gradient = ModifierUtils.popGradient(controller);
+		sunset.appendGradient(gradient); // Append gradient to sunset
+		controller.setModifier(ModifierUtils.SUNSET, new Modifier(sunset, 0));
+	}
+
+	@Override
+	public String identifier() {
+		return "ColorHorizon";
+	}
+}

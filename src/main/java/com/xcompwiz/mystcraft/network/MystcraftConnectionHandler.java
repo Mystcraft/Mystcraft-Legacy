@@ -1,0 +1,48 @@
+package com.xcompwiz.mystcraft.network;
+
+import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.entity.player.EntityPlayer;
+
+import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.world.WorldProviderMyst;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
+
+public class MystcraftConnectionHandler {
+
+	private static boolean	connected	= false;
+
+	@SubscribeEvent
+	public void playerLoggedIn(PlayerLoggedInEvent event) {
+		EntityPlayer player = event.player;
+		if (player.worldObj.provider instanceof WorldProviderMyst) {
+			NetworkUtils.sendAgeData(player.worldObj, player, player.dimension); // Sends age data
+		}
+	}
+
+	@SubscribeEvent
+	public void connectionOpened(ClientConnectedToServerEvent event) {
+		connected = true;
+		Mystcraft.clientStorage = ((NetHandlerPlayClient) event.handler).mapStorageOrigin;
+	}
+
+	@SubscribeEvent
+	public void connectionOpened(ServerConnectionFromClientEvent event) {
+		event.manager.scheduleOutboundPacket(MPacketDimensions.createPacket(Mystcraft.registeredDims));
+		event.manager.scheduleOutboundPacket(MPacketConfigs.createPacket());
+	}
+
+	@SubscribeEvent
+	public void connectionClosed(ClientDisconnectionFromServerEvent event) {
+		if (connected) {
+			connected = false;
+			Mystcraft.unregisterDimensions();
+			Mystcraft.clientStorage = null;
+			Mystcraft.serverLabels = Mystcraft.renderlabels;
+		}
+	}
+}

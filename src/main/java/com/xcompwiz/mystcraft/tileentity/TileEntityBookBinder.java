@@ -1,0 +1,309 @@
+package com.xcompwiz.mystcraft.tileentity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.Constants;
+
+import com.xcompwiz.mystcraft.inventory.IItemBuilder;
+import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
+import com.xcompwiz.mystcraft.item.ItemAgebook;
+import com.xcompwiz.mystcraft.item.ItemNotebook;
+import com.xcompwiz.mystcraft.item.ItemPage;
+import com.xcompwiz.mystcraft.linking.LinkOptions;
+import com.xcompwiz.mystcraft.page.Page;
+
+public class TileEntityBookBinder extends TileEntity implements IItemBuilder, ISidedInventory {
+
+	private ItemStack		itemstacks[];
+	private List<ItemStack>	pages;
+	private String			pendingtitle;
+
+	private static int[]	isidedslots	= { 1 };
+
+	public TileEntityBookBinder() {
+		itemstacks = new ItemStack[2];
+		pages = new ArrayList<ItemStack>();
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int slotIndex, ItemStack itemstack) {
+		if (itemstack == null) return false;
+		if (slotIndex == 1 && itemstack.getItem() == Items.leather) return true;
+		return false;
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return itemstacks.length + pages.size();
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int i) {
+		if (i >= itemstacks.length) {
+			i -= itemstacks.length;
+			if (i >= pages.size()) return null;
+			return pages.get(i);
+		}
+		return itemstacks[i];
+	}
+
+	@Override
+	public ItemStack decrStackSize(int i, int j) {
+		if (itemstacks[i] != null) {
+			if (itemstacks[i].stackSize <= j) {
+				ItemStack itemstack = itemstacks[i];
+				itemstacks[i] = null;
+				handleItemChange(itemstacks[i], i);
+				return itemstack;
+			}
+			ItemStack itemstack1 = itemstacks[i].splitStack(j);
+			if (itemstacks[i].stackSize == 0) {
+				itemstacks[i] = null;
+			}
+			handleItemChange(itemstacks[i], i);
+			return itemstack1;
+		}
+		return null;
+	}
+
+	@Override
+	public void setInventorySlotContents(int i, ItemStack itemstack) {
+		if (itemstack != null && !isItemValidForSlot(i, itemstack)) {
+			itemstack.stackSize = 0;
+			return;
+		}
+		itemstacks[i] = itemstack;
+		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
+			itemstack.stackSize = getInventoryStackLimit();
+		}
+		handleItemChange(itemstacks[i], i);
+	}
+
+	@Override
+	public String getInventoryName() {
+		return "Bookbinder";
+	}
+
+	@Override
+	public boolean hasCustomInventoryName() {
+		return false;
+	}
+
+	@Override
+	public int getInventoryStackLimit() {
+		return 64;
+	}
+
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+		if (worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) { return false; }
+		return entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
+	}
+
+	@Override
+	public void openInventory() {}
+
+	@Override
+	public void closeInventory() {}
+
+	@Override
+	public void readFromNBT(NBTTagCompound nbttagcompound) {
+		super.readFromNBT(nbttagcompound);
+		NBTTagList nbttaglist = nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
+		for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+			NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
+			byte byte0 = nbttagcompound1.getByte("Slot");
+			if (byte0 >= 0 && byte0 < itemstacks.length) {
+				itemstacks[byte0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+			}
+		}
+		pages.clear();
+		nbttaglist = nbttagcompound.getTagList("Pages", Constants.NBT.TAG_COMPOUND);
+		for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+			NBTTagCompound tag = nbttaglist.getCompoundTagAt(i);
+			pages.add(ItemStack.loadItemStackFromNBT(tag));
+		}
+		if (nbttagcompound.hasKey("PendingTitle")) {
+			pendingtitle = nbttagcompound.getString("PendingTitle");
+		}
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbttagcompound) {
+		super.writeToNBT(nbttagcompound);
+		NBTTagList nbttaglist = new NBTTagList();
+		for (int i = 0; i < itemstacks.length; i++) { //XXX: Use generic item staving saving helper
+			if (itemstacks[i] != null) {
+				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+				nbttagcompound1.setByte("Slot", (byte) i);
+				itemstacks[i].writeToNBT(nbttagcompound1);
+				nbttaglist.appendTag(nbttagcompound1);
+			}
+		}
+		nbttagcompound.setTag("Items", nbttaglist);
+		nbttaglist = new NBTTagList();
+		for (ItemStack page : pages) { //XXX: Use generic item staving saving helper?
+			NBTTagCompound itemdata = new NBTTagCompound();
+			page.writeToNBT(itemdata);
+			nbttaglist.appendTag(itemdata);
+		}
+		nbttagcompound.setTag("Pages", nbttaglist);
+
+		if (pendingtitle != null) nbttagcompound.setString("PendingTitle", pendingtitle);
+	}
+
+	protected void handleItemChange(ItemStack itemstack, int slot) {}
+
+	public String getPendingTitle() {
+		return (pendingtitle == null ? "" : pendingtitle);
+	}
+
+	public void setBookTitle(String name) {
+		this.pendingtitle = name;
+	}
+
+	@Override
+	public void buildItem(ItemStack itemstack, EntityPlayer player) {
+		if (!canBuildItem()) return;
+		if (itemstack.getItem() instanceof ItemAgebook) {
+			ItemAgebook itemlogic = (ItemAgebook) itemstack.getItem();
+			if (!worldObj.isRemote) {
+				ItemAgebook.bindToNewDim(itemstack);
+				itemlogic.addPages(player, itemstack, pages);
+				itemlogic.addAuthor(player, itemstack);
+				if (pendingtitle != null && pendingtitle != "") {
+					LinkOptions.setDisplayName(itemstack.stackTagCompound, pendingtitle);
+					itemlogic.setDisplayName(player, itemstack, pendingtitle);
+				}
+				ItemStack linkpanel = pages.get(0);
+				Page.applyLinkPanel(linkpanel, itemstack);
+			}
+			pages.clear();
+			pendingtitle = null;
+			--(itemstacks[1].stackSize);
+			if (itemstacks[1].stackSize <= 0) itemstacks[1] = null;
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			this.markDirty();
+		} else {
+			itemstack.stackSize = 0;
+		}
+	}
+
+	private boolean canBuildItem() {
+		if (itemstacks[1] == null) return false;
+		if (itemstacks[1].getItem() != Items.leather) return false;
+		if (pages.size() == 0) return false;
+		if (!Page.isLinkPanel(pages.get(0))) return false;
+		for (int i = 1; i < pages.size(); ++i) {
+			if (Page.isLinkPanel(pages.get(i))) return false;
+		}
+		return true;
+	}
+
+	public ItemStack getCraftedItem() {
+		if (!canBuildItem()) return null;
+		return new ItemStack(ItemAgebook.instance);
+	}
+
+	public void setPages(List<ItemStack> page_list) {
+		if (this.worldObj.isRemote) {
+			this.pages = page_list;
+		}
+	}
+
+	public List<ItemStack> getPageList() {
+		return pages;
+	}
+
+	public ItemStack insertPage(ItemStack stack, int i) {
+		if (stack == null) return null;
+		if (stack.getItem() == Items.paper) {
+			while (stack.stackSize > 0) {
+				ItemStack clone = stack.copy();
+				clone.stackSize = 1;
+				clone = ItemPage.createItemstack(clone);
+				if (clone == null || insertPage(clone, i) != null) return stack;
+				--stack.stackSize;
+			}
+			if (stack.stackSize == 0) stack = null;
+			return stack;
+		}
+		if (stack.getItem() != ItemPage.instance) return stack;
+		while (stack.stackSize > 0) {
+			ItemStack clone = stack.copy();
+			clone.stackSize = 1;
+			pages.add(i, clone);
+			stack.stackSize -= 1;
+		}
+		stack = null;
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		this.markDirty();
+		return stack;
+	}
+
+	public ItemStack insertFromNotebook(ItemStack notebook, int index) {
+		if (notebook.getItem() != ItemNotebook.instance) return notebook;
+		int size = InventoryNotebook.getLargestSlotId(notebook);
+		if (size == 0) {
+			for (ItemStack page : pages) {
+				InventoryNotebook.addItem(notebook, page);
+			}
+			pages.clear();
+		} else {
+			for (int slot = 0; slot < size + 1; ++slot) {
+				ItemStack page = InventoryNotebook.getItem(notebook, slot);
+				if (page == null) continue;
+				page = insertPage(page, index);
+				if (page == null) ++index;
+				InventoryNotebook.setItem(notebook, slot, page);
+			}
+		}
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		this.markDirty();
+		return null;
+	}
+
+	public ItemStack removePage(int i) {
+		if (i >= pages.size()) return null;
+		ItemStack itemstack = pages.remove(i);
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		this.markDirty();
+		return itemstack;
+	}
+
+	@Override
+	public ItemStack getStackInSlotOnClosing(int par1) {
+		if (itemstacks[par1] != null) {
+			ItemStack itemstack = itemstacks[par1];
+			itemstacks[par1] = null;
+			return itemstack;
+		}
+		return null;
+	}
+
+	/**
+	 * Get the size of the side inventory.
+	 */
+	@Override
+	public int[] getAccessibleSlotsFromSide(int par1) {
+		return isidedslots;
+	}
+
+	@Override
+	public boolean canInsertItem(int slot, ItemStack itemstack, int par3) {
+		return this.isItemValidForSlot(slot, itemstack);
+	}
+
+	@Override
+	public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3) {
+		return false;
+	}
+}
