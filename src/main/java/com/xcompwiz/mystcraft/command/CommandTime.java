@@ -96,11 +96,11 @@ public class CommandTime extends CommandMyst {
 		if (dim == null) {
 			for (int var3 = 0; var3 < MinecraftServer.getServer().worldServers.length; ++var3) {
 				MinecraftServer.getServer().worldServers[var3].setWorldTime(value);
-				notifyAdmins(sender, "commands.myst.time.set.all", new Object[] { Long.valueOf(value) });
+				sendToAdmins(sender, "commands.myst.time.set.all", new Object[] { Long.valueOf(value) });
 			}
 		} else {
 			DimensionManager.getWorld(dim).setWorldTime(value);
-			notifyAdmins(sender, "commands.myst.time.set", new Object[] { Long.valueOf(value), dim });
+			sendToAdmins(sender, "commands.myst.time.set", new Object[] { Long.valueOf(value), dim });
 		}
 	}
 
@@ -112,12 +112,12 @@ public class CommandTime extends CommandMyst {
 			for (int var3 = 0; var3 < MinecraftServer.getServer().worldServers.length; ++var3) {
 				WorldServer var4 = MinecraftServer.getServer().worldServers[var3];
 				var4.setWorldTime(var4.getWorldTime() + value);
-				notifyAdmins(sender, "commands.myst.time.added.all", new Object[] { Long.valueOf(value) });
+				sendToAdmins(sender, "commands.myst.time.added.all", new Object[] { Long.valueOf(value) });
 			}
 		} else {
 			WorldServer var4 = DimensionManager.getWorld(dim);
 			var4.setWorldTime(var4.getWorldTime() + value);
-			notifyAdmins(sender, "commands.myst.time.added", new Object[] { Long.valueOf(value), dim });
+			sendToAdmins(sender, "commands.myst.time.added", new Object[] { Long.valueOf(value), dim });
 		}
 	}
 }

@@ -57,6 +57,6 @@ public class CommandMystPermissions extends CommandMyst {
 		} else {
 			throw new WrongUsageException("commands.myst.permissions.usage");
 		}
-		notifyAdmins(sender, "Set permissions for player: " + playername + " " + command + " " + direction + " " + dim_str, new Object[0]);
+		sendToAdmins(sender, "Set permissions for player: " + playername + " " + command + " " + direction + " " + dim_str, new Object[0]);
 	}
 }

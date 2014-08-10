@@ -1,6 +1,5 @@
 package com.xcompwiz.mystcraft.command;
 
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -11,7 +10,7 @@ import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
-public class CommandCreateAgebook extends CommandBase {
+public class CommandCreateAgebook extends CommandMyst {
 
 	@Override
 	public String getCommandName() {
@@ -44,7 +43,7 @@ public class CommandCreateAgebook extends CommandBase {
 		ItemAgebook.initializeCompound(itemstack, dimId, AgeData.getAge(dimId, false));
 		if (player.inventory.addItemStackToInventory(itemstack)) {
 			player.inventory.markDirty();
-			notifyAdmins(agent, agent.getCommandSenderName() + " created Descriptive Book for Dimension " + dimId, new Object[0]);
+			sendToAdmins(agent, agent.getCommandSenderName() + " created Descriptive Book for Dimension " + dimId, new Object[0]);
 		}
 	}
 }

@@ -37,8 +37,8 @@ archivesBaseName = "mystcraft"
 
 // Setup the forge minecraft plugin data. Specify the preferred forge/minecraft version here
 minecraft {
-	version = "1.7.2-10.12.1.1085"
-	assetDir = "eclipse/run/client/assets"
+	version = "1.7.10-10.13.0.1180"
+	runDir = "eclipse/run/client"
 
 	replace "@VERSION@", project.version
 }

@@ -55,6 +55,6 @@ public class CommandToggleWorldInstability extends CommandMyst {
 		}
 		data.setInstabilityEnabled(setting);
 
-		notifyAdmins(sender, sender.getCommandSenderName() + " Toggled Instability for Dimension " + dimId + "(" + data.isInstabilityEnabled() + ")", new Object[0]);
+		sendToAdmins(sender, sender.getCommandSenderName() + " Toggled Instability for Dimension " + dimId + "(" + data.isInstabilityEnabled() + ")", new Object[0]);
 	}
 }

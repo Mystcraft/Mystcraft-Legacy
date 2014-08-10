@@ -108,7 +108,7 @@ public class CommandRegenerateChunk extends CommandMyst {
 		}
 		chunkprovider.currentChunkLoader = chunkloader;
 
-		notifyAdmins(sender, String.format("%s regenerated chunks (%d, %d)+-%d in Dimension %d", sender.getCommandSenderName(), chunkX, chunkZ, range, caller.dimension), new Object[0]);
+		sendToAdmins(sender, String.format("%s regenerated chunks (%d, %d)+-%d in Dimension %d", sender.getCommandSenderName(), chunkX, chunkZ, range, caller.dimension), new Object[0]);
 
 		for (int x = chunkX - range; x <= chunkX + range; ++x) {
 			for (int z = chunkZ - range; z <= chunkZ + range; ++z) {

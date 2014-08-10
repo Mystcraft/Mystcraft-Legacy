@@ -35,7 +35,7 @@ public class CommandToggleDownfall extends CommandMyst {
 		}
 		if (dimension != null) {
 			this.toggleDownfall(dimension);
-			notifyAdmins(sender, "commands.myst.downfall.success", new Object[] { dimension });
+			sendToAdmins(sender, "commands.myst.downfall.success", new Object[] { dimension });
 		} else {
 			throw new CommandException("commands.myst.downfall.fail.nodim");
 		}

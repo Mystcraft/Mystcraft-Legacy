@@ -17,11 +17,15 @@ import net.minecraft.world.World;
 
 public abstract class CommandMyst extends CommandBase {
 
+	public void sendToAdmins(ICommandSender agent, String text, Object[] objects) {
+		func_152373_a(agent, this, text, objects);
+	}
+
 	public static EntityPlayerMP getTargetPlayer(ICommandSender sender, String target) {
 		EntityPlayerMP entityplayermp = PlayerSelector.matchOnePlayer(sender, target);
 
 		if (entityplayermp == null) {
-			entityplayermp = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(target);
+			entityplayermp = MinecraftServer.getServer().getConfigurationManager().func_152612_a(target);
 		}
 		if (entityplayermp == null) { throw new PlayerNotFoundException(); }
 		return entityplayermp;
@@ -107,7 +111,7 @@ public abstract class CommandMyst extends CommandBase {
 	 * Returns the player for a username as an Entity or throws an exception.
 	 */
 	public static Entity parsePlayerByName(String name) throws PlayerNotFoundException {
-		EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(name);
+		EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().func_152612_a(name);
 		if (player != null) { return player; }
 		throw new PlayerNotFoundException(String.format("Could not get Player by name: %s", name), new Object[0]);
 	}

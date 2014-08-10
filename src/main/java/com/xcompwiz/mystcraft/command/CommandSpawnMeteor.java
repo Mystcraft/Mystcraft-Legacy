@@ -53,6 +53,6 @@ public class CommandSpawnMeteor extends CommandMyst {
 		}
 		Entity entity = new EntityMeteor(worldObj, scale, penetration, originx, originy, originz, xd, -3, zd);
 		worldObj.spawnEntityInWorld(entity);
-		notifyAdmins(sender, sender.getCommandSenderName() + String.format(" spawned a meteor at (%.3f, %.3f, %.3f, %d)", originx, originy, originz, dimId), new Object[0]);
+		sendToAdmins(sender, sender.getCommandSenderName() + String.format(" spawned a meteor at (%.3f, %.3f, %.3f, %d)", originx, originy, originz, dimId), new Object[0]);
 	}
 }

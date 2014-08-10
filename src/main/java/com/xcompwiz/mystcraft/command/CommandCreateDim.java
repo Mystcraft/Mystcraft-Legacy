@@ -1,6 +1,5 @@
 package com.xcompwiz.mystcraft.command;
 
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
@@ -10,7 +9,7 @@ import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.util.CollectionUtils;
 
-public class CommandCreateDim extends CommandBase {
+public class CommandCreateDim extends CommandMyst {
 
 	@Override
 	public String getCommandName() {
@@ -39,6 +38,6 @@ public class CommandCreateDim extends CommandBase {
 		} catch (Exception e) {
 			throw new CommandException(e.getMessage());
 		}
-		notifyAdmins(agent, "Dimension " + dimId + " created as Mystcraft Age", new Object[0]);
+		sendToAdmins(agent, "Dimension " + dimId + " created as Mystcraft Age", new Object[0]);
 	}
 }
