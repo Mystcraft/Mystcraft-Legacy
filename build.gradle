@@ -141,7 +141,7 @@ def deployments = [
 	'local' : "${project.userHome}/AppData/Roaming/.minecraft/F1.7.2/mods",
 	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
 	'patron': {"C:/Users/Zach/Google Drive/Mystcraft Patreon Builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
-	'FC2'   : "F:/Seafile/incoming/ForgeCraft2/mods"
+	'FC1'   : "F:/Seafile/incoming/ForgeCraft1/mods"
 ]
 
 deployments.each { name, dir ->
@@ -183,7 +183,7 @@ APIDeploys.each { name, dir ->
 def changelogDeploys = [
 	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds"},
 	'patron': {"C:/Users/Zach/Google Drive/Mystcraft Patreon Builds"},
-	'FC2'   : "${project.userHome}/Dropbox/PahiCraft/Docs/Change Logs"
+	'FC'   : "${project.userHome}/Dropbox/PahiCraft/Docs/Change Logs"
 ]
 
 changelogDeploys.each { name, dir ->
