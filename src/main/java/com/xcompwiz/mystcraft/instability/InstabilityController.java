@@ -12,6 +12,7 @@ import net.minecraft.world.chunk.Chunk;
 import com.google.common.collect.HashMultiset;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
+import com.xcompwiz.mystcraft.core.DebugDataTracker;
 import com.xcompwiz.mystcraft.world.IAgeController;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
@@ -69,6 +70,7 @@ public class InstabilityController implements IInstabilityController {
 		}
 		if (controller.getInstabilityScore() != lastScore) {
 			lastScore = controller.getInstabilityScore();
+			DebugDataTracker.set(agedata.getAgeName()+".instability", ""+lastScore);
 			reconstruct();
 		}
 	}

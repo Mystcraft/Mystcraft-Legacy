@@ -8,30 +8,28 @@ public final class LoggerUtils {
 	private static Logger	log	= null;
 
 	/**
-	 * Configure the FML logger
+	 * Configure the logger
 	 */
 	private static void configureLogging() {
 		log = LogManager.getLogger("Mystcraft");
 	}
 
-	public static void info(String message, Object... params) {
+	public static void log(Level level, String message, Object... params) {
 		if (log == null) {
 			configureLogging();
 		}
-		log.log(Level.INFO, message, params);
+		log.log(level, String.format(message, params));
+	}
+
+	public static void info(String message, Object... params) {
+		log(Level.INFO, message, params);
 	}
 
 	public static void warn(String message, Object... params) {
-		if (log == null) {
-			configureLogging();
-		}
-		log.log(Level.WARN, message, params);
+		log(Level.WARN, message, params);
 	}
 
 	public static void error(String message, Object... params) {
-		if (log == null) {
-			configureLogging();
-		}
-		log.log(Level.ERROR, message, params);
+		log(Level.ERROR, message, params);
 	}
 }

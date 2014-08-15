@@ -23,10 +23,11 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import com.google.common.collect.ImmutableList;
 import com.xcompwiz.mystcraft.api.MystAPI;
-import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.MystAPI.IMystAPIProvider;
+import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.command.CommandCreateAgebook;
 import com.xcompwiz.mystcraft.command.CommandCreateDim;
+import com.xcompwiz.mystcraft.command.CommandDebug;
 import com.xcompwiz.mystcraft.command.CommandMystPermissions;
 import com.xcompwiz.mystcraft.command.CommandRegenerateChunk;
 import com.xcompwiz.mystcraft.command.CommandSpawnMeteor;
@@ -361,6 +362,7 @@ public class Mystcraft implements IMystAPIProvider {
 		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandTime());
 		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandMystPermissions());
 		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandRegenerateChunk());
+		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandDebug());
 		registerDimensions(mcserver.worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
 		LinkListenerPermissions.loadState();
 	}
