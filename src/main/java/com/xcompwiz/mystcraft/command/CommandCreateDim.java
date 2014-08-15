@@ -25,7 +25,7 @@ public class CommandCreateDim extends CommandMyst {
 	public void processCommand(ICommandSender agent, String[] args) {
 		String sTarget = null;
 
-		if (args.length >= 0) {
+		if (args.length > 0) {
 			sTarget = args[0];
 		} else {
 			throw new WrongUsageException("Could not parse command.");
