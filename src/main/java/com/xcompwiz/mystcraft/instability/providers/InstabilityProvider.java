@@ -21,10 +21,10 @@ public class InstabilityProvider implements IInstabilityProvider {
 		this.itemCtorArgs = itemCtorArgs;
 		this.uselevel = uselevel;
 
-		Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + (uselevel ? 1 : 0)];
-		if (uselevel) ctorArgClasses[0] = int.class;
-		for (int idx = 0; idx < ctorArgClasses.length; ++idx) {
-			ctorArgClasses[idx + (uselevel ? 1 : 0)] = itemCtorArgs[idx].getClass();
+		Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + (this.uselevel ? 1 : 0)];
+		if (this.uselevel) ctorArgClasses[0] = int.class;
+		for (int idx = 0; idx < itemCtorArgs.length; ++idx) {
+			ctorArgClasses[idx + (this.uselevel ? 1 : 0)] = itemCtorArgs[idx].getClass();
 		}
 		try {
 			itemCtor = effectclass.getConstructor(ctorArgClasses);

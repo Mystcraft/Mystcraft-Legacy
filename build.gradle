@@ -183,7 +183,6 @@ APIDeploys.each { name, dir ->
 def changelogDeploys = [
 	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds"},
 	'patron': {"C:/Users/Zach/Google Drive/Mystcraft Patreon Builds"},
-	'FC'   : "${project.userHome}/Dropbox/PahiCraft/Docs/Change Logs"
 ]
 
 changelogDeploys.each { name, dir ->

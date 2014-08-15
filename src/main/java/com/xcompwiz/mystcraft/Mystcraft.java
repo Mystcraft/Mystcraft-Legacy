@@ -221,7 +221,6 @@ public class Mystcraft implements IMystAPIProvider {
 		MapGenStructureIO.func_143031_a(ComponentVillageArchivistHouse.class, "ViMystAH");
 
 		// Pre-init symbol system
-		InstabilityData.loadDebugConfigs(config);
 		SymbolRemappings.initialize();
 		GrammarRules.initialize();
 

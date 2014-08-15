@@ -11,7 +11,19 @@ import net.minecraft.world.chunk.Chunk;
 
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
-public abstract class EffectPotion implements IEnvironmentalEffect {
+public class EffectPotion implements IEnvironmentalEffect {
+
+	private int	level;
+	private boolean	isGlobal;
+	private int	potionid;
+	private int	duration;
+
+	public EffectPotion(int level, Boolean global, Integer potion, Integer duration) {
+		this.level = level-1;
+		this.isGlobal = global;
+		this.potionid = potion;
+		this.duration = duration;
+	}
 
 	@Override
 	public void tick(World worldObj, Chunk chunk) {
@@ -28,9 +40,10 @@ public abstract class EffectPotion implements IEnvironmentalEffect {
 	}
 
 	protected boolean isTargetValid(World worldObj, Entity entity) {
-		return (worldObj.canBlockSeeTheSky(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ)));
+		return this.isGlobal || (worldObj.canBlockSeeTheSky(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ)));
 	}
 
-	protected abstract PotionEffect getEffect();
-
+	protected PotionEffect getEffect() {
+		return new PotionEffect(this.potionid, this.duration, this.level);
+	}
 }
