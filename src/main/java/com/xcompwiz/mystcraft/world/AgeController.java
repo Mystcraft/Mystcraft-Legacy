@@ -255,7 +255,7 @@ public class AgeController implements IAgeController {
 
 	public void updateProfiledInstability() {
 		ChunkProfiler profiler = getChunkProfiler();
-		if (profiler.getCount() == 0) {
+		if (profiler.getCount() < 400) {
 			expandChunkProfile();
 		}
 		blockinstability = profiler.calculateInstability();

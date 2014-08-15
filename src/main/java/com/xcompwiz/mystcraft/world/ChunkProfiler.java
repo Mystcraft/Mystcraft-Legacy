@@ -53,6 +53,7 @@ public class ChunkProfiler extends WorldSavedData {
 			this.data = nbt.getIntArray("data");
 			if (this.data == null || this.data.length < MAP_LENGTH) {
 				this.data = new int[MAP_LENGTH];
+				this.count = 0;
 			}
 		}
 	}
@@ -60,6 +61,7 @@ public class ChunkProfiler extends WorldSavedData {
 	private ChunkProfileData				solid_prepop	= new ChunkProfileData();
 	private ChunkProfileData				solid			= new ChunkProfileData();
 	private Map<Block, ChunkProfileData>	blockmaps;
+	private int								count			= 0;
 
 	public ChunkProfiler(String id) {
 		super(id);
@@ -106,6 +108,7 @@ public class ChunkProfiler extends WorldSavedData {
 
 	public void profile(Chunk chunk, int chunkX, int chunkZ) {
 		profileChunk(chunk, solid, blockmaps);
+		++count;
 		this.markDirty();
 	}
 
@@ -134,10 +137,10 @@ public class ChunkProfiler extends WorldSavedData {
 							}
 						}
 					}
-					if (!block.getBlocksMovement(chunk.worldObj, (chunk.xPosition<<4) + x, y, (chunk.zPosition<<4) + z)) {
+					if (!block.getBlocksMovement(chunk.worldObj, (chunk.xPosition << 4) + x, y, (chunk.zPosition << 4) + z)) {
 						accessibility = 1;
 					}
-					if (block.isAir(chunk.worldObj, (chunk.xPosition<<4) + x, y, (chunk.zPosition<<4) + z)) {
+					if (block.isAir(chunk.worldObj, (chunk.xPosition << 4) + x, y, (chunk.zPosition << 4) + z)) {
 						accessibility = 0;
 					}
 					solidmap[coords] += accessibility;
@@ -169,12 +172,14 @@ public class ChunkProfiler extends WorldSavedData {
 	public void readFromNBT(NBTTagCompound nbt) {
 		solid_prepop.readFromNBT(nbt.getCompoundTag("prepop"));
 		solid.readFromNBT(nbt.getCompoundTag("solid"));
+		count = solid.count;
 
 		if (blockmaps == null) return;
 		for (Block block : blockmaps.keySet()) {
 			ChunkProfileData map = new ChunkProfileData();
 			map.readFromNBT(nbt.getCompoundTag(block.getUnlocalizedName()));
 			blockmaps.put(block, map);
+			if (map.count < count) count = map.count;
 		}
 	}
 
@@ -227,6 +232,6 @@ public class ChunkProfiler extends WorldSavedData {
 	}
 
 	public int getCount() {
-		return solid.count;
+		return count;
 	}
 }

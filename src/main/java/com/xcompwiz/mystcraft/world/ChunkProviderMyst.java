@@ -222,7 +222,7 @@ public class ChunkProviderMyst implements IChunkProvider {
 		ChunkProfiler profiler = controller.getChunkProfiler();
 		profiler.profile(ichunkprovider.provideChunk(chunkX, chunkZ), chunkX, chunkZ);
 		int count = profiler.getCount();
-		if (count >= 400 && count % 100 == 0) {
+		if (count > 400 && count % 100 == 0) {
 			controller.updateProfiledInstability();
 		}
 	}
