@@ -112,13 +112,6 @@ public class ChunkProfiler extends WorldSavedData {
 	private static void profileChunk(Chunk chunk, ChunkProfileData soliddata, Map<Block, ChunkProfileData> maps) {
 		ExtendedBlockStorage[] storageArrays = chunk.getBlockStorageArray();
 		int[] solidmap = soliddata.data;
-		++soliddata.count;
-		if (maps != null) {
-			for (Map.Entry<Block, ChunkProfileData> entry : maps.entrySet()) {
-				ChunkProfileData map = entry.getValue();
-				++map.count;
-			}
-		}
 		int layers = solidmap.length / 256;
 		for (int y = 0; y < layers; ++y) {
 			int storagei = y >> 4;
@@ -130,14 +123,32 @@ public class ChunkProfiler extends WorldSavedData {
 					Block block = storageArrays[storagei].getBlockByExtId(x, y & 15, z);
 					//int metadata = storageArrays[storagei].getExtBlockMetadata(x, y & 15, z);
 
-					solidmap[coords] += (block != Blocks.air ? 1 : 0);
-					if (maps == null) continue;
-					for (Map.Entry<Block, ChunkProfileData> entry : maps.entrySet()) {
-						Block matchblock = entry.getKey();
-						ChunkProfileData map = entry.getValue();
-						map.data[coords] += (block == matchblock ? 1 : 0);
+					int accessibility = (block != Blocks.air ? 2 : 0);
+					if (maps != null) {
+						for (Map.Entry<Block, ChunkProfileData> entry : maps.entrySet()) {
+							Block matchblock = entry.getKey();
+							ChunkProfileData map = entry.getValue();
+							if (block == matchblock) {
+								++map.data[coords];
+								accessibility = 1;
+							}
+						}
 					}
+					if (!block.getBlocksMovement(chunk.worldObj, (chunk.xPosition<<4) + x, y, (chunk.zPosition<<4) + z)) {
+						accessibility = 1;
+					}
+					if (block.isAir(chunk.worldObj, (chunk.xPosition<<4) + x, y, (chunk.zPosition<<4) + z)) {
+						accessibility = 0;
+					}
+					solidmap[coords] += accessibility;
 				}
+			}
+		}
+		soliddata.count += 2;
+		if (maps != null) {
+			for (Map.Entry<Block, ChunkProfileData> entry : maps.entrySet()) {
+				ChunkProfileData map = entry.getValue();
+				++map.count;
 			}
 		}
 	}
