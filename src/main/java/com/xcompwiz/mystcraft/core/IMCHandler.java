@@ -34,8 +34,8 @@ public class IMCHandler {
 				if (fluid == null) continue;
 				if (data.hasKey("rarity")) SymbolDataFluids.setRarity(fluid, data.getFloat("rarity"));
 				if (data.hasKey("grammarweight")) SymbolDataFluids.setGrammarWeight(fluid, data.getFloat("grammarweight"));
-				//if (data.hasKey("instabilityPerBlock")) factor2 = data.getFloat("instabilityPerBlock");
-				//FIXME: !!!! Instability factors for fluid blocks!
+				if (data.hasKey("instabilityPerBlockAccessible")) SymbolDataFluids.setFactor1(fluid, data.getFloat("instabilityPerBlockAccessible"));
+				if (data.hasKey("instabilityPerBlock")) SymbolDataFluids.setFactor2(fluid, data.getFloat("instabilityPerBlock"));
 			}
 		}
 	}

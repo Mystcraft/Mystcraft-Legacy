@@ -19,9 +19,11 @@ import com.xcompwiz.mystcraft.world.ChunkProfiler;
 
 public class SymbolDataFluids {
 
-	private static Map<Integer, Float>					rarities		= new HashMap<Integer, Float>();
-	private static Map<Integer, Float>					grammarWeights	= new HashMap<Integer, Float>();
-	private static MystConfig							config;
+	private static Map<Integer, Float>	rarities		= new HashMap<Integer, Float>();
+	private static Map<Integer, Float>	grammarWeights	= new HashMap<Integer, Float>();
+	private static Map<Integer, Float>	factor1s		= new HashMap<Integer, Float>();
+	private static Map<Integer, Float>	factor2s		= new HashMap<Integer, Float>();
+	private static MystConfig			config;
 
 	public static void setConfig(MystConfig mystconfig) {
 		config = mystconfig;
@@ -40,7 +42,7 @@ public class SymbolDataFluids {
 			byte meta = 0;
 			if (block instanceof BlockFluidBase) meta = (byte) ((BlockFluidBase) block).getMaxRenderHeightMeta();
 			BlockModifierContainerObject container = BlockModifierContainerObject.create(WordData.Sea, symbolRarity(fluid), block, meta);
-			ChunkProfiler.setInstabilityFactors(block, 0.1F, 0, 0);
+			ChunkProfiler.setInstabilityFactors(block, factor1(fluid), factor2(fluid), 0);
 			if (fluid.isGaseous()) {
 				container.add(BlockCategory.GAS, grammarWeight(fluid));
 			} else {
@@ -63,11 +65,31 @@ public class SymbolDataFluids {
 		return 0.1F;
 	}
 
+	private static float factor1(Fluid fluid) {
+		Float value = factor1s.get(fluid.getID());
+		if (value != null) return value;
+		return 0.0F;
+	}
+
+	private static float factor2(Fluid fluid) {
+		Float value = factor2s.get(fluid.getID());
+		if (value != null) return value;
+		return 0.1F;
+	}
+
 	public static void setRarity(Fluid fluid, float value) {
 		rarities.put(fluid.getID(), value);
 	}
 
 	public static void setGrammarWeight(Fluid fluid, float value) {
 		grammarWeights.put(fluid.getID(), value);
+	}
+
+	public static void setFactor1(Fluid fluid, float value) {
+		factor1s.put(fluid.getID(), value);
+	}
+
+	public static void setFactor2(Fluid fluid, float value) {
+		factor2s.put(fluid.getID(), value);
 	}
 }
