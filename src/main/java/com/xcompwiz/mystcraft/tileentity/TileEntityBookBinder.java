@@ -140,7 +140,7 @@ public class TileEntityBookBinder extends TileEntity implements IItemBuilder, IS
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
 		NBTTagList nbttaglist = new NBTTagList();
-		for (int i = 0; i < itemstacks.length; i++) { //XXX: Use generic item staving saving helper
+		for (int i = 0; i < itemstacks.length; i++) { //XXX: Use generic item saving helper
 			if (itemstacks[i] != null) {
 				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
 				nbttagcompound1.setByte("Slot", (byte) i);
@@ -150,7 +150,7 @@ public class TileEntityBookBinder extends TileEntity implements IItemBuilder, IS
 		}
 		nbttagcompound.setTag("Items", nbttaglist);
 		nbttaglist = new NBTTagList();
-		for (ItemStack page : pages) { //XXX: Use generic item staving saving helper?
+		for (ItemStack page : pages) { //XXX: Use generic item saving helper?
 			NBTTagCompound itemdata = new NBTTagCompound();
 			page.writeToNBT(itemdata);
 			nbttaglist.appendTag(itemdata);
