@@ -56,25 +56,33 @@ public class SymbolDataFluids {
 	private static float symbolRarity(Fluid fluid) {
 		Float value = rarities.get(fluid.getID());
 		if (value != null) return value;
-		return 0.1F;
+		float val = 0.1F;
+		if (config != null) return (float) config.get(MystConfig.CATEGORY_DEBUG, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".rarity", val).getDouble(val);
+		return val;
 	}
 
 	private static float grammarWeight(Fluid fluid) {
 		Float value = grammarWeights.get(fluid.getID());
 		if (value != null) return value;
-		return 0.1F;
+		float val = 0.1F;
+		if (config != null) return (float) config.get(MystConfig.CATEGORY_DEBUG, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".grammar", val).getDouble(val);
+		return val;
 	}
 
 	private static float factor1(Fluid fluid) {
 		Float value = factor1s.get(fluid.getID());
 		if (value != null) return value;
-		return 0.0F;
+		float val = 0.0F;
+		if (config != null) return (float) config.get(MystConfig.CATEGORY_DEBUG, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".instability.factor1", val).getDouble(val);
+		return val;
 	}
 
 	private static float factor2(Fluid fluid) {
 		Float value = factor2s.get(fluid.getID());
 		if (value != null) return value;
-		return 0.1F;
+		float val = 0.1F;
+		if (config != null) return (float) config.get(MystConfig.CATEGORY_DEBUG, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".instability.factor2", val).getDouble(val);
+		return val;
 	}
 
 	public static void setRarity(Fluid fluid, float value) {

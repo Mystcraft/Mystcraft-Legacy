@@ -70,7 +70,7 @@ public class SymbolManager {
 			symbol.registerLogic(symbolProfiler, 0);
 		} catch (Exception e) {
 			LoggerUtils.error(String.format("Exception encountered when profiling symbol with identifier %s.", symbol.identifier()));
-			LoggerUtils.error(e.getMessage());
+			if (e.getMessage() != null) LoggerUtils.error(e.getMessage());
 			e.printStackTrace();
 			blackListSymbol(symbol.identifier());
 			errored.add(symbol.identifier());
