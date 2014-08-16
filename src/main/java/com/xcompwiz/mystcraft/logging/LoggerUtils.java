@@ -18,7 +18,15 @@ public final class LoggerUtils {
 		if (log == null) {
 			configureLogging();
 		}
-		log.log(level, String.format(message, params));
+		if (message == null) {
+			log.log(level, "Attempted to log null message.");
+		} else {
+			try {
+				message = String.format(message, params);
+			} catch (Exception e) {
+			}
+			log.log(level, message);
+		}
 	}
 
 	public static void info(String message, Object... params) {
