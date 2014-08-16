@@ -102,7 +102,7 @@ public class InstabilityData {
 	}
 
 	public static void initialize() {
-		//FIXME: !!! Implement missing Instability effects
+		//TODO: (Instability) Implement missing Instability effects
 		InstabilityManager.setDeckCost("basic", deckcost.basic);
 		InstabilityManager.setDeckCost("harsh", deckcost.harsh);
 		InstabilityManager.setDeckCost("destructive", deckcost.destructive);

@@ -30,11 +30,10 @@ import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import com.xcompwiz.mystcraft.world.storage.IStorageObject;
 
-// XXX: (AgeData) can we move to this class being server-side, and then having sub-objects which are sent to the
-// clients?
+// XXX: (AgeData) can we move to this class being server-side, and then having sub-objects which are sent to the clients?
 // Needed things on client-side:
-// Visuals (symbol list)
-// Symbol states (ex. weather)
+//  	Visuals (symbol list)
+//  	Symbol states (ex. weather)
 public class AgeData extends WorldSavedData {
 
 	private String								agename;
@@ -249,7 +248,7 @@ public class AgeData extends WorldSavedData {
 		return result;
 	}
 
-	//TODO: (Storage) This is a candidate for moving to world/other data (server side only unless sent specifically?)
+	//TODO: (AgeData) This is a candidate for moving to world/other data (server side only unless sent specifically?)
 	public Collection<String> getDeck(String deckname) {
 		Collection<String> cards = decks.get(deckname);
 		if (cards == null) return cards;
