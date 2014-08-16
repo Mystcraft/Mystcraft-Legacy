@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
+import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
@@ -34,6 +35,11 @@ public class SymbolTerrainGenNether extends SymbolBase {
 	@Override
 	public String identifier() {
 		return "TerrainNether";
+	}
+
+	@Override
+	public int instabilityModifier(int count) {
+		return InstabilityData.symbol.caves;
 	}
 
 	private static class TerrainGenerator extends TerrainGeneratorBase {

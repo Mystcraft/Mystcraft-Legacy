@@ -72,6 +72,8 @@ public class InstabilityData {
 
 	public static class symbol {
 		public static int	accelerated	= 250;
+		public static int	caves		= 1000;
+		public static int	bright		= 500;
 		public static int	charged		= -stability.lightning;
 		public static int	meteors		= -stability.meteors;
 		public static int	explosion	= -stability.explosions;

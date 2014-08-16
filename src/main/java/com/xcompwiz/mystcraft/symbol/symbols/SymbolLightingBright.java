@@ -1,6 +1,7 @@
 package com.xcompwiz.mystcraft.symbol.symbols;
 
 import com.xcompwiz.mystcraft.api.world.logic.ILightingController;
+import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.world.IAgeController;
 
@@ -14,6 +15,11 @@ public class SymbolLightingBright extends SymbolBase {
 	@Override
 	public String identifier() {
 		return "LightingBright";
+	}
+
+	@Override
+	public int instabilityModifier(int count) {
+		return InstabilityData.symbol.bright;
 	}
 
 	private class LightingController implements ILightingController {

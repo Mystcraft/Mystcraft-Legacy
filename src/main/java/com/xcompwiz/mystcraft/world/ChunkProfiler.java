@@ -77,7 +77,7 @@ public class ChunkProfiler extends WorldSavedData {
 	}
 
 	public int calculateInstability() {
-		//outputFiles(); //FIXME: Need to recheck the profiled values
+		//outputFiles(); //FIXME: !!!! Need to recheck the profiled values
 		float instability = 0;
 		int layers = solid.data.length / 256;
 		HashMap<Block, Float> split = new HashMap<Block, Float>();
@@ -186,7 +186,7 @@ public class ChunkProfiler extends WorldSavedData {
 
 	@SuppressWarnings("unused")
 	private void outputFiles() {
-		//FIXME: Don't release this with this code here!
+		//FIXME: !!!! Don't release this with this code here!
 		outputDebug(solid_prepop.data, solid_prepop.count, "logs/profiling/solid1.txt");
 		outputDebug(solid.data, solid.count, "logs/profiling/solid2.txt");
 		if (blockmaps != null) {
