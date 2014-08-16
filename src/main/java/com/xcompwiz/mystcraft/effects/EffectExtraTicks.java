@@ -28,24 +28,24 @@ public class EffectExtraTicks implements IEnvironmentalEffect {
 		int zPos = chunk.zPosition * 16;
 
 		ExtendedBlockStorage[] storagea = chunk.getBlockStorageArray();
-		int var9 = storagea.length;
 
-		for (int var10 = 0; var10 < var9; ++var10) {
-			ExtendedBlockStorage storage = storagea[var10];
+		for (int k = 0; k < storagea.length; ++k) {
+			ExtendedBlockStorage storage = storagea[k];
 
 			if (storage != null && storage.getNeedsRandomTick()) {
-				for (int var12 = 0; var12 < 3; ++var12) {
+				for (int i = 0; i < 3; ++i) {
 					this.updateLCG = this.updateLCG * 3 + 1013904223;
 					int bits = this.updateLCG >> 2;
 					int x = bits & 15;
 					int z = bits >> 8 & 15;
 					int y = bits >> 16 & 15;
 					Block block = storage.getBlockByExtId(x, y, z);
+					if (block == null) continue;
 					int metadata = storage.getExtBlockMetadata(x, y, z);
 					if (this.block != null && this.block != block) continue;
 					if (this.metadata != null && this.metadata != metadata) continue;
 
-					if (block != null && block.getTickRandomly()) {
+					if (this.block != null || block.getTickRandomly()) {
 						block.updateTick(worldObj, x + xPos, y + storage.getYLocation(), z + zPos, worldObj.rand);
 					}
 				}

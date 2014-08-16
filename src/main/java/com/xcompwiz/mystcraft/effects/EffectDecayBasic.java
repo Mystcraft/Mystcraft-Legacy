@@ -25,7 +25,7 @@ public class EffectDecayBasic implements IEnvironmentalEffect {
 
 	public EffectDecayBasic(IInstabilityController controller, int metadata, int min, Integer max) {
 		this.controller = controller;
-		this.updateLCG = (new Random()).nextInt(); //TODO: Make deterministic on age seed
+		this.updateLCG = (new Random()).nextInt();
 
 		this.metadata = metadata;
 		this.min = min;

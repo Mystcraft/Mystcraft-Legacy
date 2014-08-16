@@ -9,7 +9,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.block.BlockDecay;
 import com.xcompwiz.mystcraft.world.WorldInfoHelper;
 
@@ -98,12 +97,6 @@ public abstract class DecayHandler {
 	}
 
 	public void updateTick(World world, int x, int y, int z, Random random) {
-		if (!WorldInfoHelper.isMystcraftAge(world)) {
-			world.setBlock(x, y, z, Blocks.air);
-			return;
-		}
-		if (!WorldInfoHelper.isInstabilityEnabled(world) || !Mystcraft.instabilityEnabled) { return; }
-		//FIXME: !!!! Check if the relevant instability effect is still active in the world (or make decay blocks only tick by effects)
 		this.pulse(world, x, y, z, random);
 	}
 

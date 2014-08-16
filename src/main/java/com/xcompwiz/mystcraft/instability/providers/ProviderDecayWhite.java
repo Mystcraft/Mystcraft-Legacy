@@ -11,8 +11,10 @@ public class ProviderDecayWhite implements IInstabilityProvider {
 
 	@Override
 	public void addEffects(IInstabilityController controller, Integer level) {
-		for (int i = 0; i < level; ++i)
+		for (int i = 0; i < level; ++i) {
 			controller.registerEffect(new EffectDecayBasic(controller, DecayHandler.WHITE, 20, null));
-		controller.registerEffect(new EffectExtraTicks(BlockDecay.instance, DecayHandler.WHITE));
+			controller.registerEffect(new EffectExtraTicks(BlockDecay.instance, DecayHandler.WHITE));
+			controller.registerEffect(new EffectExtraTicks(BlockDecay.instance, DecayHandler.WHITE));
+		}
 	}
 }

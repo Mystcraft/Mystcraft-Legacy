@@ -23,7 +23,7 @@ public class BlockDecay extends Block {
 
 	public BlockDecay() {
 		super(Material.sand);
-		setTickRandomly(true);
+		setTickRandomly(false);
 	}
 
 	/**
