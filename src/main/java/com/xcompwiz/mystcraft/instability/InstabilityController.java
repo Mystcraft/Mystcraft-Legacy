@@ -3,7 +3,6 @@ package com.xcompwiz.mystcraft.instability;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.world.World;
@@ -41,7 +40,7 @@ public class InstabilityController implements IInstabilityController {
 			String deckname = deck.getName();
 			Collection<String> cards = HashMultiset.create(deck.getCards());
 			deck.removeAll();
-			List<String> order = agedata.getDeck(deckname);
+			Collection<String> order = agedata.getDeck(deckname);
 			boolean dirty = false;
 			for (String card : order) {
 				if (cards.remove(card)) {

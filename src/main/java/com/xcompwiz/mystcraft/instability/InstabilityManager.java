@@ -83,6 +83,9 @@ public class InstabilityManager {
 	}
 
 	public static void addCards(String deckname, List<String> cards) {
+		if (!deckcosts.containsKey(deckname)) {
+			throw new RuntimeException("Attempting to register card to unregistered deck");
+		}
 		List<String> deck = deckcards.get(deckname);
 		if (deck == null) {
 			deck = new ArrayList<String>();
@@ -135,5 +138,9 @@ public class InstabilityManager {
 		Integer val = deckcosts.get(deckname); 
 		if (val == null) return 0;
 		return val;
+	}
+
+	public static Collection<String> getDecks() {
+		return deckcosts.keySet();
 	}
 }

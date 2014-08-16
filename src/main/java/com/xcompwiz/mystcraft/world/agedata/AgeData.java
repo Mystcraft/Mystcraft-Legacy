@@ -1,9 +1,12 @@
 package com.xcompwiz.mystcraft.world.agedata;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 
@@ -27,28 +30,29 @@ import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import com.xcompwiz.mystcraft.world.storage.IStorageObject;
 
-// XXX: (AgeData) can we move to this class being server-side, and then having sub-objects which are sent to the clients?
+// XXX: (AgeData) can we move to this class being server-side, and then having sub-objects which are sent to the
+// clients?
 // Needed things on client-side:
-//  	Visuals (symbol list)
-//  	Symbol states (ex. weather)
+// Visuals (symbol list)
+// Symbol states (ex. weather)
 public class AgeData extends WorldSavedData {
 
-	private String				agename;
-	private Set<String>			authors;
-	private long				seed;
-	private short				instability;
-	private boolean				instabilityEnabled;
-	private ChunkCoordinates	spawn;
-	private List<ItemStack>		pages			= new ArrayList<ItemStack>();
-	private List<String>		symbols			= new ArrayList<String>();
-	private List<String>		effects			= new ArrayList<String>();
-	private boolean				updated;
-	private boolean				visited;
-	private NBTTagCompound		datacompound;
-	private Boolean				sharedDirty		= new Boolean(false);
-	private boolean				needsResend;
-	private Boolean				sharedResend	= new Boolean(false);
-	private long				worldtime;
+	private String								agename;
+	private Set<String>							authors;
+	private long								seed;
+	private short								instability;
+	private boolean								instabilityEnabled;
+	private ChunkCoordinates					spawn;
+	private List<ItemStack>						pages			= new ArrayList<ItemStack>();
+	private List<String>						symbols			= new ArrayList<String>();
+	private HashMap<String, Collection<String>>	decks			= new HashMap<String, Collection<String>>();
+	private boolean								updated;
+	private boolean								visited;
+	private NBTTagCompound						datacompound;
+	private Boolean								sharedDirty		= new Boolean(false);
+	private boolean								needsResend;
+	private Boolean								sharedResend	= new Boolean(false);
+	private long								worldtime;
 
 	public AgeData(String s) {
 		super(s);
@@ -246,18 +250,21 @@ public class AgeData extends WorldSavedData {
 	}
 
 	//XXX: This is a candidate for moving to world/other data (server side only unless sent specifically?)
-	public List<String> getDeck(String deckname) {
-		//FIXME: !!! Deck lists
-		return Collections.unmodifiableList(effects);
+	public Collection<String> getDeck(String deckname) {
+		Collection<String> cards = decks.get(deckname);
+		if (cards == null) return cards;
+		return Collections.unmodifiableCollection(cards);
 	}
 
 	public void saveDeck(Deck deck) {
-		//FIXME: !!! Deck lists
+		Collection<String> cards = new ArrayList<String>();
+		cards.addAll(deck.getCards());
+		decks.put(deck.getName(), cards);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		AgeDataLoader loader = new AgeDataLoaderV4_1(nbttagcompound);
+		AgeDataLoader loader = new AgeDataLoaderV4_2(nbttagcompound);
 
 		agename = loader.getAgeName();
 		authors = loader.getAuthors();
@@ -272,7 +279,7 @@ public class AgeData extends WorldSavedData {
 
 		pages = loader.getPages();
 		symbols = loader.getSymbols();
-		effects = loader.getEffects();
+		decks = loader.getDecks();
 
 		datacompound = loader.getDataCompound();
 
@@ -303,7 +310,7 @@ public class AgeData extends WorldSavedData {
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		nbttagcompound.setString("Version", "4.1");
+		nbttagcompound.setString("Version", "4.2");
 		if (agename == null || agename.isEmpty()) {
 			agename = "Unnamed Age";
 		}
@@ -335,11 +342,16 @@ public class AgeData extends WorldSavedData {
 		nbttagcompound.setTag("Symbols", list);
 
 		list = new NBTTagList();
-		for (String effect : effects) {
-			if (effects == null) continue;
-			list.appendTag(new NBTTagString(effect));
+		for (Entry<String, Collection<String>> entry : decks.entrySet()) {
+			NBTTagCompound decknbt = new NBTTagCompound();
+			decknbt.setString("Name", entry.getKey());
+			NBTTagList cardlist = new NBTTagList();
+			for (String card : entry.getValue()) {
+				cardlist.appendTag(new NBTTagString(card));
+			}
+			decknbt.setTag("Cards", cardlist);
 		}
-		nbttagcompound.setTag("Effects", list);
+		nbttagcompound.setTag("Decks", list);
 
 		if (authors != null) {
 			list = new NBTTagList();
