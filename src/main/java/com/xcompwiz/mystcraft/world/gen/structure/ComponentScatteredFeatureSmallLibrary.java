@@ -808,7 +808,7 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 				ItemStack item = null;
 				IAgeSymbol symbol = null;
 				while (!lectern.isItemValidForSlot(0, item) || (symbol != null && SymbolManager.getSymbolTreasureChance(symbol) >= 60)) {
-					item = info.getOneItem(rand); //TODO: Replace with better system?
+					item = info.getOneItem(rand); //TODO: (Treasure) Replace with better system?
 					symbol = SymbolManager.getAgeSymbol(Page.getSymbol(item));
 					if (item.stackSize > 0) item.stackSize = 1;
 				}

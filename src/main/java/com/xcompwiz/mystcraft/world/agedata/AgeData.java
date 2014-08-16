@@ -155,13 +155,13 @@ public class AgeData extends WorldSavedData {
 	}
 
 	// Primarily used when displaying written pages
-	// TODO: Move this into the books themselves
+	// TODO: (Sorting) Move this into the books themselves
 	public List<ItemStack> getPages() {
 		return Collections.unmodifiableList(pages);
 	}
 
 	// Called on book assembly
-	// TODO: Move this into the books themselves
+	// TODO: (Sorting) Move this into the books themselves
 	public void addPages(List<ItemStack> pages) {
 		this.pages.addAll(pages);
 		this.markDirty();
@@ -173,14 +173,14 @@ public class AgeData extends WorldSavedData {
 	 * @param symbol The identifier of the symbol to write
 	 * @return true if successfully wrote the symbol to the book
 	 */
-	// TODO: Move this into the books themselves
+	// TODO: (Sorting) Move this into the books themselves
 	public boolean writeSymbol(String symbol) {
 		if (this.visited) return false;
 		for (ItemStack page : pages) {
 			if (Page.isBlank(page)) {
 				Page.setSymbol(page, symbol);
 				if (visited == true) {
-					// TODO: Rewriting
+					// TODO: (Rewriting)
 				}
 				this.markDirty();
 				return true;
@@ -235,7 +235,7 @@ public class AgeData extends WorldSavedData {
 		return Collections.unmodifiableList(symbols);
 	}
 
-	// TODO: Move this into the books themselves
+	// TODO: (Sorting) Move this into the books themselves
 	public List<PositionableItem> getPositionedPages() {
 		List<PositionableItem> result = new ArrayList<PositionableItem>();
 		int slot = 0;
@@ -249,7 +249,7 @@ public class AgeData extends WorldSavedData {
 		return result;
 	}
 
-	//XXX: This is a candidate for moving to world/other data (server side only unless sent specifically?)
+	//TODO: (Storage) This is a candidate for moving to world/other data (server side only unless sent specifically?)
 	public Collection<String> getDeck(String deckname) {
 		Collection<String> cards = decks.get(deckname);
 		if (cards == null) return cards;

@@ -98,7 +98,7 @@ public class LinkRendererDisarm implements ILinkPanelEffect {
 			return start + ((end - start) * f);
 		}
 
-		// TODO: zLevels
+		// TODO: (Visuals) zLevels
 		private void drawLine(double par1, double par2, double par3, double par4) {
 			int color = 0xFFFF3333;
 			int points = rand.nextInt(50);

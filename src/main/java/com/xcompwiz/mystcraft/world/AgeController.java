@@ -115,8 +115,7 @@ public class AgeController implements IAgeController {
 		reconstruct();
 	}
 
-	// TODO: The current system uses jit rebuilding. Perhaps a signaled builder would be better, with a hold function to
-	// prevent access during the build?
+	// XXX: The current system uses jit rebuilding. Perhaps a signaled builder would be better, with a hold function to prevent access during the build?
 	private void validate() {
 		try {
 			if (agedata.isUpdated()) {

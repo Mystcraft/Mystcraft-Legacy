@@ -188,7 +188,7 @@ public class GuiElementBook extends GuiElement {
 		if (linkinfo != null) {
 			Collection<ILinkPanelEffect> effects = LinkPanelEffectManager.getEffects();
 			for (ILinkPanelEffect effect : effects) {
-				effect.render(0, 0, width, height, linkinfo); // TODO: zLevels
+				effect.render(0, 0, width, height, linkinfo); // TODO: (Visuals) zLevels
 			}
 		}
 		if (!bookcontainer.isLinkPermitted()) {

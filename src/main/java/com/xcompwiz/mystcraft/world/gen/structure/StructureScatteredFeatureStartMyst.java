@@ -9,7 +9,7 @@ public class StructureScatteredFeatureStartMyst extends StructureStart {
 	public StructureScatteredFeatureStartMyst() {}
 
 	public StructureScatteredFeatureStartMyst(World worldObj, Random random, int chunkX, int chunkZ) {
-		//TODO: Revise this to allow for variable scattered features
+		//TODO: (Structures) Revise this to allow for variable scattered features
 		ComponentScatteredFeatureSmallLibrary library = new ComponentScatteredFeatureSmallLibrary(random, chunkX * 16, chunkZ * 16);
 		this.components.add(library);
 

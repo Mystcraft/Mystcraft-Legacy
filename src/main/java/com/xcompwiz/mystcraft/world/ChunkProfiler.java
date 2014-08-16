@@ -29,8 +29,9 @@ public class ChunkProfiler extends WorldSavedData {
 	private static final Map<Block, Float>	factor2s		= new HashMap<Block, Float>();
 	private static int						totalfree		= 0;
 
-	//XXX: Move out of here.  Make accessible to API
-	//TODO: Make metadata aware
+	//XXX: Move out of here.
+	//TODO: (API) Make accessible to API
+	//TODO: (Instability) Make metadata aware
 	public static void setInstabilityFactors(Block block, float factor1, float factor2, int free) {
 		watchedblocks.add(block);
 		factor1s.put(block, factor1);
@@ -77,7 +78,6 @@ public class ChunkProfiler extends WorldSavedData {
 	}
 
 	public int calculateInstability() {
-		//FIXME: !!!! Don't release this with this code here!
 		//outputFiles(); //FIXME: !!!! Need to recheck the profiled values
 		float instability = 0;
 		int layers = solid.data.length / 256;

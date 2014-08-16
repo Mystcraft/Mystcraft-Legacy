@@ -5,7 +5,7 @@ import com.xcompwiz.mystcraft.instability.providers.InstabilityProvider;
 
 public class InstabilityFactory implements IInstabilityFactory {
 
-	//TODO: Instability API
+	//TODO: (API) Instability API
 	@Override
 	public IInstabilityProvider createProviderForEffect(Class<? extends IEnvironmentalEffect> effectclass, Object... itemCtorArgs) {
 		return new InstabilityProvider(false, effectclass, itemCtorArgs);

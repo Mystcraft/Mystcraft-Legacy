@@ -345,7 +345,7 @@ public final class GuiUtils {
 		tessellator.draw();
 	}
 
-	// TODO: Padding and alignment for scaled text
+	// TODO: (Visuals) Padding and alignment for scaled text
 	@SideOnly(Side.CLIENT)
 	public static void drawScaledText(String text, int x, int y, int width, int height, int textcolor) {
 		GL11.glPushMatrix();
