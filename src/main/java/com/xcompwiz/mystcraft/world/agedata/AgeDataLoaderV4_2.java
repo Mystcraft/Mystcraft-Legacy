@@ -90,11 +90,13 @@ public class AgeDataLoaderV4_2 extends AgeDataLoader {
 
 			pages = loader.getPages();
 			symbols = loader.getSymbols();
+			datacompound = loader.getDataCompound();
+
+			//Update
 			List<String> effects = loader.getEffects();
 			for (String deckname : InstabilityManager.getDecks()) {
 				decks.put(deckname, effects);
 			}
-			datacompound = loader.getDataCompound();
 		}
 		if (agename.isEmpty()) {
 			agename = "Unnamed Age";

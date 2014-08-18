@@ -251,7 +251,7 @@ public class AgeData extends WorldSavedData {
 	//TODO: (AgeData) This is a candidate for moving to world/other data (server side only unless sent specifically?)
 	public Collection<String> getDeck(String deckname) {
 		Collection<String> cards = decks.get(deckname);
-		if (cards == null) return cards;
+		if (cards == null) return new ArrayList<String>();
 		return Collections.unmodifiableCollection(cards);
 	}
 
