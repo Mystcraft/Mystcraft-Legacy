@@ -43,6 +43,7 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
 import com.xcompwiz.mystcraft.client.render.CloudRendererMyst;
 import com.xcompwiz.mystcraft.client.render.WeatherRendererMyst;
+import com.xcompwiz.mystcraft.core.DebugDataTracker;
 import com.xcompwiz.mystcraft.instability.InstabilityController;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
@@ -234,6 +235,9 @@ public class AgeController implements IAgeController {
 			updateProfiledInstability();
 		}
 		int score = instability + blockinstability + agedata.getBaseInstability();
+		DebugDataTracker.set(agedata.getAgeName()+".instability", ""+score);
+		DebugDataTracker.set(agedata.getAgeName()+".instability.writing", ""+instability);
+		DebugDataTracker.set(agedata.getAgeName()+".instability.book", ""+agedata.getBaseInstability());
 		int difficulty = 2;
 		if (Mystcraft.difficulty != null) difficulty = Mystcraft.difficulty;
 		switch (difficulty) {
@@ -249,6 +253,7 @@ public class AgeController implements IAgeController {
 			score *= 1.75F;
 			break;
 		}
+		DebugDataTracker.set(agedata.getAgeName()+".instability.inclDifficulty", ""+score);
 		return score;
 	}
 
