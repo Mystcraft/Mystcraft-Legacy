@@ -33,8 +33,11 @@ public class BiomeWrapperManager {
 	private BiomeGenBase getBiomeForWorldCoords(int x, int z) {
 		int lx = x & 15;
 		int lz = z & 15;
-		Chunk chunk = provider.worldObj.getChunkFromBlockCoords(x, z);
-		return chunk.getBiomeGenForWorldCoords(lx, lz, provider.worldChunkMgr);
+		if (provider.worldObj.blockExists(x, 0, z)) {
+			Chunk chunk = provider.worldObj.getChunkFromBlockCoords(x, z);
+			return chunk.getBiomeGenForWorldCoords(lx, lz, provider.worldChunkMgr);
+		}
+		return this.provider.worldChunkMgr.getBiomeGenAt(x, z);
 	}
 
 }
