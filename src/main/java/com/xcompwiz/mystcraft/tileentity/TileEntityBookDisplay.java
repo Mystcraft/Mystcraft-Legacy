@@ -22,6 +22,11 @@ public class TileEntityBookDisplay extends TileEntityBook implements IMessageRec
 		pitch = 0;
 	}
 
+	@Override
+	public boolean canUpdate() {
+		return false;
+	}
+
 	public void setPitch(int pitch) {
 		this.pitch = (short) (pitch % 360);
 	}

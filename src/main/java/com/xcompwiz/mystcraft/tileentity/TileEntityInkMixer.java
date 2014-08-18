@@ -215,6 +215,11 @@ public class TileEntityInkMixer extends TileEntity implements IItemBuilder, ISid
 	}
 
 	@Override
+	public boolean canUpdate() {
+		return true;
+	}
+
+	@Override
 	public void updateEntity() {
 		if (worldObj.isRemote) return;
 		// If we can pull from the in container and the out slot is either empty or contains the empty form of the container

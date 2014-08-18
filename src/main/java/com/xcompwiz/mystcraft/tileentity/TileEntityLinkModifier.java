@@ -10,6 +10,11 @@ import com.xcompwiz.mystcraft.linking.LinkOptions;
 
 public class TileEntityLinkModifier extends TileEntityBook {
 
+	@Override
+	public boolean canUpdate() {
+		return false;
+	}
+
 	public void setBookTitle(EntityPlayer player, String text) {
 		ItemStack itemstack = getBook();
 		if (itemstack != null && (itemstack.getItem() instanceof IItemRenameable)) {

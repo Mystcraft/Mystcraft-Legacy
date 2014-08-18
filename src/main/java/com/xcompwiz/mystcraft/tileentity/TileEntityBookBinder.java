@@ -34,6 +34,11 @@ public class TileEntityBookBinder extends TileEntity implements IItemBuilder, IS
 	}
 
 	@Override
+	public boolean canUpdate() {
+		return false;
+	}
+
+	@Override
 	public boolean isItemValidForSlot(int slotIndex, ItemStack itemstack) {
 		if (itemstack == null) return false;
 		if (slotIndex == 1 && itemstack.getItem() == Items.leather) return true;

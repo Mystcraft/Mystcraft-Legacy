@@ -46,6 +46,11 @@ public class TileEntityLectern extends TileEntityBookDisplay {
 	}
 
 	@Override
+	public boolean canUpdate() {
+		return true;
+	}
+
+	@Override
 	public void updateEntity() {
 		if (!worldObj.isRemote) {
 			ItemStack displayed = this.getDisplayItem();

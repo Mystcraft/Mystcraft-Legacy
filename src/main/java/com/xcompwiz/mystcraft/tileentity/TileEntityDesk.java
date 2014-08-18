@@ -409,6 +409,11 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 	}
 
 	@Override
+	public boolean canUpdate() {
+		return true;
+	}
+
+	@Override
 	public void updateEntity() {
 		if (worldObj.isRemote) return;
 		if (BlockWritingDesk.isBlockFoot(worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord))) this.tileEntityInvalid = true;
