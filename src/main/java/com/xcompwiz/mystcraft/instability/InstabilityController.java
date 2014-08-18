@@ -11,6 +11,7 @@ import net.minecraft.world.chunk.Chunk;
 import com.google.common.collect.HashMultiset;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
+import com.xcompwiz.mystcraft.core.DebugDataTracker;
 import com.xcompwiz.mystcraft.world.IAgeController;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
@@ -21,7 +22,7 @@ public class InstabilityController implements IInstabilityController {
 	private int										lastScore;
 
 	private Collection<Deck>						decks;
-	private HashMap<IInstabilityProvider, Integer>	providerlevels	= new HashMap<IInstabilityProvider, Integer>();
+	private HashMap<String, Integer>	providerlevels	= new HashMap<String, Integer>();
 	private Collection<IEnvironmentalEffect>		effects			= new ArrayList<IEnvironmentalEffect>();
 
 	public InstabilityController(IAgeController controller, AgeData agedata) {
@@ -80,20 +81,27 @@ public class InstabilityController implements IInstabilityController {
 			Collection<String> providernames = getProviders(deck);
 			if (providernames == null) continue;
 			for (String name : providernames) {
-				IInstabilityProvider provider = InstabilityManager.getProvider(name);
-				if (provider != null) {
-					addProviderLevel(provider);
-				}
+				addProviderLevel(name);
 			}
 		}
 		rebuildEffects();
 	}
 
 	private Collection<String> getProviders(Deck deck) {
-		return deck.getProviders(getInstabilityScore());
+		int instabilityScore = getInstabilityScore();
+		instabilityScore -= InstabilityManager.getDeckCost(deck.getName());
+		if (instabilityScore <= 0) return null;
+		Collection<String> providers = new ArrayList<String>();
+		for (String card : deck.getCards()) {
+			int cost = InstabilityManager.getCardCost(card);
+			instabilityScore -= cost;
+			if (instabilityScore <= 0) break;
+			providers.add(card);
+		}
+		return providers;
 	}
 
-	private void addProviderLevel(IInstabilityProvider provider) {
+	private void addProviderLevel(String provider) {
 		Integer level = providerlevels.get(provider);
 		if (level == null) level = 0;
 		this.providerlevels.put(provider, level + 1);
@@ -101,9 +109,14 @@ public class InstabilityController implements IInstabilityController {
 
 	private void rebuildEffects() {
 		effects.clear();
-		for (IInstabilityProvider provider : providerlevels.keySet()) {
-			provider.addEffects(this, providerlevels.get(provider));
+		for (String name : providerlevels.keySet()) {
+			IInstabilityProvider provider = InstabilityManager.getProvider(name);
+			Integer level = providerlevels.get(name);
+			if (provider != null && level != null) {
+				provider.addEffects(this, level );
+			}
 		}
+		DebugDataTracker.set(agedata.getAgeName()+".effects", ""+providerlevels);
 	}
 
 	public void tick(World world, Chunk chunk) {

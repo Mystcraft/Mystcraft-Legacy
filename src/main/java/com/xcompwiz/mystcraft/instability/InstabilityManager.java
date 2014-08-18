@@ -119,7 +119,7 @@ public class InstabilityManager {
 	public static Collection<Deck> createDecks() {
 		Collection<Deck> decks = new ArrayList<Deck>();
 		for (Entry<String, List<String>> entry : deckcards.entrySet()) {
-			decks.add(new Deck(entry.getKey(), entry.getValue(), getDeckCost(entry.getKey())));
+			decks.add(new Deck(entry.getKey(), entry.getValue()));
 		}
 		return decks;
 	}
