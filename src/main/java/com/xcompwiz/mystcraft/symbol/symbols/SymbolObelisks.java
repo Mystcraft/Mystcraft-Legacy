@@ -52,6 +52,7 @@ public class SymbolObelisks extends SymbolBase {
 		}
 
 		private void generate(World worldObj, Random random, int baseX, int baseY, int baseZ) {
+			if (baseY == 0) return;
 			int height = 12;
 			int width = 4;
 			int maxDeep = 5;
