@@ -180,7 +180,7 @@ public class ChunkProviderMyst implements IChunkProvider {
 		int x = chunkX * 16;
 		int z = chunkZ * 16;
 		ChunkCoordinates spawn = worldObj.getSpawnPoint();
-		if (spawn != null && spawn.posX >> 4 == chunkX && spawn.posZ >> 4 == chunkZ) generatePlatform(spawn.posX, spawn.posY - 1, spawn.posZ, Blocks.stone);
+		if (spawn != null && spawn.posX >> 4 == chunkX && spawn.posZ >> 4 == chunkZ) generatePlatform(spawn.posX, spawn.posY - 1, spawn.posZ, Blocks.cobblestone);
 		BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(x + 16, z + 16); //TODO: (BiomeDecoration) Wrap these biomes?
 		rand.setSeed(agedata.getSeed());
 		long l1 = (rand.nextLong() / 2L) * 2L + 1L;
@@ -216,9 +216,7 @@ public class ChunkProviderMyst implements IChunkProvider {
 		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(ichunkprovider, worldObj, rand, chunkX, chunkZ, false));
 
 		BlockFalling.fallInstantly = false;
-		if (spawn != null && spawn.posX >> 4 == chunkX && spawn.posZ >> 4 == chunkZ) {
-			generatePlatform(spawn.posX, spawn.posY - 1, spawn.posZ, Blocks.stone);
-		}
+		if (spawn != null && spawn.posX >> 4 == chunkX && spawn.posZ >> 4 == chunkZ) generatePlatform(spawn.posX, spawn.posY - 1, spawn.posZ, Blocks.cobblestone);
 		ChunkProfiler profiler = controller.getChunkProfiler();
 		profiler.profile(ichunkprovider.provideChunk(chunkX, chunkZ), chunkX, chunkZ);
 		int count = profiler.getCount();
