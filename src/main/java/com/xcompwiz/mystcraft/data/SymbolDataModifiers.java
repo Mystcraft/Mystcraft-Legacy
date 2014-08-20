@@ -87,15 +87,15 @@ public class SymbolDataModifiers {
 		BlockModifierContainerObject.create(WordData.Chain, 0.62F, Blocks.quartz_ore, 0).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.CRYSTAL, 1.00F);
 
 		//XXX: Move these to own data class
-		ChunkProfiler.setInstabilityFactors(Blocks.coal_ore, 7, 0, 210);
-		ChunkProfiler.setInstabilityFactors(Blocks.iron_ore, 30, 0, 210);
-		ChunkProfiler.setInstabilityFactors(Blocks.redstone_ore, 90, 0, 210);
-		ChunkProfiler.setInstabilityFactors(Blocks.gold_ore, 275, 0, 210);
-		ChunkProfiler.setInstabilityFactors(Blocks.diamond_ore, 800, 0, 210);
+		ChunkProfiler.setInstabilityFactors(Blocks.coal_ore, 14, 1, 200);
+		ChunkProfiler.setInstabilityFactors(Blocks.iron_ore, 30, 4, 300);
+		ChunkProfiler.setInstabilityFactors(Blocks.redstone_ore, 200, 12, 400);
+		ChunkProfiler.setInstabilityFactors(Blocks.gold_ore, 600, 45, 500);
+		ChunkProfiler.setInstabilityFactors(Blocks.diamond_ore, 4000, 200, 1000);
 
-		ChunkProfiler.setInstabilityFactors(BlockCrystal.instance, 50, 0, 0);
-		ChunkProfiler.setInstabilityFactors(Blocks.glowstone, 200, 0, 0);
-		ChunkProfiler.setInstabilityFactors(Blocks.quartz_ore, 100, 0, 0);
+		ChunkProfiler.setInstabilityFactors(BlockCrystal.instance, 10, 1, 0);
+		ChunkProfiler.setInstabilityFactors(Blocks.glowstone, 30, 8, 0);
+		ChunkProfiler.setInstabilityFactors(Blocks.quartz_ore, 20, 4, 0);
 
 		BlockModifierContainerObject.create(WordData.Sea, 0.62F, Blocks.flowing_water, 0).add(BlockCategory.FLUID, 1.00F).add(BlockCategory.SEA, 1.00F);
 		BlockModifierContainerObject.create(WordData.Sea, 0.28F, Blocks.flowing_lava, 0).add(BlockCategory.FLUID, 0.50F).add(BlockCategory.SEA, 0.50F);

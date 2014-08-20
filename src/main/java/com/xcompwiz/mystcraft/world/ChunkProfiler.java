@@ -81,7 +81,7 @@ public class ChunkProfiler extends WorldSavedData {
 	}
 
 	public int calculateInstability() {
-		//outputFiles(); //FIXME: !!!! Need to recheck the profiled values
+		//outputFiles();
 		float instability = 0;
 		int layers = solid.data.length / 256;
 		//HashMap<Block, Float> split = new HashMap<Block, Float>();
