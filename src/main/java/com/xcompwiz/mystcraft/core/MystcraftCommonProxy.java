@@ -26,6 +26,7 @@ public class MystcraftCommonProxy {
 	 * 
 	 * @throws IOException
 	 */
+	//XXX: This might belong in a helper
 	public static void writeNBTTagCompound(NBTTagCompound par0NBTTagCompound, ByteBuf data) throws IOException {
 		if (par0NBTTagCompound == null) {
 			data.writeShort(-1);
@@ -45,6 +46,7 @@ public class MystcraftCommonProxy {
 		return FMLCommonHandler.instance().getMinecraftServerInstance(); // Works when remote?
 	}
 
+	//XXX: This might belong in a helper
 	public static int findInInventory(IInventory inventory, ItemStack stack) {
 		if (inventory == null) return -1;
 		if (stack == null) return -1;

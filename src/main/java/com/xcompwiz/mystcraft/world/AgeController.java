@@ -238,6 +238,7 @@ public class AgeController implements IAgeController {
 		DebugDataTracker.set(agedata.getAgeName()+".instability", ""+score);
 		DebugDataTracker.set(agedata.getAgeName()+".instability.writing", ""+instability);
 		DebugDataTracker.set(agedata.getAgeName()+".instability.book", ""+agedata.getBaseInstability());
+		DebugDataTracker.set(agedata.getAgeName()+".instability.blocks", ""+blockinstability);
 		int difficulty = 2;
 		if (Mystcraft.difficulty != null) difficulty = Mystcraft.difficulty;
 		switch (difficulty) {
