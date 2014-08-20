@@ -235,10 +235,6 @@ public class AgeController implements IAgeController {
 			updateProfiledInstability();
 		}
 		int score = instability + blockinstability + agedata.getBaseInstability();
-		DebugDataTracker.set(agedata.getAgeName()+".instability", ""+score);
-		DebugDataTracker.set(agedata.getAgeName()+".instability.writing", ""+instability);
-		DebugDataTracker.set(agedata.getAgeName()+".instability.book", ""+agedata.getBaseInstability());
-		DebugDataTracker.set(agedata.getAgeName()+".instability.blocks", ""+blockinstability);
 		int difficulty = 2;
 		if (Mystcraft.difficulty != null) difficulty = Mystcraft.difficulty;
 		switch (difficulty) {
@@ -254,7 +250,6 @@ public class AgeController implements IAgeController {
 			score *= 1.75F;
 			break;
 		}
-		DebugDataTracker.set(agedata.getAgeName()+".instability.inclDifficulty", ""+score);
 		return score;
 	}
 
@@ -264,6 +259,10 @@ public class AgeController implements IAgeController {
 			expandChunkProfile();
 		}
 		blockinstability = profiler.calculateInstability();
+		DebugDataTracker.set(agedata.getAgeName()+".instability", ""+(instability + blockinstability + agedata.getBaseInstability()));
+		DebugDataTracker.set(agedata.getAgeName()+".instability.writing", ""+instability);
+		DebugDataTracker.set(agedata.getAgeName()+".instability.book", ""+agedata.getBaseInstability());
+		DebugDataTracker.set(agedata.getAgeName()+".instability.blocks", ""+blockinstability);
 	}
 
 	private void expandChunkProfile() {

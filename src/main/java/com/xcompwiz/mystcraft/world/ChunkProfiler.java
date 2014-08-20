@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -19,6 +20,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
+
+import com.xcompwiz.mystcraft.core.DebugDataTracker;
 
 public class ChunkProfiler extends WorldSavedData {
 	public static final String				ID				= "MystChunkProfile";
@@ -81,7 +84,7 @@ public class ChunkProfiler extends WorldSavedData {
 		//outputFiles(); //FIXME: !!!! Need to recheck the profiled values
 		float instability = 0;
 		int layers = solid.data.length / 256;
-		HashMap<Block, Float> split = new HashMap<Block, Float>();
+		//HashMap<Block, Float> split = new HashMap<Block, Float>();
 		//For all cells, calculate instability
 		for (int y = 0; y < layers; ++y) {
 			for (int z = 0; z < 16; ++z) {
@@ -96,15 +99,14 @@ public class ChunkProfiler extends WorldSavedData {
 						float val = map.data[coords] / (float) map.count;
 						val = val * availability * factor1 + val * factor2;
 						instability += val;
-						if (!split.containsKey(block)) {
-							split.put(block, 0.0F);
-						}
-						split.put(block, split.get(block) + val);
+						//if (!split.containsKey(block)) {
+						//	split.put(block, 0.0F);
+						//}
+						//split.put(block, split.get(block) + val);
 					}
 				}
 			}
 		}
-
 		return Math.round(instability - totalfree);
 	}
 
@@ -139,9 +141,11 @@ public class ChunkProfiler extends WorldSavedData {
 							}
 						}
 					}
-					if (!block.getBlocksMovement(chunk.worldObj, (chunk.xPosition << 4) + x, y, (chunk.zPosition << 4) + z)) {
+					//Checks if isPassable
+					if (block.getBlocksMovement(chunk.worldObj, (chunk.xPosition << 4) + x, y, (chunk.zPosition << 4) + z)) {
 						accessibility = 1;
 					}
+					//Checks if isAir
 					if (block.isAir(chunk.worldObj, (chunk.xPosition << 4) + x, y, (chunk.zPosition << 4) + z)) {
 						accessibility = 0;
 					}
@@ -221,6 +225,8 @@ public class ChunkProfiler extends WorldSavedData {
 				}
 				buffer.write(NEW_LINE);
 			}
+			buffer.write("FIN");
+			buffer.write(NEW_LINE);
 			buffer.close();
 			fos.close();
 		} catch (FileNotFoundException e) {
