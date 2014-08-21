@@ -26,6 +26,9 @@ public class ContainerNotebook extends ContainerMyst implements IGuiMessageHandl
 		}
 
 		for (int j = 0; j < 9; j++) {
+			if (slot == j) {
+				addSlotToContainer(new SlotBanned(inventoryplayer, j, 8 + j * 18, 157));
+			}
 			addSlotToContainer(new Slot(inventoryplayer, j, 8 + j * 18, 157));
 		}
 
