@@ -84,7 +84,7 @@ public class ChunkProfiler extends WorldSavedData {
 		//outputFiles();
 		float instability = 0;
 		int layers = solid.data.length / 256;
-		//HashMap<Block, Float> split = new HashMap<Block, Float>();
+		HashMap<Block, Float> split = new HashMap<Block, Float>();
 		//For all cells, calculate instability
 		for (int y = 0; y < layers; ++y) {
 			for (int z = 0; z < 16; ++z) {
@@ -99,13 +99,16 @@ public class ChunkProfiler extends WorldSavedData {
 						float val = map.data[coords] / (float) map.count;
 						val = val * availability * factor1 + val * factor2;
 						instability += val;
-						//if (!split.containsKey(block)) {
-						//	split.put(block, 0.0F);
-						//}
-						//split.put(block, split.get(block) + val);
+						if (!split.containsKey(block)) {
+							split.put(block, 0.0F);
+						}
+						split.put(block, split.get(block) + val);
 					}
 				}
 			}
+		}
+		for (Entry<Block, Float> entry : split.entrySet()) {
+			DebugDataTracker.set("instability."+entry.getKey().getUnlocalizedName(), ""+entry.getValue());
 		}
 		return Math.round(instability - totalfree);
 	}

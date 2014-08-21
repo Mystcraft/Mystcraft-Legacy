@@ -93,8 +93,8 @@ public class SymbolDataModifiers {
 		ChunkProfiler.setInstabilityFactors(Blocks.gold_ore, 600, 45, 500);
 		ChunkProfiler.setInstabilityFactors(Blocks.diamond_ore, 4000, 200, 1000);
 
-		ChunkProfiler.setInstabilityFactors(BlockCrystal.instance, 10, 1, 0);
-		ChunkProfiler.setInstabilityFactors(Blocks.glowstone, 30, 8, 0);
+		ChunkProfiler.setInstabilityFactors(BlockCrystal.instance, 20, 4, 0);
+		ChunkProfiler.setInstabilityFactors(Blocks.glowstone, 50, 4, 0);
 		ChunkProfiler.setInstabilityFactors(Blocks.quartz_ore, 20, 4, 0);
 
 		BlockModifierContainerObject.create(WordData.Sea, 0.62F, Blocks.flowing_water, 0).add(BlockCategory.FLUID, 1.00F).add(BlockCategory.SEA, 1.00F);

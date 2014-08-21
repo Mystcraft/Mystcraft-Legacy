@@ -36,7 +36,7 @@ public class LoaderBlocks {
 		;
 		BlockBookstand.instance = (new BlockBookstand(Material.wood)).setHardness(2.0F).setResistance(2F).setStepSound(Block.soundTypeWood).setBlockName("myst.bookstand").setCreativeTab(CreativeTabs.tabDecorations);
 		BlockLectern.instance = (new BlockLectern(Material.wood)).setHardness(2.0F).setResistance(2F).setStepSound(Block.soundTypeWood).setBlockName("myst.lectern").setCreativeTab(CreativeTabs.tabDecorations);
-		BlockDecay.instance = (new BlockDecay()).setLightLevel(0.9375F).setStepSound(Block.soundTypeSand).setBlockName("myst.unstable");
+		BlockDecay.instance = (new BlockDecay()).setStepSound(Block.soundTypeSand).setBlockName("myst.unstable");
 		BlockLinkModifier.instance = (new BlockLinkModifier(Material.iron)).setHardness(2.0F).setResistance(2F).setStepSound(Block.soundTypeMetal).setBlockName("myst.linkmodifier").setCreativeTab(CreativeTabs.tabDecorations);
 		BlockCrystal.instance = (new BlockCrystal()).setHardness(1.0F).setStepSound(Block.soundTypeGlass).setLightLevel(0.5F).setBlockName("myst.crystal").setCreativeTab(CreativeTabs.tabBlock);
 		BlockLinkPortal.instance = (new BlockLinkPortal(15)).setHardness(-1F).setStepSound(Block.soundTypeGlass).setLightLevel(0.75F).setBlockName("myst.linkportal");
