@@ -259,6 +259,7 @@ public class AgeData extends WorldSavedData {
 		Collection<String> cards = new ArrayList<String>();
 		cards.addAll(deck.getCards());
 		decks.put(deck.getName(), cards);
+		this.markDirty();
 	}
 
 	@Override
@@ -349,6 +350,7 @@ public class AgeData extends WorldSavedData {
 				cardlist.appendTag(new NBTTagString(card));
 			}
 			decknbt.setTag("Cards", cardlist);
+			list.appendTag(decknbt);
 		}
 		nbttagcompound.setTag("Decks", list);
 
