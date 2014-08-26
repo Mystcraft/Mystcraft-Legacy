@@ -263,10 +263,13 @@ public class AgeController implements IAgeController {
 		DebugDataTracker.set(agedata.getAgeName()+".instability.writing", ""+instability);
 		DebugDataTracker.set(agedata.getAgeName()+".instability.book", ""+agedata.getBaseInstability());
 		DebugDataTracker.set(agedata.getAgeName()+".instability.blocks", ""+blockinstability);
+		DebugDataTracker.set(agedata.getAgeName()+".profiled", ""+profiler.getCount());
 	}
 
 	private void expandChunkProfile() {
 		if (!(world instanceof WorldServer)) return;
+		ChunkProfiler profiler = getChunkProfiler();
+
 		ChunkCoordinates chunkcoordinates = world.getSpawnPoint();
 		chunkcoordinates.posX >>= 4;
 		chunkcoordinates.posZ >>= 4;
@@ -274,12 +277,11 @@ public class AgeController implements IAgeController {
 		IChunkProvider chunkgen = ((WorldServer) this.world).theChunkProviderServer;
 		IChunkLoader chunkloader = ((WorldServer) this.world).theChunkProviderServer.currentChunkLoader;
 		SpiralOutwardIterator iter = new SpiralOutwardIterator();
-		for (int i = 1; i <= 500;) {
+		while (profiler.getCount() <= 400) {
 			iter.step();
 			int chunkX = chunkcoordinates.posX + iter.x;
 			int chunkZ = chunkcoordinates.posZ + iter.y;
 			if (safeLoadChunk(chunkloader, world, chunkX, chunkZ) == null) {
-				++i;
 				chunkgen.loadChunk(chunkX, chunkZ);
 			}
 		}

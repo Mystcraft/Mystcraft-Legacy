@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.network;
 
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
@@ -40,9 +41,12 @@ public class MystcraftConnectionHandler {
 	public void connectionClosed(ClientDisconnectionFromServerEvent event) {
 		if (connected) {
 			connected = false;
-			Mystcraft.unregisterDimensions();
 			Mystcraft.clientStorage = null;
 			Mystcraft.serverLabels = Mystcraft.renderlabels;
+			MinecraftServer mcServer = MinecraftServer.getServer();
+			if (mcServer == null || mcServer.isServerStopped()) {
+				Mystcraft.unregisterDimensions();
+			}
 		}
 	}
 }

@@ -73,6 +73,10 @@ public class WorldProviderMyst extends WorldProvider {
 		worldChunkMgr = controller.getWorldChunkManager();
 		setWorldInfo();
 	}
+	
+	public AgeController getAgeController() {
+		return this.controller;
+	}
 
 	public void setWorldInfo() {
 		ObfuscationReflectionHelper.setPrivateValue(World.class, worldObj, new WorldInfoMyst(this, worldObj.getWorldInfo()), "worldInfo", "field"+"_72986_A");

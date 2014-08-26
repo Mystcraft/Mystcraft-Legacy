@@ -86,6 +86,7 @@ import com.xcompwiz.mystcraft.villager.MerchantRecipeProviderSymbol;
 import com.xcompwiz.mystcraft.villager.VillageCreationHandlerArchivistHouse;
 import com.xcompwiz.mystcraft.villager.VillagerArchivist;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
+import com.xcompwiz.mystcraft.world.gen.MystWorldGenerator;
 import com.xcompwiz.mystcraft.world.gen.structure.ComponentScatteredFeatureSmallLibrary;
 import com.xcompwiz.mystcraft.world.gen.structure.ComponentVillageArchivistHouse;
 import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
@@ -107,6 +108,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 
 @Mod(modid = MystObjects.MystcraftModId, version = "@VERSION@", name = "Mystcraft", useMetadata = true, dependencies = "required-after:Forge@[10.12.1.1083,)")
@@ -227,6 +229,7 @@ public class Mystcraft implements IMystAPIProvider {
 
 		// Bind dim provider to id
 		DimensionManager.registerProviderType(Mystcraft.providerId, WorldProviderMyst.class, false);
+		GameRegistry.registerWorldGenerator(new MystWorldGenerator(), Integer.MAX_VALUE);
 
 		sidedProxy.preinit();
 

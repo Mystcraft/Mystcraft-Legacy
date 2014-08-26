@@ -51,7 +51,7 @@ public class SymbolDenseOres extends SymbolBase {
 		}
 
 		protected void genStandardOre(World worldObj, int times, Random rand, WorldGenerator worldgenerator, int x, int z, int minY, int maxY) {
-			for (int l = 0; l < times; l++) {
+			for (int l = 0; l < times; ++l) {
 				int i1 = x + rand.nextInt(16);
 				int j1 = rand.nextInt(maxY - minY) + minY;
 				int k1 = z + rand.nextInt(16);

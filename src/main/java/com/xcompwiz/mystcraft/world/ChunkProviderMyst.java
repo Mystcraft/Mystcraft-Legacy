@@ -179,8 +179,6 @@ public class ChunkProviderMyst implements IChunkProvider {
 		BlockFalling.fallInstantly = true;
 		int x = chunkX * 16;
 		int z = chunkZ * 16;
-		ChunkCoordinates spawn = worldObj.getSpawnPoint();
-		if (spawn != null && spawn.posX >> 4 == chunkX && spawn.posZ >> 4 == chunkZ) generatePlatform(spawn.posX, spawn.posY - 1, spawn.posZ, Blocks.cobblestone);
 		BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(x + 16, z + 16); //TODO: (BiomeDecoration) Wrap these biomes?
 		rand.setSeed(agedata.getSeed());
 		long l1 = (rand.nextLong() / 2L) * 2L + 1L;
@@ -207,7 +205,7 @@ public class ChunkProviderMyst implements IChunkProvider {
 					worldObj.setBlock(i2 + x, j4 - 1, j3 + z, Blocks.ice, 0, 2);
 				}
 				if (worldObj.func_147478_e(i2 + x, j4, j3 + z, false)) {
-					worldObj.setBlock(i2 + x, j4, j3 + z, Blocks.snow, 0, 2);
+					worldObj.setBlock(i2 + x, j4, j3 + z, Blocks.snow_layer, 0, 2);
 				}
 			}
 
@@ -216,24 +214,6 @@ public class ChunkProviderMyst implements IChunkProvider {
 		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(ichunkprovider, worldObj, rand, chunkX, chunkZ, false));
 
 		BlockFalling.fallInstantly = false;
-		if (spawn != null && spawn.posX >> 4 == chunkX && spawn.posZ >> 4 == chunkZ) generatePlatform(spawn.posX, spawn.posY - 1, spawn.posZ, Blocks.cobblestone);
-		ChunkProfiler profiler = controller.getChunkProfiler();
-		profiler.profile(ichunkprovider.provideChunk(chunkX, chunkZ), chunkX, chunkZ);
-		int count = profiler.getCount();
-		if (count > 400 && count % 100 == 0) {
-			controller.updateProfiledInstability();
-		}
-	}
-
-	private void generatePlatform(int i, int j, int k, Block block) {
-		int size = 2;
-		for (int x = -size; x <= size; ++x) {
-			for (int z = -size; z <= size; ++z) {
-				worldObj.setBlock(i + x, j, k + z, block, 0, 2);
-				for (int y = j + 1; y < j + 5; ++y)
-					worldObj.setBlock(i + x, y, k + z, Blocks.air, 0, 2);
-			}
-		}
 	}
 
 	@Override
