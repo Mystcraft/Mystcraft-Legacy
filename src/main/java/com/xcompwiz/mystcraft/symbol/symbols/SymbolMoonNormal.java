@@ -16,6 +16,9 @@ import com.xcompwiz.mystcraft.symbol.SunsetRenderer;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.world.IAgeController;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 public class SymbolMoonNormal extends SymbolBase {
 
 	@Override
@@ -60,6 +63,7 @@ public class SymbolMoonNormal extends SymbolBase {
 			this.offset = offset.floatValue() - 0.5F;
 		}
 
+		@SideOnly(Side.CLIENT)
 		@Override
 		public void render(TextureManager eng, World worldObj, float partial) {
 			// Draw Moon
