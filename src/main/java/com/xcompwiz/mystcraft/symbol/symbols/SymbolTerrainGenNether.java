@@ -39,7 +39,7 @@ public class SymbolTerrainGenNether extends SymbolBase {
 
 	@Override
 	public int instabilityModifier(int count) {
-		return InstabilityData.symbol.caves;
+		return InstabilityData.symbol.caveworld;
 	}
 
 	private static class TerrainGenerator extends TerrainGeneratorBase {

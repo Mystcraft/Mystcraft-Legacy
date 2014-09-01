@@ -72,12 +72,12 @@ public class InstabilityData {
 
 	public static class symbol {
 		public static int	accelerated	= 1000;
-		public static int	caves		= 1000;
+		public static int	caveworld	= 1000;
 		public static int	bright		= 500;
-		public static int	charged		= -stability.lightning;
-		public static int	meteors		= -stability.meteors;
-		public static int	explosion	= -stability.explosions;
-		public static int	scorched	= -stability.burning;
+		public static int	charged		= -500;
+		public static int	meteors		= -1000;
+		public static int	explosion	= -500;
+		public static int	scorched	= -500;
 	}
 
 	public static float	clearPercentage	= 0.20F;
