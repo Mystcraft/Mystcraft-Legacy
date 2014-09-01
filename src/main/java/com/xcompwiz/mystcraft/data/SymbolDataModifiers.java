@@ -88,7 +88,7 @@ public class SymbolDataModifiers {
 
 		//XXX: Move these to own data class
 		ChunkProfiler.setInstabilityFactors(Blocks.coal_ore, 5, 1, 200);
-		ChunkProfiler.setInstabilityFactors(Blocks.iron_ore, 15, 4, 300);
+		ChunkProfiler.setInstabilityFactors(Blocks.iron_ore, 15, 2, 300);
 		ChunkProfiler.setInstabilityFactors(Blocks.redstone_ore, 75, 10, 400);
 		ChunkProfiler.setInstabilityFactors(Blocks.gold_ore, 200, 40, 500);
 		ChunkProfiler.setInstabilityFactors(Blocks.diamond_ore, 2000, 200, 1000);
