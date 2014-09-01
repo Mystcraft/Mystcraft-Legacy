@@ -67,11 +67,11 @@ public class InstabilityData {
 	}
 
 	public static class extra {
-		public static int	controller	= 200;
+		public static int	controller	= 500;
 	}
 
 	public static class symbol {
-		public static int	accelerated	= 250;
+		public static int	accelerated	= 1000;
 		public static int	caves		= 1000;
 		public static int	bright		= 500;
 		public static int	charged		= -stability.lightning;
