@@ -1,12 +1,9 @@
 package com.xcompwiz.mystcraft.world.agedata;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 
@@ -22,10 +19,7 @@ import net.minecraftforge.common.DimensionManager;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.data.GrammarRules;
 import com.xcompwiz.mystcraft.grammar.GrammarTree;
-import com.xcompwiz.mystcraft.instability.Deck;
-import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
 import com.xcompwiz.mystcraft.nbt.NBTTagCompoundWrapper;
-import com.xcompwiz.mystcraft.oldapi.PositionableItem;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import com.xcompwiz.mystcraft.world.storage.IStorageObject;
@@ -231,20 +225,6 @@ public class AgeData extends WorldSavedData {
 			}
 		}
 		return Collections.unmodifiableList(symbols);
-	}
-
-	// TODO: (Sorting) Move this into the books themselves
-	public List<PositionableItem> getPositionedPages() {
-		List<PositionableItem> result = new ArrayList<PositionableItem>();
-		int slot = 0;
-		for (ItemStack page : pages) {
-			PositionableItem positionable = new PositionableItem(page, slot);
-			positionable.x = (slot % 5) * (InventoryNotebook.pagewidth + 1);
-			positionable.y = (slot / 5) * (InventoryNotebook.pageheight + 1);
-			result.add(positionable);
-			++slot;
-		}
-		return result;
 	}
 
 	@Override

@@ -23,7 +23,6 @@ public class StorageInstabilityData extends WorldSavedData {
 		super(id);
 	}
 
-	//TODO: (AgeData) This is a candidate for moving to world/other data (server side only unless sent specifically?)
 	public Collection<String> getDeck(String deckname) {
 		Collection<String> cards = decks.get(deckname);
 		if (cards == null) return new ArrayList<String>();

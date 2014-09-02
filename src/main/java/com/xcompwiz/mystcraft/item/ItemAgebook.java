@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.item;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.data.AchievementsMyst;
+import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.oldapi.PositionableItem;
@@ -150,8 +152,21 @@ public class ItemAgebook extends ItemLinking implements IItemPageProvider, IItem
 	@Override
 	public List<PositionableItem> getPagesForSurface(EntityPlayer player, ItemStack itemstack) {
 		AgeData agedata = ItemAgebook.getAgeData(player.worldObj, itemstack);
-		if (agedata != null) return agedata.getPositionedPages();
+		if (agedata != null) return getPositionedPages(agedata.getPages());
 		return null;
+	}
+
+	public List<PositionableItem> getPositionedPages(List<ItemStack> pages) {
+		List<PositionableItem> result = new ArrayList<PositionableItem>();
+		int slot = 0;
+		for (ItemStack page : pages) {
+			PositionableItem positionable = new PositionableItem(page, slot);
+			positionable.x = (slot % 5) * (InventoryNotebook.pagewidth + 1);
+			positionable.y = (slot / 5) * (InventoryNotebook.pageheight + 1);
+			result.add(positionable);
+			++slot;
+		}
+		return result;
 	}
 
 	@Override
