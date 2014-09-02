@@ -66,6 +66,7 @@ public class AgeController implements IAgeController {
 	private WeatherRendererMyst					weatherrenderer;
 	private AgeData								agedata;
 	private InstabilityController				instabilityController;
+	private InstabilityBonusManager				instabilitybonusmanager;
 
 	private Random								symbolseedrand;
 
@@ -99,7 +100,7 @@ public class AgeController implements IAgeController {
 	private HashMap<String, Modifier>			modifiers;
 	private HashMap<String, Modifier>			globalMods;
 
-	private int									instability;
+	private int									symbolinstability;
 	private Integer								blockinstability	= null;
 	private HashMap<IAgeSymbol, Integer>		symbolcounts		= new HashMap<IAgeSymbol, Integer>();
 
@@ -113,6 +114,7 @@ public class AgeController implements IAgeController {
 		skyrenderer = new SkyRendererMyst((WorldProviderMyst) world.provider, this);
 		cloudrenderer = new CloudRendererMyst((WorldProviderMyst) world.provider, this);
 		weatherrenderer = new WeatherRendererMyst((WorldProviderMyst) world.provider, this);
+		instabilitybonusmanager = new InstabilityBonusManager((WorldProviderMyst) world.provider, this);
 		reconstruct();
 	}
 
@@ -165,7 +167,7 @@ public class AgeController implements IAgeController {
 		pvpEnabled = null;
 		globalMods = new HashMap<String, Modifier>();
 		modifiers = new HashMap<String, Modifier>();
-		instability = 0;
+		symbolinstability = 0;
 		// conflicts = new ArrayList<ISun>();
 		instabilityController = null;
 
@@ -203,7 +205,7 @@ public class AgeController implements IAgeController {
 
 		weatherController.setDataObject(agedata.getStorageObject("weather"));
 		for (Modifier mod : modifiers.values()) {
-			instability += mod.dangling;
+			symbolinstability += mod.dangling;
 		}
 		globalMods.putAll(modifiers);
 		modifiers.clear();
@@ -221,7 +223,7 @@ public class AgeController implements IAgeController {
 			++count;
 		}
 		symbolcounts.put(symbol, count);
-		instability += symbol.instabilityModifier(count);
+		symbolinstability += symbol.instabilityModifier(count);
 	}
 
 	@Override
@@ -229,12 +231,16 @@ public class AgeController implements IAgeController {
 		return world.getWorldTime();
 	}
 
+	public boolean isInstabilityEnabled() {
+		return Mystcraft.instabilityEnabled && agedata.isInstabilityEnabled();
+	}
+
 	@Override
 	public int getInstabilityScore() {
 		if (blockinstability == null) {
 			updateProfiledInstability();
 		}
-		int score = instability + blockinstability + agedata.getBaseInstability();
+		int score = symbolinstability + blockinstability + agedata.getBaseInstability() + instabilitybonusmanager.getResult();
 		int difficulty = 2;
 		if (Mystcraft.difficulty != null) difficulty = Mystcraft.difficulty;
 		switch (difficulty) {
@@ -259,11 +265,11 @@ public class AgeController implements IAgeController {
 			expandChunkProfile();
 		}
 		blockinstability = profiler.calculateInstability();
-		DebugDataTracker.set(agedata.getAgeName()+".instability", ""+(instability + blockinstability + agedata.getBaseInstability()));
-		DebugDataTracker.set(agedata.getAgeName()+".instability.writing", ""+instability);
-		DebugDataTracker.set(agedata.getAgeName()+".instability.book", ""+agedata.getBaseInstability());
-		DebugDataTracker.set(agedata.getAgeName()+".instability.blocks", ""+blockinstability);
-		DebugDataTracker.set(agedata.getAgeName()+".profiled", ""+profiler.getCount());
+		DebugDataTracker.set(agedata.getAgeName() + ".instability", "" + (symbolinstability + blockinstability + agedata.getBaseInstability()));
+		DebugDataTracker.set(agedata.getAgeName() + ".instability.writing", "" + symbolinstability);
+		DebugDataTracker.set(agedata.getAgeName() + ".instability.book", "" + agedata.getBaseInstability());
+		DebugDataTracker.set(agedata.getAgeName() + ".instability.blocks", "" + blockinstability);
+		DebugDataTracker.set(agedata.getAgeName() + ".profiled", "" + profiler.getCount());
 	}
 
 	private void expandChunkProfile() {
@@ -411,7 +417,7 @@ public class AgeController implements IAgeController {
 
 	private InstabilityController getInstabilityController() {
 		if (instabilityController == null) {
-			instabilityController = new InstabilityController(this, agedata);
+			instabilityController = new InstabilityController((WorldProviderMyst) world.provider, this);
 		}
 		return instabilityController;
 	}
@@ -442,6 +448,7 @@ public class AgeController implements IAgeController {
 			chunkprofiler = new ChunkProfiler(ChunkProfiler.ID);
 			this.world.perWorldStorage.setData(ChunkProfiler.ID, chunkprofiler);
 		}
+		chunkprofiler.setDebugName(this.agedata.getAgeName());
 		return chunkprofiler;
 	}
 
@@ -614,7 +621,7 @@ public class AgeController implements IAgeController {
 	// Registration Functions//
 	@Override
 	public void addInstability(int instability) {
-		this.instability += instability;
+		this.symbolinstability += instability;
 	}
 
 	@Override
@@ -672,7 +679,7 @@ public class AgeController implements IAgeController {
 	public void registerInterface(IBiomeController controller) {
 		if (biomeController != null) {
 			// conflicts.add(agent);
-			instability += InstabilityData.extra.controller;
+			symbolinstability += InstabilityData.extra.controller;
 		}
 		biomeController = controller;
 	}
@@ -681,7 +688,7 @@ public class AgeController implements IAgeController {
 	public void registerInterface(ITerrainGenerator terrainGen) {
 		if (genTerrain != null) {
 			// conflicts.add(agent);
-			instability += InstabilityData.extra.controller;
+			symbolinstability += InstabilityData.extra.controller;
 		}
 		genTerrain = terrainGen;
 	}
@@ -690,7 +697,7 @@ public class AgeController implements IAgeController {
 	public void registerInterface(ILightingController reg) {
 		if (lightingController != null) {
 			// conflicts.add(agent);
-			instability += InstabilityData.extra.controller;
+			symbolinstability += InstabilityData.extra.controller;
 		}
 		lightingController = reg;
 	}
@@ -699,7 +706,7 @@ public class AgeController implements IAgeController {
 	public void registerInterface(IWeatherController reg) {
 		if (weatherController != null) {
 			// conflicts.add(agent);
-			instability += InstabilityData.extra.controller;
+			symbolinstability += InstabilityData.extra.controller;
 		}
 		weatherController = reg;
 	}
@@ -788,7 +795,7 @@ public class AgeController implements IAgeController {
 	@Override
 	public void setModifier(String id, Modifier val) {
 		if (modifiers.containsKey(id)) {
-			instability += modifiers.get(id).dangling;
+			symbolinstability += modifiers.get(id).dangling;
 		}
 		modifiers.put(id, val);
 	}
@@ -796,7 +803,7 @@ public class AgeController implements IAgeController {
 	@Override
 	public void clearModifiers() {
 		for (Modifier mod : modifiers.values()) {
-			instability += mod.dangling * InstabilityData.clearPercentage;
+			symbolinstability += mod.dangling * InstabilityData.clearPercentage;
 		}
 		modifiers.clear();
 	}

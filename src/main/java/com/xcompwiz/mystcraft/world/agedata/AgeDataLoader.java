@@ -1,7 +1,5 @@
 package com.xcompwiz.mystcraft.world.agedata;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -32,10 +30,6 @@ public abstract class AgeDataLoader {
 	public abstract List<ItemStack> getPages();
 
 	public abstract List<String> getSymbols();
-
-	public HashMap<String, Collection<String>> getDecks() {
-		return null;
-	}
 
 	public abstract List<String> getEffects();
 

@@ -62,6 +62,8 @@ public class ChunkProfiler extends WorldSavedData {
 		}
 	}
 
+	private String							debugname;
+
 	private ChunkProfileData				solid_prepop	= new ChunkProfileData();
 	private ChunkProfileData				solid			= new ChunkProfileData();
 	private Map<Block, ChunkProfileData>	blockmaps;
@@ -108,7 +110,7 @@ public class ChunkProfiler extends WorldSavedData {
 			}
 		}
 		for (Entry<Block, Float> entry : split.entrySet()) {
-			DebugDataTracker.set("instability."+entry.getKey().getUnlocalizedName(), ""+entry.getValue());
+			DebugDataTracker.set((debugname == null ? "Unnamed" : debugname) + ".instability." + entry.getKey().getUnlocalizedName(), "" + entry.getValue());
 		}
 		return Math.round(instability - totalfree);
 	}
@@ -243,5 +245,9 @@ public class ChunkProfiler extends WorldSavedData {
 
 	public int getCount() {
 		return count;
+	}
+
+	public void setDebugName(String name) {
+		debugname = name;
 	}
 }

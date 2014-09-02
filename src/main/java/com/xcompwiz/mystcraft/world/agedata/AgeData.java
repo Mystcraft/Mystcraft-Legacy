@@ -44,7 +44,6 @@ public class AgeData extends WorldSavedData {
 	private ChunkCoordinates					spawn;
 	private List<ItemStack>						pages			= new ArrayList<ItemStack>();
 	private List<String>						symbols			= new ArrayList<String>();
-	private HashMap<String, Collection<String>>	decks			= new HashMap<String, Collection<String>>();
 	private boolean								updated;
 	private boolean								visited;
 	private NBTTagCompound						datacompound;
@@ -248,23 +247,9 @@ public class AgeData extends WorldSavedData {
 		return result;
 	}
 
-	//TODO: (AgeData) This is a candidate for moving to world/other data (server side only unless sent specifically?)
-	public Collection<String> getDeck(String deckname) {
-		Collection<String> cards = decks.get(deckname);
-		if (cards == null) return new ArrayList<String>();
-		return Collections.unmodifiableCollection(cards);
-	}
-
-	public void saveDeck(Deck deck) {
-		Collection<String> cards = new ArrayList<String>();
-		cards.addAll(deck.getCards());
-		decks.put(deck.getName(), cards);
-		this.markDirty();
-	}
-
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		AgeDataLoader loader = new AgeDataLoaderV4_2(nbttagcompound);
+		AgeDataLoaderV4_2 loader = new AgeDataLoaderV4_2(nbttagcompound);
 
 		agename = loader.getAgeName();
 		authors = loader.getAuthors();
@@ -279,7 +264,6 @@ public class AgeData extends WorldSavedData {
 
 		pages = loader.getPages();
 		symbols = loader.getSymbols();
-		decks = loader.getDecks();
 
 		datacompound = loader.getDataCompound();
 
@@ -340,19 +324,6 @@ public class AgeData extends WorldSavedData {
 			list.appendTag(new NBTTagString(symbol));
 		}
 		nbttagcompound.setTag("Symbols", list);
-
-		list = new NBTTagList();
-		for (Entry<String, Collection<String>> entry : decks.entrySet()) {
-			NBTTagCompound decknbt = new NBTTagCompound();
-			decknbt.setString("Name", entry.getKey());
-			NBTTagList cardlist = new NBTTagList();
-			for (String card : entry.getValue()) {
-				cardlist.appendTag(new NBTTagString(card));
-			}
-			decknbt.setTag("Cards", cardlist);
-			list.appendTag(decknbt);
-		}
-		nbttagcompound.setTag("Decks", list);
 
 		if (authors != null) {
 			list = new NBTTagList();

@@ -25,7 +25,6 @@ public class AgeDataLoaderV4_2 extends AgeDataLoader {
 	private ChunkCoordinates					spawn;
 	private List<ItemStack>						pages	= new ArrayList<ItemStack>();
 	private List<String>						symbols	= new ArrayList<String>();
-	private HashMap<String, Collection<String>>	decks	= new HashMap<String, Collection<String>>();
 	private boolean								visited;
 	private NBTTagCompound						datacompound;
 	private long								worldtime;
@@ -58,18 +57,6 @@ public class AgeDataLoaderV4_2 extends AgeDataLoader {
 				symbols.add(list.getStringTagAt(i));
 			}
 
-			list = nbttagcompound.getTagList("Decks", Constants.NBT.TAG_COMPOUND);
-			for (int i = 0; i < list.tagCount(); ++i) {
-				NBTTagCompound decknbt = list.getCompoundTagAt(i);
-				String deckname = decknbt.getString("Name");
-				NBTTagList list2 = nbttagcompound.getTagList("Cards", Constants.NBT.TAG_STRING);
-				Collection<String> cards = new ArrayList<String>();
-				for (int j = 0; j < list2.tagCount(); ++j) {
-					cards.add(list.getStringTagAt(j));
-				}
-				decks.put(deckname, cards);
-			}
-
 			list = nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING);
 			for (int i = 0; i < list.tagCount(); ++i) {
 				authors.add(list.getStringTagAt(i));
@@ -95,7 +82,7 @@ public class AgeDataLoaderV4_2 extends AgeDataLoader {
 			//Update
 			List<String> effects = loader.getEffects();
 			for (String deckname : InstabilityManager.getDecks()) {
-				decks.put(deckname, effects);
+				//FIXME: !Prioritize old effects?
 			}
 		}
 		if (agename.isEmpty()) {
@@ -146,11 +133,6 @@ public class AgeDataLoaderV4_2 extends AgeDataLoader {
 	@Override
 	public List<String> getSymbols() {
 		return symbols;
-	}
-
-	@Override
-	public HashMap<String, Collection<String>> getDecks() {
-		return decks;
 	}
 
 	@Override

@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.data.AchievementsMyst;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
@@ -54,7 +53,6 @@ public class ItemAgebook extends ItemLinking implements IItemPageProvider, IItem
 	public static AgeData bindToNewDim(ItemStack itemstack) {
 		int dimUID = DimensionUtils.getNewDimensionUID();
 		AgeData bookdata = DimensionUtils.createAge(DimensionUtils.convertDimensionUIDToID(dimUID));
-		bookdata.setInstabilityEnabled(Mystcraft.instabilityEnabled);
 		initializeCompound(itemstack, dimUID, bookdata);
 		return bookdata;
 	}

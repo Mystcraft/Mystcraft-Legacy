@@ -12,35 +12,38 @@ import com.google.common.collect.HashMultiset;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.core.DebugDataTracker;
+import com.xcompwiz.mystcraft.world.AgeController;
 import com.xcompwiz.mystcraft.world.IAgeController;
+import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
+import com.xcompwiz.mystcraft.world.storage.StorageInstabilityData;
 
 public class InstabilityController implements IInstabilityController {
-	private IAgeController							controller;
-	private AgeData									agedata;
-	private boolean									enabled;
-	private int										lastScore;
+	private AgeController						controller;
+	private StorageInstabilityData				deckdata;
+	private boolean								enabled;
+	private int									lastScore;
 
-	private Collection<Deck>						decks;
-	private HashMap<String, Integer>	providerlevels	= new HashMap<String, Integer>();
-	private Collection<IEnvironmentalEffect>		effects			= new ArrayList<IEnvironmentalEffect>();
+	private Collection<Deck>					decks;
+	private HashMap<String, Integer>			providerlevels	= new HashMap<String, Integer>();
+	private Collection<IEnvironmentalEffect>	effects			= new ArrayList<IEnvironmentalEffect>();
 
-	public InstabilityController(IAgeController controller, AgeData agedata) {
+	public InstabilityController(WorldProviderMyst provider, AgeController controller) {
 		this.controller = controller;
-		this.enabled = (agedata.isInstabilityEnabled() && Mystcraft.instabilityEnabled);
-		this.agedata = agedata;
+		this.enabled = (controller.isInstabilityEnabled());
+		StorageInstabilityData deckdata = (StorageInstabilityData) provider.worldObj.perWorldStorage.loadData(StorageInstabilityData.class, StorageInstabilityData.ID);
 		buildDecks();
 		reconstruct();
 	}
 
 	private void buildDecks() {
 		decks = InstabilityManager.createDecks();
-		Random rand = new Random(agedata.getSeed());
+		Random rand = new Random(controller.getSeed());
 		for (Deck deck : decks) {
 			String deckname = deck.getName();
 			Collection<String> cards = HashMultiset.create(deck.getCards());
 			deck.removeAll();
-			Collection<String> order = agedata.getDeck(deckname);
+			Collection<String> order = deckdata.getDeck(deckname);
 			boolean dirty = false;
 			for (String card : order) {
 				if (cards.remove(card)) {
@@ -56,14 +59,14 @@ public class InstabilityController implements IInstabilityController {
 				dirty = true;
 			}
 			if (dirty) {
-				agedata.saveDeck(deck);
+				deckdata.saveDeck(deck);
 			}
 		}
 	}
 
 	private void validate() {
-		if (enabled != (agedata.isInstabilityEnabled() && Mystcraft.instabilityEnabled)) {
-			enabled = (agedata.isInstabilityEnabled() && Mystcraft.instabilityEnabled);
+		if (enabled != (controller.isInstabilityEnabled())) {
+			enabled = (controller.isInstabilityEnabled());
 			reconstruct();
 			return;
 		}
@@ -113,10 +116,10 @@ public class InstabilityController implements IInstabilityController {
 			IInstabilityProvider provider = InstabilityManager.getProvider(name);
 			Integer level = providerlevels.get(name);
 			if (provider != null && level != null) {
-				provider.addEffects(this, level );
+				provider.addEffects(this, level);
 			}
 		}
-		DebugDataTracker.set(agedata.getAgeName()+".effects", ""+providerlevels);
+		//DebugDataTracker.set(controller.getAgeName() + ".effects", "" + providerlevels);
 	}
 
 	public void tick(World world, Chunk chunk) {
