@@ -1,8 +1,7 @@
 package com.xcompwiz.mystcraft.nbt;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -50,7 +49,7 @@ public final class NBTUtils {
 		return nbttaglist;
 	}
 
-	public static HashMap<String, Byte> readByteMapFromNBT(NBTTagCompound tagcompound, HashMap<String, Byte> map) {
+	public static Map<String, Byte> readByteMapFromNBT(NBTTagCompound tagcompound, Map<String, Byte> map) {
 		Collection<String> tagnames = tagcompound.func_150296_c();
 
 		for (String tagname : tagnames) {
@@ -59,14 +58,14 @@ public final class NBTUtils {
 		return map;
 	}
 
-	public static NBTTagCompound writeByteMapToNBT(NBTTagCompound tagcompound, HashMap<String, Byte> map) {
+	public static NBTTagCompound writeByteMapToNBT(NBTTagCompound tagcompound, Map<String, Byte> map) {
 		for (String key : map.keySet()) {
 			tagcompound.setByte(key, map.get(key));
 		}
 		return tagcompound;
 	}
 
-	public static HashMap<String, Integer> readIntMapFromNBT(NBTTagCompound tagcompound, HashMap<String, Integer> map) {
+	public static Map<String, Integer> readIntMapFromNBT(NBTTagCompound tagcompound, Map<String, Integer> map) {
 		Collection<String> tagnames = tagcompound.func_150296_c();
 
 		for (String tagname : tagnames) {
@@ -75,14 +74,14 @@ public final class NBTUtils {
 		return map;
 	}
 
-	public static NBTTagCompound writeIntMapToNBT(NBTTagCompound tagcompound, HashMap<String, Integer> map) {
+	public static NBTTagCompound writeIntMapToNBT(NBTTagCompound tagcompound, Map<String, Integer> map) {
 		for (String key : map.keySet()) {
 			tagcompound.setInteger(key, map.get(key));
 		}
 		return tagcompound;
 	}
 
-	public static HashMap<String, Float> readFloatMapFromNBT(NBTTagCompound tagcompound, HashMap<String, Float> map) {
+	public static Map<String, Float> readFloatMapFromNBT(NBTTagCompound tagcompound, Map<String, Float> map) {
 		Collection<String> tagnames = tagcompound.func_150296_c();
 
 		for (String tagname : tagnames) {
@@ -91,19 +90,26 @@ public final class NBTUtils {
 		return map;
 	}
 
-	public static NBTTagCompound writeFloatMapToNBT(NBTTagCompound tagcompound, HashMap<String, Float> map) {
+	public static NBTTagCompound writeFloatMapToNBT(NBTTagCompound tagcompound, Map<String, Float> map) {
 		for (String key : map.keySet()) {
 			tagcompound.setFloat(key, map.get(key));
 		}
 		return tagcompound;
 	}
 
-	public static NBTTagList writeStringListToNBT(NBTTagList nbttaglist, List<String> list) {
+	public static NBTTagList writeStringListToNBT(NBTTagList nbttaglist, Collection<String> list) {
 		nbttaglist = new NBTTagList();
 		for (String str : list) {
 			if (str == null) continue;
 			nbttaglist.appendTag(new NBTTagString(str));
 		}
 		return nbttaglist;
+	}
+
+	public static Collection<String> readStringListFromNBT(NBTTagList nbttaglist, Collection<String> list) {
+		for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+			list.add(nbttaglist.getStringTagAt(i));
+		}
+		return list;
 	}
 }

@@ -30,17 +30,18 @@ public class InstabilityController implements IInstabilityController {
 		this.worldprovider = provider;
 		this.controller = controller;
 		this.enabled = (controller.isInstabilityEnabled());
-		deckdata = getDataStorage(provider.worldObj);
+		deckdata = getDataStorage(provider);
 		buildDecks();
 		reconstruct();
 	}
 
-	private StorageInstabilityData getDataStorage(World worldObj) {
-		StorageInstabilityData data = (StorageInstabilityData) worldObj.perWorldStorage.loadData(StorageInstabilityData.class, StorageInstabilityData.ID);
+	private StorageInstabilityData getDataStorage(WorldProviderMyst provider) {
+		StorageInstabilityData data = (StorageInstabilityData) provider.worldObj.perWorldStorage.loadData(StorageInstabilityData.class, StorageInstabilityData.ID);
 		if (data == null) {
 			data = new StorageInstabilityData(StorageInstabilityData.ID);
-			worldObj.perWorldStorage.setData(StorageInstabilityData.ID, data);
+			provider.worldObj.perWorldStorage.setData(StorageInstabilityData.ID, data);
 		}
+		data.setAgeData(provider.agedata);
 		return data;
 	}
 
@@ -67,7 +68,7 @@ public class InstabilityController implements IInstabilityController {
 				dirty = true;
 			}
 			if (dirty) {
-				deckdata.saveDeck(deck);
+				deckdata.updateDeck(deck);
 			}
 		}
 	}

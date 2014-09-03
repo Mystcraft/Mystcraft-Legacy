@@ -6,13 +6,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
 import com.xcompwiz.mystcraft.instability.Deck;
+import com.xcompwiz.mystcraft.instability.InstabilityManager;
+import com.xcompwiz.mystcraft.nbt.NBTUtils;
+import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 public class StorageInstabilityData extends WorldSavedData {
 
@@ -23,13 +26,22 @@ public class StorageInstabilityData extends WorldSavedData {
 		super(id);
 	}
 
+	public void setAgeData(AgeData data) {
+		NBTBase cruft = data.popCruft("instabilityeffects");
+		if (cruft == null) return;
+		Collection<String> cards = NBTUtils.readStringListFromNBT((NBTTagList) cruft, new ArrayList<String>());
+		for (String deck : InstabilityManager.getDecks()) {
+			decks.put(deck, cards );
+		}
+	}
+
 	public Collection<String> getDeck(String deckname) {
 		Collection<String> cards = decks.get(deckname);
 		if (cards == null) return new ArrayList<String>();
 		return Collections.unmodifiableCollection(cards);
 	}
 
-	public void saveDeck(Deck deck) {
+	public void updateDeck(Deck deck) {
 		Collection<String> cards = new ArrayList<String>();
 		cards.addAll(deck.getCards());
 		decks.put(deck.getName(), cards);
@@ -42,11 +54,7 @@ public class StorageInstabilityData extends WorldSavedData {
 		for (Entry<String, Collection<String>> entry : decks.entrySet()) {
 			NBTTagCompound decknbt = new NBTTagCompound();
 			decknbt.setString("Name", entry.getKey());
-			NBTTagList cardlist = new NBTTagList();
-			for (String card : entry.getValue()) {
-				cardlist.appendTag(new NBTTagString(card));
-			}
-			decknbt.setTag("Cards", cardlist);
+			decknbt.setTag("Cards", NBTUtils.writeStringListToNBT(new NBTTagList(), entry.getValue()));
 			list.appendTag(decknbt);
 		}
 		nbt.setTag("Decks", list);
@@ -58,11 +66,7 @@ public class StorageInstabilityData extends WorldSavedData {
 		for (int i = 0; i < list.tagCount(); ++i) {
 			NBTTagCompound decknbt = list.getCompoundTagAt(i);
 			String deckname = decknbt.getString("Name");
-			NBTTagList list2 = decknbt.getTagList("Cards", Constants.NBT.TAG_STRING);
-			Collection<String> cards = new ArrayList<String>();
-			for (int j = 0; j < list2.tagCount(); ++j) {
-				cards.add(list.getStringTagAt(j));
-			}
+			Collection<String> cards = NBTUtils.readStringListFromNBT(decknbt.getTagList("Cards", Constants.NBT.TAG_STRING), new ArrayList<String>());
 			decks.put(deckname, cards);
 		}
 	}

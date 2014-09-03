@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
@@ -24,6 +23,7 @@ import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.data.GrammarRules;
 import com.xcompwiz.mystcraft.grammar.GrammarTree;
 import com.xcompwiz.mystcraft.nbt.NBTTagCompoundWrapper;
+import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import com.xcompwiz.mystcraft.world.storage.IStorageObject;
@@ -34,18 +34,18 @@ import com.xcompwiz.mystcraft.world.storage.IStorageObject;
 // Symbol states (ex. weather)
 public class AgeData extends WorldSavedData {
 	public static class AgeDataData {
-		public String						agename;
-		public Set<String>					authors	= new HashSet<String>();
-		public long							seed;
-		public short						instability;
-		public boolean						instabilityEnabled;
-		public ChunkCoordinates				spawn;
-		public List<ItemStack>				pages	= new ArrayList<ItemStack>();
-		public List<String>					symbols	= new ArrayList<String>();
-		public boolean						visited;
-		public NBTTagCompound				datacompound;
-		public long							worldtime;
-		public String						version;
+		public String				agename;
+		public Set<String>			authors	= new HashSet<String>();
+		public long					seed;
+		public short				instability;
+		public boolean				instabilityEnabled;
+		public ChunkCoordinates		spawn;
+		public List<ItemStack>		pages	= new ArrayList<ItemStack>();
+		public List<String>			symbols	= new ArrayList<String>();
+		public boolean				visited;
+		public NBTTagCompound		datacompound;
+		public long					worldtime;
+		public String				version;
 		public Map<String, NBTBase>	cruft	= new HashMap<String, NBTBase>();
 	}
 
@@ -61,7 +61,7 @@ public class AgeData extends WorldSavedData {
 	private boolean				visited;
 	private NBTTagCompound		datacompound;
 
-	public Map<String, NBTBase>	cruft	= new HashMap<String, NBTBase>();
+	public Map<String, NBTBase>	cruft			= new HashMap<String, NBTBase>();
 
 	private boolean				updated;
 	private Boolean				sharedDirty		= new Boolean(false);
@@ -321,21 +321,8 @@ public class AgeData extends WorldSavedData {
 		}
 		nbttagcompound.setTag("Pages", list);
 
-		list = new NBTTagList();
-		for (String symbol : symbols) {
-			if (symbol == null) continue;
-			list.appendTag(new NBTTagString(symbol));
-		}
-		nbttagcompound.setTag("Symbols", list);
-
-		if (authors != null) {
-			list = new NBTTagList();
-			for (String author : authors) {
-				if (author == null) continue;
-				list.appendTag(new NBTTagString(author));
-			}
-			nbttagcompound.setTag("Authors", list);
-		}
+		nbttagcompound.setTag("Symbols", NBTUtils.writeStringListToNBT(new NBTTagList(), symbols));
+		if (authors != null) nbttagcompound.setTag("Authors", NBTUtils.writeStringListToNBT(new NBTTagList(), authors));
 
 		if (cruft != null && cruft.size() > 0) {
 			NBTTagCompound cruftnbt = new NBTTagCompound();
@@ -399,5 +386,10 @@ public class AgeData extends WorldSavedData {
 
 	public long getWorldTime() {
 		return worldtime;
+	}
+
+	public NBTBase popCruft(String string) {
+		if (cruft == null) return null;
+		return cruft.remove(string);
 	}
 }
