@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.nbt;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -13,6 +14,7 @@ import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
+import net.minecraft.nbt.NBTTagString;
 
 public final class NBTUtils {
 	public static Number readNumber(NBTBase tag) {
@@ -94,5 +96,14 @@ public final class NBTUtils {
 			tagcompound.setFloat(key, map.get(key));
 		}
 		return tagcompound;
+	}
+
+	public static NBTTagList writeStringListToNBT(NBTTagList nbttaglist, List<String> list) {
+		nbttaglist = new NBTTagList();
+		for (String str : list) {
+			if (str == null) continue;
+			nbttaglist.appendTag(new NBTTagString(str));
+		}
+		return nbttaglist;
 	}
 }

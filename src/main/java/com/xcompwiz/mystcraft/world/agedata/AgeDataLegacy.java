@@ -1,9 +1,6 @@
 package com.xcompwiz.mystcraft.world.agedata;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,24 +16,11 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderManager.AgeDataLoader;
 
 public class AgeDataLegacy extends AgeDataLoader {
-	public static class AgeDataData {
-		public String			agename;
-		public Set<String>		authors			= new HashSet<String>();
-		public long				seed;
-		public short			instability;
-		public boolean			instabilityEnabled;
-		public ChunkCoordinates	spawn;
-		public List<ItemStack>	pages			= new ArrayList<ItemStack>();
-		public List<String>		symbols			= new ArrayList<String>();
-		public List<String>		effects			= new ArrayList<String>();
-		public boolean			visited;
-		public NBTTagCompound	datacompound;
-		public long				worldtime;
-		public String			version;
+	public static class AgeDataData extends com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderV4.AgeDataData {
 	}
 
 	@Override
-	public Object load(NBTTagCompound nbttagcompound) {
+	public AgeDataData load(NBTTagCompound nbttagcompound) {
 		AgeDataData data = new AgeDataData();
 		data.version = "legacy";
 		data.agename = nbttagcompound.getString("AgeName");

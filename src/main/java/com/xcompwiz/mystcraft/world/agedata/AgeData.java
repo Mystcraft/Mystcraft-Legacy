@@ -2,12 +2,16 @@ package com.xcompwiz.mystcraft.world.agedata;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -29,19 +33,20 @@ import com.xcompwiz.mystcraft.world.storage.IStorageObject;
 // Visuals (symbol list)
 // Symbol states (ex. weather)
 public class AgeData extends WorldSavedData {
-	public static class AgeDataData { 
-		public String			agename;
-		public Set<String>		authors			= new HashSet<String>();
-		public long				seed;
-		public short			instability;
-		public boolean			instabilityEnabled;
-		public ChunkCoordinates	spawn;
-		public List<ItemStack>	pages			= new ArrayList<ItemStack>();
-		public List<String>		symbols			= new ArrayList<String>();
-		public boolean			visited;
-		public NBTTagCompound	datacompound;
-		public long				worldtime;
-		public String			version;
+	public static class AgeDataData {
+		public String						agename;
+		public Set<String>					authors	= new HashSet<String>();
+		public long							seed;
+		public short						instability;
+		public boolean						instabilityEnabled;
+		public ChunkCoordinates				spawn;
+		public List<ItemStack>				pages	= new ArrayList<ItemStack>();
+		public List<String>					symbols	= new ArrayList<String>();
+		public boolean						visited;
+		public NBTTagCompound				datacompound;
+		public long							worldtime;
+		public String						version;
+		public Map<String, NBTBase>	cruft	= new HashMap<String, NBTBase>();
 	}
 
 	private String				agename;
@@ -55,6 +60,8 @@ public class AgeData extends WorldSavedData {
 	private List<String>		symbols			= new ArrayList<String>();
 	private boolean				visited;
 	private NBTTagCompound		datacompound;
+
+	public Map<String, NBTBase>	cruft	= new HashMap<String, NBTBase>();
 
 	private boolean				updated;
 	private Boolean				sharedDirty		= new Boolean(false);
@@ -261,6 +268,7 @@ public class AgeData extends WorldSavedData {
 		symbols = loadeddata.symbols;
 
 		datacompound = loadeddata.datacompound;
+		cruft = loadeddata.cruft;
 
 		if (datacompound == null) {
 			datacompound = new NBTTagCompound();
@@ -327,6 +335,14 @@ public class AgeData extends WorldSavedData {
 				list.appendTag(new NBTTagString(author));
 			}
 			nbttagcompound.setTag("Authors", list);
+		}
+
+		if (cruft != null) {
+			NBTTagCompound cruftnbt = new NBTTagCompound();
+			for (Entry<String, NBTBase> elem : cruft.entrySet()) {
+				cruftnbt.setTag(elem.getKey(), elem.getValue());
+			}
+			nbttagcompound.setTag("Cruft", cruftnbt);
 		}
 	}
 

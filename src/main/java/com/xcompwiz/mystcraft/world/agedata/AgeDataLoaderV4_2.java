@@ -1,11 +1,7 @@
 package com.xcompwiz.mystcraft.world.agedata;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChunkCoordinates;
@@ -15,23 +11,10 @@ import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderManager.AgeDataLoader;
 
 public class AgeDataLoaderV4_2 extends AgeDataLoader {
-	public static class AgeDataData {
-		public String			agename;
-		public Set<String>		authors			= new HashSet<String>();
-		public long				seed;
-		public short			instability;
-		public boolean			instabilityEnabled;
-		public ChunkCoordinates	spawn;
-		public List<ItemStack>	pages			= new ArrayList<ItemStack>();
-		public List<String>		symbols			= new ArrayList<String>();
-		public boolean			visited;
-		public NBTTagCompound	datacompound;
-		public long				worldtime;
-		public String			version;
-	}
+	public static class AgeDataData extends com.xcompwiz.mystcraft.world.agedata.AgeData.AgeDataData {}
 
 	@Override
-	public Object load(NBTTagCompound nbttagcompound) {
+	public AgeDataData load(NBTTagCompound nbttagcompound) {
 		AgeDataData data = new AgeDataData();
 		data.version = "4.2";
 		data.agename = nbttagcompound.getString("AgeName");
@@ -62,6 +45,11 @@ public class AgeDataLoaderV4_2 extends AgeDataLoader {
 		list = nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING);
 		for (int i = 0; i < list.tagCount(); ++i) {
 			data.authors.add(list.getStringTagAt(i));
+		}
+
+		NBTTagCompound cruftnbt = nbttagcompound.getCompoundTag("Cruft");
+		for (String key : (Set<String>) cruftnbt.func_150296_c()) {
+			data.cruft.put(key, cruftnbt.getTag(key));
 		}
 		return data;
 	}
