@@ -337,7 +337,7 @@ public class AgeData extends WorldSavedData {
 			nbttagcompound.setTag("Authors", list);
 		}
 
-		if (cruft != null) {
+		if (cruft != null && cruft.size() > 0) {
 			NBTTagCompound cruftnbt = new NBTTagCompound();
 			for (Entry<String, NBTBase> elem : cruft.entrySet()) {
 				cruftnbt.setTag(elem.getKey(), elem.getValue());
