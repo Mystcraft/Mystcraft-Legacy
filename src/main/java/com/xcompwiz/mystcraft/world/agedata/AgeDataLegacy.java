@@ -10,6 +10,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.Constants;
 
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
+import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
@@ -63,10 +64,7 @@ public class AgeDataLegacy extends AgeDataLoader {
 			}
 		}
 		if (nbttagcompound.hasKey("Symbols")) {
-			NBTTagList list = nbttagcompound.getTagList("Symbols", Constants.NBT.TAG_STRING);
-			for (int i = 0; i < list.tagCount(); i++) {
-				data.symbols.add(list.getStringTagAt(i));
-			}
+			NBTUtils.readStringListFromNBT(nbttagcompound.getTagList("Symbols", Constants.NBT.TAG_STRING), data.symbols);
 		} else if (data.visited) { // Old Save handling: new symbol list structure
 			for (ItemStack page : data.pages) {
 				String symbol = Page.getSymbol(page);
@@ -76,10 +74,7 @@ public class AgeDataLegacy extends AgeDataLoader {
 			}
 		}
 		if (nbttagcompound.hasKey("Effects")) {
-			NBTTagList list = nbttagcompound.getTagList("Effects", Constants.NBT.TAG_STRING);
-			for (int i = 0; i < list.tagCount(); i++) {
-				data.effects.add(list.getStringTagAt(i));
-			}
+			NBTUtils.readStringListFromNBT(nbttagcompound.getTagList("Effects", Constants.NBT.TAG_STRING), data.effects);
 		} else if (nbttagcompound.hasKey("EffectsCount")) { // Old save handling: effects save structure
 			int effectscount = nbttagcompound.getInteger("EffectsCount");
 			for (int i = 0; i < effectscount; ++i) {

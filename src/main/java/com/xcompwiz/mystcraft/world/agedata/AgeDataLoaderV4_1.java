@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.common.util.Constants;
 
+import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderManager.AgeDataLoader;
 
@@ -40,20 +41,10 @@ public class AgeDataLoaderV4_1 extends AgeDataLoader {
 			data.pages.add(Page.createPage(list.getCompoundTagAt(i)));
 		}
 
-		list = nbttagcompound.getTagList("Symbols", Constants.NBT.TAG_STRING);
-		for (int i = 0; i < list.tagCount(); i++) {
-			data.symbols.add(list.getStringTagAt(i));
-		}
+		NBTUtils.readStringListFromNBT(nbttagcompound.getTagList("Symbols", Constants.NBT.TAG_STRING), data.symbols);
+		NBTUtils.readStringListFromNBT(nbttagcompound.getTagList("Effects", Constants.NBT.TAG_STRING), data.effects);
+		NBTUtils.readStringListFromNBT(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), data.authors);
 
-		list = nbttagcompound.getTagList("Effects", Constants.NBT.TAG_STRING);
-		for (int i = 0; i < list.tagCount(); i++) {
-			data.effects.add(list.getStringTagAt(i));
-		}
-
-		list = nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING);
-		for (int i = 0; i < list.tagCount(); i++) {
-			data.authors.add(list.getStringTagAt(i));
-		}
 		return data;
 	}
 }

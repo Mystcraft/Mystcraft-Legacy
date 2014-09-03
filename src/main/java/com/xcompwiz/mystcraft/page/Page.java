@@ -13,6 +13,7 @@ import net.minecraftforge.common.util.Constants;
 import com.xcompwiz.mystcraft.data.InkEffects;
 import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
+import com.xcompwiz.mystcraft.nbt.NBTUtils;
 
 public abstract class Page {
 
@@ -86,13 +87,8 @@ public abstract class Page {
 		NBTTagCompound data = getData(page);
 		if (data == null) return null;
 		if (!data.hasKey("linkpanel")) return null;
-		ArrayList<String> properties = new ArrayList<String>();
 		NBTTagCompound linkpanel = data.getCompoundTag("linkpanel");
-		NBTTagList list = linkpanel.getTagList("properties", Constants.NBT.TAG_STRING);
-		for (int i = 0; i < list.tagCount(); i++) {
-			String property = list.getStringTagAt(i);
-			properties.add(property);
-		}
+		ArrayList<String> properties = NBTUtils.readStringListFromNBT(linkpanel.getTagList("properties", Constants.NBT.TAG_STRING), new ArrayList<String>());
 		return properties;
 	}
 
