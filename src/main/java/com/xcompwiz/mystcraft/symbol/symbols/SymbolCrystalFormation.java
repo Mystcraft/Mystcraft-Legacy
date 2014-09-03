@@ -46,10 +46,11 @@ public class SymbolCrystalFormation extends SymbolBase {
 			if (!flag && rand.nextInt(rate) == 0) {
 				i += rand.nextInt(16) + 8;
 				j += rand.nextInt(16) + 8;
-				flag = gen.generate(worldObj, rand, i, 0, j);
+				gen.generate(worldObj, rand, i, 0, j);
 			} else {
 				gen.noGen();
 			}
-			return flag;
+			return false;
 		}
-	}}
+	}
+}

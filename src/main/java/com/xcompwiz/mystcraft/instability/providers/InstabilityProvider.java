@@ -30,7 +30,7 @@ public class InstabilityProvider implements IInstabilityProvider {
 			itemCtor = effectclass.getConstructor(ctorArgClasses);
 		} catch (Exception e) {
 			LoggerUtils.error("Caught an exception during instability registration");
-			LoggerUtils.error(e.getMessage());
+			LoggerUtils.error(e.toString());
 			throw new RuntimeException("Error when building generic instability effect from effect class " + effectclass.getCanonicalName(), e);
 		}
 	}

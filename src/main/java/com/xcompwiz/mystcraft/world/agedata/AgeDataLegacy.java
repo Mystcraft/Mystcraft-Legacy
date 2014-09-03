@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.world.agedata;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,102 +16,106 @@ import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
+import com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderManager.AgeDataLoader;
 
 public class AgeDataLegacy extends AgeDataLoader {
+	public static class AgeDataData {
+		public String			agename;
+		public Set<String>		authors			= new HashSet<String>();
+		public long				seed;
+		public short			instability;
+		public boolean			instabilityEnabled;
+		public ChunkCoordinates	spawn;
+		public List<ItemStack>	pages			= new ArrayList<ItemStack>();
+		public List<String>		symbols			= new ArrayList<String>();
+		public List<String>		effects			= new ArrayList<String>();
+		public boolean			visited;
+		public NBTTagCompound	datacompound;
+		public long				worldtime;
+		public String			version;
+	}
 
-	private String				agename;
-	private long				seed;
-	private short				instability;
-	private boolean				instabilityEnabled;
-	private ChunkCoordinates	spawn;
-	private List<ItemStack>		pages	= new ArrayList<ItemStack>();
-	private List<String>		symbols	= new ArrayList<String>();
-	private List<String>		effects	= new ArrayList<String>();
-	private boolean				visited;
-	private NBTTagCompound		datacompound;
-	private long				worldtime;
-
-	public AgeDataLegacy(NBTTagCompound nbttagcompound) {
-		agename = nbttagcompound.getString("AgeName");
-		seed = nbttagcompound.getLong("Seed");
-		visited = nbttagcompound.getBoolean("Visited");
-		worldtime = nbttagcompound.getLong("WorldTime");
+	@Override
+	public Object load(NBTTagCompound nbttagcompound) {
+		AgeDataData data = new AgeDataData();
+		data.version = "legacy";
+		data.agename = nbttagcompound.getString("AgeName");
+		data.seed = nbttagcompound.getLong("Seed");
+		data.visited = nbttagcompound.getBoolean("Visited");
+		data.worldtime = nbttagcompound.getLong("WorldTime");
 
 		if (nbttagcompound.hasKey("BaseIns")) {
-			instability = nbttagcompound.getShort("BaseIns");
+			data.instability = nbttagcompound.getShort("BaseIns");
 		} else if (nbttagcompound.hasKey("Instability")) {
-			instability = nbttagcompound.getShort("Instability");
+			data.instability = nbttagcompound.getShort("Instability");
 		} else {
-			instability = nbttagcompound.getShort("Decay"); // Old save handling: Name was remapped to Instability
+			data.instability = nbttagcompound.getShort("Decay"); // Old save handling: Name was remapped to Instability
 		}
 
 		if (nbttagcompound.hasKey("InstabilityEnabled")) {
-			instabilityEnabled = nbttagcompound.getBoolean("InstabilityEnabled");
+			data.instabilityEnabled = nbttagcompound.getBoolean("InstabilityEnabled");
 		} else {
-			instabilityEnabled = true; // Old Save handling: Variable added
+			data.instabilityEnabled = true; // Old Save handling: Variable added
 		}
 
 		if (nbttagcompound.hasKey("SpawnX") && nbttagcompound.hasKey("SpawnY") && nbttagcompound.hasKey("SpawnZ")) {
-			spawn = new ChunkCoordinates(nbttagcompound.getInteger("SpawnX"), nbttagcompound.getInteger("SpawnY"), nbttagcompound.getInteger("SpawnZ"));
+			data.spawn = new ChunkCoordinates(nbttagcompound.getInteger("SpawnX"), nbttagcompound.getInteger("SpawnY"), nbttagcompound.getInteger("SpawnZ"));
 		} else {
-			spawn = null;
+			data.spawn = null;
 		}
 
-		pages.clear();
-		symbols.clear();
-		effects.clear();
 		if (nbttagcompound.hasKey("Pages")) {
 			NBTTagList list = nbttagcompound.getTagList("Pages", Constants.NBT.TAG_COMPOUND);
 			for (int i = 0; i < list.tagCount(); i++) {
 				NBTTagCompound pagedata = list.getCompoundTagAt(i);
-				pages.add(Page.createPage(pagedata));
+				data.pages.add(Page.createPage(pagedata));
 			}
 		} else if (nbttagcompound.hasKey("SymbolCount")) { // Old Save handling: Raw symbols
 			int symbolcount = nbttagcompound.getInteger("SymbolCount");
 			for (int i = 0; i < symbolcount; ++i) {
 				if (nbttagcompound.hasKey("Symbol" + i)) {
-					pages.add(Page.createSymbolPage(nbttagcompound.getString("Symbol" + i)));
+					data.pages.add(Page.createSymbolPage(nbttagcompound.getString("Symbol" + i)));
 				}
 			}
 		}
 		if (nbttagcompound.hasKey("Symbols")) {
 			NBTTagList list = nbttagcompound.getTagList("Symbols", Constants.NBT.TAG_STRING);
 			for (int i = 0; i < list.tagCount(); i++) {
-				symbols.add(list.getStringTagAt(i));
+				data.symbols.add(list.getStringTagAt(i));
 			}
-		} else if (visited) { // Old Save handling: new symbol list structure
-			for (ItemStack page : pages) {
+		} else if (data.visited) { // Old Save handling: new symbol list structure
+			for (ItemStack page : data.pages) {
 				String symbol = Page.getSymbol(page);
 				if (symbol != null) {
-					symbols.add(symbol);
+					data.symbols.add(symbol);
 				}
 			}
 		}
 		if (nbttagcompound.hasKey("Effects")) {
 			NBTTagList list = nbttagcompound.getTagList("Effects", Constants.NBT.TAG_STRING);
 			for (int i = 0; i < list.tagCount(); i++) {
-				effects.add(list.getStringTagAt(i));
+				data.effects.add(list.getStringTagAt(i));
 			}
 		} else if (nbttagcompound.hasKey("EffectsCount")) { // Old save handling: effects save structure
 			int effectscount = nbttagcompound.getInteger("EffectsCount");
 			for (int i = 0; i < effectscount; ++i) {
 				if (nbttagcompound.hasKey("Effect" + i)) {
-					effects.add(nbttagcompound.getString("Effect" + i));
+					data.effects.add(nbttagcompound.getString("Effect" + i));
 				}
 			}
 		} else { // Old save handling: pre-instability mechanics
-			effects.add("decayblack"); // Should be auto-removed by instability system if not necessary
+			data.effects.add("decayblack"); // Should be auto-removed by instability system if not necessary
 		}
 
 		if (nbttagcompound.hasKey("DataCompound")) {
-			datacompound = nbttagcompound.getCompoundTag("DataCompound");
+			data.datacompound = nbttagcompound.getCompoundTag("DataCompound");
 		} else {
-			datacompound = new NBTTagCompound(); // Old save handling: Pre-weather
-			pages.add(Page.createSymbolPage("WeatherNorm"));
+			data.datacompound = new NBTTagCompound(); // Old save handling: Pre-weather
+			data.pages.add(Page.createSymbolPage("WeatherNorm"));
 		}
 
-		if (this.visited && (!nbttagcompound.hasKey("Version") || nbttagcompound.getString("Version").equals("3"))) { // Old save handling: pre-sky rewrite
-			pages.add(Page.createSymbolPage("NormalStars"));
+		if (data.visited && (!nbttagcompound.hasKey("Version") || nbttagcompound.getString("Version").equals("3"))) { // Old save handling: pre-sky rewrite
+			data.pages.add(Page.createSymbolPage("NormalStars"));
 		}
 
 		// Legacy save model. Old save handling: Legacy
@@ -118,23 +123,23 @@ public class AgeDataLegacy extends AgeDataLoader {
 			int biomecount = nbttagcompound.getInteger("BiomeCount");
 			for (int i = 0; i < biomecount; ++i) {
 				if (nbttagcompound.hasKey("Biome" + i)) {
-					pages.add(Page.createSymbolPage(BiomeGenBase.getBiome(nbttagcompound.getInteger("Biome" + i)).biomeName));
+					data.pages.add(Page.createSymbolPage(BiomeGenBase.getBiome(nbttagcompound.getInteger("Biome" + i)).biomeName));
 				}
 			}
 		}
 		if (nbttagcompound.hasKey("AgeType")) {
-			pages.add(Page.createSymbolPage("Single Biome"));
-			pages.add(Page.createSymbolPage("LightingNormal"));
-			pages.add(Page.createSymbolPage("TerrainNormal"));
-			pages.add(Page.createSymbolPage("Villages"));
-			pages.add(Page.createSymbolPage("Caves"));
-			pages.add(Page.createSymbolPage("Ravines"));
-			pages.add(Page.createSymbolPage("Lakes"));
-			pages.add(Page.createSymbolPage("LavaLakes"));
-			pages.add(Page.createSymbolPage("ModFull"));
-			pages.add(Page.createSymbolPage("SunNormal"));
-			pages.add(Page.createSymbolPage("ModFull"));
-			pages.add(Page.createSymbolPage("MoonNormal"));
+			data.pages.add(Page.createSymbolPage("Single Biome"));
+			data.pages.add(Page.createSymbolPage("LightingNormal"));
+			data.pages.add(Page.createSymbolPage("TerrainNormal"));
+			data.pages.add(Page.createSymbolPage("Villages"));
+			data.pages.add(Page.createSymbolPage("Caves"));
+			data.pages.add(Page.createSymbolPage("Ravines"));
+			data.pages.add(Page.createSymbolPage("Lakes"));
+			data.pages.add(Page.createSymbolPage("LavaLakes"));
+			data.pages.add(Page.createSymbolPage("ModFull"));
+			data.pages.add(Page.createSymbolPage("SunNormal"));
+			data.pages.add(Page.createSymbolPage("ModFull"));
+			data.pages.add(Page.createSymbolPage("MoonNormal"));
 		}
 
 		// Moves all biome symbols to front in reverse order
@@ -148,81 +153,27 @@ public class AgeDataLegacy extends AgeDataLoader {
 			controllernames.add(symbol.identifier());
 		}
 		int cpos = 0;
-		for (int i = 0; i < pages.size(); ++i) {
-			String symbolid = Page.getSymbol(pages.get(i));
+		for (int i = 0; i < data.pages.size(); ++i) {
+			String symbolid = Page.getSymbol(data.pages.get(i));
 			if (biomenames.contains(symbolid)) {
-				pages.add(0, pages.remove(i));
+				data.pages.add(0, data.pages.remove(i));
 				++cpos;
 			} else if (controllernames.contains(symbolid)) {
-				pages.add(cpos, pages.remove(i));
+				data.pages.add(cpos, data.pages.remove(i));
 				++cpos;
 			}
 		}
 		cpos = 0;
-		for (int i = 0; i < symbols.size(); ++i) {
-			String symbolid = symbols.get(i);
+		for (int i = 0; i < data.symbols.size(); ++i) {
+			String symbolid = data.symbols.get(i);
 			if (biomenames.contains(symbolid)) {
-				symbols.add(0, symbols.remove(i));
+				data.symbols.add(0, data.symbols.remove(i));
 				++cpos;
 			} else if (controllernames.contains(symbolid)) {
-				symbols.add(cpos, symbols.remove(i));
+				data.symbols.add(cpos, data.symbols.remove(i));
 				++cpos;
 			}
 		}
-	}
-
-	@Override
-	public String getAgeName() {
-		return agename;
-	}
-
-	@Override
-	public long getSeed() {
-		return seed;
-	}
-
-	@Override
-	public boolean getVisited() {
-		return visited;
-	}
-
-	@Override
-	public long getWorldTime() {
-		return worldtime;
-	}
-
-	@Override
-	public short getBaseInstability() {
-		return instability;
-	}
-
-	@Override
-	public boolean isInstabilityEnabled() {
-		return instabilityEnabled;
-	}
-
-	@Override
-	public List<ItemStack> getPages() {
-		return pages;
-	}
-
-	@Override
-	public List<String> getSymbols() {
-		return symbols;
-	}
-
-	@Override
-	public List<String> getEffects() {
-		return effects;
-	}
-
-	@Override
-	public NBTTagCompound getDataCompound() {
-		return datacompound;
-	}
-
-	@Override
-	public ChunkCoordinates getSpawn() {
-		return spawn;
+		return data;
 	}
 }

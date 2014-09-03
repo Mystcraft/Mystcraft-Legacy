@@ -73,9 +73,7 @@ public class SymbolNetherFort extends SymbolBase {
 
 		@Override
 		public ChunkPosition locate(World world, String s, int i, int j, int k) {
-			if ("Nether Fortress".equals(s) && generator != null) {
-				return generator.func_151545_a(world, i, j, k);
-			}
+			if ("Nether Fortress".equals(s) && generator != null) { return generator.func_151545_a(world, i, j, k); }
 			return null;
 		}
 	}

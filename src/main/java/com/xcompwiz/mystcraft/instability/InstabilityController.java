@@ -30,9 +30,18 @@ public class InstabilityController implements IInstabilityController {
 		this.worldprovider = provider;
 		this.controller = controller;
 		this.enabled = (controller.isInstabilityEnabled());
-		deckdata = (StorageInstabilityData) provider.worldObj.perWorldStorage.loadData(StorageInstabilityData.class, StorageInstabilityData.ID);
+		deckdata = getDataStorage(provider.worldObj);
 		buildDecks();
 		reconstruct();
+	}
+
+	private StorageInstabilityData getDataStorage(World worldObj) {
+		StorageInstabilityData data = (StorageInstabilityData) worldObj.perWorldStorage.loadData(StorageInstabilityData.class, StorageInstabilityData.ID);
+		if (data == null) {
+			data = new StorageInstabilityData(StorageInstabilityData.ID);
+			worldObj.perWorldStorage.setData(StorageInstabilityData.ID, data);
+		}
+		return data;
 	}
 
 	private void buildDecks() {

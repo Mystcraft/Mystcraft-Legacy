@@ -55,7 +55,7 @@ public class InstabilityManager {
 			provider.addEffects(profiler, cardcounts.get(identifier));
 		} catch (Exception e) {
 			LoggerUtils.error(String.format("Exception encountered when profiling instability provider with identifier %s.", identifier));
-			if (e.getMessage() != null) LoggerUtils.error(e.getMessage());
+			LoggerUtils.error(e.toString());
 			e.printStackTrace();
 			errored.add(identifier);
 			unregisterProvider(identifier, provider);

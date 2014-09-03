@@ -26,25 +26,40 @@ import com.xcompwiz.mystcraft.world.storage.IStorageObject;
 
 // XXX: (AgeData) can we move to this class being server-side, and then having sub-objects which are sent to the clients?
 // Needed things on client-side:
-//  	Visuals (symbol list)
-//  	Symbol states (ex. weather)
+// Visuals (symbol list)
+// Symbol states (ex. weather)
 public class AgeData extends WorldSavedData {
+	public static class AgeDataData { 
+		public String			agename;
+		public Set<String>		authors			= new HashSet<String>();
+		public long				seed;
+		public short			instability;
+		public boolean			instabilityEnabled;
+		public ChunkCoordinates	spawn;
+		public List<ItemStack>	pages			= new ArrayList<ItemStack>();
+		public List<String>		symbols			= new ArrayList<String>();
+		public boolean			visited;
+		public NBTTagCompound	datacompound;
+		public long				worldtime;
+		public String			version;
+	}
 
-	private String								agename;
-	private Set<String>							authors;
-	private long								seed;
-	private short								instability;
-	private boolean								instabilityEnabled;
-	private ChunkCoordinates					spawn;
-	private List<ItemStack>						pages			= new ArrayList<ItemStack>();
-	private List<String>						symbols			= new ArrayList<String>();
-	private boolean								updated;
-	private boolean								visited;
-	private NBTTagCompound						datacompound;
-	private Boolean								sharedDirty		= new Boolean(false);
-	private boolean								needsResend;
-	private Boolean								sharedResend	= new Boolean(false);
-	private long								worldtime;
+	private String				agename;
+	private Set<String>			authors;
+	private long				seed;
+	private short				instability;
+	private boolean				instabilityEnabled;
+	private long				worldtime;
+	private ChunkCoordinates	spawn;
+	private List<ItemStack>		pages			= new ArrayList<ItemStack>();
+	private List<String>		symbols			= new ArrayList<String>();
+	private boolean				visited;
+	private NBTTagCompound		datacompound;
+
+	private boolean				updated;
+	private Boolean				sharedDirty		= new Boolean(false);
+	private boolean				needsResend;
+	private Boolean				sharedResend	= new Boolean(false);
 
 	public AgeData(String s) {
 		super(s);
@@ -189,9 +204,9 @@ public class AgeData extends WorldSavedData {
 	}
 
 	/**
-	 * This should be called to finalize the book. The AgeData will then store the pages as they were when the age was
-	 * created. Any changes to the book itself will be handled separately. This allows for books to be created with all
-	 * of the symbols of the age (via admin command), as well as opening doors to rewriting.
+	 * This should be called to finalize the book. The AgeData will then store the pages as they were when the age was created. Any changes to the book itself
+	 * will be handled separately. This allows for books to be created with all of the symbols of the age (via admin command), as well as opening doors to
+	 * rewriting.
 	 * 
 	 * @param pages
 	 */
@@ -229,23 +244,23 @@ public class AgeData extends WorldSavedData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		AgeDataLoaderV4_2 loader = new AgeDataLoaderV4_2(nbttagcompound);
+		AgeDataData loadeddata = AgeDataLoaderManager.load(nbttagcompound);
 
-		agename = loader.getAgeName();
-		authors = loader.getAuthors();
-		seed = loader.getSeed();
-		visited = loader.getVisited();
-		worldtime = loader.getWorldTime();
+		agename = loadeddata.agename;
+		authors = loadeddata.authors;
+		seed = loadeddata.seed;
+		visited = loadeddata.visited;
+		worldtime = loadeddata.worldtime;
 
-		instability = loader.getBaseInstability();
-		instabilityEnabled = loader.isInstabilityEnabled();
+		instability = loadeddata.instability;
+		instabilityEnabled = loadeddata.instabilityEnabled;
 
-		setSpawn(loader.getSpawn());
+		setSpawn(loadeddata.spawn);
 
-		pages = loader.getPages();
-		symbols = loader.getSymbols();
+		pages = loadeddata.pages;
+		symbols = loadeddata.symbols;
 
-		datacompound = loader.getDataCompound();
+		datacompound = loadeddata.datacompound;
 
 		if (datacompound == null) {
 			datacompound = new NBTTagCompound();

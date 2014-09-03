@@ -58,12 +58,12 @@ public class MystcraftPacketHandler {
 				handler.handle(data, player);
 			} catch (Exception e) {
 				LoggerUtils.warn("PacketHandler: Failed to handle packet type " + type);
-				LoggerUtils.warn(e.getMessage());
+				LoggerUtils.warn(e.toString());
 				e.printStackTrace();
 			}
 		} catch (Exception e) {
 			LoggerUtils.warn("PacketHandler: Failed to read packet");
-			LoggerUtils.warn(e.getMessage());
+			LoggerUtils.warn(e.toString());
 			e.printStackTrace();
 		}
 	}
