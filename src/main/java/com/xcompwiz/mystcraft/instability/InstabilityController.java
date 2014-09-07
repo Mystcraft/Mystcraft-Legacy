@@ -79,8 +79,10 @@ public class InstabilityController implements IInstabilityController {
 			reconstruct();
 			return;
 		}
-		if (controller.getInstabilityScore() != lastScore) {
-			lastScore = controller.getInstabilityScore();
+		int newscore = controller.getInstabilityScore();
+		newscore -= newscore % InstabilityManager.getSmallestCost();
+		if (newscore != lastScore) {
+			lastScore = newscore;
 			reconstruct();
 		}
 	}

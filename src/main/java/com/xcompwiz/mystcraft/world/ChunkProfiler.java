@@ -24,13 +24,13 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import com.xcompwiz.mystcraft.core.DebugDataTracker;
 
 public class ChunkProfiler extends WorldSavedData {
-	public static final String				ID				= "MystChunkProfile";
-	private static final int				MAP_LENGTH		= 256 * 256;
+	public static final String					ID				= "MystChunkProfile";
+	private static final int					MAP_LENGTH		= 256 * 256;
 
-	private static final Collection<Block>	watchedblocks	= new HashSet<Block>();
-	private static final Map<Block, Float>	factor1s		= new HashMap<Block, Float>();
-	private static final Map<Block, Float>	factor2s		= new HashMap<Block, Float>();
-	private static int						totalfree		= 0;
+	private static final Collection<Block>		watchedblocks	= new HashSet<Block>();
+	private static final Map<Block, Float>		factor1s		= new HashMap<Block, Float>();
+	private static final Map<Block, Float>		factor2s		= new HashMap<Block, Float>();
+	private static final Map<Block, Integer>	freevals		= new HashMap<Block, Integer>();
 
 	//XXX: Move out of here.
 	//TODO: (API) Make accessible to API
@@ -39,7 +39,7 @@ public class ChunkProfiler extends WorldSavedData {
 		watchedblocks.add(block);
 		factor1s.put(block, factor1);
 		factor2s.put(block, factor2);
-		totalfree += free;
+		freevals.put(block, free);
 	}
 
 	public static class ChunkProfileData {
@@ -100,7 +100,6 @@ public class ChunkProfiler extends WorldSavedData {
 						float factor2 = factor2s.get(block);
 						float val = map.data[coords] / (float) map.count;
 						val = val * availability * factor1 + val * factor2;
-						instability += val;
 						if (!split.containsKey(block)) {
 							split.put(block, 0.0F);
 						}
@@ -111,8 +110,9 @@ public class ChunkProfiler extends WorldSavedData {
 		}
 		for (Entry<Block, Float> entry : split.entrySet()) {
 			DebugDataTracker.set((debugname == null ? "Unnamed" : debugname) + ".instability." + entry.getKey().getUnlocalizedName(), "" + entry.getValue());
+			instability += Math.max(0, entry.getValue() - freevals.get(entry.getKey()));
 		}
-		return Math.round(instability - totalfree);
+		return Math.round(instability);
 	}
 
 	public void profile(Chunk chunk, int chunkX, int chunkZ) {

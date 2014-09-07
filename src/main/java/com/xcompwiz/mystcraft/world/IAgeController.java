@@ -24,17 +24,15 @@ import com.xcompwiz.mystcraft.symbol.ColorGradient;
 import com.xcompwiz.mystcraft.symbol.Modifier;
 
 /**
- * Interface to the controller system initialized along with an age that controls what symbol mechanics are added to the
- * age. Getting values from here is inconsistent until all symbols are initialized. Contains functions for setting
- * values or adding logic elements to the age which should be called from AgeSymbol.instantiate. Do NOT implement this
- * yourself!
+ * Interface to the controller system initialized along with an age that controls what symbol mechanics are added to the age. Getting values from here is
+ * inconsistent until all symbols are initialized. Contains functions for setting values or adding logic elements to the age which should be called from
+ * AgeSymbol.instantiate. Do NOT implement this yourself!
  */
 public interface IAgeController {
 
 	/**
-	 * Binds a modifier property to the given id as an object. If there is already a modifier bound to this id then it is
-	 * replaced and some instability is added to the world. Any dangling (unpopped) modifiers at the end of age
-	 * construction are converted to instability.
+	 * Binds a modifier property to the given id as an object. If there is already a modifier bound to this id then it is replaced and some instability is added
+	 * to the world. Any dangling (unpopped) modifiers at the end of age construction are converted to instability.
 	 * 
 	 * @param id Id at which the modifier is bound
 	 * @param obj Modifier object bound
@@ -50,16 +48,14 @@ public interface IAgeController {
 	public void setModifier(String id, Object obj);
 
 	/**
-	 * Removes and returns the modifier bound to the given id. If nothing is bound to the id then this returns an empty
-	 * modifier object, not null.
+	 * Removes and returns the modifier bound to the given id. If nothing is bound to the id then this returns an empty modifier object, not null.
 	 * 
 	 * @return The object bound or empty modifier object
 	 */
 	public Modifier popModifier(String id);
 
 	/**
-	 * Tells the controller to clear all currently bound modifiers, adding some instability. Used in the
-	 * "Clear Modifiers" symbol. Generally not for common use.
+	 * Tells the controller to clear all currently bound modifiers, adding some instability. Used in the "Clear Modifiers" symbol. Generally not for common use.
 	 */
 	public void clearModifiers();
 
@@ -67,26 +63,23 @@ public interface IAgeController {
 	public long getTime();
 
 	/**
-	 * Returns the world's total instability score without the stability provided by the instability mechanics. This is
-	 * subject to change until all the symbols in the age are initialized.
+	 * Returns the world's total instability score without the stability provided by the instability mechanics. Do not try calling this until chunks can be
+	 * generated.
 	 */
 	public int getInstabilityScore();
 
 	/**
-	 * Returns the height at which clouds generate. This is subject to change until all the symbols in the age are
-	 * initialized.
+	 * Returns the height at which clouds generate. This is subject to change until all the symbols in the age are initialized.
 	 */
 	public float getCloudHeight();
 
 	/**
-	 * Returns the height of the horizon visual effect. This is subject to change until all the symbols in the age are
-	 * initialized.
+	 * Returns the height of the horizon visual effect. This is subject to change until all the symbols in the age are initialized.
 	 */
 	public double getHorizon();
 
 	/**
-	 * Returns the average height of the terrain. This is subject to change until all the symbols in the age are
-	 * initialized.
+	 * Returns the average height of the terrain. This is subject to change until all the symbols in the age are initialized.
 	 */
 	public int getAverageGroundLevel();
 
@@ -116,44 +109,39 @@ public interface IAgeController {
 	public void addInstability(int instability);
 
 	/**
-	 * Allows for the 'setting' of the cloud height. If the value is already set, it averages the new value with the
-	 * stored value and stores that.
+	 * Allows for the 'setting' of the cloud height. If the value is already set, it averages the new value with the stored value and stores that.
 	 */
 	public void setCloudHeight(float height);
 
 	/**
-	 * Allows for the 'setting' of the horizon visual effect height. If the value is already set, it averages the new
-	 * value with the stored value and stores that.
+	 * Allows for the 'setting' of the horizon visual effect height. If the value is already set, it averages the new value with the stored value and stores
+	 * that.
 	 */
 	public void setHorizon(double height);
 
 	/**
-	 * Allows for the 'setting' of the average terrain height. If the value is already set, it averages the new value
-	 * with the stored value and stores that.
+	 * Allows for the 'setting' of the average terrain height. If the value is already set, it averages the new value with the stored value and stores that.
 	 */
 	public void setAverageGroundLevel(int height);
 
 	/**
-	 * Allows for the 'setting' of the sea level height. If the value is already set, it averages the new value with the
-	 * stored value and stores that.
+	 * Allows for the 'setting' of the sea level height. If the value is already set, it averages the new value with the stored value and stores that.
 	 */
 	public void setSeaLevel(int height);
 
 	/**
-	 * Sets whether the 'horizon' visual effect should be rendered If the value is already set, it replaces it (no
-	 * instability). Unset defaults to true.
+	 * Sets whether the 'horizon' visual effect should be rendered If the value is already set, it replaces it (no instability). Unset defaults to true.
 	 */
 	public void setDrawHorizon(boolean flag);
 
 	/**
-	 * Sets whether the 'void' visual effect should be rendered If the value is already set, it replaces it (no
-	 * instability). Unset defaults to true.
+	 * Sets whether the 'void' visual effect should be rendered If the value is already set, it replaces it (no instability). Unset defaults to true.
 	 */
 	public void setDrawVoid(boolean flag);
 
 	/**
-	 * Sets whether PvP is allowed in the world. Does not override server level settings. If the value is already set,
-	 * it replaces it (no instability). Unset defaults to true.
+	 * Sets whether PvP is allowed in the world. Does not override server level settings. If the value is already set, it replaces it (no instability). Unset
+	 * defaults to true.
 	 */
 	void setPvPEnabled(boolean flag);
 
@@ -178,14 +166,14 @@ public interface IAgeController {
 	public void registerInterface(IWeatherController reg);
 
 	/**
-	 * Registers a new {@link ISun} interface An age wants at least the minimum number of suns specified by the suns
-	 * controller, and no more than the maximum specified
+	 * Registers a new {@link ISun} interface An age wants at least the minimum number of suns specified by the suns controller, and no more than the maximum
+	 * specified
 	 */
 	public void registerInterface(ISun reg);
 
 	/**
-	 * Registers a new {@link IMoon} interface An age wants at least the minimum number of moons specified by the moons
-	 * controller, and no more than the maximum specified
+	 * Registers a new {@link IMoon} interface An age wants at least the minimum number of moons specified by the moons controller, and no more than the maximum
+	 * specified
 	 */
 	public void registerInterface(IMoon reg);
 
@@ -225,26 +213,26 @@ public interface IAgeController {
 	public void registerInterface(ISpawnModifier reg);
 
 	/**
-	 * Registers a new {@link IFogModifier} interface Any number of these may be registered and the results are averaged
-	 * together using the rolling average method
+	 * Registers a new {@link IFogModifier} interface Any number of these may be registered and the results are averaged together using the rolling average
+	 * method
 	 */
 	public void registerInterface(IFogColorProvider reg);
 
 	/**
-	 * Registers a new {@link ISkyColorProvider} interface Any number of these may be registered and the results are
-	 * averaged together using the rolling average method
+	 * Registers a new {@link ISkyColorProvider} interface Any number of these may be registered and the results are averaged together using the rolling average
+	 * method
 	 */
 	public void registerInterface(ISkyColorProvider skyColorizer);
 
 	/**
-	 * Registers a new {@link ICloudColorProvider} interface Any number of these may be registered and the results are
-	 * averaged together using the rolling average method
+	 * Registers a new {@link ICloudColorProvider} interface Any number of these may be registered and the results are averaged together using the rolling
+	 * average method
 	 */
 	public void registerInterface(ICloudColorProvider reg);
 
 	/**
-	 * Registers a new {@link IStaticColorProvider} interface Any number of these may be registered and the results are
-	 * averaged together using the rolling average method
+	 * Registers a new {@link IStaticColorProvider} interface Any number of these may be registered and the results are averaged together using the rolling
+	 * average method
 	 */
 	public void registerInterface(IStaticColorProvider reg);
 

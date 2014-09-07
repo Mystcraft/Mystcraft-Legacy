@@ -309,6 +309,7 @@ public class WorldProviderMyst extends WorldProvider {
 	 * Called at the beginning of the World update tick
 	 */
 	public void updateWeather() {
+		controller.tick();
 		controller.getWeatherController().updateRaining();
 		weatherrenderer.updateClouds();
 		cloudrenderer.updateClouds();

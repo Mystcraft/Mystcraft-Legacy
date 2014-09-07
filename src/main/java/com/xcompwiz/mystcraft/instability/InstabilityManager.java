@@ -16,17 +16,18 @@ import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 
 public class InstabilityManager {
-	private static HashMap<String, IInstabilityProvider>	providers	= new HashMap<String, IInstabilityProvider>();
-	private static HashMap<String, Integer>					cardcosts	= new HashMap<String, Integer>();
-	private static HashMap<String, Integer>					cardcounts	= new HashMap<String, Integer>();
+	private static HashMap<String, IInstabilityProvider>	providers		= new HashMap<String, IInstabilityProvider>();
+	private static HashMap<String, Integer>					cardcosts		= new HashMap<String, Integer>();
+	private static HashMap<String, Integer>					cardcounts		= new HashMap<String, Integer>();
 	private static Configuration							config;
 
-	private static InstabilityProfiler						profiler	= new InstabilityProfiler();
-	private static HashSet<String>							errored		= new HashSet<String>();
-	private static HashSet<String>							warned		= new HashSet<String>();
+	private static InstabilityProfiler						profiler		= new InstabilityProfiler();
+	private static HashSet<String>							errored			= new HashSet<String>();
+	private static HashSet<String>							warned			= new HashSet<String>();
 
-	private static HashMap<String, List<String>>			deckcards	= new HashMap<String, List<String>>();
-	private static HashMap<String, Integer>					deckcosts	= new HashMap<String, Integer>();
+	private static HashMap<String, List<String>>			deckcards		= new HashMap<String, List<String>>();
+	private static HashMap<String, Integer>					deckcosts		= new HashMap<String, Integer>();
+	private static int										smallestcost	= 500;
 
 	public static void setConfig(MystConfig mystconfig) {
 		config = mystconfig;
@@ -44,6 +45,7 @@ public class InstabilityManager {
 
 		providers.put(identifier, provider);
 		cardcosts.put(identifier, activationcost);
+		if (activationcost > 0 && activationcost < smallestcost) smallestcost = activationcost;
 		if (config != null && config.hasChanged()) config.save();
 	}
 
@@ -70,6 +72,10 @@ public class InstabilityManager {
 		}
 	}
 
+	public static int getSmallestCost() {
+		return smallestcost;
+	}
+
 	public static IInstabilityProvider getProvider(String identifier) {
 		IInstabilityProvider provider = providers.get(identifier);
 		if (provider == null && warned.add(identifier)) {
@@ -83,9 +89,7 @@ public class InstabilityManager {
 	}
 
 	public static void addCards(String deckname, List<String> cards) {
-		if (!deckcosts.containsKey(deckname)) {
-			throw new RuntimeException("Attempting to register card to unregistered deck");
-		}
+		if (!deckcosts.containsKey(deckname)) { throw new RuntimeException("Attempting to register card to unregistered deck"); }
 		List<String> deck = deckcards.get(deckname);
 		if (deck == null) {
 			deck = new ArrayList<String>();
@@ -135,7 +139,7 @@ public class InstabilityManager {
 	}
 
 	public static int getDeckCost(String deckname) {
-		Integer val = deckcosts.get(deckname); 
+		Integer val = deckcosts.get(deckname);
 		if (val == null) return 0;
 		return val;
 	}

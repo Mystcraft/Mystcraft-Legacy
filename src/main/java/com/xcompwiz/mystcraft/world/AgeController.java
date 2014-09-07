@@ -46,6 +46,7 @@ import com.xcompwiz.mystcraft.client.render.WeatherRendererMyst;
 import com.xcompwiz.mystcraft.core.DebugDataTracker;
 import com.xcompwiz.mystcraft.instability.InstabilityController;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
+import com.xcompwiz.mystcraft.instability.bonus.InstabilityBonusManager;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.Color;
 import com.xcompwiz.mystcraft.symbol.ColorGradient;
@@ -237,6 +238,7 @@ public class AgeController implements IAgeController {
 
 	@Override
 	public int getInstabilityScore() {
+		if (rebuilding) throw new RuntimeException("Someone is trying to grab the world instability score before the world is built!");
 		if (blockinstability == null) {
 			updateProfiledInstability();
 		}
@@ -265,10 +267,11 @@ public class AgeController implements IAgeController {
 			expandChunkProfile();
 		}
 		blockinstability = profiler.calculateInstability();
-		DebugDataTracker.set(agedata.getAgeName() + ".instability", "" + (symbolinstability + blockinstability + agedata.getBaseInstability()));
-		DebugDataTracker.set(agedata.getAgeName() + ".instability.writing", "" + symbolinstability);
+		DebugDataTracker.set(agedata.getAgeName() + ".instability", "" + (symbolinstability + blockinstability + agedata.getBaseInstability()) + instabilitybonusmanager.getResult());
+		DebugDataTracker.set(agedata.getAgeName() + ".instability.symbols", "" + symbolinstability);
 		DebugDataTracker.set(agedata.getAgeName() + ".instability.book", "" + agedata.getBaseInstability());
 		DebugDataTracker.set(agedata.getAgeName() + ".instability.blocks", "" + blockinstability);
+		DebugDataTracker.set(agedata.getAgeName() + ".instability.bonus", "" + instabilitybonusmanager.getResult());
 		DebugDataTracker.set(agedata.getAgeName() + ".profiled", "" + profiler.getCount());
 	}
 
@@ -493,6 +496,10 @@ public class AgeController implements IAgeController {
 			}
 		}
 		getInstabilityController().tick(world, chunk);
+	}
+
+	public void tick() {
+		instabilitybonusmanager.tick(world);
 	}
 
 	public List<SpawnListEntry> affectCreatureList(EnumCreatureType enumcreaturetype, List<SpawnListEntry> list, int i, int j, int k) {

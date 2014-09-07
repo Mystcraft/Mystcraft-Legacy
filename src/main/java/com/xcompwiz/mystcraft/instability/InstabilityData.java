@@ -6,6 +6,9 @@ import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.effects.EffectCrumble;
 import com.xcompwiz.mystcraft.effects.EffectPotion;
 import com.xcompwiz.mystcraft.effects.EffectPotionEnemy;
+import com.xcompwiz.mystcraft.instability.bonus.BonusProvider;
+import com.xcompwiz.mystcraft.instability.bonus.InstabilityBonusManager;
+import com.xcompwiz.mystcraft.instability.bonus.PlayerKilledBonus;
 import com.xcompwiz.mystcraft.instability.providers.InstabilityProvider;
 import com.xcompwiz.mystcraft.instability.providers.ProviderDecayBlack;
 import com.xcompwiz.mystcraft.instability.providers.ProviderDecayBlue;
@@ -141,5 +144,8 @@ public class InstabilityData {
 		InstabilityProviderContainerObject.create("explosions", new ProviderExplosion(), stability.explosions).add("destructive", 8);
 		InstabilityProviderContainerObject.create("lightning", new ProviderLightning(), stability.lightning).add("harsh", 4).add("destructive", 4);
 		InstabilityProviderContainerObject.create("meteors", new ProviderMeteor(), stability.meteors).add("destructive", 4);
+
+		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerKilledBonus.class, "Direwolf20", 10000, 1));
+		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerKilledBonus.class, "Soaryn", 10000, 1));
 	}
 }
