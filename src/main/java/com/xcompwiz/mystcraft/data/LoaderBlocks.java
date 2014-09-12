@@ -33,7 +33,6 @@ public class LoaderBlocks {
 		BlockInkMixer.instance = (new BlockInkMixer(Material.wood)).setHardness(2.0F).setResistance(2F).setStepSound(Block.soundTypeWood).setBlockName("myst.inkmixer").setCreativeTab(CreativeTabs.tabDecorations);
 		BlockBookBinder.instance = (new BlockBookBinder(Material.wood)).setHardness(2.0F).setResistance(2F).setStepSound(Block.soundTypeWood).setBlockName("myst.bookbinder").setCreativeTab(CreativeTabs.tabDecorations);
 		BlockBookReceptacle.instance = (new BlockBookReceptacle()).setHardness(1.0F).setStepSound(Block.soundTypeGlass).setBlockName("myst.receptacle").setCreativeTab(CreativeTabs.tabDecorations);
-		;
 		BlockBookstand.instance = (new BlockBookstand(Material.wood)).setHardness(2.0F).setResistance(2F).setStepSound(Block.soundTypeWood).setBlockName("myst.bookstand").setCreativeTab(CreativeTabs.tabDecorations);
 		BlockLectern.instance = (new BlockLectern(Material.wood)).setHardness(2.0F).setResistance(2F).setStepSound(Block.soundTypeWood).setBlockName("myst.lectern").setCreativeTab(CreativeTabs.tabDecorations);
 		BlockDecay.instance = (new BlockDecay()).setStepSound(Block.soundTypeSand).setBlockName("myst.unstable");

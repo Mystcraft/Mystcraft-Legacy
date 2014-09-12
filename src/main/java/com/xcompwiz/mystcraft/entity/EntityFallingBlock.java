@@ -304,6 +304,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 	private List<ItemStack> getDrops() {
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 
+		//FIXME: This isn't what the block should be dropping.  Need to use getDrops... somehow...
 		int count = block.quantityDropped(metadata, 0, worldObj.rand);
 		for (int i = 0; i < count; i++) {
 			Item item = block.getItemDropped(metadata, worldObj.rand, 0);
