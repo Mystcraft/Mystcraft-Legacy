@@ -120,7 +120,7 @@ public class Mystcraft implements IMystAPIProvider {
 	@SidedProxy(clientSide = "com.xcompwiz.mystcraft.client.MystcraftClientProxy", serverSide = "com.xcompwiz.mystcraft.core.MystcraftCommonProxy")
 	public static MystcraftCommonProxy	sidedProxy;
 
-	public static Integer				difficulty;
+	public static int					difficulty			= 2;
 
 	public static boolean				instabilityEnabled	= true;
 	public static boolean				renderlabels		= false;
@@ -196,8 +196,8 @@ public class Mystcraft implements IMystAPIProvider {
 
 		spawnmeteorEnabled = config.get(MystConfig.CATEGORY_GENERAL, "options.command.spawnmeteor.enabled", spawnmeteorEnabled).getBoolean(spawnmeteorEnabled);
 
-		difficulty = toInteger(config.get(MystConfig.CATEGORY_GENERAL, "options.difficultyoverride", "").getString());
-		instabilityEnabled = config.get(MystConfig.CATEGORY_GENERAL, "options.instability", instabilityEnabled).getBoolean(instabilityEnabled);
+		difficulty = config.getOptional(MystConfig.CATEGORY_GENERAL, "options.instability.difficulty", difficulty);
+		instabilityEnabled = config.get(MystConfig.CATEGORY_GENERAL, "options.instability.enabled", instabilityEnabled).getBoolean(instabilityEnabled);
 		renderlabels = config.get(MystConfig.CATEGORY_GENERAL, "options.renderlabels", renderlabels).getBoolean(renderlabels);
 		fastRainbows = config.get(MystConfig.CATEGORY_GENERAL, "options.fastRainbows", fastRainbows).getBoolean(fastRainbows);
 		respawnInAges = config.get(MystConfig.CATEGORY_GENERAL, "options.respawnInAges", respawnInAges).getBoolean(respawnInAges);
@@ -249,14 +249,6 @@ public class Mystcraft implements IMystAPIProvider {
 
 		// Init Achievements
 		AchievementsMyst.init();
-	}
-
-	private static Integer toInteger(String value) {
-		try {
-			return Integer.parseInt(value);
-		} catch (NumberFormatException e) {
-			return null;
-		}
 	}
 
 	@EventHandler

@@ -16,16 +16,23 @@ public class MystConfig extends Configuration {
 		super(configfile);
 	}
 
-	private static String objToString(Object obj) {
-		if (obj == null) return "";
-		return obj.toString();
+	public int getOptional(String category, String key, int val) {
+		String read = this.get(category, key, "").getString();
+		if (read == null || read.length() == 0) return val;
+		try {
+			return Integer.parseInt(read);
+		} catch (NumberFormatException e) {
+			return val;
+		}
 	}
 
-	private static Integer toInteger(String value) {
+	public float getOptional(String category, String key, float val) {
+		String read = this.get(category, key, "").getString();
+		if (read == null || read.length() == 0) return val;
 		try {
-			return Integer.parseInt(value);
+			return Float.parseFloat(read);
 		} catch (NumberFormatException e) {
-			return null;
+			return val;
 		}
 	}
 }

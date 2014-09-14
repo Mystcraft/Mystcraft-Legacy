@@ -18,7 +18,6 @@ import com.xcompwiz.mystcraft.symbol.modifiers.ModifierGradient;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierLength;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierNoSea;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierPhase;
-import com.xcompwiz.mystcraft.world.ChunkProfiler;
 import com.xcompwiz.util.CollectionUtils;
 
 public class SymbolDataModifiers {
@@ -85,17 +84,6 @@ public class SymbolDataModifiers {
 		BlockModifierContainerObject.create(WordData.Chain, 0.62F, BlockCrystal.instance, 0).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.CRYSTAL, 1.00F);
 		BlockModifierContainerObject.create(WordData.Chain, 0.42F, Blocks.glowstone, 0).add(BlockCategory.SOLID, 0.60F).add(BlockCategory.STRUCTURE, 0.60F).add(BlockCategory.CRYSTAL, 0.60F);
 		BlockModifierContainerObject.create(WordData.Chain, 0.62F, Blocks.quartz_ore, 0).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.CRYSTAL, 1.00F);
-
-		//XXX: Move these to own data class
-		ChunkProfiler.setInstabilityFactors(Blocks.coal_ore, 5, 1, 200);
-		ChunkProfiler.setInstabilityFactors(Blocks.iron_ore, 15, 2, 300);
-		ChunkProfiler.setInstabilityFactors(Blocks.redstone_ore, 75, 10, 400);
-		ChunkProfiler.setInstabilityFactors(Blocks.gold_ore, 200, 40, 500);
-		ChunkProfiler.setInstabilityFactors(Blocks.diamond_ore, 2000, 200, 1000);
-
-		ChunkProfiler.setInstabilityFactors(BlockCrystal.instance, 20, 4, 0);
-		ChunkProfiler.setInstabilityFactors(Blocks.glowstone, 50, 4, 0);
-		ChunkProfiler.setInstabilityFactors(Blocks.quartz_ore, 20, 4, 0);
 
 		BlockModifierContainerObject.create(WordData.Sea, 0.62F, Blocks.flowing_water, 0).add(BlockCategory.FLUID, 1.00F).add(BlockCategory.SEA, 1.00F);
 		BlockModifierContainerObject.create(WordData.Sea, 0.28F, Blocks.flowing_lava, 0).add(BlockCategory.FLUID, 0.50F).add(BlockCategory.SEA, 0.50F);

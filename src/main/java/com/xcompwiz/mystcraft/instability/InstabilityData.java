@@ -1,7 +1,9 @@
 package com.xcompwiz.mystcraft.instability;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 
+import com.xcompwiz.mystcraft.block.BlockCrystal;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.effects.EffectCrumble;
 import com.xcompwiz.mystcraft.effects.EffectPotion;
@@ -19,6 +21,7 @@ import com.xcompwiz.mystcraft.instability.providers.ProviderExplosion;
 import com.xcompwiz.mystcraft.instability.providers.ProviderLightning;
 import com.xcompwiz.mystcraft.instability.providers.ProviderMeteor;
 import com.xcompwiz.mystcraft.instability.providers.ProviderScorched;
+import com.xcompwiz.mystcraft.world.ChunkProfiler;
 
 public class InstabilityData {
 	private static class deckcost {
@@ -105,6 +108,16 @@ public class InstabilityData {
 	}
 
 	public static void initialize() {
+		ChunkProfiler.setInstabilityFactors(Blocks.coal_ore, 5, 1, 200);
+		ChunkProfiler.setInstabilityFactors(Blocks.iron_ore, 60, 1, 500);
+		ChunkProfiler.setInstabilityFactors(Blocks.redstone_ore, 250, 2, 500);
+		ChunkProfiler.setInstabilityFactors(Blocks.gold_ore, 750, 4, 500);
+		ChunkProfiler.setInstabilityFactors(Blocks.diamond_ore, 4000, 20, 1000);
+
+		ChunkProfiler.setInstabilityFactors(BlockCrystal.instance, 20, 4, 0);
+		ChunkProfiler.setInstabilityFactors(Blocks.glowstone, 50, 4, 0);
+		ChunkProfiler.setInstabilityFactors(Blocks.quartz_ore, 20, 4, 0);
+
 		//TODO: (Instability) Implement missing Instability effects
 		InstabilityManager.setDeckCost("basic", deckcost.basic);
 		InstabilityManager.setDeckCost("harsh", deckcost.harsh);
@@ -145,7 +158,7 @@ public class InstabilityData {
 		InstabilityProviderContainerObject.create("lightning", new ProviderLightning(), stability.lightning).add("harsh", 4).add("destructive", 4);
 		InstabilityProviderContainerObject.create("meteors", new ProviderMeteor(), stability.meteors).add("destructive", 4);
 
-		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerKilledBonus.class, "Direwolf20", 10000, 1));
-		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerKilledBonus.class, "Soaryn", 10000, 1));
+		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerKilledBonus.class, "Direwolf20", 10000, (float)1));
+		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerKilledBonus.class, "Soaryn", 10000, (float)1));
 	}
 }

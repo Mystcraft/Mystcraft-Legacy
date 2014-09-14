@@ -22,6 +22,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
 import com.xcompwiz.mystcraft.core.DebugDataTracker;
+import com.xcompwiz.mystcraft.core.DebugDataTracker.Callback;
 
 public class ChunkProfiler extends WorldSavedData {
 	public static final String					ID				= "MystChunkProfile";
@@ -68,6 +69,17 @@ public class ChunkProfiler extends WorldSavedData {
 	private ChunkProfileData				solid			= new ChunkProfileData();
 	private Map<Block, ChunkProfileData>	blockmaps;
 	private int								count			= 0;
+	private static boolean					outputfiles		= false;
+
+	static {
+		DebugDataTracker.register("profiler.output", new Callback() {
+			
+			@Override
+			public void setState(boolean state) {
+				outputfiles = state;
+			}
+		});
+	}
 
 	public ChunkProfiler(String id) {
 		super(id);
@@ -83,7 +95,7 @@ public class ChunkProfiler extends WorldSavedData {
 	}
 
 	public int calculateInstability() {
-		//outputFiles();
+		if (outputfiles) outputFiles();
 		float instability = 0;
 		int layers = solid.data.length / 256;
 		HashMap<Block, Float> split = new HashMap<Block, Float>();
@@ -194,7 +206,6 @@ public class ChunkProfiler extends WorldSavedData {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private void outputFiles() {
 		outputDebug(solid_prepop.data, solid_prepop.count, "logs/profiling/solid1.txt");
 		outputDebug(solid.data, solid.count, "logs/profiling/solid2.txt");
@@ -209,6 +220,10 @@ public class ChunkProfiler extends WorldSavedData {
 
 	private static void outputDebug(int[] solidmap, int chunkcount, String filename) {
 		File file = new File(Minecraft.getMinecraft().mcDataDir, filename);
+		File dir = file.getParentFile();
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
 		FileOutputStream fos;
 		try {
 			String NEW_LINE = System.getProperty("line.separator");

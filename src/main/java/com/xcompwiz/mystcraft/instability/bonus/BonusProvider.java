@@ -21,7 +21,7 @@ public class BonusProvider implements IInstabilityBonusProvider {
 		this.itemCtorArgs = itemCtorArgs;
 
 		Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + 1];
-		ctorArgClasses[0] = int.class;
+		ctorArgClasses[0] = InstabilityBonusManager.class;
 		for (int idx = 0; idx < itemCtorArgs.length; ++idx) {
 			ctorArgClasses[idx + 1] = itemCtorArgs[idx].getClass();
 		}

@@ -243,8 +243,7 @@ public class AgeController implements IAgeController {
 			updateProfiledInstability();
 		}
 		int score = symbolinstability + blockinstability + agedata.getBaseInstability() + instabilitybonusmanager.getResult();
-		int difficulty = 2;
-		if (Mystcraft.difficulty != null) difficulty = Mystcraft.difficulty;
+		int difficulty = Mystcraft.difficulty;
 		switch (difficulty) {
 		case 0:
 			score *= 0.25F;

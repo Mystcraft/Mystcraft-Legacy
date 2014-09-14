@@ -5,9 +5,14 @@ import java.util.HashMap;
 
 public abstract class DebugDataTracker {
 
-	private static HashMap<String, String>	vars = new HashMap<String, String>();
+	public interface Callback {
+		void setState(boolean state);
+	}
 
-	public static void clear() {
+	private static HashMap<String, String>		vars	= new HashMap<String, String>();
+	private static HashMap<String, Callback>	flags	= new HashMap<String, Callback>();
+
+	public static void clearVars() {
 		vars.clear();
 	}
 
@@ -21,5 +26,17 @@ public abstract class DebugDataTracker {
 
 	public static Collection getParams() {
 		return vars.keySet();
+	}
+
+	public static void register(String flag, Callback callback) {
+		flags.put(flag.replaceAll(" ", "_"), callback);
+	}
+
+	public static void setFlag(String command, boolean b) {
+		flags.get(command);
+	}
+
+	public static Collection<String> getFlags() {
+		return flags.keySet();
 	}
 }

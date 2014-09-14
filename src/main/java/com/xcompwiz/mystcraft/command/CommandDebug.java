@@ -26,7 +26,7 @@ public class CommandDebug extends CommandMyst {
 
 	@Override
 	public String getCommandUsage(ICommandSender par1ICommandSender) {
-		return "/" + this.getCommandName() + " param";
+		return "/" + this.getCommandName() + " <'read'> <param> OR <'set'> <flag>";
 	}
 
 	/**
@@ -34,7 +34,9 @@ public class CommandDebug extends CommandMyst {
 	 */
 	@Override
 	public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] args) {
-		if (args.length == 1) return getListOfStringsMatchingLastWord(args, this.getParams());
+		if (args.length < 2) return getListOfStringsMatchingLastWord(args, new String[]{"read", "set"});
+		if (args[0].equals("read") && args.length == 2) return getListOfStringsMatchingLastWord(args, this.getParams());
+		if (args[0].equals("set") && args.length == 2) return getListOfStringsMatchingLastWord(args, this.getFlags());
 		return null;
 	}
 
@@ -44,16 +46,30 @@ public class CommandDebug extends CommandMyst {
 		return params;
 	}
 
+	protected String[] getFlags() {
+		Collection<String> allflags = DebugDataTracker.getFlags();
+		String[] params = allflags.toArray(new String[allflags.size()]);
+		return params;
+	}
+
 	@Override
 	public void processCommand(ICommandSender agent, String[] args) {
-		String sTarget = null;
+		String command = null;
+		String flag = null;
 
-		if (args.length > 0) {
-			sTarget = args[0];
+		if (args.length > 1) {
+			command = args[0];
+			flag = args[1];
 		} else {
 			throw new WrongUsageException("Could not parse command.");
 		}
-		String value = DebugDataTracker.get(sTarget);
-		agent.addChatMessage(new ChatComponentText(value));
+		if (command.equals("read")) {
+			String value = DebugDataTracker.get(flag);
+			agent.addChatMessage(new ChatComponentText(value));
+		} else if (command.equals("set")) {
+			boolean b = true;
+			if (args.length > 2) b = (Boolean.parseBoolean(args[2]) || args[2].equals("1"));
+			DebugDataTracker.setFlag(flag, b);
+		}
 	}
 }

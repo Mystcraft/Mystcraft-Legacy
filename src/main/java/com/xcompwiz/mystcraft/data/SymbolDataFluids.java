@@ -57,7 +57,7 @@ public class SymbolDataFluids {
 		Float value = rarities.get(fluid.getID());
 		if (value != null) return value;
 		float val = 0.1F;
-		if (config != null) return (float) config.get(MystConfig.CATEGORY_DEBUG, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".rarity", val).getDouble(val);
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_DEBUG, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".rarity", val);
 		return val;
 	}
 
@@ -65,23 +65,23 @@ public class SymbolDataFluids {
 		Float value = grammarWeights.get(fluid.getID());
 		if (value != null) return value;
 		float val = 0.1F;
-		if (config != null) return (float) config.get(MystConfig.CATEGORY_DEBUG, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".grammar", val).getDouble(val);
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_DEBUG, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".grammar", val);
 		return val;
 	}
 
 	private static float factor1(Fluid fluid) {
 		Float value = factor1s.get(fluid.getID());
 		if (value != null) return value;
-		float val = 0.0F;
-		if (config != null) return (float) config.get(MystConfig.CATEGORY_DEBUG, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".instability.factor1", val).getDouble(val);
+		float val = 5.0F;
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_DEBUG, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".instability.factor_1", val);
 		return val;
 	}
 
 	private static float factor2(Fluid fluid) {
 		Float value = factor2s.get(fluid.getID());
 		if (value != null) return value;
-		float val = 0.1F;
-		if (config != null) return (float) config.get(MystConfig.CATEGORY_DEBUG, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".instability.factor2", val).getDouble(val);
+		float val = 1.0F;
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_DEBUG, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".instability.factor_2", val);
 		return val;
 	}
 
