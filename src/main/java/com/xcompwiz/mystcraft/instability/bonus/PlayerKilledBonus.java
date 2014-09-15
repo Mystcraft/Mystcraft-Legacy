@@ -6,7 +6,7 @@ import com.xcompwiz.mystcraft.instability.bonus.InstabilityBonusManager.IInstabi
 
 public class PlayerKilledBonus implements IInstabilityBonus {
 
-	public PlayerKilledBonus(InstabilityBonusManager bonusmanager, String playername, Integer amount, Float decayrate) {
+	public PlayerKilledBonus(InstabilityBonusManager bonusmanager, World worldObj, String playername, Integer amount, Float decayrate) {
 	}
 
 	@Override

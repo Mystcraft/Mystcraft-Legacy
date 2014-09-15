@@ -20,10 +20,11 @@ public class BonusProvider implements IInstabilityBonusProvider {
 		this.bonusclass = bonusclass;
 		this.itemCtorArgs = itemCtorArgs;
 
-		Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + 1];
+		Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + 2];
 		ctorArgClasses[0] = InstabilityBonusManager.class;
+		ctorArgClasses[1] = World.class;
 		for (int idx = 0; idx < itemCtorArgs.length; ++idx) {
-			ctorArgClasses[idx + 1] = itemCtorArgs[idx].getClass();
+			ctorArgClasses[idx + 2] = itemCtorArgs[idx].getClass();
 		}
 		try {
 			itemCtor = bonusclass.getConstructor(ctorArgClasses);
@@ -38,8 +39,8 @@ public class BonusProvider implements IInstabilityBonusProvider {
 	public void register(InstabilityBonusManager bonusmanager, World world) {
 		try {
 			Object[] args = itemCtorArgs;
-			args = ObjectArrays.concat(bonusmanager, itemCtorArgs);
 			args = ObjectArrays.concat(world, args);
+			args = ObjectArrays.concat(bonusmanager, args);
 			IInstabilityBonus bonus = itemCtor.newInstance(args);
 			bonusmanager.register(bonus);
 		} catch (Exception e) {
