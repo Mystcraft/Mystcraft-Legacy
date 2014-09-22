@@ -115,7 +115,6 @@ public class AgeController implements IAgeController {
 		skyrenderer = new SkyRendererMyst((WorldProviderMyst) world.provider, this);
 		cloudrenderer = new CloudRendererMyst((WorldProviderMyst) world.provider, this);
 		weatherrenderer = new WeatherRendererMyst((WorldProviderMyst) world.provider, this);
-		instabilitybonusmanager = new InstabilityBonusManager((WorldProviderMyst) world.provider, this);
 		reconstruct();
 	}
 
@@ -242,7 +241,8 @@ public class AgeController implements IAgeController {
 		if (blockinstability == null) {
 			updateProfiledInstability();
 		}
-		int score = symbolinstability + blockinstability + agedata.getBaseInstability() + instabilitybonusmanager.getResult();
+		int score = symbolinstability + blockinstability + agedata.getBaseInstability() + getInstabilityBonusManager().getResult();
+		DebugDataTracker.set(agedata.getAgeName() + ".instability.bonus", "" + getInstabilityBonusManager().getResult());
 		int difficulty = Mystcraft.difficulty;
 		switch (difficulty) {
 		case 0:
@@ -266,11 +266,10 @@ public class AgeController implements IAgeController {
 			expandChunkProfile();
 		}
 		blockinstability = profiler.calculateInstability();
-		DebugDataTracker.set(agedata.getAgeName() + ".instability", "" + (symbolinstability + blockinstability + agedata.getBaseInstability()) + instabilitybonusmanager.getResult());
+		DebugDataTracker.set(agedata.getAgeName() + ".instability", "" + (symbolinstability + blockinstability + agedata.getBaseInstability()) + getInstabilityBonusManager().getResult());
 		DebugDataTracker.set(agedata.getAgeName() + ".instability.symbols", "" + symbolinstability);
 		DebugDataTracker.set(agedata.getAgeName() + ".instability.book", "" + agedata.getBaseInstability());
 		DebugDataTracker.set(agedata.getAgeName() + ".instability.blocks", "" + blockinstability);
-		DebugDataTracker.set(agedata.getAgeName() + ".instability.bonus", "" + instabilitybonusmanager.getResult());
 		DebugDataTracker.set(agedata.getAgeName() + ".profiled", "" + profiler.getCount());
 	}
 
@@ -424,6 +423,15 @@ public class AgeController implements IAgeController {
 		return instabilityController;
 	}
 
+	private InstabilityBonusManager getInstabilityBonusManager() {
+		if (instabilitybonusmanager == null) {
+			instabilitybonusmanager = new InstabilityBonusManager((WorldProviderMyst) world.provider, this);
+		}
+		return instabilitybonusmanager;
+		//ChunkProfiler chunkprofiler = (ChunkProfiler) this.world.perWorldStorage.loadData(ChunkProfiler.class, ChunkProfiler.ID);
+	}
+
+
 	public IBiomeController getBiomeController() {
 		validate();
 		return biomeController;
@@ -498,7 +506,8 @@ public class AgeController implements IAgeController {
 	}
 
 	public void tick() {
-		instabilitybonusmanager.tick(world);
+		if (world.isRemote) return;
+		getInstabilityBonusManager().tick(world);
 	}
 
 	public List<SpawnListEntry> affectCreatureList(EnumCreatureType enumcreaturetype, List<SpawnListEntry> list, int i, int j, int k) {

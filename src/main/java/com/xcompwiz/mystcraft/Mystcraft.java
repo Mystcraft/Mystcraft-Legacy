@@ -56,6 +56,7 @@ import com.xcompwiz.mystcraft.data.SymbolRules;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.instability.InstabilityManager;
+import com.xcompwiz.mystcraft.instability.bonus.EventManager;
 import com.xcompwiz.mystcraft.item.ItemInkVial;
 import com.xcompwiz.mystcraft.linking.LinkListenerBasic;
 import com.xcompwiz.mystcraft.linking.LinkListenerEffects;
@@ -178,6 +179,10 @@ public class Mystcraft implements IMystAPIProvider {
 
 		// Register Event Handler
 		MinecraftForge.EVENT_BUS.register(new MystcraftEventHandler());
+		EventManager eventmanager = new EventManager();
+		MinecraftForge.EVENT_BUS.register(eventmanager);
+		FMLCommonHandler.instance().bus().register(eventmanager);
+		EventManager.set(eventmanager);
 
 		// Load configs
 		File configroot = event.getSuggestedConfigurationFile().getParentFile();

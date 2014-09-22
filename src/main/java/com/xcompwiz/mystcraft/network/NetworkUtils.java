@@ -1,11 +1,15 @@
 package com.xcompwiz.mystcraft.network;
 
+import java.util.Iterator;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.Mystcraft;
@@ -123,5 +127,38 @@ public final class NetworkUtils {
 	private static int getNextWindowId(EntityPlayerMP player) {
 		player.getNextWindowId();
 		return player.currentWindowId;
+	}
+
+	public static void sendMessageToAdmins(IChatComponent chatcomponent) {
+		Iterator iterator = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
+		while (iterator.hasNext()) {
+			EntityPlayer entityplayer = (EntityPlayer) iterator.next();
+			if (MinecraftServer.getServer().getConfigurationManager().func_152596_g(entityplayer.getGameProfile())) {
+				entityplayer.addChatMessage(chatcomponent);
+			}
+		}
+
+		MinecraftServer.getServer().addChatMessage(chatcomponent);
+	}
+
+	public static void sendMessageToPlayersInWorld(IChatComponent chatcomponent, int dimensionid) {
+		Iterator iterator = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
+		while (iterator.hasNext()) {
+			EntityPlayer entityplayer = (EntityPlayer) iterator.next();
+			if (entityplayer.dimension == dimensionid) {
+				entityplayer.addChatMessage(chatcomponent);
+			}
+		}
+
+		MinecraftServer.getServer().addChatMessage(chatcomponent);
+	}
+
+	public static void sendMessageToPlayers(IChatComponent chatcomponent) {
+		Iterator iterator = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
+		while (iterator.hasNext()) {
+			((EntityPlayer) iterator.next()).addChatMessage(chatcomponent);
+		}
+
+		MinecraftServer.getServer().addChatMessage(chatcomponent);
 	}
 }

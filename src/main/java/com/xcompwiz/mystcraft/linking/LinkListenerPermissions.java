@@ -178,6 +178,7 @@ public class LinkListenerPermissions {
 		return list;
 	}
 
+	//XXX: Refactor to NBTUtils
 	private static HashMap<String, Set<Integer>> readHashMapFromNBT(NBTTagCompound data) {
 		HashMap<String, Set<Integer>> map = new HashMap<String, Set<Integer>>();
 		Collection<String> tagnames = data.func_150296_c();

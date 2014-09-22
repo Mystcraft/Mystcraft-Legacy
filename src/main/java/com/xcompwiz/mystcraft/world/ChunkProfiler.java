@@ -73,7 +73,7 @@ public class ChunkProfiler extends WorldSavedData {
 
 	static {
 		DebugDataTracker.register("profiler.output", new Callback() {
-			
+
 			@Override
 			public void setState(boolean state) {
 				outputfiles = state;
@@ -122,7 +122,11 @@ public class ChunkProfiler extends WorldSavedData {
 		}
 		for (Entry<Block, Float> entry : split.entrySet()) {
 			DebugDataTracker.set((debugname == null ? "Unnamed" : debugname) + ".instability." + entry.getKey().getUnlocalizedName(), "" + entry.getValue());
-			instability += Math.max(0, entry.getValue() - freevals.get(entry.getKey()));
+			float val = entry.getValue();
+			if (val > 0) {
+				val = Math.max(0, val - freevals.get(entry.getKey()));
+			}
+			instability += val;
 		}
 		return Math.round(instability);
 	}

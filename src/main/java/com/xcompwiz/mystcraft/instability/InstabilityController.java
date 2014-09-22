@@ -104,12 +104,12 @@ public class InstabilityController implements IInstabilityController {
 	private Collection<String> getProviders(Deck deck) {
 		int instabilityScore = getInstabilityScore();
 		instabilityScore -= InstabilityManager.getDeckCost(deck.getName());
-		if (instabilityScore <= 0) return null;
+		if (instabilityScore < 0) return null;
 		Collection<String> providers = new ArrayList<String>();
 		for (String card : deck.getCards()) {
 			int cost = InstabilityManager.getCardCost(card);
 			instabilityScore -= cost;
-			if (instabilityScore <= 0) break;
+			if (instabilityScore < 0) break;
 			providers.add(card);
 		}
 		return providers;

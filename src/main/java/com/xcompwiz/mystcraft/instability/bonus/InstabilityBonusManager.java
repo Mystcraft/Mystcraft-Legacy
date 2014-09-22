@@ -44,6 +44,7 @@ public class InstabilityBonusManager {
 		return total;
 	}
 
+	//TODO: Change value tracking to allow saving through this object
 	public void tick(World world) {
 		int total = 0;
 		for (IInstabilityBonus bonus : bonuses) {

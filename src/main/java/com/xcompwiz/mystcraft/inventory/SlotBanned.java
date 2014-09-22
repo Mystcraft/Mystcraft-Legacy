@@ -13,7 +13,7 @@ public class SlotBanned extends Slot {
 	}
 
 	@Override
-	public boolean canTakeStack(EntityPlayer p_82869_1_) {
+	public boolean canTakeStack(EntityPlayer entityplayer) {
 		return false;
 	}
 

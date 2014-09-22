@@ -1,6 +1,5 @@
 package com.xcompwiz.mystcraft.instability.bonus;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
@@ -9,13 +8,15 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import com.xcompwiz.mystcraft.instability.bonus.EventManager.IOnEntityDeath;
 import com.xcompwiz.mystcraft.instability.bonus.EventManager.IOnPlayerChangedDimension;
 import com.xcompwiz.mystcraft.instability.bonus.EventManager.IOnPlayerLoggedIn;
+import com.xcompwiz.mystcraft.instability.bonus.EventManager.IOnPlayerLoggedOut;
 import com.xcompwiz.mystcraft.instability.bonus.InstabilityBonusManager.IInstabilityBonus;
 import com.xcompwiz.mystcraft.network.NetworkUtils;
 
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 
-public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOnPlayerChangedDimension, IOnPlayerLoggedIn {
+public class PlayerTrollPenalty implements IInstabilityBonus, IOnEntityDeath, IOnPlayerChangedDimension, IOnPlayerLoggedIn, IOnPlayerLoggedOut {
 
 	private int		max;
 	private int		min;
@@ -24,8 +25,9 @@ public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOn
 
 	private String	playername;
 	private int		dimensionid;
+	private boolean playerisinworld;
 
-	public PlayerKilledBonus(InstabilityBonusManager bonusmanager, World worldObj, String playername, Integer max, Float decayrate) {
+	public PlayerTrollPenalty(InstabilityBonusManager bonusmanager, World worldObj, String playername, Integer max, Float decayrate) {
 		current = 0;
 		this.playername = playername;
 		this.max = max;
@@ -37,42 +39,56 @@ public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOn
 		eventmgr.register((IOnEntityDeath)this);
 		eventmgr.register((IOnPlayerChangedDimension)this);
 		eventmgr.register((IOnPlayerLoggedIn)this);
+		eventmgr.register((IOnPlayerLoggedOut)this);
 	}
 
 	@Override
 	public int getValue() {
-		return -(int) current;
+		return (int) current;
 	}
 
 	@Override
 	public void tick(World world) {
-		current = Math.max(min, current - decayrate);
+		if (playerisinworld) {
+			current = Math.min(max, current + decayrate);
+		} else {
+			current = Math.max(min, current - decayrate);
+		}
 	}
 
 	@Override
 	public void onEntityDeath(LivingDeathEvent event) {
 		if (event.entity.dimension == dimensionid && event.entity.getCommandSenderName().equals(playername)) {
-			if (event.source.getEntity() != null && event.source.getEntity() instanceof EntityPlayer) {
-				current = max;
-				announce("instability.bonus.death", playername, event.source.getEntity().getCommandSenderName());
-			} else {
-				current = Math.max(max/2, current);
-				announce("instability.bonus.death.partial", playername);
-			}
+			current = min;
+			announce("instability.bonus.troll.death", playername);
 		}
 	}
 
 	@Override
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
 		if (event.player.dimension == dimensionid && event.player.getCommandSenderName().equals(playername)) {
-			announce("instability.bonus.death.alert", playername);
+			playerisinworld = true;
+			announce("instability.bonus.troll.alert", playername);
+		}
+	}
+
+	@Override
+	public void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
+		if (event.player.dimension == dimensionid && event.player.getCommandSenderName().equals(playername)) {
+			playerisinworld = false;
+			announce("instability.bonus.troll.left", playername);
 		}
 	}
 
 	@Override
 	public void onPlayerChangedDimension(PlayerChangedDimensionEvent event) {
+		if (event.fromDim == dimensionid && event.player.getCommandSenderName().equals(playername)) {
+			playerisinworld = false;
+			announce("instability.bonus.troll.left", playername);
+		}
 		if (event.toDim == dimensionid && event.player.getCommandSenderName().equals(playername)) {
-			announce("instability.bonus.death.alert", playername);
+			playerisinworld = true;
+			announce("instability.bonus.troll.alert", playername);
 		}
 	}
 

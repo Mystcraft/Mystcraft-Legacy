@@ -74,6 +74,14 @@ linkeffect.intralinking.name=Intra-Linking
 linkeffect.maintainmomentum.name=Maintain Momentum
 linkeffect.relative.name=Relative Link
 
+instability.bonus.death=%s has been killed by %s, activating bonus stability!
+instability.bonus.death.partial=%s has died.  Unlocking part of the bonus stability.  Kill them personally to unlock all of it!
+instability.bonus.death.alert=%s has entered the age.  Kill them in order to unlock a temporary stability bonus in this age!
+
+instability.bonus.troll.death=%s has been killed, resetting the instability penalty!
+instability.bonus.troll.alert=%s has entered the age.  The age will slowly become less stable!  Kill them to reset this!
+instability.bonus.troll.left=%s has left the age.  The stability penalty will slowly dissipate.
+
 mystsymbol.BioConGrid.name=Grid-form Biome Distribution
 mystsymbol.BioConHuge.name=Huge Biome Distribution
 mystsymbol.BioConLarge.name=Large Biome Distribution
