@@ -13,6 +13,7 @@ public class InstabilityBonusManager {
 	//XXX: Move to own (for API)
 	public interface IInstabilityBonus {
 		public int getValue();
+
 		public void tick(World world);
 	}
 
@@ -20,6 +21,8 @@ public class InstabilityBonusManager {
 	public interface IInstabilityBonusProvider {
 		public void register(InstabilityBonusManager bonusmanager, World world);
 	}
+
+	public static final InstabilityBonusManager		ZERO			= new InstabilityBonusManager();
 
 	private static Set<IInstabilityBonusProvider>	bonusproviders	= new HashSet<IInstabilityBonusProvider>();
 
@@ -29,6 +32,8 @@ public class InstabilityBonusManager {
 
 	private Set<IInstabilityBonus>	bonuses	= new HashSet<IInstabilityBonus>();
 	private int						total;
+
+	public InstabilityBonusManager() {}
 
 	public InstabilityBonusManager(WorldProviderMyst provider, IAgeController agecontroller) {
 		for (IInstabilityBonusProvider bprovider : bonusproviders) {

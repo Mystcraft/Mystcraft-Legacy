@@ -149,6 +149,8 @@ public class Mystcraft implements IMystAPIProvider {
 
 	public static boolean				debugGrammar		= false;
 
+	public static boolean				instabilitybonusEnabled = false;
+
 	@Override
 	public MystAPI getAPIInstance() {
 		//Determine which mod is requesting the API container instance

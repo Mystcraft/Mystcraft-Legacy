@@ -424,11 +424,13 @@ public class AgeController implements IAgeController {
 	}
 
 	private InstabilityBonusManager getInstabilityBonusManager() {
-		if (instabilitybonusmanager == null) {
-			instabilitybonusmanager = new InstabilityBonusManager((WorldProviderMyst) world.provider, this);
+		if (Mystcraft.instabilitybonusEnabled) {
+			if (instabilitybonusmanager == null) {
+				instabilitybonusmanager = new InstabilityBonusManager((WorldProviderMyst) world.provider, this);
+			}
+			return instabilitybonusmanager;
 		}
-		return instabilitybonusmanager;
-		//ChunkProfiler chunkprofiler = (ChunkProfiler) this.world.perWorldStorage.loadData(ChunkProfiler.class, ChunkProfiler.ID);
+		return InstabilityBonusManager.ZERO;
 	}
 
 
