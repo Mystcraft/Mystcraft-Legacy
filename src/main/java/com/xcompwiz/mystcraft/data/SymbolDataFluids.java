@@ -72,7 +72,7 @@ public class SymbolDataFluids {
 	private static float factor1(Fluid fluid) {
 		Float value = factor1s.get(fluid.getID());
 		if (value != null) return value;
-		float val = 5.0F;
+		float val = 2.0F;
 		if (config != null) return config.getOptional(MystConfig.CATEGORY_DEBUG, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".instability.factor_1", val);
 		return val;
 	}
