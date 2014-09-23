@@ -51,8 +51,6 @@ public class BlockBookBinder extends BlockContainer {
 
 	private static final int	GuiID	= GuiHandlerManager.registerGuiNetHandler(new GuiHandlerBinder());
 
-	public static Block			instance;
-
 	private IIcon				iconTop;
 	private IIcon				iconBottom;
 

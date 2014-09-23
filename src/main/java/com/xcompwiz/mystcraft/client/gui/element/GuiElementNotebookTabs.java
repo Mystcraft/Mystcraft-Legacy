@@ -6,7 +6,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.item.IItemWritable;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 
@@ -100,7 +100,7 @@ public class GuiElementNotebookTabs extends GuiElement {
 		if (topslot == 0) {
 			GL11.glColor4f(0.4F, 0.4F, 0.4F, 1.0F);
 		}
-		mc.renderEngine.bindTexture(Assets.gui_desk);
+		mc.renderEngine.bindTexture(GUIs.desk);
 		drawTexturedModalRect(guiLeft, tabY, 0, windowsizeY + ySizeTab, xSizeTab, 9);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		tabY += 9;
@@ -108,7 +108,7 @@ public class GuiElementNotebookTabs extends GuiElement {
 			if (i == activeslot) {
 				GL11.glColor4f(0.5F, 0.5F, 1.0F, 1.0F);
 			}
-			mc.renderEngine.bindTexture(Assets.gui_desk);
+			mc.renderEngine.bindTexture(GUIs.desk);
 			drawTexturedModalRect(guiLeft, tabY, 0, windowsizeY, xSizeTab, ySizeTab);
 			GuiUtils.drawWord(mc.renderEngine, zLevel, DrawableWordManager.getDrawableWord("" + i), 19, guiLeft + 8, tabY + 3);
 
@@ -135,7 +135,7 @@ public class GuiElementNotebookTabs extends GuiElement {
 			tabY += ySizeTab;
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		}
-		mc.renderEngine.bindTexture(Assets.gui_desk);
+		mc.renderEngine.bindTexture(GUIs.desk);
 		if (activeslot >= topslot + tabCount) {
 			GL11.glColor4f(0.5F, 0.5F, 1.0F, 1.0F);
 		}

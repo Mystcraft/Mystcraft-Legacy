@@ -21,6 +21,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.portal.PortalUtils;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBook;
@@ -30,8 +31,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockBookReceptacle extends BlockContainer {
-
-	public static Block	instance;
 
 	private IIcon		iconFace;
 
@@ -116,11 +115,11 @@ public class BlockBookReceptacle extends BlockContainer {
 		if (par5 == 0) {// && par1World.getBlock(par2, par3+1, par4) != myst_BlockCrystal.instance) {
 			return false;
 		}
-		if (par5 == 1 && par1World.getBlock(par2, par3 - 1, par4) != BlockCrystal.instance) { return false; }
-		if (par5 == 2 && par1World.getBlock(par2, par3, par4 + 1) != BlockCrystal.instance) { return false; }
-		if (par5 == 3 && par1World.getBlock(par2, par3, par4 - 1) != BlockCrystal.instance) { return false; }
-		if (par5 == 4 && par1World.getBlock(par2 + 1, par3, par4) != BlockCrystal.instance) { return false; }
-		if (par5 == 5 && par1World.getBlock(par2 - 1, par3, par4) != BlockCrystal.instance) { return false; }
+		if (par5 == 1 && par1World.getBlock(par2, par3 - 1, par4) != ModBlocks.crystal) { return false; }
+		if (par5 == 2 && par1World.getBlock(par2, par3, par4 + 1) != ModBlocks.crystal) { return false; }
+		if (par5 == 3 && par1World.getBlock(par2, par3, par4 - 1) != ModBlocks.crystal) { return false; }
+		if (par5 == 4 && par1World.getBlock(par2 + 1, par3, par4) != ModBlocks.crystal) { return false; }
+		if (par5 == 5 && par1World.getBlock(par2 - 1, par3, par4) != ModBlocks.crystal) { return false; }
 		return canPlaceBlockAt(par1World, par2, par3, par4);
 	}
 
@@ -251,7 +250,7 @@ public class BlockBookReceptacle extends BlockContainer {
 	@Override
 	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block block) {
 		ChunkCoordinates coord = PortalUtils.getReceptacleBase(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4));
-		if (par1World.getBlock(coord.posX, coord.posY, coord.posZ) != BlockCrystal.instance) {
+		if (par1World.getBlock(coord.posX, coord.posY, coord.posZ) != ModBlocks.crystal) {
 			dropBlockAsItem(par1World, par2, par3, par4, 0, 0);
 			par1World.setBlock(par2, par3, par4, Blocks.air);
 		}

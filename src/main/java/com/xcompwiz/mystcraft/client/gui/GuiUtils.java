@@ -19,7 +19,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import com.xcompwiz.mystcraft.api.word.DrawableWord;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.GUIs;
+import com.xcompwiz.mystcraft.data.Assets.Vanilla;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
@@ -38,7 +39,7 @@ public final class GuiUtils {
 	@SideOnly(Side.CLIENT)
 	public static void drawPage(TextureManager renderEngine, float zLevel, ItemStack page, float xSize, float ySize, float x, float y, boolean pageFirst) {
 		if (pageFirst) {
-			renderEngine.bindTexture(Assets.book_page_left);
+			renderEngine.bindTexture(GUIs.book_page_left);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			if (page == null) GL11.glColor4f(0.2F, 0.2F, 0.2F, 0.2F);
 			drawTexturedModalRect(x, y, 156, 0, 30, 40, zLevel, xSize, ySize);
@@ -50,7 +51,7 @@ public final class GuiUtils {
 			drawGradientRect(x + xSize * 0.15F, y + ySize * 0.15F, x + xSize * 0.85F, y + ySize * 0.5F, 0xFF000000, 0xFF000000, zLevel);
 		}
 		if (!pageFirst) {
-			renderEngine.bindTexture(Assets.book_page_left);
+			renderEngine.bindTexture(GUIs.book_page_left);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			if (page == null) GL11.glColor4f(0.2F, 0.2F, 0.2F, 0.2F);
 			drawTexturedModalRect(x, y, 156, 0, 30, 40, zLevel, xSize, ySize);
@@ -321,7 +322,7 @@ public final class GuiUtils {
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void drawSprite(int x, int y, int xOffset, int yOffset, float zLevel) {
-		Minecraft.getMinecraft().renderEngine.bindTexture(Assets.slot_tex);
+		Minecraft.getMinecraft().renderEngine.bindTexture(Vanilla.slot_tex);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
@@ -334,7 +335,7 @@ public final class GuiUtils {
 
 	@SideOnly(Side.CLIENT)
 	public static void drawSprite(int x, int y, int xSize, int ySize, int xOffset, int yOffset, float zLevel) {
-		Minecraft.getMinecraft().renderEngine.bindTexture(Assets.slot_tex);
+		Minecraft.getMinecraft().renderEngine.bindTexture(Vanilla.slot_tex);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();

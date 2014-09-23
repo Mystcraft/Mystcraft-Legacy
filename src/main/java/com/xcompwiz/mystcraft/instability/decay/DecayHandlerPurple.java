@@ -5,7 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.block.BlockDecay;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 
 public class DecayHandlerPurple extends DecayHandlerSpreading {
 
@@ -18,7 +18,7 @@ public class DecayHandlerPurple extends DecayHandlerSpreading {
 	protected int getConversionDifficulty(World world, int i, int j, int k) {
 		Block block = world.getBlock(i, j, k);
 		if (block == Blocks.air) return 8;
-		if (block == BlockDecay.instance) return 5;
+		if (block == ModBlocks.decay) return 5;
 		if (block.getMaterial().isLiquid()) return 3;
 		float resist = block.getExplosionResistance(null, world, i, j, k, i, j, k);
 		if (resist < 0.0F) {

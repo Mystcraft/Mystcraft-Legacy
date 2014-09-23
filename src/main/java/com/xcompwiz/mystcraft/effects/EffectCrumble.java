@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
-import com.xcompwiz.mystcraft.block.BlockCrystal;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 
 public class EffectCrumble implements IEnvironmentalEffect {
 	public static class BlockSpec {
@@ -39,7 +39,7 @@ public class EffectCrumble implements IEnvironmentalEffect {
 		registerMapping(Blocks.ice, Blocks.water);
 
 		registerMapping(Blocks.glowstone, Blocks.glass);
-		registerMapping(BlockCrystal.instance, Blocks.glass);
+		registerMapping(ModBlocks.crystal, Blocks.glass);
 
 		registerMapping(Blocks.nether_brick, Blocks.netherrack);
 		registerMapping(Blocks.quartz_ore, Blocks.netherrack);

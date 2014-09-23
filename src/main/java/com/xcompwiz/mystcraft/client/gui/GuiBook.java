@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementBook;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementBook.IGuiOnLinkHandler;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
 import com.xcompwiz.mystcraft.inventory.ContainerBook;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
@@ -77,7 +77,7 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
 		if (!widget) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			this.mc.getTextureManager().bindTexture(Assets.slot);
+			this.mc.getTextureManager().bindTexture(GUIs.slot);
 			this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 
 			if (!isSlotVisible()) { // XXX: (GuiElementItemSlot)Replace with renderable slot? Replace slot system entirely?

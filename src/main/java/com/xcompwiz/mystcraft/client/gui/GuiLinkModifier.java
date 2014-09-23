@@ -15,7 +15,7 @@ import com.xcompwiz.mystcraft.client.gui.element.GuiElementButtonToggle.IGuiStat
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiOnTextChange;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiTextProvider;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.data.InkEffects;
 import com.xcompwiz.mystcraft.inventory.ContainerLinkModifier;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
@@ -89,7 +89,7 @@ public class GuiLinkModifier extends GuiContainerElements {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
-		this.mc.renderEngine.bindTexture(Assets.gui_single_slot);
+		this.mc.renderEngine.bindTexture(GUIs.single_slot);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		this.drawElementBackgrounds(f, mouseX, mouseY);

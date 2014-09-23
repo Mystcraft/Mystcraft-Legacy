@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.Fluid;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.render.DniColorRenderer;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.data.ModFluids;
 import com.xcompwiz.mystcraft.inventory.ContainerInkMixer;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
@@ -79,12 +79,12 @@ public class GuiInkMixer extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
-		mc.renderEngine.bindTexture(Assets.gui_mixer);
+		mc.renderEngine.bindTexture(GUIs.mixer);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		drawTexturedModalRect(guiLeft + 54, guiTop + 16, 179, 16, 66, 65);
 		if (container.hasInk()) renderTank(guiLeft + 54, guiTop + 16, 66, 65);
 
-		mc.renderEngine.bindTexture(Assets.gui_mixer);
+		mc.renderEngine.bindTexture(GUIs.mixer);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 

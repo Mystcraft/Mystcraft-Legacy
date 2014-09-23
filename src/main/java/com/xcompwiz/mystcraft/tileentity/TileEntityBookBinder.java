@@ -12,10 +12,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.IItemBuilder;
 import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
-import com.xcompwiz.mystcraft.item.ItemNotebook;
 import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.page.Page;
@@ -215,7 +215,7 @@ public class TileEntityBookBinder extends TileEntity implements IItemBuilder, IS
 
 	public ItemStack getCraftedItem() {
 		if (!canBuildItem()) return null;
-		return new ItemStack(ItemAgebook.instance);
+		return new ItemStack(ModItems.agebook);
 	}
 
 	public void setPages(List<ItemStack> page_list) {
@@ -241,7 +241,7 @@ public class TileEntityBookBinder extends TileEntity implements IItemBuilder, IS
 			if (stack.stackSize == 0) stack = null;
 			return stack;
 		}
-		if (stack.getItem() != ItemPage.instance) return stack;
+		if (stack.getItem() != ModItems.page) return stack;
 		while (stack.stackSize > 0) {
 			ItemStack clone = stack.copy();
 			clone.stackSize = 1;
@@ -255,7 +255,7 @@ public class TileEntityBookBinder extends TileEntity implements IItemBuilder, IS
 	}
 
 	public ItemStack insertFromNotebook(ItemStack notebook, int index) {
-		if (notebook.getItem() != ItemNotebook.instance) return notebook;
+		if (notebook.getItem() != ModItems.notebook) return notebook;
 		int size = InventoryNotebook.getLargestSlotId(notebook);
 		if (size == 0) {
 			for (ItemStack page : pages) {

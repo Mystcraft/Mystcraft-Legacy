@@ -14,8 +14,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockCrystal extends Block {
 
-	public static Block	instance;
-
 	public BlockCrystal() {
 		super(Material.glass);
 		setTickRandomly(false);

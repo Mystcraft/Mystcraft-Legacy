@@ -3,8 +3,8 @@ package com.xcompwiz.mystcraft.instability;
 import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 
-import com.xcompwiz.mystcraft.block.BlockCrystal;
 import com.xcompwiz.mystcraft.core.InternalAPI;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.effects.EffectCrumble;
 import com.xcompwiz.mystcraft.effects.EffectPotion;
 import com.xcompwiz.mystcraft.effects.EffectPotionEnemy;
@@ -115,7 +115,7 @@ public class InstabilityData {
 		ChunkProfiler.setInstabilityFactors(Blocks.gold_ore, 750, 4, 500);
 		ChunkProfiler.setInstabilityFactors(Blocks.diamond_ore, 4000, 20, 1000);
 
-		ChunkProfiler.setInstabilityFactors(BlockCrystal.instance, 20, 4, 0);
+		ChunkProfiler.setInstabilityFactors(ModBlocks.crystal, 20, 4, 0);
 		ChunkProfiler.setInstabilityFactors(Blocks.glowstone, 50, 4, 0);
 		ChunkProfiler.setInstabilityFactors(Blocks.quartz_ore, 20, 4, 0);
 

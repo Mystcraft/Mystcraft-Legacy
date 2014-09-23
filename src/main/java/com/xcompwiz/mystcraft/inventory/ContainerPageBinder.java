@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 
-import com.xcompwiz.mystcraft.item.ItemNotebook;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
@@ -203,7 +203,7 @@ public class ContainerPageBinder extends ContainerBase implements IGuiMessageHan
 		if (data.hasKey("InsertHeldAt")) {
 			if (player.inventory.getItemStack() == null) return;
 			int index = data.getInteger("InsertHeldAt");
-			if (player.inventory.getItemStack().getItem() == ItemNotebook.instance) {
+			if (player.inventory.getItemStack().getItem() == ModItems.notebook) {
 				tileentity.insertFromNotebook(player.inventory.getItemStack(), index);
 			} else {
 				ItemStack stack = player.inventory.getItemStack();

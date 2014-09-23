@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.inventory.ContainerNotebook;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
@@ -118,7 +118,7 @@ public class GuiInventoryNotebook extends GuiContainerElements {
 			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(this.inventorySlots.windowId, nbttagcompound));
 		}
 
-		mc.renderEngine.bindTexture(Assets.gui_scrollable);
+		mc.renderEngine.bindTexture(GUIs.scrollable);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		this.drawTexturedModalRect(sliderleft, slidertop + (int) ((sliderbottom - slidertop) * this.scrollfloat), xSize, 0, 12, 15);

@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiOnTextChange;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
@@ -185,7 +185,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		int color = 0xAA000000;
 		drawRect(guiLeft, guiTop, guiLeft + xSize - 20, guiTop + ySize, color); // Back
 
-		mc.renderEngine.bindTexture(Assets.gui_desk);
+		mc.renderEngine.bindTexture(GUIs.desk);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.drawTexturedModalRect(guiLeft + xSize - 21, guiTop, xSize, 0, 21, ySize);
 		this.drawTexturedModalRect(sliderleft, slidertop + (int) ((sliderbottom - slidertop) * sliderpos), xSize + 21, 0, 12, 15);

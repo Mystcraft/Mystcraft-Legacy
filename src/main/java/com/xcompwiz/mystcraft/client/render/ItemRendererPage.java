@@ -7,7 +7,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
@@ -58,7 +58,7 @@ public class ItemRendererPage implements IItemRenderer {
 			GuiUtils.drawPage(FMLClientHandler.instance().getClient().renderEngine, 10, item, 16.0F, 16.0F, 0.0F, 0.0F);
 		} else if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
 			TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
-			renderEngine.bindTexture(Assets.book_page_left);
+			renderEngine.bindTexture(GUIs.book_page_left);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 			GuiUtils.drawTexturedModalRect(held_offset, 0, 156, 0, 30, 40, 0, held_width, held_height);
@@ -74,7 +74,7 @@ public class ItemRendererPage implements IItemRenderer {
 		} else if (type == ItemRenderType.ENTITY) {
 			GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
 			TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
-			renderEngine.bindTexture(Assets.book_page_left);
+			renderEngine.bindTexture(GUIs.book_page_left);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 			GL11.glTranslatef(0.0F, -0.5F, 0.0F);

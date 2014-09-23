@@ -12,7 +12,7 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
-import com.xcompwiz.mystcraft.block.BlockFluidWrapper;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.data.ModFluids;
 import com.xcompwiz.mystcraft.effects.EffectCrumble;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
@@ -48,7 +48,7 @@ public class MystcraftEventHandler {
 		int i = movingobjectposition.blockX;
 		int j = movingobjectposition.blockY;
 		int k = movingobjectposition.blockZ;
-		if (event.world.getBlock(i, j, k) == BlockFluidWrapper.instance) {
+		if (event.world.getBlock(i, j, k) == ModBlocks.black_ink) {
 			event.setCanceled(true);
 		}
 	}

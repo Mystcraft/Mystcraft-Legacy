@@ -14,12 +14,12 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.block.BlockWritingDesk;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemWritingDesk extends Item {
-	public static Item	instance;
 	private IIcon		icontop;
 
 	public ItemWritingDesk() {
@@ -64,7 +64,7 @@ public class ItemWritingDesk extends Item {
 	}
 
 	private boolean extendDesk(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int face) {
-		Block block = BlockWritingDesk.instance;
+		Block block = ModBlocks.writingdesk;
 		if (world.getBlock(i, j, k) != block) return false;
 		int meta = world.getBlockMetadata(i, j, k);
 		if (BlockWritingDesk.isBlockTop(meta)) return false;
@@ -106,7 +106,7 @@ public class ItemWritingDesk extends Item {
 			face = 1;
 		}
 		if (face != 1) { return false; }
-		Block block = BlockWritingDesk.instance;
+		Block block = ModBlocks.writingdesk;
 		int facing = (MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) + 1) & 3;
 		int xOffset = 0;
 		int zOffset = 0;

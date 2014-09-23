@@ -9,16 +9,7 @@ import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import com.xcompwiz.mystcraft.block.BlockBookBinder;
-import com.xcompwiz.mystcraft.block.BlockBookReceptacle;
-import com.xcompwiz.mystcraft.block.BlockBookstand;
-import com.xcompwiz.mystcraft.block.BlockCrystal;
-import com.xcompwiz.mystcraft.block.BlockInkMixer;
-import com.xcompwiz.mystcraft.block.BlockLectern;
 import com.xcompwiz.mystcraft.config.MystConfig;
-import com.xcompwiz.mystcraft.item.ItemInkVial;
-import com.xcompwiz.mystcraft.item.ItemNotebook;
-import com.xcompwiz.mystcraft.item.ItemWritingDesk;
 
 public class ModRecipes {
 
@@ -47,9 +38,9 @@ public class ModRecipes {
 	public static void addRecipes(CraftingManager craftingmanager) {
 		// Ink
 		{
-			IRecipe recipe = new ShapelessOreRecipe(new ItemStack(ItemInkVial.instance, 1), new Object[] { "dyeBlack", "dyeBlack", Items.potionitem });
+			IRecipe recipe = new ShapelessOreRecipe(new ItemStack(ModItems.inkvial, 1), new Object[] { "dyeBlack", "dyeBlack", Items.potionitem });
 			craftingmanager.getRecipeList().add(recipe);
-			recipe = new ShapelessOreRecipe(new ItemStack(ItemInkVial.instance, 1), new Object[] { "dyeBlack", "dyeBlack", Items.glass_bottle, Items.water_bucket });
+			recipe = new ShapelessOreRecipe(new ItemStack(ModItems.inkvial, 1), new Object[] { "dyeBlack", "dyeBlack", Items.glass_bottle, Items.water_bucket });
 			craftingmanager.getRecipeList().add(recipe);
 		}
 		// Linking Book
@@ -59,45 +50,45 @@ public class ModRecipes {
 		}
 		// Notebook
 		if (Notebook) {
-			IRecipe recipe = new ShapedOreRecipe(new ItemStack(ItemNotebook.instance, 1), new Object[] { "# #", " # ", '#', Items.leather });
+			IRecipe recipe = new ShapedOreRecipe(new ItemStack(ModItems.notebook, 1), new Object[] { "# #", " # ", '#', Items.leather });
 			craftingmanager.getRecipeList().add(recipe);
 		}
 		// Crystal Receptacle
 		if (BookReceptacle) {
-			craftingmanager.addRecipe(new ItemStack(BlockBookReceptacle.instance, 1), new Object[] { "###", "# #", "###", '#', new ItemStack(BlockCrystal.instance, 1, 0) });
+			craftingmanager.addRecipe(new ItemStack(ModBlocks.receptacle, 1), new Object[] { "###", "# #", "###", '#', new ItemStack(ModBlocks.crystal, 1, 0) });
 		}
 		// Lectern
 		if (Lectern) {
-			IRecipe recipe = new ShapedOreRecipe(new ItemStack(BlockLectern.instance, 2), new Object[] { "#  ", "##S", "###", 'S', "stickWood", '#', "plankWood" });
+			IRecipe recipe = new ShapedOreRecipe(new ItemStack(ModBlocks.lectern, 2), new Object[] { "#  ", "##S", "###", 'S', "stickWood", '#', "plankWood" });
 			craftingmanager.getRecipeList().add(recipe);
 		}
 		// Bookstand
 		if (Bookstand) {
-			IRecipe recipe = new ShapedOreRecipe(new ItemStack(BlockBookstand.instance, 1), new Object[] { "S S", " # ", 'S', "stickWood", '#', "plankWood" });
+			IRecipe recipe = new ShapedOreRecipe(new ItemStack(ModBlocks.bookstand, 1), new Object[] { "S S", " # ", 'S', "stickWood", '#', "plankWood" });
 			craftingmanager.getRecipeList().add(recipe);
 		}
 		// Ink Mixer
 		if (InkMixer) {
 			IRecipe recipe;
-			recipe = new ShapedOreRecipe(new ItemStack(BlockInkMixer.instance, 1), new Object[] { "S S", "SVS", "WSW", 'S', Blocks.stone, 'V', Items.glass_bottle, 'W', "plankWood" });
+			recipe = new ShapedOreRecipe(new ItemStack(ModBlocks.inkmixer, 1), new Object[] { "S S", "SVS", "WSW", 'S', Blocks.stone, 'V', Items.glass_bottle, 'W', "plankWood" });
 			craftingmanager.getRecipeList().add(recipe);
 		}
 		// Writing Desk
 		if (WritingDesk) {
 			IRecipe recipe;
-			recipe = new ShapedOreRecipe(new ItemStack(ItemWritingDesk.instance, 1, 0), new Object[] { "I F", "###", "# #", 'I', Items.glass_bottle, 'F', Items.feather, '#', "plankWood" });
+			recipe = new ShapedOreRecipe(new ItemStack(ModItems.desk, 1, 0), new Object[] { "I F", "###", "# #", 'I', Items.glass_bottle, 'F', Items.feather, '#', "plankWood" });
 			craftingmanager.getRecipeList().add(recipe);
 		}
 		// Writing Desk Backboard
 		if (WritingDeskBack) {
 			IRecipe recipe;
-			recipe = new ShapedOreRecipe(new ItemStack(ItemWritingDesk.instance, 1, 1), new Object[] { "###", "#I#", 'I', Items.item_frame, '#', "plankWood" });
+			recipe = new ShapedOreRecipe(new ItemStack(ModItems.desk, 1, 1), new Object[] { "###", "#I#", 'I', Items.item_frame, '#', "plankWood" });
 			craftingmanager.getRecipeList().add(recipe);
 		}
 		// Book Binder
 		if (BookBinder) {
 			IRecipe recipe;
-			recipe = new ShapedOreRecipe(new ItemStack(BlockBookBinder.instance, 1), new Object[] { "III", "###", "# #", 'I', Items.iron_ingot, '#', "plankWood" });
+			recipe = new ShapedOreRecipe(new ItemStack(ModBlocks.bookbinder, 1), new Object[] { "III", "###", "# #", 'I', Items.iron_ingot, '#', "plankWood" });
 			craftingmanager.getRecipeList().add(recipe);
 		}
 	}

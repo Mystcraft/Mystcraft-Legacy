@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
-import com.xcompwiz.mystcraft.block.BlockCrystal;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
@@ -22,7 +22,7 @@ public class SymbolCrystalFormation extends SymbolBase {
 		if (block != null) {
 			generator = new WorldGenMystCrystalFormation(block.block, block.metadata);
 		} else {
-			generator = new WorldGenMystCrystalFormation(BlockCrystal.instance);
+			generator = new WorldGenMystCrystalFormation(ModBlocks.crystal);
 		}
 		controller.registerInterface(new Populator(generator));
 	}

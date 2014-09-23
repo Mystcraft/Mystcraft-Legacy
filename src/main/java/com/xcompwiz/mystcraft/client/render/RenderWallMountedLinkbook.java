@@ -9,9 +9,8 @@ import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.data.Assets;
-import com.xcompwiz.mystcraft.item.ItemAgebook;
-import com.xcompwiz.mystcraft.item.ItemLinkbook;
+import com.xcompwiz.mystcraft.data.Assets.Entities;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
 
 public class RenderWallMountedLinkbook extends TileEntitySpecialRenderer {
@@ -26,10 +25,10 @@ public class RenderWallMountedLinkbook extends TileEntitySpecialRenderer {
 		d += 0.5;
 		d2 += 0.5;
 		if (tileentity.getDisplayItem() == null) return;
-		if (tileentity.getDisplayItem().getItem() == ItemAgebook.instance) {
-			bindTexture(Assets.agebook_tex);
-		} else if (tileentity.getDisplayItem().getItem() == ItemLinkbook.instance) {
-			bindTexture(Assets.linkbook_tex);
+		if (tileentity.getDisplayItem().getItem() == ModItems.agebook) {
+			bindTexture(Entities.agebook);
+		} else if (tileentity.getDisplayItem().getItem() == ModItems.linkbook) {
+			bindTexture(Entities.linkbook);
 		} else {
 			return;
 		}

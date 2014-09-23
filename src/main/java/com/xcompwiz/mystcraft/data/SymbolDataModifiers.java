@@ -5,7 +5,6 @@ import net.minecraft.init.Blocks;
 
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.word.WordData;
-import com.xcompwiz.mystcraft.block.BlockCrystal;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.symbol.BlockDescriptor;
@@ -81,7 +80,7 @@ public class SymbolDataModifiers {
 		BlockModifierContainerObject.create(WordData.Chain, 0.42F, Blocks.glass, 0).add(BlockCategory.SOLID, 0.60F).add(BlockCategory.STRUCTURE, 0.60F).add(BlockCategory.CRYSTAL, 0.60F);
 		BlockModifierContainerObject.create(WordData.Chain, 0.62F, Blocks.snow, 0).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.CRYSTAL, 1.00F);
 		BlockModifierContainerObject.create(WordData.Chain, 0.50F, Blocks.obsidian, 0).add(BlockCategory.SOLID, 0.80F).add(BlockCategory.TERRAIN, 0.20F).add(BlockCategory.STRUCTURE, 0.80F).add(BlockCategory.CRYSTAL, 0.80F);
-		BlockModifierContainerObject.create(WordData.Chain, 0.62F, BlockCrystal.instance, 0).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.CRYSTAL, 1.00F);
+		BlockModifierContainerObject.create(WordData.Chain, 0.62F, ModBlocks.crystal, 0).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.CRYSTAL, 1.00F);
 		BlockModifierContainerObject.create(WordData.Chain, 0.42F, Blocks.glowstone, 0).add(BlockCategory.SOLID, 0.60F).add(BlockCategory.STRUCTURE, 0.60F).add(BlockCategory.CRYSTAL, 0.60F);
 		BlockModifierContainerObject.create(WordData.Chain, 0.62F, Blocks.quartz_ore, 0).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.CRYSTAL, 1.00F);
 

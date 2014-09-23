@@ -9,14 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.page.Page;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemLinkbookUnlinked extends Item {
-
-	public static Item	instance;
 
 	public ItemLinkbookUnlinked() {
 		setMaxStackSize(16);
@@ -44,7 +43,7 @@ public class ItemLinkbookUnlinked extends Item {
 	}
 
 	public static ItemStack createItem(ItemStack linkpanel, ItemStack covermat) {
-		ItemStack linkbook = new ItemStack(instance);
+		ItemStack linkbook = new ItemStack(ModItems.unlinked);
 		linkbook.stackTagCompound = (NBTTagCompound) linkpanel.stackTagCompound.copy();
 		return linkbook;
 	}
@@ -52,8 +51,8 @@ public class ItemLinkbookUnlinked extends Item {
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
 		if (world.isRemote || itemstack.stackSize > 1) return itemstack;
-		ItemStack linkbook = new ItemStack(ItemLinkbook.instance);
-		((ItemLinkbook) ItemLinkbook.instance).initialize(world, linkbook, entityplayer);
+		ItemStack linkbook = new ItemStack(ModItems.linkbook);
+		((ItemLinkbook) ModItems.linkbook).initialize(world, linkbook, entityplayer);
 		Page.applyLinkPanel(itemstack, linkbook);
 		entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, linkbook);
 		itemstack.stackSize = 0;

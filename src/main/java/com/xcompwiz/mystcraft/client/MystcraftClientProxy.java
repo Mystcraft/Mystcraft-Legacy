@@ -14,14 +14,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.block.BlockBookBinder;
-import com.xcompwiz.mystcraft.block.BlockBookReceptacle;
-import com.xcompwiz.mystcraft.block.BlockBookstand;
-import com.xcompwiz.mystcraft.block.BlockCrystal;
-import com.xcompwiz.mystcraft.block.BlockFluidWrapper;
-import com.xcompwiz.mystcraft.block.BlockInkMixer;
-import com.xcompwiz.mystcraft.block.BlockLectern;
-import com.xcompwiz.mystcraft.block.BlockLinkModifier;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleProviderLink;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleUtils;
 import com.xcompwiz.mystcraft.client.linkeffects.LinkRendererDisarm;
@@ -43,8 +35,10 @@ import com.xcompwiz.mystcraft.client.render.RenderWallMountedLinkbook;
 import com.xcompwiz.mystcraft.client.render.RenderWritingDesk;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.Entities;
 import com.xcompwiz.mystcraft.data.InkEffects;
+import com.xcompwiz.mystcraft.data.ModBlocks;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.data.ModLinkEffects;
 import com.xcompwiz.mystcraft.data.ModNotebooks;
 import com.xcompwiz.mystcraft.entity.EntityFallingBlock;
@@ -53,12 +47,6 @@ import com.xcompwiz.mystcraft.entity.EntityLinkbook;
 import com.xcompwiz.mystcraft.entity.EntityMeteor;
 import com.xcompwiz.mystcraft.error.MystcraftStartupChecker;
 import com.xcompwiz.mystcraft.inventory.CreativeTabMyst;
-import com.xcompwiz.mystcraft.item.ItemAgebook;
-import com.xcompwiz.mystcraft.item.ItemInkVial;
-import com.xcompwiz.mystcraft.item.ItemLinkbookUnlinked;
-import com.xcompwiz.mystcraft.item.ItemNotebook;
-import com.xcompwiz.mystcraft.item.ItemPage;
-import com.xcompwiz.mystcraft.item.ItemWritingDesk;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
@@ -96,10 +84,10 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 
 		ParticleUtils.registerParticle("link", new ParticleProviderLink());
 
-		MinecraftForgeClient.registerItemRenderer(ItemPage.instance, new ItemRendererPage());
-		MinecraftForgeClient.registerItemRenderer(ItemInkVial.instance, new ItemRendererMask());
+		MinecraftForgeClient.registerItemRenderer(ModItems.page, new ItemRendererPage());
+		MinecraftForgeClient.registerItemRenderer(ModItems.inkvial, new ItemRendererMask());
 
-		if (Mystcraft.archivistEnabled()) VillagerRegistry.instance().registerVillagerSkin(Mystcraft.archivistId, Assets.archivist_tex);
+		if (Mystcraft.archivistEnabled()) VillagerRegistry.instance().registerVillagerSkin(Mystcraft.archivistId, Entities.archivist);
 	}
 
 	private void registerEntityRenderers() {
@@ -131,23 +119,23 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 
 		render = new RenderLectern();
 		cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(com.xcompwiz.mystcraft.tileentity.TileEntityLectern.class, render);
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(com.xcompwiz.mystcraft.block.BlockLectern.instance), new ItemRendererTileEntity(render, new TileEntityLectern()));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(com.xcompwiz.mystcraft.data.ModBlocks.lectern), new ItemRendererTileEntity(render, new TileEntityLectern()));
 
 		render = new RenderBookstand();
 		cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(com.xcompwiz.mystcraft.tileentity.TileEntityBookstand.class, render);
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(com.xcompwiz.mystcraft.block.BlockBookstand.instance), new ItemRendererTileEntity(render, new TileEntityBookstand()));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(com.xcompwiz.mystcraft.data.ModBlocks.bookstand), new ItemRendererTileEntity(render, new TileEntityBookstand()));
 
-		render = new RenderModel(new ModelBookBinder(), Assets.bookbinder_tex);
+		render = new RenderModel(new ModelBookBinder(), Entities.bookbinder);
 		cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder.class, render);
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(com.xcompwiz.mystcraft.block.BlockBookBinder.instance), new ItemRendererTileEntity(render, new TileEntityBookBinder()));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(com.xcompwiz.mystcraft.data.ModBlocks.bookbinder), new ItemRendererTileEntity(render, new TileEntityBookBinder()));
 
-		render = new RenderModel(new ModelInkMixer(), Assets.inkmixer_tex);
+		render = new RenderModel(new ModelInkMixer(), Entities.inkmixer);
 		cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer.class, render);
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(com.xcompwiz.mystcraft.block.BlockInkMixer.instance), new ItemRendererTileEntity(render, new TileEntityInkMixer()));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(com.xcompwiz.mystcraft.data.ModBlocks.inkmixer), new ItemRendererTileEntity(render, new TileEntityInkMixer()));
 
-		render = new RenderModel(new ModelLinkModifier(), Assets.linkmodifier_tex);
+		render = new RenderModel(new ModelLinkModifier(), Entities.linkmodifier);
 		cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier.class, render);
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(com.xcompwiz.mystcraft.block.BlockLinkModifier.instance), new ItemRendererTileEntity(render, new TileEntityLinkModifier()));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(com.xcompwiz.mystcraft.data.ModBlocks.linkmodifier), new ItemRendererTileEntity(render, new TileEntityLinkModifier()));
 
 		render = new RenderStarFissure();
 		cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(com.xcompwiz.mystcraft.tileentity.TileEntityStarFissure.class, render);
@@ -165,20 +153,20 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 	public void createCreativeTabs() {
 		// Basic creative tab
 		CreativeTabMyst creativeTab = new CreativeTabMyst("mystcraft.common", true);
-		creativeTab.registerItemStack(new ItemStack(ItemAgebook.instance, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ItemLinkbookUnlinked.instance, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ItemNotebook.instance, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ItemWritingDesk.instance, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ItemWritingDesk.instance, 1, 1));
-		creativeTab.registerItemStack(new ItemStack(BlockBookstand.instance, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(BlockLectern.instance, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(BlockCrystal.instance, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(BlockBookReceptacle.instance, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(BlockInkMixer.instance, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(BlockBookBinder.instance, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(BlockLinkModifier.instance, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ItemInkVial.instance, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(BlockFluidWrapper.instance, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModItems.agebook, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModItems.unlinked, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModItems.notebook, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModItems.desk, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModItems.desk, 1, 1));
+		creativeTab.registerItemStack(new ItemStack(ModBlocks.bookstand, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModBlocks.lectern, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModBlocks.crystal, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModBlocks.receptacle, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModBlocks.inkmixer, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModBlocks.bookbinder, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModBlocks.linkmodifier, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModItems.inkvial, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModBlocks.black_ink, 1, 0));
 
 		// Symbol creative tab
 		CreativeTabMyst pageTab = new CreativeTabMyst("mystcraft.pages");

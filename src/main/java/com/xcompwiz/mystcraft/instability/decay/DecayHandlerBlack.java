@@ -5,7 +5,7 @@ import java.util.Random;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.block.BlockDecay;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.entity.EntityFallingBlock;
 import com.xcompwiz.mystcraft.world.WorldInfoHelper;
 
@@ -31,18 +31,18 @@ public class DecayHandlerBlack extends DecayHandler {
 	@Override
 	public void onBlockAdded(World world, int i, int j, int k) {
 		if (!world.isRemote) {
-			if (world.getBlock(i, j, k) == BlockDecay.instance) {
+			if (world.getBlock(i, j, k) == ModBlocks.decay) {
 				if (!WorldInfoHelper.isMystcraftAge(world)) {
 					world.setBlock(i, j, k, Blocks.air);
 					return;
 				}
 				if (!WorldInfoHelper.isInstabilityEnabled(world)) { return; }
-				if (world.getBlock(i, j - 1, k) == BlockDecay.instance && world.getBlockMetadata(i, j - 1, k) == this.getMetadata()) {
+				if (world.getBlock(i, j - 1, k) == ModBlocks.decay && world.getBlockMetadata(i, j - 1, k) == this.getMetadata()) {
 					world.setBlock(i, j - 1, k, Blocks.air);
 					EntityFallingBlock.drop(world, i, j, k);
 					return;
 				}
-				if (world.getBlock(i, j + 1, k) == BlockDecay.instance && world.getBlockMetadata(i, j - 1, k) == this.getMetadata()) {
+				if (world.getBlock(i, j + 1, k) == ModBlocks.decay && world.getBlockMetadata(i, j - 1, k) == this.getMetadata()) {
 					world.setBlock(i, j, k, Blocks.air);
 					EntityFallingBlock.drop(world, i, j + 1, k);
 					return;
@@ -65,7 +65,7 @@ public class DecayHandlerBlack extends DecayHandler {
 			world.setBlock(i, j, k, Blocks.air);
 		}
 		if (!world.isAirBlock(i, j, k)) {
-			world.setBlock(i, j, k, BlockDecay.instance, this.getMetadata(), 3);
+			world.setBlock(i, j, k, ModBlocks.decay, this.getMetadata(), 3);
 			addInstability(world, 1);
 		}
 	}

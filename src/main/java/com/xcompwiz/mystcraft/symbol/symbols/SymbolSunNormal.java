@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.world.logic.ISun;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.Vanilla;
 import com.xcompwiz.mystcraft.symbol.ColorGradient;
 import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SunsetRenderer;
@@ -78,7 +78,7 @@ public class SymbolSunNormal extends SymbolBase {
 			GL11.glRotatef(celestial_period * 360.0F, 1.0F, 0.0F, 0.0F);
 
 			float size = 30.0F;
-			eng.bindTexture(Assets.normal_sun);
+			eng.bindTexture(Vanilla.normal_sun);
 			tessellator.startDrawingQuads();
 			tessellator.addVertexWithUV((-size), 100.0D, (-size), 0.0D, 0.0D);
 			tessellator.addVertexWithUV(size, 100.0D, (-size), 1.0D, 0.0D);

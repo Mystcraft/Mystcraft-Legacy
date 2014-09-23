@@ -15,9 +15,9 @@ import net.minecraft.world.storage.MapData;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.model.ModelWritingDesk;
-import com.xcompwiz.mystcraft.data.Assets;
-import com.xcompwiz.mystcraft.item.ItemAgebook;
-import com.xcompwiz.mystcraft.item.ItemLinkbook;
+import com.xcompwiz.mystcraft.data.Assets.Entities;
+import com.xcompwiz.mystcraft.data.Assets.Vanilla;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
@@ -35,7 +35,7 @@ public class RenderWritingDesk extends TileEntitySpecialRenderer {
 		int meta = desk.getBlockMetadata() & 3;
 		d += 0.5;
 		d2 += 0.5;
-		this.bindTexture(Assets.desk_tex);
+		this.bindTexture(Entities.desk);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) d, (float) d1 + 1.5F, (float) d2);
 		GL11.glRotatef(90, 1, 0, 0);
@@ -69,10 +69,10 @@ public class RenderWritingDesk extends TileEntitySpecialRenderer {
 				GL11.glPushMatrix();
 				GL11.glTranslatef(-0.15F, 1, 1);
 				GL11.glRotatef(90.0F, 0, 0, 1);
-				if (itemstack.getItem() == ItemAgebook.instance) {
-					this.bindTexture(Assets.agebook_tex);
-				} else if (itemstack.getItem() == ItemLinkbook.instance) {
-					this.bindTexture(Assets.linkbook_tex);
+				if (itemstack.getItem() == ModItems.agebook) {
+					this.bindTexture(Entities.agebook);
+				} else if (itemstack.getItem() == ModItems.linkbook) {
+					this.bindTexture(Entities.linkbook);
 				}
 				GL11.glScalef(0.8F, 0.8F, 0.8F);
 				bookmodel.render(null, 0.0f, 0.0f, 0.0f, 1.22f /* Open */, 0.0f, 0.0625F);
@@ -90,7 +90,7 @@ public class RenderWritingDesk extends TileEntitySpecialRenderer {
 			entity.hoverStart = 0.0F;
 
 			if (entity.getEntityItem().getItem() == Items.filled_map) {
-				this.bindTexture(Assets.map_background);
+				this.bindTexture(Vanilla.map_background);
 				Tessellator var4 = Tessellator.instance;
 				GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);

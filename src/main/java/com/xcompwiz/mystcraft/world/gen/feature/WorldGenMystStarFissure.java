@@ -6,7 +6,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-import com.xcompwiz.mystcraft.block.BlockStarFissure;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 
 public class WorldGenMystStarFissure extends WorldGenerator {
 
@@ -24,7 +24,7 @@ public class WorldGenMystStarFissure extends WorldGenerator {
 	}
 
 	private void set(World world, int i, int j, int k) {
-		world.setBlock(i, j++, k, BlockStarFissure.instance);
+		world.setBlock(i, j++, k, ModBlocks.starfissure);
 		for (; j < world.getHeight(); ++j) {
 			world.setBlock(i, j, k, Blocks.air);
 		}

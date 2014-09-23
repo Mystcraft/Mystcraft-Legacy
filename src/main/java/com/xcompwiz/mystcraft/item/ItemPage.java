@@ -14,6 +14,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.data.ModAchievements;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
 import com.xcompwiz.mystcraft.oldapi.PositionableItem;
 import com.xcompwiz.mystcraft.page.IItemPageProvider;
@@ -26,8 +27,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemPage extends Item implements IItemPageProvider, IItemWritable {
-
-	public static Item	instance;
 
 	public ItemPage() {
 		super();
@@ -91,7 +90,7 @@ public class ItemPage extends Item implements IItemPageProvider, IItemWritable {
 			itemstack.stackSize = 0;
 		}
 		if (mapping.size() != 1) {
-			ItemStack notebook = new ItemStack(ItemNotebook.instance);
+			ItemStack notebook = new ItemStack(ModItems.notebook);
 			notebook.stackTagCompound = new NBTTagCompound();
 			for (ItemStack item : mapping) {
 				InventoryNotebook.addItem(notebook, item);

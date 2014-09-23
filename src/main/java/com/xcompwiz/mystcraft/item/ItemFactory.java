@@ -7,6 +7,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
@@ -62,7 +63,7 @@ public class ItemFactory implements IItemFactory {
 		symbols.addAll(symbolsset);
 		Collections.sort(symbols, ComparatorSymbolAlphabetical.instance);
 
-		ItemStack notebook = new ItemStack(ItemNotebook.instance, 1, 0);
+		ItemStack notebook = new ItemStack(ModItems.notebook, 1, 0);
 		InventoryNotebook.setName(notebook, name);
 
 		for (IAgeSymbol symbol : symbols) {
@@ -73,7 +74,7 @@ public class ItemFactory implements IItemFactory {
 
 	@Override
 	public ItemStack buildNotebook(String name, ItemStack... pages) {
-		ItemStack notebook = new ItemStack(ItemNotebook.instance, 1, 0);
+		ItemStack notebook = new ItemStack(ModItems.notebook, 1, 0);
 		InventoryNotebook.setName(notebook, name);
 
 		for (ItemStack page : pages) {

@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.world.logic.IMoon;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.Vanilla;
 import com.xcompwiz.mystcraft.symbol.ColorGradient;
 import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SunsetRenderer;
@@ -85,7 +85,7 @@ public class SymbolMoonNormal extends SymbolBase {
 			float y1 = (y + 0) / 2.0F;
 			float x2 = (x + 1) / 4.0F;
 			float y2 = (y + 1) / 2.0F;
-			eng.bindTexture(Assets.normal_moon);
+			eng.bindTexture(Vanilla.normal_moon);
 			tessellator.startDrawingQuads();
 			tessellator.addVertexWithUV((-var12), 100.0D, (-var12), x2, y2);
 			tessellator.addVertexWithUV(var12, 100.0D, (-var12), x1, y2);

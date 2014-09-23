@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.world.logic.IStarfield;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.Vanilla;
 import com.xcompwiz.mystcraft.symbol.Color;
 import com.xcompwiz.mystcraft.symbol.ColorGradient;
 import com.xcompwiz.mystcraft.symbol.ModifierUtils;
@@ -56,7 +56,7 @@ public class SymbolStarsEndSky extends SymbolBase {
 			RenderHelper.disableStandardItemLighting();
 			GL11.glDepthMask(false);
 
-			textureManager.bindTexture(Assets.end_sky);
+			textureManager.bindTexture(Vanilla.end_sky);
 
 			for (int i = 0; i < 6; ++i) {
 				GL11.glPushMatrix();

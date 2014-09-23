@@ -26,8 +26,8 @@ import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
 import com.xcompwiz.mystcraft.client.gui.GuiWritingDesk;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.ContainerWritingDesk;
-import com.xcompwiz.mystcraft.item.ItemWritingDesk;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.network.NetworkUtils;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
@@ -67,8 +67,6 @@ public class BlockWritingDesk extends Block {
 	private static final int	GuiID			= GuiHandlerManager.registerGuiNetHandler(new GuiHandlerDesk());
 
 	private static final int	headFootMap[][]	= { { 0, 1 }, { -1, 0 }, { 0, -1 }, { 1, 0 } };
-
-	public static Block			instance;
 
 	public BlockWritingDesk() {
 		super(Material.wood);
@@ -241,9 +239,9 @@ public class BlockWritingDesk extends Block {
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 		if (isBlockTop(metadata)) {
-			ret.add(new ItemStack(ItemWritingDesk.instance, 1, 1));
+			ret.add(new ItemStack(ModItems.desk, 1, 1));
 		} else {
-			ret.add(new ItemStack(ItemWritingDesk.instance, 1, 0));
+			ret.add(new ItemStack(ModItems.desk, 1, 0));
 		}
 		return ret;
 	}
@@ -256,8 +254,8 @@ public class BlockWritingDesk extends Block {
 	 */
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-		if (isBlockTop(world.getBlockMetadata(x, y, z))) { return new ItemStack(ItemWritingDesk.instance, 1, 1); }
-		return new ItemStack(ItemWritingDesk.instance, 1, 0);
+		if (isBlockTop(world.getBlockMetadata(x, y, z))) { return new ItemStack(ModItems.desk, 1, 1); }
+		return new ItemStack(ModItems.desk, 1, 0);
 	}
 
 	@Override

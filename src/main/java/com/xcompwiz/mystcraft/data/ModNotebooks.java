@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.inventory.CreativeTabMyst;
 import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
-import com.xcompwiz.mystcraft.item.ItemNotebook;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.page.SortingUtils.ComparatorSymbolAlphabetical;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
@@ -17,7 +16,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 public class ModNotebooks {
 
 	public static ItemStack createCreativeNotebook() {
-		ItemStack notebook = new ItemStack(ItemNotebook.instance, 1, 0);
+		ItemStack notebook = new ItemStack(ModItems.notebook, 1, 0);
 		InventoryNotebook.setName(notebook, "Creative Spawned (All Symbols)");
 		ArrayList<IAgeSymbol> symbols = new ArrayList<IAgeSymbol>();
 		symbols.addAll(SymbolManager.getAgeSymbols());

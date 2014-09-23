@@ -20,10 +20,9 @@ import net.minecraft.world.World;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.client.gui.GuiBook;
 import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.ContainerBook;
 import com.xcompwiz.mystcraft.inventory.InventoryBook;
-import com.xcompwiz.mystcraft.item.ItemAgebook;
-import com.xcompwiz.mystcraft.item.ItemLinkbook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.network.IMessageReceiver;
@@ -169,7 +168,7 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 
 		decaytimer = nbttagcompound.getInteger("DecayTimer");
 		if (nbttagcompound.hasKey("Book Data")) {
-			this.inventory.setBook(new ItemStack(nbttagcompound.getInteger("Book Type") == 0 ? ItemAgebook.instance : ItemLinkbook.instance, 1, 0));
+			this.inventory.setBook(new ItemStack(nbttagcompound.getInteger("Book Type") == 0 ? ModItems.agebook : ModItems.linkbook, 1, 0));
 			this.inventory.getBook().stackTagCompound = nbttagcompound.getCompoundTag("Book Data");
 		} else {
 			NBTTagCompound item = nbttagcompound.getCompoundTag("Item");

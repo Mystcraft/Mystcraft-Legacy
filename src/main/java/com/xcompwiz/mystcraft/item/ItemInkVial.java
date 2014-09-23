@@ -16,8 +16,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemInkVial extends Item implements IMaskRender {
 
-	public static ItemInkVial	instance;
-
 	protected IIcon				mask;
 
 	public ItemInkVial() {

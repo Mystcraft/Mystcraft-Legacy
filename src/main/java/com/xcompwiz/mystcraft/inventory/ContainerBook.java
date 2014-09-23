@@ -18,6 +18,7 @@ import net.minecraftforge.common.DimensionManager;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;
@@ -189,7 +190,7 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 					nbttagcompound.setInteger("SetCurrentPage", currentpageIndex);
 					packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 				}
-				if (actual != null && actual.stackTagCompound != null && actual.getItem() == ItemAgebook.instance) {
+				if (actual != null && actual.stackTagCompound != null && actual.getItem() == ModItems.agebook) {
 					if (ItemAgebook.getAgeData(inventoryplayer.player.worldObj, actual) != null) {
 						packets.add(MPacketAgeData.getDataPacket(LinkOptions.getDimensionUID(actual.stackTagCompound)));
 					}

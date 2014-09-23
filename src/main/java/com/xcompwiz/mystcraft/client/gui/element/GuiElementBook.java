@@ -13,9 +13,9 @@ import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 import com.xcompwiz.mystcraft.client.linkeffects.LinkPanelEffectManager;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.GUIs;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.IBookContainer;
-import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
@@ -104,7 +104,7 @@ public class GuiElementBook extends GuiElement {
 		GL11.glScalef(xScale, yScale, 1);
 		hovertext.clear();
 		//TODO: (PageRender) When redoing book/link item renders, might want to consider restructuring the texture sheets used for drawing here
-		mc.renderEngine.bindTexture(Assets.book_cover); // book backing
+		mc.renderEngine.bindTexture(GUIs.book_cover); // book backing
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		drawTexturedModalRect(0, 7, 152, 0, 34, 192); // Left border
 		drawTexturedModalRect(34, 7, 49, 0, 103, 192); // Left panel
@@ -115,7 +115,7 @@ public class GuiElementBook extends GuiElement {
 			drawTexturedModalRect(293, 7, 186, 0, 34, 192); // Gold border
 		}
 		if (getCurrentPageIndex() > 0) {
-			mc.renderEngine.bindTexture(Assets.book_page_left); // Left Page
+			mc.renderEngine.bindTexture(GUIs.book_page_left); // Left Page
 			drawTexturedModalRect(7, 0, 0, 0, 156, 195);
 		}
 
@@ -132,11 +132,11 @@ public class GuiElementBook extends GuiElement {
 			GL11.glPopMatrix(); // Panel matrix
 
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			mc.renderEngine.bindTexture(Assets.book_page_right); // Right Page w/ panel
+			mc.renderEngine.bindTexture(GUIs.book_page_right); // Right Page w/ panel
 			drawTexturedModalRect(163, 0, 0, 0, 156, 195);
 		} else if(page != null) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			mc.renderEngine.bindTexture(Assets.book_page_right_solid); // Full Right Page
+			mc.renderEngine.bindTexture(GUIs.book_page_right_solid); // Full Right Page
 			drawTexturedModalRect(163, 0, 0, 0, 156, 195);
 
 			if (Page.getSymbol(page) != null) {
@@ -225,7 +225,7 @@ public class GuiElementBook extends GuiElement {
 		ItemStack book = bookcontainer.getBook();
 		if (book == null) return false;
 		if (book.stackTagCompound == null) return false;
-		if (book.getItem() == ItemAgebook.instance) return true;
+		if (book.getItem() == ModItems.agebook) return true;
 		return false;
 	}
 }

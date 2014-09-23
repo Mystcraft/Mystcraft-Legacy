@@ -11,8 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.world.storage.MapData;
 
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.item.ItemLinking;
-import com.xcompwiz.mystcraft.item.ItemPage;
 
 public class TileEntityLectern extends TileEntityBookDisplay {
 
@@ -35,7 +35,7 @@ public class TileEntityLectern extends TileEntityBookDisplay {
 	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
 		if (itemstack == null) return false;
 		if (itemstack.getItem() instanceof ItemLinking) return true;
-		if (itemstack.getItem() == ItemPage.instance) return true;
+		if (itemstack.getItem() == ModItems.page) return true;
 		if (itemstack.getItem() == Items.filled_map) return true;
 		return false;
 	}

@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.xcompwiz.mystcraft.core.InternalAPI;
-import com.xcompwiz.mystcraft.item.ItemNotebook;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.oldapi.PositionableItem;
 import com.xcompwiz.mystcraft.page.IItemPageProvider.SortType;
@@ -117,7 +117,7 @@ public class InventoryNotebook implements IInventory {
 	 */
 	public static boolean isItemValid(ItemStack itemstack) {
 		if (itemstack == null) return true;
-		if (itemstack.getItem() == ItemPage.instance) return true;
+		if (itemstack.getItem() == ModItems.page) return true;
 		if (itemstack.getItem() == Items.paper) return true;
 		return false;
 	}
@@ -139,7 +139,7 @@ public class InventoryNotebook implements IInventory {
 
 	public static void setName(ItemStack notebook, String bookname) {
 		if (notebook == null) return;
-		if (notebook.getItem() != ItemNotebook.instance) return;
+		if (notebook.getItem() != ModItems.notebook) return;
 		if (notebook.stackTagCompound == null) initNotebook(notebook);
 		if (bookname == null || bookname.equals("")) {
 			notebook.stackTagCompound.removeTag("Name");
@@ -150,7 +150,7 @@ public class InventoryNotebook implements IInventory {
 
 	public static String getName(ItemStack notebook) {
 		if (notebook == null) return null;
-		if (notebook.getItem() != ItemNotebook.instance) return null;
+		if (notebook.getItem() != ModItems.notebook) return null;
 		if (notebook.stackTagCompound == null) initNotebook(notebook);
 		if (!notebook.stackTagCompound.hasKey("Name")) return null;
 		return notebook.stackTagCompound.getString("Name");
@@ -158,7 +158,7 @@ public class InventoryNotebook implements IInventory {
 
 	private static NBTTagCompound getInventoryCompound(ItemStack notebook) {
 		if (notebook == null) return null;
-		if (notebook.getItem() != ItemNotebook.instance) return null;
+		if (notebook.getItem() != ModItems.notebook) return null;
 		if (notebook.stackTagCompound == null) initNotebook(notebook);
 		if (!notebook.stackTagCompound.hasKey("Pages")) {
 			notebook.stackTagCompound.setTag("Pages", new NBTTagCompound());
@@ -168,7 +168,7 @@ public class InventoryNotebook implements IInventory {
 
 	private static NBTTagCompound getExtraDataCompound(ItemStack notebook) {
 		if (notebook == null) return null;
-		if (notebook.getItem() != ItemNotebook.instance) return null;
+		if (notebook.getItem() != ModItems.notebook) return null;
 		if (notebook.stackTagCompound == null) initNotebook(notebook);
 		if (!notebook.stackTagCompound.hasKey("BoundData")) {
 			notebook.stackTagCompound.setTag("BoundData", new NBTTagCompound());
@@ -389,7 +389,7 @@ public class InventoryNotebook implements IInventory {
 		List<ItemStack> pages = getItems(notebook);
 		for (ItemStack page : pages) {
 			if (page == null) continue;
-			if (page.getItem() != ItemPage.instance) continue;
+			if (page.getItem() != ModItems.page) continue;
 			if (InternalAPI.page.isPageWritable(page)) {
 				InternalAPI.page.setPageSymbol(page, symbol);
 				return true;

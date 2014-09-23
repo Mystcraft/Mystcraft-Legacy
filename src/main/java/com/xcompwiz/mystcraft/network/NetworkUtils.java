@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
-import com.xcompwiz.mystcraft.item.ItemAgebook;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
@@ -103,13 +103,13 @@ public final class NetworkUtils {
 	}
 
 	public static void sendAgeData(World worldObj, ItemStack itemstack, EntityPlayer player) {
-		if (itemstack != null && itemstack.getItem() == ItemAgebook.instance) {
+		if (itemstack != null && itemstack.getItem() == ModItems.agebook) {
 			sendAgeData(worldObj, player, LinkOptions.getDimensionUID(itemstack.stackTagCompound));
 		}
 	}
 
 	public static void sendAgeData(World worldObj, ItemStack itemstack, int i, int j, int k) {
-		if (itemstack != null && itemstack.getItem() == ItemAgebook.instance) {
+		if (itemstack != null && itemstack.getItem() == ModItems.agebook) {
 			net.minecraft.server.MinecraftServer mcServer = Mystcraft.sidedProxy.getMCServer();
 			if (mcServer == null) {
 				LoggerUtils.warn("Failed to get mcServer instance while sending AgeData Packet");

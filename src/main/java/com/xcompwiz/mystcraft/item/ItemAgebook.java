@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.data.ModAchievements;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
@@ -28,8 +29,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemAgebook extends ItemLinking implements IItemPageProvider, IItemWritable {
-
-	public static ItemAgebook	instance;
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -61,7 +60,7 @@ public class ItemAgebook extends ItemLinking implements IItemPageProvider, IItem
 
 	public static AgeData getAgeData(World world, ItemStack itemstack) {
 		if (itemstack.stackTagCompound == null) return null;
-		instance.initialize(world, itemstack, null);
+		ModItems.agebook.initialize(world, itemstack, null);
 		int uid = LinkOptions.getDimensionUID(itemstack.stackTagCompound);
 		return AgeData.getAge(uid, world.isRemote);
 	}

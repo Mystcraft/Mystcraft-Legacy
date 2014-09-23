@@ -8,8 +8,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
-import com.xcompwiz.mystcraft.item.ItemNotebook;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
@@ -30,7 +30,7 @@ public class TreasureGenBooster extends WeightedRandomChestContent {
 	}
 
 	public static ItemStack generateBooster(Random rand, int common, int uncommon, int rare) {
-		ItemStack notebook = new ItemStack(ItemNotebook.instance, 1, 0);
+		ItemStack notebook = new ItemStack(ModItems.notebook, 1, 0);
 
 		Collection<IAgeSymbol> symbols_common = SymbolManager.getSymbolByRarity(0.6F, null);
 		Collection<IAgeSymbol> symbols_uncommon = SymbolManager.getSymbolByRarity(0.2F, 0.6F);

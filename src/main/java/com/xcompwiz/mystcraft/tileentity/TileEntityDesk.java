@@ -26,6 +26,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.block.BlockWritingDesk;
 import com.xcompwiz.mystcraft.data.ModAchievements;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.fluids.FluidUtils;
 import com.xcompwiz.mystcraft.item.IItemRenameable;
 import com.xcompwiz.mystcraft.item.IItemWritable;
@@ -213,14 +214,14 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 	public void closeInventory() {}
 
 	public boolean hasTop() {
-		if (this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord) != BlockWritingDesk.instance) return false;
+		if (this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord) != ModBlocks.writingdesk) return false;
 		if (!BlockWritingDesk.isBlockTop(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord))) return false;
 		return true;
 	}
 
 	public boolean isLeftCovered() {
 		Block block = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
-		if (!worldObj.isAirBlock(this.xCoord, this.yCoord + 1, this.zCoord) && block != BlockWritingDesk.instance) return true;
+		if (!worldObj.isAirBlock(this.xCoord, this.yCoord + 1, this.zCoord) && block != ModBlocks.writingdesk) return true;
 		if (!BlockWritingDesk.isBlockTop(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord))) return true;
 		return false;
 	}

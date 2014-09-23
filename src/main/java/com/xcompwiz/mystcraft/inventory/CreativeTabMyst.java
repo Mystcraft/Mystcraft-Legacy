@@ -9,8 +9,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.xcompwiz.mystcraft.api.internal.IGrammarAPI;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.data.ModNotebooks;
-import com.xcompwiz.mystcraft.item.ItemAgebook;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,7 +33,7 @@ public class CreativeTabMyst extends CreativeTabs {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem() {
-		return ItemAgebook.instance;
+		return ModItems.agebook;
 	}
 
 	/**

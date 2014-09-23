@@ -11,7 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.Vanilla;
 import com.xcompwiz.mystcraft.tileentity.TileEntityStarFissure;
 
 public class RenderStarFissure extends TileEntitySpecialRenderer {
@@ -34,7 +34,7 @@ public class RenderStarFissure extends TileEntitySpecialRenderer {
 			float f6 = 0.04F;
 			float f7 = 1.0F / (f5 + 1.0F);
 			if (i == 0) {
-				this.bindTexture(Assets.end_sky);
+				this.bindTexture(Vanilla.end_sky);
 				f7 = 0.1F;
 				f5 = 65F;
 				f6 = 0.125F;
@@ -42,7 +42,7 @@ public class RenderStarFissure extends TileEntitySpecialRenderer {
 				GL11.glBlendFunc(770, 771);
 			}
 			if (i == 1) {
-				this.bindTexture(Assets.end_portal);
+				this.bindTexture(Vanilla.end_portal);
 				GL11.glEnable(3042 /* GL_BLEND */);
 				GL11.glBlendFunc(1, 1);
 				f6 = 0.5F;

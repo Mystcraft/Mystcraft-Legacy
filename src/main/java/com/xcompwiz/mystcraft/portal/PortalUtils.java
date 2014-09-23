@@ -13,22 +13,20 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.block.BlockBookReceptacle;
-import com.xcompwiz.mystcraft.block.BlockCrystal;
-import com.xcompwiz.mystcraft.block.BlockLinkPortal;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 
 public final class PortalUtils {
 
 	public static Block getPortalBlock() {
-		return BlockLinkPortal.instance;
+		return ModBlocks.portal;
 	}
 
 	public static Block getFrameBlock() {
-		return BlockCrystal.instance;
+		return ModBlocks.crystal;
 	}
 
 	public static Block getReceptacleBlock() {
-		return BlockBookReceptacle.instance;
+		return ModBlocks.receptacle;
 	}
 
 	public static int isValidLinkPortalBlock(Block block) {

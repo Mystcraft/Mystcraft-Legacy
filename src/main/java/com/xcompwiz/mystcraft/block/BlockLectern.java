@@ -1,6 +1,5 @@
 package com.xcompwiz.mystcraft.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,8 +15,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockLectern extends BlockBookDisplay {
-
-	public static Block			instance;
 
 	public BlockLectern(Material material) {
 		super(material);

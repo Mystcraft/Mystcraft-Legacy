@@ -57,7 +57,6 @@ import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.instability.InstabilityManager;
 import com.xcompwiz.mystcraft.instability.bonus.EventManager;
-import com.xcompwiz.mystcraft.item.ItemInkVial;
 import com.xcompwiz.mystcraft.linking.LinkListenerBasic;
 import com.xcompwiz.mystcraft.linking.LinkListenerEffects;
 import com.xcompwiz.mystcraft.linking.LinkListenerForgeServer;
@@ -252,7 +251,7 @@ public class Mystcraft implements IMystAPIProvider {
 		ModBlocks.init();
 		InkEffects.init();
 
-		FluidContainerRegistry.registerFluidContainer(ModFluids.black_ink, new ItemStack(ItemInkVial.instance, 1, 0), new ItemStack(Items.glass_bottle));
+		FluidContainerRegistry.registerFluidContainer(ModFluids.black_ink, new ItemStack(ModItems.inkvial, 1, 0), new ItemStack(Items.glass_bottle));
 
 		// Init Achievements
 		ModAchievements.init();

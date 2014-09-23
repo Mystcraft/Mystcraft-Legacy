@@ -10,7 +10,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.common.ChestGenHooks;
 
 import com.xcompwiz.mystcraft.api.MystObjects;
-import com.xcompwiz.mystcraft.block.BlockLectern;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
@@ -800,7 +800,7 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 		int tk2 = this.getZWithOffset(i2, k2);
 
 		if (boundingbox.isVecInside(ti, tj, tk)) {
-			worldObj.setBlock(ti, tj, tk, BlockLectern.instance);
+			worldObj.setBlock(ti, tj, tk, ModBlocks.lectern);
 			TileEntityLectern lectern = (TileEntityLectern) worldObj.getTileEntity(ti, tj, tk);
 
 			if (lectern != null) {

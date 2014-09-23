@@ -46,8 +46,6 @@ public class ItemNotebook extends Item implements IItemPageProvider, IItemWritab
 
 	private static final int	GuiID	= GuiHandlerManager.registerGuiNetHandler(new GuiHandlerNotebook());
 
-	public static Item			instance;
-
 	public ItemNotebook() {
 		setMaxStackSize(1);
 	}

@@ -10,9 +10,9 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.Entities;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
-import com.xcompwiz.mystcraft.item.ItemAgebook;
 
 public class RenderLinkbook extends Render {
 	private ModelBook	bookmodel;
@@ -24,10 +24,10 @@ public class RenderLinkbook extends Render {
 	@Override
 	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
 		EntityLinkbook linkbook = (EntityLinkbook) entity;
-		if (linkbook.getItem() == ItemAgebook.instance) {
-			this.renderManager.renderEngine.bindTexture(Assets.agebook_tex);
+		if (linkbook.getItem() == ModItems.agebook) {
+			this.renderManager.renderEngine.bindTexture(Entities.agebook);
 		} else {
-			this.renderManager.renderEngine.bindTexture(Assets.linkbook_tex);
+			this.renderManager.renderEngine.bindTexture(Entities.linkbook);
 		}
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) d, (float) d1 + 0.0625F, (float) d2);
@@ -95,6 +95,6 @@ public class RenderLinkbook extends Render {
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
-		return Assets.linkbook_tex;
+		return Entities.linkbook;
 	}
 }

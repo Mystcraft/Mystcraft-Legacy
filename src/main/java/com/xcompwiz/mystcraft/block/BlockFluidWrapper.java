@@ -1,6 +1,5 @@
 package com.xcompwiz.mystcraft.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
@@ -13,8 +12,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockFluidWrapper extends BlockFluidClassic {
-
-	public static Block	instance	= null;
 
 	public BlockFluidWrapper(Fluid fluid, Material material) {
 		super(fluid, material);

@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
 
 import com.xcompwiz.mystcraft.data.InkEffects;
-import com.xcompwiz.mystcraft.item.ItemPage;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 
@@ -134,34 +134,34 @@ public abstract class Page {
 	};
 
 	public static ItemStack createPage() {
-		ItemStack page = new ItemStack(ItemPage.instance, 1, 0);
+		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.stackTagCompound = createDefault();
 		return page;
 	};
 
 	public static ItemStack createLinkPage() {
-		ItemStack page = new ItemStack(ItemPage.instance, 1, 0);
+		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.stackTagCompound = createDefault();
 		makeLinkPanel(page);
 		return page;
 	};
 
 	public static ItemStack createLinkPage(String property) {
-		ItemStack page = new ItemStack(ItemPage.instance, 1, 0);
+		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.stackTagCompound = createDefault();
 		addLinkProperty(page, property);
 		return page;
 	};
 
 	public static ItemStack createSymbolPage(String symbol) {
-		ItemStack page = new ItemStack(ItemPage.instance, 1, 0);
+		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.stackTagCompound = createDefault();
 		setSymbol(page, symbol);
 		return page;
 	};
 
 	public static ItemStack createPage(NBTTagCompound pagedata) {
-		ItemStack page = new ItemStack(ItemPage.instance, 1, 0);
+		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.stackTagCompound = pagedata;
 		return page;
 	}

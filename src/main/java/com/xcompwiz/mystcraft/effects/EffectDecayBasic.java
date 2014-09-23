@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
-import com.xcompwiz.mystcraft.block.BlockDecay;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.instability.IInstabilityController;
 
 public class EffectDecayBasic implements IEnvironmentalEffect {
@@ -53,7 +53,7 @@ public class EffectDecayBasic implements IEnvironmentalEffect {
 			if (y < minY) { return; }
 			material = world.getBlock(x, y, z).getMaterial();
 		}
-		world.setBlock(x, y, z, BlockDecay.instance, metadata, 2);
+		world.setBlock(x, y, z, ModBlocks.decay, metadata, 2);
 	}
 
 	@Override

@@ -20,7 +20,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.block.BlockDecay;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
@@ -127,7 +127,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 			if (worldObj.isRemote) return;
 			setDead();
 			if (!worldObj.setBlock(i, j, k, block, metadata, 2)) {
-				if (block != BlockDecay.instance) {
+				if (block != ModBlocks.decay) {
 					handleDrops();
 				}
 			} else {

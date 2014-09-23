@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
@@ -39,7 +40,7 @@ public class CommandCreateAgebook extends CommandBaseAdv {
 		}
 
 		if (!Mystcraft.registeredDims.contains(dimId) || AgeData.getAge(dimId, false) == null) { throw new CommandException("Cannot create Descriptive Books for non-Mystcraft Dimensions", new Object[0]); }
-		ItemStack itemstack = new ItemStack(ItemAgebook.instance);
+		ItemStack itemstack = new ItemStack(ModItems.agebook);
 		ItemAgebook.initializeCompound(itemstack, dimId, AgeData.getAge(dimId, false));
 		if (player.inventory.addItemStackToInventory(itemstack)) {
 			player.inventory.markDirty();

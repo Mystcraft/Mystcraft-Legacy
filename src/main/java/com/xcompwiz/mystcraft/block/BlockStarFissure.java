@@ -27,8 +27,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockStarFissure extends BlockContainer {
 
-	public static Block			instance;
-
 	private static LinkOptions	defaultstarfissure	= new LinkOptions(null);
 	static {
 		defaultstarfissure.setFlag(ILinkPropertyAPI.FLAG_NATURAL, true);

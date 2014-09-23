@@ -15,7 +15,7 @@ import com.xcompwiz.mystcraft.client.gui.element.GuiElementScrollablePages.IGuiS
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiOnTextChange;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiTextProvider;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.inventory.ContainerPageBinder;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
@@ -90,7 +90,7 @@ public class GuiPageBinder extends GuiContainerElements {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
-		mc.renderEngine.bindTexture(Assets.gui_binder);
+		mc.renderEngine.bindTexture(GUIs.binder);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), guiLeft + 8, guiTop + (ySize - 96) + 2, 0x404040);

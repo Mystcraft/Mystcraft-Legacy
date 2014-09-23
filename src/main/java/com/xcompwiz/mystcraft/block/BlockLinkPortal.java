@@ -30,8 +30,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockLinkPortal extends BlockBreakable {
-	public static Block	instance;
-
 	public BlockLinkPortal(int par2) {
 		super("portal", Material.portal, false);
 		setTickRandomly(true);

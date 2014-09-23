@@ -28,11 +28,11 @@ import com.xcompwiz.mystcraft.client.gui.element.GuiElementScrollablePages.IGuiS
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiOnTextChange;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiTextProvider;
-import com.xcompwiz.mystcraft.data.Assets;
+import com.xcompwiz.mystcraft.data.Assets.GUIs;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.ContainerWritingDesk;
 import com.xcompwiz.mystcraft.inventory.IFluidTankProvider;
 import com.xcompwiz.mystcraft.item.IItemWritable;
-import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.oldapi.PositionableItem;
@@ -45,7 +45,7 @@ public class GuiWritingDesk extends GuiContainerElements {
 			ItemStack target = container.getTarget();
 			if (target == null || target.getItem() == null) return null;
 			if (container.getBook() != null) return null;
-			if (target.getItem() == ItemPage.instance) return null;
+			if (target.getItem() == ModItems.page) return null;
 			if (target.getItem() instanceof IItemWritable) { return container.getBookPageList(); }
 			return null;
 		}
@@ -246,7 +246,7 @@ public class GuiWritingDesk extends GuiContainerElements {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.bindTexture(Assets.gui_desk);
+		mc.renderEngine.bindTexture(GUIs.desk);
 		drawTexturedModalRect(guiCenter, mainTop, 0, 0, windowsizeX, windowsizeY);
 		this.drawElementBackgrounds(f, mouseX, mouseY);
 	}

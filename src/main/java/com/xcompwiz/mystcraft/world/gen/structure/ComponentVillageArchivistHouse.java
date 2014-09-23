@@ -15,8 +15,8 @@ import net.minecraftforge.common.ChestGenHooks;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.MystObjects;
-import com.xcompwiz.mystcraft.block.BlockLectern;
 import com.xcompwiz.mystcraft.block.BlockWritingDesk;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 
 public class ComponentVillageArchivistHouse extends StructureVillagePieces.Village {
@@ -180,7 +180,7 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
 		int tk2 = this.getZWithOffset(i2, k2);
 
 		if (boundingbox.isVecInside(ti, tj, tk)) {
-			worldObj.setBlock(ti, tj, tk, BlockLectern.instance);
+			worldObj.setBlock(ti, tj, tk, ModBlocks.lectern);
 			TileEntityLectern lectern = (TileEntityLectern) worldObj.getTileEntity(ti, tj, tk);
 
 			if (lectern != null) {
@@ -210,7 +210,7 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
 	}
 
 	private void placeDeskAt(World worldObj, int i, int j, int k, int i2, int k2, StructureBoundingBox boundingbox) {
-		Block block = BlockWritingDesk.instance;
+		Block block = ModBlocks.writingdesk;
 		int ti = this.getXWithOffset(i, k);
 		int tk = this.getZWithOffset(i, k);
 		int ti2 = this.getXWithOffset(i2, k2);

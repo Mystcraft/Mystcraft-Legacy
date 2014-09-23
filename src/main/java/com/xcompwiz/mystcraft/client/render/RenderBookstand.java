@@ -10,9 +10,8 @@ import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.client.model.ModelBookstand;
-import com.xcompwiz.mystcraft.data.Assets;
-import com.xcompwiz.mystcraft.item.ItemAgebook;
-import com.xcompwiz.mystcraft.item.ItemLinkbook;
+import com.xcompwiz.mystcraft.data.Assets.Entities;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookstand;
 
 public class RenderBookstand extends TileEntitySpecialRenderer {
@@ -28,7 +27,7 @@ public class RenderBookstand extends TileEntitySpecialRenderer {
 	public void render(TileEntityBookstand tileentity, double d, double d1, double d2, float f) {
 		d += 0.5;
 		d2 += 0.5;
-		bindTexture(Assets.bookstand_tex);
+		bindTexture(Entities.bookstand);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) d, (float) d1 + 0.5F, (float) d2);
 		GL11.glRotatef(180, 0, 0, 1);
@@ -36,10 +35,10 @@ public class RenderBookstand extends TileEntitySpecialRenderer {
 		stand.render(null, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0625F);
 		GL11.glPopMatrix();
 		if (tileentity.getDisplayItem() == null) return;
-		if (tileentity.getDisplayItem().getItem() == ItemAgebook.instance) {
-			bindTexture(Assets.agebook_tex);
-		} else if (tileentity.getDisplayItem().getItem() == ItemLinkbook.instance) {
-			bindTexture(Assets.linkbook_tex);
+		if (tileentity.getDisplayItem().getItem() == ModItems.agebook) {
+			bindTexture(Entities.agebook);
+		} else if (tileentity.getDisplayItem().getItem() == ModItems.linkbook) {
+			bindTexture(Entities.linkbook);
 		} else {
 			return;
 		}

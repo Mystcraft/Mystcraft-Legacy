@@ -19,8 +19,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockDecay extends Block {
 
-	public static Block	instance;
-
 	public BlockDecay() {
 		super(Material.sand);
 		setTickRandomly(false);

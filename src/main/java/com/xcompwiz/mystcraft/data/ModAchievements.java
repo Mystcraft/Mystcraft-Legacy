@@ -5,8 +5,6 @@ import net.minecraftforge.common.AchievementPage;
 
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.config.MystConfig;
-import com.xcompwiz.mystcraft.item.ItemAgebook;
-import com.xcompwiz.mystcraft.item.ItemLinkbook;
 import com.xcompwiz.mystcraft.page.Page;
 
 public class ModAchievements {
@@ -34,9 +32,9 @@ public class ModAchievements {
 	public static void init() {
 		symbol = new Achievement("achievement.myst.symbol", "myst.symbol", 0, -2, Page.createSymbolPage("BioConSingle"), null).registerStat();
 		write = new Achievement("achievement.myst.write", "myst.write", 0, 0, Page.createPage(), symbol).registerStat();
-		agebook = new Achievement("achievement.myst.agebook", "myst.agebook", 0, 3, ItemAgebook.instance, null).initIndependentStat().registerStat();
-		linkbook = new Achievement("achievement.myst.linkbook", "myst.linkbook", 2, 3, ItemLinkbook.instance, null).initIndependentStat().registerStat();
-		quinn = new Achievement("achievement.myst.quinn", "myst.quinn", 4, 3, ItemLinkbook.instance, null).registerStat();
+		agebook = new Achievement("achievement.myst.agebook", "myst.agebook", 0, 3, ModItems.agebook, null).initIndependentStat().registerStat();
+		linkbook = new Achievement("achievement.myst.linkbook", "myst.linkbook", 2, 3, ModItems.linkbook, null).initIndependentStat().registerStat();
+		quinn = new Achievement("achievement.myst.quinn", "myst.quinn", 4, 3, ModItems.linkbook, null).registerStat();
 
 		AchievementPage page = new AchievementPage(MystObjects.ACHIEVEMENT_PAGE, agebook, linkbook, quinn, write, symbol);
 		AchievementPage.registerAchievementPage(page);

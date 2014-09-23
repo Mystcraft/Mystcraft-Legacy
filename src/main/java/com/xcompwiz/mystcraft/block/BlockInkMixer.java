@@ -51,8 +51,6 @@ public class BlockInkMixer extends BlockContainer {
 
 	private static final int	GuiID	= GuiHandlerManager.registerGuiNetHandler(new GuiHandlerMixer());
 
-	public static Block			instance;
-
 	private IIcon				iconTop;
 	private IIcon				iconBottom;
 

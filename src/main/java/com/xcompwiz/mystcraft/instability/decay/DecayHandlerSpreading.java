@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.block.BlockDecay;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 
 public abstract class DecayHandlerSpreading extends DecayHandler {
 
@@ -19,9 +19,9 @@ public abstract class DecayHandlerSpreading extends DecayHandler {
 	}
 
 	protected void spread(World world, int i, int j, int k, Random rand) {
-		if (world.getBlock(i, j, k) == BlockDecay.instance && world.getBlockMetadata(i, j, k) == this.getMetadata()) return;
+		if (world.getBlock(i, j, k) == ModBlocks.decay && world.getBlockMetadata(i, j, k) == this.getMetadata()) return;
 		if (rand.nextInt(getConversionDifficulty(world, i, j, k)) == 0) {
-			world.setBlock(i, j, k, BlockDecay.instance, this.getMetadata(), 3);
+			world.setBlock(i, j, k, ModBlocks.decay, this.getMetadata(), 3);
 			addInstability(world, 1);
 		}
 	}
