@@ -3,20 +3,26 @@ package com.xcompwiz.mystcraft.core;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemGlassBottle;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.data.ModFluids;
 import com.xcompwiz.mystcraft.effects.EffectCrumble;
+import com.xcompwiz.mystcraft.entity.EntityUtils;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
+import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,7 +31,7 @@ public class MystcraftEventHandler {
 
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
-	public void textureStiching(TextureStitchEvent.Pre event) {
+	public void textureStitching(TextureStitchEvent.Pre event) {
 		if (event.map.getTextureType() == 0) {
 			ModFluids.initIcons(event.map);
 		}
@@ -49,6 +55,23 @@ public class MystcraftEventHandler {
 		int j = movingobjectposition.blockY;
 		int k = movingobjectposition.blockZ;
 		if (event.world.getBlock(i, j, k) == ModBlocks.black_ink) {
+			event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
+	public void bottleFix(PlayerInteractEvent event) {
+		if (event.action != Action.RIGHT_CLICK_AIR) return;
+		ItemStack itemstack = event.entityPlayer.inventory.getCurrentItem();
+		if (!(itemstack.getItem() instanceof ItemGlassBottle)) return;
+		MovingObjectPosition movingobjectposition = EntityUtils.getMovingObjectPositionFromPlayer(event.world, event.entityPlayer, true);
+		if (movingobjectposition == null) return;
+		if (movingobjectposition.typeOfHit != MovingObjectType.BLOCK) return;
+		int i = movingobjectposition.blockX;
+		int j = movingobjectposition.blockY;
+		int k = movingobjectposition.blockZ;
+		if (event.world.getBlock(i, j, k) == ModBlocks.black_ink) {
+			event.useItem = Event.Result.DENY;
 			event.setCanceled(true);
 		}
 	}
