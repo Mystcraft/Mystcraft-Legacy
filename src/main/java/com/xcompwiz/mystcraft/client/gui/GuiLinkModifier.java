@@ -23,7 +23,7 @@ import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
 import com.xcompwiz.util.CollectionUtils;
 
-public class GuiLinkModifier extends GuiContainerMyst {
+public class GuiLinkModifier extends GuiContainerElements {
 	private class ButtonHandler implements IGuiOnClickHandler, IGuiStateProvider {
 		@Override
 		public boolean getState(String id) {

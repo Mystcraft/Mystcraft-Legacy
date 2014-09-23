@@ -28,7 +28,7 @@ import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookDisplay;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
-public class ContainerBook extends ContainerMyst implements IGuiMessageHandler, IBookContainer {
+public class ContainerBook extends ContainerBase implements IGuiMessageHandler, IBookContainer {
 	private IInventory		inventory;
 	private InventoryPlayer	inventoryplayer;
 	private Integer			slot;

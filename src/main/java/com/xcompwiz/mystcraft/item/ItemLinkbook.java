@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.core.InternalAPI;
-import com.xcompwiz.mystcraft.data.AchievementsMyst;
+import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.page.Page;
 
@@ -58,7 +58,7 @@ public class ItemLinkbook extends ItemLinking implements IItemRenameable {
 	 */
 	@Override
 	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer player) {
-		player.addStat(AchievementsMyst.linkbook, 1);
+		player.addStat(ModAchievements.linkbook, 1);
 	}
 
 	@Override

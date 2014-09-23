@@ -7,7 +7,7 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 
-import com.xcompwiz.mystcraft.block.BlockFluidMyst;
+import com.xcompwiz.mystcraft.block.BlockFluidWrapper;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,7 +16,7 @@ public class ItemBlockFluid extends ItemBlock {
 	/** Instance of the Blocks. */
 	private final BlockFluidBase	theBlock;
 
-	public ItemBlockFluid(Block block, BlockFluidMyst par2Block) {
+	public ItemBlockFluid(Block block, BlockFluidWrapper par2Block) {
 		super(block);
 		this.theBlock = par2Block;
 		this.setMaxDamage(0);

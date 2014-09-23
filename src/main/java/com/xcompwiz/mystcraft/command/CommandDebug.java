@@ -9,7 +9,7 @@ import net.minecraft.util.ChatComponentText;
 
 import com.xcompwiz.mystcraft.core.DebugDataTracker;
 
-public class CommandDebug extends CommandMyst {
+public class CommandDebug extends CommandBaseAdv {
 
 	@Override
 	public String getCommandName() {

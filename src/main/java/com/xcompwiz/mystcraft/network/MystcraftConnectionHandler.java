@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 
 import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.data.LoaderItems;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.item.ItemMyGlasses;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
@@ -28,7 +28,7 @@ public class MystcraftConnectionHandler {
 				ItemStack itemstack = event.player.inventory.getStackInSlot(i);
 				if (itemstack != null && itemstack.getItem() instanceof ItemMyGlasses) return;
 			}
-			event.player.inventory.addItemStackToInventory(new ItemStack(LoaderItems.glasses));
+			event.player.inventory.addItemStackToInventory(new ItemStack(ModItems.glasses));
 		}
 	}
 

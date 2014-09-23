@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.entity.EntityMeteor;
 
-public class CommandSpawnMeteor extends CommandMyst {
+public class CommandSpawnMeteor extends CommandBaseAdv {
 
 	@Override
 	public String getCommandName() {

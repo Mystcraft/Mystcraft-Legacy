@@ -5,7 +5,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
-public class CommandToggleDownfall extends CommandMyst {
+public class CommandToggleDownfall extends CommandBaseAdv {
 	@Override
 	public String getCommandName() {
 		return "toggledownfall";

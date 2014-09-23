@@ -11,7 +11,7 @@ import net.minecraftforge.common.DimensionManager;
 
 import com.xcompwiz.mystcraft.world.WorldInfoHelper;
 
-public class CommandTime extends CommandMyst {
+public class CommandTime extends CommandBaseAdv {
 
 	@Override
 	public String getCommandName() {

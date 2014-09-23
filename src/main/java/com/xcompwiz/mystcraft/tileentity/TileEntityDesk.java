@@ -25,7 +25,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.block.BlockWritingDesk;
-import com.xcompwiz.mystcraft.data.AchievementsMyst;
+import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.fluids.FluidUtils;
 import com.xcompwiz.mystcraft.item.IItemRenameable;
 import com.xcompwiz.mystcraft.item.IItemWritable;
@@ -289,7 +289,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		if (!(target.getItem() instanceof IItemWritable)) return;
 		if (((IItemWritable) target.getItem()).writeSymbol(player, target, symbol, itemstacks[slot_pap])) {
 			useink();
-			player.addStat(AchievementsMyst.write, 1);
+			player.addStat(ModAchievements.write, 1);
 		}
 
 		if (itemstacks[slot_pap] != null && itemstacks[slot_pap].stackSize <= 0) itemstacks[slot_pap] = null;

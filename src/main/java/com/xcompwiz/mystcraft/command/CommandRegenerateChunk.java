@@ -18,7 +18,7 @@ import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.common.DimensionManager;
 
-public class CommandRegenerateChunk extends CommandMyst {
+public class CommandRegenerateChunk extends CommandBaseAdv {
 
 	@Override
 	public String getCommandName() {

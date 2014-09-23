@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.data.AchievementsMyst;
+import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
 import com.xcompwiz.mystcraft.oldapi.PositionableItem;
 import com.xcompwiz.mystcraft.page.IItemPageProvider;
@@ -80,7 +80,7 @@ public class ItemPage extends Item implements IItemPageProvider, IItemWritable {
 			return;
 		}
 		if (entity instanceof EntityPlayer) {
-			((EntityPlayer) entity).addStat(AchievementsMyst.symbol, 1);
+			((EntityPlayer) entity).addStat(ModAchievements.symbol, 1);
 		}
 		remapItemstack(itemstack);
 	}

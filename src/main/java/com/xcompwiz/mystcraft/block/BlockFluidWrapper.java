@@ -12,11 +12,11 @@ import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockFluidMyst extends BlockFluidClassic {
+public class BlockFluidWrapper extends BlockFluidClassic {
 
 	public static Block	instance	= null;
 
-	public BlockFluidMyst(Fluid fluid, Material material) {
+	public BlockFluidWrapper(Fluid fluid, Material material) {
 		super(fluid, material);
 		this.setRenderPass(0);
 	}
@@ -36,7 +36,7 @@ public class BlockFluidMyst extends BlockFluidClassic {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getBlockColor() {
-		return 0xFFFFFF;
+		return this.getFluid().getColor();
 	}
 
 	@Override

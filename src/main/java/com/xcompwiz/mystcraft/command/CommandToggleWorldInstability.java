@@ -9,7 +9,7 @@ import net.minecraft.command.ICommandSender;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
-public class CommandToggleWorldInstability extends CommandMyst {
+public class CommandToggleWorldInstability extends CommandBaseAdv {
 
 	@Override
 	public String getCommandName() {

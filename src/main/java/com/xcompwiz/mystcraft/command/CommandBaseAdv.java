@@ -15,7 +15,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public abstract class CommandMyst extends CommandBase {
+public abstract class CommandBaseAdv extends CommandBase {
 
 	public void sendToAdmins(ICommandSender agent, String text, Object[] objects) {
 		func_152373_a(agent, this, text, objects);

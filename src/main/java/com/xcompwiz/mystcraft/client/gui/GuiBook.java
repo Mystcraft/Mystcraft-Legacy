@@ -15,7 +15,7 @@ import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookDisplay;
 
-public class GuiBook extends GuiContainerMyst implements IGuiOnLinkHandler {
+public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 
 	private ContainerBook	container;
 	private boolean			widget;

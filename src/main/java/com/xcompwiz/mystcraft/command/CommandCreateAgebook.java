@@ -10,7 +10,7 @@ import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
-public class CommandCreateAgebook extends CommandMyst {
+public class CommandCreateAgebook extends CommandBaseAdv {
 
 	@Override
 	public String getCommandName() {

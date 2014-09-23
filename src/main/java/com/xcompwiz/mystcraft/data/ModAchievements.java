@@ -9,7 +9,7 @@ import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemLinkbook;
 import com.xcompwiz.mystcraft.page.Page;
 
-public class AchievementsMyst {
+public class ModAchievements {
 
 	private static int			symbol_id	= 5000;
 	private static int			agebook_id	= 5001;

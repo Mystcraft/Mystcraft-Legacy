@@ -22,7 +22,7 @@ import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventEnterWorld;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventExitWorld;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventStart;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
-import com.xcompwiz.mystcraft.data.AchievementsMyst;
+import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
 import com.xcompwiz.mystcraft.item.ItemLinkbook;
 import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
@@ -112,7 +112,7 @@ public class LinkListenerBasic {
 				ItemStack itemstack = player.inventory.getStackInSlot(i);
 				if (itemstack != null && itemstack.getItem() instanceof ItemLinkbook) return;
 			}
-			player.addStat(AchievementsMyst.quinn, 1);
+			player.addStat(ModAchievements.quinn, 1);
 		}
 	}
 

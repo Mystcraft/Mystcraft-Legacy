@@ -18,7 +18,7 @@ import com.xcompwiz.mystcraft.block.BlockBookBinder;
 import com.xcompwiz.mystcraft.block.BlockBookReceptacle;
 import com.xcompwiz.mystcraft.block.BlockBookstand;
 import com.xcompwiz.mystcraft.block.BlockCrystal;
-import com.xcompwiz.mystcraft.block.BlockFluidMyst;
+import com.xcompwiz.mystcraft.block.BlockFluidWrapper;
 import com.xcompwiz.mystcraft.block.BlockInkMixer;
 import com.xcompwiz.mystcraft.block.BlockLectern;
 import com.xcompwiz.mystcraft.block.BlockLinkModifier;
@@ -45,8 +45,8 @@ import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.Assets;
 import com.xcompwiz.mystcraft.data.InkEffects;
-import com.xcompwiz.mystcraft.data.LoaderLinkEffects;
-import com.xcompwiz.mystcraft.data.LoaderNotebook;
+import com.xcompwiz.mystcraft.data.ModLinkEffects;
+import com.xcompwiz.mystcraft.data.ModNotebooks;
 import com.xcompwiz.mystcraft.entity.EntityFallingBlock;
 import com.xcompwiz.mystcraft.entity.EntityLightningBoltAdv;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
@@ -164,7 +164,7 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 	@Override
 	public void createCreativeTabs() {
 		// Basic creative tab
-		CreativeTabMyst creativeTab = new CreativeTabMyst("mystcraft.common");
+		CreativeTabMyst creativeTab = new CreativeTabMyst("mystcraft.common", true);
 		creativeTab.registerItemStack(new ItemStack(ItemAgebook.instance, 1, 0));
 		creativeTab.registerItemStack(new ItemStack(ItemLinkbookUnlinked.instance, 1, 0));
 		creativeTab.registerItemStack(new ItemStack(ItemNotebook.instance, 1, 0));
@@ -178,8 +178,7 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 		creativeTab.registerItemStack(new ItemStack(BlockBookBinder.instance, 1, 0));
 		creativeTab.registerItemStack(new ItemStack(BlockLinkModifier.instance, 1, 0));
 		creativeTab.registerItemStack(new ItemStack(ItemInkVial.instance, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(BlockFluidMyst.instance, 1, 0));
-		LoaderNotebook.addNotebooks(creativeTab);
+		creativeTab.registerItemStack(new ItemStack(BlockFluidWrapper.instance, 1, 0));
 
 		// Symbol creative tab
 		CreativeTabMyst pageTab = new CreativeTabMyst("mystcraft.pages");
@@ -189,9 +188,9 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 		linkproperties.addAll(InkEffects.getProperties());
 		Collections.sort(linkproperties);
 		for (String property : linkproperties) {
-			LoaderLinkEffects.isPropertyAllowed(property);
+			ModLinkEffects.isPropertyAllowed(property);
 			pageTab.registerItemStack(Page.createLinkPage(property));
 		}
-		LoaderNotebook.addSymbolPages(pageTab);
+		ModNotebooks.addSymbolPages(pageTab);
 	}
 }

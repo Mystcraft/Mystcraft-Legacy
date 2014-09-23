@@ -17,7 +17,7 @@ import com.xcompwiz.mystcraft.item.ItemWritingDesk;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class LoaderItems {
+public class ModItems {
 	public static Item glasses = new ItemMyGlasses();
 
 	public static void loadConfigs(MystConfig config) {}

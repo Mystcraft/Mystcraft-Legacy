@@ -18,7 +18,7 @@ import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 
-public class CommandTPX extends CommandMyst {
+public class CommandTPX extends CommandBaseAdv {
 
 	@Override
 	public String getCommandName() {

@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 
-public class ContainerNotebook extends ContainerMyst implements IGuiMessageHandler {
+public class ContainerNotebook extends ContainerBase implements IGuiMessageHandler {
 	private InventoryNotebook	itemInventory;
 
 	public ContainerNotebook(InventoryPlayer inventoryplayer, int slot /* , IPageHandler external */) {

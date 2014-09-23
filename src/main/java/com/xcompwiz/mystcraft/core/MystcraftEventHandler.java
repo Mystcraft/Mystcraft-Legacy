@@ -12,8 +12,8 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
-import com.xcompwiz.mystcraft.block.BlockFluidMyst;
-import com.xcompwiz.mystcraft.data.LoaderFluids;
+import com.xcompwiz.mystcraft.block.BlockFluidWrapper;
+import com.xcompwiz.mystcraft.data.ModFluids;
 import com.xcompwiz.mystcraft.effects.EffectCrumble;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
@@ -27,7 +27,7 @@ public class MystcraftEventHandler {
 	@SubscribeEvent
 	public void textureStiching(TextureStitchEvent.Pre event) {
 		if (event.map.getTextureType() == 0) {
-			LoaderFluids.initIcons(event.map);
+			ModFluids.initIcons(event.map);
 		}
 	}
 
@@ -48,7 +48,7 @@ public class MystcraftEventHandler {
 		int i = movingobjectposition.blockX;
 		int j = movingobjectposition.blockY;
 		int k = movingobjectposition.blockZ;
-		if (event.world.getBlock(i, j, k) == BlockFluidMyst.instance) {
+		if (event.world.getBlock(i, j, k) == BlockFluidWrapper.instance) {
 			event.setCanceled(true);
 		}
 	}

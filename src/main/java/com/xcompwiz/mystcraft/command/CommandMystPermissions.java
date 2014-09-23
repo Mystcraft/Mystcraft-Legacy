@@ -8,7 +8,7 @@ import net.minecraft.server.MinecraftServer;
 
 import com.xcompwiz.mystcraft.linking.LinkListenerPermissions;
 
-public class CommandMystPermissions extends CommandMyst {
+public class CommandMystPermissions extends CommandBaseAdv {
 	@Override
 	public String getCommandName() {
 		return "myst-permissions";

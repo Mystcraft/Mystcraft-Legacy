@@ -21,7 +21,7 @@ import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
 
-public class GuiPageBinder extends GuiContainerMyst {
+public class GuiPageBinder extends GuiContainerElements {
 
 	public class PageListHandler implements IGuiPageListProvider, IGuiScrollableClickHandler {
 

@@ -40,14 +40,14 @@ import com.xcompwiz.mystcraft.core.IMCHandler;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.core.MystcraftEventHandler;
-import com.xcompwiz.mystcraft.data.AchievementsMyst;
+import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.data.GrammarRules;
 import com.xcompwiz.mystcraft.data.InkEffects;
-import com.xcompwiz.mystcraft.data.LoaderBlocks;
-import com.xcompwiz.mystcraft.data.LoaderFluids;
-import com.xcompwiz.mystcraft.data.LoaderItems;
-import com.xcompwiz.mystcraft.data.LoaderLinkEffects;
-import com.xcompwiz.mystcraft.data.LoaderRecipes;
+import com.xcompwiz.mystcraft.data.ModBlocks;
+import com.xcompwiz.mystcraft.data.ModFluids;
+import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.data.ModLinkEffects;
+import com.xcompwiz.mystcraft.data.ModRecipes;
 import com.xcompwiz.mystcraft.data.SymbolData;
 import com.xcompwiz.mystcraft.data.SymbolDataFluids;
 import com.xcompwiz.mystcraft.data.SymbolPoemData;
@@ -214,11 +214,11 @@ public class Mystcraft implements IMystAPIProvider {
 		archivistId = config.get(MystConfig.CATEGORY_GENERAL, "villager.archivist.id", 1210950779).getInt();
 		providerId = config.get(MystConfig.CATEGORY_GENERAL, "options.providerId", 1210950779).getInt();
 
-		LoaderFluids.loadConfigs(config);
-		LoaderItems.loadConfigs(config);
-		LoaderBlocks.loadConfigs(config);
-		LoaderRecipes.loadConfigs(config);
-		LoaderLinkEffects.setConfig(config);
+		ModFluids.loadConfigs(config);
+		ModItems.loadConfigs(config);
+		ModBlocks.loadConfigs(config);
+		ModRecipes.loadConfigs(config);
+		ModLinkEffects.setConfig(config);
 
 		ent_link_id = config.get(MystConfig.CATEGORY_ENTITY, "entity.book.id", 219).getInt();
 		ent_gravblock_id = config.get(MystConfig.CATEGORY_ENTITY, "entity.falling.id", 218).getInt();
@@ -247,21 +247,21 @@ public class Mystcraft implements IMystAPIProvider {
 		MinecraftForge.EVENT_BUS.register(new LinkListenerForgeServer());
 
 		// Init Items/Blocks
-		LoaderFluids.init();
-		LoaderItems.init();
-		LoaderBlocks.init();
+		ModFluids.init();
+		ModItems.init();
+		ModBlocks.init();
 		InkEffects.init();
 
-		FluidContainerRegistry.registerFluidContainer(LoaderFluids.black_ink, new ItemStack(ItemInkVial.instance, 1, 0), new ItemStack(Items.glass_bottle));
+		FluidContainerRegistry.registerFluidContainer(ModFluids.black_ink, new ItemStack(ItemInkVial.instance, 1, 0), new ItemStack(Items.glass_bottle));
 
 		// Init Achievements
-		AchievementsMyst.init();
+		ModAchievements.init();
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		// Init Recipes
-		LoaderRecipes.addRecipes(CraftingManager.getInstance());
+		ModRecipes.addRecipes(CraftingManager.getInstance());
 
 		// Init TileEntities
 		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityLectern.class, "LinkbookLectern");

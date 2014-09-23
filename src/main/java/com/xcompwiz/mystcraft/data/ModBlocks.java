@@ -11,7 +11,7 @@ import com.xcompwiz.mystcraft.block.BlockBookReceptacle;
 import com.xcompwiz.mystcraft.block.BlockBookstand;
 import com.xcompwiz.mystcraft.block.BlockCrystal;
 import com.xcompwiz.mystcraft.block.BlockDecay;
-import com.xcompwiz.mystcraft.block.BlockFluidMyst;
+import com.xcompwiz.mystcraft.block.BlockFluidWrapper;
 import com.xcompwiz.mystcraft.block.BlockInkMixer;
 import com.xcompwiz.mystcraft.block.BlockLectern;
 import com.xcompwiz.mystcraft.block.BlockLinkModifier;
@@ -25,7 +25,7 @@ import com.xcompwiz.mystcraft.item.ItemDecayBlock;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class LoaderBlocks {
+public class ModBlocks {
 
 	public static void loadConfigs(MystConfig config) {}
 
@@ -41,7 +41,7 @@ public class LoaderBlocks {
 		BlockLinkPortal.instance = (new BlockLinkPortal(15)).setHardness(-1F).setStepSound(Block.soundTypeGlass).setLightLevel(0.75F).setBlockName("myst.linkportal");
 		BlockWritingDesk.instance = (new BlockWritingDesk()).setHardness(2.5F).setStepSound(Block.soundTypeWood).setBlockName("myst.writing_desk");
 		BlockStarFissure.instance = (new BlockStarFissure(Material.portal)).setBlockUnbreakable().setBlockName("myst.starfissure");
-		BlockFluidMyst.instance = (new BlockFluidMyst(LoaderFluids.black_ink, Material.water)).setBlockName("myst.fluid");
+		BlockFluidWrapper.instance = (new BlockFluidWrapper(ModFluids.black_ink, Material.water)).setBlockName("myst.fluid");
 
 		GameRegistry.registerBlock(BlockInkMixer.instance, ItemBlock.class, MystObjects.block_inkmixer);
 		GameRegistry.registerBlock(BlockBookBinder.instance, ItemBlock.class, MystObjects.block_bookbinder);
@@ -54,7 +54,7 @@ public class LoaderBlocks {
 		GameRegistry.registerBlock(BlockLinkPortal.instance, ItemBlock.class, MystObjects.block_portal);
 		GameRegistry.registerBlock(BlockWritingDesk.instance, ItemBlock.class, MystObjects.block_writing_desk_block);
 		GameRegistry.registerBlock(BlockStarFissure.instance, ItemBlock.class, MystObjects.block_star_fissure);
-		GameRegistry.registerBlock(BlockFluidMyst.instance, ItemBlockFluid.class, "BlockFluidMyst", BlockFluidMyst.instance);
+		GameRegistry.registerBlock(BlockFluidWrapper.instance, ItemBlockFluid.class, "BlockFluidMyst", BlockFluidWrapper.instance);
 
 		// Set mining difficulties/tools
 		BlockDecay.instance.setHarvestLevel("pickaxe", 0, DecayHandler.BLUE);

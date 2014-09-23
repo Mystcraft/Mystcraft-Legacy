@@ -8,11 +8,11 @@ import net.minecraft.inventory.Container;
 
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
 
-public abstract class GuiContainerMyst extends GuiContainer {
+public abstract class GuiContainerElements extends GuiContainer {
 
 	protected List<GuiElement>	elements	= new ArrayList<GuiElement>();
 
-	public GuiContainerMyst(Container container) {
+	public GuiContainerElements(Container container) {
 		super(container);
 	}
 

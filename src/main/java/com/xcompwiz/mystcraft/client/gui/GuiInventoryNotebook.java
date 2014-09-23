@@ -15,7 +15,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiInventoryNotebook extends GuiContainerMyst {
+public class GuiInventoryNotebook extends GuiContainerElements {
 
 	private int		currentScroll;
 	private float	scrollfloat;

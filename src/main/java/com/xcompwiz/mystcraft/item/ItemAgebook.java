@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.data.AchievementsMyst;
+import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
@@ -96,7 +96,7 @@ public class ItemAgebook extends ItemLinking implements IItemPageProvider, IItem
 	 */
 	@Override
 	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer player) {
-		player.addStat(AchievementsMyst.agebook, 1);
+		player.addStat(ModAchievements.agebook, 1);
 	}
 
 	@Override

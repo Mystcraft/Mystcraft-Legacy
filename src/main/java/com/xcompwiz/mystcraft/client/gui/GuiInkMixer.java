@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.render.DniColorRenderer;
 import com.xcompwiz.mystcraft.data.Assets;
-import com.xcompwiz.mystcraft.data.LoaderFluids;
+import com.xcompwiz.mystcraft.data.ModFluids;
 import com.xcompwiz.mystcraft.inventory.ContainerInkMixer;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
@@ -92,7 +92,7 @@ public class GuiInkMixer extends GuiContainer {
 	}
 
 	private void renderTank(int left, int top, int width, int height) {
-		Fluid fluid = LoaderFluids.black_ink;
+		Fluid fluid = ModFluids.black_ink;
 		GuiUtils.drawFluid(mc.renderEngine, fluid, left, top, width, height, this.zLevel);
 		ColorGradient gradient = container.getPropertyGradient();
 		if (gradient != null && gradient.getColorCount() > 0) {

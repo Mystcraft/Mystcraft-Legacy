@@ -19,7 +19,7 @@ import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
 
-public class ContainerPageBinder extends ContainerMyst implements IGuiMessageHandler {
+public class ContainerPageBinder extends ContainerBase implements IGuiMessageHandler {
 
 	private static int				shift			= 0;
 

@@ -9,7 +9,7 @@ import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.util.CollectionUtils;
 
-public class CommandCreateDim extends CommandMyst {
+public class CommandCreateDim extends CommandBaseAdv {
 
 	@Override
 	public String getCommandName() {

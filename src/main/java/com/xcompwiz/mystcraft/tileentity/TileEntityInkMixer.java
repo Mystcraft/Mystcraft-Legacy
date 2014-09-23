@@ -19,7 +19,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.data.InkEffects;
-import com.xcompwiz.mystcraft.data.LoaderLinkEffects;
+import com.xcompwiz.mystcraft.data.ModLinkEffects;
 import com.xcompwiz.mystcraft.fluids.FluidUtils;
 import com.xcompwiz.mystcraft.inventory.IItemBuilder;
 import com.xcompwiz.mystcraft.item.ItemPage;
@@ -313,7 +313,7 @@ public class TileEntityInkMixer extends TileEntity implements IItemBuilder, ISid
 	}
 
 	private boolean isPropertyAllowed(String property) {
-		return LoaderLinkEffects.isPropertyAllowed(property);
+		return ModLinkEffects.isPropertyAllowed(property);
 	}
 
 	@SuppressWarnings("unused")

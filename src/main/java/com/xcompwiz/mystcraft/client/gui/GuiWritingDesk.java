@@ -38,7 +38,7 @@ import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.oldapi.PositionableItem;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
-public class GuiWritingDesk extends GuiContainerMyst {
+public class GuiWritingDesk extends GuiContainerElements {
 	public class PageListHandler implements IGuiPageListProvider, IGuiScrollableClickHandler {
 		@Override
 		public List<ItemStack> getPageList() {

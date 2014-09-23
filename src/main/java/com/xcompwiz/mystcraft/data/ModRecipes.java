@@ -20,7 +20,7 @@ import com.xcompwiz.mystcraft.item.ItemInkVial;
 import com.xcompwiz.mystcraft.item.ItemNotebook;
 import com.xcompwiz.mystcraft.item.ItemWritingDesk;
 
-public class LoaderRecipes {
+public class ModRecipes {
 
 	private static boolean	Linkbook;
 	private static boolean	Notebook;

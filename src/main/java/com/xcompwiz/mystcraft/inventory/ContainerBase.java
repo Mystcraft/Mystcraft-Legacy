@@ -8,7 +8,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public abstract class ContainerMyst extends Container {
+public abstract class ContainerBase extends Container {
 	protected List<SlotCollection>	collections	= new ArrayList<SlotCollection>();
 
 	@Override

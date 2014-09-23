@@ -24,7 +24,7 @@ import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.symbol.ColorGradient;
 import com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer;
 
-public class ContainerInkMixer extends ContainerMyst implements IGuiMessageHandler {
+public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandler {
 
 	private static int				shift				= 0;
 

@@ -32,7 +32,7 @@ import com.xcompwiz.mystcraft.page.IItemPageProvider.SortType;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
-public class ContainerWritingDesk extends ContainerMyst implements IGuiMessageHandler, IBookContainer {
+public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHandler, IBookContainer {
 	private static final int						xShift				= 228 + 5;
 	private static final int						yShift				= 20;
 	private static final int						tabslots			= 4;
