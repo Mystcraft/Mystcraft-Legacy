@@ -33,7 +33,7 @@ public abstract class DebugDataTracker {
 	}
 
 	public static void setFlag(String command, boolean b) {
-		flags.get(command);
+		flags.get(command).setState(b);
 	}
 
 	public static Collection<String> getFlags() {
