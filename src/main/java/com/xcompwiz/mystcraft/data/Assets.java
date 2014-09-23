@@ -36,4 +36,9 @@ public class Assets {
 	public static final ResourceLocation	gui_scrollable			= new ResourceLocation("mystcraft:gui/scrollable.png");
 	public static final ResourceLocation	gui_single_slot			= new ResourceLocation("mystcraft:gui/single_slot.png");
 	public static final ResourceLocation	gui_binder				= new ResourceLocation("mystcraft:gui/pagebinder.png");
+	public static final class Items {
+
+		public static final String	glasses	= "mystcraft:glasses";
+		
+	}
 }

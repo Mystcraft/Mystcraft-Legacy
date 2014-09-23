@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.data;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.config.MystConfig;
@@ -9,6 +10,7 @@ import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemInkVial;
 import com.xcompwiz.mystcraft.item.ItemLinkbook;
 import com.xcompwiz.mystcraft.item.ItemLinkbookUnlinked;
+import com.xcompwiz.mystcraft.item.ItemMyGlasses;
 import com.xcompwiz.mystcraft.item.ItemNotebook;
 import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.item.ItemWritingDesk;
@@ -16,6 +18,7 @@ import com.xcompwiz.mystcraft.item.ItemWritingDesk;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class LoaderItems {
+	public static Item glasses = new ItemMyGlasses();
 
 	public static void loadConfigs(MystConfig config) {}
 
@@ -35,5 +38,6 @@ public class LoaderItems {
 		GameRegistry.registerItem(ItemNotebook.instance, MystObjects.item_notebook);
 		GameRegistry.registerItem(ItemWritingDesk.instance, MystObjects.item_writing_desk);
 		GameRegistry.registerItem(ItemInkVial.instance, MystObjects.item_inkvial);
+		GameRegistry.registerItem(glasses, "glasses");
 	}
 }
