@@ -40,7 +40,7 @@ public class ItemMyGlasses extends ItemArmor {
 
 	@Override
 	public String getUnlocalizedName() {
-		return String.format("item.%s.%s", "mystcraft", getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
+		return String.format("item.%s.%s", "myst", getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
 	}
 
 	protected String getUnwrappedUnlocalizedName(String unlocalizedName) {
