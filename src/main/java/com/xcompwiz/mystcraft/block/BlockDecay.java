@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.block;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -67,6 +68,11 @@ public class BlockDecay extends Block {
 	@Override
 	protected ItemStack createStackedBlock(int par1) {
 		return null;
+	}
+
+	@Override
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+		return new ArrayList<ItemStack>();
 	}
 
 	/**

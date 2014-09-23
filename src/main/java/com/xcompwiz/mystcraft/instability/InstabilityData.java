@@ -162,7 +162,7 @@ public class InstabilityData {
 		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerKilledBonus.class, "direwolf20", 10000, 0.1F));
 		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerKilledBonus.class, "Soaryn", 10000, 0.1F));
 
-		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerTrollPenalty.class, "direwolf20", 10000, 0.6F));
-		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerTrollPenalty.class, "Soaryn", 10000, 0.6F));
+		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerTrollPenalty.class, "direwolf20", 6000, 0.5F));
+		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerTrollPenalty.class, "Soaryn", 6000, 0.5F));
 	}
 }
