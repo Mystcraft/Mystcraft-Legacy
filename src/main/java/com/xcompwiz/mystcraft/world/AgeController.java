@@ -238,7 +238,8 @@ public class AgeController implements IAgeController {
 	@Override
 	public int getInstabilityScore() {
 		if (rebuilding) throw new RuntimeException("Someone is trying to grab the world instability score before the world is built!");
-		if (blockinstability == null) {
+		ChunkProfiler profiler = getChunkProfiler();
+		if (profiler.getCount() < 400 || blockinstability == null) {
 			updateProfiledInstability();
 		}
 		int score = symbolinstability + blockinstability + agedata.getBaseInstability() + getInstabilityBonusManager().getResult();

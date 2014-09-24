@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Semaphore;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -65,11 +66,13 @@ public class ChunkProfiler extends WorldSavedData {
 
 	private String							debugname;
 
-	private ChunkProfileData				solid_prepop	= new ChunkProfileData();
-	private ChunkProfileData				solid			= new ChunkProfileData();
+	private int								count;
+	private ChunkProfileData				solid_prepop;
+	private ChunkProfileData				solid;
 	private Map<Block, ChunkProfileData>	blockmaps;
-	private int								count			= 0;
-	private static boolean					outputfiles		= false;
+	private static boolean					outputfiles	= false;
+
+	private Semaphore						semaphore	= new Semaphore(1, true);
 
 	static {
 		DebugDataTracker.register("profiler.output", new Callback() {
@@ -83,6 +86,9 @@ public class ChunkProfiler extends WorldSavedData {
 
 	public ChunkProfiler(String id) {
 		super(id);
+		count = 0;
+		solid_prepop = new ChunkProfileData();
+		solid = new ChunkProfileData();
 		blockmaps = new HashMap<Block, ChunkProfileData>();
 		for (Block block : watchedblocks) {
 			blockmaps.put(block, new ChunkProfileData());
@@ -137,7 +143,12 @@ public class ChunkProfiler extends WorldSavedData {
 		this.markDirty();
 	}
 
-	private static void profileChunk(Chunk chunk, ChunkProfileData soliddata, Map<Block, ChunkProfileData> maps) {
+	private void profileChunk(Chunk chunk, ChunkProfileData soliddata, Map<Block, ChunkProfileData> maps) {
+		try {
+			semaphore.acquire();
+		} catch (InterruptedException e) {
+			throw new RuntimeException("Failed to aquire semaphore to profile chunk (interrupted)!");
+		}
 		ExtendedBlockStorage[] storageArrays = chunk.getBlockStorageArray();
 		int[] solidmap = soliddata.data;
 		int layers = solidmap.length / 256;
@@ -181,6 +192,7 @@ public class ChunkProfiler extends WorldSavedData {
 				++map.count;
 			}
 		}
+		semaphore.release();
 	}
 
 	@Override
@@ -268,5 +280,22 @@ public class ChunkProfiler extends WorldSavedData {
 
 	public void setDebugName(String name) {
 		debugname = name;
+	}
+
+	public void clear() {
+		try {
+			semaphore.acquire();
+			count = 0;
+			solid_prepop = new ChunkProfileData();
+			solid = new ChunkProfileData();
+			blockmaps = new HashMap<Block, ChunkProfileData>();
+			for (Block block : watchedblocks) {
+				blockmaps.put(block, new ChunkProfileData());
+			}
+			this.markDirty();
+			semaphore.release();
+		} catch (InterruptedException e) {
+			throw new RuntimeException("Failed to aquire semaphore to profile chunk!");
+		}
 	}
 }
