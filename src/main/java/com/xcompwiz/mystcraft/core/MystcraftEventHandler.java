@@ -63,6 +63,7 @@ public class MystcraftEventHandler {
 	public void bottleFix(PlayerInteractEvent event) {
 		if (event.action != Action.RIGHT_CLICK_AIR) return;
 		ItemStack itemstack = event.entityPlayer.inventory.getCurrentItem();
+		if (itemstack == null) return;
 		if (!(itemstack.getItem() instanceof ItemGlassBottle)) return;
 		MovingObjectPosition movingobjectposition = EntityUtils.getMovingObjectPositionFromPlayer(event.world, event.entityPlayer, true);
 		if (movingobjectposition == null) return;
