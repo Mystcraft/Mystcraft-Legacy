@@ -267,7 +267,7 @@ public class AgeController implements IAgeController {
 			expandChunkProfile();
 		}
 		blockinstability = profiler.calculateInstability();
-		DebugDataTracker.set(agedata.getAgeName() + ".instability", "" + (symbolinstability + blockinstability + agedata.getBaseInstability()) + getInstabilityBonusManager().getResult());
+		DebugDataTracker.set(agedata.getAgeName() + ".instability", "" + (symbolinstability + blockinstability + agedata.getBaseInstability() + getInstabilityBonusManager().getResult()));
 		DebugDataTracker.set(agedata.getAgeName() + ".instability.symbols", "" + symbolinstability);
 		DebugDataTracker.set(agedata.getAgeName() + ".instability.book", "" + agedata.getBaseInstability());
 		DebugDataTracker.set(agedata.getAgeName() + ".instability.blocks", "" + blockinstability);
