@@ -8,7 +8,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-public class WorldGenMystMinable extends WorldGenerator {
+public class WorldGenCluster extends WorldGenerator {
 	/** The block ID of the ore to be placed using this generator. */
 	private Block	block;
 	private int		metadata;
@@ -16,7 +16,7 @@ public class WorldGenMystMinable extends WorldGenerator {
 	/** The number of blocks to generate. */
 	private int		numberOfBlocks;
 
-	public WorldGenMystMinable(Block block, int meta, int count) {
+	public WorldGenCluster(Block block, int meta, int count) {
 		this.block = block;
 		this.metadata = meta;
 		this.numberOfBlocks = count;
