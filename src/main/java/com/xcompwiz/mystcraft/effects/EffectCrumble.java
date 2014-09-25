@@ -107,14 +107,12 @@ public class EffectCrumble implements IEnvironmentalEffect {
 		int z;
 		int y;
 
-		for (int i = 0; i < 3; ++i) {
-			updateLCG = updateLCG * 3 + 1013904223;
-			coords = updateLCG >> 2;
-			x = chunkX + (coords & 15);
-			z = chunkZ + (coords >> 8 & 15);
-			y = (coords >> 16 & 255);
-			crumbleBlock(worldObj, x, y, z);
-		}
+		updateLCG = updateLCG * 3 + 1013904223;
+		coords = updateLCG >> 2;
+		x = chunkX + (coords & 15);
+		z = chunkZ + (coords >> 8 & 15);
+		y = (coords >> 16 & 255);
+		crumbleBlock(worldObj, x, y, z);
 	}
 
 	private static void crumbleBlock(World worldObj, int x, int y, int z) {
