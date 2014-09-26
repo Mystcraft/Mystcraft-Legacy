@@ -5,10 +5,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.data.Assets;
 
 import cpw.mods.fml.relauncher.Side;
@@ -48,10 +46,18 @@ public class ItemMyGlasses extends ItemArmor {
 	}
 
 	@Override
+	public void onUpdate(ItemStack itemstack, World worldObj, Entity entity, int slot, boolean isCurrent) {
+		super.onUpdate(itemstack, worldObj, entity, slot, isCurrent);
+		if (entity == null || !(entity instanceof EntityPlayer)) return;
+		if (!entity.getCommandSenderName().equals("XCompWiz")) {
+			EntityPlayer player = (EntityPlayer) entity;
+			player.inventory.mainInventory[slot] = null;
+		}
+	}
+
+	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World worldObj, EntityPlayer player) {
 		if (worldObj.isRemote) return itemstack;
-		Mystcraft.instabilitybonusEnabled = !Mystcraft.instabilitybonusEnabled;
-		player.addChatMessage(new ChatComponentText(String.format("Toggled State: " + Mystcraft.instabilitybonusEnabled)));
 		return itemstack;
 	}
 }

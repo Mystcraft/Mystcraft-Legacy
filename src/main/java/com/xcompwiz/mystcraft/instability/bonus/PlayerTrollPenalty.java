@@ -18,6 +18,8 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 
 public class PlayerTrollPenalty implements IInstabilityBonus, IOnEntityDeath, IOnPlayerChangedDimension, IOnPlayerLoggedIn, IOnPlayerLoggedOut {
 
+	private InstabilityBonusManager	bonusmanager;
+
 	private int		max;
 	private int		min;
 	private float	decayrate;
@@ -28,6 +30,7 @@ public class PlayerTrollPenalty implements IInstabilityBonus, IOnEntityDeath, IO
 	private boolean playerisinworld;
 
 	public PlayerTrollPenalty(InstabilityBonusManager bonusmanager, World worldObj, String playername, Integer max, Float decayrate) {
+		this.bonusmanager = bonusmanager;
 		current = 0;
 		this.playername = playername;
 		this.max = max;
@@ -93,6 +96,7 @@ public class PlayerTrollPenalty implements IInstabilityBonus, IOnEntityDeath, IO
 	}
 
 	private void announce(String string, Object... args) {
+		if (!bonusmanager.isInstabilityEnabled()) return;
 		IChatComponent chatcomponent = new ChatComponentTranslation(string, args);
 		NetworkUtils.sendMessageToPlayersInWorld(chatcomponent, this.dimensionid);
 	}

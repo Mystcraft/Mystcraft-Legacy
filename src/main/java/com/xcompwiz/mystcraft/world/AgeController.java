@@ -212,6 +212,9 @@ public class AgeController implements IAgeController {
 
 		lightingController.generateLightBrightnessTable(this.world.provider.lightBrightnessTable);
 		agedata.markVisited();
+
+		DebugDataTracker.set(agedata.getAgeName() + ".instability.symbols", "" + symbolinstability);
+		DebugDataTracker.set(agedata.getAgeName() + ".instability.book", "" + agedata.getBaseInstability());
 	}
 
 	private void addSymbol(IAgeSymbol symbol) {
@@ -243,6 +246,7 @@ public class AgeController implements IAgeController {
 			updateProfiledInstability();
 		}
 		int score = symbolinstability + blockinstability + agedata.getBaseInstability() + getInstabilityBonusManager().getResult();
+		DebugDataTracker.set(agedata.getAgeName() + ".instability", "" + (symbolinstability + blockinstability + agedata.getBaseInstability() + getInstabilityBonusManager().getResult()));
 		DebugDataTracker.set(agedata.getAgeName() + ".instability.bonus", "" + getInstabilityBonusManager().getResult());
 		int difficulty = Mystcraft.difficulty;
 		switch (difficulty) {
@@ -267,9 +271,6 @@ public class AgeController implements IAgeController {
 			expandChunkProfile();
 		}
 		blockinstability = profiler.calculateInstability();
-		DebugDataTracker.set(agedata.getAgeName() + ".instability", "" + (symbolinstability + blockinstability + agedata.getBaseInstability() + getInstabilityBonusManager().getResult()));
-		DebugDataTracker.set(agedata.getAgeName() + ".instability.symbols", "" + symbolinstability);
-		DebugDataTracker.set(agedata.getAgeName() + ".instability.book", "" + agedata.getBaseInstability());
 		DebugDataTracker.set(agedata.getAgeName() + ".instability.blocks", "" + blockinstability);
 		DebugDataTracker.set(agedata.getAgeName() + ".profiled", "" + profiler.getCount());
 	}
@@ -425,13 +426,10 @@ public class AgeController implements IAgeController {
 	}
 
 	private InstabilityBonusManager getInstabilityBonusManager() {
-		if (Mystcraft.instabilitybonusEnabled) {
-			if (instabilitybonusmanager == null) {
-				instabilitybonusmanager = new InstabilityBonusManager((WorldProviderMyst) world.provider, this);
-			}
-			return instabilitybonusmanager;
+		if (instabilitybonusmanager == null) {
+			instabilitybonusmanager = new InstabilityBonusManager((WorldProviderMyst) world.provider, this);
 		}
-		return InstabilityBonusManager.ZERO;
+		return instabilitybonusmanager;
 	}
 
 

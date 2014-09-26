@@ -17,6 +17,8 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOnPlayerChangedDimension, IOnPlayerLoggedIn {
 
+	private InstabilityBonusManager	bonusmanager;
+
 	private int		max;
 	private int		min;
 	private float	decayrate;
@@ -26,6 +28,7 @@ public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOn
 	private int		dimensionid;
 
 	public PlayerKilledBonus(InstabilityBonusManager bonusmanager, World worldObj, String playername, Integer max, Float decayrate) {
+		this.bonusmanager = bonusmanager;
 		current = 0;
 		this.playername = playername;
 		this.max = max;
@@ -77,6 +80,7 @@ public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOn
 	}
 
 	private void announce(String string, Object... args) {
+		if (!bonusmanager.isInstabilityEnabled()) return;
 		IChatComponent chatcomponent = new ChatComponentTranslation(string, args);
 		NetworkUtils.sendMessageToPlayersInWorld(chatcomponent, this.dimensionid);
 	}

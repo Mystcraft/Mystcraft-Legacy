@@ -5,7 +5,7 @@ import java.util.Set;
 
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.world.IAgeController;
+import com.xcompwiz.mystcraft.world.AgeController;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 public class InstabilityBonusManager {
@@ -33,9 +33,12 @@ public class InstabilityBonusManager {
 	private Set<IInstabilityBonus>	bonuses	= new HashSet<IInstabilityBonus>();
 	private int						total;
 
+	private AgeController	controller;
+
 	public InstabilityBonusManager() {}
 
-	public InstabilityBonusManager(WorldProviderMyst provider, IAgeController agecontroller) {
+	public InstabilityBonusManager(WorldProviderMyst provider, AgeController agecontroller) {
+		this.controller = agecontroller;
 		for (IInstabilityBonusProvider bprovider : bonusproviders) {
 			bprovider.register(this, provider.worldObj);
 		}
@@ -56,5 +59,9 @@ public class InstabilityBonusManager {
 			total += bonus.getValue();
 		}
 		this.total = total;
+	}
+
+	public boolean isInstabilityEnabled() {
+		return controller.isInstabilityEnabled();
 	}
 }
