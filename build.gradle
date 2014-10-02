@@ -21,6 +21,7 @@ apply plugin: 'forge'
 ext.configFile = file "build.properties"
 ext.smallChangelog = file("changes.txt")
 ext.releaseChangelog = file("changelog.txt")
+ext.publishChangelog = file("changes.txt")
 ext.userHome = System.properties["user.home"]
 
 configFile.withReader {
@@ -41,6 +42,18 @@ minecraft {
 	runDir = "eclipse/run/client"
 
 	replace "@VERSION@", project.version
+}
+
+curse {
+	apiKey = config.curseforge_key // saved in my properties file. http://minecraft.curseforge.com/my-api-tokens
+	projectId = "224599" // my project url is http://minecraft.curseforge.com/mc-mods/224599-mystcraft/
+	changelog = ext.publishChangelog.text
+	releaseType = "full release"
+	// the default obfuscated jar is uploaded by default
+	// artifact = project.file("some/jar/to/upload.jar")
+	// allows you to add extra compatible MC versions. The one specified in the minecraft{} block is used by default.
+	// addGameVersion "1.7.1"
+	// addGameversion "1.7.0", "1.7.4"
 }
 
 // add the api source folder
