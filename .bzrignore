@@ -4,9 +4,6 @@ __*
 
 ./releases
 ./test
-./changes.txt
-./changelog.txt
-./forge*.zip
 
 ./.gradle
 ./.settings
@@ -19,3 +16,8 @@ __*
 ./.project
 ./gradlew
 ./gradlew.bat
+./forge*.zip
+
+./todo.txt
+./changes.txt
+./changelog.txt
