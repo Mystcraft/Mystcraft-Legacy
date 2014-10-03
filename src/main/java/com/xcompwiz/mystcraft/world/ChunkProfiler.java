@@ -127,7 +127,7 @@ public class ChunkProfiler extends WorldSavedData {
 			}
 		}
 		for (Entry<Block, Float> entry : split.entrySet()) {
-			DebugDataTracker.set((debugname == null ? "Unnamed" : debugname) + ".instability." + entry.getKey().getUnlocalizedName(), "" + entry.getValue());
+			//DebugDataTracker.set((debugname == null ? "Unnamed" : debugname) + ".instability." + entry.getKey().getUnlocalizedName(), "" + entry.getValue());
 			float val = entry.getValue();
 			if (val > 0) {
 				val = Math.max(0, val - freevals.get(entry.getKey()));

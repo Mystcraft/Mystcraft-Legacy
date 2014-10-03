@@ -130,7 +130,7 @@ public class InstabilityController implements IInstabilityController {
 				provider.addEffects(this, level);
 			}
 		}
-		DebugDataTracker.set(worldprovider.getDimensionName() + ".effects", "" + providerlevels);
+		//DebugDataTracker.set(worldprovider.getDimensionName() + ".effects", "" + providerlevels);
 	}
 
 	public void tick(World world, Chunk chunk) {

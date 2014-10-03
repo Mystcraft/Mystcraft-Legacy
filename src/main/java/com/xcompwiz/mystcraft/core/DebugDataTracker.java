@@ -17,7 +17,7 @@ public abstract class DebugDataTracker {
 	}
 
 	public static void set(String id, String val) {
-		vars.put(id.replaceAll(" ", "_"), val);
+		//vars.put(id.replaceAll(" ", "_"), val);
 	}
 
 	public static String get(String id) {

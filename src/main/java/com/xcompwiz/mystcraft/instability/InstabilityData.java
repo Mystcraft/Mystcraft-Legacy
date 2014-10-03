@@ -158,11 +158,5 @@ public class InstabilityData {
 		InstabilityProviderContainerObject.create("explosions", new ProviderExplosion(), stability.explosions).add("destructive", 8);
 		InstabilityProviderContainerObject.create("lightning", new ProviderLightning(), stability.lightning).add("harsh", 4).add("destructive", 4);
 		InstabilityProviderContainerObject.create("meteors", new ProviderMeteor(), stability.meteors).add("destructive", 4);
-
-		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerKilledBonus.class, "direwolf20", 3000, 0.1F));
-		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerKilledBonus.class, "Soaryn", 3000, 0.1F));
-
-		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerTrollPenalty.class, "direwolf20", 5000, 0.05F));
-		InstabilityBonusManager.registerBonusProvider(new BonusProvider(PlayerTrollPenalty.class, "Soaryn", 5000, 0.05F));
 	}
 }

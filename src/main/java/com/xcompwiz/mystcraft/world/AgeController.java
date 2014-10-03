@@ -213,8 +213,8 @@ public class AgeController implements IAgeController {
 		lightingController.generateLightBrightnessTable(this.world.provider.lightBrightnessTable);
 		agedata.markVisited();
 
-		DebugDataTracker.set(agedata.getAgeName() + ".instability.symbols", "" + symbolinstability);
-		DebugDataTracker.set(agedata.getAgeName() + ".instability.book", "" + agedata.getBaseInstability());
+		//DebugDataTracker.set(agedata.getAgeName() + ".instability.symbols", "" + symbolinstability);
+		//DebugDataTracker.set(agedata.getAgeName() + ".instability.book", "" + agedata.getBaseInstability());
 	}
 
 	private void addSymbol(IAgeSymbol symbol) {
@@ -246,8 +246,8 @@ public class AgeController implements IAgeController {
 			updateProfiledInstability();
 		}
 		int score = symbolinstability + blockinstability + agedata.getBaseInstability() + getInstabilityBonusManager().getResult();
-		DebugDataTracker.set(agedata.getAgeName() + ".instability", "" + (symbolinstability + blockinstability + agedata.getBaseInstability() + getInstabilityBonusManager().getResult()));
-		DebugDataTracker.set(agedata.getAgeName() + ".instability.bonus", "" + getInstabilityBonusManager().getResult());
+		//DebugDataTracker.set(agedata.getAgeName() + ".instability", "" + (symbolinstability + blockinstability + agedata.getBaseInstability() + getInstabilityBonusManager().getResult()));
+		//DebugDataTracker.set(agedata.getAgeName() + ".instability.bonus", "" + getInstabilityBonusManager().getResult());
 		int difficulty = Mystcraft.difficulty;
 		switch (difficulty) {
 		case 0:
@@ -271,8 +271,8 @@ public class AgeController implements IAgeController {
 			expandChunkProfile();
 		}
 		blockinstability = profiler.calculateInstability();
-		DebugDataTracker.set(agedata.getAgeName() + ".instability.blocks", "" + blockinstability);
-		DebugDataTracker.set(agedata.getAgeName() + ".profiled", "" + profiler.getCount());
+		//DebugDataTracker.set(agedata.getAgeName() + ".instability.blocks", "" + blockinstability);
+		//DebugDataTracker.set(agedata.getAgeName() + ".profiled", "" + profiler.getCount());
 	}
 
 	private void expandChunkProfile() {
