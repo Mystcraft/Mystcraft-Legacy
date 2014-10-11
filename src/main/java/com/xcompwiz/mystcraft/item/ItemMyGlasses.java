@@ -18,6 +18,7 @@ public class ItemMyGlasses extends ItemArmor {
 		super(ArmorMaterial.GOLD, 1, 0);
 		this.setUnlocalizedName("glasses");
 		setHasSubtypes(false);
+		this.setMaxStackSize(64);
 	}
 
 	@Override
