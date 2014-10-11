@@ -251,6 +251,7 @@ public class Mystcraft implements IMystAPIProvider {
 		InkEffects.init();
 
 		FluidContainerRegistry.registerFluidContainer(ModFluids.black_ink, new ItemStack(ModItems.inkvial, 1, 0), new ItemStack(Items.glass_bottle));
+		SymbolDataFluids.init();
 
 		// Init Achievements
 		ModAchievements.init();
@@ -310,7 +311,7 @@ public class Mystcraft implements IMystAPIProvider {
 	public void modsLoaded(FMLPostInitializationEvent event) {
 		sidedProxy.postInit();
 		SymbolData.generateBiomeSymbols();
-		SymbolDataFluids.initialize();
+		SymbolDataFluids.modsLoaded();
 		SymbolRules.register();
 
 		// Treasure object

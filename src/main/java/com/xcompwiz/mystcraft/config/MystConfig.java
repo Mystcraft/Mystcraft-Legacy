@@ -11,6 +11,7 @@ public class MystConfig extends Configuration {
 	public static final String	CATEGORY_DEBUG			= "debug";
 	public static final String	CATEGORY_SYMBOLS		= "symbol";
 	public static final String	CATEGORY_INSTABILITY	= "instability";
+	public static final String	CATEGORY_BALANCE		= "balance";
 
 	public MystConfig(File configfile) {
 		super(configfile);
@@ -31,6 +32,16 @@ public class MystConfig extends Configuration {
 		if (read == null || read.length() == 0) return val;
 		try {
 			return Float.parseFloat(read);
+		} catch (NumberFormatException e) {
+			return val;
+		}
+	}
+
+	public boolean getOptional(String category, String key, boolean val) {
+		String read = this.get(category, key, "").getString();
+		if (read == null || read.length() == 0) return val;
+		try {
+			return Boolean.parseBoolean(read);
 		} catch (NumberFormatException e) {
 			return val;
 		}
