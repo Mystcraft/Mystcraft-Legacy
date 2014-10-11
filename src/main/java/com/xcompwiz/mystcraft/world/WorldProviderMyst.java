@@ -380,29 +380,28 @@ public class WorldProviderMyst extends WorldProvider {
 		worldObj.findingSpawnPoint = true;
 		Random random = new Random(agedata.getSeed());
 		ChunkPosition chunkposition = worldChunkMgr.findBiomePosition(0, 0, 256, worldChunkMgr.getBiomesToSpawnIn(), random);
-		int i = 0;
-		int j = controller.getAverageGroundLevel();
-		int k = 0;
+		int x = 0;
+		int y = Math.max(controller.getAverageGroundLevel(),controller.getSeaLevel());
+		int z = 0;
 		if (chunkposition != null) {
-			i = chunkposition.chunkPosX;
-			k = chunkposition.chunkPosZ;
+			x = chunkposition.chunkPosX;
+			z = chunkposition.chunkPosZ;
 		} else {
 			System.out.println("Unable to find spawn biome");
 		}
-		int l = 0;
-		do {
-			if (canCoordinateBeSpawn(i, k) || agedata.getSpawn() != null) {
+		for (int l = 0; l < 1000; ++l) {
+			if (canCoordinateBeSpawn(x, z) || agedata.getSpawn() != null) {
 				break;
 			}
-			i = random.nextInt(64) - random.nextInt(64);
-			k = random.nextInt(64) - random.nextInt(64);
-		} while (++l != 1000);
+			x = random.nextInt(64) - random.nextInt(64);
+			z = random.nextInt(64) - random.nextInt(64);
+		}
 		if (agedata.getSpawn() == null) {
-			worldObj.getChunkFromBlockCoords(i, k);
-			while (!worldObj.isAirBlock(i, j, k)) {
-				++j;
+			worldObj.getChunkFromBlockCoords(x, z);
+			while (!worldObj.isAirBlock(x, y, z)) {
+				++y;
 			}
-			agedata.setSpawn(new ChunkCoordinates(i, j, k));
+			agedata.setSpawn(new ChunkCoordinates(x, y, z));
 		}
 		worldObj.findingSpawnPoint = false;
 	}
