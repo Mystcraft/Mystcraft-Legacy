@@ -375,12 +375,13 @@ public class WorldProviderMyst extends WorldProvider {
 		if (agedata.getSpawn() != null) return;
 		if (worldObj.isRemote) {
 			agedata.setSpawn(new ChunkCoordinates(0, 0, 0));
+			return;
 		}
 		worldObj.findingSpawnPoint = true;
 		Random random = new Random(agedata.getSeed());
 		ChunkPosition chunkposition = worldChunkMgr.findBiomePosition(0, 0, 256, worldChunkMgr.getBiomesToSpawnIn(), random);
 		int i = 0;
-		int j = controller.getSeaLevel();
+		int j = controller.getAverageGroundLevel();
 		int k = 0;
 		if (chunkposition != null) {
 			i = chunkposition.chunkPosX;
