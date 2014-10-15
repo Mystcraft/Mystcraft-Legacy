@@ -26,9 +26,6 @@ public final class MystObjects {
 	/** For registering Mystcraft related achievements. See {@link AchievementPage}. */
 	public static final String	ACHIEVEMENT_PAGE			= "Mystcraft";
 
-	/** Note that you cannot edit this list. Should you wish to add a creative notebook, use the appropriate API call. */
-	//public List<ItemStack>		creative_notebooks;
-
 	public static final String	block_portal				= "LinkPortal";
 	public static final String	block_crystal				= "BlockCrystal";
 	public static final String	block_crystal_receptacle	= "BlockBookReceptacle";

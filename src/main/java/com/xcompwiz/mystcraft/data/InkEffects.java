@@ -66,7 +66,10 @@ public class InkEffects {
 		ItemStack clone = itemstack.copy();
 		clone.stackSize = 1;
 		Map<String, Float> map = itemstack_bindings.get(clone);
-		if (map == null) map = oredict_bindings.get(OreDictionary.getOreName(OreDictionary.getOreID(itemstack)));
+		int[] ids = OreDictionary.getOreIDs(itemstack);
+		for (int id : ids) {
+			if (map == null) map = oredict_bindings.get(OreDictionary.getOreName(id ));
+		}
 		if (map == null) map = itemId_bindings.get(itemstack.getItem());
 		if (map == null) return null;
 		return Collections.unmodifiableMap(map);

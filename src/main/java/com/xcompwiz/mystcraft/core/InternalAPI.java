@@ -3,6 +3,10 @@ package com.xcompwiz.mystcraft.core;
 import java.util.HashMap;
 
 import com.xcompwiz.mystcraft.api.MystAPI;
+import com.xcompwiz.mystcraft.api.internal.IDimensionAPI;
+import com.xcompwiz.mystcraft.api.internal.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.internal.IRenderAPI;
+import com.xcompwiz.mystcraft.api.internal.IWordAPI;
 import com.xcompwiz.mystcraft.client.render.RenderAPIDelegate;
 import com.xcompwiz.mystcraft.grammar.GrammarAPIDelegate;
 import com.xcompwiz.mystcraft.instability.InstabilityAPIDelegate;
@@ -22,6 +26,26 @@ public class InternalAPI {
 
 		public MystAPIInstance(String modId) {
 			this.modId = modId;
+		}
+
+		@Override
+		public IDimensionAPI getDimensionAPI() {
+			return InternalAPI.dimension;
+		}
+
+		@Override
+		public IGrammarAPI getGrammarAPI() {
+			return InternalAPI.grammar;
+		}
+
+		@Override
+		public IWordAPI getWordAPI() {
+			return InternalAPI.symbol;
+		}
+
+		@Override
+		public IRenderAPI getRenderAPI() {
+			return InternalAPI.render;
 		}
 
 	}
@@ -75,26 +99,6 @@ public class InternalAPI {
 
 	private static MystAPI createAPIInstance(String modId) {
 		MystAPIInstance mystAPI = new MystAPIInstance(modId);
-		//mystAPI.objects = objects;
-
-		//mystAPI.linking = linking;
-		//mystAPI.linkProperties = linkProperties;
-
-		//mystAPI.instability = instability;
-		//mystAPI.instabilityFact = instabilityFact;
-
-		//mystAPI.symbol = symbol;
-		//mystAPI.symbolValues = symbolValues;
-		//mystAPI.symbolFact = symbolFact;
-
-		//mystAPI.page = page;
-		//mystAPI.itemFact = itemFact;
-
-		mystAPI.dimension = dimension;
-		mystAPI.grammar = grammar;
-		mystAPI.word = symbol;
-
-		mystAPI.render = render;
 		return mystAPI;
 	}
 

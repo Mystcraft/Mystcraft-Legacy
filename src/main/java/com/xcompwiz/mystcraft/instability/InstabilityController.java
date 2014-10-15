@@ -10,7 +10,6 @@ import net.minecraft.world.chunk.Chunk;
 
 import com.google.common.collect.HashMultiset;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
-import com.xcompwiz.mystcraft.core.DebugDataTracker;
 import com.xcompwiz.mystcraft.world.AgeController;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import com.xcompwiz.mystcraft.world.storage.StorageInstabilityData;

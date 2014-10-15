@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.data;
 
+import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
@@ -10,7 +11,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 public class SymbolPoemData {
 
 	public static void initialize() {
-		WordData.init();
+		WordData.init(InternalAPI.getAPIInstance(MystObjects.MystcraftModId));
 		for (int i = 0; i < 26; ++i) {
 			InternalAPI.symbol.registerWord("" + i, constructNumber(i));
 		}

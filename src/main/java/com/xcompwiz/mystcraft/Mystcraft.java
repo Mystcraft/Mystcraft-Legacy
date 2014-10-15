@@ -22,8 +22,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import com.google.common.collect.ImmutableList;
-import com.xcompwiz.mystcraft.api.MystAPI;
-import com.xcompwiz.mystcraft.api.MystAPI.IMystAPIProvider;
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.command.CommandCreateAgebook;
 import com.xcompwiz.mystcraft.command.CommandCreateDim;
@@ -40,9 +38,9 @@ import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.core.MystcraftEventHandler;
-import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.data.GrammarRules;
 import com.xcompwiz.mystcraft.data.InkEffects;
+import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.data.ModFluids;
 import com.xcompwiz.mystcraft.data.ModItems;
@@ -94,11 +92,9 @@ import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
 import com.xcompwiz.mystcraft.world.gen.structure.StructureScatteredFeatureStartMyst;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
@@ -113,7 +109,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 
 @Mod(modid = MystObjects.MystcraftModId, version = "@VERSION@", name = "Mystcraft", useMetadata = true, dependencies = "required-after:Forge@[10.12.1.1083,)")
-public class Mystcraft implements IMystAPIProvider {
+public class Mystcraft {
 
 	@Instance(MystObjects.MystcraftModId)
 	public static Mystcraft				instance;
@@ -148,13 +144,6 @@ public class Mystcraft implements IMystAPIProvider {
 	public static MapStorage			clientStorage		= null;
 
 	public static boolean				debugGrammar		= false;
-
-	@Override
-	public MystAPI getAPIInstance() {
-		//Determine which mod is requesting the API container instance
-		ModContainer container = Loader.instance().activeModContainer();
-		return InternalAPI.getAPIInstance(container.getModId());
-	}
 
 	@EventHandler
 	public void load(FMLPreInitializationEvent event) {

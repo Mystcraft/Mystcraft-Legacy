@@ -50,7 +50,7 @@ public class GuiElementFluidTank extends GuiElement {
 
 		hovertext.clear();
 		if (mouseOver && fluidstack != null) {
-			hovertext.add((fluidstack.getFluid().getLocalizedName() + ": " + fluidstack.amount + "/" + tankmax));
+			hovertext.add((fluidstack.getFluid().getLocalizedName(fluidstack) + ": " + fluidstack.amount + "/" + tankmax));
 		}
 
 		GL11.glPopMatrix();

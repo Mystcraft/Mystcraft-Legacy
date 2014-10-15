@@ -43,7 +43,6 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
 import com.xcompwiz.mystcraft.client.render.CloudRendererMyst;
 import com.xcompwiz.mystcraft.client.render.WeatherRendererMyst;
-import com.xcompwiz.mystcraft.core.DebugDataTracker;
 import com.xcompwiz.mystcraft.instability.InstabilityController;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.instability.bonus.InstabilityBonusManager;

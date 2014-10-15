@@ -4,17 +4,11 @@ import com.xcompwiz.mystcraft.api.MystAPI;
 import com.xcompwiz.mystcraft.api.internal.IWordAPI;
 
 /**
- * Includes the word data for the symbol poems. You can, of course, create your own words, but it is recommended that
- * you use this list for the most part and only create words as necessary. If you use a string in a poem but do not
- * define the draw components for the string as a word then the system will automatically deterministically generate
- * components for the word.
- * 
- * These symbols are based on the original Narayan from Myst III: Exile You can see them here:
- * http://fc07.deviantart.net/fs19/f/2007/277/5/7/Symbols_of_Narayan_by_Killberk.png
- * http://isomerica.net/~mlah/narayan/symbols.html
- * 
+ * Includes the word data for the symbol poems. You can, of course, create your own words, but it is recommended that you use this list for the most part and
+ * only create words as necessary. If you use a string in a poem but do not define the draw components for the string as a word then the system will
+ * automatically deterministically generate components for the word. These symbols are based on the original Narayan from Myst III: Exile You can see them here:
+ * http://fc07.deviantart.net/fs19/f/2007/277/5/7/Symbols_of_Narayan_by_Killberk.png http://isomerica.net/~mlah/narayan/symbols.html
  * @author xcompwiz
- * 
  */
 public final class WordData {
 
@@ -98,12 +92,13 @@ public final class WordData {
 
 	private static boolean		initialized		= false;
 
-	/** Do not call this */
-	public static void init() {
-		MystAPI mystAPI = MystAPI.getInstance();
-		if (mystAPI == null || mystAPI.word == null || initialized) return;
+	/**
+	 * Do not call this. This is called by Mystcraft itself.
+	 */
+	public static void init(MystAPI mystAPI) {
+		if (mystAPI == null || mystAPI.getWordAPI() == null || initialized) return;
 		initialized = true;
-		IWordAPI wordAPI = mystAPI.word;
+		IWordAPI wordAPI = mystAPI.getWordAPI();
 		wordAPI.registerWord(Nature, new Integer[] { 5, 6, 8, 10, 11, 12, 15, 16, 17, 22 }); // Narayan - Nature
 		wordAPI.registerWord(Love, new Integer[] { 9, 10, 11, 14, 16, 17, 19, 20 }); // Narayan - Love
 		wordAPI.registerWord(Force, new Integer[] { 4, 5, 8, 16, 17, 19 }); // Narayan - Force
@@ -169,6 +164,6 @@ public final class WordData {
 		wordAPI.registerWord(Image, new Integer[] { 7, 8, 9, 10, 11, 19, 21, 23 }); // Veovis - Image
 		wordAPI.registerWord(Celestial, new Integer[] { 6, 8, 9, 10, 14, 18, 20, 21, 22, 23, 24 }); // Veovis - Celestial
 		wordAPI.registerWord(Terrain, new Integer[] { 6, 10, 12, 13, 16, 19, 24, 25, 27 }); // Veovis - Terrain
-		wordAPI.registerWord(Order, new Integer[] { 11, 14, 15, 17, 20, 21 }); // Draco18s - Original Concept Art for System
+		wordAPI.registerWord(Order, new Integer[] { 11, 14, 15, 17, 20, 21 }); // Draco18s - Original Concept Art for new "System" word
 	}
 }
