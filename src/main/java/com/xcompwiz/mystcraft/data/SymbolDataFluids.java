@@ -55,11 +55,11 @@ public class SymbolDataFluids {
 	private static Map<String, FluidData>	defaults			= new HashMap<String, SymbolDataFluids.FluidData>();
 	private static FluidData				defaultfluidvals	= new FluidData();
 
-	private static Map<Integer, Boolean>	allowedsea			= new HashMap<Integer, Boolean>();
-	private static Map<Integer, Float>		rarities			= new HashMap<Integer, Float>();
-	private static Map<Integer, Float>		grammarWeights		= new HashMap<Integer, Float>();
-	private static Map<Integer, Float>		factor1s			= new HashMap<Integer, Float>();
-	private static Map<Integer, Float>		factor2s			= new HashMap<Integer, Float>();
+	private static Map<String, Boolean>		bannedsea			= new HashMap<String, Boolean>();
+	private static Map<String, Float>		rarities			= new HashMap<String, Float>();
+	private static Map<String, Float>		grammarWeights		= new HashMap<String, Float>();
+	private static Map<String, Float>		factor1s			= new HashMap<String, Float>();
+	private static Map<String, Float>		factor2s			= new HashMap<String, Float>();
 	private static MystConfig				config;
 
 	public static void setConfig(MystConfig mystconfig) {
@@ -145,6 +145,10 @@ public class SymbolDataFluids {
 
 	public static void modsLoaded() {
 		Map<String, Fluid> map = FluidRegistry.getRegisteredFluids();
+//		for (String fluidkey : defaults.keySet()) {
+//			factor1(fluidkey); factor2(fluidkey); symbolRarity(fluidkey);
+//			grammarWeight(fluidkey); isBannedSea(fluidkey);
+//		}
 		for (Entry<String, Fluid> entry : map.entrySet()) {
 			Fluid fluid = entry.getValue();
 			Block block = fluid.getBlock();
@@ -155,77 +159,86 @@ public class SymbolDataFluids {
 
 			byte meta = 0;
 			if (block instanceof BlockFluidBase) meta = (byte) ((BlockFluidBase) block).getMaxRenderHeightMeta();
-			BlockModifierContainerObject container = BlockModifierContainerObject.create(WordData.Sea, symbolRarity(fluid), block, meta);
-			ChunkProfiler.setInstabilityFactors(block, factor1(fluid), factor2(fluid), 0);
+			String fluidkey = getFluidKey(fluid);
+			BlockModifierContainerObject container = BlockModifierContainerObject.create(WordData.Sea, symbolRarity(fluidkey), block, meta);
+			ChunkProfiler.setInstabilityFactors(block, factor1(fluidkey), factor2(fluidkey), 0);
 			if (fluid.isGaseous()) {
-				container.add(BlockCategory.GAS, grammarWeight(fluid));
+				container.add(BlockCategory.GAS, grammarWeight(fluidkey));
 			} else {
-				if (!isBannedSea(fluid)) container.add(BlockCategory.SEA, grammarWeight(fluid));
-				container.add(BlockCategory.FLUID, grammarWeight(fluid));
+				if (!isBannedSea(fluidkey)) container.add(BlockCategory.SEA, grammarWeight(fluidkey));
+				container.add(BlockCategory.FLUID, grammarWeight(fluidkey));
 			}
 		}
 		if (config != null && config.hasChanged()) config.save();
 	}
 
-	private static FluidData getDefault(Fluid fluid) {
-		FluidData data = defaults.get(fluid.getUnlocalizedName().toLowerCase().replace(' ', '_'));
+	private static FluidData getDefaultValue(String fluidkey) {
+		FluidData data = defaults.get(fluidkey);
 		if (data != null) { return data; }
 		return defaultfluidvals;
 	}
 
-	private static boolean isBannedSea(Fluid fluid) {
-		Boolean value = allowedsea.get(fluid.getID());
+	private static boolean isBannedSea(String fluidkey) {
+		Boolean value = bannedsea.get(fluidkey);
 		if (value != null) return value;
-		boolean val = getDefault(fluid).seabanned;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".seabanned", val);
+		boolean val = getDefaultValue(fluidkey).seabanned;
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".seabanned", val);
 		return val;
 	}
 
-	private static float symbolRarity(Fluid fluid) {
-		Float value = rarities.get(fluid.getID());
+	private static float symbolRarity(String fluidkey) {
+		Float value = rarities.get(fluidkey);
 		if (value != null) return value;
-		float val = getDefault(fluid).rarity;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".rarity", val);
+		float val = getDefaultValue(fluidkey).rarity;
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".rarity", val);
 		return val;
 	}
 
-	private static float grammarWeight(Fluid fluid) {
-		Float value = grammarWeights.get(fluid.getID());
+	private static float grammarWeight(String fluidkey) {
+		Float value = grammarWeights.get(fluidkey);
 		if (value != null) return value;
-		float val = getDefault(fluid).grammar;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".grammar", val);
+		float val = getDefaultValue(fluidkey).grammar;
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".grammar", val);
 		return val;
 	}
 
-	private static float factor1(Fluid fluid) {
-		Float value = factor1s.get(fluid.getID());
+	private static float factor1(String fluidkey) {
+		Float value = factor1s.get(fluidkey);
 		if (value != null) return value;
-		float val = getDefault(fluid).factor1;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".instability.factor_accessibility", val);
+		float val = getDefaultValue(fluidkey).factor1;
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".instability.factor_accessibility", val);
 		return val;
 	}
 
-	private static float factor2(Fluid fluid) {
-		Float value = factor2s.get(fluid.getID());
+	private static float factor2(String fluidkey) {
+		Float value = factor2s.get(fluidkey);
 		if (value != null) return value;
-		float val = getDefault(fluid).factor2;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluid.getUnlocalizedName().toLowerCase().replace(' ', '_') + ".instability.factor_flat", val);
+		float val = getDefaultValue(fluidkey).factor2;
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".instability.factor_flat", val);
 		return val;
+	}
+
+	private static String getFluidKey(Fluid fluid) {
+		return fluid.getUnlocalizedName().toLowerCase().replace(' ', '_');
+	}
+
+	public static void setSeaBanned(Fluid fluid, boolean value) {
+		bannedsea.put(getFluidKey(fluid), value);
 	}
 
 	public static void setRarity(Fluid fluid, float value) {
-		rarities.put(fluid.getID(), value);
+		rarities.put(getFluidKey(fluid), value);
 	}
 
 	public static void setGrammarWeight(Fluid fluid, float value) {
-		grammarWeights.put(fluid.getID(), value);
+		grammarWeights.put(getFluidKey(fluid), value);
 	}
 
 	public static void setFactor1(Fluid fluid, float value) {
-		factor1s.put(fluid.getID(), value);
+		factor1s.put(getFluidKey(fluid), value);
 	}
 
 	public static void setFactor2(Fluid fluid, float value) {
-		factor2s.put(fluid.getID(), value);
+		factor2s.put(getFluidKey(fluid), value);
 	}
 }
