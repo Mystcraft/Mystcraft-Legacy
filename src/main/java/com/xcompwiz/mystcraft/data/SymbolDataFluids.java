@@ -145,10 +145,6 @@ public class SymbolDataFluids {
 
 	public static void modsLoaded() {
 		Map<String, Fluid> map = FluidRegistry.getRegisteredFluids();
-//		for (String fluidkey : defaults.keySet()) {
-//			factor1(fluidkey); factor2(fluidkey); symbolRarity(fluidkey);
-//			grammarWeight(fluidkey); isBannedSea(fluidkey);
-//		}
 		for (Entry<String, Fluid> entry : map.entrySet()) {
 			Fluid fluid = entry.getValue();
 			Block block = fluid.getBlock();
