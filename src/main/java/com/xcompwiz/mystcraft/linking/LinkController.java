@@ -47,8 +47,7 @@ public class LinkController {
 			return false;
 		}
 		if (spawn == null) {
-			spawn = newworld.getSpawnPoint(); // Get destination coords if not
-												// set
+			spawn = newworld.getSpawnPoint(); // Get destination coords if not set
 			info.setSpawn(spawn);
 		}
 		LinkEventAlter event = new LinkEventAlter(world, newworld, entity, info.clone());

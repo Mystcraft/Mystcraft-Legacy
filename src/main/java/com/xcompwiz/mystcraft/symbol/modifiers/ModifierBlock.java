@@ -29,7 +29,7 @@ public class ModifierBlock extends SymbolBase {
 	}
 
 	@Override
-	public String displayName() {
+	public String displayName() { //TODO: Localization
 		String str = getBlockAsItem().getDisplayName();
 		if (str.endsWith("Block")) return str;
 		return str + " Block";

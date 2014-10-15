@@ -381,13 +381,13 @@ public class WorldProviderMyst extends WorldProvider {
 		Random random = new Random(agedata.getSeed());
 		ChunkPosition chunkposition = worldChunkMgr.findBiomePosition(0, 0, 256, worldChunkMgr.getBiomesToSpawnIn(), random);
 		int x = 0;
-		int y = Math.max(controller.getAverageGroundLevel(),controller.getSeaLevel());
+		int y = controller.getSeaLevel();
 		int z = 0;
 		if (chunkposition != null) {
 			x = chunkposition.chunkPosX;
 			z = chunkposition.chunkPosZ;
 		} else {
-			System.out.println("Unable to find spawn biome");
+			System.out.println("Still searching for a spawn point.");
 		}
 		for (int l = 0; l < 1000; ++l) {
 			if (canCoordinateBeSpawn(x, z) || agedata.getSpawn() != null) {
