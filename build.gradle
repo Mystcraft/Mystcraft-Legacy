@@ -215,6 +215,7 @@ changelogDeploys.each { name, dir ->
 
 import java.text.DecimalFormat
 def formatter = new DecimalFormat('00')
+def formatters = [new DecimalFormat('0'), new DecimalFormat('0'), new DecimalFormat('0'), new DecimalFormat('00')]
 
 // increment tasks
 def types = ["super", "major", "minor", "build"]
@@ -222,14 +223,11 @@ types.eachWithIndex { type, index ->
 	def incrementer = task("increment-${type}").doLast {
 		// increment
 		int newNum = (config.version[type.toLowerCase()].toString().toInteger()) + 1
-		config.version[type.toLowerCase()] = index == 3 ? formatter.format(newNum) : "$newNum"
+		config.version[type.toLowerCase()] = formatters[index].format(newNum)
 		// set lower #'s to 0
 		types.eachWithIndex { type2, index2 ->
 			if (index2 > index) {
-				if (index2 == 3)
-					config.version[type2.toLowerCase()] = '00'
-				else
-					config.version[type2.toLowerCase()] = '0'
+				config.version[type2.toLowerCase()] = formatters[index2].format(0)
 			}
 		}
 
