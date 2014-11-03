@@ -282,10 +282,9 @@ public class WorldProviderMyst extends WorldProvider {
 		if (temp > 0.15F) { return false; }
 
 		if (y >= 0 && y < 256 && worldObj.getSavedLightValue(EnumSkyBlock.Block, x, y, z) < 10) {
-			Block var6 = worldObj.getBlock(x, y - 1, z);
 			Block var7 = worldObj.getBlock(x, y, z);
 
-			if ((var7 == null || var7.isAir(worldObj, x, y, z)) && Blocks.snow.canPlaceBlockAt(worldObj, x, y, z) && var6 != null && var6 != Blocks.ice && var6.getBlocksMovement(worldObj, x, y, z)) { return true; }
+			if ((var7 == null || var7.isAir(worldObj, x, y, z)) && Blocks.snow_layer.canPlaceBlockAt(worldObj, x, y, z)) { return true; }
 		}
 		return false;
 	}
