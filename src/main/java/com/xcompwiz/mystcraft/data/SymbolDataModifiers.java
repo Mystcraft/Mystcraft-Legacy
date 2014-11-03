@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierAngle;
@@ -45,7 +46,10 @@ public class SymbolDataModifiers {
 		public static BlockModifierContainerObject create(String word, float itemrarity, Block block, byte metadata) {
 			BlockDescriptor descriptor = new BlockDescriptor(block, metadata);
 			ModifierBlock symbol = new ModifierBlock(descriptor, word);
-			if (SymbolManager.hasBinding(symbol.identifier())) return new BlockModifierContainerObject();
+			if (SymbolManager.hasBinding(symbol.identifier())) {
+				LoggerUtils.info("Some Mod is attempting to register a block symbol over an existing registration.");
+				return new BlockModifierContainerObject();
+			}
 			InternalAPI.symbol.registerSymbol(symbol);
 			return new BlockModifierContainerObject(descriptor, symbol);
 		}

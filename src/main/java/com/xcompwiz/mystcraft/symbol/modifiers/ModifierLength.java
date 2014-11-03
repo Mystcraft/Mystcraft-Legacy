@@ -32,6 +32,7 @@ public class ModifierLength extends SymbolBase {
 
 	@Override
 	public String displayName() {
+		//XXX (Localization)
 		return display;
 	}
 }

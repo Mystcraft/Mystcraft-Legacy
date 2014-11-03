@@ -35,6 +35,7 @@ public class ModifierPhase extends SymbolBase {
 
 	@Override
 	public String displayName() {
+		//XXX: Localization
 		return display + " Phase";
 	}
 }

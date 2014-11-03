@@ -49,6 +49,7 @@ public class ModifierColor extends SymbolBase {
 
 	@Override
 	public String displayName() {
+		//XXX (Localization)
 		return name + " Color";
 	}
 }
