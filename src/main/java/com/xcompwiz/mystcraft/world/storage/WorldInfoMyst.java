@@ -17,18 +17,22 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 
 	private final WorldProviderMyst	provider;
 
+	private long	tickcounter;
+
 	public WorldInfoMyst(WorldProviderMyst provider, WorldInfo worldInfo) {
 		super(worldInfo);
 		this.provider = provider;
+		this.tickcounter = 0;
 	}
 
 	@Override
 	public void incrementTotalWorldTime(long par1) {
-		super.incrementTotalWorldTime(par1); //XXX: (WorldInfo) I can control time! :P
+		if (provider.worldObj.isRemote) tickcounter += par1;
 	}
 
 	@Override
 	public long getWorldTotalTime() {
+		if (provider.worldObj.isRemote) return tickcounter;
 		return super.getWorldTotalTime(); //XXX: (WorldInfo) I can control time! :P
 	}
 
