@@ -20,14 +20,14 @@ public class ItemRendererPage implements IItemRenderer {
 	final float	held_offset			= 0.0F;
 	final float	held_symbolscale	= held_width * 0.9F;
 	final float	held_sx				= -held_offset - held_width - (held_symbolscale - held_width) / 2;
-	final float	held_sy				= -held_symbolscale - (held_height - held_symbolscale) / 2;
+	final float	held_sy				= -held_symbolscale;
 
 	final float	entity_width		= 1.0F;
 	final float	entity_height		= entity_width * 4 / 3;
 	final float	entity_offset		= -entity_width / 2;
 	final float	entity_symbolscale	= entity_width * .95F;
 	final float	entity_sx			= -entity_height / 2 + (entity_height - entity_symbolscale) / 2;
-	final float	entity_sy			= -entity_height + (entity_height - entity_symbolscale) / 2;
+	final float	entity_sy			= (entity_height - entity_symbolscale)/2;
 
 	public ItemRendererPage() {}
 
@@ -61,33 +61,32 @@ public class ItemRendererPage implements IItemRenderer {
 			renderEngine.bindTexture(GUIs.book_page_left);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-			GuiUtils.drawTexturedModalRect(held_offset, 0, 156, 0, 30, 40, 0, held_width, held_height);
+			GL11.glRotatef(180, 0.0F, 0.0F, 1.0F);
+			GuiUtils.drawTexturedModalRect(held_offset-1, -1, 156, 0, 30, 40, 0, held_width, held_height);
 
 			if (Page.getSymbol(item) != null) {
 				IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(item));
-				GL11.glRotatef(180, 0.0F, 0.0F, 1.0F);
 				GuiUtils.drawSymbol(FMLClientHandler.instance().getClient().renderEngine, -0.01F, symbol, held_symbolscale, held_sx, held_sy);
 			} else if (Page.isLinkPanel(item)) {
-				GL11.glRotatef(180, 0.0F, 0.0F, 1.0F);
 				GuiUtils.drawGradientRect(held_sx + held_width * 0.10F, held_sy, held_sx + held_width * 0.8F, held_sy + held_height * 0.3F, 0xFF000000, 0xFF000000, -0.01F);
 			}
 		} else if (type == ItemRenderType.ENTITY) {
+			GL11.glTranslatef(0.0F, 0.7F, 0.0F);
+			GL11.glRotatef(180, 1.0F, 0.0F, 0.0F);
 			GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
 			TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
 			renderEngine.bindTexture(GUIs.book_page_left);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-			GL11.glTranslatef(0.0F, -0.5F, 0.0F);
 			GuiUtils.drawTexturedModalRect(entity_offset, 0, 156, 0, 30, 40, 0, entity_width, entity_height);
 			GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
 			GuiUtils.drawTexturedModalRect(entity_offset, 0, 156, 0, 30, 40, 0, entity_width, entity_height);
 
-			GL11.glRotatef(180, 0.0F, 0.0F, 1.0F);
 			if (Page.getSymbol(item) != null) {
 				IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(item));
 				GuiUtils.drawSymbol(FMLClientHandler.instance().getClient().renderEngine, -0.01F, symbol, entity_symbolscale, entity_sx, entity_sy);
 			} else if (Page.isLinkPanel(item)) {
-				GuiUtils.drawGradientRect(entity_sx + entity_width * 0.15F, entity_sy, entity_sx + entity_width * 0.85F, entity_sy + entity_height * 0.3F, 0xFF000000, 0xFF000000, -0.01F);
+				GuiUtils.drawGradientRect(entity_sx + entity_width * 0.125F, entity_sy, entity_sx + entity_width * 0.85F, entity_sy + entity_height * 0.3F, 0xFF000000, 0xFF000000, -0.01F);
 			}
 		}
 	}

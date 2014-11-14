@@ -60,6 +60,9 @@ public final class GuiUtils {
 
 	@SideOnly(Side.CLIENT)
 	public static void drawSymbol(TextureManager renderEngine, float zLevel, IAgeSymbol symbol, float scale, float x, float y) {
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		if (symbol == null) {
 			drawWord(renderEngine, zLevel, null, scale, x, y);
 			return;
