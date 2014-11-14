@@ -140,6 +140,24 @@ public class GuiWritingDesk extends GuiContainerElements {
 		}
 	}
 
+	public class TextBoxHandlerTargetName implements IGuiTextProvider, IGuiOnTextChange {
+		@Override
+		public String getText(GuiElementTextField caller) {
+			ItemStack target = container.getTarget();
+			caller.setReadOnly(target == null || target.getItem() == null || target.getItem() == ModItems.page);
+			caller.setEnabled(!caller.isReadOnly());
+			return container.getTargetName();
+		}
+
+		@Override
+		public void onTextChange(GuiElementTextField caller, String text) {
+			NBTTagCompound nbttagcompound = new NBTTagCompound();
+			nbttagcompound.setString("SetTitle", text);
+			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
+			container.processMessage(mc.thePlayer, nbttagcompound);
+		}
+	}
+
 	public class ButtonHandlerSort implements IGuiOnClickHandler {
 		@Override
 		public void onClick(GuiElementButton caller) {
@@ -157,21 +175,6 @@ public class GuiWritingDesk extends GuiContainerElements {
 		@Override
 		public List<PositionableItem> getPositionedPages() {
 			return container.getSurfacePages(container.getActiveNotebookSlot());
-		}
-	}
-
-	public class TextBoxHandlerTargetName implements IGuiTextProvider, IGuiOnTextChange {
-		@Override
-		public String getText(GuiElementTextField caller) {
-			return container.getTargetName();
-		}
-
-		@Override
-		public void onTextChange(GuiElementTextField caller, String text) {
-			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setString("SetTitle", text);
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
-			container.processMessage(mc.thePlayer, nbttagcompound);
 		}
 	}
 
@@ -208,11 +211,15 @@ public class GuiWritingDesk extends GuiContainerElements {
 		guiTop = (height - ySize) / 2;
 		mainTop = guiTop + buttonssizeY + 2;
 
-		TextBoxHandlerSearch txt_search = new TextBoxHandlerSearch();
-		elements.add(new GuiElementTextField(txt_search, txt_search, guiLeft + 58 + (buttonssizeY + 2) * 2, guiTop, leftsize - 53 - (buttonssizeY + 2) * 2, buttonssizeY));
+		GuiElementTextField txt_box = null;
 
+		TextBoxHandlerSearch txt_search = new TextBoxHandlerSearch();
+		txt_box = new GuiElementTextField(txt_search, txt_search, "SearchBox", guiLeft + 58 + (buttonssizeY + 2) * 2, guiTop, leftsize - 53 - (buttonssizeY + 2) * 2, buttonssizeY);
+		elements.add(txt_box);
 		TextBoxHandlerTargetName txt_targname = new TextBoxHandlerTargetName();
-		elements.add(new GuiElementTextField(txt_targname, txt_targname, guiCenter + 28, mainTop + 61, windowsizeX - 48 - 9 - 20, 14));
+		txt_box = new GuiElementTextField(txt_targname, txt_targname, "ItemName", guiCenter + 28, mainTop + 61, windowsizeX - 48 - 9 - 20, 14);
+		txt_box.setMaxLength(21);
+		elements.add(txt_box);
 
 		IFluidTankProvider fluidprovider = container.getInkTankProvider();
 		elements.add(new GuiElementFluidTank(this.container, mc, guiCenter + windowsizeX - 44, mainTop + 7, 16, 70, fluidprovider));

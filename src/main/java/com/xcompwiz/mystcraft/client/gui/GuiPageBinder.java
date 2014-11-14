@@ -77,7 +77,9 @@ public class GuiPageBinder extends GuiContainerElements {
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
 		TextBoxHandler txtbxhdnlr = new TextBoxHandler();
-		elements.add(new GuiElementTextField(txtbxhdnlr, txtbxhdnlr, guiLeft + 7, guiTop + 9, xSize - 60, 14));
+		GuiElementTextField txt_box = new GuiElementTextField(txtbxhdnlr, txtbxhdnlr, "ItemName", guiLeft + 7, guiTop + 9, xSize - 60, 14);
+		txt_box.setMaxLength(21);
+		elements.add(txt_box);
 		PageListHandler pagelistHandler = new PageListHandler();
 		elements.add(new GuiElementScrollablePages(pagelistHandler, pagelistHandler , mc, guiLeft + 7, guiTop + 45, xSize - 14, 40));
 	}

@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.client.gui.element;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -23,13 +24,15 @@ public class GuiElementTextField extends GuiElement {
 	private final FontRenderer	fontRenderer;
 	private IGuiOnTextChange	textchangehandler;
 	private IGuiTextProvider	textprovider;
+	private String				id;
 
 	/** Have the current text being edited on the textbox. */
 	private int					cursorCounter;
+	private int					maxLength				= 256;
 	private boolean				enableBackgroundDrawing	= true;
 
 	/**
-	 * if true the textbox can lose focus by clicking elsewhere on the screen
+	 * if true the textbox can lose focus by clicking elsewhere on the screen.
 	 */
 	private boolean				canLoseFocus			= true;
 
@@ -39,28 +42,52 @@ public class GuiElementTextField extends GuiElement {
 	private boolean				isFocused				= false;
 
 	/**
+	 * Setting this value prevents the text from being edited.
+	 */
+	private boolean				readonly				= false;
+
+	/**
 	 * The current character index that should be used as start of the rendered text.
 	 */
 	private int					lineScrollOffset;
 	private int					cursorPosition;
+	private String				override;
+	private long				lasttyped;
 
 	/** other selection position, maybe the same as the cursor */
 	private int					selectionEnd;
 	private int					enabledColor			= 14737632;
 	private int					disabledColor			= 7368816;
 
-	public GuiElementTextField(IGuiTextProvider textprovider, IGuiOnTextChange changehandler, int guiLeft, int guiTop, int xSize, int ySize) {
+	public GuiElementTextField(IGuiTextProvider textprovider, IGuiOnTextChange changehandler, String id, int guiLeft, int guiTop, int xSize, int ySize) {
 		super(guiLeft, guiTop, xSize, ySize);
+		this.id = id;
 		this.fontRenderer = mc.fontRenderer;
 		this.textprovider = textprovider;
 		this.textchangehandler = changehandler;
 	}
 
+	public String getId() {
+		return id;
+	}
+
 	/**
 	 * if true the textbox can lose focus by clicking elsewhere on the screen
 	 */
-	public void setCanLoseFocus(boolean par1) {
-		this.canLoseFocus = par1;
+	public void setCanLoseFocus(boolean b) {
+		this.canLoseFocus = b;
+	}
+
+	public void setReadOnly(boolean b) {
+		this.readonly = b;
+	}
+
+	public boolean isReadOnly() {
+		return this.readonly;
+	}
+
+	public void setMaxLength(int v) {
+		this.maxLength = v;
 	}
 
 	/**
@@ -75,6 +102,12 @@ public class GuiElementTextField extends GuiElement {
 	 * Sets the text of the textbox.
 	 */
 	private void setText(String text) {
+		if (this.isReadOnly()) return;
+		if (text.length() > this.maxLength) {
+			text = text.substring(0, this.maxLength);
+		}
+		this.override = text;
+		this.lasttyped = Minecraft.getSystemTime();
 		if (this.textchangehandler != null) {
 			this.textchangehandler.onTextChange(this, text);
 		}
@@ -84,8 +117,16 @@ public class GuiElementTextField extends GuiElement {
 	 * Returns the text being edited on the textbox.
 	 */
 	public String getText() {
-		String text = "";
-		if (textprovider != null) {
+		String text = null;
+		if (override != null) {
+			if (this.lasttyped + 1000L > Minecraft.getSystemTime()) {
+				//if (this.isFocused) {
+				text = override;
+			} else {
+				override = null;
+			}
+		}
+		if (text == null && textprovider != null) {
 			text = this.textprovider.getText(this);
 		}
 		if (text == null) {
@@ -111,10 +152,12 @@ public class GuiElementTextField extends GuiElement {
 	 * replaces selected text, or inserts text at the position on the cursor
 	 */
 	public void writeText(String par1Str) {
+		if (this.isReadOnly()) return;
 		String s1 = "";
 		String s2 = ChatAllowedCharacters.filerAllowedCharacters(par1Str);
 		int i = this.cursorPosition < this.selectionEnd ? this.cursorPosition : this.selectionEnd;
 		int j = this.cursorPosition < this.selectionEnd ? this.selectionEnd : this.cursorPosition;
+		int k = this.maxLength - Math.min(this.getText().length(), this.maxLength) - (i - this.selectionEnd);
 
 		if (this.getText().length() > 0) {
 			s1 = s1 + this.getText().substring(0, i);
@@ -122,8 +165,13 @@ public class GuiElementTextField extends GuiElement {
 
 		int l;
 
-		s1 = s1 + s2;
-		l = s2.length();
+		if (k < s2.length()) {
+			s1 = s1 + s2.substring(0, k);
+			l = k;
+		} else {
+			s1 = s1 + s2;
+			l = s2.length();
+		}
 
 		if (this.getText().length() > 0 && j < this.getText().length()) {
 			s1 = s1 + this.getText().substring(j);
@@ -134,8 +182,7 @@ public class GuiElementTextField extends GuiElement {
 	}
 
 	/**
-	 * Deletes the specified number of words starting at the cursor position. Negative numbers will delete words left of
-	 * the cursor.
+	 * Deletes the specified number of words starting at the cursor position. Negative numbers will delete words left of the cursor.
 	 */
 	public void deleteWords(int par1) {
 		if (this.getText().length() != 0) {
@@ -149,10 +196,10 @@ public class GuiElementTextField extends GuiElement {
 
 	/**
 	 * delete the selected text, otherwise deletes characters from either side of the cursor.
-	 * 
 	 * @param par1 Number of characters to delete. Negative numbers delete to the left of the cursor.
 	 */
 	public void deleteFromCursor(int par1) {
+		if (this.isReadOnly()) return;
 		if (this.getText().length() != 0) {
 			if (this.selectionEnd != this.cursorPosition) {
 				this.writeText("");
@@ -353,7 +400,6 @@ public class GuiElementTextField extends GuiElement {
 
 	/**
 	 * Args: x, y, buttonClicked
-	 * 
 	 * @return
 	 */
 	@Override
@@ -373,6 +419,9 @@ public class GuiElementTextField extends GuiElement {
 
 			String s = this.fontRenderer.trimStringToWidth(this.getText().substring(this.lineScrollOffset), this.getWidth());
 			this.setCursorPosition(this.fontRenderer.trimStringToWidth(s, l).length() + this.lineScrollOffset);
+		}
+		if (this.isFocused && clickFlag == 1) {
+			this.setText("");
 		}
 		return flag;
 	}

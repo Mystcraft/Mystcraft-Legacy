@@ -66,7 +66,9 @@ public class GuiLinkModifier extends GuiContainerElements {
 	@Override
 	public void validate() {
 		TextBoxHandler txtbxhdnlr = new TextBoxHandler();
-		elements.add(new GuiElementTextField(txtbxhdnlr, txtbxhdnlr, guiLeft + 80, guiTop + 56, xSize - 80 - 9, 14));
+		GuiElementTextField txt_box = new GuiElementTextField(txtbxhdnlr, txtbxhdnlr, "ItemName", guiLeft + 80, guiTop + 56, xSize - 80 - 9, 14);
+		txt_box.setMaxLength(21);
+		elements.add(txt_box);
 
 		ButtonHandler buttonhandler = new ButtonHandler();
 		int x = 5, y = 10;
