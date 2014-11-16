@@ -2,6 +2,9 @@ package com.xcompwiz.mystcraft.client.gui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -22,6 +25,7 @@ import com.xcompwiz.mystcraft.client.gui.element.GuiElementPage;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementPage.IGuiPageProvider;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementPageSurface;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementPageSurface.IGuiPositionedPagesProvider;
+import com.xcompwiz.mystcraft.client.gui.element.GuiElementPageSurface.PositionableItem;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementScrollablePages;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementScrollablePages.IGuiPageListProvider;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementScrollablePages.IGuiScrollableClickHandler;
@@ -35,7 +39,8 @@ import com.xcompwiz.mystcraft.inventory.IFluidTankProvider;
 import com.xcompwiz.mystcraft.item.IItemWritable;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
-import com.xcompwiz.mystcraft.oldapi.PositionableItem;
+import com.xcompwiz.mystcraft.page.IItemPageCollection;
+import com.xcompwiz.mystcraft.page.SortingUtils;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
 public class GuiWritingDesk extends GuiContainerElements {
@@ -162,19 +167,65 @@ public class GuiWritingDesk extends GuiContainerElements {
 		@Override
 		public void onClick(GuiElementButton caller) {
 			if (caller.getId().equals("AZ")) {
-				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setByte("SortNotebook", (byte) 0);
-				nbttagcompound.setString("SortType", caller.getId());
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-				container.processMessage(mc.thePlayer, nbttagcompound);
+				//FIXME: !!(PageSorting)
 			}
 		}
 	}
 
 	public class PositionedPagesProvider implements IGuiPositionedPagesProvider {
+		private ItemStack				cached_notebook;
+		private List<PositionableItem>	arranged_pages;
+
 		@Override
 		public List<PositionableItem> getPositionedPages() {
-			return container.getSurfacePages(container.getActiveNotebookSlot());
+			ItemStack notebook = container.getNotebook(container.getActiveNotebookSlot());
+			if (!ItemStack.areItemStacksEqual(notebook, cached_notebook)) {
+				cached_notebook = notebook.copy();
+				int i = 0;
+
+				IItemPageCollection item = (IItemPageCollection) notebook.getItem();
+				List<ItemStack> pages = item.getPages(mc.thePlayer, notebook);
+				arranged_pages = new LinkedList<PositionableItem>();
+				for (ItemStack page : pages) {
+					if (page == null) {
+						++i;
+						continue;
+					}
+					PositionableItem newpos = new PositionableItem();
+					newpos.itemstack = page;
+					newpos.slotId = i++;
+					arranged_pages.add(newpos);
+				}
+				sort(SortingUtils.ComparatorItemSymbolAlphabetical.instance);
+				arrange();
+			}
+			return arranged_pages;
+		}
+
+		public void arrange() {
+			float xStep = GuiElementPageSurface.pagewidth + 1;
+			float yStep = GuiElementPageSurface.pageheight + 1;
+			float x = 0;
+			float y = 0;
+			for (PositionableItem page : arranged_pages) {
+				page.x = x;
+				page.y = y;
+				x += xStep;
+				if (x + xStep > leftsize - 53) { //XXX: sorting has width hardcoded
+					x = 0;
+					y += yStep;
+				}
+			}
+		}
+
+		public void sort(final Comparator<ItemStack> comparator) {
+			Collections.sort(arranged_pages, new Comparator<PositionableItem>() {
+				@Override
+				public int compare(PositionableItem arg0, PositionableItem arg1) {
+					return comparator.compare(arg0.itemstack, arg1.itemstack);
+				}
+			});
+			arrange();
 		}
 	}
 
@@ -190,7 +241,7 @@ public class GuiWritingDesk extends GuiContainerElements {
 	private int						mainTop;
 	private int						guiCenter;
 
-	String							text		= null;
+	String							text			= null;
 
 	private static final int		leftsize		= 228;
 	private static final int		windowsizeX		= 176;

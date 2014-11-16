@@ -1,6 +1,5 @@
 package com.xcompwiz.mystcraft.item;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,19 +15,17 @@ import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
-import com.xcompwiz.mystcraft.oldapi.PositionableItem;
 import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
-import com.xcompwiz.mystcraft.page.IItemPageProvider;
+import com.xcompwiz.mystcraft.page.IItemPageCollection;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemAgebook extends ItemLinking implements IItemPageProvider, IItemWritable {
+public class ItemAgebook extends ItemLinking implements IItemPageCollection, IItemWritable {
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -149,35 +146,14 @@ public class ItemAgebook extends ItemLinking implements IItemPageProvider, IItem
 	}
 
 	@Override
-	public List<PositionableItem> getPagesForSurface(EntityPlayer player, ItemStack itemstack) {
-		AgeData agedata = ItemAgebook.getAgeData(player.worldObj, itemstack);
-		if (agedata != null) return getPositionedPages(agedata.getPages());
-		return null;
-	}
-
-	public List<PositionableItem> getPositionedPages(List<ItemStack> pages) {
-		List<PositionableItem> result = new ArrayList<PositionableItem>();
-		int slot = 0;
-		for (ItemStack page : pages) {
-			PositionableItem positionable = new PositionableItem(page, slot);
-			positionable.x = (slot % 5) * (InventoryNotebook.pagewidth + 1);
-			positionable.y = (slot / 5) * (InventoryNotebook.pageheight + 1);
-			result.add(positionable);
-			++slot;
-		}
-		return result;
-	}
-
-	@Override
 	public ItemStack addPage(EntityPlayer player, ItemStack itemstack, ItemStack page) {
 		return page;
 	}
 
 	@Override
-	public ItemStack addPage(ItemStack itemstack, ItemStack page, float x, float y) {
-		return page;
+	public List<ItemStack> getPages(EntityPlayer player, ItemStack itemstack) {
+		AgeData agedata = ItemAgebook.getAgeData(player.worldObj, itemstack);
+		if (agedata != null) return agedata.getPages();
+		return null;
 	}
-
-	@Override
-	public void sort(ItemStack itemstack, SortType type, short width) {}
 }

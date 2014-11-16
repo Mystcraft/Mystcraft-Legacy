@@ -1,6 +1,6 @@
 __*
 *.bak
-~*.xlsx
+*.xlsx
 
 ./releases
 ./test

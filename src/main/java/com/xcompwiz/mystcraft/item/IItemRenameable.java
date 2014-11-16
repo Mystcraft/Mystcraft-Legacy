@@ -22,8 +22,7 @@ public interface IItemRenameable {
 	String getDisplayName(EntityPlayer player, ItemStack itemstack);
 
 	/**
-	 * Called to change the name of the item. You may safely ignore this, if you wish. Note that this is primarily
-	 * called server-side.
+	 * Called to change the name of the item. You may safely ignore this, if you wish.
 	 * 
 	 * @param player The player changing the name
 	 * @param itemstack The itemstack instance of the item

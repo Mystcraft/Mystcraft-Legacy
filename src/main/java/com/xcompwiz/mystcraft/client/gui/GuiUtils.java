@@ -39,6 +39,7 @@ public final class GuiUtils {
 	@SideOnly(Side.CLIENT)
 	public static void drawPage(TextureManager renderEngine, float zLevel, ItemStack page, float xSize, float ySize, float x, float y, boolean pageFirst) {
 		if (pageFirst) {
+			GL11.glDisable(GL11.GL_BLEND);
 			renderEngine.bindTexture(GUIs.book_page_left);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			if (page == null) GL11.glColor4f(0.2F, 0.2F, 0.2F, 0.2F);
@@ -51,6 +52,7 @@ public final class GuiUtils {
 			drawGradientRect(x + xSize * 0.15F, y + ySize * 0.15F, x + xSize * 0.85F, y + ySize * 0.5F, 0xFF000000, 0xFF000000, zLevel);
 		}
 		if (!pageFirst) {
+			GL11.glDisable(GL11.GL_BLEND);
 			renderEngine.bindTexture(GUIs.book_page_left);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			if (page == null) GL11.glColor4f(0.2F, 0.2F, 0.2F, 0.2F);
@@ -60,9 +62,9 @@ public final class GuiUtils {
 
 	@SideOnly(Side.CLIENT)
 	public static void drawSymbol(TextureManager renderEngine, float zLevel, IAgeSymbol symbol, float scale, float x, float y) {
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		if (symbol == null) {
 			drawWord(renderEngine, zLevel, null, scale, x, y);
 			return;
@@ -79,6 +81,7 @@ public final class GuiUtils {
 		if (words.length > 1) drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[1]), 2 * s, x + o * 2, y + o);
 		if (words.length > 2) drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[2]), 2 * s, x + o, y + o * 2);
 		if (words.length > 3) drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[3]), 2 * s, x, y + o);
+		GL11.glDisable(GL11.GL_BLEND);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -112,7 +115,6 @@ public final class GuiUtils {
 
 	/**
 	 * Draws a textured rectangle at the stored z-value. Args: x, y, u, v, width, height
-	 * 
 	 * @param xSize
 	 * @param ySize
 	 */

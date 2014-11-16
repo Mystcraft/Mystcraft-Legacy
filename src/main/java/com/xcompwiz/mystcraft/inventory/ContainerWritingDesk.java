@@ -3,7 +3,6 @@ package com.xcompwiz.mystcraft.inventory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,31 +26,29 @@ import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 import com.xcompwiz.mystcraft.network.MPacketAgeData;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
-import com.xcompwiz.mystcraft.oldapi.PositionableItem;
-import com.xcompwiz.mystcraft.page.IItemPageProvider.SortType;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHandler, IBookContainer {
-	private static final int						xShift				= 228 + 5;
-	private static final int						yShift				= 20;
-	private static final int						tabslots			= 4;
-	private static final HashMap<String, SortType>	sortmap				= new HashMap<String, SortType>();
+	private static final int	xShift				= 228 + 5;
+	private static final int	yShift				= 20;
+	private static final int	tabslots			= 4;
 
-	private byte									activeslot;
-	private byte									firstslot;
+	//XXX: Remove activeslot from container
+	private byte				activeslot;
+	private byte				firstslot;
 
-	private TileEntityDesk							tileentity;
-	private FluidStack								fluid;
-	private ItemStack								currentpage;
-	private int										currentpageIndex;
-	private int										pagecount;
-	private ILinkInfo								cached_linkinfo;
-	private Boolean									cached_permitted;
-	private String									cached_title		= "";
+	private TileEntityDesk		tileentity;
+	private FluidStack			fluid;
+	private ItemStack			currentpage;
+	private int					currentpageIndex;
+	private int					pagecount;
+	private ILinkInfo			cached_linkinfo;
+	private Boolean				cached_permitted;
+	private String				cached_title		= "";
 
-	private EntityPlayer							player;
-	private FluidTankProvider						fluidDataContainer	= new FluidTankProvider();
+	private EntityPlayer		player;
+	private FluidTankProvider	fluidDataContainer	= new FluidTankProvider();
 
 	public ContainerWritingDesk(InventoryPlayer inventoryplayer, TileEntityDesk te) {
 		this.tileentity = te;
@@ -109,8 +106,6 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		collections.add(internal);
 		collections.add(maininv);
 		collections.add(hotbar);
-
-		this.getActiveNotebook();
 	}
 
 	private void updateNotebookSlots() {
@@ -211,31 +206,15 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 				tileentity.link(player);
 			}
 		}
-		if (data.hasKey("TakeFromSurface")) {
+		if (data.hasKey("TakeFromSurface")) { //XXX: Change to RemoveFromCollection
 			if (player.inventory.getItemStack() != null) return;
 			int index = data.getInteger("TakeFromSurface");
-			player.inventory.setItemStack(tileentity.removePageFromSurface(player, this.getActiveNotebook(), index));
-		}
-		if (data.hasKey("PlaceHeldAt")) {
-			if (player.inventory.getItemStack() == null) return;
-			NBTTagCompound coords = data.getCompoundTag("PlaceHeldAt");
-			boolean single = data.getBoolean("Single");
-			if (single) {
-				ItemStack stack = player.inventory.getItemStack();
-				ItemStack clone = stack.copy();
-				clone.stackSize = 1;
-				if (tileentity.placePageInSurface(player, this.getActiveNotebook(), clone, coords.getFloat("X"), coords.getFloat("Y")) == null) {
-					stack.stackSize -= 1;
-					if (stack.stackSize <= 0) stack = null;
-					player.inventory.setItemStack(stack);
-				}
-			} else {
-				player.inventory.setItemStack(tileentity.placePageInSurface(player, this.getActiveNotebook(), player.inventory.getItemStack(), coords.getFloat("X"), coords.getFloat("Y")));
-			}
+			player.inventory.setItemStack(tileentity.removePageFromSurface(player, this.getNotebook(this.activeslot), index));
 		}
 		if (data.hasKey("AddToNotebook")) {
 			if (player.inventory.getItemStack() == null) return;
 			byte slot = data.getByte("AddToNotebook");
+			if (slot == -1) slot = this.activeslot;
 			if (tileentity.getNotebook(slot) == null) return;
 			boolean single = data.getBoolean("Single");
 			if (single) {
@@ -254,14 +233,9 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		if (data.hasKey("WriteSymbol")) {
 			tileentity.writeSymbol(player, data.getString("WriteSymbol"));
 		}
-		if (data.hasKey("SortNotebook")) {
-			SortType type = sortmap.get(data.getString("SortType")); // TODO: (PageSorting) SortType mapping
-			if (type == null) type = SortType.ALPHABETICAL;
-			tileentity.sortNotebook(this.getActiveNotebook(), (short) 155, type); //FIXME: (PageSorting) Sort client-side (and copy item to server?)
-		}
+		//XXX: This is weird, as it's only meaningful client-side
 		if (data.hasKey("SetActiveNotebook")) {
 			this.activeslot = data.getByte("SetActiveNotebook");
-			this.getActiveNotebook();
 		}
 		if (data.hasKey("SetFirstNotebook")) {
 			this.firstslot = data.getByte("SetFirstNotebook");
@@ -299,10 +273,6 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		}
 	}
 
-	private ItemStack getActiveNotebook() {
-		return tileentity.getNotebook(activeslot);
-	}
-
 	public ItemStack getNotebook(byte slot) {
 		return tileentity.getNotebook(slot);
 	}
@@ -314,9 +284,6 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	public byte getFirstNotebookSlot() {
 		return firstslot;
 	}
-
-	@Override
-	public void updateProgressBar(int i, int j) {}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
@@ -455,11 +422,6 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 
 	public String getTargetName() {
 		return cached_title;
-	}
-
-	public List<PositionableItem> getSurfacePages(byte notebookSlot) {
-		if (tileentity != null) { return tileentity.getSurfacePages(this.player, notebookSlot); }
-		return null;
 	}
 
 	public List<ItemStack> getBookPageList() {

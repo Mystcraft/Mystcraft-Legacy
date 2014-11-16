@@ -36,9 +36,7 @@ import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.network.IMessageReceiver;
 import com.xcompwiz.mystcraft.network.MPacketMessage;
-import com.xcompwiz.mystcraft.oldapi.PositionableItem;
-import com.xcompwiz.mystcraft.page.IItemPageProvider;
-import com.xcompwiz.mystcraft.page.IItemPageProvider.SortType;
+import com.xcompwiz.mystcraft.page.IItemPageCollection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -113,7 +111,10 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 
 	public ItemStack getNotebook(byte activeslot) {
 		if (activeslot < 0 || activeslot >= notebooks.length) return null;
-		return notebooks[activeslot];
+		ItemStack itemstack = notebooks[activeslot];
+		if (itemstack == null) return null;
+		if (!(itemstack.getItem() instanceof IItemPageCollection)) return null;
+		return itemstack;
 	}
 
 	@Override
@@ -128,7 +129,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		slotIndex -= itemstacks.length;
 		if (slotIndex < 0) return false;
 		if (slotIndex >= notebooks.length) return false;
-		if (itemstack.getItem() instanceof IItemPageProvider) return true;
+		if (itemstack.getItem() instanceof IItemPageCollection) return true;
 		return false;
 	}
 
@@ -296,35 +297,18 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		if (itemstacks[slot_pap] != null && itemstacks[slot_pap].stackSize <= 0) itemstacks[slot_pap] = null;
 	}
 
-	public List<PositionableItem> getSurfacePages(EntityPlayer player, byte slot) {
-		if (slot >= notebooks.length) return null;
-
-		ItemStack itemstack = notebooks[slot];
-		if (itemstack == null) return null;
-		if (!(itemstack.getItem() instanceof IItemPageProvider)) return null;
-		return ((IItemPageProvider) itemstack.getItem()).getPagesForSurface(player, itemstack);
-	}
-
 	public ItemStack removePageFromSurface(EntityPlayer player, ItemStack itemstack, int index) {
 		if (itemstack == null) return null;
-		if (!(itemstack.getItem() instanceof IItemPageProvider)) return null;
-		ItemStack page = ((IItemPageProvider) itemstack.getItem()).removePage(player, itemstack, index);
+		if (!(itemstack.getItem() instanceof IItemPageCollection)) return null;
+		ItemStack page = ((IItemPageCollection) itemstack.getItem()).removePage(player, itemstack, index);
 		this.markDirty();
 		return page;
 	}
 
-	public ItemStack placePageInSurface(EntityPlayer player, ItemStack itemstack, ItemStack page, float x, float y) {
-		if (itemstack == null) return page;
-		if (!(itemstack.getItem() instanceof IItemPageProvider)) return page;
-		ItemStack result = ((IItemPageProvider) itemstack.getItem()).addPage(itemstack, page, x, y);
-		this.markDirty();
-		return result;
-	}
-
 	public ItemStack addPage(EntityPlayer player, ItemStack itemstack, ItemStack page) {
 		if (itemstack == null) return page;
-		if (!(itemstack.getItem() instanceof IItemPageProvider)) return page;
-		ItemStack result = ((IItemPageProvider) itemstack.getItem()).addPage(player, itemstack, page);
+		if (!(itemstack.getItem() instanceof IItemPageCollection)) return page;
+		ItemStack result = ((IItemPageCollection) itemstack.getItem()).addPage(player, itemstack, page);
 		this.markDirty();
 		return result;
 	}
@@ -347,12 +331,6 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 			return itemstack;
 		}
 		return null;
-	}
-
-	public void sortNotebook(ItemStack itemstack, short width, SortType type) {
-		if (itemstack == null) return;
-		if (!(itemstack.getItem() instanceof IItemPageProvider)) return;
-		((IItemPageProvider) itemstack.getItem()).sort(itemstack, type, width);
 	}
 
 	public FluidStack getInk() {
@@ -487,10 +465,8 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 	}
 
 	/**
-	 * Return an {@link AxisAlignedBB} that controls the visible scope of a {@link TileEntitySpecialRenderer} associated
-	 * with this {@link TileEntity} Defaults to the collision bounding box
-	 * {@link Block#getCollisionBoundingBoxFromPool(World, int, int, int)} associated with the block at this location.
-	 * 
+	 * Return an {@link AxisAlignedBB} that controls the visible scope of a {@link TileEntitySpecialRenderer} associated with this {@link TileEntity} Defaults
+	 * to the collision bounding box {@link Block#getCollisionBoundingBoxFromPool(World, int, int, int)} associated with the block at this location.
 	 * @return an appropriately size {@link AxisAlignedBB} for the {@link TileEntity}
 	 */
 	@Override

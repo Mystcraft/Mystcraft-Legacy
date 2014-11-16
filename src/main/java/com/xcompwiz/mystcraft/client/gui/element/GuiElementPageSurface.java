@@ -13,11 +13,9 @@ import org.lwjgl.opengl.GL11;
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiOnTextChange;
 import com.xcompwiz.mystcraft.data.Assets.GUIs;
-import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
-import com.xcompwiz.mystcraft.oldapi.PositionableItem;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
@@ -27,6 +25,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChange {
+	public static class PositionableItem {
+
+		public int			slotId;
+		public ItemStack	itemstack;
+		public float		x;
+		public float		y;
+
+	}
+
+	public final static float	pagewidth	= 30;
+	public final static float	pageheight	= pagewidth * 4 / 3;
 
 	public interface IGuiPositionedPagesProvider {
 		List<PositionableItem> getPositionedPages();
@@ -55,8 +64,8 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		this.mc = mc;
 		this.handler = handler;
 		this.pagesProvider = pagesProvider;
-		pageWidth = InventoryNotebook.pagewidth;
-		pageHeight = InventoryNotebook.pageheight;
+		pageWidth = GuiElementPageSurface.pagewidth;
+		pageHeight = GuiElementPageSurface.pageheight;
 		mousedown = false;
 	}
 
@@ -94,26 +103,18 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 			if (mc.thePlayer.inventory.getItemStack() != null) {
 				// XXX: (PageSorting) Move handling out of element
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				NBTTagCompound data = new NBTTagCompound();
-				data.setFloat("X", (mouseX - guiLeft - pageWidth / 2));
-				data.setFloat("Y", (mouseY - guiTop - pageHeight / 2) + currentScroll);
-				nbttagcompound.setTag("PlaceHeldAt", data);
+				nbttagcompound.setByte("AddToNotebook", (byte)-1);
 				nbttagcompound.setBoolean("Single", (button == 1));
 				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
 				handler.processMessage(mc.thePlayer, nbttagcompound);
 				return true;
 			}
 			if (button == 2) {
-				// XXX: (PageSorting) Move handling out of element
-				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setByte("SortNotebook", (byte) 0);
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-				handler.processMessage(mc.thePlayer, nbttagcompound);
+				//FIXME: (Surface) Pickblock on page -> clone
 				return true;
 			}
 			if (hoverpage != null && button == 0) {
 				int index = hoverpage.slotId;
-				if (index == -1) return true;
 				// XXX: (PageSorting) Move handling out of element
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setInteger("TakeFromSurface", index);

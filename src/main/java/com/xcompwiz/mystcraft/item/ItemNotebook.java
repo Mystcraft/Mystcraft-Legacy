@@ -20,13 +20,12 @@ import com.xcompwiz.mystcraft.client.gui.GuiInventoryNotebook;
 import com.xcompwiz.mystcraft.inventory.ContainerNotebook;
 import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
 import com.xcompwiz.mystcraft.network.NetworkUtils;
-import com.xcompwiz.mystcraft.oldapi.PositionableItem;
-import com.xcompwiz.mystcraft.page.IItemPageProvider;
+import com.xcompwiz.mystcraft.page.IItemPageCollection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemNotebook extends Item implements IItemPageProvider, IItemWritable {
+public class ItemNotebook extends Item implements IItemPageCollection, IItemWritable {
 
 	public static class GuiHandlerNotebook extends GuiHandlerManager.GuiHandler {
 		@Override
@@ -128,22 +127,12 @@ public class ItemNotebook extends Item implements IItemPageProvider, IItemWritab
 	}
 
 	@Override
-	public List<PositionableItem> getPagesForSurface(EntityPlayer player, ItemStack notebook) {
-		return InventoryNotebook.getPositionableItems(notebook);
-	}
-
-	@Override
 	public ItemStack addPage(EntityPlayer player, ItemStack notebook, ItemStack page) {
 		return InventoryNotebook.addItem(notebook, page);
 	}
 
 	@Override
-	public ItemStack addPage(ItemStack notebook, ItemStack page, float x, float y) {
-		return InventoryNotebook.addItemAt(notebook, page, x, y);
-	}
-
-	@Override
-	public void sort(ItemStack itemstack, SortType type, short width) {
-		InventoryNotebook.sort(itemstack, type, width);
+	public List<ItemStack> getPages(EntityPlayer player, ItemStack itemstack) {
+		return InventoryNotebook.getItems(itemstack);
 	}
 }

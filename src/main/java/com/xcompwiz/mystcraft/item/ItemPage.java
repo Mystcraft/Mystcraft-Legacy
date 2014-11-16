@@ -16,8 +16,7 @@ import net.minecraft.world.World;
 import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
-import com.xcompwiz.mystcraft.oldapi.PositionableItem;
-import com.xcompwiz.mystcraft.page.IItemPageProvider;
+import com.xcompwiz.mystcraft.page.IItemPageCollection;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
@@ -26,7 +25,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemPage extends Item implements IItemPageProvider, IItemWritable {
+public class ItemPage extends Item implements IItemPageCollection, IItemWritable {
 
 	public ItemPage() {
 		super();
@@ -135,21 +134,12 @@ public class ItemPage extends Item implements IItemPageProvider, IItemWritable {
 	}
 
 	@Override
-	public List<PositionableItem> getPagesForSurface(EntityPlayer player, ItemStack itemstack) {
-		PositionableItem pos = new PositionableItem(itemstack, 0);
-		return Arrays.asList(pos);
-	}
-
-	@Override
 	public ItemStack addPage(EntityPlayer player, ItemStack itemstack, ItemStack page) {
 		return page;
 	}
 
 	@Override
-	public ItemStack addPage(ItemStack itemstack, ItemStack page, float x, float y) {
-		return page;
+	public List<ItemStack> getPages(EntityPlayer player, ItemStack itemstack) {
+		return Arrays.asList(itemstack);
 	}
-
-	@Override
-	public void sort(ItemStack itemstack, SortType type, short width) {}
 }
