@@ -51,12 +51,12 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 	}
 
 	/**
-	 * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
-	 * the end, it adds Fences...
+	 * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at the end, it adds Fences...
 	 */
 	@Override
 	public boolean addComponentParts(World worldObj, Random rand, StructureBoundingBox boundingbox) {
 		if (!this.shouldBuildHere(worldObj, boundingbox, 0)) return false;
+		//LoggerUtils.info("Generating Library at %d %d %d", boundingbox.minX, boundingbox.minY, boundingbox.minZ);
 
 		// 0 - Towards front
 		// 1 - Towards back
@@ -778,14 +778,10 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 		placeBlockAtCurrentPosition(worldObj, Blocks.cobblestone_wall, 0, 1, 3, 6, boundingbox);
 
 		ChestGenHooks info = ChestGenHooks.getInfo(MystObjects.MYST_TREASURE);
-		if (!this.hasMadeChest) {
-			this.hasMadeChest = this.generateStructureChestContents(worldObj, boundingbox, rand, 4, 1, 2, info.getItems(rand), info.getCount(rand));
-		}
+		this.hasMadeChest = this.generateStructureChestContents(worldObj, boundingbox, rand, 4, 1, 2, info.getItems(rand), info.getCount(rand));
 
 		for (int i = 0; i < this.lecternGenned.length; ++i) {
-			if (!this.lecternGenned[i]) {
-				this.lecternGenned[i] = this.generateStructureLectern(worldObj, boundingbox, rand, lecternCoords[i][0], lecternCoords[i][1], lecternCoords[i][2], lecternTargs[i][0], lecternTargs[i][1], info);
-			}
+			this.lecternGenned[i] = this.generateStructureLectern(worldObj, boundingbox, rand, lecternCoords[i][0], lecternCoords[i][1], lecternCoords[i][2], lecternTargs[i][0], lecternTargs[i][1], info);
 		}
 
 		return true;
@@ -807,7 +803,7 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 				lectern.setYaw(360 - getRotation(ti, tk, ti2, tk2) + 270);
 				ItemStack item = null;
 				IAgeSymbol symbol = null;
-				while (!lectern.isItemValidForSlot(0, item) || (symbol != null && SymbolManager.getSymbolTreasureChance(symbol) >= 60)) {
+				while (!lectern.isItemValidForSlot(0, item) || (symbol != null && (SymbolManager.getSymbolItemCardRank(symbol.identifier()) == null || SymbolManager.getSymbolItemCardRank(symbol.identifier()) < 3))) {
 					item = info.getOneItem(rand); //TODO: (Treasure) Replace with better system?
 					String symbolid = Page.getSymbol(item);
 					if (symbolid == null) continue;

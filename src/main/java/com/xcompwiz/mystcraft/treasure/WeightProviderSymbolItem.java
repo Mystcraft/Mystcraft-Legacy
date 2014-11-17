@@ -15,7 +15,7 @@ public class WeightProviderSymbolItem implements IWeightProvider {
 		if (item instanceof IAgeSymbol) {
 			IAgeSymbol symbol = ((IAgeSymbol) item);
 			String id = symbol.identifier();
-			return SymbolManager.getSymbolItemRarity(id);
+			return SymbolManager.getSymbolItemWeight(id);
 		}
 		return 1;
 	};

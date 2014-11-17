@@ -10,14 +10,8 @@ import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierAngle;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBlock;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierClear;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierColor;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierGradient;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierLength;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierNoSea;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierPhase;
 import com.xcompwiz.util.CollectionUtils;
 
 public class SymbolDataModifiers {
@@ -31,8 +25,7 @@ public class SymbolDataModifiers {
 			this.symbol = symbol;
 		}
 
-		private BlockModifierContainerObject() {
-		}
+		private BlockModifierContainerObject() {}
 
 		public BlockModifierContainerObject add(BlockCategory cat, float grammarweight) {
 			if (descriptor == null || symbol == null) return this;
@@ -43,72 +36,55 @@ public class SymbolDataModifiers {
 			return this;
 		}
 
-		public static BlockModifierContainerObject create(String word, float itemrarity, Block block, byte metadata) {
+		public static BlockModifierContainerObject create(String word, int cardrank, Block block, byte metadata) {
 			BlockDescriptor descriptor = new BlockDescriptor(block, metadata);
 			ModifierBlock symbol = new ModifierBlock(descriptor, word);
 			if (SymbolManager.hasBinding(symbol.identifier())) {
 				LoggerUtils.info("Some Mod is attempting to register a block symbol over an existing registration.");
 				return new BlockModifierContainerObject();
 			}
+			symbol.setCardRank(cardrank);
 			InternalAPI.symbol.registerSymbol(symbol);
 			return new BlockModifierContainerObject(descriptor, symbol);
 		}
 
-		public static BlockModifierContainerObject create(String word, float itemrarity, Block block, int metadata) {
-			return BlockModifierContainerObject.create(word, itemrarity, block, (byte) metadata);
+		public static BlockModifierContainerObject create(String word, int cardrank, Block block, int metadata) {
+			return BlockModifierContainerObject.create(word, cardrank, block, (byte) metadata);
 		}
 	}
 
 	public static void initialize() {
-		BlockModifierContainerObject.create(WordData.Terrain, 0.50F, Blocks.dirt, 0).add(BlockCategory.TERRAIN, 0.10F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.SOLID, 1.00F);
-		BlockModifierContainerObject.create(WordData.Terrain, 0.62F, Blocks.stone, 0).add(BlockCategory.TERRAIN, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.SOLID, 1.00F);
-		BlockModifierContainerObject.create(WordData.Terrain, 0.18F, Blocks.end_stone, 0).add(BlockCategory.TERRAIN, 0.40F).add(BlockCategory.STRUCTURE, 0.40F).add(BlockCategory.SOLID, 0.40F);
-		BlockModifierContainerObject.create(WordData.Terrain, 0.32F, Blocks.netherrack, 0).add(BlockCategory.TERRAIN, 0.80F).add(BlockCategory.STRUCTURE, 0.80F).add(BlockCategory.SOLID, 0.80F);
+		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.dirt, 0).add(BlockCategory.TERRAIN, 0.10F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.SOLID, 1.00F);
+		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.stone, 0).add(BlockCategory.TERRAIN, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.SOLID, 1.00F);
+		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.netherrack, 0).add(BlockCategory.TERRAIN, 0.80F).add(BlockCategory.STRUCTURE, 0.80F).add(BlockCategory.SOLID, 0.80F);
+		BlockModifierContainerObject.create(WordData.Terrain, 3, Blocks.end_stone, 0).add(BlockCategory.TERRAIN, 0.40F).add(BlockCategory.STRUCTURE, 0.40F).add(BlockCategory.SOLID, 0.40F);
 
-		BlockModifierContainerObject.create(WordData.Structure, 0.32F, Blocks.nether_brick, 0).add(BlockCategory.SOLID, 0.50F).add(BlockCategory.STRUCTURE, 0.50F);
+		BlockModifierContainerObject.create(WordData.Structure, 2, Blocks.nether_brick, 0).add(BlockCategory.SOLID, 0.50F).add(BlockCategory.STRUCTURE, 0.50F);
 		for (byte i = 0; i < 4; ++i) {
-			BlockModifierContainerObject.create(WordData.Structure, 0.62F, Blocks.log, i).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.ORGANIC, 1.00F).add(BlockCategory.STRUCTURE, 1.00F);
+			BlockModifierContainerObject.create(WordData.Structure, 2, Blocks.log, i).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.ORGANIC, 1.00F).add(BlockCategory.STRUCTURE, 1.00F);
 		}
 		for (byte i = 0; i < 2; ++i) {
-			BlockModifierContainerObject.create(WordData.Structure, 0.62F, Blocks.log2, i).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.ORGANIC, 1.00F).add(BlockCategory.STRUCTURE, 1.00F);
+			BlockModifierContainerObject.create(WordData.Structure, 2, Blocks.log2, i).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.ORGANIC, 1.00F).add(BlockCategory.STRUCTURE, 1.00F);
 		}
 
-		BlockModifierContainerObject.create(WordData.Ore, 0.01F, Blocks.diamond_ore, 0).add(BlockCategory.SOLID, 0.10F).add(BlockCategory.STRUCTURE, 0.10F);
-		BlockModifierContainerObject.create(WordData.Ore, 0.10F, Blocks.gold_ore, 0).add(BlockCategory.SOLID, 0.30F).add(BlockCategory.STRUCTURE, 0.30F);
-		BlockModifierContainerObject.create(WordData.Ore, 0.15F, Blocks.iron_ore, 0).add(BlockCategory.SOLID, 0.30F).add(BlockCategory.STRUCTURE, 0.30F);
-		BlockModifierContainerObject.create(WordData.Ore, 0.25F, Blocks.coal_ore, 0).add(BlockCategory.SOLID, 0.30F).add(BlockCategory.STRUCTURE, 0.30F);
-		BlockModifierContainerObject.create(WordData.Ore, 0.25F, Blocks.redstone_ore, 0).add(BlockCategory.SOLID, 0.30F).add(BlockCategory.STRUCTURE, 0.30F);
+		BlockModifierContainerObject.create(WordData.Ore, 5, Blocks.diamond_ore, 0).add(BlockCategory.SOLID, 0.10F).add(BlockCategory.STRUCTURE, 0.10F);
+		BlockModifierContainerObject.create(WordData.Ore, 4, Blocks.gold_ore, 0).add(BlockCategory.SOLID, 0.30F).add(BlockCategory.STRUCTURE, 0.30F);
+		BlockModifierContainerObject.create(WordData.Ore, 3, Blocks.iron_ore, 0).add(BlockCategory.SOLID, 0.30F).add(BlockCategory.STRUCTURE, 0.30F);
+		BlockModifierContainerObject.create(WordData.Ore, 3, Blocks.coal_ore, 0).add(BlockCategory.SOLID, 0.30F).add(BlockCategory.STRUCTURE, 0.30F);
+		BlockModifierContainerObject.create(WordData.Ore, 4, Blocks.redstone_ore, 0).add(BlockCategory.SOLID, 0.30F).add(BlockCategory.STRUCTURE, 0.30F);
 
-		BlockModifierContainerObject.create(WordData.Chain, 0.42F, Blocks.ice, 0).add(BlockCategory.SOLID, 0.60F).add(BlockCategory.FLUID, 0.40F).add(BlockCategory.SEA, 0.40F).add(BlockCategory.STRUCTURE, 0.40F).add(BlockCategory.CRYSTAL, 0.40F);
-		BlockModifierContainerObject.create(WordData.Chain, 0.42F, Blocks.packed_ice, 0).add(BlockCategory.SOLID, 0.60F).add(BlockCategory.FLUID, 0.40F).add(BlockCategory.TERRAIN, 0.40F).add(BlockCategory.SEA, 0.40F).add(BlockCategory.STRUCTURE, 0.40F).add(BlockCategory.CRYSTAL, 0.40F);
-		BlockModifierContainerObject.create(WordData.Chain, 0.42F, Blocks.glass, 0).add(BlockCategory.SOLID, 0.60F).add(BlockCategory.STRUCTURE, 0.60F).add(BlockCategory.CRYSTAL, 0.60F);
-		BlockModifierContainerObject.create(WordData.Chain, 0.62F, Blocks.snow, 0).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.CRYSTAL, 1.00F);
-		BlockModifierContainerObject.create(WordData.Chain, 0.50F, Blocks.obsidian, 0).add(BlockCategory.SOLID, 0.80F).add(BlockCategory.TERRAIN, 0.20F).add(BlockCategory.STRUCTURE, 0.80F).add(BlockCategory.CRYSTAL, 0.80F);
-		BlockModifierContainerObject.create(WordData.Chain, 0.62F, ModBlocks.crystal, 0).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.CRYSTAL, 1.00F);
-		BlockModifierContainerObject.create(WordData.Chain, 0.42F, Blocks.glowstone, 0).add(BlockCategory.SOLID, 0.60F).add(BlockCategory.STRUCTURE, 0.60F).add(BlockCategory.CRYSTAL, 0.60F);
-		BlockModifierContainerObject.create(WordData.Chain, 0.62F, Blocks.quartz_ore, 0).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.CRYSTAL, 1.00F);
+		BlockModifierContainerObject.create(WordData.Chain, 2, Blocks.ice, 0).add(BlockCategory.SOLID, 0.60F).add(BlockCategory.FLUID, 0.40F).add(BlockCategory.SEA, 0.40F).add(BlockCategory.STRUCTURE, 0.40F).add(BlockCategory.CRYSTAL, 0.40F);
+		BlockModifierContainerObject.create(WordData.Chain, 2, Blocks.packed_ice, 0).add(BlockCategory.SOLID, 0.60F).add(BlockCategory.FLUID, 0.40F).add(BlockCategory.TERRAIN, 0.40F).add(BlockCategory.SEA, 0.40F).add(BlockCategory.STRUCTURE, 0.40F).add(BlockCategory.CRYSTAL, 0.40F);
+		BlockModifierContainerObject.create(WordData.Chain, 2, Blocks.glass, 0).add(BlockCategory.SOLID, 0.60F).add(BlockCategory.STRUCTURE, 0.60F).add(BlockCategory.CRYSTAL, 0.60F);
+		BlockModifierContainerObject.create(WordData.Chain, 2, Blocks.snow, 0).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.CRYSTAL, 1.00F);
+		BlockModifierContainerObject.create(WordData.Chain, 3, Blocks.obsidian, 0).add(BlockCategory.SOLID, 0.80F).add(BlockCategory.TERRAIN, 0.20F).add(BlockCategory.STRUCTURE, 0.80F).add(BlockCategory.CRYSTAL, 0.80F);
+		BlockModifierContainerObject.create(WordData.Chain, 3, ModBlocks.crystal, 0).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.CRYSTAL, 1.00F);
+		BlockModifierContainerObject.create(WordData.Chain, 3, Blocks.glowstone, 0).add(BlockCategory.SOLID, 0.60F).add(BlockCategory.STRUCTURE, 0.60F).add(BlockCategory.CRYSTAL, 0.60F);
+		BlockModifierContainerObject.create(WordData.Chain, 3, Blocks.quartz_ore, 0).add(BlockCategory.SOLID, 1.00F).add(BlockCategory.STRUCTURE, 1.00F).add(BlockCategory.CRYSTAL, 1.00F);
 
-		BlockModifierContainerObject.create(WordData.Sea, 0.62F, Blocks.flowing_water, 0).add(BlockCategory.FLUID, 1.00F).add(BlockCategory.SEA, 1.00F);
-		BlockModifierContainerObject.create(WordData.Sea, 0.28F, Blocks.flowing_lava, 0).add(BlockCategory.FLUID, 0.50F).add(BlockCategory.SEA, 0.50F);
+		BlockModifierContainerObject.create(WordData.Sea, 2, Blocks.flowing_water, 0).add(BlockCategory.FLUID, 1.00F).add(BlockCategory.SEA, 1.00F);
+		BlockModifierContainerObject.create(WordData.Sea, 3, Blocks.flowing_lava, 0).add(BlockCategory.FLUID, 0.50F).add(BlockCategory.SEA, 0.50F);
 
-		InternalAPI.symbol.registerSymbol((new ModifierNoSea()));
-
-		InternalAPI.symbol.registerSymbol((new ModifierClear()));
-		// wavelength
-		InternalAPI.symbol.registerSymbol((new ModifierLength(0.0F, "ModZero", "Zero Length")));
-		InternalAPI.symbol.registerSymbol((new ModifierLength(0.5F, "ModHalf", "Half Length")));
-		InternalAPI.symbol.registerSymbol((new ModifierLength(1.0F, "ModFull", "Full Length")));
-		InternalAPI.symbol.registerSymbol((new ModifierLength(2.0F, "ModDouble", "Double Length")));
-		// phase
-		InternalAPI.symbol.registerSymbol((new ModifierPhase(000F, "ModEnd", "Nadir")));
-		InternalAPI.symbol.registerSymbol((new ModifierPhase(090F, "ModRising", "Rising")));
-		InternalAPI.symbol.registerSymbol((new ModifierPhase(180F, "ModNoon", "Zenith")));
-		InternalAPI.symbol.registerSymbol((new ModifierPhase(270F, "ModSetting", "Setting")));
-		// angle
-		InternalAPI.symbol.registerSymbol((new ModifierAngle(000.0F, "ModNorth", "North")));
-		InternalAPI.symbol.registerSymbol((new ModifierAngle(090.0F, "ModEast", "East")));
-		InternalAPI.symbol.registerSymbol((new ModifierAngle(180.0F, "ModSouth", "South")));
-		InternalAPI.symbol.registerSymbol((new ModifierAngle(270.0F, "ModWest", "West")));
 		// color
 		InternalAPI.symbol.registerSymbol((new ModifierColor(0.50F, 0.00F, 0.00F, "Maroon")));
 		InternalAPI.symbol.registerSymbol((new ModifierColor(1.00F, 0.00F, 0.00F, "Red")));
@@ -126,7 +102,5 @@ public class SymbolDataModifiers {
 		InternalAPI.symbol.registerSymbol((new ModifierColor(0.50F, 0.50F, 0.50F, "Grey")));
 		InternalAPI.symbol.registerSymbol((new ModifierColor(0.75F, 0.75F, 0.75F, "Silver")));
 		InternalAPI.symbol.registerSymbol((new ModifierColor(1.00F, 1.00F, 1.00F, "White")));
-
-		InternalAPI.symbol.registerSymbol((new ModifierGradient()));
 	}
 }

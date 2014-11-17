@@ -13,12 +13,12 @@ import com.xcompwiz.mystcraft.words.DrawableWordManager;
 public class SymbolAPIDelegate implements ISymbolAPI, ISymbolValuesAPI, IWordAPI {
 
 	@Override
-	public void setSymbolItemRarity(IAgeSymbol symbol, float weight) {
-		SymbolManager.setSymbolItemRarity(symbol.identifier(), weight);
+	public void setSymbolCardRank(IAgeSymbol symbol, int weight) {
+		SymbolManager.setSymbolItemCardRank(symbol.identifier(), weight);
 	}
 
 	@Override
-	public void setSymbolIsTradable(IAgeSymbol symbol, boolean flag) {
+	public void setSymbolIsPurchasable(IAgeSymbol symbol, boolean flag) {
 		SymbolManager.setSymbolIsTradable(symbol.identifier(), flag);
 	}
 
@@ -33,8 +33,8 @@ public class SymbolAPIDelegate implements ISymbolAPI, ISymbolValuesAPI, IWordAPI
 	}
 
 	@Override
-	public float getSymbolItemRarity(String identifier) {
-		return SymbolManager.getSymbolItemRarity(identifier);
+	public float getSymbolItemWeight(String identifier) {
+		return SymbolManager.getSymbolItemWeight(identifier);
 	}
 
 	@Override

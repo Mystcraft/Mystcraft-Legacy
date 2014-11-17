@@ -20,6 +20,7 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.data.DebugFlags;
 import com.xcompwiz.mystcraft.data.GrammarRules;
 import com.xcompwiz.mystcraft.grammar.GrammarTree;
 import com.xcompwiz.mystcraft.nbt.NBTTagCompoundWrapper;
@@ -236,12 +237,12 @@ public class AgeData extends WorldSavedData {
 			}
 			GrammarTree tree = new GrammarTree(GrammarRules.ROOT);
 			tree.parseTerminals(symbols, new Random(this.seed));
-			if (Mystcraft.debugGrammar) {
+			if (DebugFlags.grammar) {
 				System.out.println(" == Parsed Tree ==");
 				tree.print();
 			}
 			symbols = tree.getExpanded(new Random(this.seed));
-			if (Mystcraft.debugGrammar) {
+			if (DebugFlags.grammar) {
 				System.out.println(" == Produced Tree ==");
 				tree.print();
 			}

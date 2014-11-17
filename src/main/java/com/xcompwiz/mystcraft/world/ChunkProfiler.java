@@ -24,6 +24,7 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
 import com.xcompwiz.mystcraft.core.DebugDataTracker;
 import com.xcompwiz.mystcraft.core.DebugDataTracker.Callback;
+import com.xcompwiz.mystcraft.data.DebugFlags;
 
 public class ChunkProfiler extends WorldSavedData {
 	public static final String					ID				= "MystChunkProfile";
@@ -101,7 +102,7 @@ public class ChunkProfiler extends WorldSavedData {
 	}
 
 	public int calculateInstability() {
-		if (outputfiles) outputFiles();
+		if (outputfiles || DebugFlags.profiler) outputFiles();
 		float instability = 0;
 		int layers = solid.data.length / 256;
 		HashMap<Block, Float> split = new HashMap<Block, Float>();
@@ -127,7 +128,7 @@ public class ChunkProfiler extends WorldSavedData {
 			}
 		}
 		for (Entry<Block, Float> entry : split.entrySet()) {
-			//DebugDataTracker.set((debugname == null ? "Unnamed" : debugname) + ".instability." + entry.getKey().getUnlocalizedName(), "" + entry.getValue());
+			if (DebugFlags.profiler) DebugDataTracker.set((debugname == null ? "Unnamed" : debugname) + ".instability." + entry.getKey().getUnlocalizedName(), "" + entry.getValue());
 			float val = entry.getValue();
 			if (val > 0) {
 				val = Math.max(0, val - freevals.get(entry.getKey()));

@@ -17,8 +17,9 @@ public abstract class SymbolBase implements IAgeSymbol {
 		this.words = words;
 	}
 
-	public IAgeSymbol setRarity(float f) {
-		InternalAPI.symbolValues.setSymbolItemRarity(this, f);
+	public IAgeSymbol setCardRank(Integer cardrank) {
+		if (cardrank == null) return this;
+		InternalAPI.symbolValues.setSymbolCardRank(this, cardrank);
 		return this;
 	}
 

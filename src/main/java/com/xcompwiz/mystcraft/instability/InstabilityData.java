@@ -31,6 +31,7 @@ public class InstabilityData {
 
 	}
 
+	@SuppressWarnings("unused")
 	private static class stability {
 		public static int	blindness			= 1000;
 		public static int	blindness_global	= 1500;

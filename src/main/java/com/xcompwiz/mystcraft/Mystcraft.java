@@ -46,10 +46,9 @@ import com.xcompwiz.mystcraft.data.ModFluids;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.data.ModLinkEffects;
 import com.xcompwiz.mystcraft.data.ModRecipes;
-import com.xcompwiz.mystcraft.data.SymbolData;
+import com.xcompwiz.mystcraft.data.ModSymbols;
+import com.xcompwiz.mystcraft.data.ModWords;
 import com.xcompwiz.mystcraft.data.SymbolDataFluids;
-import com.xcompwiz.mystcraft.data.SymbolPoemData;
-import com.xcompwiz.mystcraft.data.SymbolRarityData;
 import com.xcompwiz.mystcraft.data.SymbolRules;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
 import com.xcompwiz.mystcraft.imc.IMCHandler;
@@ -142,8 +141,6 @@ public class Mystcraft {
 	public static Set<String>			validInks;
 
 	public static MapStorage			clientStorage		= null;
-
-	public static boolean				debugGrammar		= false;
 
 	@EventHandler
 	public void load(FMLPreInitializationEvent event) {
@@ -267,9 +264,8 @@ public class Mystcraft {
 		EntityRegistry.registerModEntity(com.xcompwiz.mystcraft.entity.EntityMeteor.class, "myst.meteor", ent_meteor_id, this, 192, 30, false);
 
 		// Init Symbol System
-		SymbolData.initialize();
-		SymbolPoemData.initialize();
-		SymbolRarityData.initialize();
+		ModSymbols.initialize();
+		ModWords.initialize();
 		SymbolRules.initialize();
 		//register instability data 
 		InstabilityData.initialize();
@@ -299,19 +295,20 @@ public class Mystcraft {
 	@EventHandler
 	public void modsLoaded(FMLPostInitializationEvent event) {
 		sidedProxy.postInit();
-		SymbolData.generateBiomeSymbols();
+		ModSymbols.generateBiomeSymbols();
 		SymbolDataFluids.modsLoaded();
 		SymbolRules.register();
+
+		SymbolManager.buildCardRanks();
 
 		// Treasure object
 		ChestGenHooks treasureinfo = ChestGenHooks.getInfo(MystObjects.MYST_TREASURE);
 		treasureinfo.setMin(4);
 		treasureinfo.setMax(8);
-		treasureinfo.addItem(new WeightedRandomChestContent(Items.book, 0, 1, 8, 50));
-		treasureinfo.addItem(new WeightedRandomChestContent(Items.paper, 0, 1, 32, 50));
-		treasureinfo.addItem(new TreasureGenBooster(11, 3, 1, 1000));
+		//treasureinfo.addItem(new WeightedRandomChestContent(Items.book, 0, 1, 8, 50));
+		treasureinfo.addItem(new TreasureGenBooster(7, 4, 4, 1, 1000));
 		// 11 commons, 3 uncommon, 1 rare, and a basic land
-		if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderBooster(11, 3, 1));
+		if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderBooster(7, 4, 4, 1));
 
 		TreasureGenWrapper mystTreasureSub = new TreasureGenWrapper(MystObjects.MYST_TREASURE, 10);
 		ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(mystTreasureSub);
@@ -327,7 +324,7 @@ public class Mystcraft {
 		for (IAgeSymbol symbol : symbols) {
 			// Create treasure gen entry
 			int maxStack = SymbolManager.getSymbolTreasureMaxStack(symbol);
-			int chance = SymbolManager.getSymbolTreasureChance(symbol);
+			int chance = SymbolManager.getSymbolItemWeight(symbol.identifier());
 			if (chance != 0 && maxStack != 0) treasureinfo.addItem(new WeightedRandomChestContent(Page.createSymbolPage(symbol.identifier()), 1, maxStack, chance));
 
 			// Merchant recipe entry

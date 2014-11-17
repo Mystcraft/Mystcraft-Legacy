@@ -19,17 +19,17 @@ public class ExplosionEffectPlaceOres extends ExplosionEffect {
 
 		public final Block	block;
 		public final int	metadata;
-		public final float	rarity;
+		public final float	weight;
 
-		public WeightedBlockSelection(Block block, int metadata, float rarity) {
+		public WeightedBlockSelection(Block block, int metadata, float weight) {
 			this.block = block;
 			this.metadata = metadata;
-			this.rarity = rarity;
+			this.weight = weight;
 		}
 
 		@Override
 		public float getWeight() {
-			return this.rarity;
+			return this.weight;
 		}
 
 	}

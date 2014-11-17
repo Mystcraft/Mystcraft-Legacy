@@ -1,6 +1,8 @@
 package com.xcompwiz.mystcraft.data;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -18,11 +20,46 @@ import com.xcompwiz.mystcraft.data.SymbolDataModifiers.BlockModifierContainerObj
 import com.xcompwiz.mystcraft.world.ChunkProfiler;
 
 public class SymbolDataFluids {
+	private static MystConfig	config;
+
+	public static void setConfig(MystConfig mystconfig) {
+		config = mystconfig;
+	}
+
+	public static void init() {
+		loadDefaults();
+	}
+
+	public static void modsLoaded() {
+		Map<String, Fluid> map = FluidRegistry.getRegisteredFluids();
+		for (Entry<String, Fluid> entry : map.entrySet()) {
+			Fluid fluid = entry.getValue();
+			if (blacklist.contains(fluid)) return;
+			Block block = fluid.getBlock();
+			if (block == Blocks.water) continue;
+			if (block == Blocks.lava) continue;
+			if (block == null) continue;
+			if (Item.getItemFromBlock(block) == null) continue;
+
+			byte meta = 0;
+			if (block instanceof BlockFluidBase) meta = (byte) ((BlockFluidBase) block).getMaxRenderHeightMeta();
+			String fluidkey = getFluidKey(fluid);
+			BlockModifierContainerObject container = BlockModifierContainerObject.create(WordData.Sea, symbolCardRank(fluidkey), block, meta);
+			ChunkProfiler.setInstabilityFactors(block, factor1(fluidkey), factor2(fluidkey), 0);
+			if (fluid.isGaseous()) {
+				container.add(BlockCategory.GAS, grammarWeight(fluidkey));
+			} else {
+				if (!isBannedSea(fluidkey)) container.add(BlockCategory.SEA, grammarWeight(fluidkey));
+				container.add(BlockCategory.FLUID, grammarWeight(fluidkey));
+			}
+		}
+		if (config != null && config.hasChanged()) config.save();
+	}
 
 	public static class FluidData {
 		public boolean	seabanned	= false;
 		public float	grammar		= 0.1F;
-		public float	rarity		= 0.1F;
+		public Integer	cardrank	= 4;
 		public float	factor1		= 1.00F;
 		public float	factor2		= 0.25F;
 
@@ -36,8 +73,8 @@ public class SymbolDataFluids {
 			return this;
 		}
 
-		public FluidData setRarity(float v) {
-			this.rarity = v;
+		public FluidData setCardRank(int v) {
+			this.cardrank = v;
 			return this;
 		}
 
@@ -52,18 +89,18 @@ public class SymbolDataFluids {
 		}
 	}
 
+	private static Collection<Fluid>		blacklist			= new HashSet<Fluid>();
 	private static Map<String, FluidData>	defaults			= new HashMap<String, SymbolDataFluids.FluidData>();
 	private static FluidData				defaultfluidvals	= new FluidData();
 
 	private static Map<String, Boolean>		bannedsea			= new HashMap<String, Boolean>();
-	private static Map<String, Float>		rarities			= new HashMap<String, Float>();
+	private static Map<String, Integer>		cardranks			= new HashMap<String, Integer>();
 	private static Map<String, Float>		grammarWeights		= new HashMap<String, Float>();
 	private static Map<String, Float>		factor1s			= new HashMap<String, Float>();
 	private static Map<String, Float>		factor2s			= new HashMap<String, Float>();
-	private static MystConfig				config;
 
-	public static void setConfig(MystConfig mystconfig) {
-		config = mystconfig;
+	public static void blacklist(Fluid fluid) {
+		blacklist.add(fluid);
 	}
 
 	public static FluidData getDefault(String fluidname) {
@@ -75,7 +112,77 @@ public class SymbolDataFluids {
 		return data;
 	}
 
-	public static void init() {
+	private static FluidData getDefaultValue(String fluidkey) {
+		FluidData data = defaults.get(fluidkey);
+		if (data != null) { return data; }
+		return defaultfluidvals;
+	}
+
+	private static boolean isBannedSea(String fluidkey) {
+		Boolean value = bannedsea.get(fluidkey);
+		if (value != null) return value;
+		boolean val = getDefaultValue(fluidkey).seabanned;
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".seabanned", val);
+		return val;
+	}
+
+	private static Integer symbolCardRank(String fluidkey) {
+		Integer value = cardranks.get(fluidkey);
+		if (value != null) return value;
+		int val = getDefaultValue(fluidkey).cardrank;
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".cardrank", val);
+		return val;
+	}
+
+	private static float grammarWeight(String fluidkey) {
+		Float value = grammarWeights.get(fluidkey);
+		if (value != null) return value;
+		float val = getDefaultValue(fluidkey).grammar;
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".grammar", val);
+		return val;
+	}
+
+	private static float factor1(String fluidkey) {
+		Float value = factor1s.get(fluidkey);
+		if (value != null) return value;
+		float val = getDefaultValue(fluidkey).factor1;
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".instability.factor_accessibility", val);
+		return val;
+	}
+
+	private static float factor2(String fluidkey) {
+		Float value = factor2s.get(fluidkey);
+		if (value != null) return value;
+		float val = getDefaultValue(fluidkey).factor2;
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".instability.factor_flat", val);
+		return val;
+	}
+
+	private static String getFluidKey(Fluid fluid) {
+		return fluid.getUnlocalizedName().toLowerCase().replace(' ', '_');
+	}
+
+	public static void setSeaBanned(Fluid fluid, boolean value) {
+		bannedsea.put(getFluidKey(fluid), value);
+	}
+
+	public static void setCardRank(Fluid fluid, int value) {
+		cardranks.put(getFluidKey(fluid), value);
+	}
+
+	public static void setGrammarWeight(Fluid fluid, float value) {
+		grammarWeights.put(getFluidKey(fluid), value);
+	}
+
+	public static void setFactor1(Fluid fluid, float value) {
+		factor1s.put(getFluidKey(fluid), value);
+	}
+
+	public static void setFactor2(Fluid fluid, float value) {
+		factor2s.put(getFluidKey(fluid), value);
+	}
+
+	private static void loadDefaults() {
 		getDefault("fluid.mobessence").setBannedSea(false).setFactor1(98F).setFactor2(7F);
 		getDefault("fluid.ender").setBannedSea(true).setFactor1(72F).setFactor2(6F);
 		getDefault("fluid.manyullyn.molten").setBannedSea(true).setFactor1(72F).setFactor2(6F);
@@ -141,100 +248,5 @@ public class SymbolDataFluids {
 		getDefault("fluid.mana").setBannedSea(false).setFactor1(-6F).setFactor2(-2F);
 		getDefault("fluid.pyrotheum").setBannedSea(false).setFactor1(-6F).setFactor2(-2F);
 		getDefault("fluid.fluxgoo").setBannedSea(false).setFactor1(-12F).setFactor2(-3F);
-	}
-
-	public static void modsLoaded() {
-		Map<String, Fluid> map = FluidRegistry.getRegisteredFluids();
-		for (Entry<String, Fluid> entry : map.entrySet()) {
-			Fluid fluid = entry.getValue();
-			Block block = fluid.getBlock();
-			if (block == Blocks.water) continue;
-			if (block == Blocks.lava) continue;
-			if (block == null) continue;
-			if (Item.getItemFromBlock(block) == null) continue;
-
-			byte meta = 0;
-			if (block instanceof BlockFluidBase) meta = (byte) ((BlockFluidBase) block).getMaxRenderHeightMeta();
-			String fluidkey = getFluidKey(fluid);
-			BlockModifierContainerObject container = BlockModifierContainerObject.create(WordData.Sea, symbolRarity(fluidkey), block, meta);
-			ChunkProfiler.setInstabilityFactors(block, factor1(fluidkey), factor2(fluidkey), 0);
-			if (fluid.isGaseous()) {
-				container.add(BlockCategory.GAS, grammarWeight(fluidkey));
-			} else {
-				if (!isBannedSea(fluidkey)) container.add(BlockCategory.SEA, grammarWeight(fluidkey));
-				container.add(BlockCategory.FLUID, grammarWeight(fluidkey));
-			}
-		}
-		if (config != null && config.hasChanged()) config.save();
-	}
-
-	private static FluidData getDefaultValue(String fluidkey) {
-		FluidData data = defaults.get(fluidkey);
-		if (data != null) { return data; }
-		return defaultfluidvals;
-	}
-
-	private static boolean isBannedSea(String fluidkey) {
-		Boolean value = bannedsea.get(fluidkey);
-		if (value != null) return value;
-		boolean val = getDefaultValue(fluidkey).seabanned;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".seabanned", val);
-		return val;
-	}
-
-	private static float symbolRarity(String fluidkey) {
-		Float value = rarities.get(fluidkey);
-		if (value != null) return value;
-		float val = getDefaultValue(fluidkey).rarity;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".rarity", val);
-		return val;
-	}
-
-	private static float grammarWeight(String fluidkey) {
-		Float value = grammarWeights.get(fluidkey);
-		if (value != null) return value;
-		float val = getDefaultValue(fluidkey).grammar;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".grammar", val);
-		return val;
-	}
-
-	private static float factor1(String fluidkey) {
-		Float value = factor1s.get(fluidkey);
-		if (value != null) return value;
-		float val = getDefaultValue(fluidkey).factor1;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".instability.factor_accessibility", val);
-		return val;
-	}
-
-	private static float factor2(String fluidkey) {
-		Float value = factor2s.get(fluidkey);
-		if (value != null) return value;
-		float val = getDefaultValue(fluidkey).factor2;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".instability.factor_flat", val);
-		return val;
-	}
-
-	private static String getFluidKey(Fluid fluid) {
-		return fluid.getUnlocalizedName().toLowerCase().replace(' ', '_');
-	}
-
-	public static void setSeaBanned(Fluid fluid, boolean value) {
-		bannedsea.put(getFluidKey(fluid), value);
-	}
-
-	public static void setRarity(Fluid fluid, float value) {
-		rarities.put(getFluidKey(fluid), value);
-	}
-
-	public static void setGrammarWeight(Fluid fluid, float value) {
-		grammarWeights.put(getFluidKey(fluid), value);
-	}
-
-	public static void setFactor1(Fluid fluid, float value) {
-		factor1s.put(getFluidKey(fluid), value);
-	}
-
-	public static void setFactor2(Fluid fluid, float value) {
-		factor2s.put(getFluidKey(fluid), value);
 	}
 }

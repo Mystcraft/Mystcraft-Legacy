@@ -23,7 +23,7 @@ public class ModifierColor extends SymbolBase {
 		this.green = g;
 		this.blue = b;
 		this.setWords(new String[] { WordData.Modifier, WordData.Image, WordData.Weave, this.name });
-		this.setRarity(0.98F);
+		this.setCardRank(0);
 	}
 
 	@Override
