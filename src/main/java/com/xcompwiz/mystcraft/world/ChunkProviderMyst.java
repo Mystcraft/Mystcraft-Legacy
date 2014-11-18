@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.world;
 
+import static net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType.QUARTZ;
+
 import java.util.List;
 import java.util.Random;
 
@@ -21,6 +23,7 @@ import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
+import net.minecraftforge.event.terraingen.TerrainGen;
 
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
@@ -191,7 +194,8 @@ public class ChunkProviderMyst implements IChunkProvider {
 		SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, x + 8, z + 8, 16, 16, rand); // TODO: (Spawning) Rewrite to use getPossibleCreatures
 		controller.populate(worldObj, rand, x, z);
 
-		for (int k1 = 0; k1 < 16; ++k1) {
+		boolean doGen = TerrainGen.generateOre(worldObj, this.rand, worldgenminablequartz, x, z, QUARTZ);
+		for (int k1 = 0; doGen && k1 < 16; ++k1) {
 			int gx = x + this.rand.nextInt(16);
 			int gy = this.rand.nextInt(108) + 10;
 			int gz = z + this.rand.nextInt(16);
