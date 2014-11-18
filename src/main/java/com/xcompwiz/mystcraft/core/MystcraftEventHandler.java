@@ -10,6 +10,7 @@ import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
@@ -20,6 +21,7 @@ import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.data.ModFluids;
 import com.xcompwiz.mystcraft.effects.EffectCrumble;
 import com.xcompwiz.mystcraft.entity.EntityUtils;
+import com.xcompwiz.mystcraft.villager.VillagerTradeSystem;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import cpw.mods.fml.common.eventhandler.Event;
@@ -57,6 +59,11 @@ public class MystcraftEventHandler {
 		if (event.world.getBlock(i, j, k) == ModBlocks.black_ink) {
 			event.setCanceled(true);
 		}
+	}
+
+	@SubscribeEvent
+	public void entityInteract(EntityInteractEvent event) {
+		if (VillagerTradeSystem.onVillagerInteraction(event)) event.setCanceled(true);
 	}
 
 	@SubscribeEvent

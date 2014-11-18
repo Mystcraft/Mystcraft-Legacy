@@ -305,7 +305,8 @@ public class Mystcraft {
 		ChestGenHooks treasureinfo = ChestGenHooks.getInfo(MystObjects.MYST_TREASURE);
 		treasureinfo.setMin(4);
 		treasureinfo.setMax(8);
-		//treasureinfo.addItem(new WeightedRandomChestContent(Items.book, 0, 1, 8, 50));
+		treasureinfo.addItem(new WeightedRandomChestContent(Items.paper, 0, 1, 8, 50));
+		treasureinfo.addItem(new WeightedRandomChestContent(Items.leather, 0, 1, 8, 50));
 		treasureinfo.addItem(new TreasureGenBooster(7, 4, 4, 1, 1000));
 		// 11 commons, 3 uncommon, 1 rare, and a basic land
 		if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderBooster(7, 4, 4, 1));

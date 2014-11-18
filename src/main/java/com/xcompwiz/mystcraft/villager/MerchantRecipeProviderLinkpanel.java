@@ -35,6 +35,6 @@ public class MerchantRecipeProviderLinkpanel implements IMerchantRecipeProvider 
 	}
 
 	public static ItemStack getPropertyTrade(String effect) {
-		return new ItemStack(Items.emerald, 16); // TODO: (Crafting) Linkpanel values
+		return new ItemStack(Items.emerald, 16); // TODO: (Trading) Linkpanel values
 	}
 }
