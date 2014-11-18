@@ -16,6 +16,7 @@ import java.util.concurrent.Semaphore;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldSavedData;
@@ -79,7 +80,7 @@ public class ChunkProfiler extends WorldSavedData {
 		DebugDataTracker.register("profiler.output", new Callback() {
 
 			@Override
-			public void setState(boolean state) {
+			public void setState(ICommandSender agent, boolean state) {
 				outputfiles = state;
 			}
 		});

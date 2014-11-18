@@ -3,10 +3,12 @@ package com.xcompwiz.mystcraft.core;
 import java.util.Collection;
 import java.util.HashMap;
 
+import net.minecraft.command.ICommandSender;
+
 public abstract class DebugDataTracker {
 
 	public interface Callback {
-		void setState(boolean state);
+		void setState(ICommandSender agent, boolean state);
 	}
 
 	private static HashMap<String, String>		vars	= new HashMap<String, String>();
@@ -17,7 +19,7 @@ public abstract class DebugDataTracker {
 	}
 
 	public static void set(String id, String val) {
-		//vars.put(id.replaceAll(" ", "_"), val);
+		vars.put(id.replaceAll(" ", "_"), val);
 	}
 
 	public static String get(String id) {
@@ -32,8 +34,8 @@ public abstract class DebugDataTracker {
 		flags.put(flag.replaceAll(" ", "_"), callback);
 	}
 
-	public static void setFlag(String command, boolean b) {
-		flags.get(command).setState(b);
+	public static void setFlag(ICommandSender agent, String command, boolean b) {
+		flags.get(command).setState(agent, b);
 	}
 
 	public static Collection<String> getFlags() {

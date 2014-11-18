@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.config.MystConfig;
-import com.xcompwiz.mystcraft.data.SymbolDataModifiers.BlockModifierContainerObject;
+import com.xcompwiz.mystcraft.data.ModSymbolsModifiers.BlockModifierContainerObject;
 import com.xcompwiz.mystcraft.world.ChunkProfiler;
 
 public class SymbolDataFluids {
@@ -47,10 +47,10 @@ public class SymbolDataFluids {
 			BlockModifierContainerObject container = BlockModifierContainerObject.create(WordData.Sea, symbolCardRank(fluidkey), block, meta);
 			ChunkProfiler.setInstabilityFactors(block, factor1(fluidkey), factor2(fluidkey), 0);
 			if (fluid.isGaseous()) {
-				container.add(BlockCategory.GAS, grammarWeight(fluidkey));
+				container.add(BlockCategory.GAS, grammarRank(fluidkey));
 			} else {
-				if (!isBannedSea(fluidkey)) container.add(BlockCategory.SEA, grammarWeight(fluidkey));
-				container.add(BlockCategory.FLUID, grammarWeight(fluidkey));
+				if (!isBannedSea(fluidkey)) container.add(BlockCategory.SEA, grammarRank(fluidkey));
+				container.add(BlockCategory.FLUID, grammarRank(fluidkey));
 			}
 		}
 		if (config != null && config.hasChanged()) config.save();
@@ -58,8 +58,8 @@ public class SymbolDataFluids {
 
 	public static class FluidData {
 		public boolean	seabanned	= false;
-		public float	grammar		= 0.1F;
-		public Integer	cardrank	= 4;
+		public int		grammar		= 4;
+		public int		cardrank	= 4;
 		public float	factor1		= 1.00F;
 		public float	factor2		= 0.25F;
 
@@ -68,7 +68,7 @@ public class SymbolDataFluids {
 			return this;
 		}
 
-		public FluidData setGrammarW(float v) {
+		public FluidData setGrammarRank(int v) {
 			this.grammar = v;
 			return this;
 		}
@@ -95,7 +95,7 @@ public class SymbolDataFluids {
 
 	private static Map<String, Boolean>		bannedsea			= new HashMap<String, Boolean>();
 	private static Map<String, Integer>		cardranks			= new HashMap<String, Integer>();
-	private static Map<String, Float>		grammarWeights		= new HashMap<String, Float>();
+	private static Map<String, Integer>		grammarranks		= new HashMap<String, Integer>();
 	private static Map<String, Float>		factor1s			= new HashMap<String, Float>();
 	private static Map<String, Float>		factor2s			= new HashMap<String, Float>();
 
@@ -134,10 +134,10 @@ public class SymbolDataFluids {
 		return val;
 	}
 
-	private static float grammarWeight(String fluidkey) {
-		Float value = grammarWeights.get(fluidkey);
+	private static Integer grammarRank(String fluidkey) {
+		Integer value = grammarranks.get(fluidkey);
 		if (value != null) return value;
-		float val = getDefaultValue(fluidkey).grammar;
+		int val = getDefaultValue(fluidkey).grammar;
 		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".grammar", val);
 		return val;
 	}
@@ -166,12 +166,12 @@ public class SymbolDataFluids {
 		bannedsea.put(getFluidKey(fluid), value);
 	}
 
-	public static void setCardRank(Fluid fluid, int value) {
+	public static void setCardRank(Fluid fluid, Integer value) {
 		cardranks.put(getFluidKey(fluid), value);
 	}
 
-	public static void setGrammarWeight(Fluid fluid, float value) {
-		grammarWeights.put(getFluidKey(fluid), value);
+	public static void setGrammarRank(Fluid fluid, Integer value) {
+		grammarranks.put(getFluidKey(fluid), value);
 	}
 
 	public static void setFactor1(Fluid fluid, float value) {

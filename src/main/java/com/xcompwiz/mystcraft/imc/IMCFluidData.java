@@ -25,7 +25,7 @@ public class IMCFluidData implements IMCProcessor {
 		if (fluid == null) return;
 		if (data.hasKey("seabanned")) SymbolDataFluids.setSeaBanned(fluid, data.getBoolean("seabanned"));
 		if (data.hasKey("cardrank")) SymbolDataFluids.setCardRank(fluid, data.getInteger("cardrank"));
-		if (data.hasKey("grammar")) SymbolDataFluids.setGrammarWeight(fluid, data.getFloat("grammar"));
+		if (data.hasKey("grammarrank")) SymbolDataFluids.setGrammarRank(fluid, data.getInteger("grammarrank"));
 		if (data.hasKey("factor1")) SymbolDataFluids.setFactor1(fluid, data.getFloat("factor1"));
 		if (data.hasKey("factor2")) SymbolDataFluids.setFactor2(fluid, data.getFloat("factor2"));
 	}

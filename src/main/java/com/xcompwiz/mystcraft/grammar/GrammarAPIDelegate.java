@@ -16,9 +16,9 @@ import com.xcompwiz.util.CollectionUtils;
 public class GrammarAPIDelegate implements IGrammarAPI {
 
 	@Override
-	public void registerGrammarRule(String parent, float rarity, String... args) {
+	public void registerGrammarRule(String parent, Integer rank, String... args) {
 		ArrayList<String> list = CollectionUtils.buildList(args);
-		GrammarGenerator.registerRule(new Rule(parent, list, rarity));
+		GrammarGenerator.registerRule(new Rule(parent, list, rank));
 	}
 
 	public Collection<IAgeSymbol> getSymbolsExpandingToken(String token) {

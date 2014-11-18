@@ -122,13 +122,13 @@ public class ModSymbols {
 
 			SymbolBase symbol = (new ModifierBiome(biome));
 			if (InternalAPI.symbol.registerSymbol(symbol)) {
-				float weight = 1.0F;
+				Integer rank = 1;
 				if (biome == BiomeGenBase.sky) {
-					weight = 0;
+					rank = null;
 				} else {
 					symbol.setCardRank(2);
 				}
-				GrammarGenerator.registerRule(new Rule(IGrammarAPI.BIOME, CollectionUtils.buildList(symbol.identifier()), weight));
+				GrammarGenerator.registerRule(new Rule(IGrammarAPI.BIOME, CollectionUtils.buildList(symbol.identifier()), rank));
 				InternalAPI.symbolValues.setSymbolTradeItem(symbol, new ItemStack(Items.emerald, 1));
 				ModifierBiome.selectables.add(biome);
 			}
@@ -141,7 +141,7 @@ public class ModSymbols {
 	}
 
 	public static void initialize() {
-		SymbolDataModifiers.initialize();
+		ModSymbolsModifiers.initialize();
 
 		registerSymbol("ColorCloud", new SymbolColorCloud(), new String[] {WordData.Image, WordData.Entropy, WordData.Believe, WordData.Weave}, 1);
 		registerSymbol("ColorCloudNat", new SymbolColorCloudNatural(), new String[] {WordData.Image, WordData.Entropy, WordData.Believe, WordData.Nature}, 1);

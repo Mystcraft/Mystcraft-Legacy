@@ -334,7 +334,7 @@ public class Mystcraft {
 			}
 		}
 
-		GrammarGenerator.buildShortestPaths();
+		GrammarGenerator.init();
 	}
 
 	@EventHandler

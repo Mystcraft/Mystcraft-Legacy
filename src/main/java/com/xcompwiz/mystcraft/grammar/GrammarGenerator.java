@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
@@ -13,20 +14,28 @@ import com.xcompwiz.mystcraft.utility.WeightedItemSelector.IWeightedItem;
 import com.xcompwiz.util.CollectionUtils;
 
 public class GrammarGenerator {
+	public static final class RankData {
+		public ArrayList<Integer>			ranksizes	= new ArrayList<Integer>();
+		public HashMap<Integer, Integer>	rankweights	= null;
+	}
+
+	public static final Map<String, RankData>	ranks	= new HashMap<String, RankData>();
+
 	public static final class Rule implements IWeightedItem {
 		private final String		parent;
 		private final List<String>	values;
-		private final float			rarity;
+		private final Integer		rank;
 
-		public Rule(String parent, List<String> values, float rarity) {
+		public Rule(String parent, List<String> values, Integer rank) {
 			this.parent = parent;
 			this.values = Collections.unmodifiableList(values);
-			this.rarity = rarity;
+			this.rank = rank;
 		}
 
 		@Override
 		public float getWeight() {
-			return this.rarity;
+			if (this.rank == null) return 0;
+			return GrammarGenerator.ranks.get(this.parent).rankweights.get(this.rank);
 		}
 
 		public String getParent() {
@@ -58,6 +67,17 @@ public class GrammarGenerator {
 		CollectionUtils.getOrCreateElement(rule.parent, mappings).add(rule);
 		for (String value : rule.values) {
 			CollectionUtils.getOrCreateElement(value, reverseLookup).add(rule);
+		}
+		if (rule.rank != null) {
+			RankData rankdata = ranks.get(rule.getParent());
+			if (rankdata == null) {
+				rankdata = new RankData();
+				ranks.put(rule.getParent(), rankdata);
+			}
+			while (rankdata.ranksizes.size() <= rule.rank) {
+				rankdata.ranksizes.add(0);
+			}
+			rankdata.ranksizes.set(rule.rank, rankdata.ranksizes.get(rule.rank) + 1);
 		}
 	}
 
@@ -94,15 +114,14 @@ public class GrammarGenerator {
 	}
 
 	/**
-	 * Returns the shortest connecting paths of rules from the subroot to the given node. If there are no paths then
-	 * this returns null or an empty list. If multiple paths have the same length, it returns all of them.
-	 * 
+	 * Returns the shortest connecting paths of rules from the subroot to the given node. If there are no paths then this returns null or an empty list. If
+	 * multiple paths have the same length, it returns all of them.
 	 * @param subtree_token The subtree to connect to node
 	 * @param node_token The node to connect to via rules
 	 * @return The list of rules that make up the path in order of subroot to node
 	 */
 	public static List<List<Rule>> getShortestPaths(String subtree_token, String node_token) {
-		if (shortestpaths == null) buildShortestPaths();
+		if (shortestpaths == null) throw new RuntimeException("Somebody's trying to use the grammar before we're done building it!");
 		List<List<Rule>> paths = null;
 		HashMap<String, List<List<Rule>>> allpaths = shortestpaths.get(subtree_token);
 		if (allpaths != null) {
@@ -158,7 +177,12 @@ public class GrammarGenerator {
 		return allpaths;
 	}
 
-	public static void buildShortestPaths() {
+	public static void init() {
+		buildShortestPaths();
+		buildRankWeights();
+	}
+
+	private static void buildShortestPaths() {
 		long timestart = System.currentTimeMillis();
 		if (profile_pathbuilder) System.out.println("Starting buildShortestPaths");
 		shortestpaths = new HashMap<String, HashMap<String, List<List<Rule>>>>();
@@ -170,6 +194,24 @@ public class GrammarGenerator {
 		}
 		long timeend = System.currentTimeMillis();
 		if (profile_pathbuilder) System.out.println("buildShortestPaths Exectution Time: " + (timeend - timestart));
+	}
+
+	private static void buildRankWeights() {
+		final int step = 1; //Increment between ranks
+		for (RankData rankdata : ranks.values()) {
+			rankdata.rankweights = new HashMap<Integer, Integer>();
+			int weight = 1;
+			int lasttotal = 0;
+			for (int i = rankdata.ranksizes.size() - 1; i >= 0; --i) {
+				int count = rankdata.ranksizes.get(i);
+				if (weight != 1 && count > 0) {
+					weight = Math.max(weight, lasttotal / count + step);
+				}
+				rankdata.rankweights.put(i, weight);
+				lasttotal = count * weight;
+				weight += step;
+			}
+		}
 	}
 
 	public static String pathToString(List<Rule> path) {

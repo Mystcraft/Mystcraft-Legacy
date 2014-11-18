@@ -75,7 +75,7 @@ public class CommandDebug extends CommandBaseAdv {
 		} else if (command.equals("set")) {
 			boolean b = true;
 			if (args.length > 2) b = (Boolean.parseBoolean(args[2]) || args[2].equals("1"));
-			DebugDataTracker.setFlag(flag, b);
+			DebugDataTracker.setFlag(agent, flag, b);
 		}
 	}
 }
