@@ -78,7 +78,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import com.xcompwiz.mystcraft.treasure.TreasureGenWrapper;
 import com.xcompwiz.mystcraft.villager.IMerchantRecipeProvider;
-import com.xcompwiz.mystcraft.villager.MerchantRecipeProviderBooster;
+import com.xcompwiz.mystcraft.villager.MerchantRecipeProviderItem;
 import com.xcompwiz.mystcraft.villager.MerchantRecipeProviderSymbol;
 import com.xcompwiz.mystcraft.villager.VillageCreationHandlerArchivistHouse;
 import com.xcompwiz.mystcraft.villager.VillagerArchivist;
@@ -299,6 +299,7 @@ public class Mystcraft {
 		SymbolRules.register();
 
 		SymbolManager.buildCardRanks();
+		GrammarGenerator.init();
 
 		// Treasure object
 		ChestGenHooks treasureinfo = ChestGenHooks.getInfo(MystObjects.MYST_TREASURE);
@@ -306,11 +307,12 @@ public class Mystcraft {
 		treasureinfo.setMax(8);
 		treasureinfo.addItem(new WeightedRandomChestContent(Items.paper, 0, 1, 8, 50));
 		treasureinfo.addItem(new WeightedRandomChestContent(Items.leather, 0, 1, 8, 50));
+		treasureinfo.addItem(new WeightedRandomChestContent(ModItems.inkvial, 0, 1, 2, 50));
 		treasureinfo.addItem(new WeightedRandomChestContent(ModItems.booster, 0, 1, 4, 1000));
 		//treasureinfo.addItem(new TreasureGenBooster(7, 4, 4, 1, 1000));
 		// 11 commons, 3 uncommon, 1 rare, and a basic land
-		if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderBooster(7, 4, 4, 1));
-		//if (archivist != null) archivist.registerRecipe(new MerchantRecipeProvider(new MerchantRecipeMyst(new ItemStack(Items.emerald, 1), new ItemStack(ModItems.booster, 1))));
+		//if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderBooster(7, 4, 4, 1));
+		if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderItem(new ItemStack(Items.emerald, 1), null, new ItemStack(ModItems.booster, 1)));
 
 		TreasureGenWrapper mystTreasureSub = new TreasureGenWrapper(MystObjects.MYST_TREASURE, 10);
 		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(mystTreasureSub);
@@ -335,8 +337,6 @@ public class Mystcraft {
 				archivist.registerRecipe(merchantrecipe);
 			}
 		}
-
-		GrammarGenerator.init();
 	}
 
 	@EventHandler
