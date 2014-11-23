@@ -13,7 +13,8 @@ public class VillagerTradeSystem {
 		EntityVillager villager = (EntityVillager) event.target;
 		if (villager.getProfession() != Mystcraft.archivistId) return false;
 		//TODO:
-		return true;
+		//return true;
+		return false;
 	}
 
 }

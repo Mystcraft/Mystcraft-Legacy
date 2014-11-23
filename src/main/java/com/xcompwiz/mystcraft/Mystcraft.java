@@ -76,7 +76,6 @@ import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
-import com.xcompwiz.mystcraft.treasure.TreasureGenBooster;
 import com.xcompwiz.mystcraft.treasure.TreasureGenWrapper;
 import com.xcompwiz.mystcraft.villager.IMerchantRecipeProvider;
 import com.xcompwiz.mystcraft.villager.MerchantRecipeProviderBooster;
@@ -307,15 +306,17 @@ public class Mystcraft {
 		treasureinfo.setMax(8);
 		treasureinfo.addItem(new WeightedRandomChestContent(Items.paper, 0, 1, 8, 50));
 		treasureinfo.addItem(new WeightedRandomChestContent(Items.leather, 0, 1, 8, 50));
-		treasureinfo.addItem(new TreasureGenBooster(7, 4, 4, 1, 1000));
+		treasureinfo.addItem(new WeightedRandomChestContent(ModItems.booster, 0, 1, 4, 1000));
+		//treasureinfo.addItem(new TreasureGenBooster(7, 4, 4, 1, 1000));
 		// 11 commons, 3 uncommon, 1 rare, and a basic land
 		if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderBooster(7, 4, 4, 1));
+		//if (archivist != null) archivist.registerRecipe(new MerchantRecipeProvider(new MerchantRecipeMyst(new ItemStack(Items.emerald, 1), new ItemStack(ModItems.booster, 1))));
 
 		TreasureGenWrapper mystTreasureSub = new TreasureGenWrapper(MystObjects.MYST_TREASURE, 10);
-		ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(mystTreasureSub);
 		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(mystTreasureSub);
 		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(mystTreasureSub);
 		ChestGenHooks.getInfo(ChestGenHooks.STRONGHOLD_LIBRARY).addItem(mystTreasureSub);
+		ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(mystTreasureSub);
 
 		sidedProxy.createCreativeTabs();
 

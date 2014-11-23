@@ -3,12 +3,9 @@ package com.xcompwiz.mystcraft.api;
 import net.minecraftforge.common.AchievementPage;
 
 /**
- * This class provides a bunch of constant values which are the identifiers for various things. For things like Blocks
- * and Items you'll use GameRegistry to get an instance. For things like the Achievements you'll need to look them up in
- * their respective locations.
- * 
+ * This class provides a bunch of constant values which are the identifiers for various things. For things like Blocks and Items you'll use GameRegistry to get
+ * an instance. For things like the Achievements you'll need to look them up in their respective locations.
  * @author XCompWiz
- * 
  */
 public final class MystObjects {
 
@@ -46,6 +43,7 @@ public final class MystObjects {
 	public static final String	item_linkbook_unlinked		= "unlinkedbook";
 	public static final String	item_linkbook				= "linkbook";
 	public static final String	item_notebook				= "notebook";
+	public static final String	item_booster				= "booster";
 	public static final String	item_inkvial				= "vial";
 
 	public static final String	fluid_black_ink				= "myst.ink.black";

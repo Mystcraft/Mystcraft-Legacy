@@ -2,7 +2,9 @@ package com.xcompwiz.mystcraft.item;
 
 import io.netty.buffer.ByteBuf;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,10 +19,16 @@ import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
 import com.xcompwiz.mystcraft.client.gui.GuiInventoryNotebook;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.ContainerNotebook;
 import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
 import com.xcompwiz.mystcraft.network.NetworkUtils;
 import com.xcompwiz.mystcraft.page.IItemPageCollection;
+import com.xcompwiz.mystcraft.page.Page;
+import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.symbol.SymbolManager;
+import com.xcompwiz.mystcraft.treasure.WeightProviderSymbolItem;
+import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -134,5 +142,33 @@ public class ItemNotebook extends Item implements IItemPageCollection, IItemWrit
 	@Override
 	public List<ItemStack> getPages(EntityPlayer player, ItemStack itemstack) {
 		return InventoryNotebook.getItems(itemstack);
+	}
+
+	//XXX: Generalize to allow for alternate rank sets (any rank, >=2, etc) 
+	public static ItemStack generateBooster(Random rand, int verycommon, int common, int uncommon, int rare) {
+		ItemStack notebook = new ItemStack(ModItems.notebook, 1, 0);
+	
+		Collection<IAgeSymbol> symbols_vc = SymbolManager.getSymbolsByRank(0);
+		Collection<IAgeSymbol> symbols_c = SymbolManager.getSymbolsByRank(1);
+		Collection<IAgeSymbol> symbols_uc = SymbolManager.getSymbolsByRank(2);
+		Collection<IAgeSymbol> symbols_r = SymbolManager.getSymbolsByRank(3, null);
+	
+		for (int i = 0; i < verycommon; ++i) {
+			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_vc, WeightProviderSymbolItem.instance);
+			InventoryNotebook.addItem(notebook, Page.createSymbolPage(symbol.identifier()));
+		}
+		for (int i = 0; i < common; ++i) {
+			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_c, WeightProviderSymbolItem.instance);
+			InventoryNotebook.addItem(notebook, Page.createSymbolPage(symbol.identifier()));
+		}
+		for (int i = 0; i < uncommon; ++i) {
+			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_uc, WeightProviderSymbolItem.instance);
+			InventoryNotebook.addItem(notebook, Page.createSymbolPage(symbol.identifier()));
+		}
+		for (int i = 0; i < rare; ++i) {
+			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_r, WeightProviderSymbolItem.instance);
+			InventoryNotebook.addItem(notebook, Page.createSymbolPage(symbol.identifier()));
+		}
+		return notebook;
 	}
 }

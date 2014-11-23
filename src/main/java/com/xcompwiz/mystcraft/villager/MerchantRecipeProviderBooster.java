@@ -9,7 +9,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
 
-import com.xcompwiz.mystcraft.treasure.TreasureGenBooster;
+import com.xcompwiz.mystcraft.item.ItemNotebook;
 
 public class MerchantRecipeProviderBooster implements IMerchantRecipeProvider {
 	private int	verycommon;
@@ -28,7 +28,7 @@ public class MerchantRecipeProviderBooster implements IMerchantRecipeProvider {
 	public List<MerchantRecipe> createNewMerchantRecipes(EntityVillager villager, Random random) {
 		List<MerchantRecipe> merchantrecipes = new ArrayList<MerchantRecipe>();
 		for (int i = 0; i < 100; ++i) {
-			ItemStack notebook = TreasureGenBooster.generateBooster(random, verycommon, common, uncommon, rare);
+			ItemStack notebook = ItemNotebook.generateBooster(random, verycommon, common, uncommon, rare);
 			MerchantRecipe merchantrecipe = new MerchantRecipeMyst(new ItemStack(Items.emerald, 20), notebook);
 			merchantrecipe.func_82783_a(-6);
 			merchantrecipes.add(merchantrecipe);
