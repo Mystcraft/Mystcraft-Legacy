@@ -25,6 +25,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.block.BlockWritingDesk;
+import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.fluids.FluidUtils;
@@ -280,6 +281,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		// If nothing in slot, check fill slot
 		if (itemstacks[slot_wrt] == null && itemstacks[slot_pap] != null) {
 			itemstacks[slot_wrt] = ItemPage.createItemstack(itemstacks[slot_pap]);
+			if (itemstacks[slot_pap].stackSize <= 0) itemstacks[slot_pap] = null;
 		}
 
 		// If nothing in slot, we're done
@@ -288,13 +290,25 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		// Do writing
 		ItemStack target = itemstacks[slot_wrt];
 		if (target == null) return;
-		if (!(target.getItem() instanceof IItemWritable)) return;
-		if (((IItemWritable) target.getItem()).writeSymbol(player, target, symbol, itemstacks[slot_pap])) {
+		if (((IItemWritable) target.getItem()).writeSymbol(player, target, symbol)) {
 			useink();
 			player.addStat(ModAchievements.write, 1);
+			return;
 		}
-
-		if (itemstacks[slot_pap] != null && itemstacks[slot_pap].stackSize <= 0) itemstacks[slot_pap] = null;
+		ItemStack paperstack = itemstacks[slot_pap];
+		if (paperstack != null) {
+			ItemStack page = paperstack.copy();
+			page.stackSize = 1;
+			page = ItemPage.createItemstack(page);
+			if (page != null) {
+				InternalAPI.page.setPageSymbol(page, symbol);
+				if (((IItemPageCollection) target.getItem()).addPage(player, target, page) == null) {
+					--paperstack.stackSize;
+				}
+			}
+			if (itemstacks[slot_pap].stackSize <= 0) itemstacks[slot_pap] = null;
+			return;
+		}
 	}
 
 	public ItemStack removePageFromSurface(EntityPlayer player, ItemStack itemstack, int index) {

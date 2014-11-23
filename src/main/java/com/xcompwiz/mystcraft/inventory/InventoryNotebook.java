@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 
 public class InventoryNotebook implements IInventory {
@@ -23,14 +22,6 @@ public class InventoryNotebook implements IInventory {
 	public InventoryNotebook(IInventory source, int slot) {
 		this.sourceinventory = source;
 		this.slot = slot;
-	}
-
-	public ItemStack getNotebookItem() {
-		return sourceinventory.getStackInSlot(slot);
-	}
-
-	public String getNotebookName() {
-		return getName(getNotebookItem());
 	}
 
 	@Override
@@ -102,9 +93,20 @@ public class InventoryNotebook implements IInventory {
 	@Override
 	public void closeInventory() {}
 
-	/**
-	 * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
-	 */
+	@Override
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+		return isItemValid(itemstack);
+	}
+
+	public ItemStack getNotebookItem() {
+		return sourceinventory.getStackInSlot(slot);
+	}
+
+	public String getNotebookName() {
+		return getName(getNotebookItem());
+	}
+
+//BEGIN NotebookUtils
 	public static boolean isItemValid(ItemStack itemstack) {
 		if (itemstack == null) return true;
 		if (itemstack.getItem() == ModItems.page) return true;
@@ -112,19 +114,8 @@ public class InventoryNotebook implements IInventory {
 		return false;
 	}
 
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		return isItemValid(itemstack);
-	}
-
 	private static void initNotebook(ItemStack notebook) {
 		if (notebook.stackTagCompound == null) notebook.stackTagCompound = new NBTTagCompound();
-		if (!notebook.stackTagCompound.hasKey("Pages")) {
-			notebook.stackTagCompound.setTag("Pages", new NBTTagCompound());
-		}
-		if (!notebook.stackTagCompound.hasKey("BoundData")) {
-			notebook.stackTagCompound.setTag("BoundData", new NBTTagCompound());
-		}
 	}
 
 	public static void setName(ItemStack notebook, String bookname) {
@@ -275,27 +266,15 @@ public class InventoryNotebook implements IInventory {
 	 * 
 	 * @param notebook Notebook container
 	 * @param symbol Symbol to write
-	 * @param paperstack Source stack for paper
 	 * @return
 	 */
-	public static boolean writeSymbol(ItemStack notebook, String symbol, ItemStack paperstack) {
+	public static boolean writeSymbol(ItemStack notebook, String symbol) {
 		List<ItemStack> pages = getItems(notebook);
 		for (ItemStack page : pages) {
 			if (page == null) continue;
 			if (page.getItem() != ModItems.page) continue;
 			if (InternalAPI.page.isPageWritable(page)) {
 				InternalAPI.page.setPageSymbol(page, symbol);
-				return true;
-			}
-		}
-		if (paperstack != null) {
-			ItemStack page = paperstack.copy();
-			page.stackSize = 1;
-			page = ItemPage.createItemstack(page);
-			if (page != null) {
-				--paperstack.stackSize;
-				InternalAPI.page.setPageSymbol(page, symbol);
-				addItem(notebook, page);
 				return true;
 			}
 		}

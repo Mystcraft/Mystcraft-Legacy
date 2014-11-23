@@ -17,10 +17,9 @@ public interface IItemWritable extends IItemRenameable {
 	 * @param player The player doing the writing
 	 * @param itemstack The itemstack instance of the item being written to
 	 * @param symbol The id of the symbol being written
-	 * @param paper_feeder This is an itemstack of paper. You may decrease the stack size to "use" paper. May be null.
 	 * @return True on success
 	 */
-	boolean writeSymbol(EntityPlayer player, ItemStack itemstack, String symbol, ItemStack paper_feeder);
+	boolean writeSymbol(EntityPlayer player, ItemStack itemstack, String symbol);
 
 	/**
 	 * Called to retrieve the list of pages in the itemstack. This can safely return null.

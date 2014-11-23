@@ -100,7 +100,7 @@ public class ItemNotebook extends Item implements IItemPageCollection, IItemWrit
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
 		if (!world.isRemote) {
 			InventoryNotebook.updatePages(itemstack);
-			NetworkUtils.displayGui(entityplayer, world, GuiID, itemstack);
+			//FIXME: NetworkUtils.displayGui(entityplayer, world, GuiID, itemstack);
 		}
 		return itemstack;
 	}
@@ -118,8 +118,8 @@ public class ItemNotebook extends Item implements IItemPageCollection, IItemWrit
 	}
 
 	@Override
-	public boolean writeSymbol(EntityPlayer player, ItemStack itemstack, String symbol, ItemStack paper_feeder) {
-		return InventoryNotebook.writeSymbol(itemstack, symbol, paper_feeder);
+	public boolean writeSymbol(EntityPlayer player, ItemStack itemstack, String symbol) {
+		return InventoryNotebook.writeSymbol(itemstack, symbol);
 	}
 
 	@Override

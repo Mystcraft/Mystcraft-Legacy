@@ -117,7 +117,7 @@ public class ItemPage extends Item implements IItemPageCollection, IItemWritable
 	public void setDisplayName(EntityPlayer player, ItemStack itemstack, String name) {}
 
 	@Override
-	public boolean writeSymbol(EntityPlayer player, ItemStack itemstack, String symbol, ItemStack paper_feeder) {
+	public boolean writeSymbol(EntityPlayer player, ItemStack itemstack, String symbol) {
 		if (!Page.isBlank(itemstack)) return false;
 		Page.setSymbol(itemstack, symbol);
 		return true;

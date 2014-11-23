@@ -108,7 +108,7 @@ public class ItemAgebook extends ItemLinking implements IItemPageCollection, IIt
 	}
 
 	@Override
-	public boolean writeSymbol(EntityPlayer player, ItemStack target, String symbol, ItemStack paper_feeder) {
+	public boolean writeSymbol(EntityPlayer player, ItemStack target, String symbol) {
 		AgeData agedata = ItemAgebook.getAgeData(player.worldObj, target);
 		if (agedata != null && !agedata.isVisited()) {
 			if (agedata.writeSymbol(symbol)) {
