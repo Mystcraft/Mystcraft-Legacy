@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
-import com.xcompwiz.mystcraft.page.IItemPageCollection;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
@@ -25,7 +24,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemPage extends Item implements IItemPageCollection, IItemWritable {
+public class ItemPage extends Item implements IItemWritable {
 
 	public ItemPage() {
 		super();
@@ -124,22 +123,7 @@ public class ItemPage extends Item implements IItemPageCollection, IItemWritable
 	}
 
 	@Override
-	public ItemStack removePage(EntityPlayer player, ItemStack itemstack, int index) {
-		return null;
-	}
-
-	@Override
 	public List<ItemStack> getPageList(EntityPlayer player, ItemStack itemstack) {
-		return Arrays.asList(itemstack);
-	}
-
-	@Override
-	public ItemStack addPage(EntityPlayer player, ItemStack itemstack, ItemStack page) {
-		return page;
-	}
-
-	@Override
-	public List<ItemStack> getPages(EntityPlayer player, ItemStack itemstack) {
 		return Arrays.asList(itemstack);
 	}
 }

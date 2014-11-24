@@ -214,7 +214,6 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		if (data.hasKey("AddToNotebook")) {
 			if (player.inventory.getItemStack() == null) return;
 			byte slot = data.getByte("AddToNotebook");
-			if (slot == -1) slot = this.activeslot;
 			if (tileentity.getNotebook(slot) == null) return;
 			boolean single = data.getBoolean("Single");
 			if (single) {

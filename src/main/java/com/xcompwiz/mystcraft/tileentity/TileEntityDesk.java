@@ -114,8 +114,9 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		if (activeslot < 0 || activeslot >= notebooks.length) return null;
 		ItemStack itemstack = notebooks[activeslot];
 		if (itemstack == null) return null;
-		if (!(itemstack.getItem() instanceof IItemPageCollection)) return null;
-		return itemstack;
+		if (itemstack.getItem() instanceof IItemPageCollection) return itemstack;
+		if (itemstack.getItem() instanceof IItemWritable) return itemstack;
+		return null;
 	}
 
 	@Override
@@ -131,6 +132,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		if (slotIndex < 0) return false;
 		if (slotIndex >= notebooks.length) return false;
 		if (itemstack.getItem() instanceof IItemPageCollection) return true;
+		if (itemstack.getItem() instanceof IItemWritable) return true;
 		return false;
 	}
 
@@ -290,13 +292,13 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		// Do writing
 		ItemStack target = itemstacks[slot_wrt];
 		if (target == null) return;
-		if (((IItemWritable) target.getItem()).writeSymbol(player, target, symbol)) {
+		if (target.getItem() instanceof IItemWritable && ((IItemWritable) target.getItem()).writeSymbol(player, target, symbol)) {
 			useink();
 			player.addStat(ModAchievements.write, 1);
 			return;
 		}
 		ItemStack paperstack = itemstacks[slot_pap];
-		if (paperstack != null) {
+		if (paperstack != null && target.getItem() instanceof IItemPageCollection) {
 			ItemStack page = paperstack.copy();
 			page.stackSize = 1;
 			page = ItemPage.createItemstack(page);

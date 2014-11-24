@@ -2,10 +2,13 @@ package com.xcompwiz.mystcraft.client.gui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,6 +21,8 @@ import com.xcompwiz.mystcraft.client.gui.element.GuiElementBook;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementBook.IGuiOnLinkHandler;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton.IGuiOnClickHandler;
+import com.xcompwiz.mystcraft.client.gui.element.GuiElementButtonToggle;
+import com.xcompwiz.mystcraft.client.gui.element.GuiElementButtonToggle.IGuiStateProvider;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementFluidTank;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementNotebookTabs;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementNotebookTabs.IGuiNotebookTabsHandler;
@@ -40,7 +45,10 @@ import com.xcompwiz.mystcraft.item.IItemWritable;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.page.IItemPageCollection;
+import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.page.SortingUtils;
+import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
 public class GuiWritingDesk extends GuiContainerElements {
@@ -163,28 +171,77 @@ public class GuiWritingDesk extends GuiContainerElements {
 		}
 	}
 
-	public class ButtonHandlerSort implements IGuiOnClickHandler {
-		@Override
-		public void onClick(GuiElementButton caller) {
-			if (caller.getId().equals("AZ")) {
-				//FIXME: !!(PageSorting)
-			}
-		}
-	}
-
-	public class PositionedPagesProvider implements IGuiPositionedPagesProvider {
+	public class PositionedPagesProvider implements IGuiPositionedPagesProvider, IGuiOnClickHandler, IGuiStateProvider {
 		private ItemStack				cached_notebook;
 		private List<PositionableItem>	arranged_pages;
+		private Comparator<ItemStack>	sorttype	= SortingUtils.ComparatorItemSymbolAlphabetical.instance;
+		private boolean					showall		= false;
 
 		@Override
 		public List<PositionableItem> getPositionedPages() {
 			ItemStack notebook = container.getNotebook(container.getActiveNotebookSlot());
 			if (!ItemStack.areItemStacksEqual(notebook, cached_notebook)) {
+				if (notebook == null) {
+					cached_notebook = null;
+					arranged_pages = null;
+					return null;
+				}
 				cached_notebook = notebook.copy();
+				updateCollection();
+			}
+			return arranged_pages;
+		}
+
+		private void updateCollection() {
+			if (cached_notebook.getItem() instanceof IItemPageCollection) {
 				int i = 0;
 
-				IItemPageCollection item = (IItemPageCollection) notebook.getItem();
-				List<ItemStack> pages = item.getPages(mc.thePlayer, notebook);
+				IItemPageCollection item = (IItemPageCollection) cached_notebook.getItem();
+				List<ItemStack> pages = item.getPages(mc.thePlayer, cached_notebook);
+				Map<String, PositionableItem> collection = new HashMap<String, PositionableItem>();
+				for (ItemStack page : pages) {
+					if (page == null) {
+						++i;
+						continue;
+					}
+					String key = Page.getSymbol(page);
+					if (Page.isLinkPanel(page)) {
+						key = "Linkpanel";
+					}
+					if (key == null) key = "?";
+					PositionableItem newpos = collection.get(key);
+					if (newpos == null) {
+						newpos = new PositionableItem();
+						newpos.itemstack = page;
+						newpos.slotId = i;
+						newpos.count = 1;
+						collection.put(key, newpos);
+					} else {
+						newpos.count++;
+					}
+					++i;
+				}
+				if (showall) {
+					Collection<IAgeSymbol> symbols = SymbolManager.getAgeSymbols();
+					for (IAgeSymbol symbol : symbols) {
+						String symbolname = symbol.identifier();
+						PositionableItem newpos = collection.get(symbolname);
+						if (newpos == null) {
+							newpos = new PositionableItem();
+							newpos.itemstack = Page.createSymbolPage(symbolname);
+							newpos.count = 0;
+							collection.put(symbolname, newpos);
+						}
+					}
+				}
+				arranged_pages = new LinkedList<PositionableItem>();
+				arranged_pages.addAll(collection.values());
+				sort(sorttype);
+			} else if (cached_notebook.getItem() instanceof IItemWritable) {
+				int i = 0;
+
+				IItemWritable item = (IItemWritable) cached_notebook.getItem();
+				List<ItemStack> pages = item.getPageList(mc.thePlayer, cached_notebook);
 				arranged_pages = new LinkedList<PositionableItem>();
 				for (ItemStack page : pages) {
 					if (page == null) {
@@ -194,12 +251,13 @@ public class GuiWritingDesk extends GuiContainerElements {
 					PositionableItem newpos = new PositionableItem();
 					newpos.itemstack = page;
 					newpos.slotId = i++;
+					newpos.count = 1;
 					arranged_pages.add(newpos);
 				}
-				sort(SortingUtils.ComparatorItemSymbolAlphabetical.instance);
-				arrange();
+			} else {
+				arranged_pages = null;
 			}
-			return arranged_pages;
+			if (arranged_pages != null) arrange();
 		}
 
 		public void arrange() {
@@ -225,7 +283,54 @@ public class GuiWritingDesk extends GuiContainerElements {
 					return comparator.compare(arg0.itemstack, arg1.itemstack);
 				}
 			});
-			arrange();
+		}
+
+		@Override
+		public void onClick(GuiElementButton caller) {
+			if (caller.getId().equals("AZ")) {
+				sorttype = SortingUtils.ComparatorItemSymbolAlphabetical.instance;
+				updateCollection();
+			} else if (caller.getId().equals("ALL")) {
+				showall = !showall;
+				updateCollection();
+			}
+		}
+
+		@Override
+		public boolean getState(String id) {
+			if (id.equals("AZ")) return sorttype == SortingUtils.ComparatorItemSymbolAlphabetical.instance;
+			if (id.equals("ALL")) return showall;
+			return false;
+		}
+
+		@Override
+		public void place(boolean single) {
+			NBTTagCompound nbttagcompound = new NBTTagCompound();
+			nbttagcompound.setByte("AddToNotebook", container.getActiveNotebookSlot());
+			nbttagcompound.setBoolean("Single", single);
+			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
+			container.processMessage(mc.thePlayer, nbttagcompound);
+		}
+
+		@Override
+		public void pickup(PositionableItem collectionelement) {
+			if (collectionelement.count <= 0) return;
+			int index = collectionelement.slotId;
+			NBTTagCompound nbttagcompound = new NBTTagCompound();
+			nbttagcompound.setInteger("TakeFromSurface", index);
+			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
+			container.processMessage(mc.thePlayer, nbttagcompound);
+		}
+
+		@Override
+		public void copy(PositionableItem collectionelement) {
+			String symbol = Page.getSymbol(collectionelement.itemstack);
+			if (symbol == null) return;
+			if (collectionelement.count <= 0) return;
+			NBTTagCompound nbttagcompound = new NBTTagCompound();
+			nbttagcompound.setString("WriteSymbol", symbol);
+			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
+			container.processMessage(mc.thePlayer, nbttagcompound);
 		}
 	}
 
@@ -286,15 +391,19 @@ public class GuiWritingDesk extends GuiContainerElements {
 		//txt_search.addListener(notebooktabs);
 		elements.add(notebooktabs);
 
-		GuiElementPageSurface surface = new GuiElementPageSurface(new PositionedPagesProvider(), this.container, this.mc, guiLeft + 58, mainTop, leftsize - 53, windowsizeY);
+		PositionedPagesProvider pagesmanager = new PositionedPagesProvider();
+		GuiElementPageSurface surface = new GuiElementPageSurface(pagesmanager, this.mc, guiLeft + 58, mainTop, leftsize - 53, windowsizeY);
 		txt_search.addListener(surface);
 		elements.add(surface);
 
-		IGuiOnClickHandler btnHandlerSort = new ButtonHandlerSort();
-		GuiElementButton btn_sortA = new GuiElementButton(btnHandlerSort, "AZ", guiLeft + 58, guiTop, buttonssizeY, buttonssizeY);
+		GuiElementButton btn_sortA = new GuiElementButtonToggle(pagesmanager, pagesmanager, "AZ", guiLeft + 58, guiTop, buttonssizeY, buttonssizeY);
 		btn_sortA.setText("AZ");
 		btn_sortA.setTooltip(Arrays.asList("Sort Alphabetically"));
 		elements.add(btn_sortA);
+		GuiElementButton btn_allsym = new GuiElementButtonToggle(pagesmanager, pagesmanager, "ALL", guiLeft + 58 + buttonssizeY, guiTop, buttonssizeY, buttonssizeY);
+		btn_allsym.setText("ALL");
+		btn_allsym.setTooltip(Arrays.asList("Show all Symbols"));
+		elements.add(btn_allsym);
 		//GuiElementButton btn_sortO = new GuiElementButton(btnHandlerSort, "123", guiLeft + 58, guiTop, buttonssizeY, buttonssizeY);
 		//btn_sortO.setText("123");
 		//btn_sortO.setTooltip(Arrays.asList("Sort By Slot Number"));

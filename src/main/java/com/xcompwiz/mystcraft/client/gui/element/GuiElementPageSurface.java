@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -13,9 +12,6 @@ import org.lwjgl.opengl.GL11;
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiOnTextChange;
 import com.xcompwiz.mystcraft.data.Assets.GUIs;
-import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
-import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
-import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
@@ -32,6 +28,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		public float		x;
 		public float		y;
 
+		public int			count	= 1;
 	}
 
 	public final static float	pagewidth	= 30;
@@ -39,9 +36,14 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 
 	public interface IGuiPositionedPagesProvider {
 		List<PositionableItem> getPositionedPages();
+
+		void place(boolean single);
+
+		void pickup(PositionableItem hoverpage);
+
+		void copy(PositionableItem hoverpage);
 	}
 
-	private IGuiMessageHandler			handler;
 	private IGuiPositionedPagesProvider	pagesProvider;
 
 	private float						pageWidth;
@@ -59,10 +61,9 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 
 	private String						searchtext;
 
-	public GuiElementPageSurface(IGuiPositionedPagesProvider pagesProvider, IGuiMessageHandler handler, Minecraft mc, int left, int top, int width, int height) {
+	public GuiElementPageSurface(IGuiPositionedPagesProvider pagesProvider, Minecraft mc, int left, int top, int width, int height) {
 		super(left, top, width, height);
 		this.mc = mc;
-		this.handler = handler;
 		this.pagesProvider = pagesProvider;
 		pageWidth = GuiElementPageSurface.pagewidth;
 		pageHeight = GuiElementPageSurface.pageheight;
@@ -99,14 +100,8 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	@Override
 	public boolean mouseClicked(int mouseX, int mouseY, int button) {
 		if (GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize, ySize)) {
-			mousedown = true;
 			if (mc.thePlayer.inventory.getItemStack() != null) {
-				// XXX: (PageSorting) Move handling out of element
-				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setByte("AddToNotebook", (byte)-1);
-				nbttagcompound.setBoolean("Single", (button == 1));
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-				handler.processMessage(mc.thePlayer, nbttagcompound);
+				pagesProvider.place(button == 1);
 				return true;
 			}
 			if (button == 2) {
@@ -114,14 +109,10 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 				return true;
 			}
 			if (hoverpage != null && button == 0) {
-				int index = hoverpage.slotId;
-				// XXX: (PageSorting) Move handling out of element
-				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setInteger("TakeFromSurface", index);
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-				handler.processMessage(mc.thePlayer, nbttagcompound);
+				pagesProvider.pickup(hoverpage);
 				return true;
 			}
+			mousedown = true;
 		}
 		return false;
 	}
@@ -129,14 +120,8 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	@Override
 	public void mouseUp(int i, int j, int k) {
 		if (GuiUtils.contains(i, j, guiLeft, guiTop, xSize - 20, ySize) && hoverpage != null && k == 1 && mousedown) {
-			String symbol = Page.getSymbol(hoverpage.itemstack);
-			if (symbol != null) {
-				// XXX: (PageSorting) Move handling out of element
-				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setString("WriteSymbol", symbol);
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-				handler.processMessage(mc.thePlayer, nbttagcompound);
-			}
+			pagesProvider.copy(hoverpage);
+			mousedown = false;
 		}
 	}
 
@@ -199,7 +184,6 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		maxScroll = 0;
 		List<PositionableItem> pages = getPages();
 		//XXX: (PageRender) If these were rendered as individual sub-elements, we could do some fancy things, like making them appear to move on sort (animated sort)
-		//Unfortunately making these into elements is non-trival, as I don't have a system for where the number of elements is constantly changing
 		if (pages != null) {
 			float x = guiLeft;
 			float y = guiTop - currentScroll;
@@ -218,13 +202,21 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 				if (Page.getSymbol(page) != null) {
 					IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
 					if (symbol != null) displayname = symbol.displayName();
+					if (displayname == null) displayname = Page.getSymbol(page);
 				}
 				if (displayname != null && searchtext != null && searchtext.length() > 0) {
 					if (!displayname.toLowerCase().contains(searchtext.toLowerCase())) {
 						page = null;
 					}
 				}
-				GuiUtils.drawPage(mc.renderEngine, zLevel, page, pagexSize, pageySize, x + pageX, y + pageY, false);
+				if (positionable.count > 0) {
+					GuiUtils.drawPage(mc.renderEngine, zLevel, page, pagexSize, pageySize, x + pageX, y + pageY, false);
+				} else {
+					GuiUtils.drawPage(mc.renderEngine, zLevel, null, pagexSize, pageySize, x + pageX, y + pageY, false);
+				}
+				if (positionable.count > 1) {
+					GuiUtils.drawScaledText("" + positionable.count, (int) (x + pageX), (int) (y + pageY + pageHeight - 7), 20, 10, 0xFFFFFF);
+				}
 				if (mouseOverPageArea && GuiUtils.contains(mouseX, mouseY, (int) (x + pageX), (int) (y + pageY), (int) pagexSize, (int) pageySize)) {
 					hoverpage = positionable;
 					Page.getTooltip(page, hovertext);

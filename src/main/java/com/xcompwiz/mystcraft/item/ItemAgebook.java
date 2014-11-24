@@ -18,14 +18,13 @@ import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
-import com.xcompwiz.mystcraft.page.IItemPageCollection;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemAgebook extends ItemLinking implements IItemPageCollection, IItemWritable {
+public class ItemAgebook extends ItemLinking implements IItemWritable {
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -134,26 +133,9 @@ public class ItemAgebook extends ItemLinking implements IItemPageCollection, IIt
 	}
 
 	@Override
-	public ItemStack removePage(EntityPlayer player, ItemStack itemstack, int index) {
-		return null;
-	}
-
-	@Override
 	public List<ItemStack> getPageList(EntityPlayer player, ItemStack itemstack) {
 		AgeData data = AgeData.getAge(LinkOptions.getDimensionUID(itemstack.stackTagCompound), player.worldObj.isRemote);
 		if (data != null) return data.getPages();
-		return null;
-	}
-
-	@Override
-	public ItemStack addPage(EntityPlayer player, ItemStack itemstack, ItemStack page) {
-		return page;
-	}
-
-	@Override
-	public List<ItemStack> getPages(EntityPlayer player, ItemStack itemstack) {
-		AgeData agedata = ItemAgebook.getAgeData(player.worldObj, itemstack);
-		if (agedata != null) return agedata.getPages();
 		return null;
 	}
 }
