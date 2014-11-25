@@ -102,7 +102,7 @@ public class ContainerFolder extends ContainerBase implements IGuiMessageHandler
 	private ItemStack placePageOnSurface(EntityPlayer player, ItemStack itemstack, ItemStack page, int index) {
 		if (itemstack == null) return page;
 		ItemStack result = page;
-		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).add(player, itemstack, page);
+		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).addPage(player, itemstack, page);
 		if (itemstack.getItem() instanceof IItemOrderablePageProvider) result = ((IItemOrderablePageProvider) itemstack.getItem()).setPage(player, itemstack, page, index);
 		if (result == page) return result;
 		return result;

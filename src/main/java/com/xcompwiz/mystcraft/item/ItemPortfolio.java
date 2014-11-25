@@ -138,19 +138,19 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 
 		for (int i = 0; i < verycommon; ++i) {
 			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_vc, WeightProviderSymbolItem.instance);
-			item.add(null, itemstack, Page.createSymbolPage(symbol.identifier()));
+			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
 		}
 		for (int i = 0; i < common; ++i) {
 			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_c, WeightProviderSymbolItem.instance);
-			item.add(null, itemstack, Page.createSymbolPage(symbol.identifier()));
+			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
 		}
 		for (int i = 0; i < uncommon; ++i) {
 			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_uc, WeightProviderSymbolItem.instance);
-			item.add(null, itemstack, Page.createSymbolPage(symbol.identifier()));
+			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
 		}
 		for (int i = 0; i < rare; ++i) {
 			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_r, WeightProviderSymbolItem.instance);
-			item.add(null, itemstack, Page.createSymbolPage(symbol.identifier()));
+			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
 		}
 		return itemstack;
 	}
@@ -181,14 +181,14 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 	}
 
 	@Override
-	public ItemStack add(EntityPlayer player, ItemStack itemstack, ItemStack page) {
+	public ItemStack addPage(EntityPlayer player, ItemStack itemstack, ItemStack page) {
 		if (itemstack == null) return page;
 		if (page.getItem() instanceof IItemPageCollection) {
 			if (page.stackSize != 1) return page;
 			IItemPageCollection otheritem = (IItemPageCollection) page.getItem();
 			List<ItemStack> pages = otheritem.getItems(player, page);
 			for (ItemStack p : pages) {
-				this.add(player, itemstack, otheritem.remove(player, page, p));
+				this.addPage(player, itemstack, otheritem.remove(player, page, p));
 			}
 			return page;
 		}
@@ -197,7 +197,7 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 			IItemOrderablePageProvider otheritem = (IItemOrderablePageProvider) page.getItem();
 			List<ItemStack> pages = otheritem.getPageList(player, page);
 			for (int i = 0; i < pages.size(); ++i) {
-				this.add(player, itemstack, otheritem.removePage(player, page, i));
+				this.addPage(player, itemstack, otheritem.removePage(player, page, i));
 			}
 			return page;
 		}

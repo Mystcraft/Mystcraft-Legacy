@@ -23,7 +23,7 @@ public class ModPageCollections {
 		symbols.addAll(SymbolManager.getAgeSymbols());
 		Collections.sort(symbols, ComparatorSymbolAlphabetical.instance);
 		for (IAgeSymbol symbol : symbols) {
-			item.add(null, collection, Page.createSymbolPage(symbol.identifier()));
+			item.addPage(null, collection, Page.createSymbolPage(symbol.identifier()));
 		}
 		return collection;
 	}

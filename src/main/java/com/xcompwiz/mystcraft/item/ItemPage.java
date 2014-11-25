@@ -91,9 +91,8 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider {
 			ItemStack folder = new ItemStack(ModItems.folder);
 			IItemOrderablePageProvider item = (IItemOrderablePageProvider) folder.getItem();
 			folder.stackTagCompound = new NBTTagCompound();
-			int i = 0;
 			for (ItemStack mappeditemstack : mapping) {
-				item.setPage(player, folder, mappeditemstack, ++i );
+				item.addPage(player, folder, mappeditemstack);
 			}
 			itemstack = folder;
 			itemstack.stackSize = folder.stackSize;

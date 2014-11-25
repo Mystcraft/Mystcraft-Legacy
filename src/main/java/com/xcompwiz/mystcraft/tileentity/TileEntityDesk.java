@@ -39,6 +39,7 @@ import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.network.IMessageReceiver;
 import com.xcompwiz.mystcraft.network.MPacketMessage;
+import com.xcompwiz.mystcraft.page.IItemPageAcceptor;
 import com.xcompwiz.mystcraft.page.IItemPageCollection;
 
 import cpw.mods.fml.relauncher.Side;
@@ -302,13 +303,14 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 			return;
 		}
 		ItemStack paperstack = itemstacks[slot_pap];
-		if (paperstack != null && target.getItem() instanceof IItemPageCollection) {
+		if (paperstack != null && (target.getItem() instanceof IItemPageAcceptor)) {
 			ItemStack page = paperstack.copy();
 			page.stackSize = 1;
 			page = ItemPage.createItemstack(page);
 			if (page != null) {
 				InternalAPI.page.setPageSymbol(page, symbol);
-				if (((IItemPageCollection) target.getItem()).add(player, target, page) == null) {
+				if (((IItemPageAcceptor) target.getItem()).addPage(player, target, page) == null) {
+					useink();
 					--paperstack.stackSize;
 				}
 			}
@@ -338,7 +340,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 	public ItemStack addPageToCollection(EntityPlayer player, ItemStack itemstack, ItemStack page) {
 		if (itemstack == null) return page;
 		ItemStack result = page;
-		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).add(player, itemstack, page);
+		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).addPage(player, itemstack, page);
 		if (result == page) return result;
 		this.markDirty();
 		return result;
@@ -347,7 +349,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 	public ItemStack placePageOnSurface(EntityPlayer player, ItemStack itemstack, ItemStack page, int index) {
 		if (itemstack == null) return page;
 		ItemStack result = page;
-		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).add(player, itemstack, page);
+		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).addPage(player, itemstack, page);
 		if (itemstack.getItem() instanceof IItemOrderablePageProvider) result = ((IItemOrderablePageProvider) itemstack.getItem()).setPage(player, itemstack, page, index);
 		if (result == page) return result;
 		this.markDirty();

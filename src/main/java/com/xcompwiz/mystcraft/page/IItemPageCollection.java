@@ -12,7 +12,7 @@ import com.xcompwiz.mystcraft.item.IItemRenameable;
  * it to allow the desk to get pages from them for writing.
  * @author xcompwiz
  */
-public interface IItemPageCollection extends IItemRenameable {
+public interface IItemPageCollection extends IItemRenameable, IItemPageAcceptor {
 
 	/**
 	 * Called when the player tries to remove a page from the itemstack. If you do not wish this to be possible, simply return null.
@@ -22,15 +22,6 @@ public interface IItemPageCollection extends IItemRenameable {
 	 * @return The page retrieved as an itemstack
 	 */
 	ItemStack remove(EntityPlayer player, ItemStack itemstack, ItemStack page);
-
-	/**
-	 * Called when the player tries to add a page to the itemstack container. If you do not wish to accept the page, simply return the page.
-	 * @param player The player adding the page
-	 * @param itemstack The itemstack instance of this item
-	 * @param page The page being added. Not guaranteed to be a page item. May have stacksize > 1.
-	 * @return The result of the operation. The player's cursor item will be set to this.
-	 */
-	ItemStack add(EntityPlayer player, ItemStack itemstack, ItemStack page);
 
 	//FIXME: !!(PageSorting) This isn't very future proof.  Collections won't be itemstacks in the future. 
 	/**

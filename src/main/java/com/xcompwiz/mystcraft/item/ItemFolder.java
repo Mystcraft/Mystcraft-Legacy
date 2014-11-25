@@ -130,4 +130,9 @@ public class ItemFolder extends Item implements IItemOrderablePageProvider, IIte
 	public ItemStack setPage(EntityPlayer player, ItemStack folder, ItemStack page, int index) {
 		return InventoryFolder.setItem(folder, index, page);
 	}
+
+	@Override
+	public ItemStack addPage(EntityPlayer player, ItemStack folder, ItemStack page) {
+		return InventoryFolder.addItem(folder, page);
+	}
 }

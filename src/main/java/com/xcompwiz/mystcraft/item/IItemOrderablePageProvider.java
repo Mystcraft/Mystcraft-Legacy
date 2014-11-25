@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.item;
 
+import com.xcompwiz.mystcraft.page.IItemPageAcceptor;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -7,7 +9,7 @@ import net.minecraft.item.ItemStack;
  * This interface allows you to create your own items which the Mystcraft writing desk can arrange on the writing desk.
  * @author xcompwiz
  */
-public interface IItemOrderablePageProvider extends IItemPageProvider {
+public interface IItemOrderablePageProvider extends IItemPageProvider, IItemPageAcceptor {
 
 	/**
 	 * @param player

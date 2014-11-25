@@ -68,7 +68,7 @@ public class ItemFactory implements IItemFactory {
 		item.setDisplayName(null, itemstack, name);
 
 		for (IAgeSymbol symbol : symbols) {
-			item.add(null, itemstack, Page.createSymbolPage(symbol.identifier()));
+			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
 		}
 		return itemstack;
 	}
@@ -82,7 +82,7 @@ public class ItemFactory implements IItemFactory {
 		for (ItemStack page : pages) {
 			if (page == null) continue;
 			if (!(page.getItem() instanceof ItemPage)) continue;
-			item.add(null, itemstack, page.copy());
+			item.addPage(null, itemstack, page.copy());
 		}
 		return itemstack;
 	}
