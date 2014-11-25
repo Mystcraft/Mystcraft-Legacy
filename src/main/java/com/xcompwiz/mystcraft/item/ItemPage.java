@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
@@ -24,11 +23,11 @@ import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemPage extends Item implements IItemWritable {
+public class ItemPage extends Item implements IItemWritable, IItemPageProvider {
 
 	public ItemPage() {
 		super();
-		setMaxStackSize(16);
+		setMaxStackSize(64);
 		setHasSubtypes(true);
 	}
 
@@ -77,25 +76,28 @@ public class ItemPage extends Item implements IItemWritable {
 			return;
 		}
 		if (entity instanceof EntityPlayer) {
-			((EntityPlayer) entity).addStat(ModAchievements.symbol, 1);
+			EntityPlayer player = ((EntityPlayer) entity);
+			player.addStat(ModAchievements.symbol, 1);
+			remapItemstack(player, itemstack);
 		}
-		remapItemstack(itemstack);
 	}
 
-	public static void remapItemstack(ItemStack itemstack) {
+	public static void remapItemstack(EntityPlayer player, ItemStack itemstack) {
 		List<ItemStack> mapping = SymbolRemappings.remap(itemstack);
 		if (mapping.size() == 0) {
 			itemstack.stackSize = 0;
 		}
 		if (mapping.size() != 1) {
-			ItemStack notebook = new ItemStack(ModItems.notebook);
-			notebook.stackTagCompound = new NBTTagCompound();
-			for (ItemStack item : mapping) {
-				InventoryNotebook.addItem(notebook, item);
+			ItemStack folder = new ItemStack(ModItems.folder);
+			IItemOrderablePageProvider item = (IItemOrderablePageProvider) folder.getItem();
+			folder.stackTagCompound = new NBTTagCompound();
+			int i = 0;
+			for (ItemStack mappeditemstack : mapping) {
+				item.setPage(player, folder, mappeditemstack, ++i );
 			}
-			itemstack = notebook;
-			itemstack.stackSize = notebook.stackSize;
-			itemstack.stackTagCompound = notebook.stackTagCompound;
+			itemstack = folder;
+			itemstack.stackSize = folder.stackSize;
+			itemstack.stackTagCompound = folder.stackTagCompound;
 		}
 	}
 

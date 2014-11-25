@@ -24,7 +24,7 @@ import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemAgebook extends ItemLinking implements IItemWritable {
+public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPageProvider {
 
 	@SideOnly(Side.CLIENT)
 	@Override

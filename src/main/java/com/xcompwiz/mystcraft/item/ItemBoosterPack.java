@@ -27,14 +27,14 @@ public class ItemBoosterPack extends Item {
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
 		if (world.isRemote) return itemstack;
-		ItemStack notebook = ItemNotebook.generateBooster(entityplayer.getRNG(), 7, 4, 4, 1);
-		if (notebook == null) return itemstack;
+		ItemStack newitemstack = ItemPortfolio.generateBooster(entityplayer.getRNG(), 7, 4, 4, 1);
+		if (newitemstack == null) return itemstack;
 		itemstack.stackSize--;
 		if (itemstack.stackSize <= 0) {
 			entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
-			itemstack = notebook;
+			itemstack = newitemstack;
 		} else {
-			if (!entityplayer.inventory.addItemStackToInventory(notebook)) {
+			if (!entityplayer.inventory.addItemStackToInventory(newitemstack)) {
 				++itemstack.stackSize;
 				return itemstack;
 			}

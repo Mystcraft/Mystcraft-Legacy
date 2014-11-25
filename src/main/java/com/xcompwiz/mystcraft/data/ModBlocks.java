@@ -5,7 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 
-import com.xcompwiz.mystcraft.api.MystObjects;
+import com.xcompwiz.mystcraft.api.MystObjects.Blocks;
 import com.xcompwiz.mystcraft.block.BlockBookBinder;
 import com.xcompwiz.mystcraft.block.BlockBookReceptacle;
 import com.xcompwiz.mystcraft.block.BlockBookstand;
@@ -55,17 +55,17 @@ public class ModBlocks {
 		starfissure = (new BlockStarFissure(Material.portal)).setBlockUnbreakable().setBlockName("myst.starfissure");
 		black_ink = (new BlockFluidWrapper(ModFluids.black_ink, Material.water)).setBlockName("myst.fluid");
 
-		GameRegistry.registerBlock(inkmixer, ItemBlock.class, MystObjects.block_inkmixer);
-		GameRegistry.registerBlock(bookbinder, ItemBlock.class, MystObjects.block_bookbinder);
-		GameRegistry.registerBlock(receptacle, ItemBlock.class, MystObjects.block_crystal_receptacle);
-		GameRegistry.registerBlock(bookstand, ItemBlock.class, MystObjects.block_bookstand);
-		GameRegistry.registerBlock(lectern, ItemBlock.class, MystObjects.block_book_lectern);
-		GameRegistry.registerBlock(decay, ItemDecayBlock.class, MystObjects.block_decay);
-		GameRegistry.registerBlock(linkmodifier, ItemBlock.class, MystObjects.block_link_modifer);
-		GameRegistry.registerBlock(crystal, ItemBlock.class, MystObjects.block_crystal);
-		GameRegistry.registerBlock(portal, ItemBlock.class, MystObjects.block_portal);
-		GameRegistry.registerBlock(writingdesk, ItemBlock.class, MystObjects.block_writing_desk_block);
-		GameRegistry.registerBlock(starfissure, ItemBlock.class, MystObjects.block_star_fissure);
+		GameRegistry.registerBlock(inkmixer, ItemBlock.class, Blocks.inkmixer);
+		GameRegistry.registerBlock(bookbinder, ItemBlock.class, Blocks.bookbinder);
+		GameRegistry.registerBlock(receptacle, ItemBlock.class, Blocks.crystal_receptacle);
+		GameRegistry.registerBlock(bookstand, ItemBlock.class, Blocks.bookstand);
+		GameRegistry.registerBlock(lectern, ItemBlock.class, Blocks.book_lectern);
+		GameRegistry.registerBlock(decay, ItemDecayBlock.class, Blocks.decay);
+		GameRegistry.registerBlock(linkmodifier, ItemBlock.class, Blocks.link_modifer);
+		GameRegistry.registerBlock(crystal, ItemBlock.class, Blocks.crystal);
+		GameRegistry.registerBlock(portal, ItemBlock.class, Blocks.portal);
+		GameRegistry.registerBlock(writingdesk, ItemBlock.class, Blocks.writing_desk_block);
+		GameRegistry.registerBlock(starfissure, ItemBlock.class, Blocks.star_fissure);
 		GameRegistry.registerBlock(black_ink, ItemBlockFluid.class, "BlockFluidMyst", black_ink);
 
 		// Set mining difficulties/tools

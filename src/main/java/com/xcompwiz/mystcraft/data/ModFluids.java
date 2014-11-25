@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.api.MystObjects;
+import com.xcompwiz.mystcraft.api.MystObjects.Fluids;
 import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.fluids.FluidColorable;
 
@@ -20,7 +20,7 @@ public class ModFluids {
 	public static void init() {
 		Mystcraft.validInks = new HashSet<String>();
 
-		black_ink = new FluidColorable(MystObjects.fluid_black_ink, 0x191919);
+		black_ink = new FluidColorable(Fluids.black_ink, 0x191919);
 		FluidRegistry.registerFluid(black_ink);
 		Mystcraft.validInks.add(black_ink.getName());
 	}

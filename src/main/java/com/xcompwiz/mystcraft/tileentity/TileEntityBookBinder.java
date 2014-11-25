@@ -14,7 +14,7 @@ import net.minecraftforge.common.util.Constants;
 
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.IItemBuilder;
-import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
+import com.xcompwiz.mystcraft.inventory.InventoryFolder;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
@@ -254,21 +254,21 @@ public class TileEntityBookBinder extends TileEntity implements IItemBuilder, IS
 		return stack;
 	}
 
-	public ItemStack insertFromNotebook(ItemStack notebook, int index) {
-		if (notebook.getItem() != ModItems.notebook) return notebook;
-		int size = InventoryNotebook.getLargestSlotId(notebook);
+	public ItemStack insertFromFolder(ItemStack folder, int index) {
+		if (folder.getItem() != ModItems.folder) return folder; //XXX: Make use an interface
+		int size = InventoryFolder.getLargestSlotId(folder);
 		if (size == 0) {
 			for (ItemStack page : pages) {
-				InventoryNotebook.addItem(notebook, page);
+				InventoryFolder.addItem(folder, page);
 			}
 			pages.clear();
 		} else {
 			for (int slot = 0; slot < size + 1; ++slot) {
-				ItemStack page = InventoryNotebook.getItem(notebook, slot);
+				ItemStack page = InventoryFolder.getItem(folder, slot);
 				if (page == null) continue;
 				page = insertPage(page, index);
 				if (page == null) ++index;
-				InventoryNotebook.setItem(notebook, slot, page);
+				InventoryFolder.setItem(folder, slot, page);
 			}
 		}
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

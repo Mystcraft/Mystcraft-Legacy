@@ -322,8 +322,8 @@ public class AgeData extends WorldSavedData {
 		}
 		nbttagcompound.setTag("Pages", list);
 
-		nbttagcompound.setTag("Symbols", NBTUtils.writeStringListToNBT(new NBTTagList(), symbols));
-		if (authors != null) nbttagcompound.setTag("Authors", NBTUtils.writeStringListToNBT(new NBTTagList(), authors));
+		nbttagcompound.setTag("Symbols", NBTUtils.writeStringCollection(new NBTTagList(), symbols));
+		if (authors != null) nbttagcompound.setTag("Authors", NBTUtils.writeStringCollection(new NBTTagList(), authors));
 
 		if (cruft != null && cruft.size() > 0) {
 			NBTTagCompound cruftnbt = new NBTTagCompound();

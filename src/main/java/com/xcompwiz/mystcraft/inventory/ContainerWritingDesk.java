@@ -19,6 +19,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;
@@ -61,9 +62,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		fluidDataContainer.setMax(tileentity.getTankInfo(null)[0].capacity);
 
 		for (int i = 0; i < tabslots; ++i) {
-			SlotFiltered slot = new SlotFiltered(tileentity, i + tileentity.getMainInventorySize(), 37, 14 + i * 37 + yShift);// ,
-																																// ItemNotebook.instance.getIconFromDamage(0),
-																																// ItemNotebook.instance.getTextureFile()));
+			SlotFiltered slot = new SlotFiltered(tileentity, i + tileentity.getMainInventorySize(), 37, 14 + i * 37 + yShift);// , ItemFolder.instance.getIconFromDamage(0), ItemFolder.instance.getTextureFile()));
 			slot.setSlotStackLimit(1);
 			addSlotToContainer(slot);
 		}
@@ -108,7 +107,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		collections.add(hotbar);
 	}
 
-	private void updateNotebookSlots() {
+	private void updateSurfaceTabSlots() {
 		for (int i = 0; i < tabslots; ++i) {
 			((SlotFiltered) this.inventorySlots.get(i)).setSlotIndex(i + tileentity.getMainInventorySize() + firstslot);
 		}
@@ -206,27 +205,53 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 				tileentity.link(player);
 			}
 		}
-		if (data.hasKey("TakeFromSurface")) { //XXX: Change to RemoveFromCollection
+		if (data.hasKey("RemoveFromCollection")) {
 			if (player.inventory.getItemStack() != null) return;
-			int index = data.getInteger("TakeFromSurface");
-			player.inventory.setItemStack(tileentity.removePageFromSurface(player, this.getNotebook(this.activeslot), index));
+			ItemStack page = ItemStack.loadItemStackFromNBT(data.getCompoundTag("RemoveFromCollection"));
+			ItemStack itemstack = tileentity.removePageFromSurface(player, this.getTabSlot(this.activeslot), page);
+			player.inventory.setItemStack(itemstack);
 		}
-		if (data.hasKey("AddToNotebook")) {
+		if (data.hasKey("RemoveFromOrderedCollection")) {
+			if (player.inventory.getItemStack() != null) return;
+			int index = data.getInteger("RemoveFromOrderedCollection");
+			player.inventory.setItemStack(tileentity.removePageFromSurface(player, this.getTabSlot(this.activeslot), index));
+		}
+		if (data.hasKey("AddToCollection")) {
 			if (player.inventory.getItemStack() == null) return;
-			byte slot = data.getByte("AddToNotebook");
-			if (tileentity.getNotebook(slot) == null) return;
+			byte slot = data.getByte("AddToCollection");
+			if (tileentity.getTabItem(slot) == null) return;
 			boolean single = data.getBoolean("Single");
 			if (single) {
 				ItemStack stack = player.inventory.getItemStack();
 				ItemStack clone = stack.copy();
 				clone.stackSize = 1;
-				if (tileentity.addPage(player, tileentity.getNotebook(slot), clone) == null) {
+				stack.stackSize -= 1;
+				if (stack.stackSize <= 0) stack = null;
+				player.inventory.setItemStack(stack);
+			}
+			player.inventory.setItemStack(tileentity.addPageToCollection(player, tileentity.getTabItem(slot), player.inventory.getItemStack()));
+		}
+		if (data.hasKey("AddToSurface")) {
+			if (player.inventory.getItemStack() == null) return;
+			if (!data.hasKey("Index")) return;
+			byte slot = data.getByte("AddToSurface");
+			if (tileentity.getTabItem(slot) == null) return;
+			boolean single = data.getBoolean("Single");
+			int index = data.getInteger("Index");
+			if (single) {
+				ItemStack stack = player.inventory.getItemStack();
+				ItemStack clone = stack.copy();
+				clone.stackSize = 1;
+				ItemStack returned = tileentity.placePageOnSurface(player, tileentity.getTabItem(slot), clone, index);
+				if (returned == null || stack.stackSize == 1) {
 					stack.stackSize -= 1;
-					if (stack.stackSize <= 0) stack = null;
+					if (stack.stackSize <= 0) stack = returned;
 					player.inventory.setItemStack(stack);
+				} else {
+					tileentity.placePageOnSurface(player, tileentity.getTabItem(slot), returned, index);
 				}
 			} else {
-				player.inventory.setItemStack(tileentity.addPage(player, tileentity.getNotebook(slot), player.inventory.getItemStack()));
+				player.inventory.setItemStack(tileentity.placePageOnSurface(player, tileentity.getTabItem(slot), player.inventory.getItemStack(), index));
 			}
 		}
 		if (data.hasKey("WriteSymbol")) {
@@ -239,8 +264,8 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		if (data.hasKey("SetFirstNotebook")) {
 			this.firstslot = data.getByte("SetFirstNotebook");
 			if (firstslot < 0) firstslot = 0;
-			if (firstslot >= tileentity.getMaxNotebookCount()) firstslot = 0;
-			updateNotebookSlots();
+			if (firstslot >= tileentity.getMaxSurfaceTabCount()) firstslot = 0;
+			updateSurfaceTabSlots();
 		}
 		if (data.hasKey("SetFluid")) {
 			if (this.tileentity.getWorldObj().isRemote) {
@@ -259,7 +284,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			if (target == null) return;
 			if (player.inventory.getItemStack() != null) return;
 			int index = data.getInteger("TakeFromSlider");
-			player.inventory.setItemStack(InventoryNotebook.removeItem(target, index));
+			player.inventory.setItemStack(InventoryFolder.removeItem(target, index));//FIXME: Reference to InventoryFolder outside folder
 		}
 		if (data.hasKey("InsertHeldAt")) {
 			ItemStack target = tileentity.getTarget();
@@ -268,19 +293,19 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			if (stack == null) return;
 			if (stack.stackSize > 1) return;
 			int index = data.getInteger("InsertHeldAt");
-			player.inventory.setItemStack(InventoryNotebook.setItem(target, index, stack));
+			player.inventory.setItemStack(InventoryFolder.setItem(target, index, stack));//FIXME: Reference to InventoryFolder outside folder
 		}
 	}
 
-	public ItemStack getNotebook(byte slot) {
-		return tileentity.getNotebook(slot);
+	public ItemStack getTabSlot(byte slot) {
+		return tileentity.getTabItem(slot);
 	}
 
-	public byte getActiveNotebookSlot() {
+	public byte getActiveTabSlot() {
 		return activeslot;
 	}
 
-	public byte getFirstNotebookSlot() {
+	public byte getFirstTabSlot() {
 		return firstslot;
 	}
 
@@ -295,7 +320,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		if (book.getItem() instanceof ItemLinking) { //FIXME: (PageStorage) This needs to change with the gui and page storage rewrite
 			return ((ItemLinking) book.getItem()).getPageList(this.player, book);
 		}
-		if (book.getItem() == ModItems.notebook) { return InventoryNotebook.getItems(book); }
+		if (book.getItem() instanceof IItemPageProvider) { return ((IItemPageProvider)book.getItem()).getPageList(this.player, book); }
 		return null;
 	}
 

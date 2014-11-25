@@ -8,12 +8,13 @@ import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemBoosterPack;
+import com.xcompwiz.mystcraft.item.ItemFolder;
 import com.xcompwiz.mystcraft.item.ItemInkVial;
 import com.xcompwiz.mystcraft.item.ItemLinkbook;
 import com.xcompwiz.mystcraft.item.ItemLinkbookUnlinked;
 import com.xcompwiz.mystcraft.item.ItemMyGlasses;
-import com.xcompwiz.mystcraft.item.ItemNotebook;
 import com.xcompwiz.mystcraft.item.ItemPage;
+import com.xcompwiz.mystcraft.item.ItemPortfolio;
 import com.xcompwiz.mystcraft.item.ItemWritingDesk;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -24,7 +25,8 @@ public class ModItems {
 	public static Item			linkbook;
 	public static Item			unlinked;
 	public static Item			booster;
-	public static Item			notebook;
+	public static Item			folder;
+	public static Item			portfolio;
 	public static Item			desk;
 	public static ItemInkVial	inkvial;
 	public static Item			glasses	= new ItemMyGlasses();
@@ -37,18 +39,20 @@ public class ModItems {
 		linkbook = (new ItemLinkbook()).setUnlocalizedName("myst.linkbook").setCreativeTab(CreativeTabs.tabTransport);
 		unlinked = (new ItemLinkbookUnlinked()).setUnlocalizedName("myst.unlinkedbook").setCreativeTab(CreativeTabs.tabTransport);
 		booster = (new ItemBoosterPack()).setUnlocalizedName("myst.booster").setCreativeTab(CreativeTabs.tabMisc);
-		notebook = (new ItemNotebook()).setUnlocalizedName("myst.notebook").setCreativeTab(CreativeTabs.tabMisc);
+		folder = (new ItemFolder()).setUnlocalizedName("myst.folder").setCreativeTab(CreativeTabs.tabMisc);
+		portfolio = (new ItemPortfolio()).setUnlocalizedName("myst.portfolio").setCreativeTab(CreativeTabs.tabMisc);
 		desk = (new ItemWritingDesk()).setUnlocalizedName("myst.writingdesk").setCreativeTab(CreativeTabs.tabDecorations);
 		inkvial = (ItemInkVial) (new ItemInkVial()).setUnlocalizedName("myst.vial").setCreativeTab(CreativeTabs.tabMaterials).setContainerItem(Items.glass_bottle);
 
-		GameRegistry.registerItem(page, MystObjects.item_page);
-		GameRegistry.registerItem(agebook, MystObjects.item_descriptive_book);
-		GameRegistry.registerItem(linkbook, MystObjects.item_linkbook);
-		GameRegistry.registerItem(unlinked, MystObjects.item_linkbook_unlinked);
-		GameRegistry.registerItem(booster, MystObjects.item_booster);
-		GameRegistry.registerItem(notebook, MystObjects.item_notebook);
-		GameRegistry.registerItem(desk, MystObjects.item_writing_desk);
-		GameRegistry.registerItem(inkvial, MystObjects.item_inkvial);
+		GameRegistry.registerItem(page, MystObjects.Items.page);
+		GameRegistry.registerItem(agebook, MystObjects.Items.descriptive_book);
+		GameRegistry.registerItem(linkbook, MystObjects.Items.linkbook);
+		GameRegistry.registerItem(unlinked, MystObjects.Items.linkbook_unlinked);
+		GameRegistry.registerItem(booster, MystObjects.Items.booster);
+		GameRegistry.registerItem(folder, MystObjects.Items.folder);
+		GameRegistry.registerItem(portfolio, MystObjects.Items.portfolio);
+		GameRegistry.registerItem(desk, MystObjects.Items.writing_desk);
+		GameRegistry.registerItem(inkvial, MystObjects.Items.inkvial);
 		GameRegistry.registerItem(glasses, "glasses");
 	}
 }

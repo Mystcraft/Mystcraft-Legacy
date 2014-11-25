@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
-import com.xcompwiz.mystcraft.inventory.InventoryNotebook;
+import com.xcompwiz.mystcraft.page.IItemPageCollection;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.page.SortingUtils.ComparatorSymbolAlphabetical;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
@@ -39,7 +39,7 @@ public class ItemFactory implements IItemFactory {
 	}
 
 	@Override
-	public ItemStack buildNotebook(String name, String... tokens) {
+	public ItemStack buildCollectionItem(String name, String... tokens) {
 		// First, grab all the rules
 		HashSet<Rule> rules = new HashSet<Rule>();
 		for (String token : tokens) {
@@ -63,25 +63,27 @@ public class ItemFactory implements IItemFactory {
 		symbols.addAll(symbolsset);
 		Collections.sort(symbols, ComparatorSymbolAlphabetical.instance);
 
-		ItemStack notebook = new ItemStack(ModItems.notebook, 1, 0);
-		InventoryNotebook.setName(notebook, name);
+		ItemStack itemstack = new ItemStack(ModItems.portfolio, 1, 0);
+		IItemPageCollection item = (IItemPageCollection) itemstack.getItem();
+		item.setDisplayName(null, itemstack, name);
 
 		for (IAgeSymbol symbol : symbols) {
-			InventoryNotebook.addItem(notebook, Page.createSymbolPage(symbol.identifier()));
+			item.add(null, itemstack, Page.createSymbolPage(symbol.identifier()));
 		}
-		return notebook;
+		return itemstack;
 	}
 
 	@Override
-	public ItemStack buildNotebook(String name, ItemStack... pages) {
-		ItemStack notebook = new ItemStack(ModItems.notebook, 1, 0);
-		InventoryNotebook.setName(notebook, name);
+	public ItemStack buildCollectionItem(String name, ItemStack... pages) {
+		ItemStack itemstack = new ItemStack(ModItems.portfolio, 1, 0);
+		IItemPageCollection item = (IItemPageCollection) itemstack.getItem();
+		item.setDisplayName(null, itemstack, name);
 
 		for (ItemStack page : pages) {
 			if (page == null) continue;
 			if (!(page.getItem() instanceof ItemPage)) continue;
-			InventoryNotebook.addItem(notebook, page.copy());
+			item.add(null, itemstack, page.copy());
 		}
-		return notebook;
+		return itemstack;
 	}
 }

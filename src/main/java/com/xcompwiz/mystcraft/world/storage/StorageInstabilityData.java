@@ -29,7 +29,7 @@ public class StorageInstabilityData extends WorldSavedData {
 	public void setAgeData(AgeData data) {
 		NBTBase cruft = data.popCruft("instabilityeffects");
 		if (cruft == null) return;
-		Collection<String> cards = NBTUtils.readStringListFromNBT((NBTTagList) cruft, new ArrayList<String>());
+		Collection<String> cards = NBTUtils.readStringCollection((NBTTagList) cruft, new ArrayList<String>());
 		for (String deck : InstabilityManager.getDecks()) {
 			decks.put(deck, cards );
 		}
@@ -54,7 +54,7 @@ public class StorageInstabilityData extends WorldSavedData {
 		for (Entry<String, Collection<String>> entry : decks.entrySet()) {
 			NBTTagCompound decknbt = new NBTTagCompound();
 			decknbt.setString("Name", entry.getKey());
-			decknbt.setTag("Cards", NBTUtils.writeStringListToNBT(new NBTTagList(), entry.getValue()));
+			decknbt.setTag("Cards", NBTUtils.writeStringCollection(new NBTTagList(), entry.getValue()));
 			list.appendTag(decknbt);
 		}
 		nbt.setTag("Decks", list);
@@ -66,7 +66,7 @@ public class StorageInstabilityData extends WorldSavedData {
 		for (int i = 0; i < list.tagCount(); ++i) {
 			NBTTagCompound decknbt = list.getCompoundTagAt(i);
 			String deckname = decknbt.getString("Name");
-			Collection<String> cards = NBTUtils.readStringListFromNBT(decknbt.getTagList("Cards", Constants.NBT.TAG_STRING), new ArrayList<String>());
+			Collection<String> cards = NBTUtils.readStringCollection(decknbt.getTagList("Cards", Constants.NBT.TAG_STRING), new ArrayList<String>());
 			decks.put(deckname, cards);
 		}
 	}

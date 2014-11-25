@@ -64,7 +64,7 @@ public class AgeDataLegacy extends AgeDataLoader {
 			}
 		}
 		if (nbttagcompound.hasKey("Symbols")) {
-			NBTUtils.readStringListFromNBT(nbttagcompound.getTagList("Symbols", Constants.NBT.TAG_STRING), data.symbols);
+			NBTUtils.readStringCollection(nbttagcompound.getTagList("Symbols", Constants.NBT.TAG_STRING), data.symbols);
 		} else if (data.visited) { // Old Save handling: new symbol list structure
 			for (ItemStack page : data.pages) {
 				String symbol = Page.getSymbol(page);
@@ -74,7 +74,7 @@ public class AgeDataLegacy extends AgeDataLoader {
 			}
 		}
 		if (nbttagcompound.hasKey("Effects")) {
-			NBTUtils.readStringListFromNBT(nbttagcompound.getTagList("Effects", Constants.NBT.TAG_STRING), data.effects);
+			NBTUtils.readStringCollection(nbttagcompound.getTagList("Effects", Constants.NBT.TAG_STRING), data.effects);
 		} else if (nbttagcompound.hasKey("EffectsCount")) { // Old save handling: effects save structure
 			int effectscount = nbttagcompound.getInteger("EffectsCount");
 			for (int i = 0; i < effectscount; ++i) {

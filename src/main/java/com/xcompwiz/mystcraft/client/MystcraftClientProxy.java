@@ -40,7 +40,7 @@ import com.xcompwiz.mystcraft.data.InkEffects;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.data.ModLinkEffects;
-import com.xcompwiz.mystcraft.data.ModNotebooks;
+import com.xcompwiz.mystcraft.data.ModPageCollections;
 import com.xcompwiz.mystcraft.entity.EntityFallingBlock;
 import com.xcompwiz.mystcraft.entity.EntityLightningBoltAdv;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
@@ -155,7 +155,9 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 		CreativeTabMyst creativeTab = new CreativeTabMyst("mystcraft.common", true);
 		creativeTab.registerItemStack(new ItemStack(ModItems.agebook, 1, 0));
 		creativeTab.registerItemStack(new ItemStack(ModItems.unlinked, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModItems.notebook, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModItems.folder, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModItems.portfolio, 1, 0));
+		creativeTab.registerItemStack(new ItemStack(ModItems.booster, 1, 0));
 		creativeTab.registerItemStack(new ItemStack(ModItems.desk, 1, 0));
 		creativeTab.registerItemStack(new ItemStack(ModItems.desk, 1, 1));
 		creativeTab.registerItemStack(new ItemStack(ModBlocks.bookstand, 1, 0));
@@ -179,6 +181,6 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 			ModLinkEffects.isPropertyAllowed(property);
 			pageTab.registerItemStack(Page.createLinkPage(property));
 		}
-		ModNotebooks.addSymbolPages(pageTab);
+		ModPageCollections.addSymbolPages(pageTab);
 	}
 }

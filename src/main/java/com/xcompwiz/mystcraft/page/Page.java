@@ -88,7 +88,7 @@ public abstract class Page {
 		if (data == null) return null;
 		if (!data.hasKey("linkpanel")) return null;
 		NBTTagCompound linkpanel = data.getCompoundTag("linkpanel");
-		ArrayList<String> properties = NBTUtils.readStringListFromNBT(linkpanel.getTagList("properties", Constants.NBT.TAG_STRING), new ArrayList<String>());
+		ArrayList<String> properties = NBTUtils.readStringCollection(linkpanel.getTagList("properties", Constants.NBT.TAG_STRING), new ArrayList<String>());
 		return properties;
 	}
 

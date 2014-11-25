@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 
 import com.xcompwiz.mystcraft.api.internal.IGrammarAPI;
 import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.data.ModNotebooks;
+import com.xcompwiz.mystcraft.data.ModPageCollections;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,15 +19,15 @@ public class CreativeTabMyst extends CreativeTabs {
 
 	private List<ItemStack>	forcelist		= new ArrayList<ItemStack>();
 	private boolean			hasSearchBar	= false;
-	private boolean			notebooks		= false;
+	private boolean			collections		= false;
 
 	public CreativeTabMyst(String label) {
 		this(label, false);
 	}
 
-	public CreativeTabMyst(String label, boolean notebooks) {
+	public CreativeTabMyst(String label, boolean folders) {
 		super(label);
-		this.notebooks = notebooks;
+		this.collections = folders;
 	}
 
 	@Override
@@ -56,25 +56,25 @@ public class CreativeTabMyst extends CreativeTabs {
 		for (ItemStack itemstack : forcelist) {
 			list.add(itemstack);
 		}
-		if (notebooks) {
-			//TODO: Use notebook builder system
-			ArrayList<ItemStack> creative_notebooks = new ArrayList<ItemStack>();
-			creative_notebooks.add(ModNotebooks.createCreativeNotebook());
-			creative_notebooks.add(ModNotebooks.buildNotebook("Biome Distributions", IGrammarAPI.BIOMECONTROLLER));
-			creative_notebooks.add(ModNotebooks.buildNotebook("Celestials", IGrammarAPI.SUN, IGrammarAPI.MOON, IGrammarAPI.STARFIELD, IGrammarAPI.DOODAD));
-			creative_notebooks.add(ModNotebooks.buildNotebook("Effects", IGrammarAPI.EFFECT));
-			creative_notebooks.add(ModNotebooks.buildNotebook("Lighting", IGrammarAPI.LIGHTING));
-			creative_notebooks.add(ModNotebooks.buildNotebook("Modifiers, Basic", IGrammarAPI.ANGLE_BASIC, IGrammarAPI.PERIOD_BASIC, IGrammarAPI.PHASE_BASIC));
-			creative_notebooks.add(ModNotebooks.buildNotebook("Modifiers, Biomes", IGrammarAPI.BIOME));
-			creative_notebooks.add(ModNotebooks.buildNotebook("Modifiers, Block", IGrammarAPI.BLOCK_ANY, IGrammarAPI.BLOCK_TERRAIN, IGrammarAPI.BLOCK_SOLID, IGrammarAPI.BLOCK_STRUCTURE, IGrammarAPI.BLOCK_ORGANIC, IGrammarAPI.BLOCK_CRYSTAL, IGrammarAPI.BLOCK_SEA, IGrammarAPI.BLOCK_FLUID, IGrammarAPI.BLOCK_GAS));
-			creative_notebooks.add(ModNotebooks.buildNotebook("Modifiers, Colors", IGrammarAPI.COLOR_BASIC, IGrammarAPI.COLOR_SEQ, IGrammarAPI.GRADIENT_BASIC, IGrammarAPI.GRADIENT_SEQ, IGrammarAPI.SUNSET));
-			creative_notebooks.add(ModNotebooks.buildNotebook("Populators", IGrammarAPI.POPULATOR));
-			creative_notebooks.add(ModNotebooks.buildNotebook("Terrain Alterations", IGrammarAPI.TERRAINALT));
-			creative_notebooks.add(ModNotebooks.buildNotebook("World Landscapes", IGrammarAPI.TERRAIN));
-			creative_notebooks.add(ModNotebooks.buildNotebook("Visuals", IGrammarAPI.VISUAL_EFFECT));
-			creative_notebooks.add(ModNotebooks.buildNotebook("Weather", IGrammarAPI.WEATHER));
-			for (ItemStack notebook : creative_notebooks) {
-				list.add(notebook);
+		if (collections) {
+			//TODO: Use folders builder system
+			ArrayList<ItemStack> creative_collections = new ArrayList<ItemStack>();
+			creative_collections.add(ModPageCollections.createCreativeCollection());
+			creative_collections.add(ModPageCollections.buildPageCollection("Biome Distributions", IGrammarAPI.BIOMECONTROLLER));
+			creative_collections.add(ModPageCollections.buildPageCollection("Celestials", IGrammarAPI.SUN, IGrammarAPI.MOON, IGrammarAPI.STARFIELD, IGrammarAPI.DOODAD));
+			creative_collections.add(ModPageCollections.buildPageCollection("Effects", IGrammarAPI.EFFECT));
+			creative_collections.add(ModPageCollections.buildPageCollection("Lighting", IGrammarAPI.LIGHTING));
+			creative_collections.add(ModPageCollections.buildPageCollection("Modifiers, Basic", IGrammarAPI.ANGLE_BASIC, IGrammarAPI.PERIOD_BASIC, IGrammarAPI.PHASE_BASIC));
+			creative_collections.add(ModPageCollections.buildPageCollection("Modifiers, Biomes", IGrammarAPI.BIOME));
+			creative_collections.add(ModPageCollections.buildPageCollection("Modifiers, Block", IGrammarAPI.BLOCK_ANY, IGrammarAPI.BLOCK_TERRAIN, IGrammarAPI.BLOCK_SOLID, IGrammarAPI.BLOCK_STRUCTURE, IGrammarAPI.BLOCK_ORGANIC, IGrammarAPI.BLOCK_CRYSTAL, IGrammarAPI.BLOCK_SEA, IGrammarAPI.BLOCK_FLUID, IGrammarAPI.BLOCK_GAS));
+			creative_collections.add(ModPageCollections.buildPageCollection("Modifiers, Colors", IGrammarAPI.COLOR_BASIC, IGrammarAPI.COLOR_SEQ, IGrammarAPI.GRADIENT_BASIC, IGrammarAPI.GRADIENT_SEQ, IGrammarAPI.SUNSET));
+			creative_collections.add(ModPageCollections.buildPageCollection("Populators", IGrammarAPI.POPULATOR));
+			creative_collections.add(ModPageCollections.buildPageCollection("Terrain Alterations", IGrammarAPI.TERRAINALT));
+			creative_collections.add(ModPageCollections.buildPageCollection("World Landscapes", IGrammarAPI.TERRAIN));
+			creative_collections.add(ModPageCollections.buildPageCollection("Visuals", IGrammarAPI.VISUAL_EFFECT));
+			creative_collections.add(ModPageCollections.buildPageCollection("Weather", IGrammarAPI.WEATHER));
+			for (ItemStack collection : creative_collections) {
+				list.add(collection);
 			}
 		}
 	}

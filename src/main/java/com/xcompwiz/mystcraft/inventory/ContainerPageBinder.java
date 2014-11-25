@@ -38,7 +38,7 @@ public class ContainerPageBinder extends ContainerBase implements IGuiMessageHan
 		this.tileentity = tileentity;
 		this.inventoryplayer = inventoryplayer;
 		// addSlotToContainer(new Slot(this.tileentity, 0, 152+shift, 8));
-		// addSlotToContainer(new Slot(this.tileentity.getNotebookInventory(), 0, 152+shift, 27));
+		// addSlotToContainer(new Slot(this.tileentity.getFolderInventory(), 0, 152+shift, 27));
 		addSlotToContainer(new SlotFiltered(this.tileentity, 1, 8 + shift, 27));// , Items.leather.getIconFromDamage(0), Items.leather.getTextureFile()));
 
 		for (int i = 0; i < 3; i++) {
@@ -203,8 +203,8 @@ public class ContainerPageBinder extends ContainerBase implements IGuiMessageHan
 		if (data.hasKey("InsertHeldAt")) {
 			if (player.inventory.getItemStack() == null) return;
 			int index = data.getInteger("InsertHeldAt");
-			if (player.inventory.getItemStack().getItem() == ModItems.notebook) {
-				tileentity.insertFromNotebook(player.inventory.getItemStack(), index);
+			if (player.inventory.getItemStack().getItem() == ModItems.folder) { //XXX: Change to using an interface
+				tileentity.insertFromFolder(player.inventory.getItemStack(), index);
 			} else {
 				ItemStack stack = player.inventory.getItemStack();
 				boolean single = data.getBoolean("Single");

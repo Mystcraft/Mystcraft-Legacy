@@ -2,6 +2,8 @@ package com.xcompwiz.mystcraft.client.gui.element;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.util.IIcon;
 
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
@@ -33,6 +35,7 @@ public abstract class GuiElementButtonBase extends GuiElement {
 
 	@Override
 	public void mouseUp(int i, int j, int k) {
+		if (!isEnabled()) return;
 		if (clicked && GuiUtils.contains(i, j, guiLeft, guiTop, xSize, ySize)) {
 			this.onClick(i, j, k);
 		}
@@ -47,6 +50,7 @@ public abstract class GuiElementButtonBase extends GuiElement {
 
 	@Override
 	public boolean mouseClicked(int i, int j, int k) {
+		if (!isEnabled()) return false;
 		if (GuiUtils.contains(i, j, guiLeft, guiTop, xSize, ySize)) {
 			clicked = true;
 			return true;
@@ -66,6 +70,14 @@ public abstract class GuiElementButtonBase extends GuiElement {
 	@Override
 	public void render(float f, int mouseX, int mouseY) {
 		hovered = GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize, ySize);
+		int fontcolor;
+		if (!isEnabled()) {
+			fontcolor = 0xFF333333;
+			GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
+		} else {
+			fontcolor = 0xFF000000;
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		}
 		// Render button
 		if (isDepressed()) {
 			GuiUtils.drawSprite(this.guiLeft, this.guiTop, xSize, ySize, 0, 0, this.zLevel);
@@ -80,7 +92,7 @@ public abstract class GuiElementButtonBase extends GuiElement {
 			GuiUtils.drawIcon(guiLeft, guiTop, icon, xSize, ySize, zLevel);
 		}
 		if (text != null) {
-			GuiUtils.drawScaledText(text, this.guiLeft + 2, this.guiTop + 2, this.xSize - 4, this.ySize - 4, 0xFF000000);
+			GuiUtils.drawScaledText(text, this.guiLeft + 2, this.guiTop + 2, this.xSize - 4, this.ySize - 4, fontcolor);
 		}
 	}
 }

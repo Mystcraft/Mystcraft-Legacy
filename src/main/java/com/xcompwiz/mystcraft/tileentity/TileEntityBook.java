@@ -53,7 +53,7 @@ public class TileEntityBook extends TileEntity implements ISidedInventory {
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		NBTUtils.readInventoryArrayFromNBT(nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND), itemstacks);
+		NBTUtils.readInventoryArray(nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND), itemstacks);
 		for (int i = 0; i < itemstacks.length; ++i) {
 			handleItemChange(i);
 		}
@@ -62,7 +62,7 @@ public class TileEntityBook extends TileEntity implements ISidedInventory {
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setTag("Items", NBTUtils.writeInventoryArrayToNBT(new NBTTagList(), itemstacks));
+		nbttagcompound.setTag("Items", NBTUtils.writeInventoryArray(new NBTTagList(), itemstacks));
 	}
 
 	@Override

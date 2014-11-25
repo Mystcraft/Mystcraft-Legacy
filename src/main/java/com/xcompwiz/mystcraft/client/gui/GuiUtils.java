@@ -328,7 +328,6 @@ public final class GuiUtils {
 	@SideOnly(Side.CLIENT)
 	public static void drawSprite(int x, int y, int xOffset, int yOffset, float zLevel) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(Vanilla.slot_tex);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV((x + 0), (y + 18), zLevel, ((xOffset + 0) * 0.0078125F), ((yOffset + 18) * 0.0078125F));
@@ -341,7 +340,6 @@ public final class GuiUtils {
 	@SideOnly(Side.CLIENT)
 	public static void drawSprite(int x, int y, int xSize, int ySize, int xOffset, int yOffset, float zLevel) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(Vanilla.slot_tex);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		tessellator.addVertexWithUV((x + 0), (y + ySize), zLevel, ((xOffset + 0) * 0.0078125F), ((yOffset + 18) * 0.0078125F));

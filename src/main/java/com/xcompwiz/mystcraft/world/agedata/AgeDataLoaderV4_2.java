@@ -38,8 +38,8 @@ public class AgeDataLoaderV4_2 extends AgeDataLoader {
 			data.pages.add(Page.createPage(list.getCompoundTagAt(i)));
 		}
 
-		NBTUtils.readStringListFromNBT(nbttagcompound.getTagList("Symbols", Constants.NBT.TAG_STRING), data.symbols);
-		NBTUtils.readStringListFromNBT(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), data.authors);
+		NBTUtils.readStringCollection(nbttagcompound.getTagList("Symbols", Constants.NBT.TAG_STRING), data.symbols);
+		NBTUtils.readStringCollection(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), data.authors);
 
 		NBTTagCompound cruftnbt = nbttagcompound.getCompoundTag("Cruft");
 		for (String key : (Set<String>) cruftnbt.func_150296_c()) {

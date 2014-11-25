@@ -1,7 +1,5 @@
 package com.xcompwiz.mystcraft.item;
 
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -10,7 +8,7 @@ import net.minecraft.item.ItemStack;
  * in the desk.
  * @author xcompwiz
  */
-public interface IItemWritable extends IItemRenameable {
+public interface IItemWritable {
 
 	/**
 	 * This is called when the player tries to write a symbol to the item.
@@ -21,11 +19,4 @@ public interface IItemWritable extends IItemRenameable {
 	 */
 	boolean writeSymbol(EntityPlayer player, ItemStack itemstack, String symbol);
 
-	/**
-	 * Called to retrieve the list of pages in the itemstack. This can safely return null.
-	 * @param player The current player
-	 * @param itemstack The itemstack instance of this item
-	 * @return A list of pages in the item
-	 */
-	List<ItemStack> getPageList(EntityPlayer player, ItemStack itemstack);
 }

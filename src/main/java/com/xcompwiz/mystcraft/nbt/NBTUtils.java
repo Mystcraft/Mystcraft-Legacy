@@ -27,7 +27,13 @@ public final class NBTUtils {
 		return 0;
 	}
 
-	public static void readInventoryArrayFromNBT(NBTTagList tagList, ItemStack[] inventory) {
+	public static String readString(NBTBase tag) {
+		if (tag == null) { return ""; }
+		if (tag instanceof NBTTagString) { return ((NBTTagString) tag).func_150285_a_(); }
+		return tag.toString();
+	}
+
+	public static void readInventoryArray(NBTTagList tagList, ItemStack[] inventory) {
 		for (int i = 0; i < tagList.tagCount(); i++) {
 			NBTTagCompound nbttagcompound1 = tagList.getCompoundTagAt(i);
 			byte byte0 = nbttagcompound1.getByte("Slot");
@@ -37,7 +43,7 @@ public final class NBTUtils {
 		}
 	}
 
-	public static NBTTagList writeInventoryArrayToNBT(NBTTagList nbttaglist, ItemStack[] inventory) {
+	public static NBTTagList writeInventoryArray(NBTTagList nbttaglist, ItemStack[] inventory) {
 		for (int i = 0; i < inventory.length; i++) {
 			if (inventory[i] != null) {
 				NBTTagCompound slot = new NBTTagCompound();
@@ -49,7 +55,7 @@ public final class NBTUtils {
 		return nbttaglist;
 	}
 
-	public static <T extends Map<String, Byte>> T readByteMapFromNBT(NBTTagCompound tagcompound, T map) {
+	public static <T extends Map<String, Byte>> T readByteMap(NBTTagCompound tagcompound, T map) {
 		Collection<String> tagnames = tagcompound.func_150296_c();
 
 		for (String tagname : tagnames) {
@@ -58,14 +64,14 @@ public final class NBTUtils {
 		return map;
 	}
 
-	public static NBTTagCompound writeByteMapToNBT(NBTTagCompound tagcompound, Map<String, Byte> map) {
+	public static NBTTagCompound writeByteMap(NBTTagCompound tagcompound, Map<String, Byte> map) {
 		for (String key : map.keySet()) {
 			tagcompound.setByte(key, map.get(key));
 		}
 		return tagcompound;
 	}
 
-	public static <T extends Map<String, Integer>> T readIntMapFromNBT(NBTTagCompound tagcompound, T map) {
+	public static <T extends Map<String, Integer>> T readIntMap(NBTTagCompound tagcompound, T map) {
 		Collection<String> tagnames = tagcompound.func_150296_c();
 
 		for (String tagname : tagnames) {
@@ -74,14 +80,14 @@ public final class NBTUtils {
 		return map;
 	}
 
-	public static NBTTagCompound writeIntMapToNBT(NBTTagCompound tagcompound, Map<String, Integer> map) {
+	public static NBTTagCompound writeIntMap(NBTTagCompound tagcompound, Map<String, Integer> map) {
 		for (String key : map.keySet()) {
 			tagcompound.setInteger(key, map.get(key));
 		}
 		return tagcompound;
 	}
 
-	public static <T extends Map<String, Float>> T readFloatMapFromNBT(NBTTagCompound tagcompound, T map) {
+	public static <T extends Map<String, Float>> T readFloatMap(NBTTagCompound tagcompound, T map) {
 		Collection<String> tagnames = tagcompound.func_150296_c();
 
 		for (String tagname : tagnames) {
@@ -90,26 +96,56 @@ public final class NBTUtils {
 		return map;
 	}
 
-	public static NBTTagCompound writeFloatMapToNBT(NBTTagCompound tagcompound, Map<String, Float> map) {
+	public static NBTTagCompound writeFloatMap(NBTTagCompound tagcompound, Map<String, Float> map) {
 		for (String key : map.keySet()) {
 			tagcompound.setFloat(key, map.get(key));
 		}
 		return tagcompound;
 	}
 
-	public static NBTTagList writeStringListToNBT(NBTTagList nbttaglist, Collection<String> list) {
-		nbttaglist = new NBTTagList();
-		for (String str : list) {
+	public static <T extends Map<String, String>> T readStringMap(NBTTagCompound tagcompound, T map) {
+		Collection<String> tagnames = tagcompound.func_150296_c();
+
+		for (String tagname : tagnames) {
+			map.put(tagname, tagcompound.getString(tagname));
+		}
+		return map;
+	}
+
+	public static NBTTagCompound writeStringMap(NBTTagCompound tagcompound, Map<String, String> map) {
+		for (String key : map.keySet()) {
+			tagcompound.setString(key, map.get(key));
+		}
+		return tagcompound;
+	}
+
+	public static NBTTagList writeStringCollection(NBTTagList nbttaglist, Collection<String> collection) {
+		for (String str : collection) {
 			if (str == null) continue;
 			nbttaglist.appendTag(new NBTTagString(str));
 		}
 		return nbttaglist;
 	}
 
-	public static <T extends Collection<String>> T readStringListFromNBT(NBTTagList nbttaglist, T list) {
+	public static <T extends Collection<String>> T readStringCollection(NBTTagList nbttaglist, T collection) {
 		for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-			list.add(nbttaglist.getStringTagAt(i));
+			collection.add(nbttaglist.getStringTagAt(i));
 		}
-		return list;
+		return collection;
+	}
+
+	public static NBTTagList writeTagCompoundCollection(NBTTagList nbttaglist, Collection<NBTTagCompound> collection) {
+		for (NBTTagCompound tag : collection) {
+			if (tag == null) continue;
+			nbttaglist.appendTag(tag);
+		}
+		return nbttaglist;
+	}
+
+	public static <T extends Collection<NBTTagCompound>> T readTagCompoundCollection(NBTTagList nbttaglist, T collection) {
+		for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+			collection.add(nbttaglist.getCompoundTagAt(i));
+		}
+		return collection;
 	}
 }

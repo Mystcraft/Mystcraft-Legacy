@@ -97,6 +97,8 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -416,6 +418,13 @@ public class Mystcraft {
 		registeredDims = Mystcraft.getExistingAgeList(worldSaveDir);
 		for (Integer dimId : registeredDims) {
 			DimensionManager.registerDimension(dimId, providerId);
+		}
+	}
+
+	@EventHandler
+	public void handleNameChanges(FMLMissingMappingsEvent event) {
+		for (MissingMapping elem : event.get()) {
+			if (elem.name.equals("Mystcraft:notebook")) elem.remap(ModItems.folder);
 		}
 	}
 }

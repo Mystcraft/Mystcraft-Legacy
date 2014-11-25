@@ -29,7 +29,7 @@ public class IMCHandler {
 			try {
 				process.process(message);
 			} catch (Exception e) {
-				LoggerUtils.error(e.toString());
+				LoggerUtils.error(e.getLocalizedMessage());
 			}
 		}
 	}

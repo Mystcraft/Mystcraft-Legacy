@@ -120,21 +120,21 @@ public class TileEntityInkMixer extends TileEntity implements IItemBuilder, ISid
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		NBTUtils.readInventoryArrayFromNBT(nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND), itemstacks);
+		NBTUtils.readInventoryArray(nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND), itemstacks);
 
 		hasInk = nbttagcompound.getBoolean("Ink");
 
-		ink_probabilities = NBTUtils.readFloatMapFromNBT(nbttagcompound.getCompoundTag("Probabilities"), new HashMap<String, Float>());
+		ink_probabilities = NBTUtils.readFloatMap(nbttagcompound.getCompoundTag("Probabilities"), new HashMap<String, Float>());
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
 		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setTag("Items", NBTUtils.writeInventoryArrayToNBT(new NBTTagList(), itemstacks));
+		nbttagcompound.setTag("Items", NBTUtils.writeInventoryArray(new NBTTagList(), itemstacks));
 
 		nbttagcompound.setBoolean("Ink", hasInk);
 
-		nbttagcompound.setTag("Probabilities", NBTUtils.writeFloatMapToNBT(new NBTTagCompound(), ink_probabilities));
+		nbttagcompound.setTag("Probabilities", NBTUtils.writeFloatMap(new NBTTagCompound(), ink_probabilities));
 	}
 
 	@Override

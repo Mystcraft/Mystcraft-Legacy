@@ -5,12 +5,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class SlotNotebook extends Slot {
+public class SlotFolder extends Slot {
 
 	private ItemStack	item;
 	protected int		slotIndex;
 
-	public SlotNotebook(IInventory inventory, int slot, int x, int y) {
+	public SlotFolder(IInventory inventory, int slot, int x, int y) {
 		super(inventory, slot, x, y);
 		this.slotIndex = slot;
 	}
@@ -20,7 +20,7 @@ public class SlotNotebook extends Slot {
 	 */
 	@Override
 	public boolean isItemValid(ItemStack itemstack) {
-		return InventoryNotebook.isItemValid(itemstack);
+		return InventoryFolder.isItemValid(itemstack);//TODO: Reference to InventoryFolder outside folder
 	}
 
 	/**

@@ -156,6 +156,7 @@ def deployments = [
 	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
 	'patron': {"C:/Users/Zach/Google Drive/Mystcraft Patreon Builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
 	'FC1'   : "F:/Seafile/incoming/ForgeCraft1/mods"
+	'FC2'   : "F:/Seafile/incoming/ForgeCraft2/mods"
 ]
 
 deployments.each { name, dir ->

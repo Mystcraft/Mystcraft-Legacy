@@ -48,7 +48,7 @@ public class AgeDataLoaderManager {
 		// Update 4.1 -> 4.2
 		if (data.version.equals("4.1")) {
 			AgeDataLoaderV4_1.AgeDataData datav = (com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderV4_1.AgeDataData) data;
-			if (datav.effects.size() > 0) data.cruft.put("instabilityeffects", NBTUtils.writeStringListToNBT(new NBTTagList(), datav.effects));
+			if (datav.effects.size() > 0) data.cruft.put("instabilityeffects", NBTUtils.writeStringCollection(new NBTTagList(), datav.effects));
 			data.version = "4.2";
 		}
 

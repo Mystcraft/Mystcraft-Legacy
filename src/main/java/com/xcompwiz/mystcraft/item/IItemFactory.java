@@ -29,19 +29,19 @@ public interface IItemFactory {
 	public ItemStack buildLinkPage(String... properties);
 
 	/**
-	 * Builds a notebook containing pages for all of the symbols produced directly from the provided grammar tokens. The symbols come pre-sorted by Alphabetical
-	 * order and will occur only once. Keep in mind localization limitations on the server, if you are creating this notebook there.
-	 * @param name The name of the notebook
+	 * Builds a collection item containing pages for all of the symbols produced directly from the provided grammar tokens. The symbols come pre-sorted by Alphabetical
+	 * order and will occur only once. Keep in mind localization limitations on the server, if you are creating this collection there.
+	 * @param name The name of the collection
 	 * @param tokens The list of grammar tokens to expand for symbols
-	 * @return The notebook itemstack
+	 * @return The collection itemstack
 	 */
-	public ItemStack buildNotebook(String name, String... tokens);
+	public ItemStack buildCollectionItem(String name, String... tokens);
 
 	/**
-	 * Builds a notebook containing the provided pages. This clones the itemstacks of the pages. This will only add items which can be put into notebooks
-	 * @param name The name of the notebook
+	 * Builds a collection item containing the provided pages. This clones the itemstacks of the pages. This will only add items which can be put into collections
+	 * @param name The name of the collection
 	 * @param pages The list of page itemstacks to add
-	 * @return The notebook itemstack
+	 * @return The collection itemstack
 	 */
-	public ItemStack buildNotebook(String name, ItemStack... pages);
+	public ItemStack buildCollectionItem(String name, ItemStack... pages);
 }

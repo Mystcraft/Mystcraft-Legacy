@@ -42,9 +42,9 @@ public class RenderWritingDesk extends TileEntitySpecialRenderer {
 		GL11.glRotatef(90, 0, 1, 0);
 		GL11.glRotatef(90, 0, 0, 1);
 		GL11.glRotatef(90 * meta, 0, 1, 0);
-		int notebookcount = 0;
+		int tabitemcount = 0;
 		int papercount = desk.getPaperCount();
-		deskmodel.render(null, 0.0625F, desk.hasTop(), notebookcount, papercount);
+		deskmodel.render(null, 0.0625F, desk.hasTop(), tabitemcount, papercount);
 		GL11.glPopMatrix();
 
 		GL11.glPushMatrix();

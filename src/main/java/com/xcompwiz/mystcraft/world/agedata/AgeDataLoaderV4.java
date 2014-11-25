@@ -37,9 +37,9 @@ public class AgeDataLoaderV4 extends AgeDataLoader {
 			data.pages.add(Page.createPage(list.getCompoundTagAt(i)));
 		}
 
-		NBTUtils.readStringListFromNBT(nbttagcompound.getTagList("Symbols", Constants.NBT.TAG_STRING), data.symbols);
-		NBTUtils.readStringListFromNBT(nbttagcompound.getTagList("Effects", Constants.NBT.TAG_STRING), data.effects);
-		NBTUtils.readStringListFromNBT(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), data.authors);
+		NBTUtils.readStringCollection(nbttagcompound.getTagList("Symbols", Constants.NBT.TAG_STRING), data.symbols);
+		NBTUtils.readStringCollection(nbttagcompound.getTagList("Effects", Constants.NBT.TAG_STRING), data.effects);
+		NBTUtils.readStringCollection(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), data.authors);
 
 		return data;
 	}

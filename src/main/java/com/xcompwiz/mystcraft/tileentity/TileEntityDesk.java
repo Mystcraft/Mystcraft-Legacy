@@ -29,6 +29,8 @@ import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.fluids.FluidUtils;
+import com.xcompwiz.mystcraft.item.IItemOrderablePageProvider;
+import com.xcompwiz.mystcraft.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.item.IItemRenameable;
 import com.xcompwiz.mystcraft.item.IItemWritable;
 import com.xcompwiz.mystcraft.item.ItemLinking;
@@ -45,7 +47,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedInventory, IMessageReceiver {
 
 	private ItemStack			itemstacks[];
-	private ItemStack			notebooks[];
+	private ItemStack			tabitems[];
 	private FluidTankFiltered	inkwell;
 
 	private static final int	slot_wrt	= 0;
@@ -57,7 +59,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 
 	public TileEntityDesk() {
 		itemstacks = new ItemStack[4];
-		notebooks = new ItemStack[25];
+		tabitems = new ItemStack[25];
 		inkwell = new FluidTankFiltered(FluidContainerRegistry.BUCKET_VOLUME);
 		inkwell.setPermittedFluids(Mystcraft.validInks);
 	}
@@ -66,8 +68,8 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		return itemstacks.length;
 	}
 
-	public int getMaxNotebookCount() {
-		return notebooks.length;
+	public int getMaxSurfaceTabCount() {
+		return tabitems.length;
 	}
 
 	public int getPaperCount() {
@@ -110,9 +112,9 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		markDirty();
 	}
 
-	public ItemStack getNotebook(byte activeslot) {
-		if (activeslot < 0 || activeslot >= notebooks.length) return null;
-		ItemStack itemstack = notebooks[activeslot];
+	public ItemStack getTabItem(byte activeslot) {
+		if (activeslot < 0 || activeslot >= tabitems.length) return null;
+		ItemStack itemstack = tabitems[activeslot];
 		if (itemstack == null) return null;
 		if (itemstack.getItem() instanceof IItemPageCollection) return itemstack;
 		if (itemstack.getItem() instanceof IItemWritable) return itemstack;
@@ -130,7 +132,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		// IFluidContainerItem) return true; //TODO: (Fluids) Handle IFluidContainerItem
 		slotIndex -= itemstacks.length;
 		if (slotIndex < 0) return false;
-		if (slotIndex >= notebooks.length) return false;
+		if (slotIndex >= tabitems.length) return false;
 		if (itemstack.getItem() instanceof IItemPageCollection) return true;
 		if (itemstack.getItem() instanceof IItemWritable) return true;
 		return false;
@@ -138,7 +140,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 
 	@Override
 	public int getSizeInventory() {
-		return itemstacks.length + notebooks.length;
+		return itemstacks.length + tabitems.length;
 	}
 
 	@Override
@@ -146,7 +148,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		ItemStack[] inv = itemstacks;
 		if (index >= inv.length) {
 			index -= inv.length;
-			inv = notebooks;
+			inv = tabitems;
 		}
 		if (index > inv.length) return null;
 		return inv[index];
@@ -157,7 +159,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		ItemStack[] inv = itemstacks;
 		if (index >= inv.length) {
 			index -= inv.length;
-			inv = notebooks;
+			inv = tabitems;
 		}
 		if (inv[index] != null) {
 			if (inv[index].stackSize <= amount) {
@@ -181,7 +183,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		ItemStack[] inv = itemstacks;
 		if (index >= inv.length) {
 			index -= inv.length;
-			inv = notebooks;
+			inv = tabitems;
 		}
 		inv[index] = itemstack;
 		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
@@ -236,8 +238,10 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		if (nbttagcompound.hasKey("Fluid")) {
 			inkwell.fill(FluidStack.loadFluidStackFromNBT(nbttagcompound.getCompoundTag("Fluid")), true);
 		}
-		NBTUtils.readInventoryArrayFromNBT(nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND), itemstacks);
-		NBTUtils.readInventoryArrayFromNBT(nbttagcompound.getTagList("Notebooks", Constants.NBT.TAG_COMPOUND), notebooks);
+		itemstacks = new ItemStack[4];
+		tabitems = new ItemStack[25];
+		NBTUtils.readInventoryArray(nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND), itemstacks);
+		NBTUtils.readInventoryArray(nbttagcompound.getTagList("Notebooks", Constants.NBT.TAG_COMPOUND), tabitems);
 	}
 
 	@Override
@@ -247,8 +251,8 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		if (fluid != null) {
 			nbttagcompound.setTag("Fluid", fluid.writeToNBT(new NBTTagCompound()));
 		}
-		nbttagcompound.setTag("Items", NBTUtils.writeInventoryArrayToNBT(new NBTTagList(), itemstacks));
-		nbttagcompound.setTag("Notebooks", NBTUtils.writeInventoryArrayToNBT(new NBTTagList(), notebooks));
+		nbttagcompound.setTag("Items", NBTUtils.writeInventoryArray(new NBTTagList(), itemstacks));
+		nbttagcompound.setTag("Notebooks", NBTUtils.writeInventoryArray(new NBTTagList(), tabitems));
 	}
 
 	public void handleItemChange(ItemStack itemstack) {}
@@ -272,8 +276,8 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 	public List<ItemStack> getBookPageList(EntityPlayer player) {
 		ItemStack itemstack = itemstacks[slot_wrt];
 		if (itemstack == null) return null;
-		if (!(itemstack.getItem() instanceof IItemWritable)) return null;
-		return ((IItemWritable) itemstack.getItem()).getPageList(player, itemstack);
+		if (!(itemstack.getItem() instanceof IItemPageProvider)) return null;
+		return ((IItemPageProvider) itemstack.getItem()).getPageList(player, itemstack);
 	}
 
 	public void writeSymbol(EntityPlayer player, String symbol) {
@@ -304,7 +308,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 			page = ItemPage.createItemstack(page);
 			if (page != null) {
 				InternalAPI.page.setPageSymbol(page, symbol);
-				if (((IItemPageCollection) target.getItem()).addPage(player, target, page) == null) {
+				if (((IItemPageCollection) target.getItem()).add(player, target, page) == null) {
 					--paperstack.stackSize;
 				}
 			}
@@ -315,16 +319,37 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 
 	public ItemStack removePageFromSurface(EntityPlayer player, ItemStack itemstack, int index) {
 		if (itemstack == null) return null;
-		if (!(itemstack.getItem() instanceof IItemPageCollection)) return null;
-		ItemStack page = ((IItemPageCollection) itemstack.getItem()).removePage(player, itemstack, index);
+		ItemStack result = null;
+		if (itemstack.getItem() instanceof IItemOrderablePageProvider) result = ((IItemOrderablePageProvider) itemstack.getItem()).removePage(player, itemstack, index);
+		if (result == null) return result;
 		this.markDirty();
-		return page;
+		return result;
 	}
 
-	public ItemStack addPage(EntityPlayer player, ItemStack itemstack, ItemStack page) {
+	public ItemStack removePageFromSurface(EntityPlayer player, ItemStack itemstack, ItemStack page) {
+		if (itemstack == null) return null;
+		ItemStack result = null;
+		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).remove(player, itemstack, page);
+		if (result == null) return result;
+		this.markDirty();
+		return result;
+	}
+
+	public ItemStack addPageToCollection(EntityPlayer player, ItemStack itemstack, ItemStack page) {
 		if (itemstack == null) return page;
-		if (!(itemstack.getItem() instanceof IItemPageCollection)) return page;
-		ItemStack result = ((IItemPageCollection) itemstack.getItem()).addPage(player, itemstack, page);
+		ItemStack result = page;
+		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).add(player, itemstack, page);
+		if (result == page) return result;
+		this.markDirty();
+		return result;
+	}
+
+	public ItemStack placePageOnSurface(EntityPlayer player, ItemStack itemstack, ItemStack page, int index) {
+		if (itemstack == null) return page;
+		ItemStack result = page;
+		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).add(player, itemstack, page);
+		if (itemstack.getItem() instanceof IItemOrderablePageProvider) result = ((IItemOrderablePageProvider) itemstack.getItem()).setPage(player, itemstack, page, index);
+		if (result == page) return result;
 		this.markDirty();
 		return result;
 	}
@@ -337,7 +362,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 	public ItemStack getStackInSlotOnClosing(int index) {
 		ItemStack[] inv = itemstacks;
 		if (index >= itemstacks.length) {
-			inv = notebooks;
+			inv = tabitems;
 			index -= itemstacks.length;
 		}
 
