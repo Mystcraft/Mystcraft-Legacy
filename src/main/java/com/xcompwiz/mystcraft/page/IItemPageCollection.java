@@ -23,7 +23,6 @@ public interface IItemPageCollection extends IItemRenameable, IItemPageAcceptor 
 	 */
 	ItemStack remove(EntityPlayer player, ItemStack itemstack, ItemStack page);
 
-	//FIXME: !!(PageSorting) This isn't very future proof.  Collections won't be itemstacks in the future. 
 	/**
 	 * Returns the collection of pages in this collection
 	 * @param itemstack The itemstack instance of this item
