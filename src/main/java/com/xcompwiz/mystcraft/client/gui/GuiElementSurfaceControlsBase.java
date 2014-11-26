@@ -32,8 +32,8 @@ import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPagesProvider, IGuiOnClickHandler, IGuiStateProvider, IGuiTextProvider, IGuiOnTextChange {
-	private Minecraft	mc;
-	private float	xSize;
+	private Minecraft				mc;
+	private float					xSize;
 
 	private ItemStack				cached_tabitem;
 	private List<PositionableItem>	arranged_pages;
@@ -68,6 +68,10 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 	}
 
 	private void updateCollection() {
+		arranged_pages = null;
+		if (cached_tabitem == null) {
+			return;
+		}
 		boolean iscollection = cached_tabitem.getItem() instanceof IItemPageCollection;
 		for (GuiElement element : surfaceelements) {
 			element.setEnabled(iscollection);
@@ -144,8 +148,6 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 				newpos.count = 1;
 				arranged_pages.add(newpos);
 			}
-		} else {
-			arranged_pages = null;
 		}
 		if (arranged_pages != null) arrange();
 	}
@@ -194,7 +196,7 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 	}
 
 	private List<IGuiOnTextChange>	listeners	= new ArrayList<IGuiOnTextChange>();
-	private String					searchtext		= null;
+	private String					searchtext	= null;
 
 	@Override
 	public String getText(GuiElementTextField caller) {
@@ -204,7 +206,7 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 	@Override
 	public void onTextChange(GuiElementTextField caller, String newtext) {
 		searchtext = newtext;
-		if (cached_tabitem.getItem() instanceof IItemPageCollection) {
+		if (cached_tabitem != null && cached_tabitem.getItem() instanceof IItemPageCollection) {
 			this.updateCollection();
 		}
 		for (IGuiOnTextChange listener : listeners) {

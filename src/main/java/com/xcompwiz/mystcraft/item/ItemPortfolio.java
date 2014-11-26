@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -29,11 +28,6 @@ import com.xcompwiz.mystcraft.inventory.ContainerFolder;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.network.NetworkUtils;
 import com.xcompwiz.mystcraft.page.IItemPageCollection;
-import com.xcompwiz.mystcraft.page.Page;
-import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
-import com.xcompwiz.mystcraft.symbol.SymbolManager;
-import com.xcompwiz.mystcraft.treasure.WeightProviderSymbolItem;
-import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -124,35 +118,6 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 		} else {
 			itemstack.stackTagCompound.setString("Name", name);
 		}
-	}
-
-	//XXX: Generalize to allow for alternate rank sets (any rank, >=2, etc)
-	public static ItemStack generateBooster(Random rand, int verycommon, int common, int uncommon, int rare) {
-		ItemStack itemstack = new ItemStack(ModItems.portfolio, 1, 0);
-		ItemPortfolio item = (ItemPortfolio) itemstack.getItem();
-
-		Collection<IAgeSymbol> symbols_vc = SymbolManager.getSymbolsByRank(0);
-		Collection<IAgeSymbol> symbols_c = SymbolManager.getSymbolsByRank(1);
-		Collection<IAgeSymbol> symbols_uc = SymbolManager.getSymbolsByRank(2);
-		Collection<IAgeSymbol> symbols_r = SymbolManager.getSymbolsByRank(3, null);
-
-		for (int i = 0; i < verycommon; ++i) {
-			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_vc, WeightProviderSymbolItem.instance);
-			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
-		}
-		for (int i = 0; i < common; ++i) {
-			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_c, WeightProviderSymbolItem.instance);
-			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
-		}
-		for (int i = 0; i < uncommon; ++i) {
-			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_uc, WeightProviderSymbolItem.instance);
-			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
-		}
-		for (int i = 0; i < rare; ++i) {
-			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_r, WeightProviderSymbolItem.instance);
-			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
-		}
-		return itemstack;
 	}
 
 	public static boolean isItemValid(ItemStack itemstack) {

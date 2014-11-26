@@ -41,7 +41,14 @@ public class TileEntityBookBinder extends TileEntity implements IItemBuilder, IS
 	@Override
 	public boolean isItemValidForSlot(int slotIndex, ItemStack itemstack) {
 		if (itemstack == null) return false;
-		if (slotIndex == 1 && itemstack.getItem() == Items.leather) return true;
+		if (slotIndex == 1 && isValidCover(itemstack)) return true;
+		return false;
+	}
+
+	//XXX: (Crafting) Book binding/covers
+	private boolean isValidCover(ItemStack itemstack) {
+		if (itemstack.getItem() == Items.leather) return true;
+		if (itemstack.getItem() == ModItems.folder) return true;
 		return false;
 	}
 
@@ -204,7 +211,7 @@ public class TileEntityBookBinder extends TileEntity implements IItemBuilder, IS
 
 	private boolean canBuildItem() {
 		if (itemstacks[1] == null) return false;
-		if (itemstacks[1].getItem() != Items.leather) return false;
+		if (!isValidCover(itemstacks[1])) return false;
 		if (pages.size() == 0) return false;
 		if (!Page.isLinkPanel(pages.get(0))) return false;
 		for (int i = 1; i < pages.size(); ++i) {
