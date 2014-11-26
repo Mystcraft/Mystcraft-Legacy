@@ -19,6 +19,7 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 
 	private ContainerBook	container;
 	private boolean			widget;
+	private GuiElementBook	bookelem;
 
 	private GuiBook(ContainerBook container) {
 		super(container);
@@ -46,11 +47,12 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 
 	@Override
 	public void validate() {
-		xSize = 312;
-		ySize = 312;
+		xSize = 327;
+		ySize = 199;
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
-		addElement(new GuiElementBook(container, this, 0,0, xSize, ySize));
+		bookelem = new GuiElementBook(container, this, 0, 0, xSize, ySize);
+		addElement(bookelem);
 		recalcPosition();
 	}
 
@@ -65,14 +67,11 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 		xSize = 176;
 		ySize = 166;
 		widget = false;
-		//FIXME: !(This broke when we changed the GuiElement system)
-//		for (GuiElement elem : elements) {
-//			if (elem.isVisible()) {
-//				xSize = Math.max(xSize, elem.getLeft());
-//				ySize = Math.max(ySize, elem.getTop());
-//				widget = true;
-//			}
-//		}
+		if (bookelem.isVisible()) {
+			xSize = bookelem.getWidth();
+			ySize = bookelem.getHeight();
+			widget = true;
+		}
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
 	}

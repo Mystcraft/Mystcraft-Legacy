@@ -39,8 +39,8 @@ public class GuiElementBook extends GuiElement {
 		super(left, top, width, height);
 		this.bookcontainer = container;
 		this.linkhandler = linkhandler;
-		this.xScale = xSize / 312.0F;
-		this.yScale = ySize / 195.0F;
+		this.xScale = xSize / 327.0F;
+		this.yScale = ySize / 199.0F;
 		bookcontainer.setCurrentPageIndex(0);
 		Collection<ILinkPanelEffect> effects = LinkPanelEffectManager.getEffects();
 		for (ILinkPanelEffect effect : effects) {
