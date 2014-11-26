@@ -15,6 +15,7 @@ public class ModRecipes {
 
 	private static boolean	Linkbook;
 	private static boolean	Folder;
+	private static boolean	Portfolio;
 	private static boolean	BookReceptacle;
 	private static boolean	Lectern;
 	private static boolean	Bookstand;
@@ -26,6 +27,7 @@ public class ModRecipes {
 	public static void loadConfigs(MystConfig config) {
 		Linkbook = config.get(MystConfig.CATEGORY_GENERAL, "options.linkbook.enabled", true).getBoolean(true);
 		Folder = config.get(MystConfig.CATEGORY_GENERAL, "options.folder.enabled", true).getBoolean(true);
+		Portfolio = config.get(MystConfig.CATEGORY_GENERAL, "options.portfolio.enabled", true).getBoolean(true);
 		BookReceptacle = config.get(MystConfig.CATEGORY_GENERAL, "options.receptacle.enabled", true).getBoolean(true);
 		Lectern = config.get(MystConfig.CATEGORY_GENERAL, "options.lectern.enabled", true).getBoolean(true);
 		Bookstand = config.get(MystConfig.CATEGORY_GENERAL, "options.bookstand.enabled", true).getBoolean(true);
@@ -50,7 +52,12 @@ public class ModRecipes {
 		}
 		// Folder
 		if (Folder) {
-			IRecipe recipe = new ShapedOreRecipe(new ItemStack(ModItems.folder, 1), new Object[] { "# #", " # ", '#', Items.leather });
+			IRecipe recipe = new ShapedOreRecipe(new ItemStack(ModItems.folder, 1), new Object[] { " # ", "S  ", " # ", '#', Items.leather, 'S', Items.string });
+			craftingmanager.getRecipeList().add(recipe);
+		}
+		// Portfolio
+		if (Portfolio) {
+			IRecipe recipe = new ShapedOreRecipe(new ItemStack(ModItems.portfolio, 1), new Object[] { "###", "S  ", "###", '#', Items.leather, 'S', Items.string });
 			craftingmanager.getRecipeList().add(recipe);
 		}
 		// Crystal Receptacle
