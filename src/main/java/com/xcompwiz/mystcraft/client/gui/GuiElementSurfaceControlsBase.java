@@ -85,8 +85,8 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 						if (symbol != null) displayname = symbol.displayName();
 						if (displayname == null) displayname = Page.getSymbol(page);
 					}
-					if (displayname != null && searchtext != null && searchtext.length() > 0) {
-						if (!displayname.toLowerCase().contains(searchtext.toLowerCase())) {
+					if (searchtext != null && searchtext.length() > 0) {
+						if (displayname == null || !displayname.toLowerCase().contains(searchtext.toLowerCase())) {
 							continue;
 						}
 					}
@@ -111,8 +111,8 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 					String symbolname = symbol.identifier();
 					//XXX: Filters
 					String displayname = symbol.displayName();
-					if (displayname != null && searchtext != null && searchtext.length() > 0) {
-						if (!displayname.toLowerCase().contains(searchtext.toLowerCase())) {
+					if (searchtext != null && searchtext.length() > 0) {
+						if (displayname == null || !displayname.toLowerCase().contains(searchtext.toLowerCase())) {
 							continue;
 						}
 					}

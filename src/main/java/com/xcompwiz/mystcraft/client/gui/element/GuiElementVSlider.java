@@ -35,6 +35,10 @@ public class GuiElementVSlider extends GuiElement {
 	@Override
 	public void _handleMouseInput() {
 		if (!mouseOver) return;
+		handleMouseScroll();
+	}
+
+	public void handleMouseScroll() {
 		int input = Mouse.getEventDWheel();
 
 		if (input != 0) {

@@ -48,12 +48,13 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	private float						pageHeight;
 
 	private PositionableItem			hoverpage;
-	private List<String>				hovertext	= new ArrayList<String>();
+	private List<String>				hovertext			= new ArrayList<String>();
 
 	private GuiElementVSlider			scrollbar;
 
 	private boolean						mousedown;
 	private String						searchtext;
+	private boolean						mouseOverPageArea	= false;
 
 	public GuiElementPageSurface(IGuiPositionedPagesProvider pagesProvider, Minecraft mc, int left, int top, int width, int height) {
 		super(left, top, width, height);
@@ -71,7 +72,8 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	 */
 	@Override
 	public void _handleMouseInput() {
-		scrollbar.handleMouseInput();
+		if (!mouseOverPageArea) return;
+		scrollbar.handleMouseScroll();
 	}
 
 	@Override
@@ -113,12 +115,11 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		return super._getTooltipInfo();
 	}
 
-
 	@Override
 	public void _renderBackground(float f, int mouseX, int mouseY) {
 		int guiLeft = getLeft();
 		int guiTop = getTop();
-		boolean mouseOverPageArea = GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize - 20, ySize);
+		mouseOverPageArea = GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize - 20, ySize);
 
 		hovertext.clear();
 		hoverpage = null;
@@ -145,7 +146,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 				float pageX = positionable.x;
 				float pageY = positionable.y;
 				if (pageY + pageHeight - ySize > maxScroll) {
-					maxScroll = (int) (pageY + pageHeight+6 - ySize);
+					maxScroll = (int) (pageY + pageHeight + 6 - ySize);
 				}
 				if (y + pageY < guiTop - pageHeight) continue;
 				if (y + pageY > guiTop + ySize) continue;
