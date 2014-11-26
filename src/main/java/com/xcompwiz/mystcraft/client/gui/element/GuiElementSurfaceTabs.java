@@ -48,8 +48,7 @@ public class GuiElementSurfaceTabs extends GuiElement {
 	}
 
 	@Override
-	public boolean keyTyped(char c, int i) {
-		super.keyTyped(c, i);
+	public boolean _onKeyPress(char c, int i) {
 		if (i == Keyboard.KEY_UP || i == mc.gameSettings.keyBindForward.getKeyCode()) {
 			cycleTabUp();
 			return true;
@@ -61,9 +60,10 @@ public class GuiElementSurfaceTabs extends GuiElement {
 	}
 
 	@Override
-	public boolean mouseClicked(int x, int y, int button) {
-		super.mouseClicked(x, y, button);
+	public boolean _onMouseDown(int x, int y, int button) {
 		byte topslot = getTopSlot();
+		int guiLeft = getLeft();
+		int guiTop = getTop();
 
 		int tabY = guiTop;
 		if (GuiUtils.contains(x, y, guiLeft, tabY, 58, 9)) {
@@ -86,10 +86,12 @@ public class GuiElementSurfaceTabs extends GuiElement {
 	}
 
 	@Override
-	public void render(float f, int mouseX, int mouseY) {
+	public void _renderBackground(float f, int mouseX, int mouseY) {
+		int guiLeft = getLeft();
+		int guiTop = getTop();
 		byte topslot = getTopSlot();
 		// Begin surface slots
-		int tabY = this.guiTop;
+		int tabY = guiTop;
 		int xSizeTab = 58;
 		int ySizeTab = 37;
 		byte activeslot = getActiveTab();
@@ -110,7 +112,7 @@ public class GuiElementSurfaceTabs extends GuiElement {
 			}
 			mc.renderEngine.bindTexture(GUIs.desk);
 			drawTexturedModalRect(guiLeft, tabY, 0, windowsizeY, xSizeTab, ySizeTab);
-			GuiUtils.drawWord(mc.renderEngine, zLevel, DrawableWordManager.getDrawableWord("" + i), 19, guiLeft + 8, tabY + 3);
+			GuiUtils.drawWord(mc.renderEngine, getZLevel(), DrawableWordManager.getDrawableWord("" + i), 19, guiLeft + 8, tabY + 3);
 
 			ItemStack pagesource = this.getTabContents(i);
 			if (pagesource != null) {

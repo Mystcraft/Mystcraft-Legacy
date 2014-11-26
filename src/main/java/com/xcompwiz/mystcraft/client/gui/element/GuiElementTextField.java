@@ -94,7 +94,7 @@ public class GuiElementTextField extends GuiElement {
 	 * Increments the cursor counter
 	 */
 	@Override
-	public void update() {
+	public void _onTick() {
 		++this.cursorCounter;
 	}
 
@@ -314,7 +314,7 @@ public class GuiElementTextField extends GuiElement {
 	 * Call this method from you GuiScreen to process the keys into textbox.
 	 */
 	@Override
-	public boolean keyTyped(char c, int i) {
+	public boolean _onKeyPress(char c, int i) {
 		if (this.isEnabled() && this.isFocused) {
 			switch (c) {
 			case 1:
@@ -403,24 +403,24 @@ public class GuiElementTextField extends GuiElement {
 	 * @return
 	 */
 	@Override
-	public boolean mouseClicked(int mouseX, int mouseY, int clickFlag) {
-		boolean flag = mouseX >= this.guiLeft && mouseX < this.guiLeft + this.xSize && mouseY >= this.guiTop && mouseY < this.guiTop + this.ySize;
+	public boolean _onMouseDown(int mouseX, int mouseY, int button) {
+		boolean flag = this.contains(mouseX, mouseY);
 
 		if (this.canLoseFocus) {
 			this.setFocused(this.isEnabled() && flag);
 		}
 
-		if (this.isFocused && clickFlag == 0) {
-			int l = mouseX - this.guiLeft;
+		if (this.isFocused && button == 0) {
+			int l = mouseX - this.getLeft();
 
 			if (this.enableBackgroundDrawing) {
 				l -= 4;
 			}
 
-			String s = this.fontRenderer.trimStringToWidth(this.getText().substring(this.lineScrollOffset), this.getWidth());
+			String s = this.fontRenderer.trimStringToWidth(this.getText().substring(this.lineScrollOffset), this.getInnerWidth());
 			this.setCursorPosition(this.fontRenderer.trimStringToWidth(s, l).length() + this.lineScrollOffset);
 		}
-		if (this.isFocused && clickFlag == 1) {
+		if (this.isFocused && button == 1) {
 			this.setText("");
 		}
 		return flag;
@@ -430,21 +430,25 @@ public class GuiElementTextField extends GuiElement {
 	 * Draws the textbox
 	 */
 	@Override
-	public void render(float f, int mouseX, int mouseY) {
-		if (this.isVisible()) {
-			if (this.getEnableBackgroundDrawing()) {
-				drawRect(this.guiLeft - 1, this.guiTop - 1, this.guiLeft + this.xSize + 1, this.guiTop + this.ySize + 1, -6250336);
-				drawRect(this.guiLeft, this.guiTop, this.guiLeft + this.xSize, this.guiTop + this.ySize, -16777216);
-			}
+	//FIXME: Renders border outside its bounds
+	public void _renderBackground(float f, int mouseX, int mouseY) {
+		if (!this.isVisible()) return;
+		int guiLeft = getLeft();
+		int guiTop = getTop();
 
-			int i = this.isEnabled() ? this.enabledColor : this.disabledColor;
+		if (this.getEnableBackgroundDrawing()) {
+			drawRect(guiLeft, guiTop, guiLeft + this.xSize, guiTop + this.ySize, -6250336);
+			drawRect(guiLeft + 1, guiTop + 1, guiLeft + this.xSize - 1, guiTop + this.ySize - 1, -16777216);
+		}
+
+		int i = (this.isEnabled() && !this.isReadOnly()) ? this.enabledColor : this.disabledColor;
 			int j = this.cursorPosition - this.lineScrollOffset;
 			int k = this.selectionEnd - this.lineScrollOffset;
-			String s = this.fontRenderer.trimStringToWidth(this.getText().substring(this.lineScrollOffset), this.getWidth());
+		String s = this.fontRenderer.trimStringToWidth(this.getText().substring(this.lineScrollOffset), this.getInnerWidth());
 			boolean flag = j >= 0 && j <= s.length();
 			boolean flag1 = this.isFocused && this.cursorCounter / 6 % 2 == 0 && flag;
-			int l = this.enableBackgroundDrawing ? this.guiLeft + 4 : this.guiLeft;
-			int i1 = this.enableBackgroundDrawing ? this.guiTop + (this.ySize - 8) / 2 : this.guiTop;
+		int l = this.enableBackgroundDrawing ? guiLeft + 4 : guiLeft;
+		int i1 = this.enableBackgroundDrawing ? guiTop + (this.ySize - 8) / 2 : guiTop;
 			int j1 = l;
 
 			if (k > s.length()) {
@@ -483,7 +487,6 @@ public class GuiElementTextField extends GuiElement {
 				this.drawCursorVertical(k1, i1 - 1, l1 - 1, i1 + 1 + this.fontRenderer.FONT_HEIGHT);
 			}
 		}
-	}
 
 	/**
 	 * draws the vertical line cursor in the textbox
@@ -578,7 +581,7 @@ public class GuiElementTextField extends GuiElement {
 	/**
 	 * returns the width of the textbox depending on if the the box is enabled
 	 */
-	public int getWidth() {
+	public int getInnerWidth() {
 		return this.getEnableBackgroundDrawing() ? this.xSize - 8 : this.xSize;
 	}
 
@@ -603,7 +606,7 @@ public class GuiElementTextField extends GuiElement {
 				this.lineScrollOffset = j;
 			}
 
-			int k = this.getWidth();
+			int k = this.getInnerWidth();
 			String s = this.fontRenderer.trimStringToWidth(this.getText().substring(this.lineScrollOffset), k);
 			int l = s.length() + this.lineScrollOffset;
 

@@ -221,62 +221,61 @@ public class GuiWritingDesk extends GuiContainerElements {
 	@Override
 	public void validate() {
 		guiLeft = (width / 2) - (leftsize / 2) - (windowsizeX / 2);
-		guiCenter = guiLeft + leftsize + 5;
+		guiCenter = leftsize + 5;
 		xSize = leftsize + windowsizeX + 5;
 		ySize = windowsizeY + buttonssizeY + 1;
 		guiTop = (height - ySize) / 2;
-		mainTop = guiTop + buttonssizeY + 2;
+		mainTop = buttonssizeY + 2;
 
 		GuiElementTextField txt_box = null;
 
-		GuiElementSurfaceControls surfacemanager = new GuiElementSurfaceControls(this.mc, guiLeft + 53, guiTop, leftsize - 53, ySize);
-		txt_box = new GuiElementTextField(surfacemanager, surfacemanager, "SearchBox", guiLeft + 58 + (buttonssizeY + 2) * 2, guiTop, leftsize - 53 - (buttonssizeY + 2) * 2, buttonssizeY);
-		elements.add(txt_box);
+		GuiElementSurfaceControls surfacemanager = new GuiElementSurfaceControls(this.mc, 53, 0, leftsize - 53, ySize);
+		txt_box = new GuiElementTextField(surfacemanager, surfacemanager, "SearchBox", 58 + (buttonssizeY + 2) * 2, 0, leftsize - 53 - (buttonssizeY + 2) * 2, buttonssizeY);
+		addElement(txt_box);
 		TextBoxHandlerTargetName txt_targname = new TextBoxHandlerTargetName();
 		txt_box = new GuiElementTextField(txt_targname, txt_targname, "ItemName", guiCenter + 28, mainTop + 61, windowsizeX - 48 - 9 - 20, 14);
 		txt_box.setMaxLength(21);
-		elements.add(txt_box);
+		addElement(txt_box);
 
 		IFluidTankProvider fluidprovider = container.getInkTankProvider();
-		elements.add(new GuiElementFluidTank(this.container, mc, guiCenter + windowsizeX - 44, mainTop + 7, 16, 70, fluidprovider));
+		addElement(new GuiElementFluidTank(this.container, mc, guiCenter + windowsizeX - 44, mainTop + 7, 16, 70, fluidprovider));
 
-		elements.add(new GuiElementBook(this.container, new LinkHandler(), guiCenter + 30, mainTop + 6, 90, 50));
+		addElement(new GuiElementBook(this.container, new LinkHandler(), guiCenter + 30, mainTop + 6, 90, 50));
 
 		PageListHandler pagelistHandler = new PageListHandler();
-		elements.add(new GuiElementScrollablePages(pagelistHandler, pagelistHandler, mc, guiCenter + 30, mainTop + 6, 90, 50));
+		addElement(new GuiElementScrollablePages(pagelistHandler, pagelistHandler, mc, guiCenter + 27, mainTop + 6, windowsizeX - 47 - 9 - 19, 50));
 
-		elements.add(new GuiElementPage(new PageHandlerTarget(), guiCenter + 32, mainTop + 6, 37.5F, 50F));
+		addElement(new GuiElementPage(new PageHandlerTarget(), guiCenter + 32, mainTop + 6, 37.5F, 50F));
 
-		GuiElementSurfaceTabs surfacetabs = new GuiElementSurfaceTabs(new SurfaceTabsHandler(), guiLeft, mainTop, 58, ySize);
+		GuiElementSurfaceTabs surfacetabs = new GuiElementSurfaceTabs(new SurfaceTabsHandler(), 0, mainTop, 58, ySize);
 		//txt_search.addListener(surfacetabs);
-		elements.add(surfacetabs);
+		addElement(surfacetabs);
 
-		GuiElementPageSurface surface = new GuiElementPageSurface(surfacemanager, this.mc, guiLeft + 58, mainTop, leftsize - 53, windowsizeY);
+		GuiElementPageSurface surface = new GuiElementPageSurface(surfacemanager, this.mc, 58, mainTop, leftsize - 53, windowsizeY);
 		surfacemanager.addListener(surface);
-		elements.add(surface);
+		addElement(surface);
 
-		GuiElementButton btn_sortA = new GuiElementButtonToggle(surfacemanager, surfacemanager, "AZ", guiLeft + 58, guiTop, buttonssizeY, buttonssizeY);
+		GuiElementButton btn_sortA = new GuiElementButtonToggle(surfacemanager, surfacemanager, "AZ", 58, 0, buttonssizeY, buttonssizeY);
 		btn_sortA.setText("AZ");
 		btn_sortA.setTooltip(Arrays.asList("Sort Alphabetically"));
-		elements.add(btn_sortA);
-		GuiElementButton btn_allsym = new GuiElementButtonToggle(surfacemanager, surfacemanager, "ALL", guiLeft + 58 + buttonssizeY, guiTop, buttonssizeY, buttonssizeY);
+		addElement(btn_sortA);
+		GuiElementButton btn_allsym = new GuiElementButtonToggle(surfacemanager, surfacemanager, "ALL", 58 + buttonssizeY, 0, buttonssizeY, buttonssizeY);
 		btn_allsym.setText("ALL");
 		btn_allsym.setTooltip(Arrays.asList("Show all Symbols"));
-		elements.add(btn_allsym);
+		addElement(btn_allsym);
 
 		surfacemanager.addSurfaceElement(btn_sortA);
 		surfacemanager.addSurfaceElement(btn_allsym);
 		//GuiElementButton btn_sortO = new GuiElementButton(btnHandlerSort, "123", guiLeft + 58, guiTop, buttonssizeY, buttonssizeY);
 		//btn_sortO.setText("123");
 		//btn_sortO.setTooltip(Arrays.asList("Sort By Slot Number"));
-		//elements.add(btn_sortO);
+		//addElement(btn_sortO);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void _drawBackgroundLayer(int mouseX, int mouseY, float f) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(GUIs.desk);
-		drawTexturedModalRect(guiCenter, mainTop, 0, 0, windowsizeX, windowsizeY);
-		this.drawElementBackgrounds(f, mouseX, mouseY);
+		drawTexturedModalRect(guiLeft + guiCenter, guiTop + mainTop, 0, 0, windowsizeX, windowsizeY);
 	}
 }

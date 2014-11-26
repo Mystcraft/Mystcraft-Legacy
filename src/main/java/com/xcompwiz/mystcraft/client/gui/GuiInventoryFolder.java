@@ -101,32 +101,31 @@ public class GuiInventoryFolder extends GuiContainerElements {
 
 		GuiElementTextField txt_box = null;
 
-		GuiElementSurfaceControls surfacemanager = new GuiElementSurfaceControls(this.mc, guiLeft, guiTop, xSize, surfaceY);
-		txt_box = new GuiElementTextField(surfacemanager, surfacemanager, "SearchBox", guiLeft + (buttonssize + 2) * 2, guiTop, xSize - (buttonssize + 2) * 2, buttonssize);
-		elements.add(txt_box);
+		GuiElementSurfaceControls surfacemanager = new GuiElementSurfaceControls(this.mc, 0, 0, xSize, surfaceY);
+		txt_box = new GuiElementTextField(surfacemanager, surfacemanager, "SearchBox", (buttonssize + 2) * 2, 0, xSize - (buttonssize + 2) * 2, buttonssize);
+		addElement(txt_box);
 
-		GuiElementPageSurface surface = new GuiElementPageSurface(surfacemanager, this.mc, guiLeft, guiTop + buttonssize+1, xSize, surfaceY - buttonssize);
+		GuiElementPageSurface surface = new GuiElementPageSurface(surfacemanager, this.mc, 0, buttonssize+1, xSize, surfaceY - buttonssize);
 		surfacemanager.addListener(surface);
-		elements.add(surface);
+		addElement(surface);
 
-		GuiElementButton btn_sortA = new GuiElementButtonToggle(surfacemanager, surfacemanager, "AZ", guiLeft, guiTop, buttonssize, buttonssize);
+		GuiElementButton btn_sortA = new GuiElementButtonToggle(surfacemanager, surfacemanager, "AZ", 0, 0, buttonssize, buttonssize);
 		btn_sortA.setText("AZ");
 		btn_sortA.setTooltip(Arrays.asList("Sort Alphabetically"));
-		elements.add(btn_sortA);
-		GuiElementButton btn_allsym = new GuiElementButtonToggle(surfacemanager, surfacemanager, "ALL", guiLeft + buttonssize, guiTop, buttonssize, buttonssize);
+		addElement(btn_sortA);
+		GuiElementButton btn_allsym = new GuiElementButtonToggle(surfacemanager, surfacemanager, "ALL", buttonssize, 0, buttonssize, buttonssize);
 		btn_allsym.setText("ALL");
 		btn_allsym.setTooltip(Arrays.asList("Show all Symbols"));
-		elements.add(btn_allsym);
+		addElement(btn_allsym);
 
 		surfacemanager.addSurfaceElement(btn_sortA);
 		surfacemanager.addSurfaceElement(btn_allsym);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void _drawBackgroundLayer(int mouseX, int mouseY, float f) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(GUIs.desk);
 		drawTexturedModalRect(guiLeft, mainTop, 0, 82, invsizeX, invsizeY);
-		this.drawElementBackgrounds(f, mouseX, mouseY);
 	}
 }

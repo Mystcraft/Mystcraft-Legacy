@@ -1,16 +1,16 @@
 package com.xcompwiz.mystcraft.client.gui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
+import com.xcompwiz.mystcraft.client.gui.element.GuiElementPanel;
 
 public abstract class GuiContainerElements extends GuiContainer {
 
-	protected List<GuiElement>	elements	= new ArrayList<GuiElement>();
+	private GuiElement	rootelement;
 
 	public GuiContainerElements(Container container) {
 		super(container);
@@ -19,107 +19,102 @@ public abstract class GuiContainerElements extends GuiContainer {
 	@Override
 	public final void initGui() {
 		super.initGui();
-		this.elements.clear();
+		this.initialization();
+		rootelement = new GuiElementPanel(this.guiLeft, this.guiTop, this.xSize, this.ySize);
+		rootelement.setZLevel(10);
 		this.validate();
+		rootelement.setLeft(this.guiLeft);
+		rootelement.setTop(this.guiTop);
+		rootelement.setWidth(this.xSize);
+		rootelement.setHeight(this.ySize);
 	}
 
+	public void initialization() {}
+
 	public void validate() {}
+
+	public void addElement(GuiElement element) {
+		this.rootelement.addElement(element);
+	}
+
+	public void bringToFront(GuiElement element) {
+		this.rootelement.bringToFront(element);
+	}
 
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
-		this.updateElements();
-	}
-
-	protected void updateElements() {
-		for (GuiElement elem : elements) {
-			elem.update();
-		}
+		rootelement.onTick();
 	}
 
 	@Override
-	protected void keyTyped(char c, int i) {
-		for (GuiElement elem : elements) {
-			if (elem.keyTyped(c, i)) { return; }
-		}
-		if (i == 1 || (i == mc.gameSettings.keyBindInventory.getKeyCode())) {
-			mc.thePlayer.closeScreen();
-		} else {
-			super.keyTyped(c, i);
-		}
+	protected final void keyTyped(char c, int i) {
+		boolean eaten = rootelement.onKeyPress(c, i);
+		this._keyTyped(c, i, eaten);
+		if (!eaten) super.keyTyped(c, i);
 	}
 
+	protected void _keyTyped(char c, int i, boolean eaten) {};
+
 	@Override
-	public void handleMouseInput() {
+	public final void handleMouseInput() {
 		super.handleMouseInput();
-		this.handleElementMouseInput();
-	}
-
-	protected void handleElementMouseInput() {
-		for (GuiElement elem : elements) {
-			elem.handleMouseInput();
-		}
+		rootelement.handleMouseInput();
 	}
 
 	@Override
-	protected void mouseClicked(int i, int j, int k) {
-		super.mouseClicked(i, j, k);
-		this.handleElementMouseClicked(i, j, k);
+	protected final void mouseClicked(int mouseX, int mouseY, int button) {
+		super.mouseClicked(mouseX, mouseY, button);
+		this._onMouseDown(mouseX, mouseY, button, rootelement.onMouseDown(mouseX, mouseY, button));
 	}
 
-	protected void handleElementMouseClicked(int i, int j, int k) {
-		for (GuiElement elem : elements) {
-			elem.mouseClicked(i, j, k);
-		}
-	}
+	protected void _onMouseDown(int mouseX, int mouseY, int button, boolean eaten) {};
 
 	@Override
-	protected void mouseMovedOrUp(int i, int j, int k) {
-		super.mouseMovedOrUp(i, j, k);
-		this.handleElementMouseUp(i, j, k);
+	protected final void mouseClickMove(int mouseX, int mouseY, int clicked_id, long lastclick) {
+		super.mouseClickMove(mouseX, mouseY, clicked_id, lastclick);
+		this._onMouseDrag(mouseX, mouseY, clicked_id, lastclick, rootelement.onMouseDrag(mouseX, mouseY, clicked_id, lastclick));
 	}
 
-	protected void handleElementMouseUp(int i, int j, int k) {
-		for (GuiElement elem : elements) {
-			elem.mouseUp(i, j, k);
-		}
-	}
-
-	protected void drawElementBackgrounds(float f, int mouseX, int mouseY) {
-		for (GuiElement elem : elements) {
-			if (elem.isVisible()) {
-				elem.render(f, mouseX, mouseY);
-			}
-		}
-	}
+	protected void _onMouseDrag(int mouseX, int mouseY, int clicked_id, long lastclick, boolean eaten) {};
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+	protected final void mouseMovedOrUp(int mouseX, int mouseY, int button) {
+		super.mouseMovedOrUp(mouseX, mouseY, button);
+		this._onMouseUp(mouseX, mouseY, button, rootelement.onMouseUp(mouseX, mouseY, button));
+	}
+
+	protected void _onMouseUp(int mouseX, int mouseY, int button, boolean eaten) {};
+
+	/**
+	 * Draws the screen and all the components in it.
+	 */
+	@Override
+	public final void drawGuiContainerBackgroundLayer(float partial, int mouseX, int mouseY) {
+		_drawBackgroundLayer(mouseX, mouseY, partial);
+		rootelement.renderBackground(partial, mouseX, mouseY);
+	}
+
+	protected void _drawBackgroundLayer(int mouseX, int mouseY, float partial) {};
+
+	@Override
+	public final void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+		mouseX -= guiLeft;
+		mouseY -= guiTop;
+		this._drawForegroundLayer(mouseX, mouseY);
+		rootelement.renderForeground(mouseX, mouseY);
 		this.drawToolTip(mouseX, mouseY);
-		this.drawElementForegrounds(mouseX, mouseY);
 	}
 
-	protected void drawElementForegrounds(int mouseX, int mouseY) {
-		for (GuiElement elem : elements) {
-			if (elem.isVisible()) {
-				elem.renderForeground(mouseX, mouseY);
-			}
-		}
-	}
+	protected void _drawForegroundLayer(int mouseX, int mouseY) {};
 
-	protected void drawToolTip(int mouseX, int mouseY) {
-		List<String> tooltip = null;
-		for (GuiElement elem : elements) {
-			if (elem.isVisible()) {
-				tooltip = elem.getTooltipInfo();
-				if (tooltip != null) break;
-			}
-		}
+	private final void drawToolTip(int mouseX, int mouseY) {
+		List<String> tooltip = rootelement.getTooltipInfo();
 		if (tooltip == null) {
 			tooltip = this.getTooltipInfo();
 		}
 		if (tooltip != null) {
-			GuiUtils.drawTooltip(fontRendererObj, mouseX - guiLeft + 12, mouseY - guiTop - 12, zLevel, tooltip, guiLeft + xSize, guiTop + ySize);
+			GuiUtils.drawTooltip(fontRendererObj, mouseX + 12, mouseY - 12, zLevel, tooltip, this.width, this.height);
 		}
 	}
 

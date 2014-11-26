@@ -66,15 +66,15 @@ public class GuiLinkModifier extends GuiContainerElements {
 	@Override
 	public void validate() {
 		TextBoxHandler txtbxhdnlr = new TextBoxHandler();
-		GuiElementTextField txt_box = new GuiElementTextField(txtbxhdnlr, txtbxhdnlr, "ItemName", guiLeft + 80, guiTop + 56, xSize - 80 - 9, 14);
+		GuiElementTextField txt_box = new GuiElementTextField(txtbxhdnlr, txtbxhdnlr, "ItemName", 80, 56, xSize - 80 - 9, 14);
 		txt_box.setMaxLength(21);
-		elements.add(txt_box);
+		addElement(txt_box);
 
 		ButtonHandler buttonhandler = new ButtonHandler();
 		int x = 5, y = 10;
 		int scale = 18;
 		for (String prop : InkEffects.getProperties()) {
-			elements.add(createButton(buttonhandler, prop, CollectionUtils.buildList(InkEffects.getLocalizedName(prop)), this.guiLeft + x, this.guiTop + y, scale));
+			addElement(createButton(buttonhandler, prop, CollectionUtils.buildList(InkEffects.getLocalizedName(prop)), x, y, scale));
 			y += scale + 2;
 			if (y >= 60) {
 				y = 10;
@@ -90,12 +90,10 @@ public class GuiLinkModifier extends GuiContainerElements {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void _drawBackgroundLayer(int mouseX, int mouseY, float f) {
 		this.mc.renderEngine.bindTexture(GUIs.single_slot);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
-		this.drawElementBackgrounds(f, mouseX, mouseY);
-
 		this.fontRendererObj.drawStringWithShadow(container.getLinkDimensionUID(), guiLeft + 100, guiTop + 40, 0xFFFFFF);
 	}
 }

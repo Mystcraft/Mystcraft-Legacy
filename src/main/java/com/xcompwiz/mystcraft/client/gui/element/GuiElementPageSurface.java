@@ -62,21 +62,21 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		pageWidth = GuiElementPageSurface.pagewidth;
 		pageHeight = GuiElementPageSurface.pageheight;
 		mousedown = false;
-		this.scrollbar = new GuiElementVSlider(guiLeft + xSize - 20, guiTop, 20, ySize);
-		this.elements.add(scrollbar);
+		this.scrollbar = new GuiElementVSlider(xSize - 20, 0, 20, ySize);
+		this.addElement(scrollbar);
 	}
 
 	/**
 	 * Handles mouse input.
 	 */
 	@Override
-	public void handleMouseInput() {
+	public void _handleMouseInput() {
 		scrollbar.handleMouseInput();
 	}
 
 	@Override
-	public boolean mouseClicked(int mouseX, int mouseY, int button) {
-		if (GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize, ySize)) {
+	public boolean _onMouseDown(int mouseX, int mouseY, int button) {
+		if (this.contains(mouseX, mouseY)) {
 			if (mc.thePlayer.inventory.getItemStack() != null) {
 				int index = getPages().size();
 				if (hoverpage != null) index = hoverpage.slotId;
@@ -97,23 +97,27 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	}
 
 	@Override
-	public void mouseUp(int i, int j, int k) {
+	public boolean _onMouseUp(int i, int j, int k) {
+		int guiLeft = getLeft();
+		int guiTop = getTop();
 		if (GuiUtils.contains(i, j, guiLeft, guiTop, xSize - 20, ySize) && hoverpage != null && k == 1 && mousedown) {
 			pagesProvider.copy(hoverpage);
 			mousedown = false;
 		}
+		return false;
 	}
 
 	@Override
-	public List<String> getTooltipInfo() {
+	public List<String> _getTooltipInfo() {
 		if (hovertext != null && hovertext.size() > 0) { return hovertext; }
-		return super.getTooltipInfo();
+		return super._getTooltipInfo();
 	}
 
 
 	@Override
-	public void render(float f, int mouseX, int mouseY) {
-		scrollbar.render(f, mouseX, mouseY);
+	public void _renderBackground(float f, int mouseX, int mouseY) {
+		int guiLeft = getLeft();
+		int guiTop = getTop();
 		boolean mouseOverPageArea = GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize - 20, ySize);
 
 		hovertext.clear();
@@ -122,9 +126,10 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		drawRect(guiLeft, guiTop, guiLeft + xSize - 20, guiTop + ySize, color); // Back
 
 		// Render pages
-		this.drawGradientRect(this.guiLeft, this.guiTop, this.guiLeft + xSize - 20, this.guiTop + ySize, 0x000000, 0x000000);
+		GuiUtils.drawGradientRect(guiLeft, guiTop, guiLeft + xSize - 20, guiTop + ySize, 0x000000, 0x000000, this.getZLevel());
+		//GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glDepthFunc(GL11.GL_GREATER);
-		this.zLevel = 20.0F;
+		this.setZLevel(1.0F);
 		GL11.glPushMatrix();
 		int currentScroll = -scrollbar.getCurrentPos();
 		List<PositionableItem> pages = getPages();
@@ -140,7 +145,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 				float pageX = positionable.x;
 				float pageY = positionable.y;
 				if (pageY + pageHeight - ySize > maxScroll) {
-					maxScroll = (int) (pageY + pageHeight - ySize);
+					maxScroll = (int) (pageY + pageHeight+6 - ySize);
 				}
 				if (y + pageY < guiTop - pageHeight) continue;
 				if (y + pageY > guiTop + ySize) continue;
@@ -156,9 +161,9 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 					}
 				}
 				if (positionable.count > 0) {
-					GuiUtils.drawPage(mc.renderEngine, zLevel, page, pagexSize, pageySize, x + pageX, y + pageY, false);
+					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), page, pagexSize, pageySize, x + pageX, y + pageY, false);
 				} else {
-					GuiUtils.drawPage(mc.renderEngine, zLevel, null, pagexSize, pageySize, x + pageX, y + pageY, false);
+					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), null, pagexSize, pageySize, x + pageX, y + pageY, false);
 				}
 				if (positionable.count > 1) {
 					GuiUtils.drawScaledText("" + positionable.count, (int) (x + pageX), (int) (y + pageY + pageHeight - 7), 20, 10, 0xFFFFFF);
@@ -178,7 +183,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		scrollbar.setMaxScroll(maxScroll);
 		GL11.glPopMatrix();
 		GL11.glDepthFunc(GL11.GL_LEQUAL);
-		this.zLevel = 30.0F;
+		this.setZLevel(2.0F);
 	}
 
 	private List<PositionableItem> getPages() {

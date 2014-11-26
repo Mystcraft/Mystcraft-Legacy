@@ -59,9 +59,11 @@ public class GuiElementBook extends GuiElement {
 	}
 
 	@Override
-	public boolean mouseClicked(int i, int j, int k) {
+	public boolean _onMouseDown(int i, int j, int k) {
 		if (this.isEnabled() == false) { return false; }
 		if (k == 0) {
+			int guiLeft = getLeft();
+			int guiTop = getTop();
 			if (getCurrentPageIndex() == 0 && i >= 173 * xScale + guiLeft && i <= 305 * xScale + guiLeft && j >= 20 * yScale + guiTop && j <= 103 * yScale + guiTop) {
 				linkhandler.onLink(this);
 				return true;
@@ -77,7 +79,7 @@ public class GuiElementBook extends GuiElement {
 	}
 
 	@Override
-	public boolean keyTyped(char c, int i) {
+	public boolean _onKeyPress(char c, int i) {
 		if (this.isEnabled() == false) { return false; }
 		if (i == Keyboard.KEY_LEFT || i == mc.gameSettings.keyBindLeft.getKeyCode()) {
 			pageLeft();
@@ -91,14 +93,16 @@ public class GuiElementBook extends GuiElement {
 	}
 
 	@Override
-	public List<String> getTooltipInfo() {
+	public List<String> _getTooltipInfo() {
 		if (hovertext.size() > 0) { return hovertext; }
 		return null;
 	}
 
 	@Override
-	public void render(float f, int mouseX, int mouseY) {
+	public void _renderBackground(float f, int mouseX, int mouseY) {
 		if (this.isVisible() == false) { return; }
+		int guiLeft = getLeft();
+		int guiTop = getTop();
 		GL11.glPushMatrix();
 		GL11.glTranslatef(guiLeft, guiTop, 0);
 		GL11.glScalef(xScale, yScale, 1);
@@ -144,7 +148,7 @@ public class GuiElementBook extends GuiElement {
 				int y = 25;
 				int scale = 140;
 				IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
-				GuiUtils.drawSymbol(mc.renderEngine, zLevel, symbol, scale, x, y);
+				GuiUtils.drawSymbol(mc.renderEngine, getZLevel(), symbol, scale, x, y);
 				if (GuiUtils.contains(mouseX, mouseY, (int) (x * xScale) + guiLeft, (int) (y * yScale) + guiTop, (int) (scale * xScale), (int) (scale * yScale))) {
 					hovertext.add(GuiUtils.getHoverText(symbol));
 				}

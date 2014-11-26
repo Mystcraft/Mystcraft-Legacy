@@ -1,10 +1,14 @@
 package com.xcompwiz.mystcraft.client.gui;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -27,10 +31,21 @@ import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public final class GuiUtils {
+
+	public static Collection<String> getRegisteredIcons(TextureMap texturemap) {
+		try {
+			Map<String, IIcon> local = ObfuscationReflectionHelper.getPrivateValue(TextureMap.class, texturemap, "mapUploadedSprites", "field_" + "94252_e");
+			return local.keySet();
+		} catch (Exception e) {
+		}
+		return null;
+	}
+
 	@SideOnly(Side.CLIENT)
 	public static void drawPage(TextureManager renderEngine, float zLevel, ItemStack page, float xSize, float ySize, float x, float y) {
 		drawPage(renderEngine, zLevel, page, xSize, ySize, x, y, true);
@@ -113,6 +128,32 @@ public final class GuiUtils {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
+	public static void drawComponent(float drawscale, float zLevel, int iconIndex, int color, float x, float y) {
+		final int iconSize = 64;
+		final int imgSize = 512;
+		final float transform = 1F / imgSize;
+		int iconX = (iconIndex % (imgSize / iconSize)) * iconSize;
+		int iconY = (iconIndex / (imgSize / iconSize)) * iconSize;
+		float fRed = (color >> 16 & 0xff) / 255F;
+		float fGreen = (color >> 8 & 0xff) / 255F;
+		float fBlue = (color & 0xff) / 255F;
+		GL11.glColor4f(fRed, fGreen, fBlue, 1.0F);
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		tessellator.addVertexWithUV(x + 0, y + drawscale, zLevel, (iconX + 0) * transform, (iconY + iconSize) * transform);
+		tessellator.addVertexWithUV(x + drawscale, y + drawscale, zLevel, (iconX + iconSize) * transform, (iconY + iconSize) * transform);
+		tessellator.addVertexWithUV(x + drawscale, y + 0, zLevel, (iconX + iconSize) * transform, (iconY + 0) * transform);
+		tessellator.addVertexWithUV(x + 0, y + 0, zLevel, (iconX + 0) * transform, (iconY + 0) * transform);
+		tessellator.draw();
+	}
+
+	//XXX: This doesn't really belong here
+	public static String getHoverText(IAgeSymbol symbol) {
+		if (symbol != null) return symbol.displayName();
+		return "?";
+	}
+
 	/**
 	 * Draws a textured rectangle at the stored z-value. Args: x, y, u, v, width, height
 	 * @param xSize
@@ -152,31 +193,6 @@ public final class GuiUtils {
 		tessellator.addVertexWithUV((x + xSize), (y + 0), zLevel, icon.getMaxU(), icon.getMinV());
 		tessellator.addVertexWithUV((x + 0), (y + 0), zLevel, icon.getMinU(), icon.getMinV());
 		tessellator.draw();
-	}
-
-	@SideOnly(Side.CLIENT)
-	public static void drawComponent(float drawscale, float zLevel, int iconIndex, int color, float x, float y) {
-		final int iconSize = 64;
-		final int imgSize = 512;
-		final float transform = 1F / imgSize;
-		int iconX = (iconIndex % (imgSize / iconSize)) * iconSize;
-		int iconY = (iconIndex / (imgSize / iconSize)) * iconSize;
-		float fRed = (color >> 16 & 0xff) / 255F;
-		float fGreen = (color >> 8 & 0xff) / 255F;
-		float fBlue = (color & 0xff) / 255F;
-		GL11.glColor4f(fRed, fGreen, fBlue, 1.0F);
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(x + 0, y + drawscale, zLevel, (iconX + 0) * transform, (iconY + iconSize) * transform);
-		tessellator.addVertexWithUV(x + drawscale, y + drawscale, zLevel, (iconX + iconSize) * transform, (iconY + iconSize) * transform);
-		tessellator.addVertexWithUV(x + drawscale, y + 0, zLevel, (iconX + iconSize) * transform, (iconY + 0) * transform);
-		tessellator.addVertexWithUV(x + 0, y + 0, zLevel, (iconX + 0) * transform, (iconY + 0) * transform);
-		tessellator.draw();
-	}
-
-	public static String getHoverText(IAgeSymbol symbol) {
-		if (symbol != null) return symbol.displayName();
-		return "?";
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -316,9 +332,9 @@ public final class GuiUtils {
 
 	public static boolean contains(int mouseX, int mouseY, int guiLeft, int guiTop, int width, int height) {
 		if (mouseX < guiLeft) return false;
-		if (mouseX > guiLeft + width) return false;
+		if (mouseX >= guiLeft + width) return false;
 		if (mouseY < guiTop) return false;
-		if (mouseY > guiTop + height) return false;
+		if (mouseY >= guiTop + height) return false;
 		return true;
 	}
 
@@ -363,5 +379,47 @@ public final class GuiUtils {
 		GL11.glScalef(scale, scale, 1);
 		Minecraft.getMinecraft().fontRenderer.drawString(text, 0, 0, textcolor);
 		GL11.glPopMatrix();
+	}
+
+	private static List<int[]>	scissors	= new LinkedList<int[]>();
+
+	/**
+	 * Clips rendering from top left corner, using Minecraft GUI coords. Don't forget to call endGlScissor after rendering. Edited by XCompWiz to support
+	 * push/pop registry style usage.
+	 * @authors iChun, XCompWiz
+	 */
+	//TODO: use a push/pop system, allowing for nested clipping settings
+	public static void startGlScissor(int guiLeft, int guiTop, int xSize, int ySize) {
+		Minecraft mc = Minecraft.getMinecraft();
+		ScaledResolution reso = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+		double scaleW = mc.displayWidth / reso.getScaledWidth_double();
+		double scaleH = mc.displayHeight / reso.getScaledHeight_double();
+		GL11.glEnable(GL11.GL_SCISSOR_TEST);
+		int x = (int) Math.floor(guiLeft * scaleW);
+		int y = (int) Math.floor(mc.displayHeight - ((guiTop + ySize) * scaleH));
+		int width = (int) Math.floor((guiLeft + xSize) * scaleW) - (int) Math.floor(guiLeft * scaleW);
+		int height = (int) Math.floor(mc.displayHeight - (guiTop * scaleH)) - (int) Math.floor(mc.displayHeight - ((guiTop + ySize) * scaleH));
+		if (scissors.size() > 0) {
+			int c[] = scissors.get(0);
+			width = Math.min(width + x, c[2] + c[0]);
+			height = Math.min(height + y, c[3] + c[1]);
+			x = Math.max(x, c[0]);
+			y = Math.max(y, c[1]);
+			width -= x;
+			height -= y;
+		}
+		scissors.add(0, new int[] { x, y, width, height });
+		GL11.glScissor(x, y, width, height); //starts from lower left corner (Minecraft starts from upper left)
+	}
+
+	public static void endGlScissor() {
+		scissors.remove(0);
+		if (scissors.size() == 0) {
+			GL11.glDisable(GL11.GL_SCISSOR_TEST);
+		} else {
+			int c[] = scissors.get(0);
+			GL11.glScissor(c[0], c[1], c[2], c[3]); //starts from lower left corner (Minecraft starts from upper left)
+		}
+
 	}
 }

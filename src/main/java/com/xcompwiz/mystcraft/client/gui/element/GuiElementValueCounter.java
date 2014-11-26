@@ -36,11 +36,11 @@ public class GuiElementValueCounter extends GuiElement implements IGuiOnClickHan
 			this.buttonYPadding = (ySize - this.buttonWidth) / 2;
 		}
 
-		elements.add(createButton(this, "--", this.guiLeft, this.guiTop + buttonYPadding, buttonWidth));
-		elements.add(createButton(this, "-", this.guiLeft + buttonWidth, this.guiTop + buttonYPadding, buttonWidth));
-		elements.add(createButton(this, "+", this.guiLeft + this.xSize - buttonWidth - buttonWidth, this.guiTop + buttonYPadding, buttonWidth));
-		elements.add(createButton(this, "++", this.guiLeft + this.xSize - buttonWidth, this.guiTop + buttonYPadding, buttonWidth));
-		elements.add(new GuiElementLabel(this, this.guiLeft + (buttonWidth) * 2, this.guiTop + buttonYPadding, this.xSize - (buttonWidth) * 4, ySize - buttonYPadding * 2, 0x7F000000, 0xFF000000));
+		addElement(createButton(this, "--", 0, buttonYPadding, buttonWidth));
+		addElement(createButton(this, "-", buttonWidth, buttonYPadding, buttonWidth));
+		addElement(createButton(this, "+", this.xSize - buttonWidth - buttonWidth, buttonYPadding, buttonWidth));
+		addElement(createButton(this, "++", this.xSize - buttonWidth, buttonYPadding, buttonWidth));
+		addElement(new GuiElementLabel(this, (buttonWidth) * 2, buttonYPadding, this.xSize - (buttonWidth) * 4, ySize - buttonYPadding * 2, 0x7F000000, 0xFFFFFFFF));
 	}
 
 	private GuiElement createButton(IGuiOnClickHandler eventhandler, String id, int guiLeft, int guiTop, int width) {

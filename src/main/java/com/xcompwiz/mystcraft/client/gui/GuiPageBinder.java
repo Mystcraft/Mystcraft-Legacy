@@ -77,11 +77,11 @@ public class GuiPageBinder extends GuiContainerElements {
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
 		TextBoxHandler txtbxhdnlr = new TextBoxHandler();
-		GuiElementTextField txt_box = new GuiElementTextField(txtbxhdnlr, txtbxhdnlr, "ItemName", guiLeft + 7, guiTop + 9, xSize - 60, 14);
+		GuiElementTextField txt_box = new GuiElementTextField(txtbxhdnlr, txtbxhdnlr, "ItemName", 7, 9, xSize - 60, 14);
 		txt_box.setMaxLength(21);
-		elements.add(txt_box);
+		addElement(txt_box);
 		PageListHandler pagelistHandler = new PageListHandler();
-		elements.add(new GuiElementScrollablePages(pagelistHandler, pagelistHandler , mc, guiLeft + 7, guiTop + 45, xSize - 14, 40));
+		addElement(new GuiElementScrollablePages(pagelistHandler, pagelistHandler , mc, 7, 45, xSize - 14, 40));
 	}
 
 	@Override
@@ -91,11 +91,10 @@ public class GuiPageBinder extends GuiContainerElements {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void _drawBackgroundLayer(int mouseX, int mouseY, float f) {
 		mc.renderEngine.bindTexture(GUIs.binder);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), guiLeft + 8, guiTop + (ySize - 96) + 2, 0x404040);
-		this.drawElementBackgrounds(f, mouseX, mouseY);
 	}
 }

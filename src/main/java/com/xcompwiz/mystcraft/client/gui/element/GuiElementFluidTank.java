@@ -29,18 +29,20 @@ public class GuiElementFluidTank extends GuiElement {
 	}
 
 	@Override
-	public List<String> getTooltipInfo() {
+	public List<String> _getTooltipInfo() {
 		if (hovertext != null && hovertext.size() > 0) { return hovertext; }
-		return super.getTooltipInfo();
+		return super._getTooltipInfo();
 	}
 
 	@Override
-	public void render(float f, int mouseX, int mouseY) {
-		mouseOver = GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize, ySize);
+	public void _renderBackground(float f, int mouseX, int mouseY) {
+		mouseOver = this.contains(mouseX, mouseY);
 
 		FluidStack fluidstack = fluidprovider.getFluid();
 		int tankmax = fluidprovider.getMax();
 
+		int guiLeft = getLeft();
+		int guiTop = getTop();
 		GL11.glPushMatrix();
 		GL11.glTranslatef(guiLeft, guiTop, 0);
 		mouseX -= guiLeft;
@@ -64,7 +66,7 @@ public class GuiElementFluidTank extends GuiElement {
 		if (filled > 1.0F) filled = 1;
 		int ltop = top + height - 1;
 		int lheight = (int) ((height - 2) * (filled));
-		GuiUtils.drawFluid(mc.renderEngine, fluidstack, left + 1, ltop - lheight, width - 2, lheight, this.zLevel);
+		GuiUtils.drawFluid(mc.renderEngine, fluidstack, left + 1, ltop - lheight, width - 2, lheight, this.getZLevel());
 	}
 
 }

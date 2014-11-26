@@ -25,15 +25,17 @@ public class GuiElementLabel extends GuiElement {
 	}
 
 	@Override
-	public List<String> getTooltipInfo() {
+	public List<String> _getTooltipInfo() {
 		if (this.hovered) { return provider.getTooltip(); }
-		return super.getTooltipInfo();
+		return super._getTooltipInfo();
 	}
 
 	@Override
-	public void render(float f, int mouseX, int mouseY) {
-		hovered = GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize, ySize);
-		drawRect(this.guiLeft, this.guiTop, this.guiLeft + this.xSize, this.guiTop + ySize, bkgdcolor);
-		GuiUtils.drawScaledText(provider.getText(), this.guiLeft + 2, this.guiTop + 2, this.xSize - 4, this.ySize - 4, textcolor);
+	public void _renderBackground(float f, int mouseX, int mouseY) {
+		hovered = this.contains(mouseX, mouseY);
+		int guiLeft = getLeft();
+		int guiTop = getTop();
+		drawRect(guiLeft, guiTop, guiLeft + this.xSize, guiTop + ySize, bkgdcolor);
+		GuiUtils.drawScaledText(provider.getText(), guiLeft + 2, guiTop + 2, this.xSize - 4, this.ySize - 4, textcolor);
 	}
 }

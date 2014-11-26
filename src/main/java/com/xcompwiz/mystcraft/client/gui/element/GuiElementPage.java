@@ -37,10 +37,12 @@ public class GuiElementPage extends GuiElement {
 	}
 
 	@Override
-	public void render(float f, int mouseX, int mouseY) {
+	public void _renderBackground(float f, int mouseX, int mouseY) {
+		int guiLeft = getLeft();
+		int guiTop = getTop();
 		hovertext.clear();
 		ItemStack target = provider.getPageItemStack(this);
-		GuiUtils.drawPage(mc.renderEngine, zLevel, target, xSizePage, ySizePage, guiLeft, guiTop);
+		GuiUtils.drawPage(mc.renderEngine, getZLevel(), target, xSizePage, ySizePage, guiLeft, guiTop);
 		if (GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize, ySize) && Page.getSymbol(target) != null) {
 			IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(target));
 			if (symbol != null) {
@@ -50,10 +52,10 @@ public class GuiElementPage extends GuiElement {
 	}
 
 	@Override
-	public List<String> getTooltipInfo() {
+	public List<String> _getTooltipInfo() {
 		if (!hovertext.isEmpty()) {
 			return hovertext;
 		}
-		return super.getTooltipInfo();
+		return super._getTooltipInfo();
 	}
 }

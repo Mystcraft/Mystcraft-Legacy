@@ -64,7 +64,7 @@ public class GuiElementScrollablePages extends GuiElement {
 	 * Handles mouse input.
 	 */
 	@Override
-	public void handleMouseInput() {
+	public void _handleMouseInput() {
 		if (this.isEnabled() == false) { return; }
 		if (!mouseOver) return;
 		int input = Mouse.getEventDWheel();
@@ -79,10 +79,12 @@ public class GuiElementScrollablePages extends GuiElement {
 	}
 
 	@Override
-	public boolean mouseClicked(int i, int j, int k) {
+	public boolean _onMouseDown(int i, int j, int k) {
 		if (this.isEnabled() == false) { return false; }
 		List<ItemStack> pageList = getPageList();
 		if (pageList == null) return false;
+		int guiLeft = getLeft();
+		int guiTop = getTop();
 		if (i > guiLeft && i < guiLeft + xSize && j > guiTop && j < guiTop + ySize) {
 			if (i > guiLeft && i < guiLeft + arrowWidth && j > guiTop && j < guiTop + ySize) {
 				cycleLeft();
@@ -123,23 +125,25 @@ public class GuiElementScrollablePages extends GuiElement {
 	}
 
 	@Override
-	public void mouseUp(int i, int j, int k) {
-		if (this.isEnabled() == false) { return; }
+	public boolean _onMouseUp(int i, int j, int k) {
 		if (clickedpage != -1 && hoverpage == clickedpage) {
 			listener.onItemRemove(this, clickedpage);
 		}
 		clickedpage = -1;
+		return false;
 	}
 
 	@Override
-	public List<String> getTooltipInfo() {
+	public List<String> _getTooltipInfo() {
 		if (hovertext != null && hovertext.size() > 0) { return hovertext; }
-		return super.getTooltipInfo();
+		return super._getTooltipInfo();
 	}
 
 	@Override
-	public void render(float f, int mouseX, int mouseY) {
-		mouseOver = GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize, ySize);
+	public void _renderBackground(float f, int mouseX, int mouseY) {
+		int guiLeft = getLeft();
+		int guiTop = getTop();
+		mouseOver = this.contains(mouseX, mouseY);
 		hovertext.clear();
 		GL11.glPushMatrix();
 		GL11.glTranslatef(guiLeft, guiTop, 0);
@@ -148,32 +152,20 @@ public class GuiElementScrollablePages extends GuiElement {
 
 		int color = 0xAA000000;
 		drawRect(0, 0, xSize, ySize, color); // Back
-		if (firstElement == 0) {
-			color = 0x33000000;
-		}
-		drawRect(0, 0, arrowWidth, ySize, color); // Left arrow
-		List<ItemStack> pageList = getPageList();
-		if (pageList == null || pageList.size() == 0 || pageList.size() - 1 == firstElement) {
-			color = 0x33000000;
-		} else {
-			color = 0xAA000000;
-		}
-		drawRect(xSize, 0, xSize - arrowWidth, ySize, color); // Right arrow
 
 		// Render pages
-		this.drawGradientRect(arrowWidth, 0, xSize - arrowWidth, ySize, 0x000000, 0x000000);
-		GL11.glDepthFunc(GL11.GL_GREATER);
-		this.zLevel = 20.0F;
 		GL11.glPushMatrix();
+		GuiUtils.startGlScissor(guiLeft+1, guiTop, xSize-2, ySize);
 		hoverpage = -1;
+		List<ItemStack> pageList = getPageList();
 		if (pageList != null) {
-			float x = arrowWidth + 2;
+			float x = 2;
 			float y = 3;
 			float pagexSize = elementWidth;
 			float pageySize = elementHeight;
 			for (int i = firstElement; i < pageList.size(); ++i) {
 				ItemStack page = pageList.get(i);
-				GuiUtils.drawPage(mc.renderEngine, zLevel, page, pagexSize, pageySize, x, y, false);
+				GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), page, pagexSize, pageySize, x, y, true);
 				if (GuiUtils.contains(mouseX, mouseY, (int) x, (int) y, (int) pagexSize, (int) pageySize)) {
 					hoverpage = i;
 					Page.getTooltip(page, hovertext);
@@ -186,14 +178,23 @@ public class GuiElementScrollablePages extends GuiElement {
 				if (x > xSize) break;
 			}
 		}
+		GuiUtils.endGlScissor();
 		GL11.glPopMatrix();
-		GL11.glDepthFunc(GL11.GL_LEQUAL);
-		this.zLevel = 30.0F;
+		if (firstElement == 0) {
+			color = 0x33000000;
+		}
+		GuiUtils.drawGradientRect(0, 0, arrowWidth, ySize, color, color, getZLevel()); // Left arrow
+		if (pageList == null || pageList.size() == 0 || pageList.size() - 1 == firstElement) {
+			color = 0x33000000;
+		} else {
+			color = 0xAA000000;
+		}
+		GuiUtils.drawGradientRect(xSize - arrowWidth, 0, xSize, ySize, color, color, getZLevel()); // Right arrow
 		GL11.glPopMatrix();
 	}
 
 	@Override
-	public boolean keyTyped(char c, int i) {
+	public boolean _onKeyPress(char c, int i) {
 		if (this.isEnabled() == false) { return false; }
 		if (i == Keyboard.KEY_LEFT || i == mc.gameSettings.keyBindLeft.getKeyCode()) {
 			cycleLeft();

@@ -5,7 +5,6 @@ import net.minecraft.client.gui.Gui;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 import com.xcompwiz.mystcraft.data.Assets;
 
 public class GuiElementVSlider extends GuiElement {
@@ -34,7 +33,7 @@ public class GuiElementVSlider extends GuiElement {
 	 * Handles mouse input.
 	 */
 	@Override
-	public void handleMouseInput() {
+	public void _handleMouseInput() {
 		if (!mouseOver) return;
 		int input = Mouse.getEventDWheel();
 
@@ -58,12 +57,12 @@ public class GuiElementVSlider extends GuiElement {
 	}
 
 	@Override
-	public void render(float f, int mouseX, int mouseY) {
-		mouseOver = GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize, ySize);
+	public void _renderBackground(float f, int mouseX, int mouseY) {
+		mouseOver = this.contains(mouseX, mouseY);
 		float xScale = xSize / 20.0F;
 
-		int guiLeft = this.guiLeft;
-		int guiTop = this.guiTop;
+		int guiLeft = getLeft();
+		int guiTop = getTop();
 
 		boolean isClicking = Mouse.isButtonDown(0);
 		int slidertop = guiTop + 4;

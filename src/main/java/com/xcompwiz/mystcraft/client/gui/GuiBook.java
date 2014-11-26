@@ -23,7 +23,6 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 	private GuiBook(ContainerBook container) {
 		super(container);
 		this.container = container;
-		guiLeft = 0;
 	}
 
 	public GuiBook(InventoryPlayer inventoryplayer, TileEntityBookDisplay tileentity) {
@@ -47,7 +46,11 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 
 	@Override
 	public void validate() {
-		elements.add(new GuiElementBook(container, this, (width - 312) / 2, (height - 195) / 2, 312, 195));
+		xSize = 312;
+		ySize = 312;
+		guiLeft = (width - xSize) / 2;
+		guiTop = (height - ySize) / 2;
+		addElement(new GuiElementBook(container, this, 0,0, xSize, ySize));
 		recalcPosition();
 	}
 
@@ -62,19 +65,20 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 		xSize = 176;
 		ySize = 166;
 		widget = false;
-		for (GuiElement elem : elements) {
-			if (elem.isVisible()) {
-				xSize = Math.max(xSize, elem.getXSize());
-				ySize = Math.max(ySize, elem.getYSize());
-				widget = true;
-			}
-		}
+		//FIXME: !(This broke when we changed the GuiElement system)
+//		for (GuiElement elem : elements) {
+//			if (elem.isVisible()) {
+//				xSize = Math.max(xSize, elem.getLeft());
+//				ySize = Math.max(ySize, elem.getTop());
+//				widget = true;
+//			}
+//		}
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
+	protected void _drawBackgroundLayer(int mouseX, int mouseY, float f) {
 		if (!widget) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.mc.getTextureManager().bindTexture(GUIs.slot);
@@ -84,7 +88,6 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 				this.drawTexturedModalRect(guiLeft + 79, guiTop + 34, 10, 10, 18, 18);
 			}
 		}
-		super.drawElementBackgrounds(f, mouseX, mouseY);
 	}
 
 	private boolean isSlotVisible() {
