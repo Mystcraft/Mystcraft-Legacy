@@ -17,7 +17,7 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 
 	private final WorldProviderMyst	provider;
 
-	private long	tickcounter;
+	private long					tickcounter;
 
 	public WorldInfoMyst(WorldProviderMyst provider, WorldInfo worldInfo) {
 		super(worldInfo);
@@ -25,15 +25,18 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 		this.tickcounter = 0;
 	}
 
+	/**
+	 * This would be better named _SET_TotalWorldTime. Actually not meant to increment.
+	 */
 	@Override
 	public void incrementTotalWorldTime(long par1) {
-		if (provider.worldObj.isRemote) tickcounter += par1;
+		if (provider.worldObj.isRemote) tickcounter = par1;
 	}
 
 	@Override
 	public long getWorldTotalTime() {
 		if (provider.worldObj.isRemote) return tickcounter;
-		return super.getWorldTotalTime(); //XXX: (WorldInfo) I can control time! :P
+		return super.getWorldTotalTime();
 	}
 
 	/**
@@ -45,8 +48,8 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	}
 
 	/**
-	 * Returns vanilla MC dimension (-1,0,1). For custom dimension compatibility, always prefer
-	 * WorldProvider.dimensionID accessed from World.provider.dimensionID
+	 * Returns vanilla MC dimension (-1,0,1). For custom dimension compatibility, always prefer WorldProvider.dimensionID accessed from
+	 * World.provider.dimensionID
 	 */
 	@Override
 	public int getVanillaDimension() {
@@ -134,8 +137,7 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 * Defines the number of ticks until next thunderbolt.
 	 */
 	@Override
-	public void setThunderTime(int par1) {
-	}
+	public void setThunderTime(int par1) {}
 
 	/**
 	 * Returns true if it is raining, false otherwise.
@@ -167,8 +169,7 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 * Sets the number of ticks until rain.
 	 */
 	@Override
-	public void setRainTime(int par1) {
-	}
+	public void setRainTime(int par1) {}
 
 	/**
 	 * Gets the GameType.
@@ -205,9 +206,8 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	}
 
 	/**
-	 * Allow access to additional mod specific world based properties Used by FML to store mod list associated with a
-	 * world, and maybe an id map Used by Forge to store the dimensions available to a world
-	 * 
+	 * Allow access to additional mod specific world based properties Used by FML to store mod list associated with a world, and maybe an id map Used by Forge
+	 * to store the dimensions available to a world
 	 * @param additionalProperties
 	 */
 	@Override
