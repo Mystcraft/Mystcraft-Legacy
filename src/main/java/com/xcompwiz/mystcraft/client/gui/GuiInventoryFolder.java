@@ -125,6 +125,7 @@ public class GuiInventoryFolder extends GuiContainerElements {
 	@Override
 	protected void _drawBackgroundLayer(int mouseX, int mouseY, float f) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		//XXX: Better texture to use here?
 		mc.renderEngine.bindTexture(GUIs.desk);
 		drawTexturedModalRect(guiLeft, mainTop, 0, 82, invsizeX, invsizeY);
 	}

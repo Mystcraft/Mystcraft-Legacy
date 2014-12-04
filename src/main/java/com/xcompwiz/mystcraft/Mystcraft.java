@@ -77,9 +77,7 @@ import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import com.xcompwiz.mystcraft.treasure.TreasureGenWrapper;
-import com.xcompwiz.mystcraft.villager.IMerchantRecipeProvider;
 import com.xcompwiz.mystcraft.villager.MerchantRecipeProviderItem;
-import com.xcompwiz.mystcraft.villager.MerchantRecipeProviderSymbol;
 import com.xcompwiz.mystcraft.villager.VillageCreationHandlerArchivistHouse;
 import com.xcompwiz.mystcraft.villager.VillagerArchivist;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
@@ -314,7 +312,7 @@ public class Mystcraft {
 		//treasureinfo.addItem(new TreasureGenBooster(7, 4, 4, 1, 1000));
 		// 11 commons, 3 uncommon, 1 rare, and a basic land
 		//if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderBooster(7, 4, 4, 1));
-		if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderItem(new ItemStack(Items.emerald, 1), null, new ItemStack(ModItems.booster, 1)));
+		if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderItem(new ItemStack(Items.emerald, 10), null, new ItemStack(ModItems.booster, 1)));
 
 		TreasureGenWrapper mystTreasureSub = new TreasureGenWrapper(MystObjects.MYST_TREASURE, 10);
 		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(mystTreasureSub);
@@ -332,12 +330,6 @@ public class Mystcraft {
 			int maxStack = SymbolManager.getSymbolTreasureMaxStack(symbol);
 			int chance = SymbolManager.getSymbolItemWeight(symbol.identifier());
 			if (chance != 0 && maxStack != 0) treasureinfo.addItem(new WeightedRandomChestContent(Page.createSymbolPage(symbol.identifier()), 1, maxStack, chance));
-
-			// Merchant recipe entry
-			if (archivist != null && SymbolManager.isSymbolTradable(symbol.identifier())) {
-				IMerchantRecipeProvider merchantrecipe = new MerchantRecipeProviderSymbol(symbol);
-				archivist.registerRecipe(merchantrecipe);
-			}
 		}
 	}
 

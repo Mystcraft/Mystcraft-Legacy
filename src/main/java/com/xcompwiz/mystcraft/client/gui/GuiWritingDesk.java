@@ -40,6 +40,7 @@ import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
 public class GuiWritingDesk extends GuiContainerElements {
+
 	public class GuiElementSurfaceControls extends GuiElementSurfaceControlsBase {
 
 		public GuiElementSurfaceControls(Minecraft mc, int guiLeft, int guiTop, int width, int height) {
