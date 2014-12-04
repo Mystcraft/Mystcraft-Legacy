@@ -16,8 +16,6 @@ import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
 
-import cpw.mods.fml.common.Loader;
-
 public class SymbolManager {
 
 	private static HashMap<String, IAgeSymbol>		ageSymbols					= new HashMap<String, IAgeSymbol>();
@@ -45,7 +43,7 @@ public class SymbolManager {
 		config = mystconfig;
 	}
 
-	public static boolean registerSymbol(IAgeSymbol symbol, boolean generateConfigOption) {
+	public static boolean registerSymbol(IAgeSymbol symbol, boolean generateConfigOption, String modid) {
 		boolean enabled = true;
 		if (symbol.identifier() == null || symbol.identifier().length() == 0) {
 			LoggerUtils.error(String.format("Attempting to bind symbol with null or zero length identifier."));
@@ -60,9 +58,8 @@ public class SymbolManager {
 			LoggerUtils.info(String.format("Symbol %s is turned off by blacklist.", symbol.identifier()));
 			return false;
 		}
-		String mod = Loader.instance().activeModContainer().getModId();
 		if (ageSymbols.get(symbol.identifier()) != null) {
-			String str = String.format("%s cannot register symbol with identifier %s. Already bound by %s.", mod, symbol.identifier(), owners.get(symbol.identifier()));
+			String str = String.format("%s cannot register symbol with identifier %s. Already bound by %s.", modid, symbol.identifier(), owners.get(symbol.identifier()));
 			LoggerUtils.error(str);
 			throw new RuntimeException(str);
 		}
@@ -80,7 +77,7 @@ public class SymbolManager {
 			if (config != null && config.hasChanged()) config.save();
 		}
 		ageSymbols.put(symbol.identifier(), symbol);
-		owners.put(symbol.identifier(), mod);
+		owners.put(symbol.identifier(), modid);
 		return true;
 	}
 

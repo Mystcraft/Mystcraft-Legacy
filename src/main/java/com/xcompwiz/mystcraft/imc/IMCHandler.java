@@ -16,6 +16,7 @@ public class IMCHandler {
 	private static Map<String, IMCProcessor>	processors	= new HashMap<String, IMCProcessor>();
 
 	static {
+		processors.put("blockmodifier", new IMCBlockModifier());
 		processors.put("blacklistfluid", new IMCBlacklistFluid());
 		processors.put("blacklist", new IMCBlacklistSymbol());
 		processors.put("fluidsymboldata", new IMCFluidData());

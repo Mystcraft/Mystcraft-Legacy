@@ -4,9 +4,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.BiomeGenBase;
 
+import com.xcompwiz.mystcraft.api.util.Color;
+import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.logic.ISkyColorProvider;
-import com.xcompwiz.mystcraft.symbol.Color;
-import com.xcompwiz.mystcraft.symbol.ColorGradient;
 import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.world.IAgeController;

@@ -16,10 +16,11 @@ import net.minecraftforge.fluids.FluidRegistry;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.config.MystConfig;
+import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.data.ModSymbolsModifiers.BlockModifierContainerObject;
 import com.xcompwiz.mystcraft.world.ChunkProfiler;
 
-public class SymbolDataFluids {
+public class ModSymbolsFluids {
 	private static MystConfig	config;
 
 	public static void setConfig(MystConfig mystconfig) {
@@ -52,6 +53,7 @@ public class SymbolDataFluids {
 				if (!isBannedSea(fluidkey)) container.add(BlockCategory.SEA, grammarRank(fluidkey));
 				container.add(BlockCategory.FLUID, grammarRank(fluidkey));
 			}
+			if (container.getSymbol() != null) InternalAPI.symbol.registerSymbol(container.getSymbol());
 		}
 		if (config != null && config.hasChanged()) config.save();
 	}
@@ -90,7 +92,7 @@ public class SymbolDataFluids {
 	}
 
 	private static Collection<Fluid>		blacklist			= new HashSet<Fluid>();
-	private static Map<String, FluidData>	defaults			= new HashMap<String, SymbolDataFluids.FluidData>();
+	private static Map<String, FluidData>	defaults			= new HashMap<String, ModSymbolsFluids.FluidData>();
 	private static FluidData				defaultfluidvals	= new FluidData();
 
 	private static Map<String, Boolean>		bannedsea			= new HashMap<String, Boolean>();
@@ -247,6 +249,6 @@ public class SymbolDataFluids {
 		getDefault("fluid.witchery:hollowtears").setBannedSea(false).setFactor1(-2F).setFactor2(-1F);
 		getDefault("fluid.mana").setBannedSea(false).setFactor1(-6F).setFactor2(-2F);
 		getDefault("fluid.pyrotheum").setBannedSea(false).setFactor1(-6F).setFactor2(-2F);
-		getDefault("fluid.fluxgoo").setBannedSea(false).setFactor1(-12F).setFactor2(-3F);
+		getDefault("fluid.fluxgoo").setBannedSea(true).setFactor1(-12F).setFactor2(-3F);
 	}
 }

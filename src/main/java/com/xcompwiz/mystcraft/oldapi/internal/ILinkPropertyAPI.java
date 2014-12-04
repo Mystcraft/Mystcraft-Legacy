@@ -6,8 +6,8 @@ import java.util.Map;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import com.xcompwiz.mystcraft.symbol.Color;
-import com.xcompwiz.mystcraft.symbol.ColorGradient;
+import com.xcompwiz.mystcraft.api.util.Color;
+import com.xcompwiz.mystcraft.api.util.ColorGradient;
 
 
 /**

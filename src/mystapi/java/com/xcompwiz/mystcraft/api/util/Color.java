@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.symbol;
+package com.xcompwiz.mystcraft.api.util;
 
 public final class Color {
 	public final float	r;

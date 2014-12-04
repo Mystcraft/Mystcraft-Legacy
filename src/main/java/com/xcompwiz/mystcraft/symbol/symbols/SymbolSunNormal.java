@@ -8,9 +8,9 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
+import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.logic.ISun;
 import com.xcompwiz.mystcraft.data.Assets.Vanilla;
-import com.xcompwiz.mystcraft.symbol.ColorGradient;
 import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SunsetRenderer;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;

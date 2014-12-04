@@ -48,7 +48,7 @@ import com.xcompwiz.mystcraft.data.ModLinkEffects;
 import com.xcompwiz.mystcraft.data.ModRecipes;
 import com.xcompwiz.mystcraft.data.ModSymbols;
 import com.xcompwiz.mystcraft.data.ModWords;
-import com.xcompwiz.mystcraft.data.SymbolDataFluids;
+import com.xcompwiz.mystcraft.data.ModSymbolsFluids;
 import com.xcompwiz.mystcraft.data.SymbolRules;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
 import com.xcompwiz.mystcraft.imc.IMCHandler;
@@ -182,7 +182,7 @@ public class Mystcraft {
 		MystConfig config = new MystConfig(configfile);
 		SymbolManager.setConfig(new MystConfig(new File(configroot, "mystcraft/symbols.cfg")));
 		InstabilityManager.setConfig(new MystConfig(new File(configroot, "mystcraft/instabilities.cfg")));
-		SymbolDataFluids.setConfig(config);
+		ModSymbolsFluids.setConfig(config);
 
 		spawnmeteorEnabled = config.get(MystConfig.CATEGORY_GENERAL, "options.command.spawnmeteor.enabled", spawnmeteorEnabled).getBoolean(spawnmeteorEnabled);
 
@@ -236,7 +236,7 @@ public class Mystcraft {
 		InkEffects.init();
 
 		FluidContainerRegistry.registerFluidContainer(ModFluids.black_ink, new ItemStack(ModItems.inkvial, 1, 0), new ItemStack(Items.glass_bottle));
-		SymbolDataFluids.init();
+		ModSymbolsFluids.init();
 
 		// Init Achievements
 		ModAchievements.init();
@@ -295,7 +295,7 @@ public class Mystcraft {
 	public void modsLoaded(FMLPostInitializationEvent event) {
 		sidedProxy.postInit();
 		ModSymbols.generateBiomeSymbols();
-		SymbolDataFluids.modsLoaded();
+		ModSymbolsFluids.modsLoaded();
 		SymbolRules.register();
 
 		SymbolManager.buildCardRanks();

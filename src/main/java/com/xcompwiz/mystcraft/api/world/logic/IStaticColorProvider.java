@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.api.world.logic;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
-import com.xcompwiz.mystcraft.symbol.Color;
+import com.xcompwiz.mystcraft.api.util.Color;
 
 /**
  * Used to produce a color once. This color cannot change over time.

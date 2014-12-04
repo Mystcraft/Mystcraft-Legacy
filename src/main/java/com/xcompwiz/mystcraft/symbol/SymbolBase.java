@@ -47,7 +47,7 @@ public abstract class SymbolBase implements IAgeSymbol {
 	 * @return The lookup key used to map the symbol to a user readable text string
 	 */
 	public String getUnlocalizedName() {
-		return "mystsymbol." + this.identifier();
+		return "myst.symbol." + this.identifier();
 	}
 
 	/**

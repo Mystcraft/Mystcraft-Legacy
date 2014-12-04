@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import net.minecraft.world.biome.WorldChunkManager;
 
+import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.api.world.logic.IChunkProviderFinalization;
 import com.xcompwiz.mystcraft.api.world.logic.ICloudColorProvider;

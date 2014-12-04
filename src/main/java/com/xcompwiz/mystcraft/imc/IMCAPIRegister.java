@@ -14,7 +14,7 @@ public class IMCAPIRegister implements IMCProcessor {
 	@Override
 	public void process(IMCMessage message) {
 		if (!message.isStringMessage()) return;
-		LoggerUtils.info(String.format("Receiving registration request from [%s] for method %s", message.getSender(), message.getStringValue()));
+		LoggerUtils.info(String.format("Receiving API registration request from [%s] for method %s", message.getSender(), message.getStringValue()));
 		callbackRegistration(message.getStringValue(), message.getSender());
 	}
 

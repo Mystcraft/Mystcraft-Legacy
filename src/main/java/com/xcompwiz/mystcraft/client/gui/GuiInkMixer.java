@@ -8,14 +8,14 @@ import net.minecraftforge.fluids.Fluid;
 
 import org.lwjgl.opengl.GL11;
 
+import com.xcompwiz.mystcraft.api.util.Color;
+import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.client.render.DniColorRenderer;
 import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.data.ModFluids;
 import com.xcompwiz.mystcraft.inventory.ContainerInkMixer;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
-import com.xcompwiz.mystcraft.symbol.Color;
-import com.xcompwiz.mystcraft.symbol.ColorGradient;
 import com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer;
 import com.xcompwiz.util.Vector;
 import com.xcompwiz.util.VectorPool;

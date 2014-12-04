@@ -9,8 +9,8 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.entity.EntityLightningBoltAdv;
-import com.xcompwiz.mystcraft.symbol.Color;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

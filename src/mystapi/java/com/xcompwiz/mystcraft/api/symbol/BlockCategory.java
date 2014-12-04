@@ -62,6 +62,13 @@ public final class BlockCategory {
 		return new BlockCategory(name);
 	}
 
+	public static BlockCategory getBlockCategory(String name) {
+		if (categories.containsKey(name)) {
+			return categories.get(name);
+		}
+		return null;
+	}
+
 	/**
 	 * Returns the type name of the BlockCategory
 	 * 

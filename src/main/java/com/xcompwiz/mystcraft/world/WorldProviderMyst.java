@@ -21,11 +21,11 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.IRenderHandler;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.client.render.CloudRendererMyst;
 import com.xcompwiz.mystcraft.client.render.WeatherRendererMyst;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.network.NetworkUtils;
-import com.xcompwiz.mystcraft.symbol.Color;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.mystcraft.world.storage.WorldInfoMyst;
 

@@ -4,8 +4,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
 
+import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.entity.EntityLightningBoltAdv;
-import com.xcompwiz.mystcraft.symbol.Color;
 
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 

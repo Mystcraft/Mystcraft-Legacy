@@ -10,6 +10,8 @@ import com.xcompwiz.mystcraft.oldapi.internal.ISymbolAPI;
 import com.xcompwiz.mystcraft.oldapi.internal.ISymbolValuesAPI;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 
+import cpw.mods.fml.common.Loader;
+
 public class SymbolAPIDelegate implements ISymbolAPI, ISymbolValuesAPI, IWordAPI {
 
 	@Override
@@ -54,12 +56,12 @@ public class SymbolAPIDelegate implements ISymbolAPI, ISymbolValuesAPI, IWordAPI
 
 	@Override
 	public boolean registerSymbol(IAgeSymbol symbol) {
-		return SymbolManager.registerSymbol(symbol, true);
+		return SymbolManager.registerSymbol(symbol, true, Loader.instance().activeModContainer().getModId());
 	}
 
 	@Override
 	public boolean registerSymbol(IAgeSymbol symbol, boolean generateConfigOption) {
-		return SymbolManager.registerSymbol(symbol, generateConfigOption);
+		return SymbolManager.registerSymbol(symbol, generateConfigOption, Loader.instance().activeModContainer().getModId());
 	}
 
 	@Override

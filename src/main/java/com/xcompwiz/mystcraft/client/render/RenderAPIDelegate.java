@@ -2,9 +2,9 @@ package com.xcompwiz.mystcraft.client.render;
 
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 import com.xcompwiz.mystcraft.api.internal.IRenderAPI;
+import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 import com.xcompwiz.mystcraft.client.linkeffects.LinkPanelEffectManager;
-import com.xcompwiz.mystcraft.symbol.Color;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 import com.xcompwiz.util.VectorPool;
@@ -32,6 +32,7 @@ public class RenderAPIDelegate implements IRenderAPI {
 		GuiUtils.drawWord(FMLClientHandler.instance().getClient().renderEngine, zLevel, DrawableWordManager.getDrawableWord(word), scale, x, y);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawColor(float x, float y, float zLevel, float radius, Color color) {
 		DniColorRenderer.render(color.toAWT(), VectorPool.getFreeVector(x, y, zLevel), radius);

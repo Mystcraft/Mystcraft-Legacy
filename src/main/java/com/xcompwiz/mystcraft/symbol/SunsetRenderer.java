@@ -9,6 +9,8 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
+import com.xcompwiz.mystcraft.api.util.Color;
+import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.world.IAgeController;
 
 import cpw.mods.fml.relauncher.Side;

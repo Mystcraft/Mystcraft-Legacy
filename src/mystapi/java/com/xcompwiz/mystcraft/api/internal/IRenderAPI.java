@@ -1,6 +1,7 @@
 package com.xcompwiz.mystcraft.api.internal;
 
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
+import com.xcompwiz.mystcraft.api.util.Color;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -54,6 +55,6 @@ public interface IRenderAPI {
 	 * @param radius The size in pixels of the square
 	 * @param color The color object to use when drawing the eye
 	 */
-	//@SideOnly(Side.CLIENT)
-	//public void drawColor(float x, float y, float zLevel, float radius, Color color);
+	@SideOnly(Side.CLIENT)
+	public void drawColor(float x, float y, float zLevel, float radius, Color color);
 }

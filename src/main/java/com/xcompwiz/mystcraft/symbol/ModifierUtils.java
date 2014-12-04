@@ -6,6 +6,8 @@ import java.util.List;
 import net.minecraft.world.biome.BiomeGenBase;
 
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
+import com.xcompwiz.mystcraft.api.util.Color;
+import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.world.IAgeController;
 
 /**

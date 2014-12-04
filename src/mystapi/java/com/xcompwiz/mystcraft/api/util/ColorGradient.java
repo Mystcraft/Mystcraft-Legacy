@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.symbol;
+package com.xcompwiz.mystcraft.api.util;
 
 import java.util.ArrayList;
 import java.util.List;

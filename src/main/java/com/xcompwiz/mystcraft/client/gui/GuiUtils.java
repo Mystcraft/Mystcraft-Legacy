@@ -111,8 +111,7 @@ public final class GuiUtils {
 		}
 		if (imagesource == null) imagesource = DrawableWord.word_components;
 		renderEngine.bindTexture(imagesource);
-		if (components == null || components.size() == 0) { // No drawable -> ?
-															// image
+		if (components == null || components.size() == 0) { // No drawable -> ? image
 			components = new ArrayList<Integer>();
 			components.add(0);
 			colors = new ArrayList<Integer>();

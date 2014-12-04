@@ -6,7 +6,7 @@ import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import com.xcompwiz.mystcraft.data.SymbolDataFluids;
+import com.xcompwiz.mystcraft.data.ModSymbolsFluids;
 import com.xcompwiz.mystcraft.imc.IMCHandler.IMCProcessor;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
@@ -41,7 +41,7 @@ public class IMCBlacklistFluid implements IMCProcessor {
 		if (itemstack == null) return;
 		String identifier = "ModMat_" + itemstack.getUnlocalizedName(); //XXX: Building ModMat identifier externally...
 		SymbolManager.blackListSymbol(identifier);
-		SymbolDataFluids.blacklist(fluid);
+		ModSymbolsFluids.blacklist(fluid);
 		LoggerUtils.info("Fluid blacklist request successful.");
 	}
 

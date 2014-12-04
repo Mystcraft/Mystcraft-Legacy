@@ -1,6 +1,6 @@
 package com.xcompwiz.mystcraft.symbol.modifiers;
 
-import com.xcompwiz.mystcraft.symbol.ColorGradient;
+import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.world.IAgeController;

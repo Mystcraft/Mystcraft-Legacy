@@ -23,6 +23,8 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.IChunkLoader;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.util.Color;
+import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.api.world.logic.IChunkProviderFinalization;
 import com.xcompwiz.mystcraft.api.world.logic.ICloudColorProvider;
@@ -49,8 +51,6 @@ import com.xcompwiz.mystcraft.instability.InstabilityController;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.instability.bonus.InstabilityBonusManager;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
-import com.xcompwiz.mystcraft.symbol.Color;
-import com.xcompwiz.mystcraft.symbol.ColorGradient;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.Modifier;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;

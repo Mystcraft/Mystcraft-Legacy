@@ -14,10 +14,10 @@ import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.api.internal.ILinkingAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
+import com.xcompwiz.mystcraft.api.util.Color;
+import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.data.InkEffects;
 import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
-import com.xcompwiz.mystcraft.symbol.Color;
-import com.xcompwiz.mystcraft.symbol.ColorGradient;
 
 public class LinkingAPIDelegate implements ILinkingAPI, ILinkPropertyAPI {
 

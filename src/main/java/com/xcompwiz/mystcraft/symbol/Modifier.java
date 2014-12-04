@@ -2,6 +2,8 @@ package com.xcompwiz.mystcraft.symbol;
 
 import java.util.List;
 
+import com.xcompwiz.mystcraft.api.util.Color;
+import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.world.IAgeController;
 
 

@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.symbol.Color;
+import com.xcompwiz.mystcraft.api.util.Color;
 
 public class EntityLightningBoltAdv extends EntityLightningBolt {
 	private Color	color;

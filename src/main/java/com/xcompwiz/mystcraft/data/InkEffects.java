@@ -14,8 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
-import com.xcompwiz.mystcraft.symbol.Color;
 
 public class InkEffects {
 

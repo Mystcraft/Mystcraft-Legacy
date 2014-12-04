@@ -13,8 +13,8 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 
+import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
-import com.xcompwiz.mystcraft.symbol.Color;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import cpw.mods.fml.relauncher.Side;

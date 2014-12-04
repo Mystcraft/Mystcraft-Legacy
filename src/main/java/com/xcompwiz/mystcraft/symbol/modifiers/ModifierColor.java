@@ -3,9 +3,9 @@ package com.xcompwiz.mystcraft.symbol.modifiers;
 import java.util.ArrayList;
 
 import com.xcompwiz.mystcraft.api.internal.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
-import com.xcompwiz.mystcraft.symbol.Color;
 import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.world.IAgeController;
