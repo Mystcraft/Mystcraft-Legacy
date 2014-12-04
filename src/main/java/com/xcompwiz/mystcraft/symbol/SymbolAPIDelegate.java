@@ -15,6 +15,16 @@ import cpw.mods.fml.common.Loader;
 
 public class SymbolAPIDelegate implements ISymbolAPI, ISymbolValuesAPI, IWordAPI {
 
+	private final String	modid;
+
+	public SymbolAPIDelegate() {
+		this(null);
+	}
+
+	public SymbolAPIDelegate(String modid) {
+		this.modid = modid;
+	}
+
 	@Override
 	public void setSymbolCardRank(IAgeSymbol symbol, int weight) {
 		SymbolManager.setSymbolItemCardRank(symbol.identifier(), weight);
@@ -57,12 +67,12 @@ public class SymbolAPIDelegate implements ISymbolAPI, ISymbolValuesAPI, IWordAPI
 
 	@Override
 	public boolean registerSymbol(IAgeSymbol symbol) {
-		return SymbolManager.registerSymbol(symbol, true, Loader.instance().activeModContainer().getModId());
+		return SymbolManager.registerSymbol(symbol, true, (modid != null ? modid : Loader.instance().activeModContainer().getModId()));
 	}
 
 	@Override
 	public boolean registerSymbol(IAgeSymbol symbol, boolean generateConfigOption) {
-		return SymbolManager.registerSymbol(symbol, generateConfigOption, Loader.instance().activeModContainer().getModId());
+		return SymbolManager.registerSymbol(symbol, generateConfigOption, (modid != null ? modid : Loader.instance().activeModContainer().getModId()));
 	}
 
 	@Override

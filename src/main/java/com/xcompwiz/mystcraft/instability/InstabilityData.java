@@ -90,14 +90,15 @@ public class InstabilityData {
 	private static class InstabilityProviderContainerObject {
 
 		private String	identifier;
+		private boolean	registered;
 
 		private InstabilityProviderContainerObject(String identifier, IInstabilityProvider provider, int activationcost) {
 			this.identifier = identifier;
-			InternalAPI.instability.registerInstability(identifier, provider, activationcost);
+			registered = InternalAPI.instability.registerInstability(identifier, provider, activationcost);
 		}
 
 		public InstabilityProviderContainerObject add(String deck, int count) {
-			InternalAPI.instability.addCards(deck, identifier, count);
+			if (registered) InternalAPI.instability.addCards(deck, identifier, count);
 			return this;
 		}
 

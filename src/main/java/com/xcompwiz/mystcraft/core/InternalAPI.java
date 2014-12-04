@@ -31,10 +31,14 @@ import com.xcompwiz.mystcraft.symbol.SymbolFactory;
 public class InternalAPI {
 
 	public static class MystAPIInstance extends MystAPI {
-		public final String	modId;
+		public final String			modId;
+
+		private SymbolAPIDelegate	symbol;
 
 		public MystAPIInstance(String modId) {
 			this.modId = modId;
+			SymbolAPIDelegate symbol_delegate = new SymbolAPIDelegate(modId);
+			this.symbol = symbol_delegate;
 		}
 
 		@Override
@@ -69,7 +73,7 @@ public class InternalAPI {
 
 		@Override
 		public ISymbolAPI getSymbolAPI() {
-			return InternalAPI.symbol;
+			return symbol;
 		}
 
 		@Override
@@ -83,19 +87,19 @@ public class InternalAPI {
 		}
 	}
 
-	public static IDimensionAPI		dimension;
-	public static ILinkingAPI		linking;
-	public static ILinkPropertyAPI		linkProperties;
-	public static IInstabilityAPI	instability;
+	public static IDimensionAPI				dimension;
+	public static ILinkingAPI				linking;
+	public static ILinkPropertyAPI			linkProperties;
+	public static IInstabilityAPI			instability;
 	public static IInstabilityFactory		instabilityFact;
-	public static ISymbolAPI			symbol;
-	public static IWordAPI			word;
+	public static ISymbolAPI				symbol;
+	public static IWordAPI					word;
 	public static ISymbolValuesAPI			symbolValues;
-	public static IGrammarAPI		grammar;
-	public static ISymbolFactory				symbolFact;
-	public static IPageAPI			page;
+	public static IGrammarAPI				grammar;
+	public static ISymbolFactory			symbolFact;
+	public static IPageAPI					page;
 	public static IItemFactory				itemFact;
-	public static IRenderAPI			render;
+	public static IRenderAPI				render;
 
 	private static HashMap<String, MystAPI>	instances	= new HashMap<String, MystAPI>();
 

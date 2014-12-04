@@ -8,8 +8,8 @@ import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 public class InstabilityAPIDelegate implements IInstabilityAPI {
 
 	@Override
-	public void registerInstability(String identifier, IInstabilityProvider provider, int activationcost) {
-		InstabilityManager.registerProvider(identifier, provider, activationcost);
+	public boolean registerInstability(String identifier, IInstabilityProvider provider, int activationcost) {
+		return InstabilityManager.registerProvider(identifier, provider, activationcost);
 	}
 
 	@Override

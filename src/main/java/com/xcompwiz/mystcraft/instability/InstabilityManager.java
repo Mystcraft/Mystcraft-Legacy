@@ -34,20 +34,21 @@ public class InstabilityManager {
 		config = mystconfig;
 	}
 
-	public static void registerProvider(String identifier, IInstabilityProvider provider, int activationcost) {
+	public static boolean registerProvider(String identifier, IInstabilityProvider provider, int activationcost) {
 		if (identifier == null || identifier.length() == 0) {
 			LoggerUtils.error(String.format("Attempting to bind instability provider with null or zero length identifier."));
-			return;
+			return false;
 		}
 		if (providers.get(identifier) != null) {
 			LoggerUtils.warn(String.format("Instability with Identifier %s already bound", identifier));
 		}
-		if (config != null && !config.get(MystConfig.CATEGORY_INSTABILITY, identifier.toLowerCase().replace(' ', '_') + ".enabled", true).getBoolean(true)) { return; }
+		if (config != null && !config.get(MystConfig.CATEGORY_INSTABILITY, identifier.toLowerCase().replace(' ', '_') + ".enabled", true).getBoolean(true)) { return false; }
 
 		providers.put(identifier, provider);
 		cardcosts.put(identifier, activationcost);
 		if (activationcost > 0 && activationcost < smallestcost) smallestcost = activationcost;
 		if (config != null && config.hasChanged()) config.save();
+		return true;
 	}
 
 	private static void profile(String identifier) {

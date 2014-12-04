@@ -1,19 +1,28 @@
 package com.xcompwiz.mystcraft.data;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
+import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.api.symbol.ISymbolFactory.CategoryPair;
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
+import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBlock;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierColor;
 import com.xcompwiz.util.CollectionUtils;
+
+import cpw.mods.fml.common.event.FMLInterModComms;
 
 public class ModSymbolsModifiers {
 
@@ -65,7 +74,8 @@ public class ModSymbolsModifiers {
 	public static void initialize() {
 		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.dirt, 0).register().add(BlockCategory.TERRAIN, 4).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
 		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.stone, 0).register().add(BlockCategory.TERRAIN, 1).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
-		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.netherrack, 0).register().add(BlockCategory.TERRAIN, 3).add(BlockCategory.STRUCTURE, 2).add(BlockCategory.SOLID, 2);
+		InternalAPI.symbol.registerSymbol(InternalAPI.symbolFact.createSymbol(Blocks.netherrack, 0, WordData.Terrain, 2, new CategoryPair(BlockCategory.TERRAIN, 3), new CategoryPair(BlockCategory.STRUCTURE, 2), new CategoryPair(BlockCategory.SOLID, 2)));
+		//BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.netherrack, 0).register().add(BlockCategory.TERRAIN, 3).add(BlockCategory.STRUCTURE, 2).add(BlockCategory.SOLID, 2);
 		BlockModifierContainerObject.create(WordData.Terrain, 3, Blocks.end_stone, 0).register().add(BlockCategory.TERRAIN, 4).add(BlockCategory.STRUCTURE, 3).add(BlockCategory.SOLID, 3);
 
 		BlockModifierContainerObject.create(WordData.Structure, 2, Blocks.nether_brick, 0).register().add(BlockCategory.SOLID, 2).add(BlockCategory.STRUCTURE, 2);
@@ -87,9 +97,28 @@ public class ModSymbolsModifiers {
 		BlockModifierContainerObject.create(WordData.Chain, 2, Blocks.glass, 0).register().add(BlockCategory.SOLID, 3).add(BlockCategory.STRUCTURE, 3).add(BlockCategory.CRYSTAL, 3);
 		BlockModifierContainerObject.create(WordData.Chain, 2, Blocks.snow, 0).register().add(BlockCategory.SOLID, 3).add(BlockCategory.STRUCTURE, 3).add(BlockCategory.CRYSTAL, 3);
 		BlockModifierContainerObject.create(WordData.Chain, 3, Blocks.obsidian, 0).register().add(BlockCategory.SOLID, 4).add(BlockCategory.TERRAIN, 4).add(BlockCategory.STRUCTURE, 3).add(BlockCategory.CRYSTAL, 3);
-		BlockModifierContainerObject.create(WordData.Chain, 3, ModBlocks.crystal, 0).register().add(BlockCategory.SOLID, 4).add(BlockCategory.STRUCTURE, 4).add(BlockCategory.CRYSTAL, 4);
 		BlockModifierContainerObject.create(WordData.Chain, 3, Blocks.glowstone, 0).register().add(BlockCategory.SOLID, 4).add(BlockCategory.STRUCTURE, 4).add(BlockCategory.CRYSTAL, 4);
 		BlockModifierContainerObject.create(WordData.Chain, 3, Blocks.quartz_ore, 0).register().add(BlockCategory.SOLID, 4).add(BlockCategory.STRUCTURE, 4).add(BlockCategory.CRYSTAL, 4);
+
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.setString("BlockName", MystObjects.Blocks.crystal);
+		//nbt.setInteger("Metadata", 0); (or nbt.setByte would work, too)
+		nbt.setString("PoemWord", WordData.Chain);
+		nbt.setInteger("Rank", 3);
+		ArrayList<Object[]> pairs = new ArrayList<Object[]>();
+		pairs.add(new Object[] { "BlockSolid", 4 });
+		pairs.add(new Object[] { "BlockStructure", 4 });
+		pairs.add(new Object[] { "BlockCrystal", 4 });
+		ArrayList<NBTTagCompound> categories = new ArrayList<NBTTagCompound>();
+		for (Object[] pair : pairs) {
+			NBTTagCompound cat = new NBTTagCompound();
+			cat.setString("Category", ((BlockCategory) pair[0]).getName());
+			cat.setInteger("Rank", (Integer) pair[1]);
+			categories.add(cat);
+		}
+		nbt.setTag("Categories", NBTUtils.writeTagCompoundCollection(new NBTTagList(), categories));
+		FMLInterModComms.sendMessage("Mystcraft", "blockmodifier", nbt);
+		//BlockModifierContainerObject.create(WordData.Chain, 3, ModBlocks.crystal, 0).register().add(BlockCategory.SOLID, 4).add(BlockCategory.STRUCTURE, 4).add(BlockCategory.CRYSTAL, 4);
 
 		BlockModifierContainerObject.create(WordData.Sea, 2, Blocks.flowing_water, 0).register().add(BlockCategory.FLUID, 1).add(BlockCategory.SEA, 1);
 		BlockModifierContainerObject.create(WordData.Sea, 3, Blocks.flowing_lava, 0).register().add(BlockCategory.FLUID, 2).add(BlockCategory.SEA, 2);

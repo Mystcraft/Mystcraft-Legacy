@@ -6,7 +6,9 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
 
+import com.xcompwiz.mystcraft.api.MystAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.api.symbol.ISymbolFactory.CategoryPair;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.imc.IMCHandler.IMCProcessor;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
@@ -28,39 +30,40 @@ public class IMCBlockModifier implements IMCProcessor {
 			return;
 		}
 		int metadata = 0;
-		if (nbt.hasKey("Metadata")) metadata = nbt.getInteger("Metadata");
+		if (nbt.hasKey("Metadata")) metadata = NBTUtils.readNumber(nbt.getTag("Metadata")).intValue();
 		String thirdword = nbt.getString("PoemWord");
 		if (thirdword == null) {
 			LoggerUtils.warn("Poem word not specified for %s belonging to mod [%s] when creating block modifier symbol via IMC message.", blockname, message.getClass());
 		}
 		int rank = 1;
 		if (nbt.hasKey("Rank")) {
-			rank = nbt.getInteger("Rank");
+			rank = NBTUtils.readNumber(nbt.getTag("Rank")).intValue();
 		} else {
 			LoggerUtils.warn("Item Ranking not specified for %s belonging to mod [%s] when creating block modifier symbol via IMC message.", blockname, message.getClass());
 		}
 
-		ArrayList<Object[]> objects = null;
+		ArrayList<CategoryPair> objects = null;
 		if (nbt.hasKey("Categories")) {
 			ArrayList<NBTTagCompound> list = NBTUtils.readTagCompoundCollection(nbt.getTagList("Categories", Constants.NBT.TAG_COMPOUND), new ArrayList<NBTTagCompound>());
-			objects = new ArrayList<Object[]>();
+			objects = new ArrayList<CategoryPair>();
 			for (NBTTagCompound cat : list) {
 				String catname = cat.getString("Category");
-				Integer catrank = cat.getInteger("Rank");
-				objects.add(new Object[] { catname, catrank });
+				int catrank = 1;
+				if (cat.hasKey("Rank")) catrank = NBTUtils.readNumber(cat.getTag("Rank")).intValue();
+				objects.add(new CategoryPair(catname, catrank));
 			}
 		}
 		if (objects == null) {
 			LoggerUtils.warn("Block categories not specified for %s belonging to mod [%s] when creating block modifier symbol via IMC message.", blockname, message.getClass());
 		}
 
-		IAgeSymbol symbol = InternalAPI.symbolFact.createSymbol(block, metadata, thirdword, rank, (objects != null ? objects.toArray() : null));
+		CategoryPair[] args = (objects != null ? objects.toArray(new CategoryPair[]{}) : null);
+		IAgeSymbol symbol = InternalAPI.symbolFact.createSymbol(block, metadata, thirdword, rank, args);
 		if (symbol == null) {
 			LoggerUtils.warn("[%s] is attempting to create a block modifier symbol for an already registered block.", message.getSender());
 		} else {
-			//TODO: MystAPI api = InternalAPI.getAPIInstance(message.getSender());
-			//api.getSymbolFactory()
-			InternalAPI.symbol.registerSymbol(symbol);
+			MystAPI api = InternalAPI.getAPIInstance(message.getSender());
+			api.getSymbolAPI().registerSymbol(symbol);
 		}
 	}
 

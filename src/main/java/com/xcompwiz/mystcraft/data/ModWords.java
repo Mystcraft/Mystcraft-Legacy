@@ -9,7 +9,7 @@ public class ModWords {
 	public static void initialize() {
 		WordData.init(InternalAPI.getAPIInstance(MystObjects.MystcraftModId));
 		for (int i = 0; i < 26; ++i) {
-			InternalAPI.symbol.registerWord("" + i, constructNumber(i));
+			InternalAPI.word.registerWord("" + i, constructNumber(i));
 		}
 	}
 

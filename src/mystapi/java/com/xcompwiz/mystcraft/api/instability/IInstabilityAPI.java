@@ -13,8 +13,9 @@ public interface IInstabilityAPI {
 
 	/**
 	 * Registers an instability provider to the instability system.
+	 * @return 
 	 */
-	void registerInstability(String identifier, IInstabilityProvider provider, int activationcost);
+	boolean registerInstability(String identifier, IInstabilityProvider provider, int activationcost);
 
 	/**
 	 * Adds card instances of a registered effect to the given deck by deck name.  If the deck does not exist, this throws an error.
