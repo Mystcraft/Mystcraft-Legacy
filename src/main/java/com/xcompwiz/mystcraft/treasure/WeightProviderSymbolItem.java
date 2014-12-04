@@ -1,6 +1,6 @@
 package com.xcompwiz.mystcraft.treasure;
 
-import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector.IWeightProvider;
 

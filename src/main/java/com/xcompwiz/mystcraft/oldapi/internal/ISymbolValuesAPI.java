@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 
 import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
-import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 /**
  * Allows the setting of various treasure rarity and weighting values for symbols. See {@link IGrammarAPI} for setting the grammar rule(s) for a symbol. These

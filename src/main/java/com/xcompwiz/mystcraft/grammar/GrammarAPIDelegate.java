@@ -8,8 +8,8 @@ import java.util.Random;
 import java.util.Set;
 
 import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
-import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.util.CollectionUtils;
 

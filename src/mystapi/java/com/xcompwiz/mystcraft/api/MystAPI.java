@@ -2,8 +2,12 @@ package com.xcompwiz.mystcraft.api;
 
 import com.xcompwiz.mystcraft.api.client.IRenderAPI;
 import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.instability.IInstabilityAPI;
+import com.xcompwiz.mystcraft.api.item.IItemFactory;
 import com.xcompwiz.mystcraft.api.linking.IDimensionAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkingAPI;
+import com.xcompwiz.mystcraft.api.symbol.ISymbolAPI;
+import com.xcompwiz.mystcraft.api.symbol.ISymbolFactory;
 import com.xcompwiz.mystcraft.api.word.IWordAPI;
 
 import cpw.mods.fml.relauncher.Side;
@@ -23,9 +27,16 @@ public abstract class MystAPI {
 
 	public abstract ILinkingAPI getLinkingAPI();
 
+	public abstract IInstabilityAPI getInstabilityAPI();
+
+	public abstract ISymbolAPI getSymbolAPI();
+	public abstract ISymbolFactory getSymbolFactory();
+
 	public abstract IGrammarAPI getGrammarAPI();
 
 	public abstract IWordAPI getWordAPI();
+
+	public abstract IItemFactory getItemFactory();
 
 	@SideOnly(Side.CLIENT)
 	public abstract IRenderAPI getRenderAPI();

@@ -5,8 +5,8 @@ import java.util.Comparator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.core.InternalAPI;
-import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 
 /**
  * Provides helper methods and classes for sorting items, pages, and symbols
@@ -45,8 +45,8 @@ public final class SortingUtils {
 			if (id1 == id2) return 0;
 			if (id1 == null) return -1;
 			if (id2 == null) return 1;
-			IAgeSymbol symbol1 = InternalAPI.symbol.getSymbolForIdentifier(id1);
-			IAgeSymbol symbol2 = InternalAPI.symbol.getSymbolForIdentifier(id2);
+			IAgeSymbol symbol1 = InternalAPI.symbol.getSymbol(id1);
+			IAgeSymbol symbol2 = InternalAPI.symbol.getSymbol(id2);
 			return ComparatorSymbolAlphabetical.instance.compare(symbol1, symbol2);
 		}
 	}

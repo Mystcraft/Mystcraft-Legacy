@@ -23,6 +23,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import com.google.common.collect.ImmutableList;
 import com.xcompwiz.mystcraft.api.MystObjects;
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.command.CommandCreateAgebook;
 import com.xcompwiz.mystcraft.command.CommandCreateDim;
 import com.xcompwiz.mystcraft.command.CommandDebug;
@@ -73,7 +74,6 @@ import com.xcompwiz.mystcraft.network.MPacketSpawnLightningBolt;
 import com.xcompwiz.mystcraft.network.MystcraftConnectionHandler;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.page.Page;
-import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import com.xcompwiz.mystcraft.treasure.TreasureGenWrapper;

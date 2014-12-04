@@ -10,9 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.api.item.IItemPageAcceptor;
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.page.Page;
-import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.treasure.WeightProviderSymbolItem;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector;

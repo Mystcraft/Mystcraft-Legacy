@@ -4,9 +4,10 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.api.symbol.ISymbolAPI;
 import com.xcompwiz.mystcraft.api.word.DrawableWord;
 import com.xcompwiz.mystcraft.api.word.IWordAPI;
-import com.xcompwiz.mystcraft.oldapi.internal.ISymbolAPI;
 import com.xcompwiz.mystcraft.oldapi.internal.ISymbolValuesAPI;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 
@@ -80,7 +81,7 @@ public class SymbolAPIDelegate implements ISymbolAPI, ISymbolValuesAPI, IWordAPI
 	}
 
 	@Override
-	public IAgeSymbol getSymbolForIdentifier(String identifier) {
+	public IAgeSymbol getSymbol(String identifier) {
 		return SymbolManager.getAgeSymbol(identifier);
 	}
 

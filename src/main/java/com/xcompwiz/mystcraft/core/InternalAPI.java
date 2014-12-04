@@ -5,8 +5,13 @@ import java.util.HashMap;
 import com.xcompwiz.mystcraft.api.MystAPI;
 import com.xcompwiz.mystcraft.api.client.IRenderAPI;
 import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.instability.IInstabilityAPI;
+import com.xcompwiz.mystcraft.api.instability.IInstabilityFactory;
+import com.xcompwiz.mystcraft.api.item.IItemFactory;
 import com.xcompwiz.mystcraft.api.linking.IDimensionAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkingAPI;
+import com.xcompwiz.mystcraft.api.symbol.ISymbolAPI;
+import com.xcompwiz.mystcraft.api.symbol.ISymbolFactory;
 import com.xcompwiz.mystcraft.api.word.IWordAPI;
 import com.xcompwiz.mystcraft.client.render.RenderAPIDelegate;
 import com.xcompwiz.mystcraft.grammar.GrammarAPIDelegate;
@@ -15,6 +20,9 @@ import com.xcompwiz.mystcraft.instability.InstabilityFactory;
 import com.xcompwiz.mystcraft.item.ItemFactory;
 import com.xcompwiz.mystcraft.linking.DimensionAPIDelegate;
 import com.xcompwiz.mystcraft.linking.LinkingAPIDelegate;
+import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
+import com.xcompwiz.mystcraft.oldapi.internal.IPageAPI;
+import com.xcompwiz.mystcraft.oldapi.internal.ISymbolValuesAPI;
 import com.xcompwiz.mystcraft.page.PageAPIDelegate;
 import com.xcompwiz.mystcraft.page.SortingUtils.ComparatorItemSymbolAlphabetical;
 import com.xcompwiz.mystcraft.symbol.SymbolAPIDelegate;
@@ -46,27 +54,48 @@ public class InternalAPI {
 
 		@Override
 		public IWordAPI getWordAPI() {
-			return InternalAPI.symbol;
+			return InternalAPI.word;
 		}
 
 		@Override
 		public IRenderAPI getRenderAPI() {
 			return InternalAPI.render;
 		}
+
+		@Override
+		public IInstabilityAPI getInstabilityAPI() {
+			return InternalAPI.instability;
+		}
+
+		@Override
+		public ISymbolAPI getSymbolAPI() {
+			return InternalAPI.symbol;
+		}
+
+		@Override
+		public ISymbolFactory getSymbolFactory() {
+			return InternalAPI.symbolFact;
+		}
+
+		@Override
+		public IItemFactory getItemFactory() {
+			return InternalAPI.itemFact;
+		}
 	}
 
-	public static DimensionAPIDelegate		dimension;
-	public static LinkingAPIDelegate		linking;
-	public static LinkingAPIDelegate		linkProperties;
-	public static InstabilityAPIDelegate	instability;
-	public static InstabilityFactory		instabilityFact;
-	public static SymbolAPIDelegate			symbol;
-	public static SymbolAPIDelegate			symbolValues;
-	public static GrammarAPIDelegate		grammar;
-	public static SymbolFactory				symbolFact;
-	public static PageAPIDelegate			page;
-	public static ItemFactory				itemFact;
-	public static RenderAPIDelegate			render;
+	public static IDimensionAPI		dimension;
+	public static ILinkingAPI		linking;
+	public static ILinkPropertyAPI		linkProperties;
+	public static IInstabilityAPI	instability;
+	public static IInstabilityFactory		instabilityFact;
+	public static ISymbolAPI			symbol;
+	public static IWordAPI			word;
+	public static ISymbolValuesAPI			symbolValues;
+	public static IGrammarAPI		grammar;
+	public static ISymbolFactory				symbolFact;
+	public static IPageAPI			page;
+	public static IItemFactory				itemFact;
+	public static IRenderAPI			render;
 
 	private static HashMap<String, MystAPI>	instances	= new HashMap<String, MystAPI>();
 
@@ -81,6 +110,7 @@ public class InternalAPI {
 
 		SymbolAPIDelegate symbol_delegate = new SymbolAPIDelegate();
 		symbol = symbol_delegate;
+		word = symbol_delegate;
 		symbolValues = symbol_delegate;
 		grammar = new GrammarAPIDelegate();
 		symbolFact = new SymbolFactory();

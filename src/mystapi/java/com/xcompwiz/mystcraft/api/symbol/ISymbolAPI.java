@@ -1,9 +1,8 @@
-package com.xcompwiz.mystcraft.oldapi.internal;
+package com.xcompwiz.mystcraft.api.symbol;
 
 import java.util.List;
 
 import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
-import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 
 /**
  * Provides functions for registering different aspects to the Symbol system. You can blacklist identifiers and register your own symbols. The implementation of
@@ -13,8 +12,8 @@ import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 public interface ISymbolAPI {
 
 	/**
-	 * Use this to turn off symbols from the core mod This must be done before Mystcraft's init phase to have any effect
-	 * @param identifier The identifier of the symbol to prevent from being registered
+	 * Use this to turn off/remove symbols by identifier (ex. from the core mod).
+	 * @param identifier The identifier of the symbol to prevent from being registered/unregister
 	 */
 	public void blacklistIdentifier(String identifier);
 
@@ -32,7 +31,7 @@ public interface ISymbolAPI {
 	 * passed to it. If a symbol throws an exception during profiling then the symbol will not be registered and the identifier will be blacklisted. Note: Don't
 	 * forget to create grammar rules for your symbols! See {@link IGrammarAPI}
 	 * @param symbol The AgeSymbol to register
-	 * @param generateConfigOption Whether or not a config entry will be created for the symbol
+	 * @param generateConfigOption Whether or not a config entry should be created for the symbol
 	 * @return Success
 	 */
 	public boolean registerSymbol(IAgeSymbol symbol, boolean generateConfigOption);
@@ -48,7 +47,7 @@ public interface ISymbolAPI {
 	 * @param identifier The identifier for the symbol
 	 * @return The symbol with the given identifier, or null if none is registered with that id
 	 */
-	public IAgeSymbol getSymbolForIdentifier(String identifier);
+	public IAgeSymbol getSymbol(String identifier);
 
 	/**
 	 * Returns the id of the mod which registered the symbol

@@ -97,7 +97,7 @@ public class InstabilityData {
 		}
 
 		public InstabilityProviderContainerObject add(String deck, int count) {
-			InstabilityManager.addCards(deck, identifier, count);
+			InternalAPI.instability.addCards(deck, identifier, count);
 			return this;
 		}
 

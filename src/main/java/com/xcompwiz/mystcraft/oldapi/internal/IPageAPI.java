@@ -2,6 +2,8 @@ package com.xcompwiz.mystcraft.oldapi.internal;
 
 import java.util.Collection;
 
+import com.xcompwiz.mystcraft.api.item.IItemFactory;
+
 import net.minecraft.item.ItemStack;
 
 /**

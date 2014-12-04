@@ -3,12 +3,14 @@ package com.xcompwiz.mystcraft.symbol;
 import net.minecraft.block.Block;
 
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.api.symbol.ISymbolFactory;
 import com.xcompwiz.mystcraft.data.ModSymbolsModifiers.BlockModifierContainerObject;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 
 public class SymbolFactory implements ISymbolFactory {
 
-	// TODO: (API) symbol factory method for block modifier symbols
+	@Override
 	public IAgeSymbol createSymbol(Block block, int metadata, String thirdword, int rank, Object[]... objects) {
 		BlockModifierContainerObject container = BlockModifierContainerObject.create(thirdword, rank, block, metadata);
 		if (objects != null) for (Object[] obj : objects) {

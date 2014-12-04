@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
 import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton.IGuiOnClickHandler;
@@ -28,7 +29,6 @@ import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiOnTextC
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiTextProvider;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.page.SortingUtils;
-import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPagesProvider, IGuiOnClickHandler, IGuiStateProvider, IGuiTextProvider, IGuiOnTextChange {

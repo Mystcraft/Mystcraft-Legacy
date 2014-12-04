@@ -3,10 +3,10 @@ package com.xcompwiz.mystcraft.data;
 import java.util.ArrayList;
 
 import com.xcompwiz.mystcraft.api.grammar.GrammarData;
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
-import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.util.CollectionUtils;

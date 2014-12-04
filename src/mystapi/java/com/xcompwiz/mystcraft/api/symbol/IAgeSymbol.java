@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.symbol;
+package com.xcompwiz.mystcraft.api.symbol;
 
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
@@ -19,8 +19,8 @@ public interface IAgeSymbol {
 
 	/**
 	 * How much instability should be added to the world. This is called every time the symbol is added to the world (if it is stacked). It is not necessary to
-	 * use this function to add instability for duplicated critical logic. Used to limit stacking (ex. After three crystal symbols, add 100 instability every
-	 * time crystal is added).
+	 * use this function to add instability for duplicated critical logic. Used to limit stacking (ex. After three mineshaft symbols, add 100 instability every
+	 * time mineshafts is added).
 	 * @param count How many times the symbol has been added thus far (first time = 1)
 	 * @return the amount of instability to add
 	 */
@@ -39,7 +39,7 @@ public interface IAgeSymbol {
 	public abstract String displayName();
 
 	/**
-	 * Returns a list of words that are used to render the symbol Should return 4 words to build a Narayan "poem" See {@link WordData}
+	 * Returns a list of words that are used to render the symbol. Should return 4 words to build a Narayan "poem". See {@link WordData}.
 	 * @return 4 element array of words to be mapped to drawn symbol parts
 	 */
 	public abstract String[] getPoem();

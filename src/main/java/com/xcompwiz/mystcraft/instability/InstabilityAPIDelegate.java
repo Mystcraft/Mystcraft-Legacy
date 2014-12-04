@@ -2,8 +2,8 @@ package com.xcompwiz.mystcraft.instability;
 
 import java.util.Collection;
 
+import com.xcompwiz.mystcraft.api.instability.IInstabilityAPI;
 import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
-import com.xcompwiz.mystcraft.oldapi.internal.IInstabilityAPI;
 
 public class InstabilityAPIDelegate implements IInstabilityAPI {
 
@@ -20,6 +20,11 @@ public class InstabilityAPIDelegate implements IInstabilityAPI {
 	@Override
 	public IInstabilityProvider getInstabilityProvider(String identifier) {
 		return InstabilityManager.getProvider(identifier);
+	}
+
+	@Override
+	public void addCards(String deck, String identifier, int count) {
+		InstabilityManager.addCards(deck, identifier, count);
 	}
 
 }

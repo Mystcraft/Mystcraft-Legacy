@@ -7,10 +7,9 @@ import com.xcompwiz.mystcraft.instability.providers.InstabilityProvider;
 
 public class InstabilityFactory implements IInstabilityFactory {
 
-	//TODO: (API) Instability API
 	@Override
-	public IInstabilityProvider createProviderForEffect(Class<? extends IEnvironmentalEffect> effectclass, Object... itemCtorArgs) {
-		return new InstabilityProvider(false, effectclass, itemCtorArgs);
+	public IInstabilityProvider createProviderForEffect(Class<? extends IEnvironmentalEffect> effectclass, boolean uselevel, Object... itemCtorArgs) {
+		return new InstabilityProvider(uselevel, effectclass, itemCtorArgs);
 	}
 
 }
