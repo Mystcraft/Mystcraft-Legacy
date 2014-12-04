@@ -15,9 +15,7 @@ public class WorldInfoHelper {
 		float angle = lastangle;
 		int steprate = 10;
 		for (int attempt = 0; attempt < 1000; ++attempt) {
-			if (Math.abs(angle - target) < 0.05) {
-				return time;
-			}
+			if (Math.abs(angle - target) < 0.05) { return time; }
 			time += steprate;
 			angle = world.provider.calculateCelestialAngle(time, 0);
 			if (Math.abs(angle - lastangle) < 0.01) {

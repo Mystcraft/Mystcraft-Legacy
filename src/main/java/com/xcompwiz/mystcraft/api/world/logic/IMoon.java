@@ -7,9 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Adds a moon to the age
- * 
  * @author XCompWiz
- * 
  */
 public interface IMoon {
 

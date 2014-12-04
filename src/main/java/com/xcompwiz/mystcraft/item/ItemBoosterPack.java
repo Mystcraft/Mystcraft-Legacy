@@ -3,6 +3,12 @@ package com.xcompwiz.mystcraft.item;
 import java.util.Collection;
 import java.util.Random;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
 import com.xcompwiz.mystcraft.api.item.IItemPageAcceptor;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.page.Page;
@@ -10,13 +16,6 @@ import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.treasure.WeightProviderSymbolItem;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
-
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -57,12 +56,12 @@ public class ItemBoosterPack extends Item {
 	public static ItemStack generateBooster(Random rand, int verycommon, int common, int uncommon, int rare) {
 		ItemStack itemstack = new ItemStack(ModItems.folder, 1, 0);
 		IItemPageAcceptor item = (IItemPageAcceptor) itemstack.getItem();
-	
+
 		Collection<IAgeSymbol> symbols_vc = SymbolManager.getSymbolsByRank(0);
 		Collection<IAgeSymbol> symbols_c = SymbolManager.getSymbolsByRank(1);
 		Collection<IAgeSymbol> symbols_uc = SymbolManager.getSymbolsByRank(2);
 		Collection<IAgeSymbol> symbols_r = SymbolManager.getSymbolsByRank(3, null);
-	
+
 		for (int i = 0; i < verycommon; ++i) {
 			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_vc, WeightProviderSymbolItem.instance);
 			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));

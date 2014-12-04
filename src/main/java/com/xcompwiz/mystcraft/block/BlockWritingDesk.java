@@ -80,7 +80,7 @@ public class BlockWritingDesk extends Block {
 		float ymax = 1.0F;
 		float zmin = 0.0F;
 		float zmax = 1.0F;
-		int meta = iblockaccess.getBlockMetadata(i,j,k);
+		int meta = iblockaccess.getBlockMetadata(i, j, k);
 		if (isBlockTop(meta)) {
 			ymax = 0.75F;
 			int dir = getDirectionFromMetadata(meta);
@@ -110,15 +110,13 @@ public class BlockWritingDesk extends Block {
 	}
 
 	/**
-	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-	 * cleared to be reused)
+	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been cleared to be reused)
 	 */
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
 		setBlockBoundsBasedOnState(par1World, par2, par3, par4);
 		return AxisAlignedBB.getBoundingBox(par2 + this.minX, par3 + this.minY, par4 + this.minZ, par2 + this.maxX, par3 + this.maxY, par4 + this.maxZ);
 	}
-
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -216,8 +214,8 @@ public class BlockWritingDesk extends Block {
 	}
 
 	/**
-	 * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage
-	 * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
+	 * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage and is ignored for blocks which do not
+	 * support subtypes. Blocks which cannot be harvested should return null.
 	 */
 	@Override
 	protected ItemStack createStackedBlock(int par1) {
@@ -226,7 +224,6 @@ public class BlockWritingDesk extends Block {
 
 	/**
 	 * This returns a complete list of items dropped from this block.
-	 * 
 	 * @param world The current world
 	 * @param x X Position
 	 * @param y Y Position
@@ -248,7 +245,6 @@ public class BlockWritingDesk extends Block {
 
 	/**
 	 * Called when a user uses the creative pick block button on this block
-	 * 
 	 * @param target The full target the player is looking at
 	 * @return A ItemStack to add to the player's inventory, Null if nothing should be added.
 	 */
@@ -339,14 +335,13 @@ public class BlockWritingDesk extends Block {
 			world.setBlockMetadataWithNotify(i, j, k, facing, 3);
 			world.setBlock(i + xOffset, j, k + zOffset, this, facing + 8, 3);
 		} else {
-			world.setBlock(i,j,k, Blocks.air, 0, 3);
+			world.setBlock(i, j, k, Blocks.air, 0, 3);
 		}
 	}
 
 	/**
-	 * Called when the block receives a BlockEvent - see World.addBlockEvent. By default, passes it on to the tile
-	 * entity at this location. Args: world, x, y, z, blockID, EventID, event parameter
-	 * 
+	 * Called when the block receives a BlockEvent - see World.addBlockEvent. By default, passes it on to the tile entity at this location. Args: world, x, y,
+	 * z, blockID, EventID, event parameter
 	 * @return
 	 */
 	@Override

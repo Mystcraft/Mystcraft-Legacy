@@ -47,7 +47,7 @@ public class CommandReprofile extends CommandBaseAdv {
 		if (!Mystcraft.registeredDims.contains(dimId) || AgeData.getAge(dimId, false) == null) { throw new CommandException("Cannot (re)profile block instability for non-Mystcraft Dimensions", new Object[0]); }
 
 		MinecraftServer server = MinecraftServer.getServer();
-		World worldObj = server .worldServerForDimension(dimId);
+		World worldObj = server.worldServerForDimension(dimId);
 		ChunkProfiler chunkprofiler = (ChunkProfiler) worldObj.perWorldStorage.loadData(ChunkProfiler.class, ChunkProfiler.ID);
 		chunkprofiler.clear();
 

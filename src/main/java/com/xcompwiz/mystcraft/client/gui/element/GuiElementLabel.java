@@ -8,6 +8,7 @@ public class GuiElementLabel extends GuiElement {
 
 	public interface IGuiLabelDataProvider {
 		String getText();
+
 		List<String> getTooltip();
 	}
 

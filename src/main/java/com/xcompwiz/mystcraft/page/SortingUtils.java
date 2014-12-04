@@ -8,17 +8,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 
-
 /**
  * Provides helper methods and classes for sorting items, pages, and symbols
- * 
  * @author xcompwiz
  */
 public final class SortingUtils {
 	/**
-	 * Sorts page items in NBT form by symbol display name. Note that, due to localization, this is only reliable on the
-	 * client. Clients and the server may not agree on localization.
-	 * 
+	 * Sorts page items in NBT form by symbol display name. Note that, due to localization, this is only reliable on the client. Clients and the server may not
+	 * agree on localization.
 	 * @author xcompwiz
 	 */
 	public static class ComparatorTagItemSymbolAlphabetical implements Comparator<NBTTagCompound> {
@@ -34,9 +31,8 @@ public final class SortingUtils {
 	}
 
 	/**
-	 * Sorts page items in ItemStack form by symbol display name. Note that, due to localization, this is only reliable
-	 * on the client. Clients and the server may not agree on localization.
-	 * 
+	 * Sorts page items in ItemStack form by symbol display name. Note that, due to localization, this is only reliable on the client. Clients and the server
+	 * may not agree on localization.
 	 * @author xcompwiz
 	 */
 	public static class ComparatorItemSymbolAlphabetical implements Comparator<ItemStack> {
@@ -56,9 +52,7 @@ public final class SortingUtils {
 	}
 
 	/**
-	 * Sorts symbols by display name. Note that, due to localization, this is only reliable on the client. Clients and
-	 * the server may not agree on localization.
-	 * 
+	 * Sorts symbols by display name. Note that, due to localization, this is only reliable on the client. Clients and the server may not agree on localization.
 	 * @author xcompwiz
 	 */
 	public static class ComparatorSymbolAlphabetical implements Comparator<IAgeSymbol> {

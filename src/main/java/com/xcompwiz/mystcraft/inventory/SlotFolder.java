@@ -42,8 +42,7 @@ public class SlotFolder extends Slot {
 	}
 
 	/**
-	 * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
-	 * stack.
+	 * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new stack.
 	 */
 	@Override
 	public ItemStack decrStackSize(int par1) {

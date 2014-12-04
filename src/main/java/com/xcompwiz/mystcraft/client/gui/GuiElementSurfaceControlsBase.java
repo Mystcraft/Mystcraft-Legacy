@@ -69,9 +69,7 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 
 	private void updateCollection() {
 		arranged_pages = null;
-		if (cached_tabitem == null) {
-			return;
-		}
+		if (cached_tabitem == null) { return; }
 		boolean iscollection = cached_tabitem.getItem() instanceof IItemPageCollection;
 		for (GuiElement element : surfaceelements) {
 			element.setEnabled(iscollection);

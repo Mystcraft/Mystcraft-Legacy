@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 
-
 public class LinkPanelEffectManager {
 
 	private static Collection<ILinkPanelEffect>	effects	= new ArrayList<ILinkPanelEffect>();

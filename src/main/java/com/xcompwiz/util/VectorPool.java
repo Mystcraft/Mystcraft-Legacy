@@ -4,9 +4,7 @@ import java.util.LinkedList;
 
 /**
  * Written by heldplayer as part of the DniColorRenderer
- * 
  * @author heldplayer
- * 
  */
 public final class VectorPool {
 

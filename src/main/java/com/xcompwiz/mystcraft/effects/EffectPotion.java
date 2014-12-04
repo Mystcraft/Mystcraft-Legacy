@@ -13,13 +13,13 @@ import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
 public class EffectPotion implements IEnvironmentalEffect {
 
-	private int	level;
+	private int		level;
 	private boolean	isGlobal;
-	private int	potionid;
-	private int	duration;
+	private int		potionid;
+	private int		duration;
 
 	public EffectPotion(int level, Boolean global, Integer potion, Integer duration) {
-		this.level = level-1;
+		this.level = level - 1;
 		this.isGlobal = global;
 		this.potionid = potion;
 		this.duration = duration;

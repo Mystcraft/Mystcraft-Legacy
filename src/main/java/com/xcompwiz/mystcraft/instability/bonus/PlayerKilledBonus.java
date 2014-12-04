@@ -19,13 +19,13 @@ public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOn
 
 	private InstabilityBonusManager	bonusmanager;
 
-	private int		max;
-	private int		min;
-	private float	decayrate;
-	private float	current;
+	private int						max;
+	private int						min;
+	private float					decayrate;
+	private float					current;
 
-	private String	playername;
-	private int		dimensionid;
+	private String					playername;
+	private int						dimensionid;
 
 	public PlayerKilledBonus(InstabilityBonusManager bonusmanager, World worldObj, String playername, Integer max, Float decayrate) {
 		this.bonusmanager = bonusmanager;
@@ -37,9 +37,9 @@ public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOn
 		this.dimensionid = worldObj.provider.dimensionId;
 
 		EventManager eventmgr = EventManager.get();
-		eventmgr.register((IOnEntityDeath)this);
-		eventmgr.register((IOnPlayerChangedDimension)this);
-		eventmgr.register((IOnPlayerLoggedIn)this);
+		eventmgr.register((IOnEntityDeath) this);
+		eventmgr.register((IOnPlayerChangedDimension) this);
+		eventmgr.register((IOnPlayerLoggedIn) this);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOn
 				current = max;
 				announce("instability.bonus.death", playername, event.source.getEntity().getCommandSenderName());
 			} else {
-				current = Math.max(max/2, current);
+				current = Math.max(max / 2, current);
 				announce("instability.bonus.death.partial", playername);
 			}
 		}

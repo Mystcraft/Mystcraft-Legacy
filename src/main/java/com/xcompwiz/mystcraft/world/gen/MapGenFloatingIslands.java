@@ -34,7 +34,6 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 
 	/**
 	 * Generates a node in the current cave system recursion tree.
-	 * 
 	 * @param modified
 	 */
 	protected void generateCaveNode(long seed, int chunkX, int chunkZ, Block[] blocks, byte[] metadata, boolean[] modified, double baseX, double baseY, double baseZ, float scalar, float angleB, float angleC, int loopc, int maxLoops, double squash) {

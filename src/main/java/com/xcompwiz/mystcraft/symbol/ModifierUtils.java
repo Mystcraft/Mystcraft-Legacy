@@ -12,9 +12,8 @@ import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 
 /**
- * A collection of helper functions for dealing with more complex modifier types, such as blocks and biomes. Also
- * includes a number of averaging functions to aid in consistent behavior.
- * 
+ * A collection of helper functions for dealing with more complex modifier types, such as blocks and biomes. Also includes a number of averaging functions to
+ * aid in consistent behavior.
  * @author xcompwiz
  */
 public final class ModifierUtils {
@@ -31,8 +30,8 @@ public final class ModifierUtils {
 	/** Used for gradient objects. See {@link Modifier}.asGradient(). */
 	public static final String	GRADIENT	= "gradient";
 	/**
-	 * A secondary gradient object, used for sunsets. The sunset color modifier sets this (appends) from an existing
-	 * gradient or builds one if necessary. See ModifierUtils.popGradient()
+	 * A secondary gradient object, used for sunsets. The sunset color modifier sets this (appends) from an existing gradient or builds one if necessary. See
+	 * ModifierUtils.popGradient()
 	 */
 	public static final String	SUNSET		= "sunset";
 
@@ -49,15 +48,12 @@ public final class ModifierUtils {
 	}
 
 	/**
-	 * Calculates the average value of two angles, returning the angle between them on their shortest arc. Technically,
-	 * this calculates the midpoint of the shortest arc drawn between the two angles, meaning it will average either
-	 * clockwise or anti-clockwise, whichever has the smallest distance. Note that opposite angles are averaged to the
-	 * midpoint of the clockwise arc.
-	 * 
+	 * Calculates the average value of two angles, returning the angle between them on their shortest arc. Technically, this calculates the midpoint of the
+	 * shortest arc drawn between the two angles, meaning it will average either clockwise or anti-clockwise, whichever has the smallest distance. Note that
+	 * opposite angles are averaged to the midpoint of the clockwise arc.
 	 * @param first The first angle
 	 * @param second The second angle
-	 * @return The average angle closest to the passed in angles. If the angles are opposite, returns the clockwise
-	 *         midpoint.
+	 * @return The average angle closest to the passed in angles. If the angles are opposite, returns the clockwise midpoint.
 	 */
 	public static float averageAngles(float first, float second) {
 		float third = second;
@@ -73,9 +69,8 @@ public final class ModifierUtils {
 	}
 
 	/**
-	 * Calculates the midpoint of the arc created by drawing an arc clockwise from the first angle to the second. The
-	 * angle returned will be exactly between the two angles provided on this clockwise arc.
-	 * 
+	 * Calculates the midpoint of the arc created by drawing an arc clockwise from the first angle to the second. The angle returned will be exactly between the
+	 * two angles provided on this clockwise arc.
 	 * @author Veovis
 	 * @param first The first angle
 	 * @param second The second angle
@@ -93,12 +88,10 @@ public final class ModifierUtils {
 	}
 
 	/**
-	 * Returns a gradient from the current modifiers. This will always return a gradient, though the gradient may be
-	 * empty. If there isn't a gradient object in the modifier system then a gradient will be built If the gradient is
-	 * empty then the system will attempt to use an existing color modifier Note that if both are empty then the
-	 * returned gradient will be empty If the gradient modifier exists and is not empty, then any color modifiers will
-	 * be ignored If a gradient modifier is set but is empty then the color modifier will still be popped
-	 * 
+	 * Returns a gradient from the current modifiers. This will always return a gradient, though the gradient may be empty. If there isn't a gradient object in
+	 * the modifier system then a gradient will be built If the gradient is empty then the system will attempt to use an existing color modifier Note that if
+	 * both are empty then the returned gradient will be empty If the gradient modifier exists and is not empty, then any color modifiers will be ignored If a
+	 * gradient modifier is set but is empty then the color modifier will still be popped
 	 * @param controller The controller passed to the symbol during logic registration
 	 * @return A valid gradient object
 	 */
@@ -110,12 +103,10 @@ public final class ModifierUtils {
 	}
 
 	/**
-	 * Returns a gradient from the current modifiers. This will always return a gradient If there isn't a gradient
-	 * object in the modifier system then a gradient will be built If the gradient is empty then the system will attempt
-	 * to use an existing color modifier If both modifiers are unset then the provided default color will be added to
-	 * the gradient If the gradient modifier exists and is not empty, then any color modifiers will be ignored If a
-	 * gradient modifier is set but is empty then the color modifier will still be popped
-	 * 
+	 * Returns a gradient from the current modifiers. This will always return a gradient If there isn't a gradient object in the modifier system then a gradient
+	 * will be built If the gradient is empty then the system will attempt to use an existing color modifier If both modifiers are unset then the provided
+	 * default color will be added to the gradient If the gradient modifier exists and is not empty, then any color modifiers will be ignored If a gradient
+	 * modifier is set but is empty then the color modifier will still be popped
 	 * @param controller The controller passed to the symbol during logic registration
 	 * @param r The default color value to use (red component)
 	 * @param g The default color value to use (green component)
@@ -129,9 +120,8 @@ public final class ModifierUtils {
 	}
 
 	/**
-	 * Provides a block of a particular generation category if one is in the queue. This will pop the first block
-	 * satisfying the generation category found from the top of the queue
-	 * 
+	 * Provides a block of a particular generation category if one is in the queue. This will pop the first block satisfying the generation category found from
+	 * the top of the queue
 	 * @param controller The controller passed to the symbol during logic registration
 	 * @param type The generation category to attempt to retrieve
 	 * @return A block descriptor, if one satisfying the category is found. Otherwise null
@@ -142,9 +132,7 @@ public final class ModifierUtils {
 	}
 
 	/**
-	 * Provides the first block which matches any of the given generation categories if one is in the queue. This will
-	 * pop the block from the top of the queue.
-	 * 
+	 * Provides the first block which matches any of the given generation categories if one is in the queue. This will pop the block from the top of the queue.
 	 * @param controller The controller passed to the symbol during logic registration
 	 * @param types The generation categories to match against
 	 * @return A block descriptor, if one satisfying the category is found. Otherwise null
@@ -169,7 +157,6 @@ public final class ModifierUtils {
 
 	/**
 	 * Adds a block descriptor to the top of the queue
-	 * 
 	 * @param controller The controller passed to the symbol during logic registration
 	 * @param block The block descriptor to push to the queue
 	 */

@@ -33,8 +33,7 @@ public class SlotCraftCustom extends Slot {
 	}
 
 	/**
-	 * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
-	 * stack.
+	 * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new stack.
 	 */
 	@Override
 	public ItemStack decrStackSize(int par1) {
@@ -45,8 +44,8 @@ public class SlotCraftCustom extends Slot {
 	}
 
 	/**
-	 * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood. Typically increases an
-	 * internal count then calls onCrafting(item).
+	 * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood. Typically increases an internal count then calls
+	 * onCrafting(item).
 	 */
 	@Override
 	protected void onCrafting(ItemStack par1ItemStack, int par2) {

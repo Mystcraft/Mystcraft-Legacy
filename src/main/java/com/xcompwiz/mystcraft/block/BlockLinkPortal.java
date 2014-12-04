@@ -42,8 +42,7 @@ public class BlockLinkPortal extends BlockBreakable {
 	}
 
 	/**
-	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-	 * cleared to be reused)
+	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been cleared to be reused)
 	 */
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int i) {
@@ -83,8 +82,8 @@ public class BlockLinkPortal extends BlockBreakable {
 	}
 
 	/**
-	 * Is this block (a) opaque and (b) a full 1m cube? This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
+	 * Is this block (a) opaque and (b) a full 1m cube? This determines whether or not to render the shared face of two adjacent blocks and also whether the
+	 * player can attach torches, redstone wire, etc to this block.
 	 */
 	@Override
 	public boolean isOpaqueCube() {
@@ -121,8 +120,7 @@ public class BlockLinkPortal extends BlockBreakable {
 	}
 
 	/**
-	 * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-	 * when first determining what to render.
+	 * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called when first determining what to render.
 	 */
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -137,8 +135,8 @@ public class BlockLinkPortal extends BlockBreakable {
 	}
 
 	/**
-	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-	 * their own) Args: x, y, z, neighbor blockID
+	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are their own) Args: x, y, z, neighbor
+	 * blockID
 	 */
 	@Override
 	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5) {

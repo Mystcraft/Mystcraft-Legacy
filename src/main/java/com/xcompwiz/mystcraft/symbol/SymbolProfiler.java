@@ -29,7 +29,7 @@ import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 
 public class SymbolProfiler implements IAgeController {
 
-	private HashMap<Class<?>, HashSet<IAgeSymbol>>		registrations	= new HashMap<Class<?>, HashSet<IAgeSymbol>>();
+	private HashMap<Class<?>, HashSet<IAgeSymbol>>	registrations	= new HashMap<Class<?>, HashSet<IAgeSymbol>>();
 	private HashSet<IAgeSymbol>						cloudHeight		= new HashSet<IAgeSymbol>();
 	private HashSet<IAgeSymbol>						horizon			= new HashSet<IAgeSymbol>();
 	private HashSet<IAgeSymbol>						grndlevel		= new HashSet<IAgeSymbol>();

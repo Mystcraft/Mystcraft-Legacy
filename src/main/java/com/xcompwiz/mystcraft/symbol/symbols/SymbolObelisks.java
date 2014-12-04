@@ -28,8 +28,8 @@ public class SymbolObelisks extends SymbolBase {
 	}
 
 	private class Populator implements IPopulate {
-		private Block					block;
-		private byte					metadata;
+		private Block	block;
+		private byte	metadata;
 
 		public Populator(BlockDescriptor descriptor) {
 			if (descriptor == null) {

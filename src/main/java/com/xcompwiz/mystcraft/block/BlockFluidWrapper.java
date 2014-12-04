@@ -42,8 +42,7 @@ public class BlockFluidWrapper extends BlockFluidClassic {
 	}
 
 	/**
-	 * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-	 * when first determining what to render.
+	 * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called when first determining what to render.
 	 */
 	@Override
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {

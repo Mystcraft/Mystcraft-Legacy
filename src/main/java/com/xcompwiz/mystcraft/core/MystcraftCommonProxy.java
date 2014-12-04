@@ -23,7 +23,6 @@ public class MystcraftCommonProxy {
 
 	/**
 	 * Writes a compressed NBTTagCompound to the OutputStream
-	 * 
 	 * @throws IOException
 	 */
 	//XXX: This might belong in a helper

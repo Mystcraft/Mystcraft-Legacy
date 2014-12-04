@@ -24,7 +24,7 @@ public class TileEntityBookReceptacle extends TileEntityBookDisplay implements I
 		Random rand = new Random();
 		ItemStack book = getBook();
 		if (book == null) return 0xFFFFFF;
-		ILinkInfo info = ((ItemLinking)book.getItem()).getLinkInfo(book);
+		ILinkInfo info = ((ItemLinking) book.getItem()).getLinkInfo(book);
 		if (info == null) return 0x000000;
 		rand.setSeed(info.getDisplayName().hashCode());
 		int color = 0;

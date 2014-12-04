@@ -69,9 +69,7 @@ public class SymbolStrongholds extends SymbolBase {
 
 		@Override
 		public ChunkPosition locate(World world, String s, int i, int j, int k) {
-			if ("Stronghold".equals(s) && generator != null) {
-				return generator.func_151545_a(world, i, j, k);
-			}
+			if ("Stronghold".equals(s) && generator != null) { return generator.func_151545_a(world, i, j, k); }
 			return null;
 		}
 	}

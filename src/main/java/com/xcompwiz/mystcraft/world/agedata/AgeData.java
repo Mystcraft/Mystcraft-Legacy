@@ -184,7 +184,6 @@ public class AgeData extends WorldSavedData {
 
 	/**
 	 * Writes the symbol to the first blank page in the book Returns false on failure
-	 * 
 	 * @param symbol The identifier of the symbol to write
 	 * @return true if successfully wrote the symbol to the book
 	 */
@@ -215,7 +214,6 @@ public class AgeData extends WorldSavedData {
 	 * This should be called to finalize the book. The AgeData will then store the pages as they were when the age was created. Any changes to the book itself
 	 * will be handled separately. This allows for books to be created with all of the symbols of the age (via admin command), as well as opening doors to
 	 * rewriting.
-	 * 
 	 * @param pages
 	 */
 	//TODO: (PageStorage) When revising the storage of pages, push the pages list of the written book via a function to "finalize" the book

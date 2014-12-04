@@ -7,9 +7,8 @@ import net.minecraft.block.Block;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 
 /**
- * For defining information for block modifiers This handles the block modifier system. Use this to get block modifiers
- * for usage as well as to push block modifiers to the age. See {@link BlockCategory}
- * 
+ * For defining information for block modifiers This handles the block modifier system. Use this to get block modifiers for usage as well as to push block
+ * modifiers to the age. See {@link BlockCategory}
  * @author xcompwiz
  */
 public final class BlockDescriptor {
@@ -19,7 +18,6 @@ public final class BlockDescriptor {
 
 	/**
 	 * Describes a block
-	 * 
 	 * @param blockId ID of the block to use in generation
 	 * @param metadata Metadata value of the block to use in generation
 	 */
@@ -30,7 +28,6 @@ public final class BlockDescriptor {
 
 	/**
 	 * Describes a block
-	 * 
 	 * @param blockId ID of the block to use in generation
 	 */
 	public BlockDescriptor(Block block) {
@@ -38,9 +35,7 @@ public final class BlockDescriptor {
 	}
 
 	/**
-	 * Mark the block descriptor as valid for certain categories of generation example: Stone is valid for Solid,
-	 * Structure, and Terrain
-	 * 
+	 * Mark the block descriptor as valid for certain categories of generation example: Stone is valid for Solid, Structure, and Terrain
 	 * @param key The category of terrain which is valid. See the definitions in the {@link BlockDescriptor} class.
 	 * @param flag Whether it is valid or not
 	 */
@@ -51,9 +46,8 @@ public final class BlockDescriptor {
 	}
 
 	/**
-	 * Returns if the block descriptor is flagged for satisfying a category of generation Generally, you won't need this
-	 * function. It is mostly for internal use.
-	 * 
+	 * Returns if the block descriptor is flagged for satisfying a category of generation Generally, you won't need this function. It is mostly for internal
+	 * use.
 	 * @param key The category to check, null defaults to ANY
 	 * @return True is valid, false otherwise
 	 */

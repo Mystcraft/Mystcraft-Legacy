@@ -69,8 +69,7 @@ public class SymbolTerrainGenEnd extends SymbolBase {
 		}
 
 		/**
-		 * generates a subset of the level's terrain data. Takes 7 arguments: the [empty] noise array, the position, and
-		 * the size.
+		 * generates a subset of the level's terrain data. Takes 7 arguments: the [empty] noise array, the position, and the size.
 		 */
 		@Override
 		protected double[] initializeNoiseField(double[] noise_field, int subchunkX, int subchunkY, int subchunkZ, int sizeX, int sizeY, int sizeZ) {

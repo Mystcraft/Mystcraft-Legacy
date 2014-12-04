@@ -434,7 +434,6 @@ public class AgeController implements IAgeController {
 		return instabilitybonusmanager;
 	}
 
-
 	public IBiomeController getBiomeController() {
 		validate();
 		return biomeController;

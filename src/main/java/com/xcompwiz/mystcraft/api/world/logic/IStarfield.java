@@ -7,9 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Adds a starfield to the age This is rendered behind all of the other celestial objects
- * 
  * @author XCompWiz
- * 
  */
 public interface IStarfield {
 

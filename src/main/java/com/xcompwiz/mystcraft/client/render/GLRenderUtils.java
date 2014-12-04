@@ -15,9 +15,9 @@ public final class GLRenderUtils {
 		public boolean	GL_LIGHTING;
 		public boolean	GL_TEXTURE_2D;
 		public boolean	checked;
-		public int	SmoothMode;
-		public int	AlphaFunc;
-		public int	DepthFunc;
+		public int		SmoothMode;
+		public int		AlphaFunc;
+		public int		DepthFunc;
 	}
 
 	public static final GLRenderState	state	= new GLRenderState();
@@ -36,7 +36,7 @@ public final class GLRenderUtils {
 		state.SmoothMode = GL11.glGetInteger(GL11.GL_SHADE_MODEL);
 		state.AlphaFunc = GL11.glGetInteger(GL11.GL_ALPHA_TEST_FUNC);
 		state.DepthFunc = GL11.glGetInteger(GL11.GL_DEPTH_FUNC);
-		
+
 		state.checked = true;
 	}
 

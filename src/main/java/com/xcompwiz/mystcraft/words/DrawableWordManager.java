@@ -5,7 +5,6 @@ import java.util.Random;
 
 import com.xcompwiz.mystcraft.api.word.DrawableWord;
 
-
 public class DrawableWordManager {
 
 	private static HashMap<String, DrawableWord>	words	= new HashMap<String, DrawableWord>();

@@ -23,7 +23,7 @@ public class RenderMeteor extends Render {
 		EntityMeteor meteor = (EntityMeteor) entity;
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) d, (float) d1, (float) d2);
-		GL11.glScalef(meteor.getScale()/10F, meteor.getScale()/10F, meteor.getScale()/10F);
+		GL11.glScalef(meteor.getScale() / 10F, meteor.getScale() / 10F, meteor.getScale() / 10F);
 		GL11.glRotatef(entity.rotationYaw, 0, -1, 0);
 		GL11.glRotatef(entity.rotationPitch, 0, 0, 1);
 		this.renderManager.renderEngine.bindTexture(Vanilla.end_portal);

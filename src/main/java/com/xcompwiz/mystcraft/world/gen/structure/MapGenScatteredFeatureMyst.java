@@ -13,7 +13,7 @@ import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.StructureStart;
 
-//TODO: (Structures) Revise structure gen
+// TODO: (Structures) Revise structure gen
 public class MapGenScatteredFeatureMyst extends MapGenStructure {
 	/** contains possible spawns for scattered features */
 	private List<SpawnListEntry>	scatteredFeatureSpawnList;

@@ -2,9 +2,7 @@ package com.xcompwiz.util;
 
 /**
  * Written by heldplayer as part of the DniColorRenderer
- * 
  * @author heldplayer
- * 
  */
 public class MathBezier {
 

@@ -139,7 +139,7 @@ public class InstabilityData {
 		InstabilityProviderContainerObject.create("slow,g", new InstabilityProvider(true, EffectPotion.class, true, Potion.moveSlowdown.id, 80), stability.slow_global).add("harsh", 5);
 		InstabilityProviderContainerObject.create("weakness", new InstabilityProvider(true, EffectPotion.class, false, Potion.weakness.id, 80), stability.weakness).add("basic", 8).add("harsh", 2);
 		InstabilityProviderContainerObject.create("weakness,g", new InstabilityProvider(true, EffectPotion.class, true, Potion.weakness.id, 80), stability.weakness_global).add("harsh", 5);
-		InstabilityProviderContainerObject.create("wither", new InstabilityProvider(true,EffectPotion.class, false, Potion.wither.id, 30), stability.wither).add("harsh", 1).add("destructive", 1).add("eating", 2);
+		InstabilityProviderContainerObject.create("wither", new InstabilityProvider(true, EffectPotion.class, false, Potion.wither.id, 30), stability.wither).add("harsh", 1).add("destructive", 1).add("eating", 2);
 		InstabilityProviderContainerObject.create("wither,g", new InstabilityProvider(true, EffectPotion.class, true, Potion.wither.id, 30), stability.wither_global).add("destructive", 1).add("eating", 1).add("death", 1);
 
 		InstabilityProviderContainerObject.create("burning", new ProviderScorched(), stability.burning).add("harsh", 1);

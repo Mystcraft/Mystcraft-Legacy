@@ -31,7 +31,7 @@ public class StorageInstabilityData extends WorldSavedData {
 		if (cruft == null) return;
 		Collection<String> cards = NBTUtils.readStringCollection((NBTTagList) cruft, new ArrayList<String>());
 		for (String deck : InstabilityManager.getDecks()) {
-			decks.put(deck, cards );
+			decks.put(deck, cards);
 		}
 	}
 

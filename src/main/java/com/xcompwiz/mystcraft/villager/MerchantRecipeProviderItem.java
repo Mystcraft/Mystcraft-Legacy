@@ -23,7 +23,7 @@ public class MerchantRecipeProviderItem implements IMerchantRecipeProvider {
 
 	@Override
 	public List<MerchantRecipe> createNewMerchantRecipes(EntityVillager villager, Random random) {
-		return CollectionUtils.buildList((MerchantRecipe)new MerchantRecipeMyst(buy1, buy2, sell));
+		return CollectionUtils.buildList((MerchantRecipe) new MerchantRecipeMyst(buy1, buy2, sell));
 	}
 
 }

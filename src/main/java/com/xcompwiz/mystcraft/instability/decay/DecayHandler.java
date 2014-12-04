@@ -51,7 +51,7 @@ public abstract class DecayHandler {
 	protected void setMetadata(int meta) {
 		this.metadata = meta;
 	}
-	
+
 	protected int getMetadata() {
 		return this.metadata;
 	}

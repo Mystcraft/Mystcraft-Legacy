@@ -32,7 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockBookReceptacle extends BlockContainer {
 
-	private IIcon		iconFace;
+	private IIcon	iconFace;
 
 	public BlockBookReceptacle() {
 		super(Material.glass);
@@ -59,8 +59,8 @@ public class BlockBookReceptacle extends BlockContainer {
 	}
 
 	/**
-	 * Is this block (a) opaque and (b) a full 1m cube? This determines whether or not to render the shared face of two
-	 * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
+	 * Is this block (a) opaque and (b) a full 1m cube? This determines whether or not to render the shared face of two adjacent blocks and also whether the
+	 * player can attach torches, redstone wire, etc to this block.
 	 */
 	@Override
 	public boolean isOpaqueCube() {
@@ -157,8 +157,7 @@ public class BlockBookReceptacle extends BlockContainer {
 	}
 
 	/**
-	 * Adds to the supplied array any colliding bounding boxes with the passed in bounding box. Args: world, x, y, z,
-	 * axisAlignedBB, arrayList
+	 * Adds to the supplied array any colliding bounding boxes with the passed in bounding box. Args: world, x, y, z, axisAlignedBB, arrayList
 	 */
 	@Override
 	public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List list, Entity entity) {
@@ -244,8 +243,8 @@ public class BlockBookReceptacle extends BlockContainer {
 	}
 
 	/**
-	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-	 * their own) Args: x, y, z, neighbor blockID
+	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are their own) Args: x, y, z, neighbor
+	 * blockID
 	 */
 	@Override
 	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block block) {
@@ -305,8 +304,8 @@ public class BlockBookReceptacle extends BlockContainer {
 	}
 
 	/**
-	 * If this returns true, then comparators facing away from this block will use the value from
-	 * getComparatorInputOverride instead of the actual redstone signal strength.
+	 * If this returns true, then comparators facing away from this block will use the value from getComparatorInputOverride instead of the actual redstone
+	 * signal strength.
 	 */
 	@Override
 	public boolean hasComparatorInputOverride() {
@@ -314,8 +313,8 @@ public class BlockBookReceptacle extends BlockContainer {
 	}
 
 	/**
-	 * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal
-	 * strength when this block inputs to a comparator.
+	 * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal strength when this block inputs to a
+	 * comparator.
 	 */
 	@Override
 	public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5) {

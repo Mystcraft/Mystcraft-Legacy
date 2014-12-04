@@ -155,7 +155,7 @@ public class GuiElementScrollablePages extends GuiElement {
 
 		// Render pages
 		GL11.glPushMatrix();
-		GuiUtils.startGlScissor(guiLeft+1, guiTop, xSize-2, ySize);
+		GuiUtils.startGlScissor(guiLeft + 1, guiTop, xSize - 2, ySize);
 		hoverpage = -1;
 		List<ItemStack> pageList = getPageList();
 		if (pageList != null) {

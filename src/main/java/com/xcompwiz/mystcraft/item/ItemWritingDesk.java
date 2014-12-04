@@ -20,7 +20,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemWritingDesk extends Item {
-	private IIcon		icontop;
+	private IIcon	icontop;
 
 	public ItemWritingDesk() {
 		this.setHasSubtypes(true);

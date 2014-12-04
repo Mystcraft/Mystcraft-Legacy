@@ -169,9 +169,8 @@ public class InventoryFolder {
 	}
 
 	/**
-	 * Writes the symbol to the first blank page in the book Can draw from the provided paperstack if there are not
-	 * available blank pages Returns false on failure
-	 * 
+	 * Writes the symbol to the first blank page in the book Can draw from the provided paperstack if there are not available blank pages Returns false on
+	 * failure
 	 * @param folder Folder container
 	 * @param symbol Symbol to write
 	 * @return

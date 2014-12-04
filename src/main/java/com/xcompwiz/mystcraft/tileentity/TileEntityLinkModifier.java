@@ -18,7 +18,7 @@ public class TileEntityLinkModifier extends TileEntityBook {
 	public void setBookTitle(EntityPlayer player, String text) {
 		ItemStack itemstack = getBook();
 		if (itemstack != null && (itemstack.getItem() instanceof IItemRenameable)) {
-			((IItemRenameable)itemstack.getItem()).setDisplayName(player, itemstack, text);
+			((IItemRenameable) itemstack.getItem()).setDisplayName(player, itemstack, text);
 		}
 	}
 

@@ -66,8 +66,7 @@ public class BlockBookstand extends BlockBookDisplay {
 	}
 
 	/**
-	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-	 * cleared to be reused)
+	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been cleared to be reused)
 	 */
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
@@ -76,8 +75,7 @@ public class BlockBookstand extends BlockBookDisplay {
 	}
 
 	/**
-	 * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world,
-	 * x, y, z, startVec, endVec
+	 * Ray traces through the blocks collision from start vector to end vector returning a ray trace hit. Args: world, x, y, z, startVec, endVec
 	 */
 	@Override
 	public MovingObjectPosition collisionRayTrace(World worldObj, int x, int y, int z, Vec3 startVec3, Vec3 endVec3) {
@@ -107,7 +105,6 @@ public class BlockBookstand extends BlockBookDisplay {
 
 		return collision;
 	}
-
 
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase entityliving, ItemStack itemstack) {

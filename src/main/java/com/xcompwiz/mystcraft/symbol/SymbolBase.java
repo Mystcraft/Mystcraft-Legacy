@@ -43,7 +43,6 @@ public abstract class SymbolBase implements IAgeSymbol {
 
 	/**
 	 * Returns the unlocalized name
-	 * 
 	 * @return The lookup key used to map the symbol to a user readable text string
 	 */
 	public String getUnlocalizedName() {
@@ -52,7 +51,6 @@ public abstract class SymbolBase implements IAgeSymbol {
 
 	/**
 	 * Returns the user localized name
-	 * 
 	 * @return Name the user sees for the symbol
 	 */
 	@Override

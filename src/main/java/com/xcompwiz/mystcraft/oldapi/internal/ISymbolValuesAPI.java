@@ -42,7 +42,6 @@ public interface ISymbolValuesAPI {
 	 */
 	public boolean getSymbolIsTradable(String identifier);
 
-
 	/**
 	 * Can be used to set the item a villager will trade the symbol for
 	 * @param symbol The symbol the villager will trade

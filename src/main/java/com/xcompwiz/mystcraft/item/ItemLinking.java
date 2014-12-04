@@ -155,9 +155,7 @@ public abstract class ItemLinking extends Item {
 	}
 
 	/**
-	 * Return the maxDamage for this ItemStack. Defaults to the maxDamage field in this item, but can be overridden here
-	 * for other sources such as NBT.
-	 * 
+	 * Return the maxDamage for this ItemStack. Defaults to the maxDamage field in this item, but can be overridden here for other sources such as NBT.
 	 * @param stack The itemstack that is damaged
 	 * @return the damage value
 	 */

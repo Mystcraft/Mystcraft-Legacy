@@ -73,8 +73,7 @@ public class GuiInventoryFolder extends GuiContainerElements {
 		}
 
 		@Override
-		public void copy(PositionableItem collectionelement) {
-		}
+		public void copy(PositionableItem collectionelement) {}
 	}
 
 	private ContainerFolder		container;
@@ -94,10 +93,10 @@ public class GuiInventoryFolder extends GuiContainerElements {
 	@Override
 	public void validate() {
 		xSize = invsizeX;
-		ySize = surfaceY + buttonssize + invsizeY+1;
+		ySize = surfaceY + buttonssize + invsizeY + 1;
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
-		mainTop = guiTop + surfaceY+1;
+		mainTop = guiTop + surfaceY + 1;
 
 		GuiElementTextField txt_box = null;
 
@@ -105,7 +104,7 @@ public class GuiInventoryFolder extends GuiContainerElements {
 		txt_box = new GuiElementTextField(surfacemanager, surfacemanager, "SearchBox", (buttonssize + 2) * 2, 0, xSize - (buttonssize + 2) * 2, buttonssize);
 		addElement(txt_box);
 
-		GuiElementPageSurface surface = new GuiElementPageSurface(surfacemanager, this.mc, 0, buttonssize+1, xSize, surfaceY - buttonssize);
+		GuiElementPageSurface surface = new GuiElementPageSurface(surfacemanager, this.mc, 0, buttonssize + 1, xSize, surfaceY - buttonssize);
 		surfacemanager.addListener(surface);
 		addElement(surface);
 

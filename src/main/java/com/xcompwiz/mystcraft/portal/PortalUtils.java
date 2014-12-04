@@ -196,7 +196,6 @@ public final class PortalUtils {
 		}
 	}
 
-
 	private static boolean isPortalBlockStable(World world, int i, int j, int k) {
 		if (world.isRemote) return true;
 		if (!checkPortalTension(world, i, j, k)) return false;

@@ -12,9 +12,7 @@ public final class FluidUtils {
 		if (container.stackSize > 1) {
 			container.splitStack(1);
 		}
-		if (container.getItem().hasContainerItem(container)) {
-			return container.getItem().getContainerItem(container);
-		}
+		if (container.getItem().hasContainerItem(container)) { return container.getItem().getContainerItem(container); }
 		return null;
 	}
 

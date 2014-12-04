@@ -95,7 +95,7 @@ public class ContainerPageBinder extends ContainerBase implements IGuiMessageHan
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			if (helditem == null) {
 				nbttagcompound.setBoolean("CClearHeldItem", true);
-			} else { 
+			} else {
 				nbttagcompound.setTag("CSetHeldItem", helditem.writeToNBT(new NBTTagCompound()));
 			}
 			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));

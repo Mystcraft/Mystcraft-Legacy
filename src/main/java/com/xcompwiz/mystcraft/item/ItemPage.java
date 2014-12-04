@@ -49,16 +49,14 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider {
 	@Override
 	public String getItemStackDisplayName(ItemStack itemstack) {
 		if (itemstack.stackTagCompound != null) {
-			if (Page.isLinkPanel(itemstack)) return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack)+".panel.name");
-			if (Page.isBlank(itemstack)) return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack)+".blank.name");
+			if (Page.isLinkPanel(itemstack)) return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack) + ".panel.name");
+			if (Page.isBlank(itemstack)) return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack) + ".blank.name");
 			String symbolId = Page.getSymbol(itemstack);
 			IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolId);
-			if (symbol == null) {
-				return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack)+".symbol.name") + " (Unknown: " + symbolId + ")";
-			}
-			return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack)+".symbol.name") + " (" + symbol.displayName() + ")";
+			if (symbol == null) { return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack) + ".symbol.name") + " (Unknown: " + symbolId + ")"; }
+			return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack) + ".symbol.name") + " (" + symbol.displayName() + ")";
 		}
-		return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack)+".blank.name");
+		return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack) + ".blank.name");
 	}
 
 	@Override

@@ -33,9 +33,7 @@ public final class ParticleUtils {
 
 			double var22 = 256.0D;
 
-			if (var15 * var15 + var17 * var17 + var19 * var19 > var22) {
-				return;
-			}
+			if (var15 * var15 + var17 * var17 + var19 * var19 > var22) { return; }
 			effect = provider.createParticle(mc.theWorld, x, y, z, motionX, motionY, motionZ);
 
 			if (effect != null) {

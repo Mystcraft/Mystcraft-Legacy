@@ -5,15 +5,12 @@ import net.minecraft.world.World;
 
 /**
  * Applied to the chunk data after initial generation
- * 
  * @author xcompwiz
  */
 public interface ITerrainAlteration {
 
 	/**
-	 * Called after the initial terrain generation in order to alter the terrain. This is called after the biome block
-	 * replacement
-	 * 
+	 * Called after the initial terrain generation in order to alter the terrain. This is called after the biome block replacement
 	 * @param worldObj The world object of the chunk being modified. Do NOT access blocks directly through this.
 	 * @param chunkX The chunk x coordinate in chunk space
 	 * @param chunkZ The chunk z coordinate in chunk space

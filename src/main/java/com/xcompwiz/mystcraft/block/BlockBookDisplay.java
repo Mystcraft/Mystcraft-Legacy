@@ -103,8 +103,8 @@ public abstract class BlockBookDisplay extends BlockContainer {
 	}
 
 	/**
-	 * If this returns true, then comparators facing away from this block will use the value from
-	 * getComparatorInputOverride instead of the actual redstone signal strength.
+	 * If this returns true, then comparators facing away from this block will use the value from getComparatorInputOverride instead of the actual redstone
+	 * signal strength.
 	 */
 	@Override
 	public boolean hasComparatorInputOverride() {
@@ -112,8 +112,8 @@ public abstract class BlockBookDisplay extends BlockContainer {
 	}
 
 	/**
-	 * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal
-	 * strength when this block inputs to a comparator.
+	 * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal strength when this block inputs to a
+	 * comparator.
 	 */
 	@Override
 	public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5) {

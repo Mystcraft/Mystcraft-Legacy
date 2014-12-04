@@ -27,7 +27,7 @@ public class ItemRendererPage implements IItemRenderer {
 	final float	entity_offset		= -entity_width / 2;
 	final float	entity_symbolscale	= entity_width * .95F;
 	final float	entity_sx			= -entity_height / 2 + (entity_height - entity_symbolscale) / 2;
-	final float	entity_sy			= (entity_height - entity_symbolscale)/2;
+	final float	entity_sy			= (entity_height - entity_symbolscale) / 2;
 
 	public ItemRendererPage() {}
 
@@ -51,9 +51,9 @@ public class ItemRendererPage implements IItemRenderer {
 
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		if (type == ItemRenderType.INVENTORY) {
 			GuiUtils.drawPage(FMLClientHandler.instance().getClient().renderEngine, 10, item, 16.0F, 16.0F, 0.0F, 0.0F);
 		} else if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
@@ -62,7 +62,7 @@ public class ItemRendererPage implements IItemRenderer {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 			GL11.glRotatef(180, 0.0F, 0.0F, 1.0F);
-			GuiUtils.drawTexturedModalRect(held_offset-1, -1, 156, 0, 30, 40, 0, held_width, held_height);
+			GuiUtils.drawTexturedModalRect(held_offset - 1, -1, 156, 0, 30, 40, 0, held_width, held_height);
 
 			if (Page.getSymbol(item) != null) {
 				IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(item));

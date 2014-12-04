@@ -22,7 +22,6 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 	}
 
 	@Override
-	public void processMessage(EntityPlayer player, NBTTagCompound nbttagcompound) {
-	}
+	public void processMessage(EntityPlayer player, NBTTagCompound nbttagcompound) {}
 
 }

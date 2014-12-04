@@ -138,7 +138,7 @@ public class GuiElementBook extends GuiElement {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			mc.renderEngine.bindTexture(GUIs.book_page_right); // Right Page w/ panel
 			drawTexturedModalRect(163, 0, 0, 0, 156, 195);
-		} else if(page != null) {
+		} else if (page != null) {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			mc.renderEngine.bindTexture(GUIs.book_page_right_solid); // Full Right Page
 			drawTexturedModalRect(163, 0, 0, 0, 156, 195);
@@ -201,13 +201,13 @@ public class GuiElementBook extends GuiElement {
 	}
 
 	private void pageLeft() {
-		int currentpage = getCurrentPageIndex()-1;
+		int currentpage = getCurrentPageIndex() - 1;
 		if (currentpage < 0) currentpage = 0;
 		bookcontainer.setCurrentPageIndex(currentpage);
 	}
 
 	private void pageRight() {
-		int currentpage = getCurrentPageIndex()+1;
+		int currentpage = getCurrentPageIndex() + 1;
 		if (currentpage > bookcontainer.getPageCount()) currentpage = bookcontainer.getPageCount();
 		bookcontainer.setCurrentPageIndex(currentpage);
 	}

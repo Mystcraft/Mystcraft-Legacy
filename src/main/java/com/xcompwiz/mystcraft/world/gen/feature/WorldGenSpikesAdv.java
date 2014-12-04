@@ -35,7 +35,7 @@ public class WorldGenSpikesAdv extends WorldGeneratorAdv {
 
 			for (int x = baseX - width; x <= baseX + width; ++x) {
 				for (int z = baseZ - width; z <= baseZ + width; ++z) {
-					int maxHeight = baseY + rand.nextInt(rand.nextInt(height)+1)+1;
+					int maxHeight = baseY + rand.nextInt(rand.nextInt(height) + 1) + 1;
 					for (int y = baseY; y < maxHeight && y < 256; ++y) {
 						int dx = x - baseX;
 						int dz = z - baseZ;

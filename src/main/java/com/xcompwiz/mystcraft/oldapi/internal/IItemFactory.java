@@ -29,8 +29,8 @@ public interface IItemFactory {
 	public ItemStack buildLinkPage(String... properties);
 
 	/**
-	 * Builds a collection item containing pages for all of the symbols produced directly from the provided grammar tokens. The symbols come pre-sorted by Alphabetical
-	 * order and will occur only once. Keep in mind localization limitations on the server, if you are creating this collection there.
+	 * Builds a collection item containing pages for all of the symbols produced directly from the provided grammar tokens. The symbols come pre-sorted by
+	 * Alphabetical order and will occur only once. Keep in mind localization limitations on the server, if you are creating this collection there.
 	 * @param name The name of the collection
 	 * @param tokens The list of grammar tokens to expand for symbols
 	 * @return The collection itemstack
@@ -38,7 +38,8 @@ public interface IItemFactory {
 	public ItemStack buildCollectionItem(String name, String... tokens);
 
 	/**
-	 * Builds a collection item containing the provided pages. This clones the itemstacks of the pages. This will only add items which can be put into collections
+	 * Builds a collection item containing the provided pages. This clones the itemstacks of the pages. This will only add items which can be put into
+	 * collections
 	 * @param name The name of the collection
 	 * @param pages The list of page itemstacks to add
 	 * @return The collection itemstack

@@ -15,9 +15,9 @@ public class AgeDataLoaderManager {
 		public abstract AgeDataData load(NBTTagCompound nbt);
 	}
 
-	private static final String	currentversion	= "4.2";
+	private static final String						currentversion	= "4.2";
 
-	private static HashMap<String, AgeDataLoader> loaders = new HashMap<String, AgeDataLoader>();
+	private static HashMap<String, AgeDataLoader>	loaders			= new HashMap<String, AgeDataLoader>();
 
 	static {
 		loaders.put("4.2", new AgeDataLoaderV4_2());
@@ -55,8 +55,6 @@ public class AgeDataLoaderManager {
 		if (data.agename.isEmpty()) {
 			data.agename = "Unnamed Age";
 		}
-		if (!data.version.equals(currentversion)) {
-			throw new RuntimeException("Error updating old agedata file! Version is " + data.version);
-		}
+		if (!data.version.equals(currentversion)) { throw new RuntimeException("Error updating old agedata file! Version is " + data.version); }
 	}
 }

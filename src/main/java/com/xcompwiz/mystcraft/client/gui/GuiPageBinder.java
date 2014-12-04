@@ -62,7 +62,7 @@ public class GuiPageBinder extends GuiContainerElements {
 		}
 	}
 
-	private ContainerPageBinder			container;
+	private ContainerPageBinder	container;
 
 	public GuiPageBinder(InventoryPlayer inventoryplayer, TileEntityBookBinder tileentity) {
 		super(new ContainerPageBinder(inventoryplayer, tileentity));
@@ -81,7 +81,7 @@ public class GuiPageBinder extends GuiContainerElements {
 		txt_box.setMaxLength(21);
 		addElement(txt_box);
 		PageListHandler pagelistHandler = new PageListHandler();
-		addElement(new GuiElementScrollablePages(pagelistHandler, pagelistHandler , mc, 7, 45, xSize - 14, 40));
+		addElement(new GuiElementScrollablePages(pagelistHandler, pagelistHandler, mc, 7, 45, xSize - 14, 40));
 	}
 
 	@Override

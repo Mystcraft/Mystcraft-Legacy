@@ -40,7 +40,7 @@ public class ExplosionAdvanced {
 
 	private static HashMap<Byte, ExplosionEffect>	effectmap		= new HashMap<Byte, ExplosionEffect>();
 	private static HashMap<ExplosionEffect, Byte>	effectid		= new HashMap<ExplosionEffect, Byte>();
-	private static byte nextId = 0;
+	private static byte								nextId			= 0;
 
 	public static void registerEffect(ExplosionEffect effect) {
 		if (effectmap.containsKey(nextId)) throw new RuntimeException("Mystcraft has run ut of explosion effect IDs!  Contact XCompWiz and ask for more!");

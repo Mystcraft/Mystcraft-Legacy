@@ -56,12 +56,11 @@ public class RenderWritingDesk extends TileEntitySpecialRenderer {
 
 	private void renderItems(TileEntityDesk desk) {
 		/*
-		 * for (int i = 0; i < 25; ++i) { ItemStack itemstack = desk.getStackInSlot(i+4); // desk.getDisplayItem(); if
-		 * (itemstack != null) { GL11.glPushMatrix(); if (i < 8) GL11.glTranslatef(0.15F, 0.3F, -0.35F+0.1F*i); else if
-		 * (i < 16) GL11.glTranslatef(-0.15F, 0.3F, -0.35F+0.1F*(i-8)); else if (i < 24) GL11.glTranslatef(-0.45F, 0.3F,
-		 * -0.35F+0.1F*(i-16)); else if (i == 24) { GL11.glTranslatef(-0.42F, 0.6F, 0.0F); GL11.glRotatef(90.0F, 1, 0,
-		 * 0); } this.bindTexture(Assets.linkbook_tex); GL11.glScalef(0.8F, 0.8F, 0.8F); bookmodel.render(null, 0.0f,
-		 * 0.0f, 0.0f, 0.005f Open , 0.0f, 0.0625F); GL11.glPopMatrix(); } }
+		 * for (int i = 0; i < 25; ++i) { ItemStack itemstack = desk.getStackInSlot(i+4); // desk.getDisplayItem(); if (itemstack != null) {
+		 * GL11.glPushMatrix(); if (i < 8) GL11.glTranslatef(0.15F, 0.3F, -0.35F+0.1F*i); else if (i < 16) GL11.glTranslatef(-0.15F, 0.3F, -0.35F+0.1F*(i-8));
+		 * else if (i < 24) GL11.glTranslatef(-0.45F, 0.3F, -0.35F+0.1F*(i-16)); else if (i == 24) { GL11.glTranslatef(-0.42F, 0.6F, 0.0F);
+		 * GL11.glRotatef(90.0F, 1, 0, 0); } this.bindTexture(Assets.linkbook_tex); GL11.glScalef(0.8F, 0.8F, 0.8F); bookmodel.render(null, 0.0f, 0.0f, 0.0f,
+		 * 0.005f Open , 0.0f, 0.0625F); GL11.glPopMatrix(); } }
 		 */
 		ItemStack itemstack = desk.getDisplayItem(); // desk.getDisplayItem();
 		if (itemstack != null) {

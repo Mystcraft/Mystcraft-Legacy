@@ -62,8 +62,8 @@ public class SymbolBiomeControllerNative extends SymbolBase {
 		}
 
 		/**
-		 * Return a list of biomes for the specified blocks. Args: listToReuse, x, y, width, length, cacheFlag (if
-		 * false, don't check biomeCache to avoid infinite loop in BiomeCacheBlock)
+		 * Return a list of biomes for the specified blocks. Args: listToReuse, x, y, width, length, cacheFlag (if false, don't check biomeCache to avoid
+		 * infinite loop in BiomeCacheBlock)
 		 */
 		@Override
 		public BiomeGenBase[] getBiomesAtCoords(BiomeGenBase par1ArrayOfBiomeGenBase[], int par2, int par3, int par4, int par5, boolean par6) {

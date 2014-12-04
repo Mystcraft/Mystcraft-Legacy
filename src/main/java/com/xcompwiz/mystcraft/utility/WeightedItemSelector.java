@@ -13,8 +13,8 @@ public class WeightedItemSelector {
 
 	public interface IWeightedItem {
 		/**
-		 * The weight is used to determine how often the item is chosen (higher = more often; 0 = no chance). Note that in a
-		 * collection of items with no chance, the system will default to an even distribution chance
+		 * The weight is used to determine how often the item is chosen (higher = more often; 0 = no chance). Note that in a collection of items with no chance,
+		 * the system will default to an even distribution chance
 		 */
 		public float getWeight();
 	}

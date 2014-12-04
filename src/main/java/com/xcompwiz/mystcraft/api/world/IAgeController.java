@@ -33,7 +33,6 @@ public interface IAgeController {
 	/**
 	 * Binds a modifier property to the given id as an object. If there is already a modifier bound to this id then it is replaced and some instability is added
 	 * to the world. Any dangling (unpopped) modifiers at the end of age construction are converted to instability.
-	 * 
 	 * @param id Id at which the modifier is bound
 	 * @param obj Modifier object bound
 	 */
@@ -41,7 +40,6 @@ public interface IAgeController {
 
 	/**
 	 * Convenience function for setModifier. This will wrap the object in a Modifier object.
-	 * 
 	 * @param id Id at which the modifier is bound
 	 * @param obj Object value bound
 	 */
@@ -49,7 +47,6 @@ public interface IAgeController {
 
 	/**
 	 * Removes and returns the modifier bound to the given id. If nothing is bound to the id then this returns an empty modifier object, not null.
-	 * 
 	 * @return The object bound or empty modifier object
 	 */
 	public Modifier popModifier(String id);
@@ -96,14 +93,12 @@ public interface IAgeController {
 
 	/**
 	 * returns the default sunset color
-	 * 
 	 * @return The default sunrise gradient if one was set, otherwise null
 	 */
 	public ColorGradient getSunriseSunsetColor();
 
 	/**
 	 * Additional method of adding instability
-	 * 
 	 * @param instability The amount of instability to add (should be a positive value)
 	 */
 	public void addInstability(int instability);

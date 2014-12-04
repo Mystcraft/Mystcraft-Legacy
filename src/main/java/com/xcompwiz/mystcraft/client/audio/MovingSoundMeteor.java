@@ -15,7 +15,7 @@ public class MovingSoundMeteor extends MovingSound {
 
 	public MovingSoundMeteor(EntityMeteor entity) {
 		super(new ResourceLocation("mystcraft:entity.meteor.roar"));
-        this.field_147666_i = ISound.AttenuationType.NONE;
+		this.field_147666_i = ISound.AttenuationType.NONE;
 		this.entity = entity;
 		this.repeat = true;
 		this.volume = 1000.0F;

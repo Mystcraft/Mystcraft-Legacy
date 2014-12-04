@@ -23,7 +23,7 @@ public class MapGenAdvanced {
 	private int			blockcount;
 	private int			blockcounttotal	= 0;
 	private int			callcount		= 0;
-	private int			fillcount	= 0;
+	private int			fillcount		= 0;
 
 	public MapGenAdvanced(long seed, Block block, byte blockMeta) {
 		this.seed = seed;

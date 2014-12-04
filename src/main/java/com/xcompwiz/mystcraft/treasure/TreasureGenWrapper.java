@@ -21,7 +21,6 @@ public class TreasureGenWrapper extends WeightedRandomChestContent {
 
 	/**
 	 * Allows a mod to submit a custom implementation that can delegate item stack generation beyond simple stack lookup
-	 * 
 	 * @param random The current random for generation
 	 * @param newInventory The inventory being generated (do not populate it, but you can refer to it)
 	 * @return An array of {@link ItemStack} to put into the chest

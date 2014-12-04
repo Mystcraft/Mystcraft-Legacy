@@ -6,11 +6,13 @@ import net.minecraft.item.ItemStack;
 
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
-//XXX: This probably needs to be made into a gui interface
+// XXX: This probably needs to be made into a gui interface
 public interface IBookContainer {
 
 	public abstract ItemStack getCurrentPage();
+
 	public abstract int getCurrentPageIndex();
+
 	public abstract void setCurrentPageIndex(int currentpage);
 
 	public abstract int getPageCount();

@@ -62,8 +62,8 @@ public class BlockDecay extends Block {
 	}
 
 	/**
-	 * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage
-	 * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
+	 * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage and is ignored for blocks which do not
+	 * support subtypes. Blocks which cannot be harvested should return null.
 	 */
 	@Override
 	protected ItemStack createStackedBlock(int par1) {
@@ -77,7 +77,6 @@ public class BlockDecay extends Block {
 
 	/**
 	 * Called when a user uses the creative pick block button on this block
-	 * 
 	 * @param target The full target the player is looking at
 	 * @return A ItemStack to add to the player's inventory, Null if nothing should be added.
 	 */
@@ -88,7 +87,6 @@ public class BlockDecay extends Block {
 
 	/**
 	 * Location sensitive version of getExplosionRestance
-	 * 
 	 * @param entity The entity that caused the explosion
 	 * @param worldObj The current world
 	 * @param x X Position
@@ -106,7 +104,6 @@ public class BlockDecay extends Block {
 
 	/**
 	 * Returns the block hardness at a location.
-	 * 
 	 * @param worldObj The current world
 	 * @param x X Position
 	 * @param y Y Position
@@ -119,7 +116,6 @@ public class BlockDecay extends Block {
 
 	/**
 	 * Get a light value for this block, normal ranges are between 0 and 15
-	 * 
 	 * @param worldObj The current world
 	 * @param x X Position
 	 * @param y Y position

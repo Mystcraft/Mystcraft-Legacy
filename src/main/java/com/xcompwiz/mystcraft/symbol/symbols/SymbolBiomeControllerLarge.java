@@ -43,17 +43,17 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 	}
 
 	static class BiomeController implements IBiomeController {
-		private BiomeGenBase	allowedBiomes[];
+		private BiomeGenBase		allowedBiomes[];
 		/** A list of biomes that the player can spawn in. */
-		private List<BiomeGenBase>			biomesToSpawnIn;
+		private List<BiomeGenBase>	biomesToSpawnIn;
 
-		private GenLayer		genBiomes;
+		private GenLayer			genBiomes;
 		/** A GenLayer containing the indices into BiomeGenBase.biomeList[] */
-		private GenLayer		biomeIndexLayer;
+		private GenLayer			biomeIndexLayer;
 		/** The BiomeCache object for this world. */
-		private BiomeCache		biomeCache;
+		private BiomeCache			biomeCache;
 
-		private int				zoomscale;
+		private int					zoomscale;
 
 		protected BiomeController(IAgeController controller, int zoom, List<BiomeGenBase> biomes) {
 			this.zoomscale = zoom;
@@ -142,8 +142,8 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 		}
 
 		/**
-		 * Return a list of biomes for the specified blocks. Args: listToReuse, x, y, width, length, cacheFlag (if
-		 * false, don't check biomeCache to avoid infinite loop in BiomeCacheBlock)
+		 * Return a list of biomes for the specified blocks. Args: listToReuse, x, y, width, length, cacheFlag (if false, don't check biomeCache to avoid
+		 * infinite loop in BiomeCacheBlock)
 		 */
 		@Override
 		public BiomeGenBase[] getBiomesAtCoords(BiomeGenBase par1ArrayOfBiomeGenBase[], int par2, int par3, int par4, int par5, boolean par6) {

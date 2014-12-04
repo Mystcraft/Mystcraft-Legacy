@@ -36,7 +36,7 @@ public class ItemRendererMask implements IItemRenderer {
 
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack stack, Object... data) {
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		if (type.equals(ItemRenderType.ENTITY)) {
 			GL11.glRotated(90, 0, -1, 0);
 			GL11.glTranslated(-.5, -.5, 0);

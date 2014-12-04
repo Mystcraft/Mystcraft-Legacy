@@ -20,17 +20,16 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class WeatherRendererMyst extends IRenderHandler {
-	private static final ResourceLocation	locationRainPng		= new ResourceLocation("textures/environment/rain.png");
-	private static final ResourceLocation	locationSnowPng		= new ResourceLocation("textures/environment/snow.png");
+	private static final ResourceLocation	locationRainPng	= new ResourceLocation("textures/environment/rain.png");
+	private static final ResourceLocation	locationSnowPng	= new ResourceLocation("textures/environment/snow.png");
 
 	private int								rendererUpdateCount;
 
 	private float[]							rainXCoords;
 	private float[]							rainYCoords;
-	private Random							random				= new Random();
+	private Random							random			= new Random();
 
-	public WeatherRendererMyst(WorldProviderMyst provider, AgeController controller) {
-	}
+	public WeatherRendererMyst(WorldProviderMyst provider, AgeController controller) {}
 
 	@Override
 	@SideOnly(Side.CLIENT)

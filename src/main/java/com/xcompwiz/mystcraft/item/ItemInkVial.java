@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemInkVial extends Item implements IMaskRender {
 
-	protected IIcon				mask;
+	protected IIcon	mask;
 
 	public ItemInkVial() {
 		setMaxStackSize(16);

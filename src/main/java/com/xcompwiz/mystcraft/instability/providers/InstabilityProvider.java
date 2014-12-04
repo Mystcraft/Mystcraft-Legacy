@@ -10,9 +10,9 @@ import com.xcompwiz.mystcraft.logging.LoggerUtils;
 
 public class InstabilityProvider implements IInstabilityProvider {
 
-	private Class<? extends IEnvironmentalEffect>			effectclass;
-	private Object[]										itemCtorArgs;
-	private boolean											uselevel;
+	private Class<? extends IEnvironmentalEffect>		effectclass;
+	private Object[]									itemCtorArgs;
+	private boolean										uselevel;
 
 	private Constructor<? extends IEnvironmentalEffect>	itemCtor;
 
@@ -46,7 +46,7 @@ public class InstabilityProvider implements IInstabilityProvider {
 			}
 		} catch (Exception e) {
 			LoggerUtils.error("Caught an exception during instability usage");
-			throw new RuntimeException("Error when building generic instability effect from effect class " + effectclass.getCanonicalName() +" with args " + itemCtorArgs, e);
+			throw new RuntimeException("Error when building generic instability effect from effect class " + effectclass.getCanonicalName() + " with args " + itemCtorArgs, e);
 		}
 	}
 }

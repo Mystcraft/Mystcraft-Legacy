@@ -47,7 +47,7 @@ public class IMCBlockModifier implements IMCProcessor {
 			for (NBTTagCompound cat : list) {
 				String catname = cat.getString("Category");
 				Integer catrank = cat.getInteger("Rank");
-				objects.add(new Object[]{catname, catrank});
+				objects.add(new Object[] { catname, catrank });
 			}
 		}
 		if (objects == null) {

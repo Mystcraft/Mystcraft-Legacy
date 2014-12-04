@@ -88,7 +88,7 @@ public abstract class CommandBaseAdv extends CommandBase {
 			double d2 = parseDouble(par1ICommandSender, arg);
 			if (random) {
 				Random rand = new Random();
-				d1 += (rand.nextDouble()*2 - 1)*d2;
+				d1 += (rand.nextDouble() * 2 - 1) * d2;
 			} else {
 				d1 += d2;
 			}
@@ -116,15 +116,11 @@ public abstract class CommandBaseAdv extends CommandBase {
 		throw new PlayerNotFoundException(String.format("Could not get Player by name: %s", name), new Object[0]);
 	}
 
-    public static float parseFloat(ICommandSender par0ICommandSender, String par1Str)
-    {
-        try
-        {
-            return Float.parseFloat(par1Str);
-        }
-        catch (NumberFormatException numberformatexception)
-        {
-            throw new NumberInvalidException("commands.generic.num.invalid", new Object[] {par1Str});
-        }
-    }
+	public static float parseFloat(ICommandSender par0ICommandSender, String par1Str) {
+		try {
+			return Float.parseFloat(par1Str);
+		} catch (NumberFormatException numberformatexception) {
+			throw new NumberInvalidException("commands.generic.num.invalid", new Object[] { par1Str });
+		}
+	}
 }

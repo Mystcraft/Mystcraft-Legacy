@@ -154,7 +154,6 @@ public class GrammarTree {
 
 	/**
 	 * Builds the base tree
-	 * 
 	 * @param terminals The original symbol list
 	 * @param rand The random number generator to use to decide between ties in shortest path
 	 */
@@ -168,7 +167,6 @@ public class GrammarTree {
 
 	/**
 	 * Merges the subtrees into the tree and returns the list of symbols after expanding the remaining tokens
-	 * 
 	 * @param rand The random number generator to use when choosing expansion paths
 	 * @return the list of symbols after expanding the remaining tokens
 	 */
@@ -284,10 +282,9 @@ public class GrammarTree {
 	}
 
 	/**
-	 * Builds a subtree from the provided node. First it attempts to insert the node into any existing tree by looking
-	 * for shortest path connections to all unexplored nodes. Failing that, it reverse expands the node upward for as
-	 * long as it has exactly one producing rule and then adds the resultant subroot to the forest.
-	 * 
+	 * Builds a subtree from the provided node. First it attempts to insert the node into any existing tree by looking for shortest path connections to all
+	 * unexplored nodes. Failing that, it reverse expands the node upward for as long as it has exactly one producing rule and then adds the resultant subroot
+	 * to the forest.
 	 * @param subroot The node to reverse expand into a tree
 	 * @param rand The random number generator to use to decide between ties in shortest path
 	 */
@@ -313,9 +310,8 @@ public class GrammarTree {
 	}
 
 	/**
-	 * Returns the shortest connecting path of rules from the subroot to the given node. If there are no paths then this
-	 * returns null. If there is more than one, chooses one randomly.
-	 * 
+	 * Returns the shortest connecting path of rules from the subroot to the given node. If there are no paths then this returns null. If there is more than
+	 * one, chooses one randomly.
 	 * @param subroot The subtree to connect to node
 	 * @param node The node to connect to via rules
 	 * @return The list of rules that make up the path in order of subroot to node
@@ -327,19 +323,18 @@ public class GrammarTree {
 	}
 
 	/**
-	 * Attempts to put the given subtree into the main tree. This is used to put the subtree forest built in the phrasal
-	 * pass into the main tree. If the node has no producing rules (rules that produce this token) then this fails. For
-	 * all unexplored nodes: It checks if this node matches that node, replacing it and returning on success. Otherwise it builds
-	 * a list of all of the rules which can map from that node to this one. If there are any such options and they can be
-	 * selected from randomly, it will randomly select such a rule. If there aren't any such direct connections then the
-	 * function attempts to build a list of possible paths to the main tree. It then randomly selects one of these
-	 * connections, if there are any. Each connection is considered equally likely.
-	 * 
+	 * Attempts to put the given subtree into the main tree. This is used to put the subtree forest built in the phrasal pass into the main tree. If the node
+	 * has no producing rules (rules that produce this token) then this fails. For all unexplored nodes: It checks if this node matches that node, replacing it
+	 * and returning on success. Otherwise it builds a list of all of the rules which can map from that node to this one. If there are any such options and they
+	 * can be selected from randomly, it will randomly select such a rule. If there aren't any such direct connections then the function attempts to build a
+	 * list of possible paths to the main tree. It then randomly selects one of these connections, if there are any. Each connection is considered equally
+	 * likely.
 	 * @param subroot The node to put into the tree
 	 * @param rand The random number generator to use to make decisions
 	 * @return success
 	 */
-	@SuppressWarnings("unused") //XXX: (re)move connectSubtreeRandomly
+	@SuppressWarnings("unused")
+	//XXX: (re)move connectSubtreeRandomly
 	private boolean connectSubtreeRandomly(GrammarNode subroot, Random rand) {
 		List<Rule> rules = GrammarGenerator.getParentRules(subroot.token);
 		if (rules == null || rules.size() == 0) return false;
@@ -380,12 +375,11 @@ public class GrammarTree {
 	}
 
 	/**
-	 * Attempts to put the given subtree into the main tree. This is used to put the subtree forest built in the phrasal
-	 * pass into the main tree. If the node has no producing rules (rules that produce this token) then this fails. For
-	 * all unexplored nodes: It checks if this node matches that node, replacing it and returning on success. Otherwise it builds
-	 * a list of all of the rules which can map from that node to this one directly. If there are any such options and they can be
-	 * selected from randomly, it will randomly select such a rule. If there aren't any such direct connections then the
-	 * function attempts to find the shortest path to the node.
+	 * Attempts to put the given subtree into the main tree. This is used to put the subtree forest built in the phrasal pass into the main tree. If the node
+	 * has no producing rules (rules that produce this token) then this fails. For all unexplored nodes: It checks if this node matches that node, replacing it
+	 * and returning on success. Otherwise it builds a list of all of the rules which can map from that node to this one directly. If there are any such options
+	 * and they can be selected from randomly, it will randomly select such a rule. If there aren't any such direct connections then the function attempts to
+	 * find the shortest path to the node.
 	 * @param subroot
 	 * @param rand
 	 * @return
@@ -423,7 +417,6 @@ public class GrammarTree {
 
 	/**
 	 * Checks to see if this token already exists in a tree
-	 * 
 	 * @param parent The token to search for
 	 * @param subroot The root of the tree to search
 	 * @return If the token is the token of any node in the tree
@@ -440,12 +433,10 @@ public class GrammarTree {
 	}
 
 	/**
-	 * Used in building the possible connections to the main tree from a orphaned node For all unexplored nodes, build a
-	 * list of direct options if any options, select one to reverse expand, insert to the connection results, and return
-	 * Otherwise, recursively call this on all possible rules which produce this token, avoiding loops
-	 * 
-	 * @param connections The shared connections list to which any found connections will be added (subroot, node to
-	 *            replace)
+	 * Used in building the possible connections to the main tree from a orphaned node For all unexplored nodes, build a list of direct options if any options,
+	 * select one to reverse expand, insert to the connection results, and return Otherwise, recursively call this on all possible rules which produce this
+	 * token, avoiding loops
+	 * @param connections The shared connections list to which any found connections will be added (subroot, node to replace)
 	 * @param subroot The root of the tree to put into the main tree
 	 * @param rand RNG for decisions
 	 */
@@ -471,9 +462,7 @@ public class GrammarTree {
 	}
 
 	/**
-	 * Replaces one node with another one Used to replace unexplored nodes with fulfilling subtrees Adds the children of
-	 * the subtree to the unexplored list
-	 * 
+	 * Replaces one node with another one Used to replace unexplored nodes with fulfilling subtrees Adds the children of the subtree to the unexplored list
 	 * @param node Node to replace
 	 * @param subroot To to insert
 	 */
@@ -490,11 +479,9 @@ public class GrammarTree {
 	}
 
 	/**
-	 * Adds the children of the passed subtree to the unexplored list Adds all children in order (left to right) to the
-	 * front of the list (far right ends up on top) If any children are explored then they are queued to be processed
-	 * (farther right and children of more recently added nodes get processed later than leftmost nodes, putting them
-	 * higher on the list)
-	 * 
+	 * Adds the children of the passed subtree to the unexplored list Adds all children in order (left to right) to the front of the list (far right ends up on
+	 * top) If any children are explored then they are queued to be processed (farther right and children of more recently added nodes get processed later than
+	 * leftmost nodes, putting them higher on the list)
 	 * @param subroot to add the children of
 	 */
 	private void addUnexploredNodes(GrammarNode subroot) {
@@ -530,9 +517,8 @@ public class GrammarTree {
 	}
 
 	/**
-	 * Reverse expands a node by a rule. Basically uses the rule to build a new root node and sibling nodes for the
-	 * passed in root node. The passed in node will be used in place of the token farthest right in the rule which matches.
-	 * 
+	 * Reverse expands a node by a rule. Basically uses the rule to build a new root node and sibling nodes for the passed in root node. The passed in node will
+	 * be used in place of the token farthest right in the rule which matches.
 	 * @param subroot The root of the subtree
 	 * @param rule The rule to use
 	 * @return The new root

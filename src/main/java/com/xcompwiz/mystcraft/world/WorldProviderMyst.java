@@ -50,9 +50,7 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	/**
-	 * Sets the providers current dimension ID, used in default getSaveFolder() Added to allow default providers to be
-	 * registered for multiple dimensions.
-	 * 
+	 * Sets the providers current dimension ID, used in default getSaveFolder() Added to allow default providers to be registered for multiple dimensions.
 	 * @param dim Dimension ID
 	 */
 	@Override
@@ -73,13 +71,13 @@ public class WorldProviderMyst extends WorldProvider {
 		worldChunkMgr = controller.getWorldChunkManager();
 		setWorldInfo();
 	}
-	
+
 	public AgeController getAgeController() {
 		return this.controller;
 	}
 
 	public void setWorldInfo() {
-		ObfuscationReflectionHelper.setPrivateValue(World.class, worldObj, new WorldInfoMyst(this, worldObj.getWorldInfo()), "worldInfo", "field"+"_72986_A");
+		ObfuscationReflectionHelper.setPrivateValue(World.class, worldObj, new WorldInfoMyst(this, worldObj.getWorldInfo()), "worldInfo", "field" + "_72986_A");
 	}
 
 	@Override
@@ -116,8 +114,7 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	/**
-	 * Calculates the angle of sun and moon in the sky relative to a specified time (usually worldTime) par1 = worldTime
-	 * par3 = partialtick
+	 * Calculates the angle of sun and moon in the sky relative to a specified time (usually worldTime) par1 = worldTime par3 = partialtick
 	 */
 	@Override
 	public float calculateCelestialAngle(long time, float partialtick) {

@@ -53,9 +53,7 @@ public class GuiElementPage extends GuiElement {
 
 	@Override
 	public List<String> _getTooltipInfo() {
-		if (!hovertext.isEmpty()) {
-			return hovertext;
-		}
+		if (!hovertext.isEmpty()) { return hovertext; }
 		return super._getTooltipInfo();
 	}
 }

@@ -18,7 +18,7 @@ public class MystcraftStartupChecker {
 
 	public static abstract class ErrorChecker {
 
-		private boolean	hasRun = false;
+		private boolean	hasRun	= false;
 
 		public final boolean hasRun() {
 			return hasRun;
@@ -28,14 +28,14 @@ public class MystcraftStartupChecker {
 			hasRun = true;
 			GuiScreen gui = getErrorGui();
 			if (gui != null) {
-		        Minecraft.getMinecraft().displayGuiScreen(gui);
-		        return true;
+				Minecraft.getMinecraft().displayGuiScreen(gui);
+				return true;
 			}
 			return false;
 		}
 
 		protected abstract GuiScreen getErrorGui();
-		
+
 	}
 
 	public static class CheckSymbolLoadError extends ErrorChecker {
@@ -51,15 +51,15 @@ public class MystcraftStartupChecker {
 				messages.add("To prevent this message from coming up in the future, disable or remove these symbols.");
 				messages.add("");
 				messages.addAll(errored);
-		        return new GuiNonCriticalError(messages);
+				return new GuiNonCriticalError(messages);
 			}
-	        return null;
+			return null;
 		}
-		
+
 	}
 
-	private HashSet<ErrorChecker>	checks = new HashSet<ErrorChecker>();
-	
+	private HashSet<ErrorChecker>	checks	= new HashSet<ErrorChecker>();
+
 	public MystcraftStartupChecker() {
 		checks.add(new CheckSymbolLoadError());
 	}
@@ -70,15 +70,13 @@ public class MystcraftStartupChecker {
 			if (!checkForErrors()) {
 				FMLCommonHandler.instance().bus().unregister(this);
 			}
-        }
+		}
 	}
 
 	private boolean checkForErrors() {
 		for (ErrorChecker check : checks) {
 			if (!check.hasRun()) {
-				if (check.run()) {
-					return true;
-				}
+				if (check.run()) { return true; }
 			}
 		}
 		return false;

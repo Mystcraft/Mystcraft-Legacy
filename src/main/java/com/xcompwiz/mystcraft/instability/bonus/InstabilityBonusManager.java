@@ -33,7 +33,7 @@ public class InstabilityBonusManager {
 	private Set<IInstabilityBonus>	bonuses	= new HashSet<IInstabilityBonus>();
 	private int						total;
 
-	private AgeController	controller;
+	private AgeController			controller;
 
 	public InstabilityBonusManager() {}
 

@@ -46,8 +46,8 @@ public class BlockCrystal extends Block {
 	// }
 
 	/**
-	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-	 * their own) Args: x, y, z, neighbor blockID
+	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are their own) Args: x, y, z, neighbor
+	 * blockID
 	 */
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, Block block) {
@@ -62,8 +62,8 @@ public class BlockCrystal extends Block {
 	}
 
 	/**
-	 * If this returns true, then comparators facing away from this block will use the value from
-	 * getComparatorInputOverride instead of the actual redstone signal strength.
+	 * If this returns true, then comparators facing away from this block will use the value from getComparatorInputOverride instead of the actual redstone
+	 * signal strength.
 	 */
 	@Override
 	public boolean hasComparatorInputOverride() {
@@ -71,8 +71,8 @@ public class BlockCrystal extends Block {
 	}
 
 	/**
-	 * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal
-	 * strength when this block inputs to a comparator.
+	 * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal strength when this block inputs to a
+	 * comparator.
 	 */
 	@Override
 	public int getComparatorInputOverride(World world, int i, int j, int k, int par5) {

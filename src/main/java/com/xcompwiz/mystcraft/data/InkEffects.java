@@ -59,7 +59,7 @@ public class InkEffects {
 	}
 
 	public static String getUnlocalizedName(String property) {
-		return "linkeffect."+property.replaceAll(" ", "").toLowerCase()+".name";
+		return "linkeffect." + property.replaceAll(" ", "").toLowerCase() + ".name";
 	}
 
 	public static Map<String, Float> getItemEffects(ItemStack itemstack) {
@@ -68,7 +68,7 @@ public class InkEffects {
 		Map<String, Float> map = itemstack_bindings.get(clone);
 		int[] ids = OreDictionary.getOreIDs(itemstack);
 		for (int id : ids) {
-			if (map == null) map = oredict_bindings.get(OreDictionary.getOreName(id ));
+			if (map == null) map = oredict_bindings.get(OreDictionary.getOreName(id));
 		}
 		if (map == null) map = itemId_bindings.get(itemstack.getItem());
 		if (map == null) return null;

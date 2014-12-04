@@ -9,9 +9,8 @@ import com.xcompwiz.util.Vector;
 import com.xcompwiz.util.VectorPool;
 
 /**
- * Renders the color "eyes" that the D'ni used to represent colors Created by heldplayer for use in his Mystcraft-NEI
- * plugin and he kindly gave me permission to include it in Mystcraft directly :)
- * 
+ * Renders the color "eyes" that the D'ni used to represent colors Created by heldplayer for use in his Mystcraft-NEI plugin and he kindly gave me permission to
+ * include it in Mystcraft directly :)
  * @author heldplayer
  */
 public class DniColorRenderer {

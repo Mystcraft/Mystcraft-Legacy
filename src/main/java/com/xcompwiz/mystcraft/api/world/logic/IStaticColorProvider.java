@@ -7,7 +7,6 @@ import com.xcompwiz.mystcraft.api.util.Color;
 
 /**
  * Used to produce a color once. This color cannot change over time.
- * 
  * @author xcompwiz
  */
 public interface IStaticColorProvider {
@@ -16,9 +15,8 @@ public interface IStaticColorProvider {
 	public final static String	FOLIAGE	= "Foliage";
 
 	/**
-	 * Returns a color based on the provided information Note that the produced color is fixed, so this type of element
-	 * should not use gradients Can return null if the logic element does not provide a color for this case
-	 * 
+	 * Returns a color based on the provided information Note that the produced color is fixed, so this type of element should not use gradients Can return null
+	 * if the logic element does not provide a color for this case
 	 * @param type String identifier of the type of color
 	 * @param worldObj The world object
 	 * @param biome The current biome. Can be null

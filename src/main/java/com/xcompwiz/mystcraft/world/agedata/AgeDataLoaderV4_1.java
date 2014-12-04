@@ -14,7 +14,7 @@ import com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderManager.AgeDataLoader;
 
 public class AgeDataLoaderV4_1 extends AgeDataLoader {
 	public static class AgeDataData extends com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderV4_2.AgeDataData {
-		public List<String>		effects			= new ArrayList<String>();
+		public List<String>	effects	= new ArrayList<String>();
 	}
 
 	@Override

@@ -10,8 +10,7 @@ import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderManager.AgeDataLoader;
 
 public class AgeDataLoaderV4 extends AgeDataLoader {
-	public static class AgeDataData extends com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderV4_1.AgeDataData  {
-	}
+	public static class AgeDataData extends com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderV4_1.AgeDataData {}
 
 	@Override
 	public AgeDataData load(NBTTagCompound nbttagcompound) {

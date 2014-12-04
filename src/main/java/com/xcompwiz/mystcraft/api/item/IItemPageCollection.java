@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-
 /**
  * This interface allows you to create your own items which the Mystcraft writing desk can use as page sources (the tabs on the left). Have your items implement
  * it to allow the desk to get pages from them for writing.

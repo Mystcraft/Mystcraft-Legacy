@@ -20,14 +20,14 @@ public class PlayerTrollPenalty implements IInstabilityBonus, IOnEntityDeath, IO
 
 	private InstabilityBonusManager	bonusmanager;
 
-	private int		max;
-	private int		min;
-	private float	decayrate;
-	private float	current;
+	private int						max;
+	private int						min;
+	private float					decayrate;
+	private float					current;
 
-	private String	playername;
-	private int		dimensionid;
-	private boolean playerisinworld;
+	private String					playername;
+	private int						dimensionid;
+	private boolean					playerisinworld;
 
 	public PlayerTrollPenalty(InstabilityBonusManager bonusmanager, World worldObj, String playername, Integer max, Float decayrate) {
 		this.bonusmanager = bonusmanager;
@@ -39,10 +39,10 @@ public class PlayerTrollPenalty implements IInstabilityBonus, IOnEntityDeath, IO
 		this.dimensionid = worldObj.provider.dimensionId;
 
 		EventManager eventmgr = EventManager.get();
-		eventmgr.register((IOnEntityDeath)this);
-		eventmgr.register((IOnPlayerChangedDimension)this);
-		eventmgr.register((IOnPlayerLoggedIn)this);
-		eventmgr.register((IOnPlayerLoggedOut)this);
+		eventmgr.register((IOnEntityDeath) this);
+		eventmgr.register((IOnPlayerChangedDimension) this);
+		eventmgr.register((IOnPlayerLoggedIn) this);
+		eventmgr.register((IOnPlayerLoggedOut) this);
 	}
 
 	@Override

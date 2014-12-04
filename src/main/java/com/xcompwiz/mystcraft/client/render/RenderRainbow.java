@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL11;
 public class RenderRainbow {
 	/**
 	 * hue from 0f to 360f
-	 * 
 	 * @param hue
 	 * @param sat
 	 * @param val
@@ -93,9 +92,9 @@ public class RenderRainbow {
 
 	public static void doRenderRainbow(float width) {
 		/*
-		 * float brightness; float angleDegrees = (float) (celestialAngle * (180.0 / Math.PI)); if (angleDegrees >= 270
-		 * && angleDegrees < 360) { brightness = ((angleDegrees - 270f) / 90f); } else if (angleDegrees >= 0 &&
-		 * angleDegrees <= 90) { brightness = 1f - (angleDegrees / 90f); } else { brightness = 0f; }
+		 * float brightness; float angleDegrees = (float) (celestialAngle * (180.0 / Math.PI)); if (angleDegrees >= 270 && angleDegrees < 360) { brightness =
+		 * ((angleDegrees - 270f) / 90f); } else if (angleDegrees >= 0 && angleDegrees <= 90) { brightness = 1f - (angleDegrees / 90f); } else { brightness =
+		 * 0f; }
 		 */
 		// System.out.println("angle: " + angleDegrees + ", brightness: " + brightness);
 		Tessellator t = Tessellator.instance;

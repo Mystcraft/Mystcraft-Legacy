@@ -17,8 +17,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderManager.AgeDataLoader;
 
 public class AgeDataLegacy extends AgeDataLoader {
-	public static class AgeDataData extends com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderV4.AgeDataData {
-	}
+	public static class AgeDataData extends com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderV4.AgeDataData {}
 
 	@Override
 	public AgeDataData load(NBTTagCompound nbttagcompound) {
