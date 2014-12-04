@@ -1,6 +1,5 @@
-package com.xcompwiz.mystcraft.api.internal;
+package com.xcompwiz.mystcraft.api.client;
 
-import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 import com.xcompwiz.mystcraft.api.util.Color;
 
 import cpw.mods.fml.relauncher.Side;

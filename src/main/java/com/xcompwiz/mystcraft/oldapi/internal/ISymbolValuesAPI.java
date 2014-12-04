@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-import com.xcompwiz.mystcraft.api.internal.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 
 /**

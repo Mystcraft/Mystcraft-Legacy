@@ -6,7 +6,6 @@ import java.util.List;
 
 import net.minecraft.util.ResourceLocation;
 
-import com.xcompwiz.mystcraft.api.internal.IWordAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

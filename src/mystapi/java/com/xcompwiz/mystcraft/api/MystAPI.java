@@ -1,9 +1,10 @@
 package com.xcompwiz.mystcraft.api;
 
-import com.xcompwiz.mystcraft.api.internal.IDimensionAPI;
-import com.xcompwiz.mystcraft.api.internal.IGrammarAPI;
-import com.xcompwiz.mystcraft.api.internal.IRenderAPI;
-import com.xcompwiz.mystcraft.api.internal.IWordAPI;
+import com.xcompwiz.mystcraft.api.client.IRenderAPI;
+import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.linking.IDimensionAPI;
+import com.xcompwiz.mystcraft.api.linking.ILinkingAPI;
+import com.xcompwiz.mystcraft.api.word.IWordAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,6 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public abstract class MystAPI {
 	public abstract IDimensionAPI getDimensionAPI();
+	public abstract ILinkingAPI getLinkingAPI();
 	public abstract IGrammarAPI getGrammarAPI();
 	public abstract IWordAPI getWordAPI();
 

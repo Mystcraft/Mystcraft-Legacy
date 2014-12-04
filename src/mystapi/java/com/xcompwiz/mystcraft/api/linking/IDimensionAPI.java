@@ -1,9 +1,6 @@
-package com.xcompwiz.mystcraft.api.internal;
+package com.xcompwiz.mystcraft.api.linking;
 
 import java.util.Collection;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Functions for interacting with Mystcraft dimensions. The implementation of this is provided by MystAPI. Do NOT implement this yourself!
@@ -28,6 +25,5 @@ public interface IDimensionAPI {
 	 * that this will only work server side.
 	 * @return The id of the newly created dimension
 	 */
-	@SideOnly(Side.SERVER)
 	public int createAge();
 }

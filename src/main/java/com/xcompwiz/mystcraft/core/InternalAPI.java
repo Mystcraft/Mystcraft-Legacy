@@ -3,10 +3,11 @@ package com.xcompwiz.mystcraft.core;
 import java.util.HashMap;
 
 import com.xcompwiz.mystcraft.api.MystAPI;
-import com.xcompwiz.mystcraft.api.internal.IDimensionAPI;
-import com.xcompwiz.mystcraft.api.internal.IGrammarAPI;
-import com.xcompwiz.mystcraft.api.internal.IRenderAPI;
-import com.xcompwiz.mystcraft.api.internal.IWordAPI;
+import com.xcompwiz.mystcraft.api.client.IRenderAPI;
+import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.linking.IDimensionAPI;
+import com.xcompwiz.mystcraft.api.linking.ILinkingAPI;
+import com.xcompwiz.mystcraft.api.word.IWordAPI;
 import com.xcompwiz.mystcraft.client.render.RenderAPIDelegate;
 import com.xcompwiz.mystcraft.grammar.GrammarAPIDelegate;
 import com.xcompwiz.mystcraft.instability.InstabilityAPIDelegate;
@@ -31,6 +32,11 @@ public class InternalAPI {
 		@Override
 		public IDimensionAPI getDimensionAPI() {
 			return InternalAPI.dimension;
+		}
+
+		@Override
+		public ILinkingAPI getLinkingAPI() {
+			return InternalAPI.linking;
 		}
 
 		@Override

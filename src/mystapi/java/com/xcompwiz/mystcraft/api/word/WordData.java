@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.api.word;
 
 import com.xcompwiz.mystcraft.api.MystAPI;
-import com.xcompwiz.mystcraft.api.internal.IWordAPI;
 
 /**
  * Includes the word data for the symbol poems. You can, of course, create your own words, but it is recommended that you use this list for the most part and

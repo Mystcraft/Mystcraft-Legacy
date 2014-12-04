@@ -12,8 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.api.internal.ILinkingAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
+import com.xcompwiz.mystcraft.api.linking.ILinkingAPI;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.data.InkEffects;

@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.api.internal.IDimensionAPI;
+import com.xcompwiz.mystcraft.api.linking.IDimensionAPI;
 
 public class DimensionAPIDelegate implements IDimensionAPI {
 

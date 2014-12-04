@@ -1,6 +1,5 @@
-package com.xcompwiz.mystcraft.api.internal;
+package com.xcompwiz.mystcraft.api.word;
 
-import com.xcompwiz.mystcraft.api.word.DrawableWord;
 
 /**
  * Provides functions for interacting with the words system. You can use this to create your own Narayan words (See

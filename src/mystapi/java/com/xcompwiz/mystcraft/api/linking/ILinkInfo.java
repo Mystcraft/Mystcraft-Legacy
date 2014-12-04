@@ -4,7 +4,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 
 import com.xcompwiz.mystcraft.api.event.LinkEvent;
-import com.xcompwiz.mystcraft.api.internal.ILinkingAPI;
 
 /**
  * This is an object describing all the information needed to link an entity using the Mystcraft teleport mechanics.

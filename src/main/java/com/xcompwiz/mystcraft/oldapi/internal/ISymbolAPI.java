@@ -2,7 +2,7 @@ package com.xcompwiz.mystcraft.oldapi.internal;
 
 import java.util.List;
 
-import com.xcompwiz.mystcraft.api.internal.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 
 /**

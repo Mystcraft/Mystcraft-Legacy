@@ -1,7 +1,7 @@
 package com.xcompwiz.mystcraft.client.render;
 
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
-import com.xcompwiz.mystcraft.api.internal.IRenderAPI;
+import com.xcompwiz.mystcraft.api.client.IRenderAPI;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 import com.xcompwiz.mystcraft.client.linkeffects.LinkPanelEffectManager;

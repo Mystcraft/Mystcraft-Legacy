@@ -4,8 +4,8 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-import com.xcompwiz.mystcraft.api.internal.IWordAPI;
 import com.xcompwiz.mystcraft.api.word.DrawableWord;
+import com.xcompwiz.mystcraft.api.word.IWordAPI;
 import com.xcompwiz.mystcraft.oldapi.internal.ISymbolAPI;
 import com.xcompwiz.mystcraft.oldapi.internal.ISymbolValuesAPI;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;

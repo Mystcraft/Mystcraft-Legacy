@@ -4,7 +4,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 
-import com.xcompwiz.mystcraft.api.internal.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.grammar.GrammarData;
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
@@ -128,7 +128,7 @@ public class ModSymbols {
 				} else {
 					symbol.setCardRank(2);
 				}
-				GrammarGenerator.registerRule(new Rule(IGrammarAPI.BIOME, CollectionUtils.buildList(symbol.identifier()), rank));
+				GrammarGenerator.registerRule(new Rule(GrammarData.BIOME, CollectionUtils.buildList(symbol.identifier()), rank));
 				InternalAPI.symbolValues.setSymbolTradeItem(symbol, new ItemStack(Items.emerald, 1));
 				ModifierBiome.selectables.add(biome);
 			}

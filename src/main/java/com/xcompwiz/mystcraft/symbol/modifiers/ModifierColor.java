@@ -2,7 +2,7 @@ package com.xcompwiz.mystcraft.symbol.modifiers;
 
 import java.util.ArrayList;
 
-import com.xcompwiz.mystcraft.api.internal.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.grammar.GrammarData;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
@@ -28,7 +28,7 @@ public class ModifierColor extends SymbolBase {
 
 	@Override
 	public ArrayList<Rule> createRules() {
-		return CollectionUtils.buildList(new Rule(IGrammarAPI.COLOR_BASIC, CollectionUtils.buildList(this.identifier()), 1));
+		return CollectionUtils.buildList(new Rule(GrammarData.COLOR_BASIC, CollectionUtils.buildList(this.identifier()), 1));
 	}
 
 	@Override

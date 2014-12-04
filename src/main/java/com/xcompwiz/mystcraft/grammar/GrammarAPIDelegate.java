@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import com.xcompwiz.mystcraft.api.internal.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;

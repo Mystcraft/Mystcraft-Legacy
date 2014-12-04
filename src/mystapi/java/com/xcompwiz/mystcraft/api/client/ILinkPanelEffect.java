@@ -1,6 +1,5 @@
 package com.xcompwiz.mystcraft.api.client;
 
-import com.xcompwiz.mystcraft.api.internal.IRenderAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
 import cpw.mods.fml.relauncher.Side;
