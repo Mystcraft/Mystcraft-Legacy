@@ -18,7 +18,7 @@ public class Modifier {
 	/** Amount of instability added if the modifier is left in the system */
 	public int				dangling;
 
-	public static final int	dangling_default	= 50;
+	public static final int	dangling_default	= 100;
 
 	public Modifier() {
 		this(null);
