@@ -6,9 +6,9 @@ import java.util.Random;
 import net.minecraft.world.biome.BiomeGenBase;
 
 import com.xcompwiz.mystcraft.api.word.WordData;
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.world.IAgeController;
 
 public class ModifierBiome extends SymbolBase {
 	public static ArrayList<BiomeGenBase>	selectables	= new ArrayList<BiomeGenBase>();

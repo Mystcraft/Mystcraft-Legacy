@@ -3,8 +3,8 @@ package com.xcompwiz.mystcraft.tileentity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+import com.xcompwiz.mystcraft.api.item.IItemRenameable;
 import com.xcompwiz.mystcraft.entity.EntityDummy;
-import com.xcompwiz.mystcraft.item.IItemRenameable;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 

@@ -1,6 +1,7 @@
-package com.xcompwiz.mystcraft.item;
+package com.xcompwiz.mystcraft.api.item;
 
 import java.util.List;
+
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

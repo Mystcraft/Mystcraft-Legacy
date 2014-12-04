@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.oldapi.internal;
 import java.util.Collection;
 
 import com.xcompwiz.mystcraft.api.MystAPI;
-import com.xcompwiz.mystcraft.instability.IInstabilityProvider;
+import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 
 
 /**

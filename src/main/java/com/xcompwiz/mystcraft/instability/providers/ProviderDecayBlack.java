@@ -2,11 +2,11 @@ package com.xcompwiz.mystcraft.instability.providers;
 
 import net.minecraft.block.material.Material;
 
+import com.xcompwiz.mystcraft.api.instability.IInstabilityController;
+import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.effects.EffectDecayBasic;
 import com.xcompwiz.mystcraft.effects.EffectExtraTicks;
-import com.xcompwiz.mystcraft.instability.IInstabilityController;
-import com.xcompwiz.mystcraft.instability.IInstabilityProvider;
 import com.xcompwiz.mystcraft.instability.decay.DecayHandler;
 
 public class ProviderDecayBlack implements IInstabilityProvider {

@@ -6,9 +6,9 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.WeatherControllerToggleable;
-import com.xcompwiz.mystcraft.world.IAgeController;
 
 public class SymbolWeatherStorm extends SymbolBase {
 

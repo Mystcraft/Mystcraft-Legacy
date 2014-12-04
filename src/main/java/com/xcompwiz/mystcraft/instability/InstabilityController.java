@@ -9,6 +9,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 import com.google.common.collect.HashMultiset;
+import com.xcompwiz.mystcraft.api.instability.IInstabilityController;
+import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.core.DebugDataTracker;
 import com.xcompwiz.mystcraft.data.DebugFlags;

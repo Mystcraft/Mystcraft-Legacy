@@ -9,9 +9,9 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.xcompwiz.mystcraft.api.event.DenseOresEvent;
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.world.IAgeController;
 
 public class SymbolDenseOres extends SymbolBase {
 	@Override

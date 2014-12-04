@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import net.minecraft.item.ItemStack;
 
-import com.xcompwiz.mystcraft.item.IItemFactory;
 
 /**
  * Provides methods for accessing and setting information in pages The implementation of this is provided by MystAPI.

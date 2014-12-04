@@ -1,7 +1,7 @@
 package com.xcompwiz.mystcraft.symbol;
 
 import com.xcompwiz.mystcraft.api.word.WordData;
-import com.xcompwiz.mystcraft.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 
 
 /**

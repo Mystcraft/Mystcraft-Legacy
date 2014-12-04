@@ -5,8 +5,8 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
-import com.xcompwiz.mystcraft.world.IAgeController;
 
 public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 

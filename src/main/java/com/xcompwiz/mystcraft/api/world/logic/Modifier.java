@@ -1,16 +1,15 @@
-package com.xcompwiz.mystcraft.symbol;
+package com.xcompwiz.mystcraft.api.world.logic;
 
 import java.util.List;
 
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
-import com.xcompwiz.mystcraft.world.IAgeController;
-
+import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 
 /**
- * The modifier object class This wraps the modifier objects registered to the {@link IAgeController} during symbol
- * logic initialization See {@link ModifierUtils} for more advanced modifier usages
- * 
+ * The modifier object class This wraps the modifier objects registered to the {@link IAgeController} during symbol logic initialization See
+ * {@link ModifierUtils} for more advanced modifier usages
  * @author xcompwiz
  */
 public class Modifier {
@@ -40,7 +39,6 @@ public class Modifier {
 
 	/**
 	 * Returns the stored object without any casting
-	 * 
 	 * @return Returns the stored object or null
 	 */
 	public Object asObject() {
@@ -49,7 +47,6 @@ public class Modifier {
 
 	/**
 	 * Casts the stored object as a Number
-	 * 
 	 * @return Returns the stored object as a Number or null
 	 */
 	public Number asNumber() {
@@ -59,7 +56,6 @@ public class Modifier {
 
 	/**
 	 * Casts the stored object as a Color
-	 * 
 	 * @return Returns the stored object as a Color or null
 	 */
 	public Color asColor() {
@@ -69,7 +65,6 @@ public class Modifier {
 
 	/**
 	 * Casts the stored object as a gradient
-	 * 
 	 * @return Returns the stored object as a gradient or null
 	 */
 	public ColorGradient asGradient() {
@@ -80,7 +75,6 @@ public class Modifier {
 	/**
 	 * Casts the stored object as a list
 	 * @param <T> The type of element in the list
-	 * 
 	 * @return Returns the stored object as a list or null
 	 */
 	public <T> List<T> asList() {

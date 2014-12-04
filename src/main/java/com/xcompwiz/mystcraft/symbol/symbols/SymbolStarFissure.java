@@ -5,9 +5,9 @@ import java.util.Random;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.world.IAgeController;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGenMystStarFissure;
 
 public class SymbolStarFissure extends SymbolBase {

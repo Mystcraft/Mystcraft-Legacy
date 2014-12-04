@@ -10,6 +10,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.lwjgl.opengl.GL11;
 
+import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
+import com.xcompwiz.mystcraft.api.item.IItemWritable;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementBook;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementBook.IGuiOnLinkHandler;
@@ -32,10 +34,8 @@ import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.ContainerWritingDesk;
 import com.xcompwiz.mystcraft.inventory.IFluidTankProvider;
-import com.xcompwiz.mystcraft.item.IItemWritable;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
-import com.xcompwiz.mystcraft.page.IItemPageCollection;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 

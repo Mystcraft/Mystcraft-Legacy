@@ -15,6 +15,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
+import com.xcompwiz.mystcraft.api.item.IItemWritable;
 import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
 import com.xcompwiz.mystcraft.client.gui.GuiInventoryFolder;
 import com.xcompwiz.mystcraft.inventory.ContainerFolder;

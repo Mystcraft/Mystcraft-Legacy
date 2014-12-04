@@ -53,7 +53,6 @@ public class InternalAPI {
 		public IRenderAPI getRenderAPI() {
 			return InternalAPI.render;
 		}
-
 	}
 
 	public static DimensionAPIDelegate		dimension;

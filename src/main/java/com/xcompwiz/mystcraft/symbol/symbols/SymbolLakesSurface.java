@@ -7,11 +7,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.world.IAgeController;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGenLakesAdv;
 
 public class SymbolLakesSurface extends SymbolBase {

@@ -2,9 +2,9 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import net.minecraft.block.Block;
 
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.world.IAgeController;
 
 public class SymbolTerrainGenVoid extends SymbolBase {
 

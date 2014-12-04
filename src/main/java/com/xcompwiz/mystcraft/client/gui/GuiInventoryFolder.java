@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.lwjgl.opengl.GL11;
 
+import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButtonToggle;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementPageSurface;
@@ -18,7 +19,6 @@ import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.inventory.ContainerFolder;
 import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
-import com.xcompwiz.mystcraft.page.IItemPageCollection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

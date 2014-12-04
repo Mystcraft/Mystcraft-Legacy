@@ -1,7 +1,7 @@
 package com.xcompwiz.mystcraft.symbol.modifiers;
 
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.world.IAgeController;
 
 public class ModifierClear extends SymbolBase {
 

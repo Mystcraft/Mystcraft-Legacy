@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.instability;
 
+import com.xcompwiz.mystcraft.api.instability.IInstabilityFactory;
+import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.instability.providers.InstabilityProvider;
 

@@ -3,8 +3,8 @@ package com.xcompwiz.mystcraft.item;
 import java.util.Collection;
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.api.item.IItemPageAcceptor;
 import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.page.IItemPageAcceptor;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;

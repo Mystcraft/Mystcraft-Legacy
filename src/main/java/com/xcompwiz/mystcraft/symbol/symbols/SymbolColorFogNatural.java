@@ -3,9 +3,9 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 import net.minecraft.util.MathHelper;
 
 import com.xcompwiz.mystcraft.api.util.Color;
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.IFogColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.world.IAgeController;
 
 public class SymbolColorFogNatural extends SymbolBase {
 	@Override

@@ -1,9 +1,9 @@
 package com.xcompwiz.mystcraft.symbol.symbols;
 
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.effects.EffectExtraTicks;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.world.IAgeController;
 
 public class SymbolEnvAccelerated extends SymbolBase {
 

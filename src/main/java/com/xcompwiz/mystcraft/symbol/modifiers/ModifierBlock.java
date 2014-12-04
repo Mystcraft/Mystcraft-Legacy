@@ -4,10 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import com.xcompwiz.mystcraft.api.word.WordData;
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.world.IAgeController;
 
 public class ModifierBlock extends SymbolBase {
 

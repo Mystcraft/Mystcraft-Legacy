@@ -1,8 +1,8 @@
 package com.xcompwiz.mystcraft.symbol.symbols;
 
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.ILightingController;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.world.IAgeController;
 
 public class SymbolLightingNormal extends SymbolBase {
 

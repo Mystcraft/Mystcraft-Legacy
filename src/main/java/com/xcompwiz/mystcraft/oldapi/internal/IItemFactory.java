@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.item;
+package com.xcompwiz.mystcraft.oldapi.internal;
 
 import net.minecraft.item.ItemStack;
 

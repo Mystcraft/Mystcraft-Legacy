@@ -12,13 +12,13 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.IChunkProviderFinalization;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 import com.xcompwiz.mystcraft.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
-import com.xcompwiz.mystcraft.world.IAgeController;
 import com.xcompwiz.mystcraft.world.gen.MapGenAdvanced;
 import com.xcompwiz.mystcraft.world.gen.MapGenFloatingIslands;
 import com.xcompwiz.mystcraft.world.gen.MapGenFloatingIslands.IModifiedHandler;

@@ -17,9 +17,9 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;

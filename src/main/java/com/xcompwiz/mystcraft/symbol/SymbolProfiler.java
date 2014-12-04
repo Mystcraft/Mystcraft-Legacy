@@ -6,6 +6,7 @@ import java.util.HashSet;
 import net.minecraft.world.biome.WorldChunkManager;
 
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.api.world.logic.IChunkProviderFinalization;
 import com.xcompwiz.mystcraft.api.world.logic.ICloudColorProvider;
@@ -24,7 +25,7 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainFeatureLocator;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
-import com.xcompwiz.mystcraft.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 
 public class SymbolProfiler implements IAgeController {
 

@@ -1,11 +1,9 @@
-package com.xcompwiz.mystcraft.page;
+package com.xcompwiz.mystcraft.api.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public interface IItemPageAcceptor {
-
-
 	/**
 	 * Called when the player tries to add a page to the itemstack container. If you do not wish to accept the page, simply return the page.
 	 * @param player The player adding the page

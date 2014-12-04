@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.instability;
 
 import java.util.Collection;
 
+import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 import com.xcompwiz.mystcraft.oldapi.internal.IInstabilityAPI;
 
 public class InstabilityAPIDelegate implements IInstabilityAPI {

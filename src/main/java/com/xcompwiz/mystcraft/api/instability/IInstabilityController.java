@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.instability;
+package com.xcompwiz.mystcraft.api.instability;
 
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 

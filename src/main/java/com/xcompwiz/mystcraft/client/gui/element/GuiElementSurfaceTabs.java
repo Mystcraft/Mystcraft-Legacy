@@ -5,9 +5,9 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import com.xcompwiz.mystcraft.api.item.IItemRenameable;
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 import com.xcompwiz.mystcraft.data.Assets.GUIs;
-import com.xcompwiz.mystcraft.item.IItemRenameable;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 
 public class GuiElementSurfaceTabs extends GuiElement {

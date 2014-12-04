@@ -14,6 +14,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
+import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton.IGuiOnClickHandler;
@@ -24,8 +26,6 @@ import com.xcompwiz.mystcraft.client.gui.element.GuiElementPageSurface.Positiona
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiOnTextChange;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiTextProvider;
-import com.xcompwiz.mystcraft.item.IItemPageProvider;
-import com.xcompwiz.mystcraft.page.IItemPageCollection;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.page.SortingUtils;
 import com.xcompwiz.mystcraft.symbol.IAgeSymbol;

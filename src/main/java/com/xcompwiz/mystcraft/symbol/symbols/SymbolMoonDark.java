@@ -3,9 +3,9 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.world.World;
 
+import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.IMoon;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.world.IAgeController;
 
 public class SymbolMoonDark extends SymbolBase {
 

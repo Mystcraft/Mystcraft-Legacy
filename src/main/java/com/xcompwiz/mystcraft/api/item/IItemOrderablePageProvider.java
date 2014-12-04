@@ -1,6 +1,5 @@
-package com.xcompwiz.mystcraft.item;
+package com.xcompwiz.mystcraft.api.item;
 
-import com.xcompwiz.mystcraft.page.IItemPageAcceptor;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

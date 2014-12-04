@@ -6,10 +6,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.xcompwiz.mystcraft.item.IItemOrderablePageProvider;
-import com.xcompwiz.mystcraft.item.IItemRenameable;
+import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
+import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
+import com.xcompwiz.mystcraft.api.item.IItemRenameable;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
-import com.xcompwiz.mystcraft.page.IItemPageCollection;
 
 public class ContainerFolder extends ContainerBase implements IGuiMessageHandler {
 

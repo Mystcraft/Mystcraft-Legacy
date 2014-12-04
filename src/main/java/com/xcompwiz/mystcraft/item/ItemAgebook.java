@@ -13,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
+import com.xcompwiz.mystcraft.api.item.IItemWritable;
 import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;

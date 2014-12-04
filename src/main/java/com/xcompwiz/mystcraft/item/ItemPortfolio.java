@@ -21,13 +21,15 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
+import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
+import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
+import com.xcompwiz.mystcraft.api.item.IItemRenameable;
 import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
 import com.xcompwiz.mystcraft.client.gui.GuiInventoryFolder;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.ContainerFolder;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.network.NetworkUtils;
-import com.xcompwiz.mystcraft.page.IItemPageCollection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
