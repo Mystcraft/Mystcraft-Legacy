@@ -10,9 +10,8 @@ import cpw.mods.fml.common.eventhandler.Cancelable;
 import cpw.mods.fml.common.eventhandler.Event;
 
 /**
- * Mystcraft link (teleport) events. These events are all fired server-side only. Client-side functionality should be
- * handled by listening on the server side and notifying the client via a network message. The events are sent over the
- * Forge event bus.
+ * Mystcraft link (teleport) events. These events are all fired server-side only. Client-side functionality should be handled by listening on the server side
+ * and notifying the client via a network message. The events are sent over the Forge event bus.
  */
 public abstract class LinkEvent extends Event {
 
@@ -75,9 +74,8 @@ public abstract class LinkEvent extends Event {
 	}
 
 	/**
-	 * Called when the entity enters the new world and their position has been approximated. The entity is not fully
-	 * associated or tuned with the world yet, and players have not been sent server-side information such as weather
-	 * and time.
+	 * Called when the entity enters the new world and their position has been approximated. The entity is not fully associated or tuned with the world yet, and
+	 * players have not been sent server-side information such as weather and time.
 	 */
 	public static class LinkEventEnterWorld extends LinkEvent {
 		public LinkEventEnterWorld(World origin, World destination, Entity entity, ILinkInfo info) {

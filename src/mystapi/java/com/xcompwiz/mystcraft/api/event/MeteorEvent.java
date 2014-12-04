@@ -7,8 +7,8 @@ import net.minecraft.world.ChunkPosition;
 import cpw.mods.fml.common.eventhandler.Event;
 
 /**
- * The base event for the meteor. Used as the abstract parent class for all of the meteor events. These events are sent
- * over the Forge event bus and are Server-side only.
+ * The base event for the meteor. Used as the abstract parent class for all of the meteor events. These events are sent over the Forge event bus and are
+ * Server-side only.
  */
 public abstract class MeteorEvent extends Event {
 	public final Entity	meteor;
@@ -27,8 +27,8 @@ public abstract class MeteorEvent extends Event {
 	}
 
 	/**
-	 * The impact event for the meteor. This is sent out after all of the explosions have occurred and the meteor still
-	 * exists, effectively suspended in the middle of the crater.
+	 * The impact event for the meteor. This is sent out after all of the explosions have occurred and the meteor still exists, effectively suspended in the
+	 * middle of the crater.
 	 */
 	public static class MetorImpact extends MeteorEvent {
 		public MetorImpact(Entity meteor) {
@@ -37,9 +37,8 @@ public abstract class MeteorEvent extends Event {
 	}
 
 	/**
-	 * The explosion event for the meteor impact. Note that there will be several of these per meteor impact, as the
-	 * crater is a result of multiple explosions at different positions around the meteor. The list of positions is the
-	 * set of all blocks which were affected by the explosion. Only called server-side.
+	 * The explosion event for the meteor impact. Note that there will be several of these per meteor impact, as the crater is a result of multiple explosions
+	 * at different positions around the meteor. The list of positions is the set of all blocks which were affected by the explosion. Only called server-side.
 	 */
 	public static class MetorExplosion extends MeteorEvent {
 		/** The list of blocks affected by the explosion */

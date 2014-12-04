@@ -20,8 +20,11 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public abstract class MystAPI {
 	public abstract IDimensionAPI getDimensionAPI();
+
 	public abstract ILinkingAPI getLinkingAPI();
+
 	public abstract IGrammarAPI getGrammarAPI();
+
 	public abstract IWordAPI getWordAPI();
 
 	@SideOnly(Side.CLIENT)

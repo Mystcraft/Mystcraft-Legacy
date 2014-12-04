@@ -25,7 +25,6 @@ public final class Color {
 
 	/**
 	 * Averages this color with another color. Does not modify this object
-	 * 
 	 * @param other The color to average with
 	 * @return The averaged color
 	 */
@@ -36,7 +35,6 @@ public final class Color {
 
 	/**
 	 * Averages this color with a set of values. Does not modify this object
-	 * 
 	 * @param other The color to average with
 	 * @return The averaged color
 	 */
@@ -47,7 +45,6 @@ public final class Color {
 
 	/**
 	 * Converts the color to an integer value
-	 * 
 	 * @return The int representation of the color
 	 */
 	public int asInt() {
@@ -59,7 +56,6 @@ public final class Color {
 
 	/**
 	 * Converts the color to a java awt color
-	 * 
 	 * @return The color in AWT form
 	 */
 	public java.awt.Color toAWT() {

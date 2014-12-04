@@ -8,8 +8,7 @@ import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import cpw.mods.fml.common.eventhandler.Event;
 
 /**
- * Indicates that a link through a (Mystcraft) portal is about to occur, and allows for the link information to be
- * modified. Listen for this event via Forge.
+ * Indicates that a link through a (Mystcraft) portal is about to occur, and allows for the link information to be modified. Listen for this event via Forge.
  */
 public class PortalLinkEvent extends Event {
 	/** The world object where the link originates from */

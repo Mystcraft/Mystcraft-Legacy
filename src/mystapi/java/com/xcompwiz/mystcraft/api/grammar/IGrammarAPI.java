@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-
 /**
  * Provides methods for interacting with the grammar rules for the symbol generation system. The implementation of this is provided by MystAPI. Do NOT implement
  * this yourself!

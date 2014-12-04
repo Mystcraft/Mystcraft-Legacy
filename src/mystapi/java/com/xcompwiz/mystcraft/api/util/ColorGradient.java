@@ -10,7 +10,6 @@ public final class ColorGradient {
 
 	/**
 	 * Gets the number of color points in the gradient
-	 * 
 	 * @return The number of fixed colors in the gradient
 	 */
 	public int getColorCount() {
@@ -19,7 +18,6 @@ public final class ColorGradient {
 
 	/**
 	 * Returns the full length of the gradient
-	 * 
 	 * @return The length of the gradient
 	 */
 	public float getLength() {
@@ -28,7 +26,6 @@ public final class ColorGradient {
 
 	/**
 	 * Adds a gradient to the end of this gradient
-	 * 
 	 * @param other The gradient to add to the end of this one
 	 */
 	public void appendGradient(ColorGradient other) {
@@ -39,7 +36,6 @@ public final class ColorGradient {
 
 	/**
 	 * Adds a color to the end of the gradient
-	 * 
 	 * @param color The color to add
 	 */
 	public void pushColor(Color color) {
@@ -48,7 +44,6 @@ public final class ColorGradient {
 
 	/**
 	 * Adds a color to the gradient
-	 * 
 	 * @param color The color to add
 	 * @param interval How long it takes to transition to the next color
 	 */
@@ -63,7 +58,6 @@ public final class ColorGradient {
 
 	/**
 	 * Gets the current color at a point
-	 * 
 	 * @param value The point in the gradient to use
 	 * @return The color object that represents the current color
 	 */

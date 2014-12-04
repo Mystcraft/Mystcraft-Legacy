@@ -5,16 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.util.ResourceLocation;
-
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * This is the "word" class for the Narayan Poems. You can use this class to do very advanced words, but generally it
- * should be sufficient to use {@code registerWord(String name, Integer[] components)} in {@link IWordAPI}. See
- * {@link WordData}
- * 
+ * This is the "word" class for the Narayan Poems. You can use this class to do very advanced words, but generally it should be sufficient to use
+ * {@code registerWord(String name, Integer[] components)} in {@link IWordAPI}. See {@link WordData}
  * @author xcompwiz
  */
 public final class DrawableWord {

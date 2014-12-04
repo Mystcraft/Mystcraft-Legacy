@@ -7,23 +7,20 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Exposes functions for rendering Mystcraft elements, such as symbols, words, and colors
- * 
  * @author xcompwiz
  */
 public interface IRenderAPI {
 
 	/**
 	 * Use this to register your own rendering effects on the linkpanel
-	 * 
 	 * @param The renderer to register
 	 */
 	@SideOnly(Side.CLIENT)
 	void registerRenderEffect(ILinkPanelEffect renderer);
 
 	/**
-	 * Draws a Narayan word from the word list. If the word does not exist, it will be generated based on the string.
-	 * Note that you can also draw D'ni numbers by using for example "1" as the word. This works for 0-26.
-	 * 
+	 * Draws a Narayan word from the word list. If the word does not exist, it will be generated based on the string. Note that you can also draw D'ni numbers
+	 * by using for example "1" as the word. This works for 0-26.
 	 * @param x The x location in pixels
 	 * @param y The y location in pixels
 	 * @param zLevel The zLevel we're drawing on
@@ -35,7 +32,6 @@ public interface IRenderAPI {
 
 	/**
 	 * Can be used to draw a symbol somewhere
-	 * 
 	 * @param x The x location in pixels
 	 * @param y The y location in pixels
 	 * @param zLevel The zLevel we're drawing on
@@ -47,7 +43,6 @@ public interface IRenderAPI {
 
 	/**
 	 * Draws a D'ni color "eye". The eye will be in and represent the provided color.
-	 * 
 	 * @param x The x location in pixels
 	 * @param y The y location in pixels
 	 * @param zLevel The zLevel we're drawing on

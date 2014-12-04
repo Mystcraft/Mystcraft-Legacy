@@ -5,9 +5,8 @@ import java.util.Collections;
 import java.util.HashMap;
 
 /**
- * Defines the categories for the BlockDescriptors. These are used to define what cases a block is usable in when
- * generating. For example, only BlockDescriptors marked with TERRAIN will be used when a TERRAIN block is requested.
- * 
+ * Defines the categories for the BlockDescriptors. These are used to define what cases a block is usable in when generating. For example, only BlockDescriptors
+ * marked with TERRAIN will be used when a TERRAIN block is requested.
  * @author xcompwiz
  */
 public final class BlockCategory {
@@ -16,14 +15,13 @@ public final class BlockCategory {
 
 	/**
 	 * Gets all of the generation categories
-	 * 
 	 * @return The set of all generation categories
 	 */
 	public static Collection<BlockCategory> getCategories() {
 		return Collections.unmodifiableCollection(categories.values());
 	}
 
-	/** This is a special-case category.  All block modifiers satisfy this. */
+	/** This is a special-case category. All block modifiers satisfy this. */
 	public static final BlockCategory	ANY			= new BlockCategory("BlockAny");
 	/** Valid Solid blocks include sand (everything but fluids and air) */
 	public static final BlockCategory	SOLID		= new BlockCategory("BlockSolid");
@@ -45,9 +43,8 @@ public final class BlockCategory {
 	private final String				name;
 
 	/**
-	 * Creates a new BlockCategory. Generally you shouldn't make more than one instance with a name, but it is supported
-	 * for the sake of multiple add-ons wanting identical new block types.
-	 * 
+	 * Creates a new BlockCategory. Generally you shouldn't make more than one instance with a name, but it is supported for the sake of multiple add-ons
+	 * wanting identical new block types.
 	 * @param name The name of the category. Used for comparisons and as the category's grammar token
 	 */
 	private BlockCategory(String name) {
@@ -56,22 +53,17 @@ public final class BlockCategory {
 	}
 
 	public static BlockCategory registerBlockCategory(String name) {
-		if (categories.containsKey(name)) {
-			return categories.get(name);
-		}
+		if (categories.containsKey(name)) { return categories.get(name); }
 		return new BlockCategory(name);
 	}
 
 	public static BlockCategory getBlockCategory(String name) {
-		if (categories.containsKey(name)) {
-			return categories.get(name);
-		}
+		if (categories.containsKey(name)) { return categories.get(name); }
 		return null;
 	}
 
 	/**
 	 * Returns the type name of the BlockCategory
-	 * 
 	 * @return the name provided to the BlockCategory
 	 */
 	public String getName() {
@@ -80,7 +72,6 @@ public final class BlockCategory {
 
 	/**
 	 * Gets the grammar token bound to a generation category
-	 * 
 	 * @return The grammar token for the category
 	 */
 	public String getGrammarBinding() {

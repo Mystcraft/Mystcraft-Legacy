@@ -6,9 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * This interface allows for you to add render layers to the link panel in a book. Register it through the
- * {@link IRenderAPI}.
- * 
+ * This interface allows for you to add render layers to the link panel in a book. Register it through the {@link IRenderAPI}.
  * @author xcompwiz
  */
 @SideOnly(Side.CLIENT)
@@ -16,7 +14,6 @@ public interface ILinkPanelEffect {
 
 	/**
 	 * Called when the rendering should occur
-	 * 
 	 * @param left
 	 * @param top
 	 * @param width

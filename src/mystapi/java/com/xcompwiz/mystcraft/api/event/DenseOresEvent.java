@@ -6,9 +6,8 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.eventhandler.Event;
 
 /**
- * Listen for this event via Forge in order to do generation during Dense Ores population for every dense ores symbol
- * The provided variables are exactly like that of the standard generation. See the documentation of each variable for
- * more information.
+ * Listen for this event via Forge in order to do generation during Dense Ores population for every dense ores symbol The provided variables are exactly like
+ * that of the standard generation. See the documentation of each variable for more information.
  */
 public class DenseOresEvent extends Event {
 	/** The world in which we're generating */
