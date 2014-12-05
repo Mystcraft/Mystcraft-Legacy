@@ -17,6 +17,7 @@ public class IMCHandler {
 
 	static {
 		processors.put("blockmodifier", new IMCBlockModifier());
+		processors.put("blockinstability", new IMCBlockInstability());
 		processors.put("blacklistfluid", new IMCBlacklistFluid());
 		processors.put("blacklist", new IMCBlacklistSymbol());
 		processors.put("fluidsymboldata", new IMCFluidData());

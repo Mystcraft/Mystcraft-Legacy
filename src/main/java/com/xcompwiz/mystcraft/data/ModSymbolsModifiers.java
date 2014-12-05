@@ -112,7 +112,7 @@ public class ModSymbolsModifiers {
 		ArrayList<NBTTagCompound> categories = new ArrayList<NBTTagCompound>();
 		for (Object[] pair : pairs) {
 			NBTTagCompound cat = new NBTTagCompound();
-			cat.setString("Category", ((BlockCategory) pair[0]).getName());
+			cat.setString("Category", (String) pair[0]);
 			cat.setInteger("Rank", (Integer) pair[1]);
 			categories.add(cat);
 		}
