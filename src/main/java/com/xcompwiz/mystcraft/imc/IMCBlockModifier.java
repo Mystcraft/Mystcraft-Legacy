@@ -3,6 +3,8 @@ package com.xcompwiz.mystcraft.imc;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
 
@@ -23,23 +25,43 @@ public class IMCBlockModifier implements IMCProcessor {
 	public void process(IMCMessage message) {
 		if (!message.isNBTMessage()) return;
 		NBTTagCompound nbt = message.getNBTValue();
-		String blockname = nbt.getString("BlockName");
-		Block block = GameRegistry.findBlock(message.getSender(), blockname);
+
+		Block block = null;
+		int metadata = 0;
+
+		if (nbt.hasKey("ItemStack")) {
+			ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("ItemStack"));
+			if (!(itemstack.getItem() instanceof ItemBlock)) throw new RuntimeException("Itemstacks references used for setting instability factors must extend ItemBlock");
+			block = ((ItemBlock)itemstack.getItem()).field_150939_a;
+			metadata = itemstack.getItemDamage();
+		}
+
+		if (nbt.hasKey("BlockName")) {
+			String blockname = nbt.getString("BlockName");
+			block = GameRegistry.findBlock(message.getSender(), blockname);
+			if (block == null) {
+				LoggerUtils.error("Could not find block by name %s belonging to mod [%s] when creating block modifier symbol via IMC message.", blockname, message.getSender());
+				return;
+			}
+		}
+
 		if (block == null) {
-			LoggerUtils.error("Could not find block by name %s belonging to mod [%s] when creating block modifier symbol via IMC message.", blockname, message.getClass());
+			LoggerUtils.error("No block specified when creating block modifier symbol via IMC message from mod [%s].", message.getSender());
 			return;
 		}
-		int metadata = 0;
+
 		if (nbt.hasKey("Metadata")) metadata = NBTUtils.readNumber(nbt.getTag("Metadata")).intValue();
+
 		String thirdword = nbt.getString("PoemWord");
 		if (thirdword == null) {
-			LoggerUtils.warn("Poem word not specified for %s belonging to mod [%s] when creating block modifier symbol via IMC message.", blockname, message.getClass());
+			LoggerUtils.warn("Poem word not specified for %s:%d belonging to mod [%s] when creating block modifier symbol via IMC message.", block.getUnlocalizedName(), metadata, message.getSender());
 		}
+
 		int rank = 1;
 		if (nbt.hasKey("Rank")) {
 			rank = NBTUtils.readNumber(nbt.getTag("Rank")).intValue();
 		} else {
-			LoggerUtils.warn("Item Ranking not specified for %s belonging to mod [%s] when creating block modifier symbol via IMC message.", blockname, message.getClass());
+			LoggerUtils.warn("Item Ranking not specified for %s:%d belonging to mod [%s] when creating block modifier symbol via IMC message.", block.getUnlocalizedName(), metadata, message.getSender());
 		}
 
 		ArrayList<CategoryPair> objects = null;
@@ -54,10 +76,10 @@ public class IMCBlockModifier implements IMCProcessor {
 			}
 		}
 		if (objects == null) {
-			LoggerUtils.warn("Block categories not specified for %s belonging to mod [%s] when creating block modifier symbol via IMC message.", blockname, message.getClass());
+			LoggerUtils.warn("Block categories not specified for %s:%d belonging to mod [%s] when creating block modifier symbol via IMC message.", block.getUnlocalizedName(), metadata, message.getSender());
 		}
 
-		CategoryPair[] args = (objects != null ? objects.toArray(new CategoryPair[]{}) : null);
+		CategoryPair[] args = (objects != null ? objects.toArray(new CategoryPair[] {}) : null);
 		IAgeSymbol symbol = InternalAPI.symbolFact.createSymbol(block, metadata, thirdword, rank, args);
 		if (symbol == null) {
 			LoggerUtils.warn("[%s] is attempting to create a block modifier symbol for an already registered block.", message.getSender());
