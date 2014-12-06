@@ -20,6 +20,7 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.world.storage.IStorageObject;
 import com.xcompwiz.mystcraft.data.DebugFlags;
 import com.xcompwiz.mystcraft.data.GrammarRules;
 import com.xcompwiz.mystcraft.grammar.GrammarTree;
@@ -27,7 +28,6 @@ import com.xcompwiz.mystcraft.nbt.NBTTagCompoundWrapper;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
-import com.xcompwiz.mystcraft.world.storage.IStorageObject;
 
 // XXX: (AgeData) can we move to this class being server-side, and then having sub-objects which are sent to the clients?
 // Needed things on client-side:

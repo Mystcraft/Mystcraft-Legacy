@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.api.world.logic;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
-import com.xcompwiz.mystcraft.world.storage.IStorageObject;
+import com.xcompwiz.mystcraft.api.world.storage.IStorageObject;
 
 // FIXME: This interface needs to be revised/reworked completely
 // WARNING! If you use this interface, be prepared for your symbol to not update to the next API version

@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
-import com.xcompwiz.mystcraft.world.storage.IStorageObject;
+import com.xcompwiz.mystcraft.api.world.storage.IStorageObject;
 
 public abstract class WeatherControllerBase implements IWeatherController {
 

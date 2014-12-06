@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.world.storage;
+package com.xcompwiz.mystcraft.api.world.storage;
 
 /**
  * Do NOT implement this yourself!
