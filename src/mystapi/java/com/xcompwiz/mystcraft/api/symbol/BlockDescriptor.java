@@ -1,10 +1,9 @@
-package com.xcompwiz.mystcraft.symbol;
+package com.xcompwiz.mystcraft.api.symbol;
 
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
 
-import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 
 /**
  * For defining information for block modifiers This handles the block modifier system. Use this to get block modifiers for usage as well as to push block

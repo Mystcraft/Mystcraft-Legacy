@@ -4,10 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
+import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
-import com.xcompwiz.mystcraft.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolTerrainGenFlat extends SymbolBase {
