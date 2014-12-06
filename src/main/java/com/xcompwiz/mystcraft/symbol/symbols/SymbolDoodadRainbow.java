@@ -9,10 +9,10 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.ISkyDoodad;
 import com.xcompwiz.mystcraft.client.render.RenderRainbow;
-import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import cpw.mods.fml.relauncher.Side;

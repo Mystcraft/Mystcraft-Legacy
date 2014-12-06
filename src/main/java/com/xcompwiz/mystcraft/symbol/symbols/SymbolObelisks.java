@@ -8,10 +8,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
+import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.symbol.BlockDescriptor;
-import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolObelisks extends SymbolBase {

@@ -2,10 +2,10 @@ package com.xcompwiz.mystcraft.api.world.logic;
 
 import java.util.List;
 
+import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
-import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 
 /**
  * The modifier object class This wraps the modifier objects registered to the {@link IAgeController} during symbol logic initialization See

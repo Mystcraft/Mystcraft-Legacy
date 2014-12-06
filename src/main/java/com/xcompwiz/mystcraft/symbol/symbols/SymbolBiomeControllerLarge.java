@@ -14,9 +14,9 @@ import net.minecraft.world.gen.layer.GenLayerSmooth;
 import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
 import net.minecraft.world.gen.layer.IntCache;
 
+import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
-import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
 import com.xcompwiz.mystcraft.world.gen.layer.GenLayerBiomeMyst;

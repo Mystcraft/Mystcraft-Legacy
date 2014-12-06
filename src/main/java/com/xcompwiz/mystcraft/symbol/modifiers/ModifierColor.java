@@ -3,11 +3,11 @@ package com.xcompwiz.mystcraft.symbol.modifiers;
 import java.util.ArrayList;
 
 import com.xcompwiz.mystcraft.api.grammar.GrammarData;
+import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
-import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.util.CollectionUtils;
 

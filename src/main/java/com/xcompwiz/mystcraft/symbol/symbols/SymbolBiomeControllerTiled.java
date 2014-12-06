@@ -6,9 +6,9 @@ import java.util.Random;
 
 import net.minecraft.world.biome.BiomeGenBase;
 
+import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
-import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
 

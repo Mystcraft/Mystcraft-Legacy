@@ -1,10 +1,10 @@
 package com.xcompwiz.mystcraft.symbol.symbols;
 
+import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.effects.EffectLightning;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
-import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolEnvLightning extends SymbolBase {

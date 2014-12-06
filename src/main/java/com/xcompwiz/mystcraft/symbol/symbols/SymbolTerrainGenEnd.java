@@ -7,9 +7,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
+import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.symbol.BlockDescriptor;
-import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.TerrainGeneratorBase;
 

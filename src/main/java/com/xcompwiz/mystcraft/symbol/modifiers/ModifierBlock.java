@@ -3,10 +3,10 @@ package com.xcompwiz.mystcraft.symbol.modifiers;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
+import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.symbol.BlockDescriptor;
-import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class ModifierBlock extends SymbolBase {

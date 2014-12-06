@@ -1,15 +1,15 @@
-package com.xcompwiz.mystcraft.symbol;
+package com.xcompwiz.mystcraft.api.symbol;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.world.biome.BiomeGenBase;
 
-import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
 import com.xcompwiz.mystcraft.api.world.logic.Modifier;
+import com.xcompwiz.mystcraft.symbol.BlockDescriptor;
 
 /**
  * A collection of helper functions for dealing with more complex modifier types, such as blocks and biomes. Also includes a number of averaging functions to

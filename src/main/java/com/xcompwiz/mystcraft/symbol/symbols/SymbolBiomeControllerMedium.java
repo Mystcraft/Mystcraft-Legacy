@@ -5,8 +5,8 @@ import java.util.List;
 
 import net.minecraft.world.biome.BiomeGenBase;
 
+import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
-import com.xcompwiz.mystcraft.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolBiomeControllerMedium extends SymbolBase {
