@@ -20,14 +20,13 @@ public class GuiVillagerShop extends GuiContainerElements {
 	@Override
 	public void validate() {
 		xSize = 176;
-		ySize = 80;
+		ySize = 181;
 	}
 
 	@Override
 	protected void _drawBackgroundLayer(int mouseX, int mouseY, float partial) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		//XXX: Better texture to use here?
-		mc.renderEngine.bindTexture(GUIs.desk);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 82, xSize, ySize);
+		mc.renderEngine.bindTexture(GUIs.villagershop);
+		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 }

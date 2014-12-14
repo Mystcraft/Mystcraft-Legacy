@@ -32,11 +32,12 @@ public class Assets {
 		public static final ResourceLocation	book_page_right			= new ResourceLocation("mystcraft:gui/bookui_pageR.png");
 		public static final ResourceLocation	book_page_right_solid	= new ResourceLocation("mystcraft:gui/bookui_rpage_full.png");
 		public static final ResourceLocation	desk					= new ResourceLocation("mystcraft:gui/writingdesk.png");
+		public static final ResourceLocation	villagershop			= new ResourceLocation("mystcraft:gui/tradeshop.png");
 		public static final ResourceLocation	mixer					= new ResourceLocation("mystcraft:gui/inkmixer.png");
 		public static final ResourceLocation	scrollable				= new ResourceLocation("mystcraft:gui/scrollable.png");
 		public static final ResourceLocation	single_slot				= new ResourceLocation("mystcraft:gui/single_slot.png");
 		public static final ResourceLocation	binder					= new ResourceLocation("mystcraft:gui/pagebinder.png");
-		public static ResourceLocation			scrollbar				= new ResourceLocation("mystcraft:gui/scrollbar.png");
+		public static final ResourceLocation	scrollbar				= new ResourceLocation("mystcraft:gui/scrollbar.png");
 	}
 
 	public static final class Items {
