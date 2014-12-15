@@ -42,7 +42,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		agedata.addSymbol("LakesSurface", 0);
 
 		agedata.addSymbol("ModMat_tile.lava", 0);
-		agedata.addSymbol("DeepLakes", 0);
+		agedata.addSymbol("LakesDeep", 0);
 
 		//Caves
 		agedata.addSymbol("Caves", 0);
