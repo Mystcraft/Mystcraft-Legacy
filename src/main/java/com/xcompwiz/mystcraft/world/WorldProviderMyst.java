@@ -100,17 +100,17 @@ public class WorldProviderMyst extends WorldProvider {
 
 	@Override
 	public IChunkProvider createChunkGenerator() {
-		return new ChunkProviderMyst(controller, worldObj, agedata);
+		return new ChunkProviderMyst(getAgeController(), worldObj, agedata);
 	}
 
 	@Override
 	protected void generateLightBrightnessTable() {
-		controller.generateLightBrightnessTable(lightBrightnessTable);
+		getAgeController().generateLightBrightnessTable(lightBrightnessTable);
 	}
 
 	@Override
 	public float[] calcSunriseSunsetColors(float f, float f1) {
-		return null; // controller.getHorizonColor(f, f1);
+		return null; // getAgeController().getHorizonColor(f, f1);
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class WorldProviderMyst extends WorldProvider {
 	 */
 	@Override
 	public float calculateCelestialAngle(long time, float partialtick) {
-		return controller.calculateCelestialAngle(time, partialtick);
+		return getAgeController().calculateCelestialAngle(time, partialtick);
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class WorldProviderMyst extends WorldProvider {
 
 	@Override
 	public Vec3 getFogColor(float celestial_angle, float time) {
-		Vec3 fog = controller.getFogColor(celestial_angle, time);
+		Vec3 fog = getAgeController().getFogColor(celestial_angle, time);
 		if (fog == null) {
 			float f2 = MathHelper.cos(celestial_angle * 3.141593F * 2.0F) * 2.0F + 0.5F;
 			if (f2 < 0.0F) {
@@ -161,7 +161,7 @@ public class WorldProviderMyst extends WorldProvider {
 			var3 = 1.0F;
 		}
 
-		Vec3 temp = controller.getCloudColor(worldObj.getWorldTime(), celestial_angle);
+		Vec3 temp = getAgeController().getCloudColor(worldObj.getWorldTime(), celestial_angle);
 		float var4;
 		float var5;
 		float var6;
@@ -219,12 +219,12 @@ public class WorldProviderMyst extends WorldProvider {
 
 	@Override
 	public float getCloudHeight() {
-		return controller.getCloudHeight();
+		return getAgeController().getCloudHeight();
 	}
 
 	@Override
 	public double getHorizon() {
-		return controller.getHorizon();
+		return getAgeController().getHorizon();
 	}
 
 	@Override
@@ -236,7 +236,7 @@ public class WorldProviderMyst extends WorldProvider {
 	public boolean canBlockFreeze(int x, int y, int z, boolean reqLand) {
 		BiomeGenBase biome = this.getBiomeGenForCoords(x, z);
 		float temp = biome.getFloatTemperature(x, y, z);
-		temp = this.controller.getTemperatureAtHeight(temp, y);
+		temp = this.getAgeController().getTemperatureAtHeight(temp, y);
 
 		if (temp > 0.15F) { return false; }
 		if (y >= 0 && y < 256 && worldObj.getSavedLightValue(EnumSkyBlock.Block, x, y, z) < 10) {
@@ -274,7 +274,7 @@ public class WorldProviderMyst extends WorldProvider {
 	public boolean canSnowAt(int x, int y, int z, boolean checkLight) {
 		BiomeGenBase biome = this.getBiomeGenForCoords(x, z);
 		float temp = biome.getFloatTemperature(x, y, z);
-		temp = this.controller.getTemperatureAtHeight(temp, y);
+		temp = this.getAgeController().getTemperatureAtHeight(temp, y);
 
 		if (temp > 0.15F) { return false; }
 
@@ -296,7 +296,7 @@ public class WorldProviderMyst extends WorldProvider {
 
 	@Override
 	public boolean canDoLightning(Chunk chunk) {
-		controller.tickBlocksAndAmbiance(chunk);
+		getAgeController().tickBlocksAndAmbiance(chunk);
 		return false;
 	}
 
@@ -305,15 +305,15 @@ public class WorldProviderMyst extends WorldProvider {
 	 * Called at the beginning of the World update tick
 	 */
 	public void updateWeather() {
-		controller.tick();
-		controller.getWeatherController().updateRaining();
+		getAgeController().tick();
+		getAgeController().getWeatherController().updateRaining();
 		weatherrenderer.updateClouds();
 		cloudrenderer.updateClouds();
 
 		this.worldObj.prevRainingStrength = this.worldObj.rainingStrength;
-		this.worldObj.rainingStrength = this.controller.getWeatherController().getRainingStrength();
+		this.worldObj.rainingStrength = this.getAgeController().getWeatherController().getRainingStrength();
 		this.worldObj.prevThunderingStrength = this.worldObj.thunderingStrength;
-		this.worldObj.thunderingStrength = this.controller.getWeatherController().getStormStrength();
+		this.worldObj.thunderingStrength = this.getAgeController().getWeatherController().getStormStrength();
 
 		if (worldObj.isRemote || !(worldObj instanceof WorldServer)) return;
 		WorldServer world = (WorldServer) this.worldObj;
@@ -336,18 +336,18 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	private long timeToSunrise() {
-		return controller.getTimeToSunrise(this.getWorldTime());
+		return getAgeController().getTimeToSunrise(this.getWorldTime());
 	}
 
 	@Override
 	public void resetRainAndThunder() {
 		this.agedata.markNeedsResend();
-		this.controller.getWeatherController().reset();
+		this.getAgeController().getWeatherController().reset();
 	}
 
 	public void togglePrecipitation() {
 		this.agedata.markNeedsResend();
-		this.controller.getWeatherController().togglePrecipitation();
+		this.getAgeController().getWeatherController().togglePrecipitation();
 	}
 
 	@Override
@@ -377,7 +377,7 @@ public class WorldProviderMyst extends WorldProvider {
 		Random random = new Random(agedata.getSeed());
 		ChunkPosition chunkposition = worldChunkMgr.findBiomePosition(0, 0, 256, worldChunkMgr.getBiomesToSpawnIn(), random);
 		int x = 0;
-		int y = controller.getSeaLevel();
+		int y = getAgeController().getSeaLevel();
 		int z = 0;
 		if (chunkposition != null) {
 			x = chunkposition.chunkPosX;
@@ -431,7 +431,7 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	public Color getStaticColor(String string, BiomeGenBase biome, int x, int y, int z) {
-		return controller.getStaticColor(string, biome, x, y, z);
+		return getAgeController().getStaticColor(string, biome, x, y, z);
 	}
 
 	/**
@@ -444,7 +444,7 @@ public class WorldProviderMyst extends WorldProvider {
 		float green = 0;
 		float blue = 0;
 		BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posZ));
-		Vec3 out = controller.getSkyColor(entity, biome, worldObj.getWorldTime(), celestial_angle);
+		Vec3 out = getAgeController().getSkyColor(entity, biome, worldObj.getWorldTime(), celestial_angle);
 		if (out == null) {
 			float var4 = MathHelper.cos(celestial_angle * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
 
@@ -552,22 +552,22 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	public boolean isPvPEnabled() {
-		return controller.isPvPEnabled();
+		return getAgeController().isPvPEnabled();
 	}
 
 	public float getTemperature(float temperature, int biomeId) {
-		return controller.getWeatherController().getTemperature(temperature, biomeId);
+		return getAgeController().getWeatherController().getTemperature(temperature, biomeId);
 	}
 
 	public float getRainfall(float rainfall, int biomeId) {
-		return controller.getWeatherController().getRainfall(rainfall, biomeId);
+		return getAgeController().getWeatherController().getRainfall(rainfall, biomeId);
 	}
 
 	public boolean getEnableSnow(boolean enableSnow, int biomeId) {
-		return controller.getWeatherController().getEnableSnow(enableSnow, biomeId);
+		return getAgeController().getWeatherController().getEnableSnow(enableSnow, biomeId);
 	}
 
 	public boolean getEnableRain(boolean canSpawnLightningBolt, int biomeId) {
-		return controller.getWeatherController().getEnableRain(canSpawnLightningBolt, biomeId);
+		return getAgeController().getWeatherController().getEnableRain(canSpawnLightningBolt, biomeId);
 	}
 }

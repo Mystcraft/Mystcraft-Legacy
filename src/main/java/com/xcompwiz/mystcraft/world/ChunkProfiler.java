@@ -38,21 +38,22 @@ public class ChunkProfiler extends WorldSavedData {
 	private static final Map<String, Integer>	freevals		= new HashMap<String, Integer>();
 
 	//XXX: Move out of here.
-	//TODO: (API) Make accessible to API
-	//TODO: (Instability) Make metadata aware
-	public static void setInstabilityFactors(Block block, float factor1, float factor2, int free) {
-		setInstabilityFactors(block, 0, factor1, factor2, free);
+	public static void setInstabilityFactors(Block block, float factor1, float factor2) {
+		setInstabilityFactors(block, 0, factor1, factor2);
 	}
 
-	public static void setInstabilityFactors(Block block, int metadata, float factor1, float factor2, int free) {
-		setInstabilityFactors(getOrCreateUnlocalizedKey(block, metadata), factor1, factor2, free);
+	public static void setInstabilityFactors(Block block, int metadata, float factor1, float factor2) {
+		setInstabilityFactors(getOrCreateUnlocalizedKey(block, metadata), factor1, factor2);
 	}
 
-	private static void setInstabilityFactors(String unlocalizedkey, float factor1, float factor2, int free) {
+	private static void setInstabilityFactors(String unlocalizedkey, float factor1, float factor2) {
 		watchedblocks.add(unlocalizedkey);
 		factor1s.put(unlocalizedkey, factor1);
 		factor2s.put(unlocalizedkey, factor2);
-		freevals.put(unlocalizedkey, free);
+	}
+
+	public static <T extends Number> void setBaselineStability(String key, T value) {
+		freevals.put(key, value.intValue());
 	}
 
 	private static final Map<Block, HashMap<Integer, String>>	keys	= new HashMap<Block, HashMap<Integer, String>>();
@@ -101,7 +102,6 @@ public class ChunkProfiler extends WorldSavedData {
 	private String							debugname;
 
 	private int								count;
-	private ChunkProfileData				solid_prepop;
 	private ChunkProfileData				solid;
 	private Map<String, ChunkProfileData>	blockmaps;
 	private static boolean					outputfiles	= false;
@@ -121,7 +121,6 @@ public class ChunkProfiler extends WorldSavedData {
 	public ChunkProfiler(String id) {
 		super(id);
 		count = 0;
-		solid_prepop = new ChunkProfileData();
 		solid = new ChunkProfileData();
 		blockmaps = new HashMap<String, ChunkProfileData>();
 		for (String blockkey : watchedblocks) {
@@ -130,13 +129,27 @@ public class ChunkProfiler extends WorldSavedData {
 	}
 
 	public void baseChunk(Chunk chunk, int chunkX, int chunkZ) {
-		profileChunk(chunk, solid_prepop, null);
-		this.markDirty();
 	}
 
 	public int calculateInstability() {
 		if (outputfiles || DebugFlags.profiler) outputFiles();
+		HashMap<String, Float> split = calculateSplitInstability();
 		float instability = 0;
+		for (Entry<String, Float> entry : split.entrySet()) {
+			if (DebugFlags.profiler) DebugDataTracker.set((debugname == null ? "Unnamed" : debugname) + ".instability." + entry.getKey(), "" + entry.getValue());
+			float val = entry.getValue();
+			if (val > 0) {
+				Integer free = freevals.get(entry.getKey());
+				if (free != null) {
+					val = Math.max(0, val - free);
+				}
+			}
+			instability += val;
+		}
+		return Math.round(instability);
+	}
+
+	public HashMap<String, Float> calculateSplitInstability() {
 		int layers = solid.data.length / 256;
 		HashMap<String, Float> split = new HashMap<String, Float>();
 		//For all cells, calculate instability
@@ -160,15 +173,7 @@ public class ChunkProfiler extends WorldSavedData {
 				}
 			}
 		}
-		for (Entry<String, Float> entry : split.entrySet()) {
-			if (DebugFlags.profiler) DebugDataTracker.set((debugname == null ? "Unnamed" : debugname) + ".instability." + entry.getKey(), "" + entry.getValue());
-			float val = entry.getValue();
-			if (val > 0) {
-				val = Math.max(0, val - freevals.get(entry.getKey()));
-			}
-			instability += val;
-		}
-		return Math.round(instability);
+		return split;
 	}
 
 	public void profile(Chunk chunk, int chunkX, int chunkZ) {
@@ -228,7 +233,6 @@ public class ChunkProfiler extends WorldSavedData {
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
-		nbt.setTag("prepop", solid_prepop.writeToNBT(new NBTTagCompound()));
 		nbt.setTag("solid", solid.writeToNBT(new NBTTagCompound()));
 		if (blockmaps == null) return;
 		for (Map.Entry<String, ChunkProfileData> entry : blockmaps.entrySet()) {
@@ -240,7 +244,6 @@ public class ChunkProfiler extends WorldSavedData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		solid_prepop.readFromNBT(nbt.getCompoundTag("prepop"));
 		solid.readFromNBT(nbt.getCompoundTag("solid"));
 		count = solid.count;
 		if (nbt.hasKey("tile.myst.fluid")) {
@@ -257,7 +260,6 @@ public class ChunkProfiler extends WorldSavedData {
 	}
 
 	private void outputFiles() {
-		outputDebug(solid_prepop.data, solid_prepop.count, "logs/profiling/solid1.txt");
 		outputDebug(solid.data, solid.count, "logs/profiling/solid2.txt");
 		if (blockmaps != null) {
 			for (Map.Entry<String, ChunkProfileData> entry : blockmaps.entrySet()) {
@@ -320,7 +322,6 @@ public class ChunkProfiler extends WorldSavedData {
 		try {
 			semaphore.acquire();
 			count = 0;
-			solid_prepop = new ChunkProfileData();
 			solid = new ChunkProfileData();
 			blockmaps = new HashMap<String, ChunkProfileData>();
 			for (String blockkey : watchedblocks) {

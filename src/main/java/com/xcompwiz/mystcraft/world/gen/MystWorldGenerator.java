@@ -33,6 +33,7 @@ public class MystWorldGenerator implements IWorldGenerator {
 
 	private boolean profileCompletedChunks(ChunkProfiler profiler, int chunkX, int chunkZ, IChunkProvider ichunkprovider) {
 		boolean flag = false;
+		//Check nearby chunks if we've completed them without generating any other chunks. 
 		for (int i = chunkX - 1; i <= chunkX + 1; ++i) {
 			for (int k = chunkZ - 1; k <= chunkZ + 1; ++k) {
 				if (!ichunkprovider.chunkExists(i, k)) continue;

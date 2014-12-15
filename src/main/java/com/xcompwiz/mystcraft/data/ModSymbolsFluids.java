@@ -46,7 +46,7 @@ public class ModSymbolsFluids {
 			if (block instanceof BlockFluidBase) meta = (byte) ((BlockFluidBase) block).getMaxRenderHeightMeta();
 			String fluidkey = getFluidKey(fluid);
 			BlockModifierContainerObject container = BlockModifierContainerObject.create(WordData.Sea, symbolCardRank(fluidkey), block, meta);
-			ChunkProfiler.setInstabilityFactors(block, factor1(fluidkey), factor2(fluidkey), 0);
+			ChunkProfiler.setInstabilityFactors(block, factor1(fluidkey), factor2(fluidkey));
 			if (fluid.isGaseous()) {
 				container.add(BlockCategory.GAS, grammarRank(fluidkey));
 			} else {

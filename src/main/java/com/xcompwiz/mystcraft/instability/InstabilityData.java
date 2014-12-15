@@ -108,15 +108,15 @@ public class InstabilityData {
 	}
 
 	public static void initialize() {
-		ChunkProfiler.setInstabilityFactors(Blocks.coal_ore, 5, 1, 200);
-		ChunkProfiler.setInstabilityFactors(Blocks.iron_ore, 60, 1, 500);
-		ChunkProfiler.setInstabilityFactors(Blocks.redstone_ore, 250, 2, 500);
-		ChunkProfiler.setInstabilityFactors(Blocks.gold_ore, 750, 4, 500);
-		ChunkProfiler.setInstabilityFactors(Blocks.diamond_ore, 4000, 20, 1000);
+		ChunkProfiler.setInstabilityFactors(Blocks.coal_ore, 5, 1);			// 200
+		ChunkProfiler.setInstabilityFactors(Blocks.iron_ore, 60, 1);		// 500
+		ChunkProfiler.setInstabilityFactors(Blocks.redstone_ore, 250, 2);	// 500
+		ChunkProfiler.setInstabilityFactors(Blocks.gold_ore, 750, 4);		// 500
+		ChunkProfiler.setInstabilityFactors(Blocks.diamond_ore, 4000, 20);	//1000
 
-		ChunkProfiler.setInstabilityFactors(ModBlocks.crystal, 20, 4, 0);
-		ChunkProfiler.setInstabilityFactors(Blocks.glowstone, 50, 4, 0);
-		ChunkProfiler.setInstabilityFactors(Blocks.quartz_ore, 20, 4, 0);
+		ChunkProfiler.setInstabilityFactors(ModBlocks.crystal, 20, 4);		//   0
+		ChunkProfiler.setInstabilityFactors(Blocks.glowstone, 50, 4);		//   0
+		ChunkProfiler.setInstabilityFactors(Blocks.quartz_ore, 20, 4);		//   0
 
 		//TODO: (Instability) Implement missing Instability effects
 		InstabilityManager.setDeckCost("basic", deckcost.basic);
