@@ -13,6 +13,7 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.world.WorldEvent;
 
+import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -35,7 +36,7 @@ public class InstabilityDataCalculator {
 		this.storage = mcserver.worldServerForDimension(0).mapStorage;
 		this.minimumchunks = ModifierBiome.selectables.size() * 20;
 		ChunkProfiler profiler = getChunkProfiler();
-		this.chunkX = profiler.getCount();
+		this.chunkX = profiler.getCount() - 1;
 	}
 
 	@SubscribeEvent
@@ -47,18 +48,21 @@ public class InstabilityDataCalculator {
 		} else {
 			cleanup();
 			constants = getChunkProfiler().calculateSplitInstability();
+			HashMap<String, Number> freevals = new HashMap<String, Number>();
 			for (String key : constants.keySet()) {
 				float val = constants.get(key);
 				val = (val * tolerance);
 				val = (float) (Math.floor(val / 100) * 100);
-				ChunkProfiler.setBaselineStability(key, val);
+				freevals.put(key, val);
 			}
+			InstabilityBlockManager.setBaselineStability(freevals);
 			mcserver = null;
 		}
 	}
 
 	public void shutdown() {
 		this.cleanup();
+		InstabilityBlockManager.clearBaselineStability();
 		mcserver = null;
 	}
 
@@ -141,6 +145,10 @@ public class InstabilityDataCalculator {
 		IChunkLoader chunkloader = ((WorldServer) world).theChunkProviderServer.currentChunkLoader;
 
 		if (safeLoadChunk(chunkloader, world, chunkX, chunkZ) == null) {
+			//We generate a band in order to get the center chunk populated.
+			//Technically we don't profile it until the next set is populated, due to needing all the surrounding chunks to be complete
+			//The first set actually only provides the end cap, and is never profiled at all
+			//XXX: (Optimization) One chunk per tick rather than 4
 			chunkgen.loadChunk(chunkX, chunkZ + 2);
 			chunkgen.loadChunk(chunkX, chunkZ + 1);
 			chunkgen.loadChunk(chunkX, chunkZ);

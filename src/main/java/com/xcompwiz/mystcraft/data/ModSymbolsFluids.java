@@ -18,7 +18,7 @@ import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.data.ModSymbolsModifiers.BlockModifierContainerObject;
-import com.xcompwiz.mystcraft.world.ChunkProfiler;
+import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 
 public class ModSymbolsFluids {
 	private static MystConfig	config;
@@ -46,7 +46,7 @@ public class ModSymbolsFluids {
 			if (block instanceof BlockFluidBase) meta = (byte) ((BlockFluidBase) block).getMaxRenderHeightMeta();
 			String fluidkey = getFluidKey(fluid);
 			BlockModifierContainerObject container = BlockModifierContainerObject.create(WordData.Sea, symbolCardRank(fluidkey), block, meta);
-			ChunkProfiler.setInstabilityFactors(block, factor1(fluidkey), factor2(fluidkey));
+			InstabilityBlockManager.setInstabilityFactors(block, factor1(fluidkey), factor2(fluidkey));
 			if (fluid.isGaseous()) {
 				container.add(BlockCategory.GAS, grammarRank(fluidkey));
 			} else {

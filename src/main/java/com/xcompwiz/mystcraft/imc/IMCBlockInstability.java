@@ -6,9 +6,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.xcompwiz.mystcraft.imc.IMCHandler.IMCProcessor;
+import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
-import com.xcompwiz.mystcraft.world.ChunkProfiler;
 
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -45,6 +45,6 @@ public class IMCBlockInstability implements IMCProcessor {
 
 		if (nbt.hasKey("Metadata")) metadata = NBTUtils.readNumber(nbt.getTag("Metadata")).intValue();
 
-		ChunkProfiler.setInstabilityFactors(block, metadata, nbt.getFloat("Accessibility"), nbt.getFloat("Flat"));
+		InstabilityBlockManager.setInstabilityFactors(block, metadata, nbt.getFloat("Accessibility"), nbt.getFloat("Flat"));
 	}
 }

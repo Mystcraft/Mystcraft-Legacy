@@ -7,9 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Semaphore;
@@ -18,7 +16,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.chunk.Chunk;
@@ -27,57 +24,11 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import com.xcompwiz.mystcraft.core.DebugDataTracker;
 import com.xcompwiz.mystcraft.core.DebugDataTracker.Callback;
 import com.xcompwiz.mystcraft.data.DebugFlags;
+import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 
 public class ChunkProfiler extends WorldSavedData {
-	public static final String					ID				= "MystChunkProfile";
-	private static final int					MAP_LENGTH		= 256 * 256;
-
-	private static final Collection<String>		watchedblocks	= new HashSet<String>();
-	private static final Map<String, Float>		factor1s		= new HashMap<String, Float>();
-	private static final Map<String, Float>		factor2s		= new HashMap<String, Float>();
-	private static final Map<String, Integer>	freevals		= new HashMap<String, Integer>();
-
-	//XXX: Move out of here.
-	public static void setInstabilityFactors(Block block, float factor1, float factor2) {
-		setInstabilityFactors(block, 0, factor1, factor2);
-	}
-
-	public static void setInstabilityFactors(Block block, int metadata, float factor1, float factor2) {
-		setInstabilityFactors(getOrCreateUnlocalizedKey(block, metadata), factor1, factor2);
-	}
-
-	private static void setInstabilityFactors(String unlocalizedkey, float factor1, float factor2) {
-		watchedblocks.add(unlocalizedkey);
-		factor1s.put(unlocalizedkey, factor1);
-		factor2s.put(unlocalizedkey, factor2);
-	}
-
-	public static <T extends Number> void setBaselineStability(String key, T value) {
-		freevals.put(key, value.intValue());
-	}
-
-	private static final Map<Block, HashMap<Integer, String>>	keys	= new HashMap<Block, HashMap<Integer, String>>();
-
-	private static String getOrCreateUnlocalizedKey(Block block, int metadata) {
-		HashMap<Integer, String> metakeys = keys.get(block);
-		if (metakeys == null) {
-			metakeys = new HashMap<Integer, String>();
-			keys.put(block, metakeys);
-		}
-		String key = metakeys.get(metadata);
-		if (key == null) {
-			ItemStack localizationitemstack = new ItemStack(block, 1, metadata);
-			key = localizationitemstack.getUnlocalizedName();
-			metakeys.put(metadata, key);
-		}
-		return key;
-	}
-
-	private static String getUnlocalizedKey(Block block, int metadata) {
-		HashMap<Integer, String> metakeys = keys.get(block);
-		if (metakeys == null) return null;
-		return metakeys.get(metadata);
-	}
+	public static final String	ID			= "MystChunkProfile";
+	private static final int	MAP_LENGTH	= 256 * 256;
 
 	public static class ChunkProfileData {
 		public int[]	data	= new int[MAP_LENGTH];
@@ -123,26 +74,23 @@ public class ChunkProfiler extends WorldSavedData {
 		count = 0;
 		solid = new ChunkProfileData();
 		blockmaps = new HashMap<String, ChunkProfileData>();
-		for (String blockkey : watchedblocks) {
+		for (String blockkey : InstabilityBlockManager.getWatchedBlocks()) {
 			blockmaps.put(blockkey, new ChunkProfileData());
 		}
 	}
 
-	public void baseChunk(Chunk chunk, int chunkX, int chunkZ) {
-	}
+	public void baseChunk(Chunk chunk, int chunkX, int chunkZ) {}
 
 	public int calculateInstability() {
 		if (outputfiles || DebugFlags.profiler) outputFiles();
+		if (!InstabilityBlockManager.isBaselineConstructed()) return 0;
 		HashMap<String, Float> split = calculateSplitInstability();
 		float instability = 0;
 		for (Entry<String, Float> entry : split.entrySet()) {
 			if (DebugFlags.profiler) DebugDataTracker.set((debugname == null ? "Unnamed" : debugname) + ".instability." + entry.getKey(), "" + entry.getValue());
 			float val = entry.getValue();
 			if (val > 0) {
-				Integer free = freevals.get(entry.getKey());
-				if (free != null) {
-					val = Math.max(0, val - free);
-				}
+				val = Math.max(0, val - InstabilityBlockManager.getBaseline(entry.getKey()));
 			}
 			instability += val;
 		}
@@ -158,11 +106,11 @@ public class ChunkProfiler extends WorldSavedData {
 				for (int x = 0; x < 16; ++x) {
 					int coords = y << 8 | z << 4 | x;
 					float availability = 1 - (solid.data[coords] / (float) solid.count);
-					for (String blockkey : watchedblocks) {
+					for (String blockkey : InstabilityBlockManager.getWatchedBlocks()) {
 						ChunkProfileData map = blockmaps.get(blockkey);
 						if (map.count < 100) continue;
-						float factor1 = factor1s.get(blockkey);
-						float factor2 = factor2s.get(blockkey);
+						float factor1 = InstabilityBlockManager.ro_factor1s.get(blockkey);
+						float factor2 = InstabilityBlockManager.ro_factor2s.get(blockkey);
 						float val = map.data[coords] / (float) map.count;
 						val = val * availability * factor1 + val * factor2;
 						if (!split.containsKey(blockkey)) {
@@ -203,7 +151,7 @@ public class ChunkProfiler extends WorldSavedData {
 
 					int accessibility = (block != Blocks.air ? 2 : 0);
 					if (maps != null) {
-						ChunkProfileData map = maps.get(getUnlocalizedKey(block, metadata));
+						ChunkProfileData map = maps.get(InstabilityBlockManager.getUnlocalizedKey(block, metadata));
 						if (map != null) {
 							++map.data[coords];
 							accessibility = 1;
@@ -324,7 +272,7 @@ public class ChunkProfiler extends WorldSavedData {
 			count = 0;
 			solid = new ChunkProfileData();
 			blockmaps = new HashMap<String, ChunkProfileData>();
-			for (String blockkey : watchedblocks) {
+			for (String blockkey : InstabilityBlockManager.getWatchedBlocks()) {
 				blockmaps.put(blockkey, new ChunkProfileData());
 			}
 			this.markDirty();
