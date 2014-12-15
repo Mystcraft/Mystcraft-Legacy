@@ -107,6 +107,11 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		return true;
 	}
 
+	@Override
+	public boolean canRespawnHere() {
+		return false;
+	}
+
 	public void replaceChunkProvider() {
 		WorldServer world = (WorldServer) worldObj;
 		class AnvilChunkLoaderDummy extends AnvilChunkLoader {

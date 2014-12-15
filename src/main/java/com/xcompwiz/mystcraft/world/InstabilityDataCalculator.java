@@ -138,6 +138,8 @@ public class InstabilityDataCalculator {
 			world = mcserver.worldServerForDimension(dimId);
 			if (world == null) throw new RuntimeException("Could not create Instability Comparison Dimension");
 			((WorldProviderMystDummy) world.provider).setChunkProfiler(profiler);
+			//TODO: We should probably try and prohibit teleportation to this dimension...
+			//Alternatively, detect player changed dimension and queue them to teleport again next tick
 		}
 
 		//At every call of this function, we want to fully generate a single chunk.
