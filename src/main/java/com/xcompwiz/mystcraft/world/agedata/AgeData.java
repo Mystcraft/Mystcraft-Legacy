@@ -21,8 +21,8 @@ import net.minecraftforge.common.DimensionManager;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.world.storage.IStorageObject;
-import com.xcompwiz.mystcraft.data.DebugFlags;
 import com.xcompwiz.mystcraft.data.GrammarRules;
+import com.xcompwiz.mystcraft.debug.DebugFlags;
 import com.xcompwiz.mystcraft.grammar.GrammarTree;
 import com.xcompwiz.mystcraft.nbt.NBTTagCompoundWrapper;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;

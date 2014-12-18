@@ -21,9 +21,8 @@ import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
-import com.xcompwiz.mystcraft.core.DebugDataTracker;
-import com.xcompwiz.mystcraft.core.DebugDataTracker.Callback;
-import com.xcompwiz.mystcraft.data.DebugFlags;
+import com.xcompwiz.mystcraft.debug.DebugHierarchy;
+import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugValueCallback;
 import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 
 public class ChunkProfiler extends WorldSavedData {
@@ -50,8 +49,6 @@ public class ChunkProfiler extends WorldSavedData {
 		}
 	}
 
-	private String							debugname;
-
 	private int								count;
 	private ChunkProfileData				solid;
 	private Map<String, ChunkProfileData>	blockmaps;
@@ -60,11 +57,16 @@ public class ChunkProfiler extends WorldSavedData {
 	private Semaphore						semaphore	= new Semaphore(1, true);
 
 	static {
-		DebugDataTracker.register("profiler.output", new Callback() {
+		DebugHierarchy.register("profiler.output", new DebugValueCallback() {
 
 			@Override
-			public void setState(ICommandSender agent, boolean state) {
+			public void set(ICommandSender agent, boolean state) {
 				outputfiles = state;
+			}
+
+			@Override
+			public String get(ICommandSender agent) {
+				return Boolean.toString(outputfiles);
 			}
 		});
 	}
@@ -82,12 +84,11 @@ public class ChunkProfiler extends WorldSavedData {
 	public void baseChunk(Chunk chunk, int chunkX, int chunkZ) {}
 
 	public int calculateInstability() {
-		if (outputfiles || DebugFlags.profiler) outputFiles();
+		if (outputfiles) outputFiles();
 		if (!InstabilityBlockManager.isBaselineConstructed()) return 0;
 		HashMap<String, Float> split = calculateSplitInstability();
 		float instability = 0;
 		for (Entry<String, Float> entry : split.entrySet()) {
-			if (DebugFlags.profiler) DebugDataTracker.set((debugname == null ? "Unnamed" : debugname) + ".instability." + entry.getKey(), "" + entry.getValue());
 			float val = entry.getValue();
 			if (val > 0) {
 				val = Math.max(0, val - InstabilityBlockManager.getBaseline(entry.getKey()));
@@ -260,10 +261,6 @@ public class ChunkProfiler extends WorldSavedData {
 
 	public int getCount() {
 		return count;
-	}
-
-	public void setDebugName(String name) {
-		debugname = name;
 	}
 
 	public void clear() {

@@ -48,8 +48,6 @@ import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
 import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 import com.xcompwiz.mystcraft.client.render.CloudRendererMyst;
 import com.xcompwiz.mystcraft.client.render.WeatherRendererMyst;
-import com.xcompwiz.mystcraft.core.DebugDataTracker;
-import com.xcompwiz.mystcraft.data.DebugFlags;
 import com.xcompwiz.mystcraft.instability.InstabilityController;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.instability.bonus.InstabilityBonusManager;
@@ -214,9 +212,6 @@ public class AgeController implements IAgeController {
 
 		lightingController.generateLightBrightnessTable(this.world.provider.lightBrightnessTable);
 		agedata.markVisited();
-
-		if (DebugFlags.instability) DebugDataTracker.set(agedata.getAgeName() + ".instability.symbols", "" + symbolinstability);
-		if (DebugFlags.instability) DebugDataTracker.set(agedata.getAgeName() + ".instability.book", "" + agedata.getBaseInstability());
 	}
 
 	private void addSymbol(IAgeSymbol symbol) {
@@ -248,8 +243,6 @@ public class AgeController implements IAgeController {
 			updateProfiledInstability();
 		}
 		int score = symbolinstability + blockinstability + agedata.getBaseInstability() + getInstabilityBonusManager().getResult();
-		if (DebugFlags.instability) DebugDataTracker.set(agedata.getAgeName() + ".instability", "" + (symbolinstability + blockinstability + agedata.getBaseInstability() + getInstabilityBonusManager().getResult()));
-		if (DebugFlags.instability) DebugDataTracker.set(agedata.getAgeName() + ".instability.bonus", "" + getInstabilityBonusManager().getResult());
 		int difficulty = Mystcraft.difficulty;
 		switch (difficulty) {
 		case 0:
@@ -273,8 +266,6 @@ public class AgeController implements IAgeController {
 			expandChunkProfile();
 		}
 		blockinstability = profiler.calculateInstability();
-		if (DebugFlags.instability) DebugDataTracker.set(agedata.getAgeName() + ".instability.blocks", "" + blockinstability);
-		if (DebugFlags.instability) DebugDataTracker.set(agedata.getAgeName() + ".profiled", "" + profiler.getCount());
 	}
 
 	private void expandChunkProfile() {
@@ -460,7 +451,6 @@ public class AgeController implements IAgeController {
 			chunkprofiler = new ChunkProfiler(ChunkProfiler.ID);
 			this.world.perWorldStorage.setData(ChunkProfiler.ID, chunkprofiler);
 		}
-		chunkprofiler.setDebugName(this.agedata.getAgeName());
 		return chunkprofiler;
 	}
 

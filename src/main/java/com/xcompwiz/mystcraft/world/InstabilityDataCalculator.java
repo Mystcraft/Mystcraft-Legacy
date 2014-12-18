@@ -72,7 +72,6 @@ public class InstabilityDataCalculator {
 			chunkprofiler = new ChunkProfiler(StorageID);
 			storage.setData(StorageID, chunkprofiler);
 		}
-		chunkprofiler.setDebugName(StorageID);
 		return chunkprofiler;
 	}
 

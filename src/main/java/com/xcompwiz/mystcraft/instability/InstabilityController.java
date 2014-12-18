@@ -12,8 +12,6 @@ import com.google.common.collect.HashMultiset;
 import com.xcompwiz.mystcraft.api.instability.IInstabilityController;
 import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
-import com.xcompwiz.mystcraft.core.DebugDataTracker;
-import com.xcompwiz.mystcraft.data.DebugFlags;
 import com.xcompwiz.mystcraft.world.AgeController;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import com.xcompwiz.mystcraft.world.storage.StorageInstabilityData;
@@ -27,10 +25,8 @@ public class InstabilityController implements IInstabilityController {
 	private Collection<Deck>					decks;
 	private HashMap<String, Integer>			providerlevels	= new HashMap<String, Integer>();
 	private Collection<IEnvironmentalEffect>	effects			= new ArrayList<IEnvironmentalEffect>();
-	private WorldProviderMyst					worldprovider;
 
 	public InstabilityController(WorldProviderMyst provider, AgeController controller) {
-		this.worldprovider = provider;
 		this.controller = controller;
 		this.enabled = (controller.isInstabilityEnabled());
 		deckdata = getDataStorage(provider);
@@ -133,7 +129,6 @@ public class InstabilityController implements IInstabilityController {
 				provider.addEffects(this, level);
 			}
 		}
-		if (DebugFlags.instability) DebugDataTracker.set(worldprovider.getDimensionName() + ".effects", "" + providerlevels);
 	}
 
 	public void tick(World world, Chunk chunk) {

@@ -7,7 +7,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.util.ChatComponentText;
 
-import com.xcompwiz.mystcraft.core.DebugDataTracker;
+import com.xcompwiz.mystcraft.debug.DebugHierarchy;
 
 public class CommandDebug extends CommandBaseAdv {
 
@@ -41,19 +41,12 @@ public class CommandDebug extends CommandBaseAdv {
 	@Override
 	public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] args) {
 		if (args.length < 2) return getListOfStringsMatchingLastWord(args, new String[] { "read", "set" });
-		if (args[0].equals("read") && args.length == 2) return getListOfStringsMatchingLastWord(args, this.getParams());
-		if (args[0].equals("set") && args.length == 2) return getListOfStringsMatchingLastWord(args, this.getFlags());
+		if (args.length == 2 && (args[0].equals("read") || args[0].equals("set"))) return getListOfStringsMatchingLastWord(args, this.getKeys());
 		return null;
 	}
 
-	protected String[] getParams() {
-		Collection<String> allparams = DebugDataTracker.getParams();
-		String[] params = allparams.toArray(new String[allparams.size()]);
-		return params;
-	}
-
-	protected String[] getFlags() {
-		Collection<String> allflags = DebugDataTracker.getFlags();
+	protected String[] getKeys() {
+		Collection<String> allflags = DebugHierarchy.getKeys();
 		String[] params = allflags.toArray(new String[allflags.size()]);
 		return params;
 	}
@@ -70,12 +63,12 @@ public class CommandDebug extends CommandBaseAdv {
 			throw new WrongUsageException("Could not parse command.");
 		}
 		if (command.equals("read")) {
-			String value = DebugDataTracker.get(flag);
+			String value = DebugHierarchy.getCallback(agent, flag).get(agent);
 			agent.addChatMessage(new ChatComponentText(value));
 		} else if (command.equals("set")) {
 			boolean b = true;
 			if (args.length > 2) b = (Boolean.parseBoolean(args[2]) || args[2].equals("1"));
-			DebugDataTracker.setFlag(agent, flag, b);
+			DebugHierarchy.getCallback(agent, flag).set(agent, b);
 		}
 	}
 }
