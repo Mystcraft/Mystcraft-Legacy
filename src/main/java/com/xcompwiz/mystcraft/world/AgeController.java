@@ -8,6 +8,7 @@ import java.util.concurrent.Semaphore;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.ChunkCoordinates;
@@ -48,6 +49,8 @@ import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
 import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 import com.xcompwiz.mystcraft.client.render.CloudRendererMyst;
 import com.xcompwiz.mystcraft.client.render.WeatherRendererMyst;
+import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
+import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
 import com.xcompwiz.mystcraft.instability.InstabilityController;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.instability.bonus.InstabilityBonusManager;
@@ -224,6 +227,20 @@ public class AgeController implements IAgeController {
 		}
 		symbolcounts.put(symbol, count);
 		symbolinstability += symbol.instabilityModifier(count);
+	}
+
+	public void registerDebugInfo(DebugNode node) {
+		final ChunkProfiler profiler = this.getChunkProfiler();
+//@formatter:off
+		node.addChild("profiled_chunks", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + profiler.getCount(); }});
+		node = node.getOrCreateNode("instability");
+		node.addChild("symbols", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + symbolinstability; }});
+		node.addChild("book", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + agedata.getBaseInstability(); }});
+		node.addChild("total", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + (symbolinstability + (blockinstability == null ? 0 : blockinstability) + agedata.getBaseInstability() + getInstabilityBonusManager().getResult()); }});
+		node.addChild("bonus", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + getInstabilityBonusManager().getResult(); }});
+		node.addChild("blocks_total", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + blockinstability; }});
+//@formatter:on	
+		profiler.registerDebugInfo(node.getOrCreateNode("blocks"));
 	}
 
 	@Override

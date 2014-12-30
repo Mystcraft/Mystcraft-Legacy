@@ -19,6 +19,8 @@ import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.data.ModFluids;
+import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
+import com.xcompwiz.mystcraft.debug.DebugUtils;
 import com.xcompwiz.mystcraft.effects.EffectCrumble;
 import com.xcompwiz.mystcraft.entity.EntityUtils;
 import com.xcompwiz.mystcraft.villager.VillagerTradeSystem;
@@ -99,9 +101,19 @@ public class MystcraftEventHandler {
 		WorldProvider provider = event.world.provider;
 		if (provider instanceof WorldProviderMyst) {
 			((WorldProviderMyst) provider).setWorldInfo();
+			if (event.world.isRemote) return;
+			DebugNode node = DebugUtils.getDebugNodeForAge(((WorldProviderMyst) provider).agedata);
+			((WorldProviderMyst) provider).getAgeController().registerDebugInfo(node);
 		}
 	}
 
 	@SubscribeEvent
-	public void handleSaveUnloadEvent(WorldEvent.Unload event) {}
+	public void handleWorldUnloadEvent(WorldEvent.Unload event) {
+		WorldProvider provider = event.world.provider;
+		if (provider instanceof WorldProviderMyst) {
+			if (event.world.isRemote) return;
+			DebugNode node = DebugUtils.getDebugNodeForAge(((WorldProviderMyst) provider).agedata);
+			node.parent.removeChild(node);
+		}
+	}
 }

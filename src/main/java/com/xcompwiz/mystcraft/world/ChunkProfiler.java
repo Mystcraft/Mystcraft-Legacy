@@ -21,8 +21,10 @@ import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
-import com.xcompwiz.mystcraft.debug.DebugHierarchy;
+import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugValueCallback;
+import com.xcompwiz.mystcraft.debug.DebugUtils;
+import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
 import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 
 public class ChunkProfiler extends WorldSavedData {
@@ -54,10 +56,12 @@ public class ChunkProfiler extends WorldSavedData {
 	private Map<String, ChunkProfileData>	blockmaps;
 	private static boolean					outputfiles	= false;
 
+	private HashMap<String, Float>			lastsplitcalc;
+
 	private Semaphore						semaphore	= new Semaphore(1, true);
 
 	static {
-		DebugHierarchy.register("profiler.output", new DebugValueCallback() {
+		DebugUtils.register("global.profiler.file_output", new DebugValueCallback() {
 
 			@Override
 			public void set(ICommandSender agent, boolean state) {
@@ -122,6 +126,7 @@ public class ChunkProfiler extends WorldSavedData {
 				}
 			}
 		}
+		lastsplitcalc = split;
 		return split;
 	}
 
@@ -276,6 +281,30 @@ public class ChunkProfiler extends WorldSavedData {
 			semaphore.release();
 		} catch (InterruptedException e) {
 			throw new RuntimeException("Failed to aquire semaphore to profile chunk!");
+		}
+	}
+
+	public void registerDebugInfo(DebugNode node) {
+		for (final String blockkey : InstabilityBlockManager.getWatchedBlocks()) {
+			node.addChild(blockkey.replaceAll("\\.", "_"), new DefaultValueCallback() {
+				private ChunkProfiler	profiler;
+				private String	blockkey;
+
+				@Override
+				public String get(ICommandSender agent) {
+					HashMap<String, Float> split = profiler.lastsplitcalc;
+					if (split == null) return "";
+					Float val = split.get(blockkey);
+					if (val == null) return "";
+					return "" + val;
+				}
+
+				private DefaultValueCallback init(ChunkProfiler profiler, String blockkey) {
+					this.profiler = profiler;
+					this.blockkey = blockkey;
+					return this;
+				}
+			}.init(this, blockkey));
 		}
 	}
 }
