@@ -1,7 +1,10 @@
 package com.xcompwiz.mystcraft.world;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -11,6 +14,7 @@ import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.gen.ChunkProviderServer;
 
+import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
@@ -68,6 +72,9 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 			public ChunkProfiler getChunkProfiler() {
 				return chunkprofiler;
 			}
+
+			@Override
+			public void registerDebugInfo(DebugNode node) {}
 		}
 
 		controller = new AgeControllerDummy(worldObj, agedata);
@@ -130,6 +137,8 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 			}
 		}
 		class ChunkProviderServerDummy extends ChunkProviderServer {
+			private List<Long>	chunkqueue	= new LinkedList<Long>();
+
 			public ChunkProviderServerDummy(WorldServer p_i1520_1_, IChunkLoader p_i1520_2_, IChunkProvider p_i1520_3_) {
 				super(p_i1520_1_, p_i1520_2_, p_i1520_3_);
 			}
@@ -140,7 +149,23 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 			}
 
 			@Override
+			public Chunk originalLoadChunk(int p_73158_1_, int p_73158_2_) {
+				Chunk chunk = super.originalLoadChunk(p_73158_1_, p_73158_2_);
+				this.chunkqueue.add(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunk.xPosition, chunk.xPosition)));
+				return chunk;
+			}
+
+			@Override
 			public boolean unloadQueuedChunks() {
+				for (int i = 0; i < 100 && this.chunkqueue.size() > 32; ++i) {
+					Long olong = this.chunkqueue.get(0);
+					Chunk chunk = (Chunk) this.loadedChunkHashMap.getValueByKey(olong.longValue());
+					if (chunk != null) {
+						this.loadedChunks.remove(chunk);
+					}
+					chunkqueue.remove(0);
+					this.loadedChunkHashMap.remove(olong.longValue());
+				}
 				return this.currentChunkProvider.unloadQueuedChunks();
 			}
 		}
