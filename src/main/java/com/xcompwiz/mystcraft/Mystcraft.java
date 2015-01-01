@@ -297,6 +297,7 @@ public class Mystcraft {
 	@EventHandler
 	public void modsLoaded(FMLPostInitializationEvent event) {
 		sidedProxy.postInit();
+
 		ModSymbols.generateBiomeSymbols();
 		ModSymbolsFluids.modsLoaded();
 		SymbolRules.register();

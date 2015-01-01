@@ -12,6 +12,9 @@ public class MystConfig extends Configuration {
 	public static final String	CATEGORY_SYMBOLS		= "symbol";
 	public static final String	CATEGORY_INSTABILITY	= "instability";
 	public static final String	CATEGORY_BALANCE		= "balance";
+	public static final String	CATAGORY_RENDER			= "render";
+	public static final String	CATAGORY_SERVER			= "server";
+
 	private boolean				allowoptional			= true;
 
 	public MystConfig(File configfile) {
