@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.network.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,14 +12,7 @@ import com.xcompwiz.mystcraft.Mystcraft;
 
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketDimensions extends MPacket {
-
-	private static byte	packetId	= (byte) 10;
-
-	@Override
-	public byte getPacketType() {
-		return packetId;
-	}
+public class MPacketDimensions extends PacketHandler {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -46,9 +38,8 @@ public class MPacketDimensions extends MPacket {
 	}
 
 	public static FMLProxyPacket createPacket(Collection<Integer> set) {
-		ByteBuf data = Unpooled.buffer();
+		ByteBuf data = PacketHandler.createDataBuffer(MPacketDimensions.class);
 
-		data.writeByte(packetId);
 		data.writeInt(set.size());
 		for (Integer dimId : set)
 			data.writeInt(dimId);

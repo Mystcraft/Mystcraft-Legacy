@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.network.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,14 +12,7 @@ import com.xcompwiz.mystcraft.network.IMessageReceiver;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketMessage extends MPacket {
-
-	private static byte	packetId	= (byte) 132;
-
-	@Override
-	public byte getPacketType() {
-		return packetId;
-	}
+public class MPacketMessage extends PacketHandler {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -55,8 +47,7 @@ public class MPacketMessage extends MPacket {
 	}
 
 	public static FMLProxyPacket createPacket(TileEntity tile, NBTTagCompound nbttagcompound) {
-		ByteBuf data = Unpooled.buffer();
-		data.writeByte(packetId);
+		ByteBuf data = PacketHandler.createDataBuffer(MPacketMessage.class);
 
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setTag("Data", nbttagcompound);
@@ -70,13 +61,12 @@ public class MPacketMessage extends MPacket {
 	}
 
 	public static FMLProxyPacket createPacket(Entity entity, NBTTagCompound nbttagcompound) {
-		ByteBuf data = Unpooled.buffer();
+		ByteBuf data = PacketHandler.createDataBuffer(MPacketMessage.class);
 
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setTag("Data", nbttagcompound);
 		nbt.setInteger("ID", entity.getEntityId());
 
-		data.writeByte(packetId);
 		ByteBufUtils.writeTag(data, nbt);
 
 		return buildPacket(data);

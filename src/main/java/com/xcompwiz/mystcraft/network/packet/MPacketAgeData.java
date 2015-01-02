@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.network.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
@@ -11,14 +10,7 @@ import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 
-public class MPacketAgeData extends MPacket {
-
-	private static byte	packetId	= (byte) 135;
-
-	@Override
-	public byte getPacketType() {
-		return packetId;
-	}
+public class MPacketAgeData extends PacketHandler {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -37,9 +29,8 @@ public class MPacketAgeData extends MPacket {
 		NBTTagCompound nbttagcompound = new NBTTagCompound();
 		AgeData.getAge(uid, false).writeToNBT(nbttagcompound);
 
-		ByteBuf data = Unpooled.buffer();
+		ByteBuf data = PacketHandler.createDataBuffer(MPacketAgeData.class);
 
-		data.writeByte(packetId);
 		data.writeInt(uid);
 		ByteBufUtils.writeTag(data, nbttagcompound);
 

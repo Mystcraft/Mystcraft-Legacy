@@ -1,17 +1,15 @@
 package com.xcompwiz.mystcraft.network.packet;
 
-import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
-
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+
+import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketGuiMessage extends MPacket {
-
-	private static byte	packetId	= (byte) 140;
+public class MPacketGuiMessage extends PacketHandler {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -25,15 +23,9 @@ public class MPacketGuiMessage extends MPacket {
 		}
 	}
 
-	@Override
-	public byte getPacketType() {
-		return packetId;
-	}
-
 	public static FMLProxyPacket createPacket(int windowId, NBTTagCompound nbttagcompound) {
-		ByteBuf data = Unpooled.buffer();
+		ByteBuf data = PacketHandler.createDataBuffer(MPacketGuiMessage.class);
 
-		data.writeByte(packetId);
 		data.writeInt(windowId);
 		ByteBufUtils.writeTag(data, nbttagcompound);
 

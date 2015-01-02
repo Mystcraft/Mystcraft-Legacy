@@ -1,21 +1,13 @@
 package com.xcompwiz.mystcraft.network.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketConfigs extends MPacket {
-
-	private static byte	packetId	= (byte) 25;
-
-	@Override
-	public byte getPacketType() {
-		return packetId;
-	}
+public class MPacketConfigs extends PacketHandler {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -23,9 +15,9 @@ public class MPacketConfigs extends MPacket {
 	}
 
 	public static FMLProxyPacket createPacket() {
-		ByteBuf data = Unpooled.buffer();
+		ByteBuf data = PacketHandler.createDataBuffer(MPacketConfigs.class);
 
-		data.writeByte(packetId);
+		//TODO: Generalize?
 		data.writeBoolean(Mystcraft.renderlabels);
 
 		return buildPacket(data);

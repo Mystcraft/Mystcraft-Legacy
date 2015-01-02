@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.network.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +14,7 @@ import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffect;
 
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketExplosion extends MPacket {
-
-	private static final byte	packetId	= (byte) 100;
+public class MPacketExplosion extends PacketHandler {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -50,9 +47,8 @@ public class MPacketExplosion extends MPacket {
 	}
 
 	public static FMLProxyPacket createPacket(EntityPlayer player, ExplosionAdvanced explosion) {
-		ByteBuf data = Unpooled.buffer();
+		ByteBuf data = PacketHandler.createDataBuffer(MPacketExplosion.class);
 
-		data.writeByte(packetId);
 		data.writeDouble(explosion.explosionX);
 		data.writeDouble(explosion.explosionY);
 		data.writeDouble(explosion.explosionZ);
@@ -76,10 +72,4 @@ public class MPacketExplosion extends MPacket {
 
 		return buildPacket(data);
 	}
-
-	@Override
-	public byte getPacketType() {
-		return packetId;
-	}
-
 }

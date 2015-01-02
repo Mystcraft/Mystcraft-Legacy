@@ -150,16 +150,16 @@ public class Mystcraft {
 		InternalAPI.initAPI();
 
 		// Init packet handling
-		MystcraftPacketHandler.registerPacketHandler(new MPacketDimensions()); // 10
-		MystcraftPacketHandler.registerPacketHandler(new MPacketConfigs()); // 25
-		MystcraftPacketHandler.registerPacketHandler(new MPacketParticles()); // 20
-		MystcraftPacketHandler.registerPacketHandler(new MPacketMessage()); // 132
-		MystcraftPacketHandler.registerPacketHandler(new MPacketGuiMessage()); // 140
-		MystcraftPacketHandler.registerPacketHandler(new MPacketOpenWindow()); // 134
-		MystcraftPacketHandler.registerPacketHandler(new MPacketActivateItem()); // 137
-		MystcraftPacketHandler.registerPacketHandler(new MPacketAgeData()); // 135
-		MystcraftPacketHandler.registerPacketHandler(new MPacketExplosion()); // 100
-		MystcraftPacketHandler.registerPacketHandler(new MPacketSpawnLightningBolt()); // 101
+		MystcraftPacketHandler.registerPacketHandler(new MPacketDimensions(), (byte)10); // 10
+		MystcraftPacketHandler.registerPacketHandler(new MPacketConfigs(), (byte)25); // 25
+		MystcraftPacketHandler.registerPacketHandler(new MPacketParticles(), (byte)20); // 20
+		MystcraftPacketHandler.registerPacketHandler(new MPacketMessage(), (byte)132); // 132
+		MystcraftPacketHandler.registerPacketHandler(new MPacketGuiMessage(), (byte)140); // 140
+		MystcraftPacketHandler.registerPacketHandler(new MPacketOpenWindow(), (byte)134); // 134
+		MystcraftPacketHandler.registerPacketHandler(new MPacketActivateItem(), (byte)137); // 137
+		MystcraftPacketHandler.registerPacketHandler(new MPacketAgeData(), (byte)135); // 135
+		MystcraftPacketHandler.registerPacketHandler(new MPacketExplosion(), (byte)100); // 100
+		MystcraftPacketHandler.registerPacketHandler(new MPacketSpawnLightningBolt(), (byte)101); // 101
 
 		FMLCommonHandler.instance().bus().register(new MystcraftConnectionHandler());
 		MystcraftPacketHandler.bus = NetworkRegistry.INSTANCE.newEventDrivenChannel(MystcraftPacketHandler.CHANNEL);

@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.network.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
 
 import com.xcompwiz.mystcraft.api.util.Color;
@@ -9,9 +8,7 @@ import com.xcompwiz.mystcraft.entity.EntityLightningBoltAdv;
 
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketSpawnLightningBolt extends MPacket {
-
-	private static final byte	packetId	= (byte) 101;
+public class MPacketSpawnLightningBolt extends PacketHandler {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -30,10 +27,9 @@ public class MPacketSpawnLightningBolt extends MPacket {
 	}
 
 	public static FMLProxyPacket createPacket(EntityLightningBoltAdv entity) {
-		ByteBuf data = Unpooled.buffer();
+		ByteBuf data = PacketHandler.createDataBuffer(MPacketSpawnLightningBolt.class);
 
 		try {
-			data.writeByte(packetId);
 			data.writeInt(entity.getEntityId());
 			data.writeDouble(entity.posX);
 			data.writeDouble(entity.posY);
@@ -53,10 +49,4 @@ public class MPacketSpawnLightningBolt extends MPacket {
 
 		return buildPacket(data);
 	}
-
-	@Override
-	public byte getPacketType() {
-		return packetId;
-	}
-
 }

@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.network.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Vec3;
@@ -12,14 +11,7 @@ import com.xcompwiz.mystcraft.Mystcraft;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketParticles extends MPacket {
-
-	private static byte	packetId	= (byte) 20;
-
-	@Override
-	public byte getPacketType() {
-		return packetId;
-	}
+public class MPacketParticles extends PacketHandler {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -43,12 +35,13 @@ public class MPacketParticles extends MPacket {
 	}
 
 	public static FMLProxyPacket createPacket(Entity entity, String particle) {
-		ByteBuf data = Unpooled.buffer();
-		data.writeByte(packetId);
+		ByteBuf data = PacketHandler.createDataBuffer(MPacketParticles.class);
+
 		data.writeDouble(entity.posX);
 		data.writeDouble(entity.posY);
 		data.writeDouble(entity.posZ);
 		ByteBufUtils.writeUTF8String(data, particle);
+
 		return buildPacket(data);
 	}
 }
