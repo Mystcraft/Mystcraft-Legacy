@@ -17,8 +17,8 @@ import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiOnTextC
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiTextProvider;
 import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.inventory.ContainerPageBinder;
-import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
+import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
 
 public class GuiPageBinder extends GuiContainerElements {

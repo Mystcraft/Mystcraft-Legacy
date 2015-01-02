@@ -1,4 +1,6 @@
-package com.xcompwiz.mystcraft.network;
+package com.xcompwiz.mystcraft.network.packet;
+
+import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

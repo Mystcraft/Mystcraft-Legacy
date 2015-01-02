@@ -5,7 +5,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
 
 import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.network.MPacketDimensions;
+import com.xcompwiz.mystcraft.network.packet.MPacketDimensions;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 import cpw.mods.fml.common.FMLCommonHandler;

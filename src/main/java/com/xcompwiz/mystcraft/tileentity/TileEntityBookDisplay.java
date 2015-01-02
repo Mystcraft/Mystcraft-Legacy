@@ -9,7 +9,7 @@ import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.network.IMessageReceiver;
-import com.xcompwiz.mystcraft.network.MPacketMessage;
+import com.xcompwiz.mystcraft.network.packet.MPacketMessage;
 
 public class TileEntityBookDisplay extends TileEntityBook implements IMessageReceiver {
 

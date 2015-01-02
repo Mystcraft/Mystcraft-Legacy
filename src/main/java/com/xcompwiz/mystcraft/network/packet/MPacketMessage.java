@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.network;
+package com.xcompwiz.mystcraft.network.packet;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.network.IMessageReceiver;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
@@ -55,6 +56,7 @@ public class MPacketMessage extends MPacket {
 
 	public static FMLProxyPacket createPacket(TileEntity tile, NBTTagCompound nbttagcompound) {
 		ByteBuf data = Unpooled.buffer();
+		data.writeByte(packetId);
 
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setTag("Data", nbttagcompound);
@@ -62,7 +64,6 @@ public class MPacketMessage extends MPacket {
 		nbt.setInteger("Y", tile.yCoord);
 		nbt.setInteger("Z", tile.zCoord);
 
-		data.writeByte(packetId);
 		ByteBufUtils.writeTag(data, nbt);
 
 		return buildPacket(data);

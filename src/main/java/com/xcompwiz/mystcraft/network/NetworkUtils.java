@@ -18,6 +18,8 @@ import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
+import com.xcompwiz.mystcraft.network.packet.MPacketAgeData;
+import com.xcompwiz.mystcraft.network.packet.MPacketOpenWindow;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 public final class NetworkUtils {

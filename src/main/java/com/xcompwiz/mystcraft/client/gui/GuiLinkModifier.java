@@ -18,8 +18,8 @@ import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiTextPro
 import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.data.InkEffects;
 import com.xcompwiz.mystcraft.inventory.ContainerLinkModifier;
-import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
+import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
 import com.xcompwiz.util.CollectionUtils;
 

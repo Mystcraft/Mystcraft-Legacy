@@ -1,4 +1,6 @@
-package com.xcompwiz.mystcraft.network;
+package com.xcompwiz.mystcraft.network.packet;
+
+import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;

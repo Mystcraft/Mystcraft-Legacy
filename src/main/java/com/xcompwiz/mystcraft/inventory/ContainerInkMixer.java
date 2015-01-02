@@ -21,7 +21,7 @@ import net.minecraft.network.Packet;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
-import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
+import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer;
 
 public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandler {

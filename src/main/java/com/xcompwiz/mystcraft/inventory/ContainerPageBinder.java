@@ -16,7 +16,7 @@ import net.minecraft.network.Packet;
 
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
-import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
+import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
 
 public class ContainerPageBinder extends ContainerBase implements IGuiMessageHandler {

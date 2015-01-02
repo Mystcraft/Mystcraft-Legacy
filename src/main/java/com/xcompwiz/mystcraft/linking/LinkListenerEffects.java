@@ -10,7 +10,7 @@ import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventStart;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.data.Sounds;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
-import com.xcompwiz.mystcraft.network.MPacketParticles;
+import com.xcompwiz.mystcraft.network.packet.MPacketParticles;
 import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 
 import cpw.mods.fml.common.FMLCommonHandler;

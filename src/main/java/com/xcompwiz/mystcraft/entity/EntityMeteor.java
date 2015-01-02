@@ -27,8 +27,8 @@ import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffectBasic;
 import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffectBreakBlocks;
 import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffectFire;
 import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffectPlaceOres;
-import com.xcompwiz.mystcraft.network.MPacketExplosion;
-import com.xcompwiz.mystcraft.network.MPacketParticles;
+import com.xcompwiz.mystcraft.network.packet.MPacketExplosion;
+import com.xcompwiz.mystcraft.network.packet.MPacketParticles;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;

@@ -24,8 +24,8 @@ import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
-import com.xcompwiz.mystcraft.network.MPacketAgeData;
-import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
+import com.xcompwiz.mystcraft.network.packet.MPacketAgeData;
+import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookDisplay;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 

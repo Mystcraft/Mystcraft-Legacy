@@ -17,8 +17,8 @@ import com.xcompwiz.mystcraft.client.gui.element.GuiElementPageSurface.Positiona
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField;
 import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.inventory.ContainerFolder;
-import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
+import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

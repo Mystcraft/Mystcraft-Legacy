@@ -9,7 +9,7 @@ import net.minecraft.world.chunk.Chunk;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.entity.EntityLightningBoltAdv;
-import com.xcompwiz.mystcraft.network.MPacketSpawnLightningBolt;
+import com.xcompwiz.mystcraft.network.packet.MPacketSpawnLightningBolt;
 
 public class EffectLightning implements IEnvironmentalEffect {
 

@@ -11,8 +11,8 @@ import com.xcompwiz.mystcraft.client.gui.element.GuiElementBook.IGuiOnLinkHandle
 import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
 import com.xcompwiz.mystcraft.inventory.ContainerBook;
-import com.xcompwiz.mystcraft.network.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
+import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookDisplay;
 
 public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {

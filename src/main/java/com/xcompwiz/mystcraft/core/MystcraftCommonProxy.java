@@ -2,7 +2,6 @@ package com.xcompwiz.mystcraft.core;
 
 import io.netty.buffer.ByteBuf;
 
-import java.io.File;
 import java.io.IOException;
 
 import net.minecraft.entity.Entity;
@@ -16,11 +15,6 @@ import net.minecraft.world.WorldServer;
 import cpw.mods.fml.common.FMLCommonHandler;
 
 public class MystcraftCommonProxy {
-
-	public File getLogFile() {
-		return new File("mystcraft_logfile.txt");
-	}
-
 	/**
 	 * Writes a compressed NBTTagCompound to the OutputStream
 	 * @throws IOException

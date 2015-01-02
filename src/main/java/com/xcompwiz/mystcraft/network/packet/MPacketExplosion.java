@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.network;
+package com.xcompwiz.mystcraft.network.packet;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
