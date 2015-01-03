@@ -1,10 +1,13 @@
 package com.xcompwiz.mystcraft.linking;
 
+import java.util.Random;
+
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.network.packet.MPacketDimensions;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
@@ -32,5 +35,15 @@ public class DimensionUtils {
 		server.getConfigurationManager().sendPacketToAllPlayers(MPacketDimensions.createPacket(dimId));
 		AgeData data = AgeData.getAge(dimId, false);
 		return data;
+	}
+
+	public static int getLinkColor(ILinkInfo info) {
+		if (info == null) return 0x000000;
+		Random rand = new Random(info.getDisplayName().hashCode());
+		int color = 0;
+		color += (rand.nextInt(256));
+		color += (rand.nextInt(256) << 8);
+		color += (rand.nextInt(256) << 16);
+		return color;
 	}
 }

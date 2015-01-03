@@ -27,27 +27,27 @@ public interface ILinkInfo {
 	int getDimensionUID();
 
 	/**
-	 * Sets the destination's unique Dimension identifier Use APICallHandler.getDimensionUID(World worldObj) to get the dimension's UID
+	 * Sets the destination's unique Dimension identifier. Use getDimensionUID(World worldObj) to get the dimension's UID.
 	 */
 	void setDimensionUID(int uid);
 
 	/**
-	 * Gets the point which the link targets If null then the link mechanics will use the dimension's spawn point
+	 * Gets the point which the link targets. If null then the link mechanics will use the dimension's spawn point.
 	 */
 	ChunkCoordinates getSpawn();
 
 	/**
-	 * Sets the point which the link targets If null then the link mechanics will use the dimension's spawn point
+	 * Sets the point which the link targets. If null then the link mechanics will use the dimension's spawn point.
 	 */
 	void setSpawn(ChunkCoordinates spawn);
 
 	/**
-	 * Gets the direction the linked entity will face once linked
+	 * Gets the direction the linked entity will face once linked.
 	 */
 	float getSpawnYaw();
 
 	/**
-	 * Sets the direction the linked entity will face once linked
+	 * Sets the direction the linked entity will face once linked.
 	 */
 	void setSpawnYaw(float spawnyaw);
 

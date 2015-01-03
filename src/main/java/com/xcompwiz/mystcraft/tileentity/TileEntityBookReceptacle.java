@@ -1,11 +1,10 @@
 package com.xcompwiz.mystcraft.tileentity;
 
-import java.util.Random;
-
 import net.minecraft.item.ItemStack;
 
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.item.ItemLinking;
+import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.network.IMessageReceiver;
 import com.xcompwiz.mystcraft.portal.PortalUtils;
 
@@ -21,17 +20,10 @@ public class TileEntityBookReceptacle extends TileEntityBookDisplay implements I
 	}
 
 	public int getPortalColor() {
-		Random rand = new Random();
 		ItemStack book = getBook();
 		if (book == null) return 0xFFFFFF;
 		ILinkInfo info = ((ItemLinking) book.getItem()).getLinkInfo(book);
-		if (info == null) return 0x000000;
-		rand.setSeed(info.getDisplayName().hashCode());
-		int color = 0;
-		color += (rand.nextInt(256));
-		color += (rand.nextInt(256) << 8);
-		color += (rand.nextInt(256) << 16);
-		return color;
+		return DimensionUtils.getLinkColor(info);
 	}
 
 	@Override
