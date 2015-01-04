@@ -42,6 +42,6 @@ public final class LoggerUtils {
 	}
 
 	public static void debug(String message, Object... params) {
-		log(Level.DEBUG, message, params);
+		//log(Level.DEBUG, message, params);
 	}
 }

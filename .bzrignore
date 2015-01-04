@@ -9,8 +9,8 @@ __*
 ./.settings
 ./bin
 ./build
-./eclipse
 ./gradle
+./run
 
 ./.classpath
 ./.project
