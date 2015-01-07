@@ -277,6 +277,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		if (data.hasKey("SetCurrentPage")) {
 			if (this.tileentity.getWorldObj().isRemote) {
 				this.setCurrentPageIndex(data.getInteger("SetCurrentPage"));
+				cached_linkinfo = null;
 			}
 		}
 		if (data.hasKey("TakeFromSlider")) {

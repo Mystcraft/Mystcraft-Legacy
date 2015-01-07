@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import com.xcompwiz.mystcraft.api.item.IItemPageAcceptor;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.treasure.WeightProviderSymbolItem;
@@ -62,22 +63,26 @@ public class ItemBoosterPack extends Item {
 		Collection<IAgeSymbol> symbols_uc = SymbolManager.getSymbolsByRank(2);
 		Collection<IAgeSymbol> symbols_r = SymbolManager.getSymbolsByRank(3, null);
 
-		for (int i = 0; i < verycommon; ++i) {
-			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_vc, WeightProviderSymbolItem.instance);
-			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
-		}
-		for (int i = 0; i < common; ++i) {
-			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_c, WeightProviderSymbolItem.instance);
-			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
-		}
-		for (int i = 0; i < uncommon; ++i) {
-			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_uc, WeightProviderSymbolItem.instance);
-			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
-		}
-		for (int i = 0; i < rare; ++i) {
-			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, symbols_r, WeightProviderSymbolItem.instance);
-			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
-		}
+		addRandomPages(rand, item, itemstack, verycommon, symbols_vc);
+		addRandomPages(rand, item, itemstack, common, symbols_c);
+		addRandomPages(rand, item, itemstack, uncommon, symbols_uc);
+		addRandomPages(rand, item, itemstack, rare, symbols_r);
 		return itemstack;
+	}
+
+	private static void addRandomPages(Random rand, IItemPageAcceptor item, ItemStack itemstack, int count, Collection<IAgeSymbol> collection) {
+		for (int i = 0; i < count; ++i) {
+			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, collection, WeightProviderSymbolItem.instance);
+			if (checkerr(symbol, collection)) continue;
+			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
+		}
+	}
+
+	private static boolean checkerr(IAgeSymbol symbol, Collection<IAgeSymbol> collection) {
+		if (symbol == null) {
+			LoggerUtils.error("Symbol from random selection null (%s)", collection.toString());
+			return true;
+		}
+		return false;
 	}
 }

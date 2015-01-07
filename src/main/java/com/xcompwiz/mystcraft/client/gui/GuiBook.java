@@ -67,7 +67,7 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 		xSize = 176;
 		ySize = 166;
 		widget = false;
-		if (bookelem.isVisible()) {
+		if (bookelem.isVisible()) { //XXX: Clean this up?
 			xSize = bookelem.getWidth();
 			ySize = bookelem.getHeight();
 			widget = true;

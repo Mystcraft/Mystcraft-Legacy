@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityMinecartHopper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -65,7 +66,7 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 
 	public EntityLinkbook(World world) {
 		super(world);
-		setSize(0.7F, 0.2F);
+		setSize(0.25F, 0.2F);
 		renderDistanceWeight = 8.0D;
 		dataWatcher.addObject(bookitemID, Integer.valueOf(0)); // Book type
 		dataWatcher.addObject(agenameID, String.valueOf("")); // Age name
@@ -92,11 +93,6 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 		posY -= 0.10000000149011612D;
 		posZ -= MathHelper.sin((rotationYaw / 180F) * 3.141593F) * 0.16F;
 		setPosition(posX, posY, posZ);
-	}
-
-	@Override
-	protected boolean canDespawn() {
-		return false;
 	}
 
 	public Item getItem() {
@@ -151,9 +147,6 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 
 	@Override
 	public void knockBack(Entity entity, float i, double d, double d1) {}
-
-	@Override
-	protected void updateEntityActionState() {}
 
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
@@ -212,7 +205,7 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 
 		super.onUpdate();
 
-		this.noClip = this.func_145771_j(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
+		//this.noClip = this.func_145771_j(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
 
 		if (worldObj.isRemote) return;
 		++decaytimer;
@@ -321,4 +314,58 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 		if (inventory == null) return false;
 		return inventory.isItemValidForSlot(i, itemstack);
 	}
+
+	@Override
+	protected boolean canDespawn() {
+		return false;
+	}
+
+	@Override
+	public boolean isNoDespawnRequired() {
+		return true;
+	}
+
+	@Override
+	protected boolean isAIEnabled() {
+		return false;
+	}
+
+	@Override
+	public boolean canAttackClass(Class par1Class) {
+		return false;
+	}
+
+	@Override
+	protected void updateAITasks() {}
+
+	@Override
+	public void setMoveForward(float par1) {}
+
+	@Override
+	public void setJumping(boolean par1) {}
+
+	@Override
+	public void setAIMoveSpeed(float par1) {}
+
+	@Override
+	protected void updateEntityActionState() {}
+
+	@Override
+	public void faceEntity(Entity par1Entity, float par2, float par3) {}
+
+	@Override
+	public EntityLivingBase getAITarget() {
+		return null;
+	}
+
+	@Override
+	public void setRevengeTarget(EntityLivingBase par1) {}
+
+	@Override
+	public EntityLivingBase getLastAttacker() {
+		return null;
+	}
+
+	@Override
+	public void setLastAttacker(Entity par1) {}
 }

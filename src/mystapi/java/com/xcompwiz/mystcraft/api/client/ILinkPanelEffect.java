@@ -24,5 +24,4 @@ public interface ILinkPanelEffect {
 
 	/** Called when the book gui element first opens */
 	public void onOpen();
-
 }
