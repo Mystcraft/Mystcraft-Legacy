@@ -196,7 +196,7 @@ public class GuiElementBook extends GuiElement {
 			}
 		}
 		if (!bookcontainer.isLinkPermitted()) {
-			drawGradientRect(0, 0, width, height, 0x99888888, 0x99888888);
+			drawGradientRect(0, 0, width, height, 0xBB888888, 0xBB888888);
 		}
 	}
 
