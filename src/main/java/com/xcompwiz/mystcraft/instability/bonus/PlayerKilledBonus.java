@@ -18,6 +18,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOnPlayerChangedDimension, IOnPlayerLoggedIn {
 
 	private InstabilityBonusManager	bonusmanager;
+	private String					name;
 
 	private int						max;
 	private int						min;
@@ -35,11 +36,17 @@ public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOn
 		this.min = 0;
 		this.decayrate = decayrate;
 		this.dimensionid = worldObj.provider.dimensionId;
+		this.name = "Player Killed: " + playername;
 
 		EventManager eventmgr = EventManager.get();
 		eventmgr.register((IOnEntityDeath) this);
 		eventmgr.register((IOnPlayerChangedDimension) this);
 		eventmgr.register((IOnPlayerLoggedIn) this);
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
 	}
 
 	@Override

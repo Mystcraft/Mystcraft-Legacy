@@ -106,8 +106,8 @@ public class CommandDebug extends CommandBaseAdv {
 		} else if (command.equals("set")) {
 			IDebugElement elem = DebugUtils.getElement(address);
 			if (elem instanceof DebugValueCallback) {
-				boolean b = true;
-				if (args.length > 2) b = (Boolean.parseBoolean(args[args.length - 1]) || args[args.length - 1].equals("1"));
+				if (args.length <= 2) throw new WrongUsageException("Could not parse command.");
+				String b = args[args.length - 1];
 				((DebugValueCallback) elem).set(agent, b);
 			} else {
 				throw new CommandException("myst.debug.address.invalid");

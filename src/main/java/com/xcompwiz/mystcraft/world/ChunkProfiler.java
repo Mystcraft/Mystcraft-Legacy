@@ -64,8 +64,17 @@ public class ChunkProfiler extends WorldSavedData {
 		DebugUtils.register("global.profiler.file_output", new DebugValueCallback() {
 
 			@Override
-			public void set(ICommandSender agent, boolean state) {
-				outputfiles = state;
+			public void set(ICommandSender agent, String state) {
+				try {
+					if (state.compareToIgnoreCase("true") == 0) {
+						outputfiles = true;
+					} else if (state.compareToIgnoreCase("false") == 0) {
+						outputfiles = false;
+					} else {
+						outputfiles = Boolean.getBoolean(state);
+					}
+				} catch (Exception e) {
+				}
 			}
 
 			@Override

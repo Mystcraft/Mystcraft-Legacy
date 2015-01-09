@@ -19,6 +19,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 public class PlayerTrollPenalty implements IInstabilityBonus, IOnEntityDeath, IOnPlayerChangedDimension, IOnPlayerLoggedIn, IOnPlayerLoggedOut {
 
 	private InstabilityBonusManager	bonusmanager;
+	private String					name;
 
 	private int						max;
 	private int						min;
@@ -37,12 +38,18 @@ public class PlayerTrollPenalty implements IInstabilityBonus, IOnEntityDeath, IO
 		this.min = 0;
 		this.decayrate = decayrate;
 		this.dimensionid = worldObj.provider.dimensionId;
+		this.name = "Player: " + playername;
 
 		EventManager eventmgr = EventManager.get();
 		eventmgr.register((IOnEntityDeath) this);
 		eventmgr.register((IOnPlayerChangedDimension) this);
 		eventmgr.register((IOnPlayerLoggedIn) this);
 		eventmgr.register((IOnPlayerLoggedOut) this);
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
 	}
 
 	@Override

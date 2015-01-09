@@ -70,7 +70,7 @@ public abstract class DebugHierarchy {
 	public interface DebugValueCallback extends IDebugElement {
 		String get(ICommandSender agent);
 
-		void set(ICommandSender agent, boolean state);
+		void set(ICommandSender agent, String state);
 	}
 
 	public interface DebugTaskCallback extends IDebugElement {

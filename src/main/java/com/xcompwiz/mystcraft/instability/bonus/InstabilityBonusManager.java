@@ -3,8 +3,11 @@ package com.xcompwiz.mystcraft.instability.bonus;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.command.ICommandSender;
 import net.minecraft.world.World;
 
+import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
+import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
 import com.xcompwiz.mystcraft.world.AgeController;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
@@ -12,6 +15,8 @@ public class InstabilityBonusManager {
 
 	//XXX: Move to own (for API)
 	public interface IInstabilityBonus {
+		public String getName();
+
 		public int getValue();
 
 		public void tick(World world);
@@ -44,6 +49,7 @@ public class InstabilityBonusManager {
 		}
 	}
 
+	//XXX: Encapsulate this to prevent external registration?
 	public void register(IInstabilityBonus provider) {
 		bonuses.add(provider);
 	}
@@ -63,5 +69,16 @@ public class InstabilityBonusManager {
 
 	public boolean isInstabilityEnabled() {
 		return controller.isInstabilityEnabled();
+	}
+
+	public void registerDebugInfo(DebugNode node) {
+		for (final IInstabilityBonus bonus : this.bonuses) {
+			node.addChild(bonus.getName().replaceAll("\\.", "_").replaceAll(" ", ""), new DefaultValueCallback() {
+				@Override
+				public String get(ICommandSender agent) {
+					return "" + bonus.getValue();
+				}
+			});
+		}
 	}
 }

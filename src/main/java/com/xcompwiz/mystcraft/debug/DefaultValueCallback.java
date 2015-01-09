@@ -29,7 +29,7 @@ public abstract class DefaultValueCallback implements DebugValueCallback {
 	}
 
 	@Override
-	public void set(ICommandSender agent, boolean state) {
+	public void set(ICommandSender agent, String state) {
 		throw new CallbackSetNotSupported();
 	}
 

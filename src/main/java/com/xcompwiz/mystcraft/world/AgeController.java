@@ -107,6 +107,7 @@ public class AgeController implements IAgeController {
 	private int									symbolinstability;
 	private Integer								blockinstability	= null;
 	private HashMap<IAgeSymbol, Integer>		symbolcounts		= new HashMap<IAgeSymbol, Integer>();
+	protected int								debuginstability = 0;
 
 	private Semaphore							semaphore			= new Semaphore(1, true);
 	private boolean								rebuilding;
@@ -231,15 +232,18 @@ public class AgeController implements IAgeController {
 
 	public void registerDebugInfo(DebugNode node) {
 		final ChunkProfiler profiler = this.getChunkProfiler();
+		final InstabilityBonusManager bonusmanager = getInstabilityBonusManager();
 //@formatter:off
 		node.addChild("profiled_chunks", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + profiler.getCount(); }});
 		node = node.getOrCreateNode("instability");
 		node.addChild("symbols", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + symbolinstability; }});
+		node.addChild("debug", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + debuginstability; } @Override public void set(ICommandSender agent, String value) { debuginstability = Integer.getInteger(value); }});
 		node.addChild("book", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + agedata.getBaseInstability(); }});
 		node.addChild("total", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + (symbolinstability + (blockinstability == null ? 0 : blockinstability) + agedata.getBaseInstability() + getInstabilityBonusManager().getResult()); }});
-		node.addChild("bonus", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + getInstabilityBonusManager().getResult(); }});
+		node.addChild("bonus_total", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + bonusmanager.getResult(); }});
 		node.addChild("blocks_total", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + blockinstability; }});
 //@formatter:on	
+		bonusmanager.registerDebugInfo(node.getOrCreateNode("bonus"));
 		profiler.registerDebugInfo(node.getOrCreateNode("blocks"));
 	}
 
@@ -259,7 +263,7 @@ public class AgeController implements IAgeController {
 		if (profiler.getCount() < 400 || blockinstability == null) {
 			updateProfiledInstability();
 		}
-		int score = symbolinstability + blockinstability + agedata.getBaseInstability() + getInstabilityBonusManager().getResult();
+		int score = debuginstability + symbolinstability + blockinstability + agedata.getBaseInstability() + getInstabilityBonusManager().getResult();
 		int difficulty = Mystcraft.difficulty;
 		switch (difficulty) {
 		case 0:
