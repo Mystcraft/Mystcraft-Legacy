@@ -79,8 +79,11 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	@Override
 	public boolean _onMouseDown(int mouseX, int mouseY, int button) {
 		if (this.contains(mouseX, mouseY)) {
+			if (pagesProvider == null) return false;
 			if (mc.thePlayer.inventory.getItemStack() != null) {
-				int index = getPages().size();
+				List<PositionableItem> pages = getPages();
+				if (pages == null) return false;
+				int index = pages.size();
 				if (hoverpage != null) index = hoverpage.slotId;
 				pagesProvider.place(index, button == 1);
 				return true;
@@ -102,10 +105,10 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	public boolean _onMouseUp(int i, int j, int k) {
 		int guiLeft = getLeft();
 		int guiTop = getTop();
-		if (GuiUtils.contains(i, j, guiLeft, guiTop, xSize - 20, ySize) && hoverpage != null && k == 1 && mousedown) {
+		if (pagesProvider != null && GuiUtils.contains(i, j, guiLeft, guiTop, xSize - 20, ySize) && hoverpage != null && k == 1 && mousedown) {
 			pagesProvider.copy(hoverpage);
-			mousedown = false;
 		}
+		mousedown = false;
 		return false;
 	}
 
