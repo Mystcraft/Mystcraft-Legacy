@@ -288,14 +288,14 @@ public class ChunkProfiler extends WorldSavedData {
 		for (final String blockkey : InstabilityBlockManager.getWatchedBlocks()) {
 			node.addChild(blockkey.replaceAll("\\.", "_"), new DefaultValueCallback() {
 				private ChunkProfiler	profiler;
-				private String	blockkey;
+				private String			blockkey;
 
 				@Override
 				public String get(ICommandSender agent) {
 					HashMap<String, Float> split = profiler.lastsplitcalc;
-					if (split == null) return "";
+					if (split == null) return "N/A";
 					Float val = split.get(blockkey);
-					if (val == null) return "";
+					if (val == null) return "None";
 					return "" + val;
 				}
 

@@ -11,13 +11,13 @@ import net.minecraft.item.ItemStack;
 
 public class InstabilityBlockManager {
 
-	private static final Collection<String>	watchedblocks	= new HashSet<String>();
-	private static final Map<String, Float>	factor1s		= new HashMap<String, Float>();
-	private static final Map<String, Float>	factor2s		= new HashMap<String, Float>();
-	private static Map<String, ? extends Number>		freevals;
+	private static final Collection<String>			watchedblocks	= new HashSet<String>();
+	private static final Map<String, Float>			factor1s		= new HashMap<String, Float>();
+	private static final Map<String, Float>			factor2s		= new HashMap<String, Float>();
+	private static Map<String, ? extends Number>	freevals;
 
-	public static final Map<String, Float>	ro_factor1s		= Collections.unmodifiableMap(factor1s);
-	public static final Map<String, Float>	ro_factor2s		= Collections.unmodifiableMap(factor2s);
+	public static final Map<String, Float>			ro_factor1s		= Collections.unmodifiableMap(factor1s);
+	public static final Map<String, Float>			ro_factor2s		= Collections.unmodifiableMap(factor2s);
 
 	public static void setInstabilityFactors(Block block, float factor1, float factor2) {
 		setInstabilityFactors(block, 0, factor1, factor2);

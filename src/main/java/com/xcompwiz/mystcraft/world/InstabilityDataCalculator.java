@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.world;
 import java.io.File;
 import java.util.HashMap;
 
+import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -13,6 +14,9 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.world.WorldEvent;
 
+import com.xcompwiz.mystcraft.debug.DebugHierarchy;
+import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
+import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
 import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
 
@@ -25,18 +29,56 @@ public class InstabilityDataCalculator {
 
 	private MinecraftServer			mcserver;
 	private MapStorage				storage;
-	private int						minimumchunks;
 
-	private HashMap<String, Float>	constants;
+	private int						minimumchunks; //TODO: Make this configurable
+	private float					tolerance	= 1.05F; //TODO: Make this configurable
 
-	private float					tolerance	= 1.01F;
+	private HashMap<String, Number>	freevals;
+
+	public static DebugNode getDebugNode() {
+		DebugNode current = DebugHierarchy.root;
+		current = current.getOrCreateNode("data");
+		current = current.getOrCreateNode("instability_calc");
+		return current;
+	}
 
 	public InstabilityDataCalculator(MinecraftServer mcserver) {
 		this.mcserver = mcserver;
 		this.storage = mcserver.worldServerForDimension(0).mapStorage;
 		this.minimumchunks = ModifierBiome.selectables.size() * 20;
-		ChunkProfiler profiler = getChunkProfiler();
+		final ChunkProfiler profiler = getChunkProfiler();
 		this.chunkX = profiler.getCount() - 1;
+
+		DebugNode node = getDebugNode();
+		//@formatter:off
+		node.addChild("profiled_chunks", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + profiler.getCount(); }});
+		this.registerDebugInfo(node.getOrCreateNode("freevals"));
+		profiler.registerDebugInfo(node.getOrCreateNode("profiled"));
+		//@formatter:on
+	}
+
+	private void registerDebugInfo(DebugNode node) {
+		for (final String blockkey : InstabilityBlockManager.getWatchedBlocks()) {
+			node.addChild(blockkey.replaceAll("\\.", "_"), new DefaultValueCallback() {
+				private InstabilityDataCalculator	calculator;
+				private String						blockkey;
+
+				@Override
+				public String get(ICommandSender agent) {
+					HashMap<String, Number> split = calculator.freevals;
+					if (split == null) return "N/A";
+					Number val = split.get(blockkey);
+					if (val == null) return "None";
+					return "" + val;
+				}
+
+				private DefaultValueCallback init(InstabilityDataCalculator calculator, String blockkey) {
+					this.calculator = calculator;
+					this.blockkey = blockkey;
+					return this;
+				}
+			}.init(this, blockkey));
+		}
 	}
 
 	@SubscribeEvent
@@ -47,8 +89,8 @@ public class InstabilityDataCalculator {
 			stepChunkGeneration(profiler);
 		} else {
 			cleanup();
-			constants = getChunkProfiler().calculateSplitInstability();
-			HashMap<String, Number> freevals = new HashMap<String, Number>();
+			HashMap<String, Float> constants = getChunkProfiler().calculateSplitInstability();
+			freevals = new HashMap<String, Number>();
 			for (String key : constants.keySet()) {
 				float val = constants.get(key);
 				val = (val * tolerance);
@@ -64,6 +106,9 @@ public class InstabilityDataCalculator {
 		this.cleanup();
 		InstabilityBlockManager.clearBaselineStability();
 		mcserver = null;
+
+		DebugNode node = getDebugNode();
+		node.parent.removeChild(node);
 	}
 
 	private ChunkProfiler getChunkProfiler() {
