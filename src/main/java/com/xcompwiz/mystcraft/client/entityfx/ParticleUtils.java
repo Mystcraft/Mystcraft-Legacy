@@ -16,24 +16,24 @@ public final class ParticleUtils {
 	public static void spawnParticle(String particle, double x, double y, double z, double motionX, double motionY, double motionZ) {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (mc != null && mc.renderViewEntity != null && mc.effectRenderer != null) {
-			int var14 = mc.gameSettings.particleSetting;
+			int particlesetting = mc.gameSettings.particleSetting;
 
-			if (var14 == 1 && mc.theWorld.rand.nextInt(3) == 0) {
-				var14 = 2;
+			if (particlesetting == 1 && mc.theWorld.rand.nextInt(3) == 0) {
+				particlesetting = 2;
 			}
-			if (var14 > 1) { return; }
+			if (particlesetting > 1) { return; }
 
 			ParticleProvider provider = particlemappings.get(particle);
 			if (provider == null) return;
 
-			double var15 = mc.renderViewEntity.posX - x;
-			double var17 = mc.renderViewEntity.posY - y;
-			double var19 = mc.renderViewEntity.posZ - z;
+			double lx = mc.renderViewEntity.posX - x;
+			double ly = mc.renderViewEntity.posY - y;
+			double lz = mc.renderViewEntity.posZ - z;
 			EntityFX effect = null;
 
-			double var22 = 256.0D;
+			double distsq = 256.0D;
 
-			if (var15 * var15 + var17 * var17 + var19 * var19 > var22) { return; }
+			if (lx * lx + ly * ly + lz * lz > distsq) { return; }
 			effect = provider.createParticle(mc.theWorld, x, y, z, motionX, motionY, motionZ);
 
 			if (effect != null) {
