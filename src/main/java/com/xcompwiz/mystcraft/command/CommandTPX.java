@@ -126,7 +126,7 @@ public class CommandTPX extends CommandBaseAdv {
 	}
 
 	public static boolean isOpTP(ILinkInfo link) {
-		return link.getFlag("Op-TP");
+		return link.getFlag(ILinkPropertyAPI.FLAG_TPCOMMAND);
 	}
 
 	private void makeOpTP(ILinkInfo link) {

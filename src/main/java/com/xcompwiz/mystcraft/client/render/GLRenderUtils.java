@@ -22,7 +22,7 @@ public final class GLRenderUtils {
 
 	public static final GLRenderState	state	= new GLRenderState();
 
-	public static void checkState() {
+	public static void grabState() {
 		state.GL_ALPHA_TEST = GL11.glGetBoolean(GL11.GL_ALPHA_TEST);
 		state.GL_BLEND = GL11.glGetBoolean(GL11.GL_BLEND);
 		state.GL_COLOR_LOGIC_OP = GL11.glGetBoolean(GL11.GL_COLOR_LOGIC_OP);

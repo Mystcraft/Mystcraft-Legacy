@@ -14,8 +14,8 @@ import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
-import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.inventory.InventoryUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.network.packet.MPacketAgeData;
@@ -59,7 +59,7 @@ public final class NetworkUtils {
 			return;
 		}
 
-		int slot = MystcraftCommonProxy.findInInventory(player.inventory, itemstack);
+		int slot = InventoryUtils.findInInventory(player.inventory, itemstack);
 		if (slot < 0) {
 			LoggerUtils.warn(String.format("Attempted to open GUI for item not in inventory (%s)", guiID));
 			return;

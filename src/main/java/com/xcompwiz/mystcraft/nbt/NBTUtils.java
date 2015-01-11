@@ -1,9 +1,13 @@
 package com.xcompwiz.mystcraft.nbt;
 
+import io.netty.buffer.ByteBuf;
+
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
@@ -147,5 +151,19 @@ public final class NBTUtils {
 			collection.add(nbttaglist.getCompoundTagAt(i));
 		}
 		return collection;
+	}
+
+	/**
+	 * Writes a compressed NBTTagCompound to the OutputStream
+	 * @throws IOException
+	 */
+	public static void writeNBTTagCompound(NBTTagCompound par0NBTTagCompound, ByteBuf data) throws IOException {
+		if (par0NBTTagCompound == null) {
+			data.writeShort(-1);
+		} else {
+			byte[] var2 = CompressedStreamTools.compress(par0NBTTagCompound);
+			data.writeShort((short) var2.length);
+			data.writeBytes(var2);
+		}
 	}
 }
