@@ -48,6 +48,7 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 			itemstack.stackTagCompound = new NBTTagCompound();
 			//FIXME: Empty books do what?
 			LinkOptions.setFlag(itemstack.stackTagCompound, ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, true);
+			((ItemAgebook)itemstack.getItem()).addPages(itemstack, Collections.singleton(Page.createLinkPage()));
 		}
 	}
 
@@ -56,6 +57,7 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		LinkOptions.setDimensionUID(itemstack.stackTagCompound, dimId);
 		LinkOptions.setDisplayName(itemstack.stackTagCompound, bookdata.getAgeName());
 		LinkOptions.setFlag(itemstack.stackTagCompound, ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, true);
+		((ItemAgebook)itemstack.getItem()).addPages(itemstack, Collections.singleton(Page.createLinkPage()));
 	}
 
 	public static void create(ItemStack agebook, EntityPlayer player, List<ItemStack> pages, String pendingtitle) {
@@ -111,8 +113,9 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		Integer dimid = LinkOptions.getDimensionUID(itemstack.stackTagCompound);
 		if (dimid != null) return;
 		dimid = DimensionUtils.getNewDimensionUID();
-		DimensionUtils.createAge(DimensionUtils.convertDimensionUIDToID(dimid));
+		AgeData agedata = DimensionUtils.createAge(DimensionUtils.convertDimensionUIDToID(dimid));
 		LinkOptions.setDimensionUID(itemstack.stackTagCompound, dimid);
+		agedata.setAgeName(LinkOptions.getDisplayName(itemstack.stackTagCompound));
 	}
 
 	@Override

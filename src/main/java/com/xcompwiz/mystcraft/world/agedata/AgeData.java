@@ -133,7 +133,7 @@ public class AgeData extends WorldSavedData {
 	}
 
 	public Set<String> getAuthors() {
-		if (authors == null) return null;
+		if (authors == null) return Collections.EMPTY_SET;
 		return Collections.unmodifiableSet(authors);
 	}
 

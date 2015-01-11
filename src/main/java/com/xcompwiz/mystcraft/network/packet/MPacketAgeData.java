@@ -3,12 +3,12 @@ package com.xcompwiz.mystcraft.network.packet;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
 public class MPacketAgeData extends PacketHandler {
 
@@ -25,7 +25,7 @@ public class MPacketAgeData extends PacketHandler {
 		return;
 	}
 
-	public static Packet getDataPacket(int uid) {
+	public static FMLProxyPacket getDataPacket(int uid) {
 		NBTTagCompound nbttagcompound = new NBTTagCompound();
 		AgeData.getAge(uid, false).writeToNBT(nbttagcompound);
 
@@ -34,8 +34,7 @@ public class MPacketAgeData extends PacketHandler {
 		data.writeInt(uid);
 		ByteBufUtils.writeTag(data, nbttagcompound);
 
-		Packet pkt = buildPacket(data);
-		return pkt;
+		return buildPacket(data);
 	}
 
 }
