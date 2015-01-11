@@ -346,6 +346,7 @@ public class AgeData extends WorldSavedData {
 	}
 
 	public static AgeData getAge(int uid, boolean isRemote) {
+		if (!DimensionManager.isDimensionRegistered(uid)) return null;
 		if (DimensionManager.getProviderType(uid) != Mystcraft.providerId) return null;
 		String s = getStringID(uid);
 		MapStorage storage = Mystcraft.getStorage(!isRemote);

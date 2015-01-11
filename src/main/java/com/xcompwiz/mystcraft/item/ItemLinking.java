@@ -214,4 +214,13 @@ public abstract class ItemLinking extends Item {
 	public List<ItemStack> getPageList(EntityPlayer player, ItemStack itemstack) {
 		return null;
 	}
+
+	public static Integer getTargetDimension(ItemStack book) {
+		if (book == null) return null;
+		if (book.stackTagCompound == null) return null;
+		if (book.getItem() instanceof ItemLinking) {
+			return LinkOptions.getDimensionUID(book.stackTagCompound);
+		}
+		return null;
+	}
 }

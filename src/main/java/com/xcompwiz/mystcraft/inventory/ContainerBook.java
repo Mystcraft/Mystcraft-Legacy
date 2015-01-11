@@ -14,20 +14,18 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
-import net.minecraftforge.common.DimensionManager;
 
-import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
+import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketAgeData;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookDisplay;
-import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 public class ContainerBook extends ContainerBase implements IGuiMessageHandler, IBookContainer {
 	private IInventory		inventory;
@@ -108,19 +106,9 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 
 	@Override
 	public boolean isTargetWorldVisited() {
-		ItemStack book = getBook();
-		if (book == null) return false;
-		if (book.stackTagCompound == null) return false;
-		if (book.getItem() instanceof ItemLinking) { //XXX: (Helper) This should be broken into some kind of helper
-			int dim = LinkOptions.getDimensionUID(book.stackTagCompound);
-			if (DimensionManager.getProviderType(dim) == Mystcraft.providerId) {
-				AgeData agedata = AgeData.getAge(dim, inventoryplayer.player.worldObj.isRemote);
-				if (agedata == null) return false;
-				return agedata.isVisited();
-			}
-			return true;
-		}
-		return false;
+		Integer dim = ItemLinking.getTargetDimension(getBook());
+		if (dim == null) return false;
+		return DimensionUtils.isDimensionVisited(dim, inventoryplayer.player.worldObj.isRemote);
 	}
 
 	@Override

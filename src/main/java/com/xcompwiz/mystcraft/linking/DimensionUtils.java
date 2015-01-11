@@ -27,6 +27,16 @@ public class DimensionUtils {
 		return dimUId;
 	}
 
+	public static boolean isDimensionVisited(int dimId, boolean isRemote) {
+		if (!DimensionManager.isDimensionRegistered(dimId)) return false;
+		if (DimensionManager.getProviderType(dimId) == Mystcraft.providerId) {
+			AgeData agedata = AgeData.getAge(dimId, isRemote);
+			if (agedata == null) return false;
+			return agedata.isVisited();
+		}
+		return true;
+	}
+
 	public static AgeData createAge(int dimId) {
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 		if (server == null) throw new RuntimeException("Cannot create dimension client-side. Misuse of Mystcraft API.");
