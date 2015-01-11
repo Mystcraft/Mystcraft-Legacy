@@ -1,6 +1,6 @@
 package com.xcompwiz.mystcraft.item;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -11,14 +11,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.item.IItemWritable;
 import com.xcompwiz.mystcraft.data.ModAchievements;
-import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
+import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
@@ -35,32 +37,18 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 	}
 
 	@Override
-	protected void initialize(World world, ItemStack itemstack, Entity entity) {
-		if (world.isRemote) return;
-		if (itemstack.stackTagCompound != null) {
-			AgeData data = AgeData.getAge(LinkOptions.getDimensionUID(itemstack.stackTagCompound), world.isRemote);
-			if (data == null) {
-				itemstack.stackTagCompound = null;
-			}
-		}
+	public EnumRarity getRarity(ItemStack itemstack) {
+		return itemstack.isItemEnchanted() ? EnumRarity.rare : EnumRarity.epic;
+	}
+
+	@Override
+	protected void initialize(World worldObj, ItemStack itemstack, Entity entity) {
+		if (worldObj.isRemote) return;
 		if (itemstack.stackTagCompound == null) {
-			AgeData bookdata = bindToNewDim(itemstack);
-			bookdata.setPages(Arrays.asList(Page.createLinkPage()));
+			itemstack.stackTagCompound = new NBTTagCompound();
+			//FIXME: Empty books do what?
+			LinkOptions.setFlag(itemstack.stackTagCompound, ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, true);
 		}
-	}
-
-	public static AgeData bindToNewDim(ItemStack itemstack) {
-		int dimUID = DimensionUtils.getNewDimensionUID();
-		AgeData bookdata = DimensionUtils.createAge(DimensionUtils.convertDimensionUIDToID(dimUID));
-		initializeCompound(itemstack, dimUID, bookdata);
-		return bookdata;
-	}
-
-	public static AgeData getAgeData(World world, ItemStack itemstack) {
-		if (itemstack.stackTagCompound == null) return null;
-		ModItems.agebook.initialize(world, itemstack, null);
-		int uid = LinkOptions.getDimensionUID(itemstack.stackTagCompound);
-		return AgeData.getAge(uid, world.isRemote);
 	}
 
 	public static void initializeCompound(ItemStack itemstack, int dimId, AgeData bookdata) {
@@ -70,30 +58,61 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		LinkOptions.setFlag(itemstack.stackTagCompound, ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, true);
 	}
 
-	@Override
-	public EnumRarity getRarity(ItemStack itemstack) {
-		return itemstack.isItemEnchanted() ? EnumRarity.rare : EnumRarity.epic;
+	public static void create(ItemStack agebook, EntityPlayer player, List<ItemStack> pages, String pendingtitle) {
+		agebook.stackTagCompound = new NBTTagCompound();
+		((ItemAgebook)agebook.getItem()).addPages(agebook, pages);
+		((ItemAgebook)agebook.getItem()).addAuthor(agebook, player);
+		((ItemAgebook)agebook.getItem()).setDisplayName(player, agebook, pendingtitle);
+		if (pages.isEmpty()) return;
+		ItemStack linkpanel = pages.get(0);
+		if (Page.isLinkPanel(linkpanel)) Page.applyLinkPanel(linkpanel, agebook);
+	}
+
+	public static boolean isNewAgebook(ItemStack agebook) {
+		if (agebook.stackTagCompound == null) return false;
+		Integer dimid = LinkOptions.getDimensionUID(agebook.stackTagCompound);
+		if (dimid != null) return false;
+		List<ItemStack> pages = ((ItemAgebook)agebook.getItem()).getPageList(null, agebook);
+		if (pages.isEmpty()) return false;
+		if (!Page.isLinkPanel(pages.get(0))) return false;
+		return true;
 	}
 
 	@Override
-	public Collection<String> getAuthors(ItemStack itemstack) {
+	@Deprecated
+	public void onUpdate(ItemStack itemstack, World worldObj, Entity entity, int i, boolean flag) {
+		super.onUpdate(itemstack, worldObj, entity, i, flag);
+		if (worldObj.isRemote) return;
 		if (itemstack.stackTagCompound != null) {
-			int uid = LinkOptions.getDimensionUID(itemstack.stackTagCompound);
-			AgeData data = AgeData.getAge(uid, true);
-			if (data != null) {
-				Collection<String> authors = data.getAuthors();
-				if (authors != null) return authors;
-			}
+			Integer dimid = LinkOptions.getDimensionUID(itemstack.stackTagCompound);
+			if (dimid == null) return;
+			AgeData data = AgeData.getAge(dimid, worldObj.isRemote);
+			if (data == null) return;
+			//FIXME: ! Transition to new storage
+			if (!itemstack.stackTagCompound.hasKey("Pages")) addPages(itemstack, data.getPages());
+			if (!itemstack.stackTagCompound.hasKey("Authors")) addAuthors(itemstack, data.getAuthors());
 		}
-		return Collections.emptySet();
 	}
 
-	/**
-	 * Called when item is crafted/smelted. Used in maps.
-	 */
 	@Override
 	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer player) {
 		player.addStat(ModAchievements.agebook, 1);
+	}
+
+	@Override
+	public void activate(ItemStack itemstack, World worldObj, Entity entity) {
+		if (worldObj.isRemote) return;
+		this.checkFirstLink(itemstack, worldObj, entity);
+		super.activate(itemstack, worldObj, entity);
+	}
+
+	private void checkFirstLink(ItemStack itemstack, World worldObj, Entity entity) {
+		if (itemstack.stackTagCompound == null) return;
+		Integer dimid = LinkOptions.getDimensionUID(itemstack.stackTagCompound);
+		if (dimid != null) return;
+		dimid = DimensionUtils.getNewDimensionUID();
+		DimensionUtils.createAge(DimensionUtils.convertDimensionUIDToID(dimid));
+		LinkOptions.setDimensionUID(itemstack.stackTagCompound, dimid);
 	}
 
 	@Override
@@ -104,40 +123,75 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 	@Override
 	public void setDisplayName(EntityPlayer player, ItemStack itemstack, String name) {
 		LinkOptions.setDisplayName(itemstack.stackTagCompound, name);
-		AgeData data = AgeData.getAge(LinkOptions.getDimensionUID(itemstack.stackTagCompound), player.worldObj.isRemote);
+		AgeData data = getAgeData(itemstack, player.worldObj.isRemote);
 		if (data != null) data.setAgeName(name);
 	}
 
 	@Override
-	public boolean writeSymbol(EntityPlayer player, ItemStack target, String symbol) {
-		AgeData agedata = ItemAgebook.getAgeData(player.worldObj, target);
-		if (agedata != null && !agedata.isVisited()) {
-			if (agedata.writeSymbol(symbol)) {
-				agedata.addAuthor(player.getDisplayName());
+	public boolean writeSymbol(EntityPlayer player, ItemStack itemstack, String symbol) {
+		if (isVisited(itemstack, player.worldObj.isRemote)) return false;
+		if (itemstack.stackTagCompound == null) return false;
+		NBTTagCompound nbttagcompound = itemstack.stackTagCompound;
+		Collection<ItemStack> list = NBTUtils.readItemStackCollection(nbttagcompound.getTagList("Pages", Constants.NBT.TAG_COMPOUND), new ArrayList<ItemStack>());
+		for (ItemStack page : list) {
+			if (Page.isBlank(page)) {
+				Page.setSymbol(page, symbol);
+				nbttagcompound.setTag("Pages", NBTUtils.writeItemStackCollection(new NBTTagList(), list));
+				this.addAuthor(itemstack, player);
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public void addPages(EntityPlayer player, ItemStack itemstack, List<ItemStack> pages) {
-		AgeData agedata = ItemAgebook.getAgeData(player.worldObj, itemstack);
-		if (agedata != null && !agedata.isVisited()) {
-			agedata.addPages(pages);
-		}
-	}
-
-	public void addAuthor(EntityPlayer player, ItemStack itemstack) {
-		AgeData agedata = ItemAgebook.getAgeData(player.worldObj, itemstack);
-		if (agedata != null && !agedata.isVisited()) {
-			agedata.addAuthor(player.getDisplayName());
-		}
+	private void addPages(ItemStack itemstack, Collection<ItemStack> pages) {
+		if (itemstack.stackTagCompound == null) return;
+		NBTTagCompound nbttagcompound = itemstack.stackTagCompound;
+		Collection<ItemStack> list = NBTUtils.readItemStackCollection(nbttagcompound.getTagList("Pages", Constants.NBT.TAG_COMPOUND), new ArrayList<ItemStack>());
+		list.addAll(pages);
+		nbttagcompound.setTag("Pages", NBTUtils.writeItemStackCollection(new NBTTagList(), list));
 	}
 
 	@Override
 	public List<ItemStack> getPageList(EntityPlayer player, ItemStack itemstack) {
-		AgeData data = AgeData.getAge(LinkOptions.getDimensionUID(itemstack.stackTagCompound), player.worldObj.isRemote);
-		if (data != null) return data.getPages();
-		return null;
+		if (itemstack.stackTagCompound == null) return Collections.EMPTY_LIST;
+		NBTTagCompound nbttagcompound = itemstack.stackTagCompound;
+		return NBTUtils.readItemStackCollection(nbttagcompound.getTagList("Pages", Constants.NBT.TAG_COMPOUND), new ArrayList<ItemStack>());
+	}
+
+	private void addAuthor(ItemStack itemstack, EntityPlayer player) {
+		if (itemstack.stackTagCompound == null) return;
+		NBTTagCompound nbttagcompound = itemstack.stackTagCompound;
+		Collection<String> list = NBTUtils.readStringCollection(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), new ArrayList<String>());
+		list.add(player.getDisplayName());
+		nbttagcompound.setTag("Authors", NBTUtils.writeStringCollection(new NBTTagList(), list));
+	}
+
+	private void addAuthors(ItemStack itemstack, Collection<String> authors) {
+		if (itemstack.stackTagCompound == null) return;
+		NBTTagCompound nbttagcompound = itemstack.stackTagCompound;
+		Collection<String> list = NBTUtils.readStringCollection(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), new ArrayList<String>());
+		list.addAll(authors);
+		nbttagcompound.setTag("Authors", NBTUtils.writeStringCollection(new NBTTagList(), list));
+	}
+
+	@Override
+	public Collection<String> getAuthors(ItemStack itemstack) {
+		if (itemstack.stackTagCompound == null) return Collections.EMPTY_LIST;
+		NBTTagCompound nbttagcompound = itemstack.stackTagCompound;
+		return NBTUtils.readStringCollection(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), new ArrayList<String>());
+	}
+
+	private AgeData getAgeData(ItemStack itemstack, boolean isRemote) {
+		if (itemstack.stackTagCompound == null) return null;
+		Integer uid = LinkOptions.getDimensionUID(itemstack.stackTagCompound);
+		if (uid == null) return null;
+		return AgeData.getAge(uid, isRemote);
+	}
+
+	private boolean isVisited(ItemStack itemstack, boolean isRemote) {
+		AgeData agedata = getAgeData(itemstack, isRemote);
+		if (agedata == null) return false;
+		return agedata.isVisited();
 	}
 }

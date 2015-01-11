@@ -8,7 +8,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
 import com.xcompwiz.mystcraft.item.ItemLinking;
-import com.xcompwiz.mystcraft.linking.LinkController;
 
 public class InventoryBook implements IInventory {
 
@@ -125,7 +124,7 @@ public class InventoryBook implements IInventory {
 		ItemStack book = getBook();
 		if (book == null) return;
 		if (!(book.getItem() instanceof ItemLinking)) return;
-		LinkController.travelEntity(owner.worldObj, entity, ((ItemLinking) book.getItem()).getLinkInfo(book));
+		((ItemLinking) book.getItem()).activate(book, owner.worldObj, entity);
 	}
 
 	@Override

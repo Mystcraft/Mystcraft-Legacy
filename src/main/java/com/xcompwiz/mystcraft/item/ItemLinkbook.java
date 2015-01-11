@@ -1,6 +1,5 @@
 package com.xcompwiz.mystcraft.item;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -31,25 +30,15 @@ public class ItemLinkbook extends ItemLinking implements IItemRenameable, IItemP
 	}
 
 	@Override
-	protected void initialize(World world, ItemStack itemstack, Entity entity) {
-		if (itemstack.stackTagCompound == null) {
-			itemstack.setTagCompound(InternalAPI.linking.createLinkInfoFromPosition(world, entity).getTagCompound());
-		}
-	}
-
-	@Override
 	public EnumRarity getRarity(ItemStack itemstack) {
 		return EnumRarity.rare;
 	}
 
 	@Override
-	public Collection<String> getAuthors(ItemStack itemstack) {
-		if (itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("Author")) {
-			ArrayList<String> authors = new ArrayList<String>();
-			authors.add(itemstack.stackTagCompound.getString("Author"));
-			return authors;
+	protected void initialize(World world, ItemStack itemstack, Entity entity) {
+		if (itemstack.stackTagCompound == null) {
+			itemstack.setTagCompound(InternalAPI.linking.createLinkInfoFromPosition(world, entity).getTagCompound());
 		}
-		return Collections.EMPTY_SET;
 	}
 
 	/**
@@ -74,5 +63,11 @@ public class ItemLinkbook extends ItemLinking implements IItemRenameable, IItemP
 	public List<ItemStack> getPageList(EntityPlayer player, ItemStack itemstack) {
 		//TODO: Might want to create the actual link page in the future
 		return Collections.singletonList(Page.createLinkPage());
+	}
+
+	@Override
+	public Collection<String> getAuthors(ItemStack itemstack) {
+		if (itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("Author")) { return Collections.singleton(itemstack.stackTagCompound.getString("Author")); }
+		return Collections.EMPTY_SET;
 	}
 }

@@ -6,7 +6,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 
 import com.xcompwiz.mystcraft.item.ItemLinking;
-import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.network.IMessageReceiver;
 import com.xcompwiz.mystcraft.network.packet.MPacketMessage;
@@ -82,6 +81,6 @@ public class TileEntityBookDisplay extends TileEntityBook implements IMessageRec
 		ItemStack book = getBook();
 		if (book == null) return;
 		if (!(book.getItem() instanceof ItemLinking)) return;
-		LinkController.travelEntity(worldObj, player, ((ItemLinking) book.getItem()).getLinkInfo(book));
+		((ItemLinking) book.getItem()).activate(book, worldObj, player);
 	}
 }

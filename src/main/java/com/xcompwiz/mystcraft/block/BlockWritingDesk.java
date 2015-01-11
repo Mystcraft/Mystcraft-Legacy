@@ -50,7 +50,6 @@ public class BlockWritingDesk extends Block {
 		@Override
 		public Container getContainer(EntityPlayerMP player, World worldObj, TileEntity tileentity, int i, int j, int k) {
 			// Sends age data packet
-			NetworkUtils.sendAgeData(worldObj, ((TileEntityDesk) tileentity).getStackInSlot(0), player);
 			return new ContainerWritingDesk(player.inventory, (TileEntityDesk) tileentity);
 		}
 

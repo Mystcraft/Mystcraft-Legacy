@@ -35,7 +35,8 @@ public class LinkController {
 		if (world.isRemote) return false;
 		if (info == null) return false;
 		info = info.clone();
-		int dimension = DimensionUtils.convertDimensionUIDToID(info.getDimensionUID());
+		Integer dimension = info.getDimensionUID();
+		if (dimension == null) return false;
 		ChunkCoordinates spawn = info.getSpawn();
 		float yaw = info.getSpawnYaw();
 		if (!LinkListenerManager.isLinkPermitted(world, entity, info)) return false;

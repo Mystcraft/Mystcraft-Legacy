@@ -37,7 +37,6 @@ import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.fluids.FluidUtils;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.item.ItemPage;
-import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.network.IMessageReceiver;
 import com.xcompwiz.mystcraft.network.packet.MPacketMessage;
@@ -486,7 +485,7 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		ItemStack book = getTarget();
 		if (book == null) return;
 		if (!(book.getItem() instanceof ItemLinking)) return;
-		LinkController.travelEntity(worldObj, player, ((ItemLinking) book.getItem()).getLinkInfo(book));
+		((ItemLinking) book.getItem()).activate(book, worldObj, player);
 	}
 
 	/**

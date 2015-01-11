@@ -35,7 +35,6 @@ public abstract class BlockBookDisplay extends BlockContainer {
 		@Override
 		public Container getContainer(EntityPlayerMP player, World worldObj, TileEntity tileentity, int i, int j, int k) {
 			// Sends age data packet
-			NetworkUtils.sendAgeData(worldObj, ((TileEntityBookDisplay) tileentity).getBook(), player);
 			return new ContainerBook(player.inventory, (TileEntityBookDisplay) tileentity);
 		}
 

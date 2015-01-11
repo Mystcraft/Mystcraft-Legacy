@@ -29,7 +29,7 @@ public class LinkOptions implements ILinkInfo {
 	}
 
 	@Override
-	public int getDimensionUID() {
+	public Integer getDimensionUID() {
 		return getDimensionUID(data);
 	}
 
@@ -87,12 +87,13 @@ public class LinkOptions implements ILinkInfo {
 		if (nbttagcompound == null) {
 			nbttagcompound = new NBTTagCompound();
 		}
-		nbttagcompound.setString("agename", name);
+		nbttagcompound.setString("DisplayName", name);
 		return nbttagcompound;
 	}
 
 	public static String getDisplayName(NBTTagCompound nbttagcompound) {
-		if (nbttagcompound != null) { return nbttagcompound.getString("agename"); }
+		if (nbttagcompound != null && nbttagcompound.hasKey("DisplayName")) { return nbttagcompound.getString("DisplayName"); }
+		if (nbttagcompound != null && nbttagcompound.hasKey("agename")) { return nbttagcompound.getString("agename"); }
 		return "???";
 	}
 
@@ -130,10 +131,10 @@ public class LinkOptions implements ILinkInfo {
 		return nbttagcompound;
 	}
 
-	public static int getDimensionUID(NBTTagCompound nbttagcompound) {
-		if (nbttagcompound != null && nbttagcompound.hasKey("AgeUID")) { return nbttagcompound.getInteger("AgeUID"); }
+	public static Integer getDimensionUID(NBTTagCompound nbttagcompound) {
 		if (nbttagcompound != null && nbttagcompound.hasKey("Dimension")) { return nbttagcompound.getInteger("Dimension"); }
-		return 0;
+		if (nbttagcompound != null && nbttagcompound.hasKey("AgeUID")) { return nbttagcompound.getInteger("AgeUID"); }
+		return null;
 	}
 
 	public static NBTTagCompound setSpawn(NBTTagCompound nbttagcompound, ChunkCoordinates coords) {

@@ -40,9 +40,12 @@ public class LinkListenerBasic {
 		ILinkInfo info = event.info;
 		if (world.isRemote) { return; }
 
-		if (entity.isDead || entity.worldObj != world || entity.riddenByEntity != null) {
+		Integer dimid = info.getDimensionUID();
+		if (dimid == null) {
+			event.setCanceled(true); //We'll need to override isLinkPermitted handling for unestablished links
+		} else if (entity.isDead || entity.worldObj != world || entity.riddenByEntity != null) {
 			event.setCanceled(true);
-		} else if (entity.worldObj.provider.dimensionId == DimensionUtils.convertDimensionUIDToID(info.getDimensionUID()) && !info.getFlag(ILinkPropertyAPI.FLAG_INTRA_LINKING)) {
+		} else if (entity.worldObj.provider.dimensionId == dimid && !info.getFlag(ILinkPropertyAPI.FLAG_INTRA_LINKING)) {
 			event.setCanceled(true);
 		} else if (info.getFlag(ILinkPropertyAPI.FLAG_DISARM)) {
 			if (entity instanceof EntityItem) {

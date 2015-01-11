@@ -35,7 +35,6 @@ public abstract class ItemLinking extends Item {
 	public static class GuiHandlerBookItem extends GuiHandlerManager.GuiHandler {
 		@Override
 		public Container getContainer(EntityPlayerMP player, World worldObj, ItemStack itemstack, int slot) {
-			NetworkUtils.sendAgeData(worldObj, itemstack, player);
 			return new ContainerBook(player.inventory, slot);
 		}
 
@@ -91,18 +90,26 @@ public abstract class ItemLinking extends Item {
 		}
 	}
 
-	public void activate(ItemStack itemstack, World world, EntityPlayer entityplayer) {
+	public void activate(ItemStack itemstack, World world, Entity entity) {
 		if (world.isRemote) return;
 		if (itemstack.stackTagCompound == null) return;
 		ILinkInfo linkinfo = this.getLinkInfo(itemstack);
-		if (LinkListenerManager.isLinkPermitted(world, entityplayer, linkinfo)) {
+		if (LinkListenerManager.isLinkPermitted(world, entity, linkinfo)) {
+			onLink(itemstack, world, entity);
+			LinkController.travelEntity(world, entity, linkinfo);
+		}
+	}
+
+	protected void onLink(ItemStack itemstack, World world, Entity entity) {
+		if (entity instanceof EntityPlayer) {
+			EntityPlayer entityplayer = (EntityPlayer) entity;
+			if (entityplayer.inventory.getCurrentItem() != itemstack) return;
 			if (dropItemOnLink(itemstack)) {
 				// Add book to original world
 				world.spawnEntityInWorld(createEntity(world, entityplayer, itemstack));
 				// Remove item from inventory
 				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
 			}
-			LinkController.travelEntity(world, entityplayer, linkinfo);
 		}
 	}
 
@@ -207,6 +214,7 @@ public abstract class ItemLinking extends Item {
 		return null;
 	}
 
+	//TODO: Move to IItemWritable?
 	public Collection<String> getAuthors(ItemStack book) {
 		return Collections.EMPTY_SET;
 	}
@@ -214,9 +222,7 @@ public abstract class ItemLinking extends Item {
 	public static Integer getTargetDimension(ItemStack book) {
 		if (book == null) return null;
 		if (book.stackTagCompound == null) return null;
-		if (book.getItem() instanceof ItemLinking) {
-			return LinkOptions.getDimensionUID(book.stackTagCompound);
-		}
+		if (book.getItem() instanceof ItemLinking) { return LinkOptions.getDimensionUID(book.stackTagCompound); }
 		return null;
 	}
 }

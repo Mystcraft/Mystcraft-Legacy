@@ -22,9 +22,9 @@ public interface ILinkInfo {
 	void setDisplayName(String displayname);
 
 	/**
-	 * Gets the destination's unique Dimension identifier.
+	 * Gets the destination's unique Dimension identifier, if one is set.
 	 */
-	int getDimensionUID();
+	Integer getDimensionUID();
 
 	/**
 	 * Sets the destination's unique Dimension identifier. Use getDimensionUID(World worldObj) to get the dimension's UID.

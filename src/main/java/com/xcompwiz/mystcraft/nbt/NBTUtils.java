@@ -153,6 +153,21 @@ public final class NBTUtils {
 		return collection;
 	}
 
+	public static NBTTagList writeItemStackCollection(NBTTagList nbttaglist, Collection<ItemStack> collection) {
+		for (ItemStack itemstack : collection) {
+			if (itemstack == null) continue;
+			nbttaglist.appendTag(itemstack.writeToNBT(new NBTTagCompound()));
+		}
+		return nbttaglist;
+	}
+
+	public static <T extends Collection<ItemStack>> T readItemStackCollection(NBTTagList nbttaglist, T collection) {
+		for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+			collection.add(ItemStack.loadItemStackFromNBT(nbttaglist.getCompoundTagAt(i)));
+		}
+		return collection;
+	}
+
 	/**
 	 * Writes a compressed NBTTagCompound to the OutputStream
 	 * @throws IOException

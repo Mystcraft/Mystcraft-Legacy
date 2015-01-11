@@ -6,7 +6,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IChatComponent;
@@ -14,9 +13,7 @@ import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
-import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.InventoryUtils;
-import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.network.packet.MPacketAgeData;
 import com.xcompwiz.mystcraft.network.packet.MPacketOpenWindow;
@@ -102,28 +99,6 @@ public final class NetworkUtils {
 		if (!Mystcraft.registeredDims.contains(ageUID)) return;
 		if (AgeData.getAge(ageUID, false) == null) return;
 		((EntityPlayerMP) player).playerNetServerHandler.sendPacket(MPacketAgeData.getDataPacket(ageUID));
-	}
-
-	public static void sendAgeData(World worldObj, ItemStack itemstack, EntityPlayer player) {
-		if (itemstack != null && itemstack.getItem() == ModItems.agebook) {
-			sendAgeData(worldObj, player, LinkOptions.getDimensionUID(itemstack.stackTagCompound));
-		}
-	}
-
-	public static void sendAgeData(World worldObj, ItemStack itemstack, int i, int j, int k) {
-		if (itemstack != null && itemstack.getItem() == ModItems.agebook) {
-			net.minecraft.server.MinecraftServer mcServer = Mystcraft.sidedProxy.getMCServer();
-			if (mcServer == null) {
-				LoggerUtils.warn("Failed to get mcServer instance while sending AgeData Packet");
-			} else {
-				int dimId = LinkOptions.getDimensionUID(itemstack.stackTagCompound);
-				if (!Mystcraft.registeredDims.contains(dimId)) return;
-				if (AgeData.getAge(dimId, false) == null) return;
-				Packet packet = MPacketAgeData.getDataPacket(dimId);
-				mcServer.getConfigurationManager().sendToAllNear(i, j, k, 16D, worldObj.provider.dimensionId, packet);
-				// mcServer.getConfigurationManager().sendPacketToAllPlayersInDimension(packet, worldObj.provider.dimensionId);
-			}
-		}
 	}
 
 	private static int getNextWindowId(EntityPlayerMP player) {

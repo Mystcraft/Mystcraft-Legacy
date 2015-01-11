@@ -38,8 +38,6 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 	public static class GuiHandlerBookEntity extends GuiHandlerManager.GuiHandler {
 		@Override
 		public Container getContainer(EntityPlayerMP player, World worldObj, Entity entity) {
-			NetworkUtils.sendAgeData(worldObj, ((EntityLinkbook) entity).inventory.getStackInSlot(0), player);
-
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			((EntityLinkbook) entity).writeEntityToNBT(nbttagcompound);
 			player.playerNetServerHandler.sendPacket(MPacketMessage.createPacket(entity, nbttagcompound));

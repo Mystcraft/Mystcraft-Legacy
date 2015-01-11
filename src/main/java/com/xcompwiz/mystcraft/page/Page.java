@@ -92,6 +92,7 @@ public abstract class Page {
 		return properties;
 	}
 
+	//XXX: This is a weird way to do this now
 	public static void applyLinkPanel(ItemStack linkpanel, ItemStack linkingitem) {
 		Collection<String> properties = getLinkProperties(linkpanel);
 		if (properties == null) return;

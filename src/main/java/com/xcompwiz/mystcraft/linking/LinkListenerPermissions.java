@@ -34,7 +34,9 @@ public class LinkListenerPermissions {
 		if (CommandTPX.isOpTP(event.info)) return;
 		if (event.entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.entity;
-			if (!(canPlayerLeaveDimension(player, event.origin.provider.dimensionId) && canPlayerEnterDimension(player, event.info.getDimensionUID()))) {
+			Integer dimid = event.info.getDimensionUID();
+			if (dimid == null) return;
+			if (!(canPlayerLeaveDimension(player, event.origin.provider.dimensionId) && canPlayerEnterDimension(player, dimid))) {
 				event.setCanceled(true);
 			}
 		}

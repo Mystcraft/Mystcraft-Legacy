@@ -17,14 +17,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
-import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;
-import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
-import com.xcompwiz.mystcraft.network.packet.MPacketAgeData;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
@@ -128,11 +125,6 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			stored = (ItemStack) this.inventoryItemStacks.get(slotId);
 
 			if (!ItemStack.areItemStacksEqual(stored, actual)) {
-				if (actual != null && actual.stackTagCompound != null && actual.getItem() == ModItems.agebook) {
-					if (ItemAgebook.getAgeData(player.worldObj, actual) != null) {
-						packets.add(MPacketAgeData.getDataPacket(LinkOptions.getDimensionUID(actual.stackTagCompound)));
-					}
-				}
 				stored = actual == null ? null : actual.copy();
 				this.inventoryItemStacks.set(slotId, stored);
 
@@ -409,6 +401,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	private boolean checkLinkPermitted() {
 		ILinkInfo linkinfo = getLinkInfo();
 		if (linkinfo == null) { return false; }
+		if (ItemAgebook.isNewAgebook(getBook())) return true;
 		return LinkListenerManager.isLinkPermitted(tileentity.getWorldObj(), player, linkinfo);
 	}
 

@@ -17,7 +17,6 @@ import com.xcompwiz.mystcraft.inventory.IItemBuilder;
 import com.xcompwiz.mystcraft.inventory.InventoryFolder;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemPage;
-import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.page.Page;
 
 public class TileEntityBookBinder extends TileEntity implements IItemBuilder, ISidedInventory {
@@ -186,18 +185,7 @@ public class TileEntityBookBinder extends TileEntity implements IItemBuilder, IS
 	public void buildItem(ItemStack itemstack, EntityPlayer player) {
 		if (!canBuildItem()) return;
 		if (itemstack.getItem() instanceof ItemAgebook) {
-			ItemAgebook itemlogic = (ItemAgebook) itemstack.getItem();
-			if (!worldObj.isRemote) {
-				ItemAgebook.bindToNewDim(itemstack);
-				itemlogic.addPages(player, itemstack, pages);
-				itemlogic.addAuthor(player, itemstack);
-				if (pendingtitle != null && pendingtitle != "") {
-					LinkOptions.setDisplayName(itemstack.stackTagCompound, pendingtitle);
-					itemlogic.setDisplayName(player, itemstack, pendingtitle);
-				}
-				ItemStack linkpanel = pages.get(0);
-				Page.applyLinkPanel(linkpanel, itemstack);
-			}
+			ItemAgebook.create(itemstack, player, pages, pendingtitle);
 			pages.clear();
 			pendingtitle = null;
 			--(itemstacks[1].stackSize);
@@ -214,6 +202,7 @@ public class TileEntityBookBinder extends TileEntity implements IItemBuilder, IS
 		if (!isValidCover(itemstacks[1])) return false;
 		if (pages.size() == 0) return false;
 		if (!Page.isLinkPanel(pages.get(0))) return false;
+		if (pendingtitle == null || pendingtitle.equals("")) return false;
 		for (int i = 1; i < pages.size(); ++i) {
 			if (Page.isLinkPanel(pages.get(i))) return false;
 		}

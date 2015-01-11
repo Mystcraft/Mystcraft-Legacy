@@ -88,8 +88,9 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 				pagesProvider.place(index, button == 1);
 				return true;
 			}
-			if (button == 2) {
+			if (hoverpage != null && button == 2) {
 				//FIXME: (Surface) Pickblock on page -> clone
+				//pagesProvider.clone(hoverpage);
 				return true;
 			}
 			if (hoverpage != null && button == 0) {

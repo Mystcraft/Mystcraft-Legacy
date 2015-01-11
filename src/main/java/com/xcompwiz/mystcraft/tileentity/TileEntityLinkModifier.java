@@ -27,7 +27,7 @@ public class TileEntityLinkModifier extends TileEntityBook {
 		if (itemstack != null) {
 			if (itemstack.getItem() instanceof ItemLinking) {
 				ItemLinking.validate(worldObj, itemstack, new EntityDummy(worldObj, this.xCoord, this.yCoord, this.zCoord, 0, 0));
-				return "" + LinkOptions.getDimensionUID(itemstack.stackTagCompound);
+				return "" + String.valueOf(LinkOptions.getDimensionUID(itemstack.stackTagCompound));
 			}
 		}
 		return "";
