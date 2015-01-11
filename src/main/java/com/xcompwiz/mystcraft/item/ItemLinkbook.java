@@ -72,8 +72,7 @@ public class ItemLinkbook extends ItemLinking implements IItemRenameable, IItemP
 
 	@Override
 	public List<ItemStack> getPageList(EntityPlayer player, ItemStack itemstack) {
-		List<ItemStack> pages = new ArrayList<ItemStack>();
-		pages.add(Page.createLinkPage());
-		return pages;
+		//TODO: Might want to create the actual link page in the future
+		return Collections.singletonList(Page.createLinkPage());
 	}
 }
