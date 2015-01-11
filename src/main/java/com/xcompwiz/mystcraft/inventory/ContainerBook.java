@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 
+import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
@@ -93,9 +94,7 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	private List<ItemStack> getPageList() {
 		ItemStack book = getBook();
 		if (book == null) return null;
-		if (book.getItem() instanceof ItemLinking) { //FIXME: (PageStorage) This needs to change with the gui and page storage rewrite
-			return ((ItemLinking) book.getItem()).getPageList(this.inventoryplayer.player, book);
-		}
+		if (book.getItem() instanceof IItemPageProvider) { return ((IItemPageProvider) book.getItem()).getPageList(this.inventoryplayer.player, book); }
 		return null;
 	}
 

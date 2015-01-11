@@ -6,7 +6,8 @@ import net.minecraft.item.ItemStack;
 
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
-// XXX: This probably needs to be made into a gui interface
+// XXX: Refactor this into helpers and multiple interfaces
+// Keep getBook
 public interface IBookContainer {
 
 	public abstract ItemStack getCurrentPage();

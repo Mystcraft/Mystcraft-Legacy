@@ -12,6 +12,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.item.IItemRenameable;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.data.ModAchievements;
@@ -21,7 +22,7 @@ import com.xcompwiz.mystcraft.page.Page;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemLinkbook extends ItemLinking implements IItemRenameable {
+public class ItemLinkbook extends ItemLinking implements IItemRenameable, IItemPageProvider {
 
 	@SideOnly(Side.CLIENT)
 	@Override

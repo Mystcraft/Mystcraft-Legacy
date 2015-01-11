@@ -316,9 +316,6 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	private List<ItemStack> getPageList() {
 		ItemStack book = getBook();
 		if (book == null) return null;
-		if (book.getItem() instanceof ItemLinking) { //FIXME: (PageStorage) This needs to change with the gui and page storage rewrite
-			return ((ItemLinking) book.getItem()).getPageList(this.player, book);
-		}
 		if (book.getItem() instanceof IItemPageProvider) { return ((IItemPageProvider) book.getItem()).getPageList(this.player, book); }
 		return null;
 	}
