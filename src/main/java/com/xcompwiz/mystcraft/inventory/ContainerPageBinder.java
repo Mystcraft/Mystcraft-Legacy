@@ -20,6 +20,16 @@ import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
 
 public class ContainerPageBinder extends ContainerBase implements IGuiMessageHandler {
+	public static class Messages {
+
+		public static final String	InsertHeldAt	= "InsertHeldAt";
+		public static final String	TakeFromSlider	= "TakeFromSlider";
+		public static final String	SetTitle		= "SetTitle";
+		public static final String	CSetPage		= "CSetPage";
+		public static final String	CSetPageCount	= "CSetPageCount";
+		public static final String	CSetHeldItem	= "CSetHeldItem";
+		public static final String	CClearHeldItem	= "CClearHeldItem";
+	}
 
 	private static int				shift			= 0;
 
@@ -94,9 +104,9 @@ public class ContainerPageBinder extends ContainerBase implements IGuiMessageHan
 			cached_helditem = helditem;
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			if (helditem == null) {
-				nbttagcompound.setBoolean("CClearHeldItem", true);
+				nbttagcompound.setBoolean(Messages.CClearHeldItem, true);
 			} else {
-				nbttagcompound.setTag("CSetHeldItem", helditem.writeToNBT(new NBTTagCompound()));
+				nbttagcompound.setTag(Messages.CSetHeldItem, helditem.writeToNBT(new NBTTagCompound()));
 			}
 			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 		}
@@ -106,7 +116,7 @@ public class ContainerPageBinder extends ContainerBase implements IGuiMessageHan
 			cached_title = temp;
 
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setString("SetTitle", cached_title);
+			nbttagcompound.setString(Messages.SetTitle, cached_title);
 			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 		}
 		List<ItemStack> templist = tileentity.getPageList();
@@ -117,7 +127,7 @@ public class ContainerPageBinder extends ContainerBase implements IGuiMessageHan
 			}
 			if (!ItemStack.areItemStacksEqual(local, remote)) {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setInteger("CSetPage", i);
+				nbttagcompound.setInteger(Messages.CSetPage, i);
 				nbttagcompound.setTag("Item", local.writeToNBT(new NBTTagCompound()));
 				packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 				while (page_list.size() < i) {
@@ -132,7 +142,7 @@ public class ContainerPageBinder extends ContainerBase implements IGuiMessageHan
 		}
 		if (templist.size() < page_list.size()) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setInteger("CSetPageCount", templist.size());
+			nbttagcompound.setInteger(Messages.CSetPageCount, templist.size());
 			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 			page_list = page_list.subList(0, templist.size());
 		}
@@ -164,23 +174,23 @@ public class ContainerPageBinder extends ContainerBase implements IGuiMessageHan
 
 	@Override
 	public void processMessage(EntityPlayer player, NBTTagCompound data) {
-		if (data.hasKey("CClearHeldItem")) {
+		if (data.hasKey(Messages.CClearHeldItem)) {
 			if (tileentity.getWorldObj().isRemote) {
 				player.inventory.setItemStack(null);
 			}
 		}
-		if (data.hasKey("CSetHeldItem")) {
+		if (data.hasKey(Messages.CSetHeldItem)) {
 			if (tileentity.getWorldObj().isRemote) {
-				player.inventory.setItemStack(ItemStack.loadItemStackFromNBT(data.getCompoundTag("CSetHeldItem")));
+				player.inventory.setItemStack(ItemStack.loadItemStackFromNBT(data.getCompoundTag(Messages.CSetHeldItem)));
 			}
 		}
-		if (data.hasKey("CSetPageCount")) {
-			page_list = page_list.subList(0, data.getInteger("CSetPageCount"));
+		if (data.hasKey(Messages.CSetPageCount)) {
+			page_list = page_list.subList(0, data.getInteger(Messages.CSetPageCount));
 			tileentity.setPages(page_list);
 		}
-		if (data.hasKey("CSetPage")) {
+		if (data.hasKey(Messages.CSetPage)) {
 			ItemStack item = ItemStack.loadItemStackFromNBT(data.getCompoundTag("Item"));
-			int i = data.getInteger("CSetPage");
+			int i = data.getInteger(Messages.CSetPage);
 			while (page_list.size() < i) {
 				page_list.add(null);
 			}
@@ -191,18 +201,18 @@ public class ContainerPageBinder extends ContainerBase implements IGuiMessageHan
 			}
 			tileentity.setPages(page_list);
 		}
-		if (data.hasKey("SetTitle")) {
-			cached_title = data.getString("SetTitle");
+		if (data.hasKey(Messages.SetTitle)) {
+			cached_title = data.getString(Messages.SetTitle);
 			this.tileentity.setBookTitle(cached_title);
 		}
-		if (data.hasKey("TakeFromSlider")) {
+		if (data.hasKey(Messages.TakeFromSlider)) {
 			if (player.inventory.getItemStack() != null) return;
-			int index = data.getInteger("TakeFromSlider");
+			int index = data.getInteger(Messages.TakeFromSlider);
 			player.inventory.setItemStack(tileentity.removePage(index));
 		}
-		if (data.hasKey("InsertHeldAt")) {
+		if (data.hasKey(Messages.InsertHeldAt)) {
 			if (player.inventory.getItemStack() == null) return;
-			int index = data.getInteger("InsertHeldAt");
+			int index = data.getInteger(Messages.InsertHeldAt);
 			if (player.inventory.getItemStack().getItem() == ModItems.folder) { //XXX: Change to using an interface
 				tileentity.insertFromFolder(player.inventory.getItemStack(), index);
 			} else {

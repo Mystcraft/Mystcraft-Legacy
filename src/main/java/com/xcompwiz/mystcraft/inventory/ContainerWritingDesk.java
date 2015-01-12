@@ -27,6 +27,23 @@ import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
 public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHandler, IBookContainer {
+	public static class Messages {
+		public static final String	LinkPermitted				= "LinkPermitted";
+		public static final String	SetCurrentPage				= "SetCurrentPage";
+		public static final String	SetTitle					= "SetTitle";
+		public static final String	Link						= "Link";
+		public static final String	RemoveFromCollection		= "RemoveFromCollection";
+		public static final String	RemoveFromOrderedCollection	= "RemoveFromOrderedCollection";
+		public static final String	AddToCollection				= "AddToCollection";
+		public static final String	AddToSurface				= "AddToSurface";
+		public static final String	WriteSymbol					= "WriteSymbol";
+		public static final String	SetActiveNotebook			= "SetActiveNotebook";
+		public static final String	SetFirstNotebook			= "SetFirstNotebook";
+		public static final String	SetFluid					= "SetFluid";
+		public static final String	TakeFromSlider				= "TakeFromSlider";
+		public static final String	InsertHeldAt				= "InsertHeldAt";
+	}
+
 	private static final int	xShift				= 228 + 5;
 	private static final int	yShift				= 20;
 	private static final int	tabslots			= 4;
@@ -118,7 +135,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			cached_linkinfo = null;
 			cached_permitted = null;
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setInteger("SetCurrentPage", currentpageIndex);
+			nbttagcompound.setInteger(Messages.SetCurrentPage, currentpageIndex);
 			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 		}
 		for (int slotId = 0; slotId < this.inventorySlots.size(); ++slotId) {
@@ -142,14 +159,14 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			NBTTagCompound fluidnbt = new NBTTagCompound();
 			if (fluid != null) fluid.writeToNBT(fluidnbt);
-			nbttagcompound.setTag("SetFluid", fluidnbt);
+			nbttagcompound.setTag(Messages.SetFluid, fluidnbt);
 			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 		}
 		if (cached_permitted == null) {
 			cached_permitted = checkLinkPermitted();
 			if (cached_permitted != null) {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setBoolean("LinkPermitted", cached_permitted);
+				nbttagcompound.setBoolean(Messages.LinkPermitted, cached_permitted);
 				packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 			}
 		}
@@ -158,7 +175,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			cached_title = temp_title;
 
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setString("SetTitle", cached_title);
+			nbttagcompound.setString(Messages.SetTitle, cached_title);
 			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 		}
 		if (packets.size() > 0) {
@@ -184,32 +201,32 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 
 	@Override
 	public void processMessage(EntityPlayer player, NBTTagCompound data) {
-		if (data.hasKey("LinkPermitted")) {
-			cached_permitted = data.getBoolean("LinkPermitted");
+		if (data.hasKey(Messages.LinkPermitted)) {
+			cached_permitted = data.getBoolean(Messages.LinkPermitted);
 		}
-		if (data.hasKey("SetTitle")) {
-			cached_title = data.getString("SetTitle");
+		if (data.hasKey(Messages.SetTitle)) {
+			cached_title = data.getString(Messages.SetTitle);
 			this.tileentity.setBookTitle(player, cached_title);
 		}
-		if (data.hasKey("Link")) {
+		if (data.hasKey(Messages.Link)) {
 			if (tileentity != null) {
 				tileentity.link(player);
 			}
 		}
-		if (data.hasKey("RemoveFromCollection")) {
+		if (data.hasKey(Messages.RemoveFromCollection)) {
 			if (player.inventory.getItemStack() != null) return;
-			ItemStack page = ItemStack.loadItemStackFromNBT(data.getCompoundTag("RemoveFromCollection"));
+			ItemStack page = ItemStack.loadItemStackFromNBT(data.getCompoundTag(Messages.RemoveFromCollection));
 			ItemStack itemstack = tileentity.removePageFromSurface(player, this.getTabSlot(this.activeslot), page);
 			player.inventory.setItemStack(itemstack);
 		}
-		if (data.hasKey("RemoveFromOrderedCollection")) {
+		if (data.hasKey(Messages.RemoveFromOrderedCollection)) {
 			if (player.inventory.getItemStack() != null) return;
-			int index = data.getInteger("RemoveFromOrderedCollection");
+			int index = data.getInteger(Messages.RemoveFromOrderedCollection);
 			player.inventory.setItemStack(tileentity.removePageFromSurface(player, this.getTabSlot(this.activeslot), index));
 		}
-		if (data.hasKey("AddToCollection")) {
+		if (data.hasKey(Messages.AddToCollection)) {
 			if (player.inventory.getItemStack() == null) return;
-			byte slot = data.getByte("AddToCollection");
+			byte slot = data.getByte(Messages.AddToCollection);
 			if (tileentity.getTabItem(slot) == null) return;
 			boolean single = data.getBoolean("Single");
 			if (single) {
@@ -222,10 +239,10 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			}
 			player.inventory.setItemStack(tileentity.addPageToCollection(player, tileentity.getTabItem(slot), player.inventory.getItemStack()));
 		}
-		if (data.hasKey("AddToSurface")) {
+		if (data.hasKey(Messages.AddToSurface)) {
 			if (player.inventory.getItemStack() == null) return;
 			if (!data.hasKey("Index")) return;
-			byte slot = data.getByte("AddToSurface");
+			byte slot = data.getByte(Messages.AddToSurface);
 			if (tileentity.getTabItem(slot) == null) return;
 			boolean single = data.getBoolean("Single");
 			int index = data.getInteger("Index");
@@ -245,46 +262,46 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 				player.inventory.setItemStack(tileentity.placePageOnSurface(player, tileentity.getTabItem(slot), player.inventory.getItemStack(), index));
 			}
 		}
-		if (data.hasKey("WriteSymbol")) {
-			tileentity.writeSymbol(player, data.getString("WriteSymbol"));
+		if (data.hasKey(Messages.WriteSymbol)) {
+			tileentity.writeSymbol(player, data.getString(Messages.WriteSymbol));
 		}
 		//XXX: This is weird, as it's only meaningful client-side
-		if (data.hasKey("SetActiveNotebook")) {
-			this.activeslot = data.getByte("SetActiveNotebook");
+		if (data.hasKey(Messages.SetActiveNotebook)) {
+			this.activeslot = data.getByte(Messages.SetActiveNotebook);
 		}
-		if (data.hasKey("SetFirstNotebook")) {
-			this.firstslot = data.getByte("SetFirstNotebook");
+		if (data.hasKey(Messages.SetFirstNotebook)) {
+			this.firstslot = data.getByte(Messages.SetFirstNotebook);
 			if (firstslot < 0) firstslot = 0;
 			if (firstslot >= tileentity.getMaxSurfaceTabCount()) firstslot = 0;
 			updateSurfaceTabSlots();
 		}
-		if (data.hasKey("SetFluid")) {
+		if (data.hasKey(Messages.SetFluid)) {
 			if (this.tileentity.getWorldObj().isRemote) {
-				this.tileentity.setInk(FluidStack.loadFluidStackFromNBT(data.getCompoundTag("SetFluid")));
+				this.tileentity.setInk(FluidStack.loadFluidStackFromNBT(data.getCompoundTag(Messages.SetFluid)));
 				this.fluid = this.tileentity.getInk();
 				fluidDataContainer.setFluid(fluid);
 			}
 		}
-		if (data.hasKey("SetCurrentPage")) {
+		if (data.hasKey(Messages.SetCurrentPage)) {
 			if (this.tileentity.getWorldObj().isRemote) {
-				this.setCurrentPageIndex(data.getInteger("SetCurrentPage"));
+				this.setCurrentPageIndex(data.getInteger(Messages.SetCurrentPage));
 				cached_linkinfo = null;
 			}
 		}
-		if (data.hasKey("TakeFromSlider")) {
+		if (data.hasKey(Messages.TakeFromSlider)) {
 			ItemStack target = tileentity.getTarget();
 			if (target == null) return;
 			if (player.inventory.getItemStack() != null) return;
-			int index = data.getInteger("TakeFromSlider");
+			int index = data.getInteger(Messages.TakeFromSlider);
 			player.inventory.setItemStack(InventoryFolder.removeItem(target, index));//FIXME: Reference to InventoryFolder outside folder
 		}
-		if (data.hasKey("InsertHeldAt")) {
+		if (data.hasKey(Messages.InsertHeldAt)) {
 			ItemStack target = tileentity.getTarget();
 			if (target == null) return;
 			ItemStack stack = player.inventory.getItemStack();
 			if (stack == null) return;
 			if (stack.stackSize > 1) return;
-			int index = data.getInteger("InsertHeldAt");
+			int index = data.getInteger(Messages.InsertHeldAt);
 			player.inventory.setItemStack(InventoryFolder.setItem(target, index, stack));//FIXME: Reference to InventoryFolder outside folder
 		}
 	}

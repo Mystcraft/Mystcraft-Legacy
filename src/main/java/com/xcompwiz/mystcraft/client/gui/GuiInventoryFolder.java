@@ -40,7 +40,7 @@ public class GuiInventoryFolder extends GuiContainerElements {
 		@Override
 		public void place(int index, boolean single) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setByte("AddToSurface", (byte) 0);
+			nbttagcompound.setByte(ContainerFolder.Messages.AddToSurface, (byte) 0);
 			nbttagcompound.setBoolean("Single", single);
 			nbttagcompound.setInteger("Index", index);
 			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
@@ -60,13 +60,13 @@ public class GuiInventoryFolder extends GuiContainerElements {
 				}
 				page.writeToNBT(itemdata);
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setTag("RemoveFromCollection", itemdata);
+				nbttagcompound.setTag(ContainerFolder.Messages.RemoveFromCollection, itemdata);
 				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
 				container.processMessage(mc.thePlayer, nbttagcompound);
 			} else {
 				int index = collectionelement.slotId;
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setInteger("RemoveFromOrderedCollection", index);
+				nbttagcompound.setInteger(ContainerFolder.Messages.RemoveFromOrderedCollection, index);
 				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
 				container.processMessage(mc.thePlayer, nbttagcompound);
 			}

@@ -12,6 +12,12 @@ import com.xcompwiz.mystcraft.api.item.IItemRenameable;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 
 public class ContainerFolder extends ContainerBase implements IGuiMessageHandler {
+	public static class Messages {
+
+		public static final String	AddToSurface				= "AddToSurface";
+		public static final String	RemoveFromOrderedCollection	= "RemoveFromOrderedCollection";
+		public static final String	RemoveFromCollection		= "RemoveFromCollection";
+	}
 
 	private InventoryPlayer	playerinv;
 	private int				slot;
@@ -63,18 +69,18 @@ public class ContainerFolder extends ContainerBase implements IGuiMessageHandler
 
 	@Override
 	public void processMessage(EntityPlayer player, NBTTagCompound data) {
-		if (data.hasKey("RemoveFromCollection")) {
+		if (data.hasKey(Messages.RemoveFromCollection)) {
 			if (player.inventory.getItemStack() != null) return;
-			ItemStack page = ItemStack.loadItemStackFromNBT(data.getCompoundTag("RemoveFromCollection"));
+			ItemStack page = ItemStack.loadItemStackFromNBT(data.getCompoundTag(Messages.RemoveFromCollection));
 			ItemStack itemstack = removePageFromSurface(player, this.getInventoryItem(), page);
 			player.inventory.setItemStack(itemstack);
 		}
-		if (data.hasKey("RemoveFromOrderedCollection")) {
+		if (data.hasKey(Messages.RemoveFromOrderedCollection)) {
 			if (player.inventory.getItemStack() != null) return;
-			int index = data.getInteger("RemoveFromOrderedCollection");
+			int index = data.getInteger(Messages.RemoveFromOrderedCollection);
 			player.inventory.setItemStack(removePageFromSurface(player, this.getInventoryItem(), index));
 		}
-		if (data.hasKey("AddToSurface")) {
+		if (data.hasKey(Messages.AddToSurface)) {
 			if (player.inventory.getItemStack() == null) return;
 			if (!data.hasKey("Index")) return;
 			if (this.getInventoryItem() == null) return;

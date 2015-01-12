@@ -34,7 +34,7 @@ public class GuiPageBinder extends GuiContainerElements {
 		public void onItemPlace(GuiElementScrollablePages guiElementScrollablePages, int index, int mousebutton) {
 			// Inform server container to remove the page from the 'hand' and put it in the page container at index
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setInteger("InsertHeldAt", index);
+			nbttagcompound.setInteger(ContainerPageBinder.Messages.InsertHeldAt, index);
 			nbttagcompound.setBoolean("Single", (mousebutton == 1));
 			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
 		}
@@ -42,7 +42,7 @@ public class GuiPageBinder extends GuiContainerElements {
 		@Override
 		public void onItemRemove(GuiElementScrollablePages guiElementScrollablePages, int clickedpage) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setInteger("TakeFromSlider", clickedpage);
+			nbttagcompound.setInteger(ContainerPageBinder.Messages.TakeFromSlider, clickedpage);
 			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
 		}
 	}
@@ -56,7 +56,7 @@ public class GuiPageBinder extends GuiContainerElements {
 		@Override
 		public void onTextChange(GuiElementTextField caller, String text) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setString("SetTitle", text);
+			nbttagcompound.setString(ContainerPageBinder.Messages.SetTitle, text);
 			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
 			container.processMessage(mc.thePlayer, nbttagcompound);
 		}

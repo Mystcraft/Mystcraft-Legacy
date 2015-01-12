@@ -10,6 +10,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 
 public class ContainerVillagerShop extends ContainerBase implements IGuiMessageHandler {
+	public static class Messages {
+	}
 
 	private InventoryPlayer		inventoryplayer;
 	private EntityVillager		villager;

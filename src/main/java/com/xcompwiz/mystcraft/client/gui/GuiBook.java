@@ -41,7 +41,7 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 	@Override
 	public void onLink(GuiElement elem) {
 		NBTTagCompound nbttagcompound = new NBTTagCompound();
-		nbttagcompound.setByte("Link", (byte) 0);
+		nbttagcompound.setByte(ContainerBook.Messages.Link, (byte) 0);
 		MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
 	}
 

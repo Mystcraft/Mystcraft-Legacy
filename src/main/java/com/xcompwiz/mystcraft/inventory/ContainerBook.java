@@ -27,6 +27,12 @@ import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookDisplay;
 
 public class ContainerBook extends ContainerBase implements IGuiMessageHandler, IBookContainer {
+	public static class Messages {
+		public static final String	LinkPermitted	= "LinkPermitted";
+		public static final String	SetCurrentPage	= "SetCurrentPage";
+		public static final String	Link			= "Link";
+	}
+
 	private IInventory		inventory;
 	private InventoryPlayer	inventoryplayer;
 	private Integer			slot;
@@ -170,7 +176,7 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 					cached_linkinfo = null;
 					cached_permitted = null;
 					NBTTagCompound nbttagcompound = new NBTTagCompound();
-					nbttagcompound.setInteger("SetCurrentPage", currentpageIndex);
+					nbttagcompound.setInteger(Messages.SetCurrentPage, currentpageIndex);
 					packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 				}
 				stored = actual == null ? null : actual.copy();
@@ -185,7 +191,7 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 			cached_permitted = checkLinkPermitted();
 			if (cached_permitted != null) {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setBoolean("LinkPermitted", cached_permitted);
+				nbttagcompound.setBoolean(Messages.LinkPermitted, cached_permitted);
 				packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 			}
 		}
@@ -232,13 +238,13 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 
 	@Override
 	public void processMessage(EntityPlayer player, NBTTagCompound data) {
-		if (data.hasKey("LinkPermitted")) {
-			cached_permitted = data.getBoolean("LinkPermitted");
+		if (data.hasKey(Messages.LinkPermitted)) {
+			cached_permitted = data.getBoolean(Messages.LinkPermitted);
 		}
-		if (data.hasKey("SetCurrentPage")) {
-			this.setCurrentPageIndex(data.getInteger("SetCurrentPage"));
+		if (data.hasKey(Messages.SetCurrentPage)) {
+			this.setCurrentPageIndex(data.getInteger(Messages.SetCurrentPage));
 		}
-		if (data.hasKey("Link")) {
+		if (data.hasKey(Messages.Link)) {
 			if (inventory != null) {
 				if (inventory instanceof TileEntityBookDisplay) {
 					((TileEntityBookDisplay) inventory).link(player);

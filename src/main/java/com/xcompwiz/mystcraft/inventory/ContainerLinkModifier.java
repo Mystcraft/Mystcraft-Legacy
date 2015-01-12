@@ -16,6 +16,11 @@ import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
 
 public class ContainerLinkModifier extends ContainerBase implements IGuiMessageHandler {
+	public static class Messages {
+
+		public static final String	SetTitle	= null;
+		public static final String	SetFlag	= null;
+	}
 
 	private TileEntityLinkModifier	tileentity		= null;
 	private InventoryPlayer			inventoryplayer;
@@ -74,7 +79,7 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 			cached_title = temp;
 
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setString("SetTitle", cached_title);
+			nbttagcompound.setString(Messages.SetTitle, cached_title);
 			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 		}
 		if (packets.size() > 0) {
@@ -98,11 +103,11 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 
 	@Override
 	public void processMessage(EntityPlayer player, NBTTagCompound data) {
-		if (data.hasKey("SetFlag")) {
-			tileentity.setLinkOption(data.getString("SetFlag"), data.getBoolean("Value"));
+		if (data.hasKey(Messages.SetFlag)) {
+			tileentity.setLinkOption(data.getString(Messages.SetFlag), data.getBoolean("Value"));
 		}
-		if (data.hasKey("SetTitle")) {
-			cached_title = data.getString("SetTitle");
+		if (data.hasKey(Messages.SetTitle)) {
+			cached_title = data.getString(Messages.SetTitle);
 			this.tileentity.setBookTitle(player, cached_title);
 		}
 	}

@@ -67,7 +67,7 @@ public class GuiInkMixer extends GuiContainer {
 			if (mc.thePlayer.inventory.getItemStack() != null) {
 				// NOTE: We're client side, so we need to communicate what we want done to the server
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setBoolean("Consume", true);
+				nbttagcompound.setBoolean(ContainerInkMixer.Messages.Consume, true);
 				nbttagcompound.setBoolean("Single", (k == 1));
 				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
 				container.processMessage(mc.thePlayer, nbttagcompound);

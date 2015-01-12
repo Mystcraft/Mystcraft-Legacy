@@ -25,6 +25,13 @@ import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer;
 
 public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandler {
+	public static class Messages {
+
+		public static final String	SetSeed			= "SetSeed";
+		public static final String	SetInk			= "SetInk";
+		public static final String	SetProperties	= "SetProperties";
+		public static final String	Consume			= "Consume";
+	}
 
 	private static int				shift				= 0;
 
@@ -92,14 +99,14 @@ public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandl
 			cached_hasink = tileentity.getHasInk();
 
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setBoolean("SetInk", cached_hasink);
+			nbttagcompound.setBoolean(Messages.SetInk, cached_hasink);
 			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 		}
 		if (cached_seed != tileentity.getNextSeed()) {
 			cached_seed = tileentity.getNextSeed();
 
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setLong("SetSeed", cached_seed);
+			nbttagcompound.setLong(Messages.SetSeed, cached_seed);
 			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 		}
 
@@ -124,7 +131,7 @@ public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandl
 				properties.put(entry.getKey(), entry.getValue());
 				probabilities.setFloat(entry.getKey(), entry.getValue());
 			}
-			nbttagcompound.setTag("SetProperties", probabilities);
+			nbttagcompound.setTag(Messages.SetProperties, probabilities);
 			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 		}
 		if (packets.size() > 0) {
@@ -156,24 +163,24 @@ public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandl
 
 	@Override
 	public void processMessage(EntityPlayer player, NBTTagCompound data) {
-		if (data.hasKey("SetInk")) {
-			this.cached_hasink = data.getBoolean("SetInk");
+		if (data.hasKey(Messages.SetInk)) {
+			this.cached_hasink = data.getBoolean(Messages.SetInk);
 			this.tileentity.setHasInk(cached_hasink);
 		}
-		if (data.hasKey("SetSeed")) {
-			this.cached_seed = data.getLong("SetSeed");
+		if (data.hasKey(Messages.SetSeed)) {
+			this.cached_seed = data.getLong(Messages.SetSeed);
 			this.tileentity.setNextSeed(cached_seed);
 		}
-		if (data.hasKey("SetProperties")) {
+		if (data.hasKey(Messages.SetProperties)) {
 			this.properties.clear();
-			NBTTagCompound probabilities = data.getCompoundTag("SetProperties");
+			NBTTagCompound probabilities = data.getCompoundTag(Messages.SetProperties);
 			Collection<String> tagnames = probabilities.func_150296_c();
 			for (String tagname : tagnames) {
 				this.properties.put(tagname, probabilities.getFloat(tagname));
 			}
 			rebuildGradient();
 		}
-		if (data.hasKey("Consume")) {
+		if (data.hasKey(Messages.Consume)) {
 			if (player.inventory.getItemStack() == null) return;
 			if (!tileentity.getHasInk()) return;
 			ItemStack itemstack = player.inventory.getItemStack();
