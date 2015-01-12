@@ -189,10 +189,13 @@ public class GuiElementBook extends GuiElement {
 
 	private void drawLinkPanelOverlays(int width, int height) {
 		ILinkInfo linkinfo = bookcontainer.getLinkInfo();
+		ItemStack bookclone = bookcontainer.getBook();
+		if (bookclone != null) bookclone = bookclone.copy();
+
 		if (linkinfo != null) {
 			Collection<ILinkPanelEffect> effects = LinkPanelEffectManager.getEffects();
 			for (ILinkPanelEffect effect : effects) {
-				effect.render(0, 0, width, height, linkinfo); // TODO: (Visuals) zLevels
+				effect.render(0, 0, width, height, linkinfo, bookclone); // TODO: (Visuals) zLevels
 			}
 		}
 		if (!bookcontainer.isLinkPermitted()) {

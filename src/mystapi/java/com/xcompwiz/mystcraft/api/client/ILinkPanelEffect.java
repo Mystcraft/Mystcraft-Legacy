@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.api.client;
 
+import net.minecraft.item.ItemStack;
+
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
 import cpw.mods.fml.relauncher.Side;
@@ -19,8 +21,9 @@ public interface ILinkPanelEffect {
 	 * @param width
 	 * @param height
 	 * @param linkInfo The info of the link for the panel being rendered
+	 * @param bookclone A clone instance of the book itemstack
 	 */
-	public void render(int left, int top, int width, int height, ILinkInfo linkInfo);
+	public void render(int left, int top, int width, int height, ILinkInfo linkInfo, ItemStack bookclone);
 
 	/** Called when the book gui element first opens */
 	public void onOpen();

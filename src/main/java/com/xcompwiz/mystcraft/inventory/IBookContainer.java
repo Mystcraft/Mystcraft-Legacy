@@ -8,6 +8,7 @@ import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
 // XXX: Refactor this into helpers and multiple interfaces
 // Keep getBook
+// isLinkPermitted is a server to client thing, so isn't part of book (natively)
 public interface IBookContainer {
 
 	public abstract ItemStack getCurrentPage();

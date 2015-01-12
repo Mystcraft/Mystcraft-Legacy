@@ -29,6 +29,7 @@ public class BlockStarFissure extends BlockContainer {
 
 	private static LinkOptions	defaultstarfissure	= new LinkOptions(null);
 	static {
+		defaultstarfissure.setDimensionUID(0);
 		defaultstarfissure.setFlag(ILinkPropertyAPI.FLAG_NATURAL, true);
 		defaultstarfissure.setFlag(ILinkPropertyAPI.FLAG_EXTERNAL, true);
 		defaultstarfissure.setProperty(ILinkPropertyAPI.PROP_SOUND, Sounds.FISSURELINK);

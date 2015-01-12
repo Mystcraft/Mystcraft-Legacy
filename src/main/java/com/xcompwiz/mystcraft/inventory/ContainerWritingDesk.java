@@ -19,6 +19,7 @@ import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
+import com.xcompwiz.mystcraft.item.LinkItemUtils;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
@@ -355,9 +356,9 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 
 	@Override
 	public boolean isTargetWorldVisited() {
-		Integer dim = ItemLinking.getTargetDimension(getBook());
+		Integer dim = LinkItemUtils.getTargetDimension(getBook());
 		if (dim == null) return false;
-		return DimensionUtils.isDimensionVisited(dim, tileentity.getWorldObj().isRemote);
+		return DimensionUtils.isDimensionVisited(dim);
 	}
 
 	@Override

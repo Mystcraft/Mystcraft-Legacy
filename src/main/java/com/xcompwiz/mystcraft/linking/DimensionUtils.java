@@ -27,13 +27,10 @@ public class DimensionUtils {
 		return dimUId;
 	}
 
-	public static boolean isDimensionVisited(int dimId, boolean isRemote) {
+	@Deprecated
+	public static boolean isDimensionVisited(Integer dimId) {
+		if (dimId == null) return false;
 		if (!DimensionManager.isDimensionRegistered(dimId)) return false;
-//		if (DimensionManager.getProviderType(dimId) == Mystcraft.providerId) {
-//			AgeData agedata = AgeData.getAge(dimId, isRemote);
-//			if (agedata == null) return false;
-//			return agedata.isVisited();
-//		}
 		return true;
 	}
 

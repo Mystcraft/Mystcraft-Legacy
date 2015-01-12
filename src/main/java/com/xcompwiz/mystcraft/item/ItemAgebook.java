@@ -116,6 +116,7 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		AgeData agedata = DimensionUtils.createAge(DimensionUtils.convertDimensionUIDToID(dimid));
 		LinkOptions.setDimensionUID(itemstack.stackTagCompound, dimid);
 		agedata.setAgeName(LinkOptions.getDisplayName(itemstack.stackTagCompound));
+		agedata.setPages(getPageList(null, itemstack));
 	}
 
 	@Override

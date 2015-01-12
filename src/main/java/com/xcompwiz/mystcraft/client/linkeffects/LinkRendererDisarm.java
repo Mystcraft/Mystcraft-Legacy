@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
@@ -26,7 +27,7 @@ public class LinkRendererDisarm implements ILinkPanelEffect {
 	}
 
 	@Override
-	public void render(int i, int j, int k, int l, ILinkInfo linkInfo) {
+	public void render(int i, int j, int k, int l, ILinkInfo linkInfo, ItemStack bookclone) {
 		if (linkInfo.getFlag(ILinkPropertyAPI.FLAG_DISARM)) {
 			long now = System.currentTimeMillis();
 			long delta = now - lasttime;

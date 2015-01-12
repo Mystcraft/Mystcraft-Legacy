@@ -218,11 +218,4 @@ public abstract class ItemLinking extends Item {
 	public Collection<String> getAuthors(ItemStack book) {
 		return Collections.EMPTY_SET;
 	}
-
-	public static Integer getTargetDimension(ItemStack book) {
-		if (book == null) return null;
-		if (book.stackTagCompound == null) return null;
-		if (book.getItem() instanceof ItemLinking) { return LinkOptions.getDimensionUID(book.stackTagCompound); }
-		return null;
-	}
 }

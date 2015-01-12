@@ -5,6 +5,7 @@ import net.minecraft.world.WorldServer;
 
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
+//FIXME: -> WorldInfoUtils
 public class WorldInfoHelper {
 
 	public static long getWorldTimeAtNextCelestialAngle(WorldServer world, float target) {
