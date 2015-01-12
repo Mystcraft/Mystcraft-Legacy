@@ -37,6 +37,7 @@ public class GuiPageBinder extends GuiContainerElements {
 			nbttagcompound.setInteger(ContainerPageBinder.Messages.InsertHeldAt, index);
 			nbttagcompound.setBoolean("Single", (mousebutton == 1));
 			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
+			container.processMessage(mc.thePlayer, nbttagcompound);
 		}
 
 		@Override

@@ -61,7 +61,7 @@ public class InventoryFolder {
 	}
 
 	public static int getLargestSlotId(ItemStack folder) {
-		int largest = 0;
+		int largest = -1;
 		NBTTagCompound compound = getInventoryCompound(folder);
 		if (compound == null) return 0;
 		Collection<String> tagnames = compound.func_150296_c();
@@ -169,8 +169,7 @@ public class InventoryFolder {
 	}
 
 	/**
-	 * Writes the symbol to the first blank page in the book Can draw from the provided paperstack if there are not available blank pages Returns false on
-	 * failure
+	 * Writes the symbol to the first blank page in the book. Returns false on failure.
 	 * @param folder Folder container
 	 * @param symbol Symbol to write
 	 * @return

@@ -47,7 +47,7 @@ public class TileEntityBookBinder extends TileEntity implements IItemBuilder, IS
 	//XXX: (Crafting) Book binding/covers
 	private boolean isValidCover(ItemStack itemstack) {
 		if (itemstack.getItem() == Items.leather) return true;
-		if (itemstack.getItem() == ModItems.folder) return true;
+		if (itemstack.getItem() == ModItems.folder && InventoryFolder.getLargestSlotId(itemstack) == -1) return true; //XXX: This is slightly broken client-side (NBT might be stale)
 		return false;
 	}
 
@@ -253,7 +253,7 @@ public class TileEntityBookBinder extends TileEntity implements IItemBuilder, IS
 	public ItemStack insertFromFolder(ItemStack folder, int index) {
 		if (folder.getItem() != ModItems.folder) return folder; //XXX: Make use an interface
 		int size = InventoryFolder.getLargestSlotId(folder);
-		if (size == 0) {
+		if (size == -1) {
 			for (ItemStack page : pages) {
 				InventoryFolder.addItem(folder, page);
 			}
