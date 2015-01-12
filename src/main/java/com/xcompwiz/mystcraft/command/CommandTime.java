@@ -9,7 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
-import com.xcompwiz.mystcraft.world.WorldInfoHelper;
+import com.xcompwiz.mystcraft.world.WorldInfoUtils;
 
 public class CommandTime extends CommandBaseAdv {
 
@@ -49,8 +49,8 @@ public class CommandTime extends CommandBaseAdv {
 			if (dimension != null) {
 				WorldServer world = DimensionManager.getWorld(dimension);
 				if (world == null) { throw new CommandException("commands.myst.time.fail.noworld"); }
-				daytime = WorldInfoHelper.getWorldNextDawnTime(world);
-				nighttime = WorldInfoHelper.getWorldNextDuskTime(world);
+				daytime = WorldInfoUtils.getWorldNextDawnTime(world);
+				nighttime = WorldInfoUtils.getWorldNextDuskTime(world);
 			}
 
 			if (args[0].equals("set")) {

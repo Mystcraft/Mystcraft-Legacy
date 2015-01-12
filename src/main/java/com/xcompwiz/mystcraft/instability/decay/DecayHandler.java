@@ -10,7 +10,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.data.ModBlocks;
-import com.xcompwiz.mystcraft.world.WorldInfoHelper;
+import com.xcompwiz.mystcraft.world.WorldInfoUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -88,7 +88,7 @@ public abstract class DecayHandler {
 	public void onBlockAdded(World world, int i, int j, int k) {
 		if (!world.isRemote) {
 			if (world.getBlock(i, j, k) == ModBlocks.decay) {
-				if (!WorldInfoHelper.isMystcraftAge(world)) {
+				if (!WorldInfoUtils.isMystcraftAge(world)) {
 					world.setBlock(i, j, k, Blocks.air);
 					return;
 				}

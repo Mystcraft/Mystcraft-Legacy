@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.entity.EntityFallingBlock;
-import com.xcompwiz.mystcraft.world.WorldInfoHelper;
+import com.xcompwiz.mystcraft.world.WorldInfoUtils;
 
 public class DecayHandlerBlack extends DecayHandler {
 
@@ -32,11 +32,11 @@ public class DecayHandlerBlack extends DecayHandler {
 	public void onBlockAdded(World world, int i, int j, int k) {
 		if (!world.isRemote) {
 			if (world.getBlock(i, j, k) == ModBlocks.decay) {
-				if (!WorldInfoHelper.isMystcraftAge(world)) {
+				if (!WorldInfoUtils.isMystcraftAge(world)) {
 					world.setBlock(i, j, k, Blocks.air);
 					return;
 				}
-				if (!WorldInfoHelper.isInstabilityEnabled(world)) { return; }
+				if (!WorldInfoUtils.isInstabilityEnabled(world)) { return; }
 				if (world.getBlock(i, j - 1, k) == ModBlocks.decay && world.getBlockMetadata(i, j - 1, k) == this.getMetadata()) {
 					world.setBlock(i, j - 1, k, Blocks.air);
 					EntityFallingBlock.drop(world, i, j, k);
