@@ -169,57 +169,28 @@ public class AgeData extends WorldSavedData {
 		return instability;
 	}
 
-	// Primarily used when displaying written pages
-	// TODO: (Sorting) Move this into the books themselves
-	public List<ItemStack> getPages() {
-		return Collections.unmodifiableList(pages);
-	}
-
-	// Called on book assembly
-	// TODO: (Sorting) Move this into the books themselves
-	public void addPages(List<ItemStack> pages) {
-		this.pages.addAll(pages);
-		this.markDirty();
-	}
-
-	/**
-	 * Writes the symbol to the first blank page in the book Returns false on failure
-	 * @param symbol The identifier of the symbol to write
-	 * @return true if successfully wrote the symbol to the book
-	 */
-	// TODO: (Sorting) Move this into the books themselves
-	public boolean writeSymbol(String symbol) {
-		if (this.visited) return false;
-		for (ItemStack page : pages) {
-			if (Page.isBlank(page)) {
-				Page.setSymbol(page, symbol);
-				if (visited == true) {
-					// TODO: (Rewriting)
-				}
-				this.markDirty();
-				return true;
-			}
-		}
-		return false;
-	}
-
-	// Used by AgeController to add symbols without adding pages
-	public void addSymbol(String symbol, int instability) {
-		symbols.add(symbol);
-		this.instability += instability;
-		this.markDirty();
-	}
-
 	/**
 	 * This should be called to finalize the book. The AgeData will then store the pages as they were when the age was created. Any changes to the book itself
 	 * will be handled separately. This allows for books to be created with all of the symbols of the age (via admin command), as well as opening doors to
 	 * rewriting.
 	 * @param pages
 	 */
-	//TODO: (PageStorage) When revising the storage of pages, push the pages list of the written book via a function to "finalize" the book
+	// Called on first link
 	public void setPages(List<ItemStack> pages) {
 		this.pages.clear();
 		this.pages.addAll(pages);
+		this.markDirty();
+	}
+
+	// Primarily used when displaying written pages
+	public List<ItemStack> getPages() {
+		return Collections.unmodifiableList(pages);
+	}
+
+	// Used by AgeController to add symbols without adding pages
+	public void addSymbol(String symbol, int instability) {
+		symbols.add(symbol);
+		this.instability += instability;
 		this.markDirty();
 	}
 
