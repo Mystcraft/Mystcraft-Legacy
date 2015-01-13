@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.world;
 
 import static net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType.QUARTZ;
 
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Random;
 
@@ -22,11 +23,14 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
+
+import cpw.mods.fml.common.eventhandler.Event.Result;
 
 public class ChunkProviderMyst implements IChunkProvider {
 	private AgeController				controller;
@@ -49,71 +53,62 @@ public class ChunkProviderMyst implements IChunkProvider {
 		noiseGen4 = new NoiseGeneratorOctaves(rand, 4);
 	}
 
-	private void replaceBlocksForBiome(int chunkX, int chunkZ, Block blocks[], byte[] metadata, BiomeGenBase abiomegenbase[]) {
-		int layers = blocks.length / 256;
-		int sealevel = controller.getSeaLevel();
+	private Block[]	vblocks;
+	private byte[]	vmetadata;
+
+	private void replaceBlocksForBiome(int chunkX, int chunkZ, Block[] blocks, byte[] metadata, BiomeGenBase[] abiomegenbase) {
+		if (vblocks == null || vblocks.length != blocks.length) vblocks = new Block[blocks.length];
+		if (vmetadata == null || vmetadata.length != metadata.length) vmetadata = new byte[metadata.length];
+		mapLocalToVanilla(blocks, vblocks);
+		mapLocalToVanilla(metadata, vmetadata);
+		ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(this, chunkX, chunkZ, vblocks, vmetadata, abiomegenbase, this.worldObj);
+		MinecraftForge.EVENT_BUS.post(event);
+		if (event.getResult() == Result.DENY) return;
+
+		//TODO: Vanilla is now using a different noise generation system for stone noise
 		double noisefactor = 0.03125D;
-		stoneNoise = noiseGen4.generateNoiseOctaves(stoneNoise, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, noisefactor * 2D, noisefactor * 2D, noisefactor * 2D);
+		this.stoneNoise = noiseGen4.generateNoiseOctaves(stoneNoise, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, noisefactor * 2D, noisefactor * 2D, noisefactor * 2D);
 
-		for (int z = 0; z < 16; z++) {
-			for (int x = 0; x < 16; x++) {
-				BiomeGenBase biomegenbase = abiomegenbase[x + z * 16];
-
-				int stone_noise_val = (int) (stoneNoise[z + x * 16] / 3D + 3D + rand.nextDouble() * 0.25D);
-				int counter = -1;
-				Block surface = biomegenbase.topBlock;
-				Block filler = biomegenbase.fillerBlock;
-				for (int y = layers - 1; y >= 0; --y) {
-					float f = biomegenbase.getFloatTemperature(x, y, z);
-					int coords = y << 8 | z << 4 | x;
-					Block block = blocks[coords];
-					if (block == null || block == Blocks.air || block == Blocks.bedrock) {
-						counter = -1;
-						continue;
-					}
-					if (block != Blocks.stone) {
-						continue;
-					}
-					if (counter == -1) {
-						if (stone_noise_val <= 0) {
-							surface = Blocks.air;
-							filler = Blocks.stone;
-						} else {
-							if (y >= sealevel - 4 && y <= sealevel + 1) {
-								surface = biomegenbase.topBlock;
-								filler = biomegenbase.fillerBlock;
-							}
-						}
-						if (y < sealevel && surface == null) {
-							if (f < 0.15F) {
-								surface = Blocks.ice;
-							} else {
-								surface = Blocks.water;
-							}
-						}
-						counter = stone_noise_val;
-						if (y >= sealevel - 1) {
-							blocks[coords] = surface;
-						} else {
-							blocks[coords] = filler;
-						}
-						continue;
-					}
-					if (counter <= 0) {
-						continue;
-					}
-					--counter;
-					blocks[coords] = filler;
-					if (counter == 0 && filler == Blocks.sand) {
-						counter = rand.nextInt(4);
-						filler = Blocks.sandstone;
-					}
-				}
-
+		for (int k = 0; k < 16; ++k) {
+			for (int l = 0; l < 16; ++l) {
+				BiomeGenBase biomegenbase = abiomegenbase[l + k * 16];
+				biomegenbase.genTerrainBlocks(this.worldObj, this.rand, vblocks, vmetadata, chunkX * 16 + k, chunkZ * 16 + l, this.stoneNoise[l + k * 16]);
 			}
-
 		}
+		mapVanillaToLocal(vblocks, blocks);
+		mapVanillaToLocal(vmetadata, metadata);
+	}
 
+	//On local indexing, we are incrementing x, then z, then y
+	private void mapLocalToVanilla(Object arr1, Object arr2) {
+		int len = Array.getLength(arr1);
+		if (len != Array.getLength(arr2)) throw new RuntimeException("Cannot map data indicies: Arrays of different lenghts");
+		int maxy = len / 256;
+		for (int y = 0; y < maxy; ++y) {
+			for (int z = 0; z < 16; ++z) {
+				for (int x = 0; x < 16; ++x) {
+					int lcoords = y << 8 | z << 4 | x;
+					int vcoords = ((z << 4 | x) * maxy) | y;
+					Array.set(arr2, vcoords, Array.get(arr1, lcoords));
+				}
+			}
+		}
+	}
+
+	//On vanilla indexing, we increment y, then x, then z
+	private void mapVanillaToLocal(Object arr1, Object arr2) {
+		int len = Array.getLength(arr1);
+		if (len != Array.getLength(arr2)) throw new RuntimeException("Cannot map data indicies: Arrays of different lenghts");
+		int maxy = len / 256;
+		for (int z = 0; z < 16; ++z) {
+			for (int x = 0; x < 16; ++x) {
+				for (int y = 0; y < maxy; ++y) {
+					int lcoords = y << 8 | z << 4 | x;
+					int vcoords = ((z << 4 | x) * maxy) | y;
+					Array.set(arr2, lcoords, Array.get(arr1, vcoords));
+				}
+			}
+		}
 	}
 
 	@Override
