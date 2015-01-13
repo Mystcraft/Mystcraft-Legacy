@@ -26,7 +26,7 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 	public ComponentScatteredFeatureSmallLibrary() {}
 
 	public ComponentScatteredFeatureSmallLibrary(Random par1Random, int x, int z) {
-		super(par1Random, x, 64, z, 10, 10, 10);
+		super(par1Random, x, 64, z, 11, 10, 11);
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 	 */
 	@Override
 	public boolean addComponentParts(World worldObj, Random rand, StructureBoundingBox boundingbox) {
-		if (!this.shouldBuildHere(worldObj, boundingbox, 0)) return false;
+		//if (!this.shouldBuildHere(worldObj, boundingbox, 0)) return false;
 		//LoggerUtils.info("Generating Library at %d %d %d", boundingbox.minX, boundingbox.minY, boundingbox.minZ);
 
 		// 0 - Towards front
