@@ -94,7 +94,7 @@ public class InstabilityDataCalculator {
 			for (String key : constants.keySet()) {
 				float val = constants.get(key);
 				val = (val * tolerance);
-				val = (float) (Math.floor(val / 100) * 100);
+				val = (float) (Math.ceil(val / 100) * 100);
 				freevals.put(key, val);
 			}
 			InstabilityBlockManager.setBaselineStability(freevals);
