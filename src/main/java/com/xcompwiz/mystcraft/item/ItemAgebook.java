@@ -57,7 +57,7 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		LinkOptions.setDimensionUID(itemstack.stackTagCompound, dimId);
 		LinkOptions.setDisplayName(itemstack.stackTagCompound, bookdata.getAgeName());
 		LinkOptions.setFlag(itemstack.stackTagCompound, ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, true);
-		((ItemAgebook)itemstack.getItem()).addPages(itemstack, Collections.singleton(Page.createLinkPage()));
+		((ItemAgebook)itemstack.getItem()).addPages(itemstack, bookdata.getPages());
 	}
 
 	public static void create(ItemStack agebook, EntityPlayer player, List<ItemStack> pages, String pendingtitle) {

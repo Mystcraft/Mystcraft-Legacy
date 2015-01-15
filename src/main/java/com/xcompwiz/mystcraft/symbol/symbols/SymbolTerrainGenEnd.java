@@ -19,15 +19,15 @@ public class SymbolTerrainGenEnd extends SymbolBase {
 	public void registerLogic(IAgeController controller, long seed) {
 		TerrainGenerator gen = new TerrainGenerator(controller);
 		BlockDescriptor block;
-		block = ModifierUtils.popBlockMatching(controller, BlockCategory.TERRAIN);
-		if (block != null) {
-			gen.setTerrainBlock(block.block, block.metadata);
-		}
 		block = ModifierUtils.popBlockMatching(controller, BlockCategory.SEA);
 		if (block != null) {
 			gen.setSeaBlock(block.block, block.metadata);
 		} else {
 			gen.setSeaBlock(Blocks.air, (byte) 0);
+		}
+		block = ModifierUtils.popBlockMatching(controller, BlockCategory.TERRAIN);
+		if (block != null) {
+			gen.setTerrainBlock(block.block, block.metadata);
 		}
 		controller.registerInterface(gen);
 		controller.setHorizon(0);

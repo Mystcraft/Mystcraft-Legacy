@@ -38,7 +38,7 @@ public abstract class CommandBaseAdv extends CommandBase {
 			return player.worldObj;
 		} catch (Exception e) {
 			try {
-				TileEntity comblock = getCommandSenderAsCommandBlock(sender);
+				TileEntity comblock = getCommandSenderAsTileEntity(sender);
 				return comblock.getWorldObj();
 			} catch (Exception ex) {
 				throw new CommandException("This command can only be sent from a player or command block");
@@ -53,7 +53,7 @@ public abstract class CommandBaseAdv extends CommandBase {
 			return player.dimension;
 		} catch (Exception e) {
 			try {
-				TileEntity comblock = getCommandSenderAsCommandBlock(sender);
+				TileEntity comblock = getCommandSenderAsTileEntity(sender);
 				return comblock.getWorldObj().provider.dimensionId;
 			} catch (Exception ex) {
 				throw new CommandException("You must specify a dimension to use this command from the commandline");
@@ -64,8 +64,9 @@ public abstract class CommandBaseAdv extends CommandBase {
 	/**
 	 * Returns the given ICommandSender as a EntityPlayer or throw an exception.
 	 */
-	public static TileEntity getCommandSenderAsCommandBlock(ICommandSender sender) {
-		throw new CommandException("Could not get commandblock", new Object[0]);
+	public static TileEntity getCommandSenderAsTileEntity(ICommandSender sender) {
+		//FIXME: getCommandSenderAsTileEntity
+		throw new CommandException("Could not get tile entity", new Object[0]);
 	}
 
 	public static double handleRelativeNumber(ICommandSender sender, double origin, String arg) {
