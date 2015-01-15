@@ -105,6 +105,7 @@ public class ChunkProviderMyst implements IChunkProvider {
 				for (int y = 0; y < maxy; ++y) {
 					int lcoords = y << 8 | z << 4 | x;
 					int vcoords = ((z << 4 | x) * maxy) | y;
+					if (y < 6 && Blocks.bedrock == Array.get(arr1, vcoords)) continue; //Filter out biome added bedrock layers
 					Array.set(arr2, lcoords, Array.get(arr1, vcoords));
 				}
 			}
