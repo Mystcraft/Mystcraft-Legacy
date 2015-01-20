@@ -20,7 +20,7 @@ import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-import net.minecraft.world.gen.NoiseGeneratorOctaves;
+import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.ChunkProviderEvent;
@@ -35,7 +35,7 @@ import cpw.mods.fml.common.eventhandler.Event.Result;
 public class ChunkProviderMyst implements IChunkProvider {
 	private AgeController				controller;
 	private Random						rand;
-	private NoiseGeneratorOctaves		noiseGen4;
+	private NoiseGeneratorPerlin		stoneNoiseGen;
 	private World						worldObj;
 	private AgeData						agedata;
 	private double						stoneNoise[];
@@ -50,7 +50,7 @@ public class ChunkProviderMyst implements IChunkProvider {
 		worldObj = world;
 		agedata = age;
 		rand = new Random(agedata.getSeed());
-		noiseGen4 = new NoiseGeneratorOctaves(rand, 4);
+		stoneNoiseGen = new NoiseGeneratorPerlin(this.rand, 4);
 	}
 
 	private Block[]	vblocks;
@@ -67,12 +67,12 @@ public class ChunkProviderMyst implements IChunkProvider {
 
 		//TODO: Vanilla is now using a different noise generation system for stone noise
 		double noisefactor = 0.03125D;
-		this.stoneNoise = noiseGen4.generateNoiseOctaves(stoneNoise, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, noisefactor * 2D, noisefactor * 2D, noisefactor * 2D);
+		this.stoneNoise = stoneNoiseGen.func_151599_a(this.stoneNoise, chunkX * 16, chunkZ * 16, 16, 16, noisefactor * 2.0D, noisefactor * 2.0D, 1.0D);
 
-		for (int k = 0; k < 16; ++k) {
-			for (int l = 0; l < 16; ++l) {
-				BiomeGenBase biomegenbase = abiomegenbase[l + k * 16];
-				biomegenbase.genTerrainBlocks(this.worldObj, this.rand, vblocks, vmetadata, chunkX * 16 + k, chunkZ * 16 + l, this.stoneNoise[l + k * 16]);
+		for (int xoff = 0; xoff < 16; ++xoff) {
+			for (int zoff = 0; zoff < 16; ++zoff) {
+				BiomeGenBase biomegenbase = abiomegenbase[zoff + xoff * 16];
+				biomegenbase.genTerrainBlocks(this.worldObj, this.rand, vblocks, vmetadata, chunkX * 16 + xoff, chunkZ * 16 + zoff, this.stoneNoise[zoff + xoff * 16]);
 			}
 		}
 		mapVanillaToLocal(vblocks, blocks);
@@ -88,14 +88,14 @@ public class ChunkProviderMyst implements IChunkProvider {
 			for (int z = 0; z < 16; ++z) {
 				for (int x = 0; x < 16; ++x) {
 					int lcoords = y << 8 | z << 4 | x;
-					int vcoords = ((z << 4 | x) * maxy) | y;
+					int vcoords = ((x << 4 | z) * maxy) | y;
 					Array.set(arr2, vcoords, Array.get(arr1, lcoords));
 				}
 			}
 		}
 	}
 
-	//On vanilla indexing, we increment y, then x, then z
+	//On vanilla indexing, we increment y, then z, then x
 	private void mapVanillaToLocal(Object arr1, Object arr2) {
 		int len = Array.getLength(arr1);
 		if (len != Array.getLength(arr2)) throw new RuntimeException("Cannot map data indicies: Arrays of different lenghts");
@@ -104,7 +104,7 @@ public class ChunkProviderMyst implements IChunkProvider {
 			for (int x = 0; x < 16; ++x) {
 				for (int y = 0; y < maxy; ++y) {
 					int lcoords = y << 8 | z << 4 | x;
-					int vcoords = ((z << 4 | x) * maxy) | y;
+					int vcoords = ((x << 4 | z) * maxy) | y;
 					if (y < 6 && Blocks.bedrock == Array.get(arr1, vcoords)) continue; //Filter out biome added bedrock layers
 					Array.set(arr2, lcoords, Array.get(arr1, vcoords));
 				}
