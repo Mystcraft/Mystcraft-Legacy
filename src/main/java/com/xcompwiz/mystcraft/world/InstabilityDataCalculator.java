@@ -14,13 +14,20 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.world.WorldEvent;
 
+import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAllow;
+import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
 import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
 import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
+import com.xcompwiz.mystcraft.linking.LinkController;
+import com.xcompwiz.mystcraft.linking.LinkOptions;
+import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class InstabilityDataCalculator {
@@ -151,7 +158,32 @@ public class InstabilityDataCalculator {
 			File dir = event.world.getSaveHandler().getWorldDirectory();
 			dir = new File(dir, event.world.provider.getSaveFolder());
 			dir.deleteOnExit();
-			//TODO: Request for the profiled data to save NOW
+			//TODO: Request for the profile data to save NOW
+		}
+	}
+
+	@SubscribeEvent
+	public void isLinkPermitted(LinkEventAllow event) {
+		if (dimId != null && event.destination.provider.dimensionId == dimId) event.setCanceled(true);
+	}
+
+		@SubscribeEvent
+	public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
+		if (dimId != null && event.player.dimension == dimId) {
+			ILinkInfo link = new LinkOptions(null);
+			link.setDimensionUID(0);
+			link.setFlag(ILinkPropertyAPI.FLAG_TPCOMMAND, true);
+			LinkController.travelEntity(event.player.worldObj, event.player, link);
+		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerChangedDimension(PlayerChangedDimensionEvent event) {
+		if (dimId != null && event.toDim == dimId) {
+			ILinkInfo link = new LinkOptions(null);
+			link.setDimensionUID(0);
+			link.setFlag(ILinkPropertyAPI.FLAG_TPCOMMAND, true);
+			LinkController.travelEntity(event.player.worldObj, event.player, link);
 		}
 	}
 
