@@ -8,8 +8,6 @@ import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
@@ -64,43 +62,37 @@ public class CommandTPX extends CommandBaseAdv {
 	public void processCommand(ICommandSender sender, String[] args) {
 		Entity subject = null;
 		ILinkInfo link = null;
-		try {
-			String sSubject = null;
-			String sTarget = null;
-			String sX = null, sY = null, sZ = null;
+		String sSubject = null;
+		String sTarget = null;
+		String sX = null, sY = null, sZ = null;
 
-			if (args.length > 3) {
-				if (args.length > 4) sSubject = args[args.length - 5];
-				sTarget = args[args.length - 4];
-				sX = args[args.length - 3];
-				sY = args[args.length - 2];
-				sZ = args[args.length - 1];
-			} else if (args.length == 2) {
-				sSubject = args[args.length - 2];
-				sTarget = args[args.length - 1];
-			} else if (args.length == 1) {
-				sTarget = args[args.length - 1];
-			} else {
-				throw new WrongUsageException("commands.myst.tpx.usage");
-			}
-
-			if (sSubject == null) {
-				subject = getCommandSenderAsPlayer(sender);
-			} else {
-				subject = getTargetPlayer(sender, sSubject);
-			}
-			if (subject == null) { throw new WrongUsageException("commands.myst.tpx.fail.nosubject"); }
-
-			link = getLinkInfoForTarget(sender, subject, sTarget, sX, sY, sZ);
-
-			link.setFlag(ILinkPropertyAPI.FLAG_INTRA_LINKING, true);
-			makeOpTP(link);
-			LinkController.travelEntity(subject.worldObj, subject, link);
-
-		} catch (CommandException e) {
-			sender.addChatMessage(new ChatComponentText(e.getMessage()));
-			sender.addChatMessage(new ChatComponentTranslation(getCommandUsage(sender)));
+		if (args.length > 3) {
+			if (args.length > 4) sSubject = args[args.length - 5];
+			sTarget = args[args.length - 4];
+			sX = args[args.length - 3];
+			sY = args[args.length - 2];
+			sZ = args[args.length - 1];
+		} else if (args.length == 2) {
+			sSubject = args[args.length - 2];
+			sTarget = args[args.length - 1];
+		} else if (args.length == 1) {
+			sTarget = args[args.length - 1];
+		} else {
+			throw new WrongUsageException("commands.myst.tpx.usage");
 		}
+
+		if (sSubject == null) {
+			subject = getCommandSenderAsPlayer(sender);
+		} else {
+			subject = getTargetPlayer(sender, sSubject);
+		}
+		if (subject == null) { throw new WrongUsageException("commands.myst.tpx.fail.nosubject"); }
+
+		link = getLinkInfoForTarget(sender, subject, sTarget, sX, sY, sZ);
+
+		link.setFlag(ILinkPropertyAPI.FLAG_INTRA_LINKING, true);
+		makeOpTP(link);
+		LinkController.travelEntity(subject.worldObj, subject, link);
 	}
 
 	public static ILinkInfo getLinkInfoForTarget(ICommandSender sender, Entity subject, String sTarget, String sX, String sY, String sZ) {
