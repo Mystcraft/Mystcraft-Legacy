@@ -18,8 +18,8 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
 public class ContainerLinkModifier extends ContainerBase implements IGuiMessageHandler {
 	public static class Messages {
 
-		public static final String	SetTitle	= null;
-		public static final String	SetFlag	= null;
+		public static final String	SetTitle	= "SetTitle";
+		public static final String	SetFlag		= "SetFlag";
 	}
 
 	private TileEntityLinkModifier	tileentity		= null;
