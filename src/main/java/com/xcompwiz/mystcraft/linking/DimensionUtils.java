@@ -27,7 +27,6 @@ public class DimensionUtils {
 		return dimUId;
 	}
 
-	@Deprecated
 	public static boolean isDimensionVisited(Integer dimId) {
 		if (dimId == null) return false;
 		if (!DimensionManager.isDimensionRegistered(dimId)) return false;
