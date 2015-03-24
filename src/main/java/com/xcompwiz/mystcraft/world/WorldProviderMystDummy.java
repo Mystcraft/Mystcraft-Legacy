@@ -22,6 +22,55 @@ import cpw.mods.fml.common.ObfuscationReflectionHelper;
 
 public class WorldProviderMystDummy extends WorldProviderMyst {
 
+	private static class AnvilChunkLoaderDummy extends AnvilChunkLoader {
+		public AnvilChunkLoaderDummy(File p_i2003_1_) {
+			super(p_i2003_1_);
+		}
+
+		@Override
+		public boolean chunkExists(World world, int i, int j) {
+			return false;
+		}
+
+		@Override
+		public Chunk loadChunk(World p_75815_1_, int p_75815_2_, int p_75815_3_) throws java.io.IOException {
+			return null;
+		}
+	}
+	private static class ChunkProviderServerDummy extends ChunkProviderServer {
+		private List<Long>	chunkqueue	= new LinkedList<Long>();
+
+		public ChunkProviderServerDummy(WorldServer p_i1520_1_, IChunkLoader p_i1520_2_, IChunkProvider p_i1520_3_) {
+			super(p_i1520_1_, p_i1520_2_, p_i1520_3_);
+		}
+
+		@Override
+		public boolean canSave() {
+			return false;
+		}
+
+		@Override
+		public Chunk originalLoadChunk(int p_73158_1_, int p_73158_2_) {
+			Chunk chunk = super.originalLoadChunk(p_73158_1_, p_73158_2_);
+			this.chunkqueue.add(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunk.xPosition, chunk.zPosition)));
+			return chunk;
+		}
+
+		@Override
+		public boolean unloadQueuedChunks() {
+			for (int i = 0; i < 100 && this.chunkqueue.size() > 32; ++i) {
+				Long olong = this.chunkqueue.get(0);
+				Chunk chunk = (Chunk) this.loadedChunkHashMap.getValueByKey(olong.longValue());
+				if (chunk != null) {
+					this.loadedChunks.remove(chunk);
+				}
+				chunkqueue.remove(0);
+				this.loadedChunkHashMap.remove(olong.longValue());
+			}
+			return this.currentChunkProvider.unloadQueuedChunks();
+		}
+	}
+
 	private AgeController	controller;
 	public ChunkProfiler	chunkprofiler;
 
@@ -121,54 +170,6 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 
 	public void replaceChunkProvider() {
 		WorldServer world = (WorldServer) worldObj;
-		class AnvilChunkLoaderDummy extends AnvilChunkLoader {
-			public AnvilChunkLoaderDummy(File p_i2003_1_) {
-				super(p_i2003_1_);
-			}
-
-			@Override
-			public boolean chunkExists(World world, int i, int j) {
-				return false;
-			}
-
-			@Override
-			public Chunk loadChunk(World p_75815_1_, int p_75815_2_, int p_75815_3_) throws java.io.IOException {
-				return null;
-			}
-		}
-		class ChunkProviderServerDummy extends ChunkProviderServer {
-			private List<Long>	chunkqueue	= new LinkedList<Long>();
-
-			public ChunkProviderServerDummy(WorldServer p_i1520_1_, IChunkLoader p_i1520_2_, IChunkProvider p_i1520_3_) {
-				super(p_i1520_1_, p_i1520_2_, p_i1520_3_);
-			}
-
-			@Override
-			public boolean canSave() {
-				return false;
-			}
-
-			@Override
-			public Chunk originalLoadChunk(int p_73158_1_, int p_73158_2_) {
-				Chunk chunk = super.originalLoadChunk(p_73158_1_, p_73158_2_);
-				this.chunkqueue.add(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunk.xPosition, chunk.xPosition)));
-				return chunk;
-			}
-
-			@Override
-			public boolean unloadQueuedChunks() {
-				for (int i = 0; i < 100 && this.chunkqueue.size() > 32; ++i) {
-					Long olong = this.chunkqueue.get(0);
-					Chunk chunk = (Chunk) this.loadedChunkHashMap.getValueByKey(olong.longValue());
-					if (chunk != null) {
-						this.loadedChunks.remove(chunk);
-					}
-					chunkqueue.remove(0);
-					this.loadedChunkHashMap.remove(olong.longValue());
-				}
-				return this.currentChunkProvider.unloadQueuedChunks();
-			}
-		}
 		world.theChunkProviderServer = new ChunkProviderServerDummy(world, new AnvilChunkLoaderDummy(((AnvilChunkLoader) world.theChunkProviderServer.currentChunkLoader).chunkSaveLocation), this.createChunkGenerator());
 		ObfuscationReflectionHelper.setPrivateValue(World.class, worldObj, world.theChunkProviderServer, "chunkProvider", "field" + "_73020_y");
 	}

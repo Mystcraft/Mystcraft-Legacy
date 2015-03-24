@@ -2,7 +2,6 @@ package com.xcompwiz.mystcraft.world;
 
 import static net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType.QUARTZ;
 
-import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Random;
 
@@ -59,57 +58,24 @@ public class ChunkProviderMyst implements IChunkProvider {
 	private void replaceBlocksForBiome(int chunkX, int chunkZ, Block[] blocks, byte[] metadata, BiomeGenBase[] abiomegenbase) {
 		if (vblocks == null || vblocks.length != blocks.length) vblocks = new Block[blocks.length];
 		if (vmetadata == null || vmetadata.length != metadata.length) vmetadata = new byte[metadata.length];
-		mapLocalToVanilla(blocks, vblocks);
-		mapLocalToVanilla(metadata, vmetadata);
+		ArrayMappingUtils.mapLocalToVanilla(blocks, vblocks);
+		ArrayMappingUtils.mapLocalToVanilla(metadata, vmetadata);
 		ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(this, chunkX, chunkZ, vblocks, vmetadata, abiomegenbase, this.worldObj);
 		MinecraftForge.EVENT_BUS.post(event);
-		if (event.getResult() == Result.DENY) return;
-
-		//TODO: Vanilla is now using a different noise generation system for stone noise
-		double noisefactor = 0.03125D;
-		this.stoneNoise = stoneNoiseGen.func_151599_a(this.stoneNoise, chunkX * 16, chunkZ * 16, 16, 16, noisefactor * 2.0D, noisefactor * 2.0D, 1.0D);
-
-		for (int xoff = 0; xoff < 16; ++xoff) {
-			for (int zoff = 0; zoff < 16; ++zoff) {
-				BiomeGenBase biomegenbase = abiomegenbase[zoff + xoff * 16];
-				biomegenbase.genTerrainBlocks(this.worldObj, this.rand, vblocks, vmetadata, chunkX * 16 + xoff, chunkZ * 16 + zoff, this.stoneNoise[zoff + xoff * 16]);
-			}
-		}
-		mapVanillaToLocal(vblocks, blocks);
-		mapVanillaToLocal(vmetadata, metadata);
-	}
-
-	//On local indexing, we are incrementing x, then z, then y
-	private void mapLocalToVanilla(Object arr1, Object arr2) {
-		int len = Array.getLength(arr1);
-		if (len != Array.getLength(arr2)) throw new RuntimeException("Cannot map data indicies: Arrays of different lenghts");
-		int maxy = len / 256;
-		for (int y = 0; y < maxy; ++y) {
-			for (int z = 0; z < 16; ++z) {
-				for (int x = 0; x < 16; ++x) {
-					int lcoords = y << 8 | z << 4 | x;
-					int vcoords = ((x << 4 | z) * maxy) | y;
-					Array.set(arr2, vcoords, Array.get(arr1, lcoords));
+		if (event.getResult() != Result.DENY) {
+			//TODO: Vanilla is now using a different noise generation system for stone noise
+			double noisefactor = 0.03125D;
+			this.stoneNoise = stoneNoiseGen.func_151599_a(this.stoneNoise, chunkX * 16, chunkZ * 16, 16, 16, noisefactor * 2.0D, noisefactor * 2.0D, 1.0D);
+	
+			for (int xoff = 0; xoff < 16; ++xoff) {
+				for (int zoff = 0; zoff < 16; ++zoff) {
+					BiomeGenBase biomegenbase = abiomegenbase[zoff + xoff * 16];
+					biomegenbase.genTerrainBlocks(this.worldObj, this.rand, vblocks, vmetadata, chunkX * 16 + xoff, chunkZ * 16 + zoff, this.stoneNoise[zoff + xoff * 16]);
 				}
 			}
 		}
-	}
-
-	//On vanilla indexing, we increment y, then z, then x
-	private void mapVanillaToLocal(Object arr1, Object arr2) {
-		int len = Array.getLength(arr1);
-		if (len != Array.getLength(arr2)) throw new RuntimeException("Cannot map data indicies: Arrays of different lenghts");
-		int maxy = len / 256;
-		for (int z = 0; z < 16; ++z) {
-			for (int x = 0; x < 16; ++x) {
-				for (int y = 0; y < maxy; ++y) {
-					int lcoords = y << 8 | z << 4 | x;
-					int vcoords = ((x << 4 | z) * maxy) | y;
-					if (y < 6 && Blocks.bedrock == Array.get(arr1, vcoords)) continue; //Filter out biome added bedrock layers
-					Array.set(arr2, lcoords, Array.get(arr1, vcoords));
-				}
-			}
-		}
+		ArrayMappingUtils.mapVanillaToLocal(vblocks, blocks);
+		ArrayMappingUtils.mapVanillaToLocal(vmetadata, metadata);
 	}
 
 	@Override

@@ -28,6 +28,7 @@ import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class InstabilityDataCalculator {
@@ -90,6 +91,7 @@ public class InstabilityDataCalculator {
 
 	@SubscribeEvent
 	public void onServerTick(ServerTickEvent event) {
+		if (event.phase == Phase.START) return;
 		if (mcserver == null) return;
 		ChunkProfiler profiler = getChunkProfiler();
 		if (profiler.getCount() <= minimumchunks) {
