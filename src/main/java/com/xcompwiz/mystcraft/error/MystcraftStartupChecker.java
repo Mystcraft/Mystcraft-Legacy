@@ -39,7 +39,6 @@ public class MystcraftStartupChecker {
 	}
 
 	public static class CheckSymbolLoadError extends ErrorChecker {
-
 		@Override
 		protected GuiScreen getErrorGui() {
 			HashSet<String> errored = SymbolManager.getErroredSymbols();
@@ -55,7 +54,6 @@ public class MystcraftStartupChecker {
 			}
 			return null;
 		}
-
 	}
 
 	private HashSet<ErrorChecker>	checks	= new HashSet<ErrorChecker>();
