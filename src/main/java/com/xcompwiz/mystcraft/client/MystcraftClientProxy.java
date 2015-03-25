@@ -16,6 +16,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleProviderLink;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleUtils;
+import com.xcompwiz.mystcraft.client.gui.overlay.GuiNotification;
 import com.xcompwiz.mystcraft.client.linkeffects.LinkRendererDisarm;
 import com.xcompwiz.mystcraft.client.model.ModelBookBinder;
 import com.xcompwiz.mystcraft.client.model.ModelInkMixer;
@@ -64,15 +65,22 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class MystcraftClientProxy extends MystcraftCommonProxy {
 
+	private MystcraftStartupChecker	startupchecker;
+
 	@Override
 	public Entity getEntityByID(World worldObj, int id) {
 		if (worldObj instanceof WorldClient) return ((WorldClient) worldObj).getEntityByID(id);
 		return super.getEntityByID(worldObj, id);
 	}
 
+	public GuiNotification getNotificationGui() {
+		return this.startupchecker.getNotificationGui();
+	}
+
 	@Override
 	public void preinit() {
-		FMLCommonHandler.instance().bus().register(new MystcraftStartupChecker());
+		startupchecker = new MystcraftStartupChecker();
+		FMLCommonHandler.instance().bus().register(startupchecker);
 	}
 
 	@Override

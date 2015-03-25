@@ -22,6 +22,7 @@ import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
 import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
+import com.xcompwiz.mystcraft.network.packet.MPacketProfilingState;
 import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
 
@@ -30,6 +31,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
 
 public class InstabilityDataCalculator {
 
@@ -38,8 +40,8 @@ public class InstabilityDataCalculator {
 	private MinecraftServer			mcserver;
 	private MapStorage				storage;
 
-	private int						minimumchunks; //TODO: Make this configurable
-	private float					tolerance	= 1.05F; //TODO: Make this configurable
+	private int						minimumchunks;					//TODO: Make this configurable
+	private float					tolerance	= 1.05F;			//TODO: Make this configurable
 
 	private HashMap<String, Number>	freevals;
 
@@ -140,6 +142,7 @@ public class InstabilityDataCalculator {
 		if (world != null) {
 			DimensionManager.unloadWorld(world.provider.dimensionId);
 			world = null;
+			mcserver.getConfigurationManager().sendPacketToAllPlayers(MPacketProfilingState.createPacket(false));
 		}
 	}
 
@@ -169,7 +172,7 @@ public class InstabilityDataCalculator {
 		if (dimId != null && event.destination.provider.dimensionId == dimId) event.setCanceled(true);
 	}
 
-		@SubscribeEvent
+	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
 		if (dimId != null && event.player.dimension == dimId) {
 			ILinkInfo link = new LinkOptions(null);
@@ -177,6 +180,11 @@ public class InstabilityDataCalculator {
 			link.setFlag(ILinkPropertyAPI.FLAG_TPCOMMAND, true);
 			LinkController.travelEntity(event.player.worldObj, event.player, link);
 		}
+	}
+
+	@SubscribeEvent
+	public void connectionOpened(ServerConnectionFromClientEvent event) {
+		event.manager.scheduleOutboundPacket(MPacketProfilingState.createPacket(true));
 	}
 
 	@SubscribeEvent

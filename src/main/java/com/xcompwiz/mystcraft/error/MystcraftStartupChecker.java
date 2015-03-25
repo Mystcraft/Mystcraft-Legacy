@@ -8,11 +8,13 @@ import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 
 import com.xcompwiz.mystcraft.client.gui.error.GuiNonCriticalError;
+import com.xcompwiz.mystcraft.client.gui.overlay.GuiNotification;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 
 public class MystcraftStartupChecker {
 
@@ -58,6 +60,8 @@ public class MystcraftStartupChecker {
 
 	private HashSet<ErrorChecker>	checks	= new HashSet<ErrorChecker>();
 
+	private GuiNotification			updateNotification;
+
 	public MystcraftStartupChecker() {
 		checks.add(new CheckSymbolLoadError());
 	}
@@ -65,18 +69,33 @@ public class MystcraftStartupChecker {
 	@SubscribeEvent
 	public void onClientTick(ClientTickEvent event) {
 		if (Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu) {
-			if (!checkForErrors()) {
-				FMLCommonHandler.instance().bus().unregister(this);
+			if (checkForErrors()) { return;
+			//FMLCommonHandler.instance().bus().unregister(this);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onClientRenderTick(RenderTickEvent event) {
+		if (event.phase == Phase.END) {
+			if (updateNotification != null) {
+				updateNotification.render();
 			}
 		}
 	}
 
 	private boolean checkForErrors() {
+		//FIXME: Optimize to remove completed checks
 		for (ErrorChecker check : checks) {
 			if (!check.hasRun()) {
 				if (check.run()) { return true; }
 			}
 		}
 		return false;
+	}
+
+	public GuiNotification getNotificationGui() {
+		if (updateNotification == null) updateNotification = new GuiNotification(Minecraft.getMinecraft());
+		return updateNotification;
 	}
 }

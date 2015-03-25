@@ -72,6 +72,7 @@ import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.packet.MPacketMessage;
 import com.xcompwiz.mystcraft.network.packet.MPacketOpenWindow;
 import com.xcompwiz.mystcraft.network.packet.MPacketParticles;
+import com.xcompwiz.mystcraft.network.packet.MPacketProfilingState;
 import com.xcompwiz.mystcraft.network.packet.MPacketSpawnLightningBolt;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
@@ -151,8 +152,9 @@ public class Mystcraft {
 
 		// Init packet handling
 		MystcraftPacketHandler.registerPacketHandler(new MPacketDimensions(), (byte)10); // 10
-		MystcraftPacketHandler.registerPacketHandler(new MPacketConfigs(), (byte)25); // 25
-		MystcraftPacketHandler.registerPacketHandler(new MPacketParticles(), (byte)20); // 20
+		MystcraftPacketHandler.registerPacketHandler(new MPacketConfigs(), (byte)20); // 25
+		MystcraftPacketHandler.registerPacketHandler(new MPacketProfilingState(), (byte)21); // 25
+		MystcraftPacketHandler.registerPacketHandler(new MPacketParticles(), (byte)25); // 20
 		MystcraftPacketHandler.registerPacketHandler(new MPacketMessage(), (byte)132); // 132
 		MystcraftPacketHandler.registerPacketHandler(new MPacketGuiMessage(), (byte)140); // 140
 		MystcraftPacketHandler.registerPacketHandler(new MPacketOpenWindow(), (byte)134); // 134
