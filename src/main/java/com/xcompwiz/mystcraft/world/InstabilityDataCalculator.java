@@ -57,7 +57,7 @@ public class InstabilityDataCalculator {
 		this.storage = mcserver.worldServerForDimension(0).mapStorage;
 		this.minimumchunks = ModifierBiome.selectables.size() * 20;
 		final ChunkProfiler profiler = getChunkProfiler();
-		this.chunkX = profiler.getCount() - 1;
+		this.chunkX = profiler.getCount() - 1; //TODO: Tie this to the needed chunk radius
 
 		DebugNode node = getDebugNode();
 		//@formatter:off
@@ -169,7 +169,7 @@ public class InstabilityDataCalculator {
 
 	@SubscribeEvent
 	public void isLinkPermitted(LinkEventAllow event) {
-		if (dimId != null && event.destination.provider.dimensionId == dimId) event.setCanceled(true);
+		if (dimId != null && event.info.getDimensionUID() == dimId) event.setCanceled(true);
 	}
 
 	@SubscribeEvent
