@@ -150,6 +150,7 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 	@Override
 	public ItemStack addPage(EntityPlayer player, ItemStack itemstack, ItemStack page) {
 		if (itemstack == null) return page;
+		if (page == null) return page;
 		if (page.getItem() instanceof IItemPageCollection) {
 			if (page.stackSize != 1) return page;
 			IItemPageCollection otheritem = (IItemPageCollection) page.getItem();
