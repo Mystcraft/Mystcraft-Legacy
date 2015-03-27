@@ -114,6 +114,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 	private static int				chunkX_max;
 	private static int				chunkZ_max;
 	private int						chunkX, chunkZ;
+	private boolean					chunkproviderreplaced;
 
 	//We build a fake dimension setup using our own controller and a predefined agedata setup
 	@Override
@@ -192,7 +193,15 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		return false;
 	}
 
+	@Override
+	public void calculateInitialWeather() {
+		super.calculateInitialWeather();
+		replaceChunkProvider();
+	}
+
 	public void replaceChunkProvider() {
+		if (chunkproviderreplaced) return;
+		chunkproviderreplaced = true;
 		WorldServer world = (WorldServer) worldObj;
 		world.theChunkProviderServer = new ChunkProviderServerDummy(world, new AnvilChunkLoaderDummy(((AnvilChunkLoader) world.theChunkProviderServer.currentChunkLoader).chunkSaveLocation), this.createChunkGenerator());
 		ObfuscationReflectionHelper.setPrivateValue(World.class, worldObj, world.theChunkProviderServer, "chunkProvider", "field" + "_73020_y");

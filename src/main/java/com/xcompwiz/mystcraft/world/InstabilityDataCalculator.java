@@ -145,13 +145,6 @@ public class InstabilityDataCalculator {
 	}
 
 	@SubscribeEvent
-	public void onWorldLoad(WorldEvent.Load event) {
-		if (dimId != null && event.world.provider.dimensionId == dimId) {
-			((WorldProviderMystDummy) event.world.provider).replaceChunkProvider();
-		}
-	}
-
-	@SubscribeEvent
 	public void onWorldUnload(WorldEvent.Unload event) {
 		if (dimId != null && event.world.provider.dimensionId == dimId) {
 			if (dimId != null) DimensionManager.unregisterDimension(dimId);
