@@ -6,10 +6,6 @@ import java.util.HashMap;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.world.WorldEvent;
@@ -22,6 +18,7 @@ import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
 import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.network.packet.MPacketProfilingState;
 import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
@@ -100,7 +97,7 @@ public class InstabilityDataCalculator {
 			stepChunkGeneration(profiler);
 		} else {
 			cleanup();
-			HashMap<String, Float> constants = getChunkProfiler().calculateSplitInstability();
+			HashMap<String, Float> constants = profiler.calculateSplitInstability();
 			freevals = new HashMap<String, Number>();
 			for (String key : constants.keySet()) {
 				float val = constants.get(key);
@@ -143,6 +140,7 @@ public class InstabilityDataCalculator {
 			DimensionManager.unloadWorld(world.provider.dimensionId);
 			world = null;
 			mcserver.getConfigurationManager().sendPacketToAllPlayers(MPacketProfilingState.createPacket(false));
+			LoggerUtils.info("Baseline Profiling for Instability completed.");
 		}
 	}
 
@@ -184,11 +182,13 @@ public class InstabilityDataCalculator {
 
 	@SubscribeEvent
 	public void connectionOpened(ServerConnectionFromClientEvent event) {
-		event.manager.scheduleOutboundPacket(MPacketProfilingState.createPacket(true));
+		if (mcserver != null) event.manager.scheduleOutboundPacket(MPacketProfilingState.createPacket(true));
 	}
 
 	@SubscribeEvent
 	public void onPlayerChangedDimension(PlayerChangedDimensionEvent event) {
+		//TODO: We should probably try and prohibit teleportation to this dimension...
+		//Alternatively, detect player changed dimension and queue them to teleport again next tick
 		if (dimId != null && event.toDim == dimId) {
 			ILinkInfo link = new LinkOptions(null);
 			link.setDimensionUID(0);
@@ -200,6 +200,9 @@ public class InstabilityDataCalculator {
 	private void stepChunkGeneration(ChunkProfiler profiler) {
 		//If the world has yet to be established, we create a fake world to play with.
 		if (world == null) {
+			LoggerUtils.info("Baseline Profiling for Instability started. Expect some lag.");
+			WorldProviderMystDummy.setChunkProfiler(profiler);
+			WorldProviderMystDummy.setBounds(-2, minimumchunks+2, -1, 2);
 			//First we need to create a provider specifically for this purpose.  We don't care at all for the id we get, so try something silly and then go from there.
 			providerId = Integer.MIN_VALUE;
 			while (true) {
@@ -223,35 +226,8 @@ public class InstabilityDataCalculator {
 			//Finally we obtain a world instance and set the chunk profiler for it.
 			world = mcserver.worldServerForDimension(dimId);
 			if (world == null) throw new RuntimeException("Could not create Instability Comparison Dimension");
-			((WorldProviderMystDummy) world.provider).setChunkProfiler(profiler);
-			//TODO: We should probably try and prohibit teleportation to this dimension...
-			//Alternatively, detect player changed dimension and queue them to teleport again next tick
 		}
 
-		//At every call of this function, we want to fully generate a single chunk.
-		IChunkProvider chunkgen = ((WorldServer) world).theChunkProviderServer;
-		IChunkLoader chunkloader = ((WorldServer) world).theChunkProviderServer.currentChunkLoader;
-
-		if (safeLoadChunk(chunkloader, world, chunkX, chunkZ) == null) {
-			//We generate a band in order to get the center chunk populated.
-			//Technically we don't profile it until the next set is populated, due to needing all the surrounding chunks to be complete
-			//The first set actually only provides the end cap, and is never profiled at all
-			//XXX: (Optimization) One chunk per tick rather than 4
-			chunkgen.loadChunk(chunkX, chunkZ + 2);
-			chunkgen.loadChunk(chunkX, chunkZ + 1);
-			chunkgen.loadChunk(chunkX, chunkZ);
-			chunkgen.loadChunk(chunkX, chunkZ - 1);
-		}
-		++chunkX;
-	}
-
-	//XXX: Duplicated from AgeController
-	private Chunk safeLoadChunk(IChunkLoader chunkloader, World worldObj, int par1, int par2) {
-		if (chunkloader == null) { return null; }
-		try {
-			return chunkloader.loadChunk(worldObj, par1, par2);
-		} catch (Exception exception) {
-			return null;
-		}
+		((WorldProviderMystDummy) world.provider).generateNextChunk();
 	}
 }
