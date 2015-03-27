@@ -74,6 +74,7 @@ public class ModSymbolsModifiers {
 	public static void initialize() {
 		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.dirt, 0).register().add(BlockCategory.TERRAIN, 4).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
 		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.stone, 0).register().add(BlockCategory.TERRAIN, 1).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
+		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.sandstone, 0).register().add(BlockCategory.TERRAIN, 2).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
 		InternalAPI.symbol.registerSymbol(InternalAPI.symbolFact.createSymbol(Blocks.netherrack, 0, WordData.Terrain, 2, new CategoryPair(BlockCategory.TERRAIN, 3), new CategoryPair(BlockCategory.STRUCTURE, 2), new CategoryPair(BlockCategory.SOLID, 2)));
 		//BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.netherrack, 0).register().add(BlockCategory.TERRAIN, 3).add(BlockCategory.STRUCTURE, 2).add(BlockCategory.SOLID, 2);
 		BlockModifierContainerObject.create(WordData.Terrain, 3, Blocks.end_stone, 0).register().add(BlockCategory.TERRAIN, 4).add(BlockCategory.STRUCTURE, 3).add(BlockCategory.SOLID, 3);
