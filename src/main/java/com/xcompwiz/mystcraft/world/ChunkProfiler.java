@@ -92,8 +92,6 @@ public class ChunkProfiler extends WorldSavedData {
 		}
 	}
 
-	public void baseChunk(Chunk chunk, int chunkX, int chunkZ) {}
-
 	public int calculateInstability() {
 		if (outputfiles) outputFiles();
 		if (!InstabilityBlockManager.isBaselineConstructed()) return 0;

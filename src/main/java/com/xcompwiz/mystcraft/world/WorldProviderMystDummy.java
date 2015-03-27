@@ -71,10 +71,25 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		}
 	}
 
+	private class AgeControllerDummy extends AgeController {
+
+		public AgeControllerDummy(World worldObj, AgeData age) {
+			super(worldObj, age);
+		}
+
+		@Override
+		public ChunkProfiler getChunkProfiler() {
+			return chunkprofiler;
+		}
+
+		@Override
+		public void registerDebugInfo(DebugNode node) {}
+	}
+
 	private AgeController	controller;
 	public ChunkProfiler	chunkprofiler;
 
-	//We build a fake dimension setup using out own controller and a predefined agedata setup
+	//We build a fake dimension setup using our own controller and a predefined agedata setup
 	@Override
 	protected void registerWorldChunkManager() {
 		agedata = new AgeData("CONTROL");
@@ -110,21 +125,6 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		//NormalLighting
 		agedata.addSymbol("LightingNormal", 0);
 		agedata.markVisited();
-
-		class AgeControllerDummy extends AgeController {
-
-			public AgeControllerDummy(World worldObj, AgeData age) {
-				super(worldObj, age);
-			}
-
-			@Override
-			public ChunkProfiler getChunkProfiler() {
-				return chunkprofiler;
-			}
-
-			@Override
-			public void registerDebugInfo(DebugNode node) {}
-		}
 
 		controller = new AgeControllerDummy(worldObj, agedata);
 		worldChunkMgr = controller.getWorldChunkManager();

@@ -104,7 +104,6 @@ public class ChunkProviderMyst implements IChunkProvider {
 			}
 		}
 		controller.finalizeChunk(chunk, chunkX, chunkZ);
-		controller.getChunkProfiler().baseChunk(chunk, chunkX, chunkZ);
 		return chunk;
 	}
 
