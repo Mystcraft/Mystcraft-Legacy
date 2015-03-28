@@ -110,6 +110,7 @@ public class InstabilityDataCalculator {
 		if (profiler.getCount() <= minimumchunks) {
 			stepChunkGeneration(profiler);
 		} else {
+			if (world != null) LoggerUtils.info("Baseline Profiling for Instability completed.");
 			cleanup();
 			HashMap<String, Float> constants = profiler.calculateSplitInstability();
 			freevals = new HashMap<String, Number>();
@@ -147,7 +148,6 @@ public class InstabilityDataCalculator {
 			DimensionManager.unloadWorld(world.provider.dimensionId);
 			world = null;
 			mcserver.getConfigurationManager().sendPacketToAllPlayers(MPacketProfilingState.createPacket(false));
-			LoggerUtils.info("Baseline Profiling for Instability completed.");
 		}
 	}
 
@@ -188,7 +188,7 @@ public class InstabilityDataCalculator {
 				try {
 					((NetHandlerPlayServer) event.handler).kickPlayerFromServer(denymessage);
 					GameProfile gameprofile = ((NetHandlerPlayServer) event.handler).playerEntity.getGameProfile();
-					LoggerUtils.info("Disconnecting " + getPlayernameFromProfile(event.manager, gameprofile) + ": " + denymessage);
+					LoggerUtils.info("Disconnecting " + getIDString(event.manager, gameprofile) + ": " + denymessage);
 				} catch (Exception exception) {
 					LoggerUtils.error("Error whilst disconnecting player", exception);
 				}
@@ -199,7 +199,7 @@ public class InstabilityDataCalculator {
 	}
 
 	//XXX: Move to some Utils
-	public String getPlayernameFromProfile(NetworkManager networkmanager, GameProfile gameprofile) {
+	public String getIDString(NetworkManager networkmanager, GameProfile gameprofile) {
 		return gameprofile != null ? gameprofile.toString() + " (" + networkmanager.getSocketAddress().toString() + ")" : String.valueOf(networkmanager.getSocketAddress());
 	}
 
