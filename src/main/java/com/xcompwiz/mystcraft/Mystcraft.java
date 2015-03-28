@@ -206,7 +206,8 @@ public class Mystcraft {
 		ModItems.loadConfigs(config);
 		ModBlocks.loadConfigs(config);
 		ModRecipes.loadConfigs(config);
-		ModLinkEffects.setConfig(config);
+		ModLinkEffects.setConfigs(config);
+		InstabilityDataCalculator.loadConfigs(config);
 
 		ent_link_id = config.get(MystConfig.CATEGORY_ENTITY, "entity.book.id", 219).getInt();
 		ent_gravblock_id = config.get(MystConfig.CATEGORY_ENTITY, "entity.falling.id", 218).getInt();

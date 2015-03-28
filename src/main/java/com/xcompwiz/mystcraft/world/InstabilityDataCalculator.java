@@ -4,14 +4,19 @@ import java.io.File;
 import java.util.HashMap;
 
 import net.minecraft.command.ICommandSender;
+import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.world.WorldEvent;
 
+import com.mojang.authlib.GameProfile;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAllow;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
+import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
 import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
@@ -32,15 +37,25 @@ import cpw.mods.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEve
 
 public class InstabilityDataCalculator {
 
-	private static final String		StorageID	= "myst_baseline";
+	private static final String		StorageID			= "myst_baseline";
+
+	private static boolean			disconnectclients	= false;
 
 	private MinecraftServer			mcserver;
 	private MapStorage				storage;
 
-	private int						minimumchunks;					//TODO: Make this configurable
-	private float					tolerance	= 1.05F;			//TODO: Make this configurable
+	private int						minimumchunks;							//TODO: Make this configurable
+	private float					tolerance			= 1.05F;			//TODO: Make this configurable
 
 	private HashMap<String, Number>	freevals;
+
+	private Integer					providerId			= null;
+	private Integer					dimId				= null;
+	private World					world;
+
+	public static void loadConfigs(Configuration config) {
+		disconnectclients = config.get(MystConfig.CATEGORY_GENERAL, "options.profiling.baseline.disconnectclients", disconnectclients, "If set to true this will prevent clients from connecting while baseline profiling is ongoing (Only works on dedicated servers)").getBoolean(disconnectclients);
+	}
 
 	public static DebugNode getDebugNode() {
 		DebugNode current = DebugHierarchy.root;
@@ -54,7 +69,6 @@ public class InstabilityDataCalculator {
 		this.storage = mcserver.worldServerForDimension(0).mapStorage;
 		this.minimumchunks = ModifierBiome.selectables.size() * 20;
 		final ChunkProfiler profiler = getChunkProfiler();
-		this.chunkX = profiler.getCount() - 1; //TODO: Tie this to the needed chunk radius
 
 		DebugNode node = getDebugNode();
 		//@formatter:off
@@ -128,13 +142,6 @@ public class InstabilityDataCalculator {
 		return chunkprofiler;
 	}
 
-	int				chunkX		= 0;
-	int				chunkZ		= 0;
-
-	private Integer	providerId	= null;
-	private Integer	dimId		= null;
-	private World	world;
-
 	private void cleanup() {
 		if (world != null) {
 			DimensionManager.unloadWorld(world.provider.dimensionId);
@@ -175,7 +182,25 @@ public class InstabilityDataCalculator {
 
 	@SubscribeEvent
 	public void connectionOpened(ServerConnectionFromClientEvent event) {
-		if (mcserver != null) event.manager.scheduleOutboundPacket(MPacketProfilingState.createPacket(true));
+		if (mcserver != null) {
+			if (disconnectclients && mcserver.isDedicatedServer()) {
+				String denymessage = "Mystcraft still needs to finish profiling. Please try again later.";
+				try {
+					((NetHandlerPlayServer) event.handler).kickPlayerFromServer(denymessage);
+					GameProfile gameprofile = ((NetHandlerPlayServer) event.handler).playerEntity.getGameProfile();
+					LoggerUtils.info("Disconnecting " + getPlayernameFromProfile(event.manager, gameprofile) + ": " + denymessage);
+				} catch (Exception exception) {
+					LoggerUtils.error("Error whilst disconnecting player", exception);
+				}
+			} else {
+				event.manager.scheduleOutboundPacket(MPacketProfilingState.createPacket(true));
+			}
+		}
+	}
+
+	//XXX: Move to some Utils
+	public String getPlayernameFromProfile(NetworkManager networkmanager, GameProfile gameprofile) {
+		return gameprofile != null ? gameprofile.toString() + " (" + networkmanager.getSocketAddress().toString() + ")" : String.valueOf(networkmanager.getSocketAddress());
 	}
 
 	@SubscribeEvent
@@ -195,7 +220,8 @@ public class InstabilityDataCalculator {
 		if (world == null) {
 			LoggerUtils.info("Baseline Profiling for Instability started. Expect some lag.");
 			WorldProviderMystDummy.setChunkProfiler(profiler);
-			WorldProviderMystDummy.setBounds(-2, minimumchunks+2, -1, 2);
+			WorldProviderMystDummy.setBounds(profiler.getCount() - 1, //TODO: Tie this to the needed chunk radius
+					minimumchunks + 2, -1, 2);
 			//First we need to create a provider specifically for this purpose.  We don't care at all for the id we get, so try something silly and then go from there.
 			providerId = Integer.MIN_VALUE;
 			while (true) {

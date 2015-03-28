@@ -12,7 +12,7 @@ public class ModLinkEffects {
 		return val;
 	}
 
-	public static void setConfig(MystConfig c) {
+	public static void setConfigs(MystConfig c) {
 		config = c;
 	}
 
