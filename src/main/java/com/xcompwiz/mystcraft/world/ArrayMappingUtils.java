@@ -34,7 +34,7 @@ public class ArrayMappingUtils {
 					int lcoords = y << 8 | z << 4 | x;
 					int vcoords = ((x << 4 | z) * maxy) | y;
 					if (y < 6 && Blocks.bedrock == Array.get(arr1, vcoords)) continue; //Filter out biome added bedrock layers
-					arr2[vcoords] = arr1[lcoords];
+					arr2[lcoords] = arr1[vcoords];
 				}
 			}
 		}
@@ -67,7 +67,7 @@ public class ArrayMappingUtils {
 					int lcoords = y << 8 | z << 4 | x;
 					int vcoords = ((x << 4 | z) * maxy) | y;
 					if (y < 6 && Blocks.bedrock == Array.get(arr1, vcoords)) continue; //Filter out biome added bedrock layers
-					arr2[vcoords] = arr1[lcoords];
+					arr2[lcoords] = arr1[vcoords];
 				}
 			}
 		}
