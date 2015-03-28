@@ -364,9 +364,12 @@ public class Mystcraft {
 
 	@EventHandler
 	public void serverStop(FMLServerStoppedEvent event) {
-		instabilitycalculator.shutdown();
-		MinecraftForge.EVENT_BUS.unregister(instabilitycalculator);
-		FMLCommonHandler.instance().bus().unregister(instabilitycalculator);
+		if (instabilitycalculator != null) {
+			instabilitycalculator.shutdown();
+			MinecraftForge.EVENT_BUS.unregister(instabilitycalculator);
+			FMLCommonHandler.instance().bus().unregister(instabilitycalculator);
+			instabilitycalculator = null;
+		}
 		unregisterDimensions();
 		Mystcraft.clientStorage = null;
 	}
