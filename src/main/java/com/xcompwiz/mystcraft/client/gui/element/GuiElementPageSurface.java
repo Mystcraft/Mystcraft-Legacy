@@ -133,7 +133,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		// Render pages
 		GuiUtils.drawGradientRect(guiLeft, guiTop, guiLeft + xSize - 20, guiTop + ySize, 0x000000, 0x000000, this.getZLevel());
 		//GL11.glDisable(GL11.GL_DEPTH_TEST);
-		GL11.glDepthFunc(GL11.GL_GREATER);
+		GL11.glDepthFunc(GL11.GL_GEQUAL);
 		this.setZLevel(1.0F);
 		GL11.glPushMatrix();
 		int currentScroll = -scrollbar.getCurrentPos();
@@ -166,9 +166,9 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 					}
 				}
 				if (positionable.count > 0) {
-					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), page, pagexSize, pageySize, x + pageX, y + pageY, false);
+					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), page, pagexSize, pageySize, x + pageX, y + pageY);
 				} else {
-					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), null, pagexSize, pageySize, x + pageX, y + pageY, false);
+					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), null, pagexSize, pageySize, x + pageX, y + pageY);
 				}
 				if (positionable.count > 1) {
 					GuiUtils.drawScaledText("" + positionable.count, (int) (x + pageX), (int) (y + pageY + pageHeight - 7), 20, 10, 0xFFFFFF);

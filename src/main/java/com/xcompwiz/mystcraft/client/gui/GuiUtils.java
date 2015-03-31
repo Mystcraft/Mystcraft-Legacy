@@ -28,6 +28,7 @@ import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.data.Assets.Vanilla;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.page.Page;
+import com.xcompwiz.mystcraft.seasonal.SeasonalManager;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 
@@ -46,37 +47,30 @@ public final class GuiUtils {
 		return null;
 	}
 
+	//XXX: Probably need to move the symbol drawing code elsewhere
 	@SideOnly(Side.CLIENT)
 	public static void drawPage(TextureManager renderEngine, float zLevel, ItemStack page, float xSize, float ySize, float x, float y) {
-		drawPage(renderEngine, zLevel, page, xSize, ySize, x, y, true);
-	}
-
-	@SideOnly(Side.CLIENT)
-	public static void drawPage(TextureManager renderEngine, float zLevel, ItemStack page, float xSize, float ySize, float x, float y, boolean pageFirst) {
-		if (pageFirst) {
-			GL11.glDisable(GL11.GL_BLEND);
-			renderEngine.bindTexture(GUIs.book_page_left);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			if (page == null) GL11.glColor4f(0.2F, 0.2F, 0.2F, 0.2F);
-			drawTexturedModalRect(x, y, 156, 0, 30, 40, zLevel, xSize, ySize);
-		}
+		drawPageBackground(renderEngine, zLevel, page, xSize, ySize, x, y);
 		if (Page.getSymbol(page) != null) {
 			IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
 			GuiUtils.drawSymbol(renderEngine, zLevel, symbol, xSize - 1, x + 0.5F, y + (ySize + 1 - xSize) / 2);
 		} else if (Page.isLinkPanel(page)) {
 			drawGradientRect(x + xSize * 0.15F, y + ySize * 0.15F, x + xSize * 0.85F, y + ySize * 0.5F, 0xFF000000, 0xFF000000, zLevel);
 		}
-		if (!pageFirst) {
-			GL11.glDisable(GL11.GL_BLEND);
-			renderEngine.bindTexture(GUIs.book_page_left);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			if (page == null) GL11.glColor4f(0.2F, 0.2F, 0.2F, 0.2F);
-			drawTexturedModalRect(x, y, 156, 0, 30, 40, zLevel, xSize, ySize);
-		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	private static void drawPageBackground(TextureManager renderEngine, float zLevel, ItemStack page, float xSize, float ySize, float x, float y) {
+		GL11.glDisable(GL11.GL_BLEND);
+		renderEngine.bindTexture(GUIs.book_page_left);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		if (page == null) GL11.glColor4f(0.2F, 0.2F, 0.2F, 0.2F);
+		drawTexturedModalRect(x, y, 156, 0, 30, 40, zLevel, xSize, ySize);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void drawSymbol(TextureManager renderEngine, float zLevel, IAgeSymbol symbol, float scale, float x, float y) {
+		if (SeasonalManager.drawSymbol(renderEngine, zLevel, symbol, scale, x, y)) return;
 		GL11.glEnable(GL11.GL_ALPHA_TEST);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

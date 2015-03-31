@@ -26,9 +26,14 @@ public class DrawableWordManager {
 		if (word == null) {
 			word = new DrawableWord();
 			Random rand = new Random(string.hashCode());
+			int maxcompindex = 20;
 			int count = rand.nextInt(10) + 3;
+			if (string.startsWith("easter")) { //TODO: This is a silly hack
+				count = 4;
+				maxcompindex = 8;
+			}
 			for (int i = 0; i < count; ++i) {
-				word.components().add(rand.nextInt(20) + 4);
+				word.components().add(rand.nextInt(maxcompindex) + 4);
 			}
 			words.put(string, word);
 		}

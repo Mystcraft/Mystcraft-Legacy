@@ -165,7 +165,7 @@ public class GuiElementScrollablePages extends GuiElement {
 			float pageySize = elementHeight;
 			for (int i = firstElement; i < pageList.size(); ++i) {
 				ItemStack page = pageList.get(i);
-				GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), page, pagexSize, pageySize, x, y, true);
+				GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), page, pagexSize, pageySize, x, y);
 				if (GuiUtils.contains(mouseX, mouseY, (int) x, (int) y, (int) pagexSize, (int) pageySize)) {
 					hoverpage = i;
 					Page.getTooltip(page, hovertext);
