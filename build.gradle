@@ -149,6 +149,19 @@ task("updateChangelog") {
 	}
 }
 
+task("markChangelog") {
+	inputs.file project.releaseChangelog
+	outputs.file project.releaseChangelog
+
+	doLast {
+		def release = project.releaseChangelog
+		release.text = "[RELEASE]\n${release.text}"
+	}
+	mustRunAfter updateChangelog
+}
+
+project.tasks.curse.dependsOn "markChangelog"
+
 task "deploy" // creates it for later
 
 def deployments = [
