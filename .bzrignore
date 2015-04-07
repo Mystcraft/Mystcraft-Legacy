@@ -10,6 +10,7 @@ __*
 ./bin
 ./build
 ./gradle
+./media
 ./run
 
 ./.classpath
