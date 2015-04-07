@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.symbol.modifiers;
 import java.util.ArrayList;
 import java.util.Random;
 
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.biome.BiomeGenBase;
 
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
@@ -18,16 +19,18 @@ public class ModifierBiome extends SymbolBase {
 
 	public ModifierBiome(BiomeGenBase biome) {
 		this.biome = biome;
-		this.displayName = formatted();
-		if (!this.displayName.endsWith("Biome")) this.displayName += " Biome";
+		this.displayName = formatted(biome);
 		this.setWords(new String[] { WordData.Nature, WordData.Nurture, WordData.Encourage, biome.biomeName + biome.biomeID });
 	}
 
-	private String formatted() {
+	//TODO: Make into a helper somewhere
+	private static String formatted(BiomeGenBase biome) {
 		String regex = "([A-Z][a-z]+)";
 		String replacement = "$1 ";
-
-		return biome.biomeName.replaceAll(regex, replacement).replaceAll("([A-Z][a-z]+)  ", replacement).trim();
+		String name = biome.biomeName.replaceAll(regex, replacement).replaceAll("([A-Z][a-z]+)  ", replacement).trim();
+		if (name.endsWith("Biome")) name = name.substring(0, name.length() - "Biome".length()).trim();
+		name = StatCollector.translateToLocalFormatted("myst.symbol.biome.wrapper", name);
+		return name;
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import java.util.List;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.xcompwiz.mystcraft.api.grammar.GrammarData;
 import com.xcompwiz.mystcraft.data.ModItems;
@@ -59,24 +60,28 @@ public class CreativeTabMyst extends CreativeTabs {
 		if (collections) {
 			//TODO: Use folders builder system
 			ArrayList<ItemStack> creative_collections = new ArrayList<ItemStack>();
-			creative_collections.add(ModPageCollections.createCreativeCollection());
-			creative_collections.add(ModPageCollections.buildPageCollection("Biome Distributions", GrammarData.BIOMECONTROLLER));
-			creative_collections.add(ModPageCollections.buildPageCollection("Celestials", GrammarData.SUN, GrammarData.MOON, GrammarData.STARFIELD, GrammarData.DOODAD));
-			creative_collections.add(ModPageCollections.buildPageCollection("Effects", GrammarData.EFFECT));
-			creative_collections.add(ModPageCollections.buildPageCollection("Lighting", GrammarData.LIGHTING));
-			creative_collections.add(ModPageCollections.buildPageCollection("Modifiers, Basic", GrammarData.ANGLE_BASIC, GrammarData.PERIOD_BASIC, GrammarData.PHASE_BASIC));
-			creative_collections.add(ModPageCollections.buildPageCollection("Modifiers, Biomes", GrammarData.BIOME));
-			creative_collections.add(ModPageCollections.buildPageCollection("Modifiers, Block", GrammarData.BLOCK_ANY, GrammarData.BLOCK_TERRAIN, GrammarData.BLOCK_SOLID, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_ORGANIC, GrammarData.BLOCK_CRYSTAL, GrammarData.BLOCK_SEA, GrammarData.BLOCK_FLUID, GrammarData.BLOCK_GAS));
-			creative_collections.add(ModPageCollections.buildPageCollection("Modifiers, Colors", GrammarData.COLOR_BASIC, GrammarData.COLOR_SEQ, GrammarData.GRADIENT_BASIC, GrammarData.GRADIENT_SEQ, GrammarData.SUNSET));
-			creative_collections.add(ModPageCollections.buildPageCollection("Populators", GrammarData.POPULATOR));
-			creative_collections.add(ModPageCollections.buildPageCollection("Terrain Alterations", GrammarData.TERRAINALT));
-			creative_collections.add(ModPageCollections.buildPageCollection("World Landscapes", GrammarData.TERRAIN));
-			creative_collections.add(ModPageCollections.buildPageCollection("Visuals", GrammarData.VISUAL_EFFECT));
-			creative_collections.add(ModPageCollections.buildPageCollection("Weather", GrammarData.WEATHER));
+			creative_collections.add(ModPageCollections.createCreativeCollection(getCollectionName("myst.creative.notebook.all")));
+			creative_collections.add(ModPageCollections.buildPageCollection(getCollectionName("myst.creative.notebook.biomedist"), GrammarData.BIOMECONTROLLER));
+			creative_collections.add(ModPageCollections.buildPageCollection(getCollectionName("myst.creative.notebook.celestials"), GrammarData.SUN, GrammarData.MOON, GrammarData.STARFIELD, GrammarData.DOODAD));
+			creative_collections.add(ModPageCollections.buildPageCollection(getCollectionName("myst.creative.notebook.effects"), GrammarData.EFFECT));
+			creative_collections.add(ModPageCollections.buildPageCollection(getCollectionName("myst.creative.notebook.lighting"), GrammarData.LIGHTING));
+			creative_collections.add(ModPageCollections.buildPageCollection(getCollectionName("myst.creative.notebook.modbasic"), GrammarData.ANGLE_BASIC, GrammarData.PERIOD_BASIC, GrammarData.PHASE_BASIC));
+			creative_collections.add(ModPageCollections.buildPageCollection(getCollectionName("myst.creative.notebook.modbiome"), GrammarData.BIOME));
+			creative_collections.add(ModPageCollections.buildPageCollection(getCollectionName("myst.creative.notebook.modblock"), GrammarData.BLOCK_ANY, GrammarData.BLOCK_TERRAIN, GrammarData.BLOCK_SOLID, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_ORGANIC, GrammarData.BLOCK_CRYSTAL, GrammarData.BLOCK_SEA, GrammarData.BLOCK_FLUID, GrammarData.BLOCK_GAS));
+			creative_collections.add(ModPageCollections.buildPageCollection(getCollectionName("myst.creative.notebook.modcolor"), GrammarData.COLOR_BASIC, GrammarData.COLOR_SEQ, GrammarData.GRADIENT_BASIC, GrammarData.GRADIENT_SEQ, GrammarData.SUNSET));
+			creative_collections.add(ModPageCollections.buildPageCollection(getCollectionName("myst.creative.notebook.populators"), GrammarData.POPULATOR));
+			creative_collections.add(ModPageCollections.buildPageCollection(getCollectionName("myst.creative.notebook.terrainalts"), GrammarData.TERRAINALT));
+			creative_collections.add(ModPageCollections.buildPageCollection(getCollectionName("myst.creative.notebook.terrain"), GrammarData.TERRAIN));
+			creative_collections.add(ModPageCollections.buildPageCollection(getCollectionName("myst.creative.notebook.visuals"), GrammarData.VISUAL_EFFECT));
+			creative_collections.add(ModPageCollections.buildPageCollection(getCollectionName("myst.creative.notebook.weather"), GrammarData.WEATHER));
 			for (ItemStack collection : creative_collections) {
 				list.add(collection);
 			}
 		}
+	}
+
+	private String getCollectionName(String name) {
+		return StatCollector.translateToLocalFormatted("myst.creative.notebook.wrapper", StatCollector.translateToLocal(name));
 	}
 
 	public void registerItemStack(ItemStack itemstack) {

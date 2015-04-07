@@ -15,10 +15,10 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 public class ModPageCollections {
 
-	public static ItemStack createCreativeCollection() {
+	public static ItemStack createCreativeCollection(String name) {
 		ItemStack collection = new ItemStack(ModItems.portfolio, 1, 0);
 		IItemPageCollection item = (IItemPageCollection) collection.getItem();
-		item.setDisplayName(null, collection, "Creative (All Symbols)");
+		item.setDisplayName(null, collection, name);
 		ArrayList<IAgeSymbol> symbols = new ArrayList<IAgeSymbol>();
 		symbols.addAll(SymbolManager.getAgeSymbols());
 		Collections.sort(symbols, ComparatorSymbolAlphabetical.instance);
@@ -33,7 +33,7 @@ public class ModPageCollections {
 	}
 
 	public static ItemStack buildPageCollection(String name, String... args) {
-		return InternalAPI.itemFact.buildCollectionItem("Spawned (" + name + ")", args);
+		return InternalAPI.itemFact.buildCollectionItem(name, args);
 	}
 
 	public static void addSymbolPages(CreativeTabMyst pageTab) {
