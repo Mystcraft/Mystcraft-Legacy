@@ -53,6 +53,26 @@ abstract class ComponentScatteredFeatureMyst extends StructureComponent {
 		this.field_74936_d = par1NBTTagCompound.getInteger("HPos");
 	}
 
+	/**
+	 * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the levels in the BB's horizontal rectangle).
+	 */
+	protected int getAverageGroundLevel(World worldObj, StructureBoundingBox boundingbox) {
+		int i = 0;
+		int j = 0;
+
+		for (int k = this.boundingBox.minZ; k <= this.boundingBox.maxZ; ++k) {
+			for (int l = this.boundingBox.minX; l <= this.boundingBox.maxX; ++l) {
+				if (boundingbox.isVecInside(l, 64, k)) {
+					i += Math.max(worldObj.getTopSolidOrLiquidBlock(l, k), worldObj.provider.getAverageGroundLevel());
+					++j;
+				}
+			}
+		}
+
+		if (j == 0) { return -1; }
+		return i / j;
+	}
+
 	protected boolean shouldBuildHere(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3) {
 		if (this.field_74936_d >= 0) return true;
 		int var4 = 0;

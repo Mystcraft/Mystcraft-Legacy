@@ -20,10 +20,7 @@ import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 
 public class ComponentVillageArchivistHouse extends StructureVillagePieces.Village {
-	private int						averageGroundLevel	= -1;										// Used to shift the
-																									// location of the
-																									// bounding box on
-																									// gen
+	private int						averageGroundLevel	= -1;										// Used to shift the location of the bounding box on gen
 
 	private boolean[]				lecternGenned		= new boolean[2];
 	private static final int[][]	lecternCoords		= new int[][] { { 1, 2, 1 }, { 1, 2, 2 } };
@@ -50,6 +47,7 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
 		for (int i = 0; i < lecternGenned.length; ++i) {
 			nbttagcompound.setBoolean("hasPlacedLectern" + i, this.lecternGenned[i]);
 		}
+		nbttagcompound.setInteger("YPos", this.averageGroundLevel);
 	}
 
 	@Override
@@ -60,6 +58,7 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
 			if (!nbttagcompound.hasKey("hasPlacedLectern" + i)) continue;
 			lecternGenned[i] = nbttagcompound.getBoolean("hasPlacedLectern" + i);
 		}
+        this.averageGroundLevel = nbttagcompound.getInteger("YPos");
 	}
 
 	/**

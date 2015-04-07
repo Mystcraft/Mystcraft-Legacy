@@ -12,11 +12,13 @@ import net.minecraftforge.common.ChestGenHooks;
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.data.ModBlocks;
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 
 public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFeatureMyst {
+	private int						averageGroundLevel	= -1; //Used to track the library generation height
 	private boolean					hasMadeChest;
 
 	private boolean[]				lecternGenned	= new boolean[5];
@@ -37,6 +39,7 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 		for (int i = 0; i < lecternGenned.length; ++i) {
 			nbttagcompound.setBoolean("hasPlacedLectern" + i, this.lecternGenned[i]);
 		}
+		nbttagcompound.setInteger("YPos", this.averageGroundLevel);
 	}
 
 	@Override
@@ -48,6 +51,7 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 			if (!nbttagcompound.hasKey("hasPlacedLectern" + i)) continue;
 			lecternGenned[i] = nbttagcompound.getBoolean("hasPlacedLectern" + i);
 		}
+        this.averageGroundLevel = nbttagcompound.getInteger("YPos");
 	}
 
 	/**
@@ -55,8 +59,12 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 	 */
 	@Override
 	public boolean addComponentParts(World worldObj, Random rand, StructureBoundingBox boundingbox) {
-		//if (!this.shouldBuildHere(worldObj, boundingbox, 0)) return false;
-		//LoggerUtils.info("Generating Library at %d %d %d", boundingbox.minX, boundingbox.minY, boundingbox.minZ);
+		if (this.averageGroundLevel < 0) {
+			this.averageGroundLevel = this.getAverageGroundLevel(worldObj, boundingbox);
+			if (this.averageGroundLevel < 0) { return false; }
+			this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 10, 0);
+		}
+		LoggerUtils.info("Generating Library at %d %d %d", this.boundingBox.minX, this.boundingBox.maxY, this.boundingBox.minZ);
 
 		// 0 - Towards front
 		// 1 - Towards back
