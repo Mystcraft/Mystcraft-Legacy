@@ -69,7 +69,9 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 */
 	@Override
 	public int getSpawnX() {
-		return this.provider.agedata.getSpawn().posX;
+		ChunkCoordinates spawn = this.provider.agedata.getSpawn();
+		if (spawn == null) return 0;
+		return spawn.posX;
 	}
 
 	/**
@@ -77,7 +79,9 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 */
 	@Override
 	public int getSpawnY() {
-		return this.provider.agedata.getSpawn().posY;
+		ChunkCoordinates spawn = this.provider.agedata.getSpawn();
+		if (spawn == null) return 64;
+		return spawn.posY;
 	}
 
 	/**
@@ -85,7 +89,9 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 */
 	@Override
 	public int getSpawnZ() {
-		return this.provider.agedata.getSpawn().posZ;
+		ChunkCoordinates spawn = this.provider.agedata.getSpawn();
+		if (spawn == null) return 0;
+		return spawn.posZ;
 	}
 
 	/**
