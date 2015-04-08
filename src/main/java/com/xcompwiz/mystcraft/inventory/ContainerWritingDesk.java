@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
+import com.xcompwiz.mystcraft.inventory.PageCollectionPageReceiver.IItemProvider;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.item.LinkItemUtils;
@@ -26,7 +27,7 @@ import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
-public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHandler, IBookContainer {
+public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHandler, IBookContainer, IItemProvider {
 	public static class Messages {
 		public static final String	LinkPermitted				= "LinkPermitted";
 		public static final String	SetCurrentPage				= "SetCurrentPage";
@@ -108,16 +109,25 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		maininv = new SlotCollection(this, tabslots + 4, tabslots + 4 + 27);
 		hotbar = new SlotCollection(this, tabslots + 4 + 27, tabslots + 4 + 27 + 9);
 
+		ITargetInventory pagecollectionreceiver = new PageCollectionPageReceiver(this, player);
+
 		internal.pushTargetFront(maininv);
 		internal.pushTargetFront(hotbar);
 		maininv.pushTargetFront(hotbar);
 		maininv.pushTargetFront(internal);
+		maininv.pushTargetFront(pagecollectionreceiver);
 		hotbar.pushTargetFront(maininv);
 		hotbar.pushTargetFront(internal);
+		hotbar.pushTargetFront(pagecollectionreceiver);
 
 		collections.add(internal);
 		collections.add(maininv);
 		collections.add(hotbar);
+	}
+
+	@Override
+	public ItemStack getPageCollection() {
+		return this.getTabSlot(this.activeslot);
 	}
 
 	private void updateSurfaceTabSlots() {

@@ -134,6 +134,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		GuiUtils.drawGradientRect(guiLeft, guiTop, guiLeft + xSize - 20, guiTop + ySize, 0x000000, 0x000000, this.getZLevel());
 		//GL11.glDisable(GL11.GL_DEPTH_TEST);
 		GL11.glDepthFunc(GL11.GL_GEQUAL);
+		GuiUtils.startGlScissor(guiLeft, guiTop, xSize, ySize - 1);
 		this.setZLevel(1.0F);
 		GL11.glPushMatrix();
 		int currentScroll = -scrollbar.getCurrentPos();
@@ -189,6 +190,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		GL11.glPopMatrix();
 		GL11.glDepthFunc(GL11.GL_LEQUAL);
 		this.setZLevel(2.0F);
+		GuiUtils.endGlScissor();
 	}
 
 	private List<PositionableItem> getPages() {

@@ -9,9 +9,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
 import com.xcompwiz.mystcraft.api.item.IItemRenameable;
+import com.xcompwiz.mystcraft.inventory.PageCollectionPageReceiver.IItemProvider;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 
-public class ContainerFolder extends ContainerBase implements IGuiMessageHandler {
+public class ContainerFolder extends ContainerBase implements IGuiMessageHandler, IItemProvider {
 	public static class Messages {
 
 		public static final String	AddToSurface				= "AddToSurface";
@@ -44,11 +45,20 @@ public class ContainerFolder extends ContainerBase implements IGuiMessageHandler
 		maininv = new SlotCollection(this, 0, 27);
 		hotbar = new SlotCollection(this, 27, 27 + 9);
 
+		ITargetInventory pagecollectionreceiver = new PageCollectionPageReceiver(this, playerinv.player);
+
 		maininv.pushTargetFront(hotbar);
+		maininv.pushTargetFront(pagecollectionreceiver);
 		hotbar.pushTargetFront(maininv);
+		hotbar.pushTargetFront(pagecollectionreceiver);
 
 		collections.add(maininv);
 		collections.add(hotbar);
+	}
+
+	@Override
+	public ItemStack getPageCollection() {
+		return getInventoryItem();
 	}
 
 	@Override
