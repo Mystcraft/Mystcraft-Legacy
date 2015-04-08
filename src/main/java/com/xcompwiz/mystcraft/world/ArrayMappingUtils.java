@@ -1,7 +1,5 @@
 package com.xcompwiz.mystcraft.world;
 
-import java.lang.reflect.Array;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
@@ -33,7 +31,7 @@ public class ArrayMappingUtils {
 				for (int y = 0; y < maxy; ++y) {
 					int lcoords = y << 8 | z << 4 | x;
 					int vcoords = ((x << 4 | z) * maxy) | y;
-					if (y < 6 && Blocks.bedrock == Array.get(arr1, vcoords)) continue; //Filter out biome added bedrock layers
+					if (y < 6 && Blocks.bedrock == arr1[vcoords]) continue; //Filter out biome added bedrock layers
 					arr2[lcoords] = arr1[vcoords];
 				}
 			}
@@ -66,7 +64,6 @@ public class ArrayMappingUtils {
 				for (int y = 0; y < maxy; ++y) {
 					int lcoords = y << 8 | z << 4 | x;
 					int vcoords = ((x << 4 | z) * maxy) | y;
-					if (y < 6 && Blocks.bedrock == Array.get(arr1, vcoords)) continue; //Filter out biome added bedrock layers
 					arr2[lcoords] = arr1[vcoords];
 				}
 			}
