@@ -12,7 +12,6 @@ import net.minecraftforge.common.ChestGenHooks;
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.data.ModBlocks;
-import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
@@ -64,7 +63,6 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 			if (this.averageGroundLevel < 0) { return false; }
 			this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 10, 0);
 		}
-		LoggerUtils.info("Generating Library at %d %d %d", this.boundingBox.minX, this.boundingBox.maxY, this.boundingBox.minZ);
 
 		// 0 - Towards front
 		// 1 - Towards back
