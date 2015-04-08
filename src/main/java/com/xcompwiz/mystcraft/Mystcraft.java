@@ -95,6 +95,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
@@ -250,6 +251,7 @@ public class Mystcraft {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
+		FMLInterModComms.sendMessage("LookingGlass", "api1", "com.xcompwiz.mystcraft.integration.lookingglass.LookingGlassAPIReceiver.register1");
 		// Init Recipes
 		ModRecipes.addRecipes(CraftingManager.getInstance());
 
