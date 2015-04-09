@@ -172,6 +172,15 @@ def deployments = [
 	'FC2'   : "F:/Seafile/incoming/ForgeCraft2/mods",
 ]
 
+def APIDeploys = [
+	'dev': {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
+]
+
+def changelogDeploys = [
+	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds"},
+	'patron': {"C:/Users/Zach/Google Drive/Mystcraft Patreon Builds"},
+]
+
 deployments.each { name, dir ->
 	def deployer = task("deploy-${name}", type: Copy) {
 		//from project.configurations.archives  // jars, API jars, whatever
@@ -193,10 +202,6 @@ deployments.each { name, dir ->
 	deployer.dependsOn deleter
 }
 
-def APIDeploys = [
-	'dev': {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
-]
-
 APIDeploys.each { name, dir ->
 	def deployer = task("deploy-api-${name}", type: Copy) {
 		from {project.tasks.apiJar.getArchivePath()} // the API
@@ -207,11 +212,6 @@ APIDeploys.each { name, dir ->
 
 	project.tasks.deploy.dependsOn deployer
 }
-
-def changelogDeploys = [
-	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds"},
-	'patron': {"C:/Users/Zach/Google Drive/Mystcraft Patreon Builds"},
-]
 
 changelogDeploys.each { name, dir ->
 	def deployer = task("deploy-changelog-${name}", type: Copy) {
