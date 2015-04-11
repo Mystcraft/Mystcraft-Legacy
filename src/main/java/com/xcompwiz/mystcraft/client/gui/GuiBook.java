@@ -18,7 +18,7 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityBookDisplay;
 public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 
 	private ContainerBook	container;
-	private boolean			widget;
+	private boolean			widget = true;
 	private GuiElementBook	bookelem;
 
 	private GuiBook(ContainerBook container) {
@@ -64,16 +64,20 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 	}
 
 	private void recalcPosition() {
+		if (bookelem.isVisible() == widget) return;
+		widget = bookelem.isVisible();
 		xSize = 176;
 		ySize = 166;
-		widget = false;
-		if (bookelem.isVisible()) { //XXX: Clean this up?
+		if (widget) { //XXX: Clean this up?
 			xSize = bookelem.getWidth();
 			ySize = bookelem.getHeight();
-			widget = true;
 		}
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
+		bookelem.getParent().setLeft(this.guiLeft);
+		bookelem.getParent().setTop(this.guiTop);
+		bookelem.getParent().setWidth(this.xSize);
+		bookelem.getParent().setHeight(this.ySize);
 	}
 
 	@Override
