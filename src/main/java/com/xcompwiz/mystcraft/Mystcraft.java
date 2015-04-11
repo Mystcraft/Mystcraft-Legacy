@@ -251,7 +251,7 @@ public class Mystcraft {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		FMLInterModComms.sendMessage("LookingGlass", "api1", "com.xcompwiz.mystcraft.integration.lookingglass.LookingGlassAPIReceiver.register1");
+		FMLInterModComms.sendMessage("LookingGlass", "api", "1:com.xcompwiz.mystcraft.integration.lookingglass.LookingGlassAPIReceiver.register1");
 		// Init Recipes
 		ModRecipes.addRecipes(CraftingManager.getInstance());
 

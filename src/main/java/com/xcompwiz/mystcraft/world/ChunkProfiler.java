@@ -147,6 +147,8 @@ public class ChunkProfiler extends WorldSavedData {
 		} catch (InterruptedException e) {
 			throw new RuntimeException("Failed to aquire semaphore to profile chunk (interrupted)!");
 		}
+		int chunkX = chunk.xPosition << 4;
+		int chunkZ = chunk.zPosition << 4;
 		ExtendedBlockStorage[] storageArrays = chunk.getBlockStorageArray();
 		int[] solidmap = soliddata.data;
 		int layers = solidmap.length / 256;
@@ -169,11 +171,11 @@ public class ChunkProfiler extends WorldSavedData {
 						}
 					}
 					//Checks if isPassable
-					if (block.getBlocksMovement(chunk.worldObj, (chunk.xPosition << 4) + x, y, (chunk.zPosition << 4) + z)) {
+					if (block.getBlocksMovement(chunk.worldObj, chunkX + x, y, chunkZ + z)) {
 						accessibility = 1;
 					}
 					//Checks if isAir
-					if (block.isAir(chunk.worldObj, (chunk.xPosition << 4) + x, y, (chunk.zPosition << 4) + z)) {
+					if (block.isAir(chunk.worldObj, chunkX + x, y, chunkZ + z)) {
 						accessibility = 0;
 					}
 					solidmap[coords] += accessibility;

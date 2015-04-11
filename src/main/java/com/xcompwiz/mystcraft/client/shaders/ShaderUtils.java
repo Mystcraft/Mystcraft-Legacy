@@ -88,7 +88,6 @@ public class ShaderUtils {
 			ResourceLocation vlinkingpanel = (new ResourceLocation("mystcraft", "shaders/linkingpanel.vert"));
 
 			try {
-				System.out.println(new java.io.File("").getAbsolutePath());
 				DynamicLinkPanelRenderer.vertexARB = createShader(vlinkingpanel, GL20.GL_VERTEX_SHADER);
 				DynamicLinkPanelRenderer.fragmentARB = createShader(linkingpanel, GL20.GL_FRAGMENT_SHADER);
 			} catch (Exception e) {
