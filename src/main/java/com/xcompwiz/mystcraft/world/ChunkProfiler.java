@@ -26,6 +26,7 @@ import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugValueCallback;
 import com.xcompwiz.mystcraft.debug.DebugUtils;
 import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
 import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
+import com.xcompwiz.mystcraft.world.gen.ChunkProfilerManager;
 
 public class ChunkProfiler extends WorldSavedData {
 	public static final String	ID			= "MystChunkProfile";
@@ -200,6 +201,7 @@ public class ChunkProfiler extends WorldSavedData {
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
+		ChunkProfilerManager.ensureSafeSave();
 		nbt.setTag("solid", solid.writeToNBT(new NBTTagCompound()));
 		if (blockmaps == null) return;
 		for (Map.Entry<String, ChunkProfileData> entry : blockmaps.entrySet()) {
@@ -207,6 +209,7 @@ public class ChunkProfiler extends WorldSavedData {
 			ChunkProfileData map = entry.getValue();
 			nbt.setTag(blockkey, map.writeToNBT(new NBTTagCompound()));
 		}
+		ChunkProfilerManager.releaseSaveSafe();
 	}
 
 	@Override

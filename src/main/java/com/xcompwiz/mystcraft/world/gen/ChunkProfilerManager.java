@@ -24,7 +24,6 @@ public class ChunkProfilerManager extends Thread {
 		}
 
 		public void run() {
-			//TODO: We need to handle the case of a chunk being marked to be profiled, but the age getting closed first.
 			profiler.profile(chunk);
 		}
 
@@ -32,6 +31,7 @@ public class ChunkProfilerManager extends Thread {
 
 	private static List<ChunkProfileTask>	profilingqueue	= new LinkedList<ChunkProfileTask>();
 	private static Semaphore				semaphore		= new Semaphore(1, true);
+	private static boolean					safesaveenabled	= false;
 
 	static {
 		//@formatter:off
@@ -45,7 +45,7 @@ public class ChunkProfilerManager extends Thread {
 		try {
 			semaphore.acquire();
 		} catch (InterruptedException e) {
-			throw new RuntimeException("Failed to aquire semaphore to add to chunk array (interrupted)!");
+			throw new RuntimeException("Failed to acquire semaphore to add to chunk queue (interrupted)!");
 		}
 		profilingqueue.add(new ChunkProfileTask(profiler, chunk));
 		semaphore.release();
@@ -60,7 +60,7 @@ public class ChunkProfilerManager extends Thread {
 			try {
 				semaphore.acquire();
 			} catch (InterruptedException e) {
-				throw new RuntimeException("Failed to acquire semaphore to swap chunk array (interrupted)!");
+				throw new RuntimeException("Failed to acquire semaphore to swap chunk queue (interrupted)!");
 			}
 			ChunkProfileTask task = profilingqueue.remove(0);
 			semaphore.release();
@@ -72,7 +72,7 @@ public class ChunkProfilerManager extends Thread {
 		try {
 			semaphore.acquire();
 		} catch (InterruptedException e) {
-			throw new RuntimeException("Failed to acquire semaphore to add to chunk array (interrupted)!");
+			throw new RuntimeException("Failed to acquire semaphore to clear to chunk queue (interrupted)!");
 		}
 		profilingqueue.clear();
 		semaphore.release();
@@ -91,5 +91,29 @@ public class ChunkProfilerManager extends Thread {
 				}
 			}
 		}
+	}
+
+	//TODO: 1.8 Once dimension (generation?) is threaded, we'll need to handle this on a per-dimension basis.
+	// I _think_ that this method will force all generated chunks to be profiled before a dimension can be shutdown,
+	// so long as saving and gen are on the same thread.
+	public static void ensureSafeSave() {
+		while (true) {
+			try {
+				semaphore.acquire();
+			} catch (InterruptedException e) {
+				throw new RuntimeException("Failed to acquire semaphore to add to chunk array (interrupted)!");
+			}
+			if (profilingqueue.isEmpty()) {
+				safesaveenabled = true;
+				return;
+			}
+			semaphore.release();
+		}
+	}
+
+	public static void releaseSaveSafe() {
+		if (!safesaveenabled) throw new RuntimeException("Attempted to release SafeSave while not in SafeSave.");
+		safesaveenabled = false;
+		semaphore.release();
 	}
 }
