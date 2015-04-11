@@ -26,28 +26,21 @@ public class MystWorldGenerator implements IWorldGenerator {
 		if (spawn != null && spawn.posX >> 4 == chunkX && spawn.posZ >> 4 == chunkZ) generatePlatform(worldObj, spawn.posX, spawn.posY - 1, spawn.posZ, Blocks.cobblestone);
 
 		ChunkProfiler profiler = controller.getChunkProfiler();
-		if (profileCompletedChunks(profiler, chunkX, chunkZ, ichunkprovider)) {
-			controller.updateProfiledInstability();
-		}
+		profileCompletedChunks(profiler, chunkX, chunkZ, ichunkprovider);
 	}
 
-	private boolean profileCompletedChunks(ChunkProfiler profiler, int chunkX, int chunkZ, IChunkProvider ichunkprovider) {
-		boolean flag = false;
+	private void profileCompletedChunks(ChunkProfiler profiler, int chunkX, int chunkZ, IChunkProvider ichunkprovider) {
+		//TODO: Multiple checkoff for profiling chunks (greenlight flag system)
 		//Check nearby chunks if we've completed them without generating any other chunks. 
 		for (int i = chunkX - 1; i <= chunkX + 1; ++i) {
 			for (int k = chunkZ - 1; k <= chunkZ + 1; ++k) {
 				if (!ichunkprovider.chunkExists(i, k)) continue;
 				Chunk chunk = ichunkprovider.loadChunk(i, k);
 				if (checkForCompletion(ichunkprovider, chunk, i, k)) {
-					profiler.profile(chunk, i, k);
-					int count = profiler.getCount();
-					if (count > 400 && count % 100 == 0) {
-						flag = true;
-					}
+					ChunkProfilerManager.addChunk(profiler, chunk);
 				}
 			}
 		}
-		return flag;
 	}
 
 	private boolean checkForCompletion(IChunkProvider ichunkprovider, Chunk chunk, int chunkX, int chunkZ) {

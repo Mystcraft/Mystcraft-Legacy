@@ -108,6 +108,11 @@ public class ChunkProfiler extends WorldSavedData {
 	}
 
 	public HashMap<String, Float> calculateSplitInstability() {
+		try {
+			semaphore.acquire();
+		} catch (InterruptedException e) {
+			throw new RuntimeException("Failed to acquire semaphore to profile chunk (interrupted)!");
+		}
 		int layers = solid.data.length / 256;
 		HashMap<String, Float> split = new HashMap<String, Float>();
 		//For all cells, calculate instability
@@ -132,21 +137,23 @@ public class ChunkProfiler extends WorldSavedData {
 			}
 		}
 		lastsplitcalc = split;
+		semaphore.release();
 		return split;
 	}
 
-	public void profile(Chunk chunk, int chunkX, int chunkZ) {
-		profileChunk(chunk, solid, blockmaps);
-		++count;
-		this.markDirty();
-	}
-
-	private void profileChunk(Chunk chunk, ChunkProfileData soliddata, Map<String, ChunkProfileData> maps) {
+	public void profile(Chunk chunk) {
 		try {
 			semaphore.acquire();
 		} catch (InterruptedException e) {
-			throw new RuntimeException("Failed to aquire semaphore to profile chunk (interrupted)!");
+			throw new RuntimeException("Failed to acquire semaphore to profile chunk (interrupted)!");
 		}
+		profileChunk(chunk, solid, blockmaps);
+		++count;
+		this.markDirty();
+		semaphore.release();
+	}
+
+	private void profileChunk(Chunk chunk, ChunkProfileData soliddata, Map<String, ChunkProfileData> maps) {
 		int chunkX = chunk.xPosition << 4;
 		int chunkZ = chunk.zPosition << 4;
 		ExtendedBlockStorage[] storageArrays = chunk.getBlockStorageArray();
@@ -189,7 +196,6 @@ public class ChunkProfiler extends WorldSavedData {
 				++map.count;
 			}
 		}
-		semaphore.release();
 	}
 
 	@Override
@@ -221,6 +227,11 @@ public class ChunkProfiler extends WorldSavedData {
 	}
 
 	private void outputFiles() {
+		try {
+			semaphore.acquire();
+		} catch (InterruptedException e) {
+			throw new RuntimeException("Failed to acquire semaphore to profile chunk (interrupted)!");
+		}
 		outputDebug(solid.data, solid.count, "logs/profiling/solid2.txt");
 		if (blockmaps != null) {
 			for (Map.Entry<String, ChunkProfileData> entry : blockmaps.entrySet()) {
@@ -229,6 +240,7 @@ public class ChunkProfiler extends WorldSavedData {
 				outputDebug(map.data, map.count, "logs/profiling/" + blockkey + ".txt");
 			}
 		}
+		semaphore.release();
 	}
 
 	private static void outputDebug(int[] solidmap, int chunkcount, String filename) {

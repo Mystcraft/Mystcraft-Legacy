@@ -83,6 +83,7 @@ import com.xcompwiz.mystcraft.villager.VillageCreationHandlerArchivistHouse;
 import com.xcompwiz.mystcraft.villager.VillagerArchivist;
 import com.xcompwiz.mystcraft.world.InstabilityDataCalculator;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
+import com.xcompwiz.mystcraft.world.gen.ChunkProfilerManager;
 import com.xcompwiz.mystcraft.world.gen.MystWorldGenerator;
 import com.xcompwiz.mystcraft.world.gen.structure.ComponentScatteredFeatureSmallLibrary;
 import com.xcompwiz.mystcraft.world.gen.structure.ComponentVillageArchivistHouse;
@@ -141,6 +142,8 @@ public class Mystcraft {
 
 	private InstabilityDataCalculator	instabilitycalculator;
 
+	private ChunkProfilerManager		profilingThread;
+
 	public static int					inkcost				= 50;
 	public static Set<String>			validInks;
 
@@ -152,17 +155,17 @@ public class Mystcraft {
 		InternalAPI.initAPI();
 
 		// Init packet handling
-		MystcraftPacketHandler.registerPacketHandler(new MPacketDimensions(), (byte)10); // 10
-		MystcraftPacketHandler.registerPacketHandler(new MPacketConfigs(), (byte)20); // 25
-		MystcraftPacketHandler.registerPacketHandler(new MPacketProfilingState(), (byte)21); // 25
-		MystcraftPacketHandler.registerPacketHandler(new MPacketParticles(), (byte)25); // 20
-		MystcraftPacketHandler.registerPacketHandler(new MPacketMessage(), (byte)132); // 132
-		MystcraftPacketHandler.registerPacketHandler(new MPacketGuiMessage(), (byte)140); // 140
-		MystcraftPacketHandler.registerPacketHandler(new MPacketOpenWindow(), (byte)134); // 134
-		MystcraftPacketHandler.registerPacketHandler(new MPacketActivateItem(), (byte)137); // 137
-		MystcraftPacketHandler.registerPacketHandler(new MPacketAgeData(), (byte)135); // 135
-		MystcraftPacketHandler.registerPacketHandler(new MPacketExplosion(), (byte)100); // 100
-		MystcraftPacketHandler.registerPacketHandler(new MPacketSpawnLightningBolt(), (byte)101); // 101
+		MystcraftPacketHandler.registerPacketHandler(new MPacketDimensions(), (byte) 10); // 10
+		MystcraftPacketHandler.registerPacketHandler(new MPacketConfigs(), (byte) 20); // 25
+		MystcraftPacketHandler.registerPacketHandler(new MPacketProfilingState(), (byte) 21); // 25
+		MystcraftPacketHandler.registerPacketHandler(new MPacketParticles(), (byte) 25); // 20
+		MystcraftPacketHandler.registerPacketHandler(new MPacketMessage(), (byte) 132); // 132
+		MystcraftPacketHandler.registerPacketHandler(new MPacketGuiMessage(), (byte) 140); // 140
+		MystcraftPacketHandler.registerPacketHandler(new MPacketOpenWindow(), (byte) 134); // 134
+		MystcraftPacketHandler.registerPacketHandler(new MPacketActivateItem(), (byte) 137); // 137
+		MystcraftPacketHandler.registerPacketHandler(new MPacketAgeData(), (byte) 135); // 135
+		MystcraftPacketHandler.registerPacketHandler(new MPacketExplosion(), (byte) 100); // 100
+		MystcraftPacketHandler.registerPacketHandler(new MPacketSpawnLightningBolt(), (byte) 101); // 101
 
 		FMLCommonHandler.instance().bus().register(new MystcraftConnectionHandler());
 		MystcraftPacketHandler.bus = NetworkRegistry.INSTANCE.newEventDrivenChannel(MystcraftPacketHandler.CHANNEL);
@@ -357,6 +360,9 @@ public class Mystcraft {
 		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandReprofile());
 		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandDebug());
 
+		profilingThread = new ChunkProfilerManager();
+		profilingThread.start();
+
 		File datafolder = mcserver.worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile();
 		registerDimensions(datafolder);
 		LinkListenerPermissions.loadState();
@@ -372,6 +378,10 @@ public class Mystcraft {
 			MinecraftForge.EVENT_BUS.unregister(instabilitycalculator);
 			FMLCommonHandler.instance().bus().unregister(instabilitycalculator);
 			instabilitycalculator = null;
+		}
+		if (profilingThread != null) {
+			profilingThread.halt();
+			profilingThread = null;
 		}
 		unregisterDimensions();
 		Mystcraft.clientStorage = null;

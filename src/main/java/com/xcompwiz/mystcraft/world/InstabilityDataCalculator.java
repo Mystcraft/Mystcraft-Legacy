@@ -27,6 +27,7 @@ import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.network.packet.MPacketProfilingState;
 import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
+import com.xcompwiz.mystcraft.world.gen.ChunkProfilerManager;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
@@ -107,8 +108,10 @@ public class InstabilityDataCalculator {
 		if (event.phase == Phase.START) return;
 		if (mcserver == null) return;
 		ChunkProfiler profiler = getChunkProfiler();
-		if (profiler.getCount() <= minimumchunks) {
-			stepChunkGeneration(profiler);
+		int chunksremaining = minimumchunks - profiler.getCount();
+		if (chunksremaining > 0) {
+			// We check to see if the profiling queue is backed up (might be enough chunks generated.
+			if (ChunkProfilerManager.getSize() < chunksremaining) stepChunkGeneration(profiler);
 		} else {
 			if (world != null) LoggerUtils.info("Baseline Profiling for Instability completed.");
 			cleanup();

@@ -57,12 +57,15 @@ import com.xcompwiz.mystcraft.instability.bonus.InstabilityBonusManager;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
+import com.xcompwiz.mystcraft.world.gen.ChunkProfilerManager;
 import com.xcompwiz.util.SpiralOutwardIterator;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class AgeController implements IAgeController {
+	private static final int					MINCHUNKS			= 400;
+
 	private World								world;
 	private WorldChunkManager					chunkManager;
 	private SkyRendererMyst						skyrenderer;
@@ -104,10 +107,11 @@ public class AgeController implements IAgeController {
 	private HashMap<String, Modifier>			modifiers;
 	private HashMap<String, Modifier>			globalMods;
 
+	private int									nextprofiled;
 	private int									symbolinstability;
 	private Integer								blockinstability	= null;
 	private HashMap<IAgeSymbol, Integer>		symbolcounts		= new HashMap<IAgeSymbol, Integer>();
-	protected int								debuginstability = 0;
+	protected int								debuginstability	= 0;
 
 	private Semaphore							semaphore			= new Semaphore(1, true);
 	private boolean								rebuilding;
@@ -259,10 +263,12 @@ public class AgeController implements IAgeController {
 	@Override
 	public int getInstabilityScore() {
 		if (rebuilding) throw new RuntimeException("Someone is trying to grab the world instability score before the world is built!");
-		ChunkProfiler profiler = getChunkProfiler();
-		if (profiler.getCount() < 400 || blockinstability == null) {
+		int profiled = getChunkProfiler().getCount();
+		if (profiled < MINCHUNKS || profiled > nextprofiled || blockinstability == null) {
+			nextprofiled = profiled + 100;
 			updateProfiledInstability();
 		}
+		if (blockinstability == null) return 0;
 		int score = debuginstability + symbolinstability + blockinstability + agedata.getBaseInstability() + getInstabilityBonusManager().getResult();
 		int difficulty = Mystcraft.difficulty;
 		switch (difficulty) {
@@ -283,10 +289,11 @@ public class AgeController implements IAgeController {
 
 	public void updateProfiledInstability() {
 		ChunkProfiler profiler = getChunkProfiler();
-		if (profiler.getCount() < 400) {
+		int chunksneeded = MINCHUNKS - getChunkProfiler().getCount();
+		if (chunksneeded > 0 && ChunkProfilerManager.getSize() < chunksneeded) {
 			expandChunkProfile();
 		}
-		blockinstability = profiler.calculateInstability();
+		if (getChunkProfiler().getCount() > MINCHUNKS) blockinstability = profiler.calculateInstability();
 	}
 
 	private void expandChunkProfile() {
@@ -300,13 +307,16 @@ public class AgeController implements IAgeController {
 		IChunkProvider chunkgen = ((WorldServer) this.world).theChunkProviderServer;
 		IChunkLoader chunkloader = ((WorldServer) this.world).theChunkProviderServer.currentChunkLoader;
 		SpiralOutwardIterator iter = new SpiralOutwardIterator();
-		while (profiler.getCount() <= 400) {
+
+		int chunksneeded = MINCHUNKS - profiler.getCount();
+		while (chunksneeded > 0 && ChunkProfilerManager.getSize() < chunksneeded) {
 			iter.step();
 			int chunkX = chunkcoordinates.posX + iter.x;
 			int chunkZ = chunkcoordinates.posZ + iter.y;
 			if (safeLoadChunk(chunkloader, world, chunkX, chunkZ) == null) {
 				chunkgen.loadChunk(chunkX, chunkZ);
 			}
+			chunksneeded = MINCHUNKS - profiler.getCount();
 		}
 	}
 
