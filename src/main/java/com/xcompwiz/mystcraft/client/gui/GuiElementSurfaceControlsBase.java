@@ -80,16 +80,18 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 			List<ItemStack> pages = item.getItems(mc.thePlayer, cached_tabitem);
 			if (pages != null) {
 				for (ItemStack page : pages) {
-					//XXX: Filters
-					String displayname = null;
-					if (Page.getSymbol(page) != null) {
-						IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
-						if (symbol != null) displayname = symbol.displayName();
-						if (displayname == null) displayname = Page.getSymbol(page);
-					}
-					if (searchtext != null && searchtext.length() > 0) {
-						if (displayname == null || !displayname.toLowerCase().contains(searchtext.toLowerCase())) {
-							continue;
+					if (page.stackTagCompound != null) {
+						//XXX: Filters
+						String displayname = null;
+						if (Page.getSymbol(page) != null) {
+							IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
+							if (symbol != null) displayname = symbol.displayName();
+							if (displayname == null) displayname = Page.getSymbol(page);
+						}
+						if (searchtext != null && searchtext.length() > 0) {
+							if (displayname == null || !displayname.toLowerCase().contains(searchtext.toLowerCase())) {
+								continue;
+							}
 						}
 					}
 					ItemStack copy = page.copy();

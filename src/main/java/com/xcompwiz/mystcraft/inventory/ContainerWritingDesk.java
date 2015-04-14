@@ -81,16 +81,12 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			addSlotToContainer(slot);
 		}
 
-		addSlotToContainer(new SlotFiltered(tileentity, 0, 8 + xShift, 60 + yShift));
-		addSlotToContainer(new SlotFiltered(tileentity, 1, 8 + xShift, 8 + yShift));// ,
-																					// Items.paper.getIconFromDamage(0),
-																					// Items.paper.getTextureFile()));
-		addSlotToContainer(new SlotFiltered(tileentity, 2, 152 + xShift, 8 + yShift));// ,
-																						// Items.dyePowder.getIconFromDamage(0),
-																						// Items.dyePowder.getTextureFile()));
-		addSlotToContainer(new SlotFiltered(tileentity, 3, 152 + xShift, 60 + yShift));// ,
-																						// Items.glass_bottle.getIconFromDamage(0),
-																						// Items.glass_bottle.getTextureFile()));
+		SlotFiltered slot = new SlotFiltered(tileentity, 0, 8 + xShift, 60 + yShift);
+		slot.setSlotStackLimit(1);
+		addSlotToContainer(slot);
+		addSlotToContainer(new SlotFiltered(tileentity, 1, 8 + xShift, 8 + yShift));// , Items.paper.getIconFromDamage(0), Items.paper.getTextureFile()));
+		addSlotToContainer(new SlotFiltered(tileentity, 2, 152 + xShift, 8 + yShift));// , Items.dyePowder.getIconFromDamage(0), Items.dyePowder.getTextureFile()));
+		addSlotToContainer(new SlotFiltered(tileentity, 3, 152 + xShift, 60 + yShift));// , Items.glass_bottle.getIconFromDamage(0), Items.glass_bottle.getTextureFile()));
 
 		for (int i = 0; i < 3; i++) {
 			for (int k = 0; k < 9; k++) {

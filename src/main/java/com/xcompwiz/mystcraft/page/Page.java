@@ -38,9 +38,6 @@ public abstract class Page {
 
 	private static NBTTagCompound getData(ItemStack item) {
 		if (item == null) return null;
-		if (item.stackTagCompound == null) {
-			item.stackTagCompound = createDefault();
-		}
 		return item.stackTagCompound;
 	}
 
@@ -65,15 +62,22 @@ public abstract class Page {
 
 	public static void makeLinkPanel(ItemStack page) {
 		NBTTagCompound data = getData(page);
-		if (data == null) return;
+		if (data == null) {
+			page.stackTagCompound = createDefault();
+			data = getData(page);
+		}
 		if (!data.hasKey("linkpanel")) {
 			data.setTag("linkpanel", new NBTTagCompound());
 		}
 	}
 
 	public static void addLinkProperty(ItemStack page, String linkproperty) {
+		if (page == null) return;
 		NBTTagCompound data = getData(page);
-		if (data == null) return;
+		if (data == null) {
+			page.stackTagCompound = createDefault();
+			data = getData(page);
+		}
 		if (!data.hasKey("linkpanel")) {
 			data.setTag("linkpanel", new NBTTagCompound());
 		}

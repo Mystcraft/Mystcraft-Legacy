@@ -156,7 +156,8 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 			IItemPageCollection otheritem = (IItemPageCollection) page.getItem();
 			List<ItemStack> pages = otheritem.getItems(player, page);
 			for (ItemStack p : pages) {
-				this.addPage(player, itemstack, otheritem.remove(player, page, p));
+				ItemStack out = this.addPage(player, itemstack, otheritem.remove(player, page, p));
+				if (out != null) otheritem.addPage(player, page, out);
 			}
 			return page;
 		}
@@ -165,7 +166,8 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 			IItemOrderablePageProvider otheritem = (IItemOrderablePageProvider) page.getItem();
 			List<ItemStack> pages = otheritem.getPageList(player, page);
 			for (int i = 0; i < pages.size(); ++i) {
-				this.addPage(player, itemstack, otheritem.removePage(player, page, i));
+				ItemStack out = this.addPage(player, itemstack, otheritem.removePage(player, page, i));
+				if (out != null) otheritem.addPage(player, page, out);
 			}
 			return page;
 		}
