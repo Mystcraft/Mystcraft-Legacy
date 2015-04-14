@@ -195,7 +195,7 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 
 	@Override
 	public WorldType getTerrainType() {
-		return super.getTerrainType(); //XXX: (WorldInfo) Are there possibilities here?  Might need to force "normal" terrain type?  Should I create a custom one?
+		return super.getTerrainType(); // Return the "save's" terrain type here. The dim's terrain type is in the provider.
 	}
 
 	@Override
