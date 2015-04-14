@@ -165,20 +165,20 @@ project.tasks.curse.dependsOn "markChangelog"
 task "deploy" // creates it for later
 
 def deployments = [
-	'local' : "${project.userHome}/AppData/Roaming/.minecraft/F1.7.2/mods",
-	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
-	'patron': {"C:/Users/Zach/Google Drive/Mystcraft Patreon Builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
+	'local' : "${project.userHome}/Downloads/Game Misc/MultiMC5/instances/Testing ${minecraft.version}/minecraft/mods/",
+	'dev'   : "F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}",
+	'patron': "${project.userHome}/Google Drive/Mystcraft Patreon Builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}",
 	'FC1'   : "F:/Seafile/incoming/ForgeCraft1/mods",
 	'FC2'   : "F:/Seafile/incoming/ForgeCraft2/mods",
 ]
 
 def APIDeploys = [
-	'dev': {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
+	'dev': "F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}",
 ]
 
 def changelogDeploys = [
-	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds"},
-	'patron': {"C:/Users/Zach/Google Drive/Mystcraft Patreon Builds"},
+	'dev'   : "F:/Copy/Mystcraft/Mystcraft Testing/builds",
+	'patron': "${project.userHome}/Google Drive/Mystcraft Patreon Builds",
 ]
 
 deployments.each { name, dir ->
