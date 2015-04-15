@@ -163,22 +163,25 @@ task("markChangelog") {
 project.tasks.curse.dependsOn "markChangelog"
 
 task "deploy" // creates it for later
+task "deployjar" // creates it for later
+
+project.tasks.deploy.dependsOn project.tasks.deployjar
 
 def deployments = [
-	'local' : "${project.userHome}/Downloads/Game Misc/MultiMC5/instances/Testing ${minecraft.version}/minecraft/mods/",
-	'dev'   : "F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}",
-	'patron': "${project.userHome}/Google Drive/Mystcraft Patreon Builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}",
-	'FC1'   : "F:/Seafile/incoming/ForgeCraft1/mods",
-	'FC2'   : "F:/Seafile/incoming/ForgeCraft2/mods",
+	'local' : {"${project.userHome}/Downloads/Game Misc/MultiMC5/instances/Testing ${minecraft.version}/minecraft/mods/"},
+	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
+	'patron': {"${project.userHome}/Google Drive/Mystcraft Patreon Builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
+	'FC1'   : {"F:/Seafile/incoming/ForgeCraft1/mods"},
+	'FC2'   : {"F:/Seafile/incoming/ForgeCraft2/mods"},
 ]
 
 def APIDeploys = [
-	'dev': "F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}",
+	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
 ]
 
 def changelogDeploys = [
-	'dev'   : "F:/Copy/Mystcraft/Mystcraft Testing/builds",
-	'patron': "${project.userHome}/Google Drive/Mystcraft Patreon Builds",
+	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds"},
+	'patron': {"${project.userHome}/Google Drive/Mystcraft Patreon Builds"},
 ]
 
 deployments.each { name, dir ->
@@ -190,10 +193,10 @@ deployments.each { name, dir ->
 		dependsOn "reobf"
 	}
 
-	project.tasks.deploy.dependsOn deployer
+	project.tasks.deployjar.dependsOn deployer
 
 	def deleter = task("clean-${name}") << {
-		fileTree(dir).each { file ->
+		fileTree(dir()).each { file ->
 			if (!file.isDirectory() && file.name.startsWith(project.archivesBaseName))
 				file.delete()
 		}
@@ -208,6 +211,7 @@ APIDeploys.each { name, dir ->
 		from {project.tasks.devJar.getArchivePath()} // the dev jar
 		into dir
 		dependsOn "apiJar", "devJar"
+		mustRunAfter "deployjar"
 	}
 
 	project.tasks.deploy.dependsOn deployer
