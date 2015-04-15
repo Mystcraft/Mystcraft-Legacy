@@ -12,7 +12,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -26,7 +25,7 @@ import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.page.Page;
 
-public class TileEntityInkMixer extends TileEntity implements IItemBuilder, ISidedInventory {
+public class TileEntityInkMixer extends TileEntityRotatable implements IItemBuilder, ISidedInventory {
 
 	private ItemStack				itemstacks[];
 
@@ -44,6 +43,12 @@ public class TileEntityInkMixer extends TileEntity implements IItemBuilder, ISid
 	public TileEntityInkMixer() {
 		next_seed = new Random().nextLong();
 		itemstacks = new ItemStack[3];
+	}
+
+	@Override
+	public void setYaw(int rotation) {
+		rotation = rotation - (rotation % 90);
+		super.setYaw(rotation);
 	}
 
 	@Override

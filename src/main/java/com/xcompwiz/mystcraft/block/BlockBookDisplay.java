@@ -19,7 +19,7 @@ import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
 import com.xcompwiz.mystcraft.inventory.ContainerBook;
 import com.xcompwiz.mystcraft.network.NetworkUtils;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBook;
-import com.xcompwiz.mystcraft.tileentity.TileEntityBookDisplay;
+import com.xcompwiz.mystcraft.tileentity.TileEntityBookRotateable;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -35,7 +35,7 @@ public abstract class BlockBookDisplay extends BlockContainer {
 		@Override
 		public Container getContainer(EntityPlayerMP player, World worldObj, TileEntity tileentity, int i, int j, int k) {
 			// Sends age data packet
-			return new ContainerBook(player.inventory, (TileEntityBookDisplay) tileentity);
+			return new ContainerBook(player.inventory, (TileEntityBookRotateable) tileentity);
 		}
 
 		@Override
@@ -44,7 +44,7 @@ public abstract class BlockBookDisplay extends BlockContainer {
 			int x = data.readInt();
 			int y = data.readInt();
 			int z = data.readInt();
-			TileEntityBookDisplay tileentity = (TileEntityBookDisplay) player.worldObj.getTileEntity(x, y, z);
+			TileEntityBookRotateable tileentity = (TileEntityBookRotateable) player.worldObj.getTileEntity(x, y, z);
 			return new GuiBook(player.inventory, tileentity);
 		}
 	}
@@ -58,7 +58,7 @@ public abstract class BlockBookDisplay extends BlockContainer {
 	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int side, float posX, float pozY, float posZ) {
 		if (world.isRemote) return true;
-		TileEntityBookDisplay tileentity = (TileEntityBookDisplay) world.getTileEntity(i, j, k);
+		TileEntityBookRotateable tileentity = (TileEntityBookRotateable) world.getTileEntity(i, j, k);
 		if (tileentity == null) { return true; }
 		if (tileentity.getBook() == null) {
 			ItemStack itemstack = entityplayer.inventory.getCurrentItem();
@@ -86,7 +86,7 @@ public abstract class BlockBookDisplay extends BlockContainer {
 	@Override
 	public void breakBlock(World world, int i, int j, int k, Block block, int meta) {
 		if (!world.isRemote) {
-			TileEntityBookDisplay book = (TileEntityBookDisplay) world.getTileEntity(i, j, k);
+			TileEntityBookRotateable book = (TileEntityBookRotateable) world.getTileEntity(i, j, k);
 			if (book == null) {
 				// System.out.println("No tile entity?");
 				return;

@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileEntityBookstand extends TileEntityBookDisplay {
+public class TileEntityBookstand extends TileEntityBookRotateable {
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {

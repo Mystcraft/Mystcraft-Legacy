@@ -13,7 +13,7 @@ import com.xcompwiz.mystcraft.entity.EntityLinkbook;
 import com.xcompwiz.mystcraft.inventory.ContainerBook;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
-import com.xcompwiz.mystcraft.tileentity.TileEntityBookDisplay;
+import com.xcompwiz.mystcraft.tileentity.TileEntityBookRotateable;
 
 public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 
@@ -26,7 +26,7 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 		this.container = container;
 	}
 
-	public GuiBook(InventoryPlayer inventoryplayer, TileEntityBookDisplay tileentity) {
+	public GuiBook(InventoryPlayer inventoryplayer, TileEntityBookRotateable tileentity) {
 		this(new ContainerBook(inventoryplayer, tileentity));
 	}
 

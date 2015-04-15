@@ -8,7 +8,13 @@ import com.xcompwiz.mystcraft.entity.EntityDummy;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 
-public class TileEntityLinkModifier extends TileEntityBook {
+public class TileEntityLinkModifier extends TileEntityBookRotateable {
+
+	@Override
+	public void setYaw(int rotation) {
+		rotation = rotation - (rotation % 90);
+		super.setYaw(rotation);
+	}
 
 	@Override
 	public boolean canUpdate() {

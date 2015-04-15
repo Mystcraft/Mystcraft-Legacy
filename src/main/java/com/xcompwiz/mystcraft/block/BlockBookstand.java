@@ -11,6 +11,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookstand;
 
@@ -130,6 +131,20 @@ public class BlockBookstand extends BlockBookDisplay {
 		}
 		book.setYaw(rotation);
 		book.markDirty();
+	}
+
+	@Override
+	public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
+		TileEntityBookstand book = (TileEntityBookstand) worldObj.getTileEntity(x, y, z);
+		if (book == null) return false;
+		book.setYaw(book.getYaw() + 45);
+		book.markDirty();
+		return true;
+	}
+
+	@Override
+	public ForgeDirection[] getValidRotations(World worldObj, int x, int y, int z) {
+		return ForgeDirection.VALID_DIRECTIONS;
 	}
 
 	@Override

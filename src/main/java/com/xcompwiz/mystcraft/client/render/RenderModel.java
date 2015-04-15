@@ -7,6 +7,8 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import com.xcompwiz.mystcraft.tileentity.ITileEntityRotateable;
+
 public class RenderModel extends TileEntitySpecialRenderer {
 
 	private ModelBase			model;
@@ -24,6 +26,9 @@ public class RenderModel extends TileEntitySpecialRenderer {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) d, (float) d1, (float) d2);
 		GL11.glRotatef(180, 1, 0, 0);
+		if (tileentity instanceof ITileEntityRotateable) {
+			GL11.glRotatef(((ITileEntityRotateable) tileentity).getYaw(), 0, 1, 0);
+		}
 		GL11.glTranslatef(0, -1.5F, 0);
 		//GL11.glRotatef(90 - tileentity.getYaw(), 0, 1, 0);
 		model.render(null, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0625F);

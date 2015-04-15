@@ -14,7 +14,7 @@ import net.minecraft.world.storage.MapData;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 
-public class TileEntityLectern extends TileEntityBookDisplay {
+public class TileEntityLectern extends TileEntityBookRotateable {
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {

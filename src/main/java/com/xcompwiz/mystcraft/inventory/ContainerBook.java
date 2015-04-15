@@ -24,7 +24,7 @@ import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
-import com.xcompwiz.mystcraft.tileentity.TileEntityBookDisplay;
+import com.xcompwiz.mystcraft.tileentity.TileEntityBookRotateable;
 
 public class ContainerBook extends ContainerBase implements IGuiMessageHandler, IBookContainer {
 	public static class Messages {
@@ -246,8 +246,8 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 		}
 		if (data.hasKey(Messages.Link)) {
 			if (inventory != null) {
-				if (inventory instanceof TileEntityBookDisplay) {
-					((TileEntityBookDisplay) inventory).link(player);
+				if (inventory instanceof TileEntityBookRotateable) {
+					((TileEntityBookRotateable) inventory).link(player);
 				}
 				if (inventory instanceof InventoryBook) {
 					((InventoryBook) inventory).linkEntity(player);

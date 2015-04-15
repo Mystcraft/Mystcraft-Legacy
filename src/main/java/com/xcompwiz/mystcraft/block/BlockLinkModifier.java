@@ -6,6 +6,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,7 +15,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
 import com.xcompwiz.mystcraft.client.gui.GuiLinkModifier;
@@ -126,6 +129,38 @@ public class BlockLinkModifier extends BlockContainer {
 			}
 		}
 		super.breakBlock(world, i, j, k, block, meta);
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase entityliving, ItemStack itemstack) {
+		int l = MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+		TileEntityLinkModifier tileentity = (TileEntityLinkModifier) world.getTileEntity(i, j, k);
+		int rotation = 0;
+		if (l == 3) {
+			rotation = 90;
+		} else if (l == 0) {
+			rotation = 180;
+		} else if (l == 1) {
+			rotation = 270;
+		} else if (l == 2) {
+			rotation = 0;
+		}
+		tileentity.setYaw(rotation);
+		tileentity.markDirty();
+	}
+
+	@Override
+	public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
+		TileEntityLinkModifier tileentity = (TileEntityLinkModifier) worldObj.getTileEntity(x, y, z);
+		if (tileentity == null) return false;
+		tileentity.setYaw(tileentity.getYaw() + 90);
+		tileentity.markDirty();
+		return true;
+	}
+
+	@Override
+	public ForgeDirection[] getValidRotations(World worldObj, int x, int y, int z) {
+		return ForgeDirection.VALID_DIRECTIONS;
 	}
 
 	@Override

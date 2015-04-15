@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 
@@ -61,6 +62,20 @@ public class BlockLectern extends BlockBookDisplay {
 		}
 		book.setYaw(rotation);
 		book.markDirty();
+	}
+
+	@Override
+	public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
+		TileEntityLectern book = (TileEntityLectern) worldObj.getTileEntity(x, y, z);
+		if (book == null) return false;
+		book.setYaw(book.getYaw() + 90);
+		book.markDirty();
+		return true;
+	}
+
+	@Override
+	public ForgeDirection[] getValidRotations(World worldObj, int x, int y, int z) {
+		return ForgeDirection.VALID_DIRECTIONS;
 	}
 
 	@Override

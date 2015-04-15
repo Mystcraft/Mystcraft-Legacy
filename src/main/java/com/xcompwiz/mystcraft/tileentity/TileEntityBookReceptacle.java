@@ -8,7 +8,7 @@ import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.network.IMessageReceiver;
 import com.xcompwiz.mystcraft.portal.PortalUtils;
 
-public class TileEntityBookReceptacle extends TileEntityBookDisplay implements IMessageReceiver {
+public class TileEntityBookReceptacle extends TileEntityBookRotateable implements IMessageReceiver {
 
 	public TileEntityBookReceptacle() {
 		tileEntityInvalid = false;
