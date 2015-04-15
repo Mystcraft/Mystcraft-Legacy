@@ -21,8 +21,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
 import com.xcompwiz.mystcraft.data.ModBlocks;
-import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.portal.PortalUtils;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBook;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
@@ -280,7 +280,7 @@ public class BlockBookReceptacle extends BlockContainer {
 		ItemStack itemstack = book.getBook();
 		if (itemstack == null) {
 			itemstack = entityplayer.inventory.getCurrentItem();
-			if (itemstack != null && (itemstack.getItem() instanceof ItemLinking)) {
+			if (itemstack != null && (itemstack.getItem() instanceof IItemPortalActivator)) {
 				if (!world.isRemote) {
 					entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
 					book.setBook(itemstack);

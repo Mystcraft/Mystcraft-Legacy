@@ -1,10 +1,9 @@
 package com.xcompwiz.mystcraft.tileentity;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
-import com.xcompwiz.mystcraft.item.ItemLinking;
-import com.xcompwiz.mystcraft.linking.DimensionUtils;
+import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
 import com.xcompwiz.mystcraft.network.IMessageReceiver;
 import com.xcompwiz.mystcraft.portal.PortalUtils;
 
@@ -20,10 +19,19 @@ public class TileEntityBookReceptacle extends TileEntityBookRotateable implement
 	}
 
 	public int getPortalColor() {
-		ItemStack book = getBook();
-		if (book == null) return 0xFFFFFF;
-		ILinkInfo info = ((ItemLinking) book.getItem()).getLinkInfo(book);
-		return DimensionUtils.getLinkColor(info);
+		ItemStack itemstack = getBook();
+		if (itemstack == null) return 0xFFFFFF;
+		Item itemdata = itemstack.getItem();
+		if (itemdata instanceof IItemPortalActivator) {
+			return ((IItemPortalActivator)itemdata).getPortalColor(itemstack, worldObj);
+		}
+		return 0xFFFFFF;
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+		if (itemstack == null) return false;
+		return itemstack.getItem() instanceof IItemPortalActivator;
 	}
 
 	@Override
@@ -35,7 +43,7 @@ public class TileEntityBookReceptacle extends TileEntityBookRotateable implement
 		ItemStack book = getBook();
 		if (book == null) {
 			return;
-		} else if (book.getItem() instanceof ItemLinking) {
+		} else if (book.getItem() instanceof IItemPortalActivator) {
 			PortalUtils.firePortal(worldObj, xCoord, yCoord, zCoord);
 		}
 	}

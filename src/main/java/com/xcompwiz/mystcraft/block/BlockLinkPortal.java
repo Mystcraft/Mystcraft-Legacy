@@ -9,20 +9,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 
-import com.xcompwiz.mystcraft.api.event.PortalLinkEvent;
-import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
-import com.xcompwiz.mystcraft.data.Sounds;
-import com.xcompwiz.mystcraft.item.ItemLinking;
-import com.xcompwiz.mystcraft.linking.LinkController;
-import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
+import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
 import com.xcompwiz.mystcraft.portal.PortalUtils;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
 
@@ -166,7 +161,6 @@ public class BlockLinkPortal extends BlockBreakable {
 	@Override
 	public void onEntityCollidedWithBlock(World worldObj, int par2, int par3, int par4, Entity entity) {
 		if (worldObj.isRemote) return;
-		ILinkInfo info = null;
 		TileEntity tileentity = PortalUtils.getTileEntity(worldObj, par2, par3, par4);
 		if (tileentity == null || !(tileentity instanceof TileEntityBookReceptacle)) {
 			worldObj.setBlock(par2, par3, par4, Blocks.air);
@@ -178,13 +172,10 @@ public class BlockLinkPortal extends BlockBreakable {
 			return;
 		}
 		ItemStack book = container.getBook();
-		info = ((ItemLinking) book.getItem()).getLinkInfo(book);
-		info.setFlag(ILinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM, true);
-		info.setFlag(ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, false);
-		info.setFlag(ILinkPropertyAPI.FLAG_EXTERNAL, true);
-		info.setProperty(ILinkPropertyAPI.PROP_SOUND, Sounds.PORTALLINK);
-		MinecraftForge.EVENT_BUS.post(new PortalLinkEvent(worldObj, entity, info));
-		LinkController.travelEntity(worldObj, entity, info);
+		Item itemdata = book.getItem();
+		if (itemdata instanceof IItemPortalActivator) {
+			((IItemPortalActivator)itemdata).onPortalCollision(book, worldObj, entity, par2, par3, par4);
+		}
 	}
 
 	@Override

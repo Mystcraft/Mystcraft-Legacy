@@ -57,6 +57,7 @@ public class RenderLectern extends TileEntitySpecialRenderer {
 	}
 
 	protected void renderLabel(TileEntity entity, String s, double d, double d1, double d2, int i) {
+		if (s == null) return;
 		double f = entity.getDistanceFrom(field_147501_a.field_147560_j, field_147501_a.field_147561_k, field_147501_a.field_147558_l);
 		if (f > i) { return; }
 		FontRenderer fontrenderer = func_147498_b();

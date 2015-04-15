@@ -32,7 +32,7 @@ import com.xcompwiz.mystcraft.client.render.RenderLinkbook;
 import com.xcompwiz.mystcraft.client.render.RenderMeteor;
 import com.xcompwiz.mystcraft.client.render.RenderModel;
 import com.xcompwiz.mystcraft.client.render.RenderStarFissure;
-import com.xcompwiz.mystcraft.client.render.RenderWallMountedLinkbook;
+import com.xcompwiz.mystcraft.client.render.RenderBookReceptacle;
 import com.xcompwiz.mystcraft.client.render.RenderWritingDesk;
 import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
@@ -148,7 +148,7 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 		render = new RenderStarFissure();
 		cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(com.xcompwiz.mystcraft.tileentity.TileEntityStarFissure.class, render);
 
-		render = new RenderWallMountedLinkbook();
+		render = new RenderBookReceptacle();
 		cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle.class, render);
 	}
 

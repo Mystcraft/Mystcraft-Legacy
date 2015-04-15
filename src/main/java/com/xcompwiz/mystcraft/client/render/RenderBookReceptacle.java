@@ -13,11 +13,11 @@ import com.xcompwiz.mystcraft.data.Assets.Entities;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
 
-public class RenderWallMountedLinkbook extends TileEntitySpecialRenderer {
+public class RenderBookReceptacle extends TileEntitySpecialRenderer {
 
 	private ModelBook	bookmodel;
 
-	public RenderWallMountedLinkbook() {
+	public RenderBookReceptacle() {
 		bookmodel = new ModelBook();
 	}
 
@@ -30,7 +30,9 @@ public class RenderWallMountedLinkbook extends TileEntitySpecialRenderer {
 		} else if (tileentity.getDisplayItem().getItem() == ModItems.linkbook) {
 			bindTexture(Entities.linkbook);
 		} else {
-			return;
+			//FIXME: API Allow IPortalLinkItem items to control rendering somehow
+			bindTexture(Entities.linkbook);
+			//return;
 		}
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) d, (float) d1 + 0.5F, (float) d2);
@@ -43,6 +45,7 @@ public class RenderWallMountedLinkbook extends TileEntitySpecialRenderer {
 	}
 
 	protected void renderLabel(TileEntity entity, String s, double d, double d1, double d2, int i) {
+		if (s == null) return;
 		double f = entity.getDistanceFrom(field_147501_a.field_147560_j, field_147501_a.field_147561_k, field_147501_a.field_147558_l);
 		if (f > i) { return; }
 		FontRenderer fontrenderer = func_147498_b();

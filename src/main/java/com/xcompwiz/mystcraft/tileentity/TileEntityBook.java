@@ -38,11 +38,10 @@ public class TileEntityBook extends TileEntity implements ISidedInventory {
 	}
 
 	public String getBookTitle() {
-		String title = "";
+		String title = null;
 		if (getBook() != null && getBook().getItem() instanceof ItemLinking) {
 			title = LinkOptions.getDisplayName(getBook().stackTagCompound);
 		}
-		if (title == null) { return ""; }
 		return title;
 	}
 

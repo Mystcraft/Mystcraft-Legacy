@@ -26,7 +26,7 @@ public class TileEntityRotatable extends TileEntity implements IMessageReceiver,
 	public void setYaw(int yaw) {
 		this.yaw = (short) (yaw % 360);
 		this.markDirty();
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		if (worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	@Override

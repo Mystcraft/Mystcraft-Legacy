@@ -29,7 +29,7 @@ public class TileEntityBookRotateable extends TileEntityBook implements IMessage
 	public void setPitch(int pitch) {
 		this.pitch = (short) (pitch % 360);
 		this.markDirty();
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		if (worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	public short getPitch() {
@@ -40,7 +40,7 @@ public class TileEntityBookRotateable extends TileEntityBook implements IMessage
 	public void setYaw(int yaw) {
 		this.yaw = (short) (yaw % 360);
 		this.markDirty();
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		if (worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	@Override

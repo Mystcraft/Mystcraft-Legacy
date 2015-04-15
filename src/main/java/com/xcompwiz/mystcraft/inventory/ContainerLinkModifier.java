@@ -75,6 +75,7 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 		super.detectAndSendChanges();
 		List<Packet> packets = new ArrayList<Packet>();
 		String temp = tileentity.getBookTitle();
+		if (temp == null) temp = "";
 		if (this.cached_title != temp) {
 			cached_title = temp;
 

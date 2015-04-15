@@ -3,12 +3,14 @@ package com.xcompwiz.mystcraft.api.event;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
+import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
 import cpw.mods.fml.common.eventhandler.Event;
 
 /**
  * Indicates that a link through a (Mystcraft) portal is about to occur, and allows for the link information to be modified. Listen for this event via Forge.
+ * This is not called for portal links handled by non-Mystcraft portal items (See: {@link IItemPortalActivator})
  */
 public class PortalLinkEvent extends Event {
 	/** The world object where the link originates from */
