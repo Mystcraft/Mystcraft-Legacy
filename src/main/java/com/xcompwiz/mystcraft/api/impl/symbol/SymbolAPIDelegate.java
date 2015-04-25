@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.symbol;
+package com.xcompwiz.mystcraft.api.impl.symbol;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import com.xcompwiz.mystcraft.api.symbol.ISymbolAPI;
 import com.xcompwiz.mystcraft.api.word.DrawableWord;
 import com.xcompwiz.mystcraft.api.word.IWordAPI;
 import com.xcompwiz.mystcraft.oldapi.internal.ISymbolValuesAPI;
+import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 
 import cpw.mods.fml.common.Loader;

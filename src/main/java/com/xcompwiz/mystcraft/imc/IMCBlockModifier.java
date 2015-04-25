@@ -8,10 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
 
-import com.xcompwiz.mystcraft.api.MystAPI;
+import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.symbol.ISymbolFactory.CategoryPair;
-import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.imc.IMCHandler.IMCProcessor;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
@@ -84,8 +83,7 @@ public class IMCBlockModifier implements IMCProcessor {
 		if (symbol == null) {
 			LoggerUtils.warn("[%s] is attempting to create a block modifier symbol for an already registered block.", message.getSender());
 		} else {
-			MystAPI api = InternalAPI.getAPIInstance(message.getSender());
-			api.getSymbolAPI().registerSymbol(symbol);
+			InternalAPI.symbol.registerSymbol(symbol); //TODO: Replace with using the mod's own API instances
 		}
 	}
 

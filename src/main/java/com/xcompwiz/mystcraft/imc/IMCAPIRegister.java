@@ -2,8 +2,8 @@ package com.xcompwiz.mystcraft.imc;
 
 import java.lang.reflect.Method;
 
-import com.xcompwiz.mystcraft.api.MystAPI;
-import com.xcompwiz.mystcraft.core.InternalAPI;
+import com.xcompwiz.mystcraft.api.APIInstanceProvider;
+import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.imc.IMCHandler.IMCProcessor;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 
@@ -19,8 +19,8 @@ public class IMCAPIRegister implements IMCProcessor {
 	}
 
 	/**
-	 * This is a cool bit of code lifted from WAILA
-	 * @author: ProfMobius, Edited by XCompWiz
+	 * This is a cool bit of code lifted and modified from WAILA
+	 * @author: ProfMobius, XCompWiz
 	 * @param method The method (prefixed by classname) to call
 	 * @param modname The name of the mod which made the request
 	 */
@@ -29,21 +29,26 @@ public class IMCAPIRegister implements IMCProcessor {
 		String methodName = splitName[splitName.length - 1];
 		String className = method.substring(0, method.length() - methodName.length() - 1);
 
+		APIInstanceProvider providerinst = InternalAPI.getAPIProviderInstance(modname);
+		if (providerinst == null) {
+			LoggerUtils.error(String.format("Could not initialize API provider instance for %s", modname));
+			return;
+		}
+
 		LoggerUtils.info(String.format("Trying to call (reflection) %s %s", className, methodName));
 
 		try {
 			Class reflectClass = Class.forName(className);
-			Method reflectMethod = reflectClass.getDeclaredMethod(methodName, MystAPI.class);
-			reflectMethod.invoke(null, InternalAPI.getAPIInstance(modname));
-
-			LoggerUtils.info(String.format("Success in registering %s", modname));
-
+			Method reflectMethod = reflectClass.getDeclaredMethod(methodName, APIInstanceProvider.class);
+			reflectMethod.invoke(null, providerinst);
+			LoggerUtils.info(String.format("API provided to %s", modname));
 		} catch (ClassNotFoundException e) {
-			LoggerUtils.warn(String.format("Could not find class %s", className));
+			LoggerUtils.error(String.format("Could not find class %s", className));
 		} catch (NoSuchMethodException e) {
-			LoggerUtils.warn(String.format("Could not find method %s", methodName));
+			LoggerUtils.error(String.format("Could not find method %s", methodName));
 		} catch (Exception e) {
-			LoggerUtils.warn(String.format("Exception while trying to access the method : %s", e.toString()));
+			LoggerUtils.error(String.format("Exception while calling the method %s.%s", className, methodName));
+			e.printStackTrace();
 		}
 	}
 }

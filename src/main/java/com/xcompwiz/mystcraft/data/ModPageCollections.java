@@ -5,9 +5,9 @@ import java.util.Collections;
 
 import net.minecraft.item.ItemStack;
 
+import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
-import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.inventory.CreativeTabMyst;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.page.SortingUtils.ComparatorSymbolAlphabetical;

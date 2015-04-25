@@ -50,5 +50,5 @@ public interface IRenderAPI {
 	 * @param color The color object to use when drawing the eye
 	 */
 	@SideOnly(Side.CLIENT)
-	public void drawColor(float x, float y, float zLevel, float radius, Color color);
+	public void drawColorEye(float x, float y, float zLevel, float radius, Color color);
 }

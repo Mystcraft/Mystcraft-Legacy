@@ -38,7 +38,7 @@ public abstract class MeteorEvent extends Event {
 
 	/**
 	 * The explosion event for the meteor impact. Note that there will be several of these per meteor impact, as the crater is a result of multiple explosions
-	 * at different positions around the meteor. The list of positions is the set of all blocks which were affected by the explosion. Only called server-side.
+	 * at different positions around the meteor. The list of positions is the set of all blocks which were affected by the explosion.
 	 */
 	public static class MetorExplosion extends MeteorEvent {
 		/** The list of blocks affected by the explosion */

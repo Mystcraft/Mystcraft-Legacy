@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.grammar;
+package com.xcompwiz.mystcraft.api.impl.grammar;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +9,8 @@ import java.util.Set;
 
 import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
+import com.xcompwiz.mystcraft.grammar.GrammarTree;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.util.CollectionUtils;

@@ -1,13 +1,12 @@
 package com.xcompwiz.mystcraft.data;
 
-import com.xcompwiz.mystcraft.api.MystObjects;
+import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.word.WordData;
-import com.xcompwiz.mystcraft.core.InternalAPI;
 
 public class ModWords {
 
 	public static void initialize() {
-		WordData.init(InternalAPI.getAPIInstance(MystObjects.MystcraftModId));
+		WordData.init(InternalAPI.word);
 		for (int i = 0; i < 26; ++i) {
 			InternalAPI.word.registerWord("" + i, constructNumber(i));
 		}

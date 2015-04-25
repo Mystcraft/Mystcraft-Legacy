@@ -28,10 +28,14 @@ public class IMCHandler {
 		for (IMCMessage message : messages) {
 			String key = message.key.toLowerCase();
 			IMCProcessor process = processors.get(key);
+			if (process == null) {
+				LoggerUtils.error("IMC message '%s' from [%s] unrecognized", key, message.getSender());
+			}
 			try {
 				process.process(message);
 			} catch (Exception e) {
-				LoggerUtils.error(e.getLocalizedMessage());
+				LoggerUtils.error("Failed to process IMC message '%s' from [%s]", key, message.getSender());
+				e.printStackTrace();
 			}
 		}
 	}

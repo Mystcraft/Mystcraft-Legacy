@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleProviderLink;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleUtils;
 import com.xcompwiz.mystcraft.client.gui.overlay.GuiNotification;
@@ -34,7 +35,6 @@ import com.xcompwiz.mystcraft.client.render.RenderModel;
 import com.xcompwiz.mystcraft.client.render.RenderStarFissure;
 import com.xcompwiz.mystcraft.client.render.RenderBookReceptacle;
 import com.xcompwiz.mystcraft.client.render.RenderWritingDesk;
-import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.Assets.Entities;
 import com.xcompwiz.mystcraft.data.InkEffects;

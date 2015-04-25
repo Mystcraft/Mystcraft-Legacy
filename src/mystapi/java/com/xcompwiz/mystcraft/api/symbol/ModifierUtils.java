@@ -88,9 +88,9 @@ public final class ModifierUtils {
 
 	/**
 	 * Returns a gradient from the current modifiers. This will always return a gradient, though the gradient may be empty. If there isn't a gradient object in
-	 * the modifier system then a gradient will be built If the gradient is empty then the system will attempt to use an existing color modifier Note that if
-	 * both are empty then the returned gradient will be empty If the gradient modifier exists and is not empty, then any color modifiers will be ignored If a
-	 * gradient modifier is set but is empty then the color modifier will still be popped
+	 * the modifier system then a gradient will be built. If the gradient is empty then the system will attempt to use an existing color modifier. Note that if
+	 * both are empty then the returned gradient will be empty. If the gradient modifier exists and is not empty, then any color modifiers will be ignored. If a
+	 * gradient modifier is set but is empty then the color modifier will still be popped.
 	 * @param controller The controller passed to the symbol during logic registration
 	 * @return A valid gradient object
 	 */
@@ -102,9 +102,9 @@ public final class ModifierUtils {
 	}
 
 	/**
-	 * Returns a gradient from the current modifiers. This will always return a gradient If there isn't a gradient object in the modifier system then a gradient
-	 * will be built If the gradient is empty then the system will attempt to use an existing color modifier If both modifiers are unset then the provided
-	 * default color will be added to the gradient If the gradient modifier exists and is not empty, then any color modifiers will be ignored If a gradient
+	 * Returns a gradient from the current modifiers. This will always return a gradient. If there isn't a gradient object in the modifier system then a gradient
+	 * will be built. If the gradient is empty then the system will attempt to use an existing color modifier. If both modifiers are unset then the provided
+	 * default color will be added to the gradient. If the gradient modifier exists and is not empty, then any color modifiers will be ignored. If a gradient
 	 * modifier is set but is empty then the color modifier will still be popped
 	 * @param controller The controller passed to the symbol during logic registration
 	 * @param r The default color value to use (red component)
@@ -120,7 +120,7 @@ public final class ModifierUtils {
 
 	/**
 	 * Provides a block of a particular generation category if one is in the queue. This will pop the first block satisfying the generation category found from
-	 * the top of the queue
+	 * the top of the queue.
 	 * @param controller The controller passed to the symbol during logic registration
 	 * @param type The generation category to attempt to retrieve
 	 * @return A block descriptor, if one satisfying the category is found. Otherwise null
@@ -155,7 +155,7 @@ public final class ModifierUtils {
 	}
 
 	/**
-	 * Adds a block descriptor to the top of the queue
+	 * Adds a block descriptor to the top of the queue.
 	 * @param controller The controller passed to the symbol during logic registration
 	 * @param block The block descriptor to push to the queue
 	 */

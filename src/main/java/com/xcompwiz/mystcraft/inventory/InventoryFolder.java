@@ -8,7 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.xcompwiz.mystcraft.core.InternalAPI;
+import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 

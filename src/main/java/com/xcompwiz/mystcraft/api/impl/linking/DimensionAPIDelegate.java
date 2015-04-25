@@ -1,10 +1,11 @@
-package com.xcompwiz.mystcraft.linking;
+package com.xcompwiz.mystcraft.api.impl.linking;
 
 import java.util.Collection;
 import java.util.Collections;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.linking.IDimensionAPI;
+import com.xcompwiz.mystcraft.linking.DimensionUtils;
 
 public class DimensionAPIDelegate implements IDimensionAPI {
 

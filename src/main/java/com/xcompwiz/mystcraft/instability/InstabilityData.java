@@ -3,8 +3,8 @@ package com.xcompwiz.mystcraft.instability;
 import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 
+import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
-import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.effects.EffectCrumble;
 import com.xcompwiz.mystcraft.effects.EffectPotion;

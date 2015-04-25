@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import net.minecraft.util.StatCollector;
 
+import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
-import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 
 public abstract class SymbolBase implements IAgeSymbol {

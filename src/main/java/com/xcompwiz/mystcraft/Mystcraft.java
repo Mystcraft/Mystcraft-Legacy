@@ -23,6 +23,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import com.google.common.collect.ImmutableList;
 import com.xcompwiz.mystcraft.api.MystObjects;
+import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.command.CommandCreateAgebook;
 import com.xcompwiz.mystcraft.command.CommandCreateDim;
@@ -36,7 +37,6 @@ import com.xcompwiz.mystcraft.command.CommandTime;
 import com.xcompwiz.mystcraft.command.CommandToggleDownfall;
 import com.xcompwiz.mystcraft.command.CommandToggleWorldInstability;
 import com.xcompwiz.mystcraft.config.MystConfig;
-import com.xcompwiz.mystcraft.core.InternalAPI;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.core.MystcraftEventHandler;
 import com.xcompwiz.mystcraft.data.GrammarRules;
@@ -254,7 +254,7 @@ public class Mystcraft {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		FMLInterModComms.sendMessage("LookingGlass", "api", "1:com.xcompwiz.mystcraft.integration.lookingglass.LookingGlassAPIReceiver.register1");
+		FMLInterModComms.sendMessage("LookingGlass", "register", "com.xcompwiz.mystcraft.integration.lookingglass.LookingGlassAPIHandler.register");
 		// Init Recipes
 		ModRecipes.addRecipes(CraftingManager.getInstance());
 

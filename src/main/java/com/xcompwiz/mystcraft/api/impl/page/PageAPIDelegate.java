@@ -1,10 +1,11 @@
-package com.xcompwiz.mystcraft.page;
+package com.xcompwiz.mystcraft.api.impl.page;
 
 import java.util.Collection;
 
 import net.minecraft.item.ItemStack;
 
 import com.xcompwiz.mystcraft.oldapi.internal.IPageAPI;
+import com.xcompwiz.mystcraft.page.Page;
 
 public class PageAPIDelegate implements IPageAPI {
 

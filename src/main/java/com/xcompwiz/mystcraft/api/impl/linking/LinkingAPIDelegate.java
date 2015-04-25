@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.linking;
+package com.xcompwiz.mystcraft.api.impl.linking;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -17,6 +17,10 @@ import com.xcompwiz.mystcraft.api.linking.ILinkingAPI;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.data.InkEffects;
+import com.xcompwiz.mystcraft.linking.DimensionUtils;
+import com.xcompwiz.mystcraft.linking.LinkController;
+import com.xcompwiz.mystcraft.linking.LinkListenerManager;
+import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 
 public class LinkingAPIDelegate implements ILinkingAPI, ILinkPropertyAPI {

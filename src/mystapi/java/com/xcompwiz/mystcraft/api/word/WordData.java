@@ -1,6 +1,5 @@
 package com.xcompwiz.mystcraft.api.word;
 
-import com.xcompwiz.mystcraft.api.MystAPI;
 
 /**
  * Includes the word data for the symbol poems. You can, of course, create your own words, but it is recommended that you use this list for the most part and
@@ -94,10 +93,9 @@ public final class WordData {
 	/**
 	 * Do not call this. This is called by Mystcraft itself.
 	 */
-	public static void init(MystAPI mystAPI) {
-		if (mystAPI == null || mystAPI.getWordAPI() == null || initialized) return;
+	public static void init(IWordAPI wordAPI) {
+		if (wordAPI == null || initialized) return;
 		initialized = true;
-		IWordAPI wordAPI = mystAPI.getWordAPI();
 		wordAPI.registerWord(Nature, new Integer[] { 5, 6, 8, 10, 11, 12, 15, 16, 17, 22 }); // Narayan - Nature
 		wordAPI.registerWord(Love, new Integer[] { 9, 10, 11, 14, 16, 17, 19, 20 }); // Narayan - Love
 		wordAPI.registerWord(Force, new Integer[] { 4, 5, 8, 16, 17, 19 }); // Narayan - Force

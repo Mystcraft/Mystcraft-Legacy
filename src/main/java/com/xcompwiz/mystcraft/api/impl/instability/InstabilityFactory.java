@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.instability;
+package com.xcompwiz.mystcraft.api.impl.instability;
 
 import com.xcompwiz.mystcraft.api.instability.IInstabilityFactory;
 import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;

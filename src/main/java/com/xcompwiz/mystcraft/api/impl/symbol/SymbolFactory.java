@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.symbol;
+package com.xcompwiz.mystcraft.api.impl.symbol;
 
 import net.minecraft.block.Block;
 
