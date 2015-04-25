@@ -11,7 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * Exposes functions for rendering Mystcraft elements, such as symbols, words, and colors
  * @author xcompwiz
  */
-public interface IRenderAPI {
+public interface RenderAPI {
 
 	/**
 	 * Use this to register your own rendering effects on the linkpanel

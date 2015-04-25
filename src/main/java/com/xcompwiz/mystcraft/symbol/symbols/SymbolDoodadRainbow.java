@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.ISkyDoodad;
 import com.xcompwiz.mystcraft.client.render.RenderRainbow;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
@@ -21,7 +21,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class SymbolDoodadRainbow extends SymbolBase {
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		Number angle = controller.popModifier(ModifierUtils.ANGLE).asNumber();
 		controller.registerInterface(new CelestialObject(controller, seed, angle));
 	}
@@ -39,7 +39,7 @@ public class SymbolDoodadRainbow extends SymbolBase {
 		private boolean	initialized;
 		private Integer	rainbowGLCallList	= null;
 
-		CelestialObject(IAgeController controller, long seed, Number angle) {
+		CelestialObject(AgeDirector controller, long seed, Number angle) {
 			rand = new Random(seed);
 			if (angle == null) {
 				angle = rand.nextDouble() * 360.0F;

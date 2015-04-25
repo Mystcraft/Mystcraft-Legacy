@@ -17,7 +17,7 @@ import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.page.SortingUtils.ComparatorSymbolAlphabetical;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
-public class ItemFactory {
+public class ItemFactoryImpl {
 
 	public ItemStack buildPage() {
 		return Page.createPage();

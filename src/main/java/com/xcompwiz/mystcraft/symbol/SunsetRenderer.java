@@ -11,17 +11,17 @@ import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class SunsetRenderer {
 	private float				colorsSunriseSunset[]	= new float[4];
-	protected IAgeController	controller;
+	protected AgeDirector	controller;
 	protected ColorGradient		gradient;
 
-	public SunsetRenderer(IAgeController controller, ColorGradient gradient) {
+	public SunsetRenderer(AgeDirector controller, ColorGradient gradient) {
 		this.controller = controller;
 		this.gradient = gradient;
 	}

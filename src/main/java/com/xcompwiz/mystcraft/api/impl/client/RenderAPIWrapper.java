@@ -1,13 +1,13 @@
 package com.xcompwiz.mystcraft.api.impl.client;
 
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
-import com.xcompwiz.mystcraft.api.hook.IRenderAPI;
+import com.xcompwiz.mystcraft.api.hook.RenderAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.util.Color;
 
-public class RenderAPIWrapper extends APIWrapper implements IRenderAPI {
+public class RenderAPIWrapper extends APIWrapper implements RenderAPI {
 
 	public RenderAPIWrapper(String modname) {
 		super(modname);

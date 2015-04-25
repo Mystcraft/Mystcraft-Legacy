@@ -2,9 +2,9 @@ package com.xcompwiz.mystcraft.nbt;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.xcompwiz.mystcraft.api.world.storage.IStorageObject;
+import com.xcompwiz.mystcraft.api.world.storage.StorageObject;
 
-public class NBTTagCompoundWrapper implements IStorageObject {
+public class NBTTagCompoundWrapper implements StorageObject {
 
 	private NBTTagCompound	compoundTag;
 	@SuppressWarnings("unused")

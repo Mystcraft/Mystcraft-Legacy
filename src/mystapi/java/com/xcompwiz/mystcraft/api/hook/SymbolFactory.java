@@ -6,14 +6,14 @@ import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import net.minecraft.block.Block;
 
 /**
- * Provides methods for generating boilerplate {@link IAgeSymbol}s. These methods do not register the symbol directly. Use the {@link ISymbolAPI} for that. The
+ * Provides methods for generating boilerplate {@link IAgeSymbol}s. These methods do not register the symbol directly. Use the {@link SymbolAPI} for that. The
  * implementation of this is provided by MystAPI Do NOT implement this yourself!
  * @author xcompwiz
  */
-public interface ISymbolFactory {
+public interface SymbolFactory {
 
 	/**
-	 * Creates a block modifier symbol from a specified block. Remember to register the symbol via {@link ISymbolAPI}.
+	 * Creates a block modifier symbol from a specified block. Remember to register the symbol via {@link SymbolAPI}.
 	 * @param block The block to use
 	 * @param metadata The metadata value to use
 	 * @param thirdword The third word in the Narayan poem (symbol rendering)

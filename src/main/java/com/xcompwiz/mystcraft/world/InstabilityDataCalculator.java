@@ -15,6 +15,7 @@ import net.minecraftforge.event.world.WorldEvent;
 
 import com.mojang.authlib.GameProfile;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAllow;
+import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy;
@@ -25,7 +26,6 @@ import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.network.packet.MPacketProfilingState;
-import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
 import com.xcompwiz.mystcraft.world.gen.ChunkProfilerManager;
 
@@ -178,7 +178,7 @@ public class InstabilityDataCalculator {
 		if (dimId != null && event.player.dimension == dimId) {
 			ILinkInfo link = new LinkOptions(null);
 			link.setDimensionUID(0);
-			link.setFlag(ILinkPropertyAPI.FLAG_TPCOMMAND, true);
+			link.setFlag(LinkPropertyAPI.FLAG_TPCOMMAND, true);
 			LinkController.travelEntity(event.player.worldObj, event.player, link);
 		}
 	}
@@ -213,7 +213,7 @@ public class InstabilityDataCalculator {
 		if (dimId != null && event.toDim == dimId) {
 			ILinkInfo link = new LinkOptions(null);
 			link.setDimensionUID(0);
-			link.setFlag(ILinkPropertyAPI.FLAG_TPCOMMAND, true);
+			link.setFlag(LinkPropertyAPI.FLAG_TPCOMMAND, true);
 			LinkController.travelEntity(event.player.worldObj, event.player, link);
 		}
 	}

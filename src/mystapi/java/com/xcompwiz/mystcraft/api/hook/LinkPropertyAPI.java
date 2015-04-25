@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.oldapi.internal;
+package com.xcompwiz.mystcraft.api.hook;
 
 import java.util.Collection;
 import java.util.Map;
@@ -14,7 +14,7 @@ import com.xcompwiz.mystcraft.api.util.ColorGradient;
  * NOT implement this yourself!
  * @author xcompwiz
  */
-public interface ILinkPropertyAPI {
+public interface LinkPropertyAPI {
 
 	/* String ids for standard link flags */
 	/** The link can stay within the same dimension */

@@ -9,14 +9,14 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGenLakesAdv;
 
 public class SymbolLakesSurface extends SymbolBase {
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		BlockDescriptor block = ModifierUtils.popBlockMatching(controller, BlockCategory.FLUID);
 		WorldGenerator generator = null;
 		if (block != null) {

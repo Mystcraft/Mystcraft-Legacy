@@ -12,5 +12,5 @@ public interface IInstabilityProvider {
 	 * session.
 	 * @param level The level (stack count) of the provider [1-inf)
 	 */
-	public void addEffects(IInstabilityController controller, Integer level);
+	public void addEffects(InstabilityDirector controller, Integer level);
 }

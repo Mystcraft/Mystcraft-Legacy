@@ -27,7 +27,7 @@ import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.api.world.logic.IChunkProviderFinalization;
 import com.xcompwiz.mystcraft.api.world.logic.ICloudColorProvider;
@@ -63,7 +63,7 @@ import com.xcompwiz.util.SpiralOutwardIterator;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class AgeController implements IAgeController {
+public class AgeController implements AgeDirector {
 	private static final int					MINCHUNKS			= 400;
 
 	private World								world;

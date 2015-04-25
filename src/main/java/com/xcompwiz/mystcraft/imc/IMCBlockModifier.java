@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
 
-import com.xcompwiz.mystcraft.api.hook.ISymbolFactory.CategoryPair;
+import com.xcompwiz.mystcraft.api.hook.SymbolFactory.CategoryPair;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.imc.IMCHandler.IMCProcessor;

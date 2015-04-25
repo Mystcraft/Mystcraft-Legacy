@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IStarfield;
 import com.xcompwiz.mystcraft.data.Assets.Vanilla;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
@@ -18,7 +18,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 public class SymbolStarsEndSky extends SymbolBase {
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		ColorGradient gradient = ModifierUtils.popGradient(controller, .156F, .156F, .156F); // 2631720 = 0010 1000 0010 1000 0010 1000 = #282828
 		controller.registerInterface(new SkyBackground(controller, seed, gradient));
 		controller.setHorizon(0);
@@ -34,9 +34,9 @@ public class SymbolStarsEndSky extends SymbolBase {
 	private static class SkyBackground implements IStarfield {
 
 		private ColorGradient	gradient;
-		private IAgeController	controller;
+		private AgeDirector	controller;
 
-		SkyBackground(IAgeController controller, long seed, ColorGradient gradient) {
+		SkyBackground(AgeDirector controller, long seed, ColorGradient gradient) {
 			this.controller = controller;
 			this.gradient = gradient;
 		}

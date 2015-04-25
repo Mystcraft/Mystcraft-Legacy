@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 import com.xcompwiz.mystcraft.api.MystObjects;
-import com.xcompwiz.mystcraft.api.hook.ISymbolFactory.CategoryPair;
+import com.xcompwiz.mystcraft.api.hook.SymbolFactory.CategoryPair;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;

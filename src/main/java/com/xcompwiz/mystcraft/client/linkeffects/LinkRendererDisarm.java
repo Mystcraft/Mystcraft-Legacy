@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
+import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
-import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,7 +28,7 @@ public class LinkRendererDisarm implements ILinkPanelEffect {
 
 	@Override
 	public void render(int i, int j, int k, int l, ILinkInfo linkInfo, ItemStack bookclone) {
-		if (linkInfo.getFlag(ILinkPropertyAPI.FLAG_DISARM)) {
+		if (linkInfo.getFlag(LinkPropertyAPI.FLAG_DISARM)) {
 			long now = System.currentTimeMillis();
 			long delta = now - lasttime;
 			if ((delta > 3000 && rand.nextInt(3000) == 0) || delta > 8000) {

@@ -7,7 +7,7 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenNetherBridge;
 
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainFeatureLocator;
@@ -16,7 +16,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 public class SymbolNetherFort extends SymbolBase {
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		MapGenNetherBridge generator = new MapGenNetherBridge();
 		controller.registerInterface(new TerrainAlteration(generator));
 		controller.registerInterface(new Populator(generator));

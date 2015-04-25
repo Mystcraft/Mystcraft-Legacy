@@ -6,13 +6,13 @@ import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 import com.xcompwiz.mystcraft.api.impl.client.RenderAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.grammar.GrammarAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.instability.InstabilityAPIDelegate;
-import com.xcompwiz.mystcraft.api.impl.instability.InstabilityFactory;
-import com.xcompwiz.mystcraft.api.impl.item.ItemFactory;
+import com.xcompwiz.mystcraft.api.impl.instability.InstabilityFactoryImpl;
+import com.xcompwiz.mystcraft.api.impl.item.ItemFactoryImpl;
 import com.xcompwiz.mystcraft.api.impl.linking.DimensionAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.linking.LinkingAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.page.PageAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.symbol.SymbolAPIDelegate;
-import com.xcompwiz.mystcraft.api.impl.symbol.SymbolFactory;
+import com.xcompwiz.mystcraft.api.impl.symbol.SymbolFactoryImpl;
 import com.xcompwiz.mystcraft.page.SortingUtils.ComparatorItemSymbolAlphabetical;
 
 public class InternalAPI {
@@ -28,9 +28,9 @@ public class InternalAPI {
 	public static PageAPIDelegate			page;
 	public static RenderAPIDelegate			render;
 
-	public static InstabilityFactory		instabilityFact;
-	public static SymbolFactory				symbolFact;
-	public static ItemFactory				itemFact;
+	public static InstabilityFactoryImpl	instabilityFact;
+	public static SymbolFactoryImpl			symbolFact;
+	public static ItemFactoryImpl			itemFact;
 
 	public static void initAPI() {
 		LinkingAPIDelegate linking_delegate = new LinkingAPIDelegate();
@@ -39,17 +39,17 @@ public class InternalAPI {
 		linkProperties = linking_delegate;
 
 		instability = new InstabilityAPIDelegate();
-		instabilityFact = new InstabilityFactory();
+		instabilityFact = new InstabilityFactoryImpl();
 
 		SymbolAPIDelegate symbol_delegate = new SymbolAPIDelegate();
 		symbol = symbol_delegate;
 		word = symbol_delegate;
 		symbolValues = symbol_delegate;
 		grammar = new GrammarAPIDelegate();
-		symbolFact = new SymbolFactory();
+		symbolFact = new SymbolFactoryImpl();
 
 		page = new PageAPIDelegate();
-		itemFact = new ItemFactory();
+		itemFact = new ItemFactoryImpl();
 
 		render = new RenderAPIDelegate();
 

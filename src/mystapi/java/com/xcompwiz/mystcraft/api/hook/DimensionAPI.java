@@ -6,7 +6,7 @@ import java.util.Collection;
  * Functions for interacting with Mystcraft dimensions. The implementation of this is provided by MystAPI. Do NOT implement this yourself!
  * @author xcompwiz
  */
-public interface IDimensionAPI {
+public interface DimensionAPI {
 
 	/**
 	 * @return An immutable list of all the dimension ids which are Mystcraft dimensions

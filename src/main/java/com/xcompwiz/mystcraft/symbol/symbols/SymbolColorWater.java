@@ -5,14 +5,14 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.Color;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorWater extends SymbolBase {
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		Color color = controller.popModifier(ModifierUtils.COLOR).asColor();
 		controller.registerInterface(new StaticColorProvider(IStaticColorProvider.WATER, color));
 	}

@@ -7,13 +7,13 @@ import net.minecraft.world.biome.BiomeGenBase;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.ISkyColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorSky extends SymbolBase {
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		ColorGradient gradient = ModifierUtils.popGradient(controller, 1, 1, 1);
 		controller.registerInterface(new Colorizer(controller, gradient));
 	}
@@ -25,9 +25,9 @@ public class SymbolColorSky extends SymbolBase {
 
 	private class Colorizer implements ISkyColorProvider {
 		ColorGradient			gradient;
-		private IAgeController	controller;
+		private AgeDirector	controller;
 
-		public Colorizer(IAgeController controller, ColorGradient gradient) {
+		public Colorizer(AgeDirector controller, ColorGradient gradient) {
 			this.controller = controller;
 			this.gradient = gradient;
 		}

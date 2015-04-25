@@ -7,7 +7,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 
 /**
@@ -94,7 +94,7 @@ public final class ModifierUtils {
 	 * @param controller The controller passed to the symbol during logic registration
 	 * @return A valid gradient object
 	 */
-	public static ColorGradient popGradient(IAgeController controller) {
+	public static ColorGradient popGradient(AgeDirector controller) {
 		ColorGradient gradient = controller.popModifier(GRADIENT).asGradient();
 		if (gradient == null) gradient = new ColorGradient();
 		if (gradient.getColorCount() == 0) gradient.pushColor(controller.popModifier(COLOR).asColor());
@@ -112,7 +112,7 @@ public final class ModifierUtils {
 	 * @param b The default color value to use (blue component)
 	 * @return A valid gradient object
 	 */
-	public static ColorGradient popGradient(IAgeController controller, float r, float g, float b) {
+	public static ColorGradient popGradient(AgeDirector controller, float r, float g, float b) {
 		ColorGradient gradient = popGradient(controller);
 		if (gradient.getColorCount() == 0) gradient.pushColor(new Color(r, g, b));
 		return gradient;
@@ -126,7 +126,7 @@ public final class ModifierUtils {
 	 * @return A block descriptor, if one satisfying the category is found. Otherwise null
 	 */
 	@Deprecated
-	public static BlockDescriptor popBlockOfType(IAgeController controller, BlockCategory type) {
+	public static BlockDescriptor popBlockOfType(AgeDirector controller, BlockCategory type) {
 		return popBlockMatching(controller, type);
 	}
 
@@ -136,7 +136,7 @@ public final class ModifierUtils {
 	 * @param types The generation categories to match against
 	 * @return A block descriptor, if one satisfying the category is found. Otherwise null
 	 */
-	public static BlockDescriptor popBlockMatching(IAgeController controller, BlockCategory... types) {
+	public static BlockDescriptor popBlockMatching(AgeDirector controller, BlockCategory... types) {
 		Modifier modifier = controller.popModifier("blocklist");
 		List<BlockDescriptor> list = modifier.asList();
 		if (list == null) return null;
@@ -159,7 +159,7 @@ public final class ModifierUtils {
 	 * @param controller The controller passed to the symbol during logic registration
 	 * @param block The block descriptor to push to the queue
 	 */
-	public static void pushBlock(IAgeController controller, BlockDescriptor block) {
+	public static void pushBlock(AgeDirector controller, BlockDescriptor block) {
 		Modifier modifier = controller.popModifier("blocklist");
 		List<BlockDescriptor> list = modifier.asList();
 		if (list == null) {
@@ -171,7 +171,7 @@ public final class ModifierUtils {
 		controller.setModifier("blocklist", modifier);
 	}
 
-	public static void pushBiome(IAgeController controller, BiomeGenBase biome) {
+	public static void pushBiome(AgeDirector controller, BiomeGenBase biome) {
 		Modifier modifier = controller.popModifier("biomelist");
 		List<BiomeGenBase> list = modifier.asList();
 		if (list == null) {
@@ -183,7 +183,7 @@ public final class ModifierUtils {
 		controller.setModifier("biomelist", modifier);
 	}
 
-	public static BiomeGenBase popBiome(IAgeController controller) {
+	public static BiomeGenBase popBiome(AgeDirector controller) {
 		Modifier modifier = controller.popModifier("biomelist");
 		List<BiomeGenBase> list = modifier.asList();
 		if (list == null || list.size() == 0) return null;

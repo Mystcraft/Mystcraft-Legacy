@@ -1,7 +1,7 @@
 package com.xcompwiz.mystcraft.api.symbol;
 
 import com.xcompwiz.mystcraft.api.word.WordData;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 
 /**
  * Implement and register this through the ISymbolAPI to add your own symbols to Mystcraft
@@ -15,7 +15,7 @@ public interface IAgeSymbol {
 	 * @param A unique seed for the symbol call. The seed is based on the age seed and the order of the symbols, providing a deterministic way of making the
 	 *            same symbol produce different results within the same age
 	 */
-	public abstract void registerLogic(IAgeController controller, long seed);
+	public abstract void registerLogic(AgeDirector controller, long seed);
 
 	/**
 	 * How much instability should be added to the world. This is called every time the symbol is added to the world (if it is stacked). It is not necessary to

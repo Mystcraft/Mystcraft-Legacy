@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IStarfield;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
@@ -23,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class SymbolStarsTwinkle extends SymbolBase {
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		Number period = controller.popModifier(ModifierUtils.FACTOR).asNumber();
 		Number angle = controller.popModifier(ModifierUtils.ANGLE).asNumber();
 		ColorGradient gradient = ModifierUtils.popGradient(controller, 1, 1, 1);
@@ -47,9 +47,9 @@ public class SymbolStarsTwinkle extends SymbolBase {
 		private float				angle;
 		private float				offset		= 0;
 		private ColorGradient		gradient;
-		private IAgeController		controller;
+		private AgeDirector		controller;
 
-		SkyBackground(IAgeController controller, long seed, Number period, Number angle, ColorGradient gradient) {
+		SkyBackground(AgeDirector controller, long seed, Number period, Number angle, ColorGradient gradient) {
 			this.controller = controller;
 			rand = new Random(seed);
 			if (period == null) {

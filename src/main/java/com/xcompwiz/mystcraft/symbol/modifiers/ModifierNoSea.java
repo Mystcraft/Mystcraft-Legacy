@@ -5,7 +5,7 @@ import net.minecraft.init.Blocks;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class ModifierNoSea extends SymbolBase {
@@ -18,7 +18,7 @@ public class ModifierNoSea extends SymbolBase {
 	}
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		ModifierUtils.pushBlock(controller, blockDescriptor);
 	}
 

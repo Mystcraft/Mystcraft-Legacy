@@ -1,18 +1,17 @@
-package com.xcompwiz.mystcraft.oldapi.internal;
+package com.xcompwiz.mystcraft.api.hook;
 
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-import com.xcompwiz.mystcraft.api.hook.IGrammarAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 /**
- * Allows the setting of various treasure rarity and weighting values for symbols. See {@link IGrammarAPI} for setting the grammar rule(s) for a symbol. These
+ * Allows the setting of various treasure rarity and weighting values for symbols. See {@link GrammarAPI} for setting the grammar rule(s) for a symbol. These
  * should be set before post-init. The implementation of this is provided by MystAPI. Do NOT implement this yourself!
  * @author xcompwiz
  */
-public interface ISymbolValuesAPI {
+public interface SymbolValuesAPI {
 	/**
 	 * Sets the symbol's rarity ranking which controls the weight used when generating treasure and selecting pages for trades. Rank 0 is very common, 1 is
 	 * common, 2 is uncommon, and 3 and up is rare. Higher numbers result in higher rarity.

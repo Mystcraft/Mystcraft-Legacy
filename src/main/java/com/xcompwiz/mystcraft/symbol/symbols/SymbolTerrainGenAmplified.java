@@ -3,14 +3,14 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.symbols.SymbolTerrainGenNormal.TerrainGeneratorNormal;
 
 public class SymbolTerrainGenAmplified extends SymbolBase {
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		TerrainGeneratorNormal gen = new TerrainGeneratorNormal(controller, true);
 		BlockDescriptor block;
 		block = ModifierUtils.popBlockMatching(controller, BlockCategory.SEA);

@@ -15,11 +15,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.xcompwiz.mystcraft.api.event.StarFissureLinkEvent;
+import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.data.Sounds;
 import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
-import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 import com.xcompwiz.mystcraft.tileentity.TileEntityStarFissure;
 
 import cpw.mods.fml.relauncher.Side;
@@ -30,9 +30,9 @@ public class BlockStarFissure extends BlockContainer {
 	private static LinkOptions	defaultstarfissure	= new LinkOptions(null);
 	static {
 		defaultstarfissure.setDimensionUID(0);
-		defaultstarfissure.setFlag(ILinkPropertyAPI.FLAG_NATURAL, true);
-		defaultstarfissure.setFlag(ILinkPropertyAPI.FLAG_EXTERNAL, true);
-		defaultstarfissure.setProperty(ILinkPropertyAPI.PROP_SOUND, Sounds.FISSURELINK);
+		defaultstarfissure.setFlag(LinkPropertyAPI.FLAG_NATURAL, true);
+		defaultstarfissure.setFlag(LinkPropertyAPI.FLAG_EXTERNAL, true);
+		defaultstarfissure.setProperty(LinkPropertyAPI.PROP_SOUND, Sounds.FISSURELINK);
 	}
 
 	public BlockStarFissure(Material material) {

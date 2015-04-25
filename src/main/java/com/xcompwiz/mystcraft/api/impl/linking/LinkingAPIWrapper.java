@@ -4,12 +4,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.api.hook.ILinkingAPI;
+import com.xcompwiz.mystcraft.api.hook.LinkingAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
-public class LinkingAPIWrapper extends APIWrapper implements ILinkingAPI {
+public class LinkingAPIWrapper extends APIWrapper implements LinkingAPI {
 
 	public LinkingAPIWrapper(String modname) {
 		super(modname);

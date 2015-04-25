@@ -20,7 +20,7 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
 
 import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.api.world.storage.IStorageObject;
+import com.xcompwiz.mystcraft.api.world.storage.StorageObject;
 import com.xcompwiz.mystcraft.data.GrammarRules;
 import com.xcompwiz.mystcraft.debug.DebugFlags;
 import com.xcompwiz.mystcraft.grammar.GrammarTree;
@@ -342,7 +342,7 @@ public class AgeData extends WorldSavedData {
 		return (new StringBuilder()).append("agedata_").append(uid).toString();
 	}
 
-	public IStorageObject getStorageObject(String string) {
+	public StorageObject getStorageObject(String string) {
 		if (!datacompound.hasKey(string)) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			datacompound.setTag(string, nbttagcompound);

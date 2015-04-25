@@ -1,11 +1,11 @@
 package com.xcompwiz.mystcraft.api.impl.word;
 
-import com.xcompwiz.mystcraft.api.hook.IWordAPI;
+import com.xcompwiz.mystcraft.api.hook.WordAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.word.DrawableWord;
 
-public class WordAPIWrapper extends APIWrapper implements IWordAPI {
+public class WordAPIWrapper extends APIWrapper implements WordAPI {
 
 	public WordAPIWrapper(String modname) {
 		super(modname);

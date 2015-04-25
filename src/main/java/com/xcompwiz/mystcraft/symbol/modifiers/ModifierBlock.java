@@ -7,7 +7,7 @@ import net.minecraft.util.StatCollector;
 import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.word.WordData;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class ModifierBlock extends SymbolBase {
@@ -39,7 +39,7 @@ public class ModifierBlock extends SymbolBase {
 	}
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		ModifierUtils.pushBlock(controller, blockDescriptor);
 	}
 

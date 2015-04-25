@@ -4,7 +4,7 @@ package com.xcompwiz.mystcraft.api.world.storage;
  * Do NOT implement this yourself!
  * @author xcompwiz
  */
-public interface IStorageObject {
+public interface StorageObject {
 
 	public abstract boolean getBoolean(String string);
 

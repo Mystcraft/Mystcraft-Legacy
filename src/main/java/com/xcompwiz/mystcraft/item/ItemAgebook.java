@@ -15,13 +15,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
+import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.item.IItemWritable;
 import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
-import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
@@ -47,7 +47,7 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		if (itemstack.stackTagCompound == null) {
 			itemstack.stackTagCompound = new NBTTagCompound();
 			//FIXME: Empty books do what?
-			LinkOptions.setFlag(itemstack.stackTagCompound, ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, true);
+			LinkOptions.setFlag(itemstack.stackTagCompound, LinkPropertyAPI.FLAG_GENERATE_PLATFORM, true);
 			((ItemAgebook)itemstack.getItem()).addPages(itemstack, Collections.singleton(Page.createLinkPage()));
 		}
 	}
@@ -56,7 +56,7 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		itemstack.setTagCompound(new NBTTagCompound());
 		LinkOptions.setDimensionUID(itemstack.stackTagCompound, dimId);
 		LinkOptions.setDisplayName(itemstack.stackTagCompound, bookdata.getAgeName());
-		LinkOptions.setFlag(itemstack.stackTagCompound, ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, true);
+		LinkOptions.setFlag(itemstack.stackTagCompound, LinkPropertyAPI.FLAG_GENERATE_PLATFORM, true);
 		((ItemAgebook)itemstack.getItem()).addPages(itemstack, bookdata.getPages());
 	}
 

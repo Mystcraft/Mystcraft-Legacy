@@ -14,8 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.util.Color;
-import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 
 public class InkEffects {
 
@@ -118,51 +118,51 @@ public class InkEffects {
 	}
 
 	public static void init() {
-		registerProperty(ILinkPropertyAPI.FLAG_INTRA_LINKING, new Color(0, 1, 0));
-		registerProperty(ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, new Color(0.5F, 0.5F, 0.5F));
-		registerProperty(ILinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM, new Color(0, 0, 1));
-		registerProperty(ILinkPropertyAPI.FLAG_DISARM, new Color(1, 0, 0));
-		registerProperty(ILinkPropertyAPI.FLAG_RELATIVE, new Color(0.6F, 0, 0.6F));
+		registerProperty(LinkPropertyAPI.FLAG_INTRA_LINKING, new Color(0, 1, 0));
+		registerProperty(LinkPropertyAPI.FLAG_GENERATE_PLATFORM, new Color(0.5F, 0.5F, 0.5F));
+		registerProperty(LinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM, new Color(0, 0, 1));
+		registerProperty(LinkPropertyAPI.FLAG_DISARM, new Color(1, 0, 0));
+		registerProperty(LinkPropertyAPI.FLAG_RELATIVE, new Color(0.6F, 0, 0.6F));
 
-		addPropertyToItem(new ItemStack(Items.gunpowder), ILinkPropertyAPI.FLAG_DISARM, 0.2F);
+		addPropertyToItem(new ItemStack(Items.gunpowder), LinkPropertyAPI.FLAG_DISARM, 0.2F);
 
-		addPropertyToItem(new ItemStack(Items.mushroom_stew), ILinkPropertyAPI.FLAG_DISARM, 0.05F);
+		addPropertyToItem(new ItemStack(Items.mushroom_stew), LinkPropertyAPI.FLAG_DISARM, 0.05F);
 
-		addPropertyToItem(new ItemStack(Items.clay_ball), ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, 0.25F);
+		addPropertyToItem(new ItemStack(Items.clay_ball), LinkPropertyAPI.FLAG_GENERATE_PLATFORM, 0.25F);
 
-		addPropertyToItem(new ItemStack(Items.experience_bottle), ILinkPropertyAPI.FLAG_INTRA_LINKING, 0.15F);
+		addPropertyToItem(new ItemStack(Items.experience_bottle), LinkPropertyAPI.FLAG_INTRA_LINKING, 0.15F);
 
 		addPropertyToItem("dyeBlack", "", 0.5F); // Black Dye
 
-		addPropertyToItem(new ItemStack(Items.ender_pearl), ILinkPropertyAPI.FLAG_INTRA_LINKING, 0.15F);
-		addPropertyToItem(new ItemStack(Items.ender_pearl), ILinkPropertyAPI.FLAG_DISARM, 0.15F);
+		addPropertyToItem(new ItemStack(Items.ender_pearl), LinkPropertyAPI.FLAG_INTRA_LINKING, 0.15F);
+		addPropertyToItem(new ItemStack(Items.ender_pearl), LinkPropertyAPI.FLAG_DISARM, 0.15F);
 
-		addPropertyToItem(new ItemStack(Items.feather), ILinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM, 0.15F);
+		addPropertyToItem(new ItemStack(Items.feather), LinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM, 0.15F);
 
 		// addPropertyToItem(Items.ghastTear, LinkOptions.FLAG_RELATIVE, 0.15F);
 
-		addPropertyToItem(Items.fire_charge, ILinkPropertyAPI.FLAG_DISARM, 0.25F);
+		addPropertyToItem(Items.fire_charge, LinkPropertyAPI.FLAG_DISARM, 0.25F);
 
 		// addPropertyToItem(Items.redstone), "Self-Powered", 1.0F);
 		// addPropertyToItem(Items.dyePowder, 4, "", 0.0F); //Lapis Lazuli
 
-		addPropertyToItem("dustBrass", ILinkPropertyAPI.FLAG_DISARM, 0.15F);
-		addPropertyToItem("dustBronze", ILinkPropertyAPI.FLAG_DISARM, 0.15F);
+		addPropertyToItem("dustBrass", LinkPropertyAPI.FLAG_DISARM, 0.15F);
+		addPropertyToItem("dustBronze", LinkPropertyAPI.FLAG_DISARM, 0.15F);
 		// addPropertyToItem("dustCoal", LinkOptions.FLAG_INTRA_LINKING, 0.5F);
-		addPropertyToItem("dustTin", ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, 0.1F);
-		addPropertyToItem("dustTin", ILinkPropertyAPI.FLAG_INTRA_LINKING, 0.1F);
-		addPropertyToItem("dustIron", ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, 0.15F);
-		addPropertyToItem("dustIron", ILinkPropertyAPI.FLAG_INTRA_LINKING, 0.15F);
-		addPropertyToItem("dustLead", ILinkPropertyAPI.FLAG_DISARM, 0.2F);
-		addPropertyToItem("dustLead", ILinkPropertyAPI.FLAG_INTRA_LINKING, 0.2F);
-		addPropertyToItem("dustSilver", ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, 0.2F);
-		addPropertyToItem("dustSilver", ILinkPropertyAPI.FLAG_INTRA_LINKING, 0.2F);
-		addPropertyToItem("dustDiamond", ILinkPropertyAPI.FLAG_INTRA_LINKING, 0.25F);
-		addPropertyToItem("dustDiamond", ILinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM, 0.1F);
-		addPropertyToItem("dustDiamond", ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, 0.1F);
-		addPropertyToItem("dustGold", ILinkPropertyAPI.FLAG_INTRA_LINKING, 0.25F);
-		addPropertyToItem("dustGold", ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, 0.1F);
-		addPropertyToItem("dustGold", ILinkPropertyAPI.FLAG_DISARM, 0.1F);
+		addPropertyToItem("dustTin", LinkPropertyAPI.FLAG_GENERATE_PLATFORM, 0.1F);
+		addPropertyToItem("dustTin", LinkPropertyAPI.FLAG_INTRA_LINKING, 0.1F);
+		addPropertyToItem("dustIron", LinkPropertyAPI.FLAG_GENERATE_PLATFORM, 0.15F);
+		addPropertyToItem("dustIron", LinkPropertyAPI.FLAG_INTRA_LINKING, 0.15F);
+		addPropertyToItem("dustLead", LinkPropertyAPI.FLAG_DISARM, 0.2F);
+		addPropertyToItem("dustLead", LinkPropertyAPI.FLAG_INTRA_LINKING, 0.2F);
+		addPropertyToItem("dustSilver", LinkPropertyAPI.FLAG_GENERATE_PLATFORM, 0.2F);
+		addPropertyToItem("dustSilver", LinkPropertyAPI.FLAG_INTRA_LINKING, 0.2F);
+		addPropertyToItem("dustDiamond", LinkPropertyAPI.FLAG_INTRA_LINKING, 0.25F);
+		addPropertyToItem("dustDiamond", LinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM, 0.1F);
+		addPropertyToItem("dustDiamond", LinkPropertyAPI.FLAG_GENERATE_PLATFORM, 0.1F);
+		addPropertyToItem("dustGold", LinkPropertyAPI.FLAG_INTRA_LINKING, 0.25F);
+		addPropertyToItem("dustGold", LinkPropertyAPI.FLAG_GENERATE_PLATFORM, 0.1F);
+		addPropertyToItem("dustGold", LinkPropertyAPI.FLAG_DISARM, 0.1F);
 		// addPropertyToItem("dustCopper", LinkOptions.FLAG_RELATIVE, 0.05F);
 	}
 }

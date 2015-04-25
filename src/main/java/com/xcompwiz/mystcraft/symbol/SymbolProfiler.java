@@ -7,7 +7,7 @@ import net.minecraft.world.biome.WorldChunkManager;
 
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.api.world.logic.IChunkProviderFinalization;
 import com.xcompwiz.mystcraft.api.world.logic.ICloudColorProvider;
@@ -28,7 +28,7 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
 import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 
-public class SymbolProfiler implements IAgeController {
+public class SymbolProfiler implements AgeDirector {
 
 	private HashMap<Class<?>, HashSet<IAgeSymbol>>	registrations	= new HashMap<Class<?>, HashSet<IAgeSymbol>>();
 	private HashSet<IAgeSymbol>						cloudHeight		= new HashSet<IAgeSymbol>();

@@ -10,11 +10,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
 
+import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
-import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 
 public class CommandTPX extends CommandBaseAdv {
 
@@ -90,7 +90,7 @@ public class CommandTPX extends CommandBaseAdv {
 
 		link = getLinkInfoForTarget(sender, subject, sTarget, sX, sY, sZ);
 
-		link.setFlag(ILinkPropertyAPI.FLAG_INTRA_LINKING, true);
+		link.setFlag(LinkPropertyAPI.FLAG_INTRA_LINKING, true);
 		makeOpTP(link);
 		LinkController.travelEntity(subject.worldObj, subject, link);
 	}
@@ -118,10 +118,10 @@ public class CommandTPX extends CommandBaseAdv {
 	}
 
 	public static boolean isOpTP(ILinkInfo link) {
-		return link.getFlag(ILinkPropertyAPI.FLAG_TPCOMMAND);
+		return link.getFlag(LinkPropertyAPI.FLAG_TPCOMMAND);
 	}
 
 	private void makeOpTP(ILinkInfo link) {
-		link.setFlag(ILinkPropertyAPI.FLAG_TPCOMMAND, true);
+		link.setFlag(LinkPropertyAPI.FLAG_TPCOMMAND, true);
 	}
 }

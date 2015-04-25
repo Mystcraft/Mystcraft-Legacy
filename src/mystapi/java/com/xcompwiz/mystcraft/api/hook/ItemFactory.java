@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
  * Provides a set of functions for building Mystcraft items. Do NOT implement this yourself!
  * @author xcompwiz
  */
-public interface IItemFactory {
+public interface ItemFactory {
 
 	/**
 	 * @return A blank Mystcraft page itemstack

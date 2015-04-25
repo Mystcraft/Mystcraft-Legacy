@@ -1,7 +1,7 @@
 package com.xcompwiz.mystcraft.symbol.modifiers;
 
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class ModifierLength extends SymbolBase {
@@ -16,7 +16,7 @@ public class ModifierLength extends SymbolBase {
 	}
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		Number prev = controller.popModifier(ModifierUtils.FACTOR).asNumber();
 		float value = this.value;
 		if (prev != null) {

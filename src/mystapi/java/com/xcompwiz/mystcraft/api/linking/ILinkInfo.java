@@ -4,12 +4,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 
 import com.xcompwiz.mystcraft.api.event.LinkEvent;
-import com.xcompwiz.mystcraft.api.hook.ILinkingAPI;
+import com.xcompwiz.mystcraft.api.hook.LinkingAPI;
 
 /**
  * This is an object describing all the information needed to link an entity using the Mystcraft teleport mechanics. Conversion functions to and from
  * NBTTagCompounds are provided by the API so that the description is easy to store. Unless you want to do something very specific with linking, you should not
- * implement this yourself. Instead, get a valid link object using the {@link ILinkingAPI}
+ * implement this yourself. Instead, get a valid link object using the {@link LinkingAPI}
  */
 public interface ILinkInfo {
 	/**

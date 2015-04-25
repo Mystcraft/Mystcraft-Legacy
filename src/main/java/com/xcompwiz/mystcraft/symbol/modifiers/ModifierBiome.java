@@ -8,7 +8,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.word.WordData;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class ModifierBiome extends SymbolBase {
@@ -34,7 +34,7 @@ public class ModifierBiome extends SymbolBase {
 	}
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		controller.setAverageGroundLevel((int) ((biome.rootHeight) * 64 + 64));
 		ModifierUtils.pushBiome(controller, biome);
 	}

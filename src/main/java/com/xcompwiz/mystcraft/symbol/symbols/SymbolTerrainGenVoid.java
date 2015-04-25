@@ -2,14 +2,14 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import net.minecraft.block.Block;
 
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolTerrainGenVoid extends SymbolBase {
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		controller.registerInterface(new TerrainGenerator());
 		controller.setCloudHeight(0);
 		controller.setHorizon(0);

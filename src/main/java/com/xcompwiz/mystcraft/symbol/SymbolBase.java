@@ -6,7 +6,7 @@ import net.minecraft.util.StatCollector;
 
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 
 public abstract class SymbolBase implements IAgeSymbol {
@@ -60,7 +60,7 @@ public abstract class SymbolBase implements IAgeSymbol {
 	}
 
 	@Override
-	public abstract void registerLogic(IAgeController controller, long seed);
+	public abstract void registerLogic(AgeDirector controller, long seed);
 
 	@Override
 	public int instabilityModifier(int count) {

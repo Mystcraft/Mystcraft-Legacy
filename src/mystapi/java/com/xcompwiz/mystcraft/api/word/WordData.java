@@ -1,6 +1,6 @@
 package com.xcompwiz.mystcraft.api.word;
 
-import com.xcompwiz.mystcraft.api.hook.IWordAPI;
+import com.xcompwiz.mystcraft.api.hook.WordAPI;
 
 
 /**
@@ -95,7 +95,7 @@ public final class WordData {
 	/**
 	 * Do not call this. This is called by Mystcraft itself.
 	 */
-	public static void init(IWordAPI wordAPI) {
+	public static void init(WordAPI wordAPI) {
 		if (wordAPI == null || initialized) return;
 		initialized = true;
 		wordAPI.registerWord(Nature, new Integer[] { 5, 6, 8, 10, 11, 12, 15, 16, 17, 22 }); // Narayan - Nature

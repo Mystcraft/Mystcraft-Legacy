@@ -21,11 +21,11 @@ import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventEnd;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventEnterWorld;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventExitWorld;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventStart;
+import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
 import com.xcompwiz.mystcraft.item.ItemLinkbook;
-import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
@@ -45,9 +45,9 @@ public class LinkListenerBasic {
 			event.setCanceled(true); //We'll need to override isLinkPermitted handling for unestablished links
 		} else if (entity.isDead || entity.worldObj != world || entity.riddenByEntity != null) {
 			event.setCanceled(true);
-		} else if (entity.worldObj.provider.dimensionId == dimid && !info.getFlag(ILinkPropertyAPI.FLAG_INTRA_LINKING)) {
+		} else if (entity.worldObj.provider.dimensionId == dimid && !info.getFlag(LinkPropertyAPI.FLAG_INTRA_LINKING)) {
 			event.setCanceled(true);
-		} else if (info.getFlag(ILinkPropertyAPI.FLAG_DISARM)) {
+		} else if (info.getFlag(LinkPropertyAPI.FLAG_DISARM)) {
 			if (entity instanceof EntityItem) {
 				event.setCanceled(true);
 			} else if (entity instanceof EntityLinkbook) {
@@ -63,7 +63,7 @@ public class LinkListenerBasic {
 		World newworld = event.destination;
 		ILinkInfo info = event.info;
 
-		if (info.getFlag(ILinkPropertyAPI.FLAG_RELATIVE)) {
+		if (info.getFlag(LinkPropertyAPI.FLAG_RELATIVE)) {
 			ChunkCoordinates origin = world.getSpawnPoint();
 			float dx = (int) (entity.posX - origin.posX);
 			float dy = (int) (entity.posY - origin.posY);
@@ -80,7 +80,7 @@ public class LinkListenerBasic {
 		Entity entity = event.entity;
 		ILinkInfo info = event.info;
 
-		if (info.getFlag(ILinkPropertyAPI.FLAG_DISARM)) {
+		if (info.getFlag(LinkPropertyAPI.FLAG_DISARM)) {
 			if (entity instanceof EntityPlayer) {
 				ejectInventory(entity.worldObj, ((EntityPlayer) entity).inventory, entity.posX, entity.posY, entity.posZ);
 			}
@@ -126,7 +126,7 @@ public class LinkListenerBasic {
 		ILinkInfo info = event.info;
 
 		ChunkCoordinates spawn = info.getSpawn();
-		if (info.getFlag(ILinkPropertyAPI.FLAG_GENERATE_PLATFORM) && world.isAirBlock(spawn.posX, spawn.posY - 1, spawn.posZ) && world.isAirBlock(spawn.posX, spawn.posY - 2, spawn.posZ)) {
+		if (info.getFlag(LinkPropertyAPI.FLAG_GENERATE_PLATFORM) && world.isAirBlock(spawn.posX, spawn.posY - 1, spawn.posZ) && world.isAirBlock(spawn.posX, spawn.posY - 2, spawn.posZ)) {
 			world.setBlock(spawn.posX, spawn.posY - 1, spawn.posZ, Blocks.stone, 0, 3);
 		}
 		if (entity instanceof EntityMinecart) {
@@ -136,7 +136,7 @@ public class LinkListenerBasic {
 	}
 
 	private static void handleMomentum(Entity entity, ILinkInfo info) {
-		if (!info.getFlag(ILinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM)) {
+		if (!info.getFlag(LinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM)) {
 			entity.motionX = entity.motionY = entity.motionZ = 0;
 			entity.fallDistance = 0;
 		} else {

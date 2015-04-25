@@ -15,7 +15,7 @@ import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
 import net.minecraft.world.gen.layer.IntCache;
 
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
@@ -25,7 +25,7 @@ import com.xcompwiz.mystcraft.world.gen.layer.GenLayerZoomMyst;
 public class SymbolBiomeControllerLarge extends SymbolBase {
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		List<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
 		BiomeGenBase biome;
 		biome = ModifierUtils.popBiome(controller);
@@ -55,7 +55,7 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 
 		private int					zoomscale;
 
-		protected BiomeController(IAgeController controller, int zoom, List<BiomeGenBase> biomes) {
+		protected BiomeController(AgeDirector controller, int zoom, List<BiomeGenBase> biomes) {
 			this.zoomscale = zoom;
 			biomeCache = new BiomeCache(controller.getWorldChunkManager());
 			biomesToSpawnIn = new ArrayList<BiomeGenBase>();

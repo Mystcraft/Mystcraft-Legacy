@@ -9,7 +9,7 @@ import java.util.Random;
  * this yourself!
  * @author xcompwiz
  */
-public interface IGrammarAPI {
+public interface GrammarAPI {
 
 	/**
 	 * Registers a rule for the grammar system. In general, symbols providing critical logic should only have a rule for that element. Otherwise, there is no

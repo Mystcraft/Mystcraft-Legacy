@@ -2,12 +2,12 @@ package com.xcompwiz.mystcraft.api.impl.symbol;
 
 import java.util.List;
 
-import com.xcompwiz.mystcraft.api.hook.ISymbolAPI;
+import com.xcompwiz.mystcraft.api.hook.SymbolAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
-public class SymbolAPIWrapper extends APIWrapper implements ISymbolAPI {
+public class SymbolAPIWrapper extends APIWrapper implements SymbolAPI {
 
 	public SymbolAPIWrapper(String modname) {
 		super(modname);

@@ -28,7 +28,7 @@ import com.xcompwiz.mystcraft.api.world.logic.Modifier;
  * inconsistent until all symbols are initialized. Contains functions for setting values or adding logic elements to the age which should be called from
  * AgeSymbol.instantiate. Do NOT implement this yourself!
  */
-public interface IAgeController {
+public interface AgeDirector {
 
 	/**
 	 * Binds a modifier property to the given id as an object. If there is already a modifier bound to this id then it is replaced and some instability is added

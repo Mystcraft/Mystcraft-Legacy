@@ -5,12 +5,12 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 
 public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 
-	protected IAgeController	controller;
+	protected AgeDirector	controller;
 
 	protected Random			bedrockGen;
 	private double				noise_field[];
@@ -28,7 +28,7 @@ public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 	private int					fillchunk		= 0;
 	private int					seachunk		= 0;
 
-	public TerrainGeneratorBase(IAgeController controller) {
+	public TerrainGeneratorBase(AgeDirector controller) {
 		super();
 		this.controller = controller;
 		bedrockGen = new Random(controller.getSeed());

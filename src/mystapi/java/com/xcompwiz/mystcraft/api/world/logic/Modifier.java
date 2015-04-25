@@ -5,10 +5,10 @@ import java.util.List;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 
 /**
- * The modifier object class This wraps the modifier objects registered to the {@link IAgeController} during symbol logic initialization. See
+ * The modifier object class This wraps the modifier objects registered to the {@link AgeDirector} during symbol logic initialization. See
  * {@link ModifierUtils} for more advanced modifier usages.
  * @author xcompwiz
  */

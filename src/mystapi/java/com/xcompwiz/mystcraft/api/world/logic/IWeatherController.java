@@ -3,12 +3,12 @@ package com.xcompwiz.mystcraft.api.world.logic;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
-import com.xcompwiz.mystcraft.api.world.storage.IStorageObject;
+import com.xcompwiz.mystcraft.api.world.storage.StorageObject;
 
 // FIXME: This interface needs to be revised/reworked completely
 // WARNING! If you use this interface, be prepared for this logic to vanish in a later version of the API
 public interface IWeatherController {
-	public abstract void setDataObject(IStorageObject infoObj);
+	public abstract void setDataObject(StorageObject infoObj);
 
 	public abstract void updateRaining();
 

@@ -9,6 +9,7 @@ import com.xcompwiz.mystcraft.api.exception.APIVersionUndefined;
  * This interface supports providing multiple versions of an API, so you can request ex. 'symbol-1' and always get the same interface,
  * enabling the API to move forward without breaking compatibility.
  * The provider instance provided to you, as well as any API interface instances created by it, will belong to the mod which requested the provider.
+ * To see what API interfaces are available, see the hook package.
  * @author xcompwiz
  */
 public interface APIInstanceProvider {

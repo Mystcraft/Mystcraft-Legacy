@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGenLakesAdv;
@@ -16,7 +16,7 @@ import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
 public class SymbolLakesDeep extends SymbolBase {
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		BlockDescriptor block = ModifierUtils.popBlockMatching(controller, BlockCategory.FLUID, BlockCategory.GAS);
 		WorldGeneratorAdv generator = null;
 		if (block != null) {
@@ -33,10 +33,10 @@ public class SymbolLakesDeep extends SymbolBase {
 	}
 
 	private class Populator implements IPopulate {
-		private IAgeController		controller;
+		private AgeDirector		controller;
 		private WorldGeneratorAdv	gen;
 
-		public Populator(IAgeController controller, WorldGeneratorAdv generator) {
+		public Populator(AgeDirector controller, WorldGeneratorAdv generator) {
 			this.controller = controller;
 			this.gen = generator;
 		}

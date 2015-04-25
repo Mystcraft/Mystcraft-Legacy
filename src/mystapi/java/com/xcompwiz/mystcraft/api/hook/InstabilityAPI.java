@@ -10,7 +10,7 @@ import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
  * implement this yourself!
  * @author xcompwiz
  */
-public interface IInstabilityAPI {
+public interface InstabilityAPI {
 
 	/**
 	 * Registers an instability provider to the instability system.

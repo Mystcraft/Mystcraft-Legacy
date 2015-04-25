@@ -9,7 +9,7 @@ import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
  * this is provided by MystAPI. Do NOT implement this yourself!
  * @author xcompwiz
  */
-public interface ISymbolAPI {
+public interface SymbolAPI {
 
 	/**
 	 * Use this to turn off/remove symbols by identifier (ex. from the core mod).
@@ -20,7 +20,7 @@ public interface ISymbolAPI {
 	/**
 	 * Registers a logic provider "Symbol" to the system. The symbol should provide logic elements, set values, or push modifier values to the IAgeController
 	 * passed to it. If a symbol throws an exception during profiling then the symbol will not be registered and the identifier will be blacklisted. Note: Don't
-	 * forget to create grammar rules for your symbols! See {@link IGrammarAPI}
+	 * forget to create grammar rules for your symbols! See {@link GrammarAPI}
 	 * @param symbol The AgeSymbol to register
 	 * @return Success
 	 */
@@ -29,7 +29,7 @@ public interface ISymbolAPI {
 	/**
 	 * Registers a logic provider "Symbol" to the system. The symbol should provide logic elements, set values, or push modifier values to the IAgeController
 	 * passed to it. If a symbol throws an exception during profiling then the symbol will not be registered and the identifier will be blacklisted. Note: Don't
-	 * forget to create grammar rules for your symbols! See {@link IGrammarAPI}
+	 * forget to create grammar rules for your symbols! See {@link GrammarAPI}
 	 * @param symbol The AgeSymbol to register
 	 * @param generateConfigOption Whether or not a config entry should be created for the symbol
 	 * @return Success

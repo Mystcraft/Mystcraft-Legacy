@@ -4,11 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import com.xcompwiz.mystcraft.api.hook.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.hook.GrammarAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 
-public class GrammarAPIWrapper extends APIWrapper implements IGrammarAPI {
+public class GrammarAPIWrapper extends APIWrapper implements GrammarAPI {
 
 	public GrammarAPIWrapper(String modname) {
 		super(modname);

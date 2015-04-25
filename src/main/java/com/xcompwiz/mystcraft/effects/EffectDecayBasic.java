@@ -8,13 +8,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
-import com.xcompwiz.mystcraft.api.instability.IInstabilityController;
+import com.xcompwiz.mystcraft.api.instability.InstabilityDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 
 public class EffectDecayBasic implements IEnvironmentalEffect {
 
-	private IInstabilityController	controller;
+	private InstabilityDirector	controller;
 	private int						updateLCG;
 
 	private int						maxscore	= 1000000;
@@ -23,7 +23,7 @@ public class EffectDecayBasic implements IEnvironmentalEffect {
 	private Integer					max;
 	private Set<Material>			bannedmats	= new HashSet<Material>();
 
-	public EffectDecayBasic(IInstabilityController controller, int metadata, int min, Integer max) {
+	public EffectDecayBasic(InstabilityDirector controller, int metadata, int min, Integer max) {
 		this.controller = controller;
 		this.updateLCG = (new Random()).nextInt();
 

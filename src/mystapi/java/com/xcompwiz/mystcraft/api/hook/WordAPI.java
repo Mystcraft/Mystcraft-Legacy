@@ -7,7 +7,7 @@ import com.xcompwiz.mystcraft.api.word.DrawableWord;
  * of this is provided by MystAPI. Do NOT implement this yourself!
  * @author xcompwiz
  */
-public interface IWordAPI {
+public interface WordAPI {
 
 	/**
 	 * Binds a DrawableWord to the provided name key if no other word is already bound to that name. Use this to make your custom words render correctly on your

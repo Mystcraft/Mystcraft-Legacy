@@ -1,10 +1,10 @@
 package com.xcompwiz.mystcraft.instability;
 
-import com.xcompwiz.mystcraft.api.instability.IInstabilityController;
+import com.xcompwiz.mystcraft.api.instability.InstabilityDirector;
 import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
-public class InstabilityProfiler implements IInstabilityController {
+public class InstabilityProfiler implements InstabilityDirector {
 	private IInstabilityProvider	agent	= null;
 
 	public void startProfiling(IInstabilityProvider symbol) {

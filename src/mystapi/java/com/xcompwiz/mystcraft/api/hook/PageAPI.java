@@ -1,17 +1,16 @@
-package com.xcompwiz.mystcraft.oldapi.internal;
+package com.xcompwiz.mystcraft.api.hook;
 
 import java.util.Collection;
 
-import com.xcompwiz.mystcraft.api.hook.IItemFactory;
 
 import net.minecraft.item.ItemStack;
 
 /**
- * Provides methods for accessing and setting information in pages The implementation of this is provided by MystAPI. Look at the {@link IItemFactory} for
- * methods for building page items Do NOT implement this yourself!
+ * Provides methods for accessing and setting information in pages. The implementation of this is provided by MystAPI. Look at the {@link ItemFactory} for
+ * methods for building page items.
  * @author xcompwiz
  */
-public interface IPageAPI {
+public interface PageAPI {
 
 	/**
 	 * Returns if the page has a link panel on it

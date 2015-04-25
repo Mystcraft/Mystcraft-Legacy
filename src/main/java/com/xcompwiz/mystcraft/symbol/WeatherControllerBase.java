@@ -7,13 +7,13 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
-import com.xcompwiz.mystcraft.api.world.storage.IStorageObject;
+import com.xcompwiz.mystcraft.api.world.storage.StorageObject;
 
 public abstract class WeatherControllerBase implements IWeatherController {
 
 	private Random			random		= new Random();
 	private int				updateLCG	= random.nextInt();
-	private IStorageObject	infoObj;
+	private StorageObject	infoObj;
 
 	private double			rainingStrength;
 	private double			thunderingStrength;
@@ -28,7 +28,7 @@ public abstract class WeatherControllerBase implements IWeatherController {
 	protected int			thunder_cooldown_base;
 
 	@Override
-	public void setDataObject(IStorageObject infoObj) {
+	public void setDataObject(StorageObject infoObj) {
 		this.infoObj = infoObj;
 		if (infoObj.getBoolean("raining")) {
 			rainingStrength = 1.0D;

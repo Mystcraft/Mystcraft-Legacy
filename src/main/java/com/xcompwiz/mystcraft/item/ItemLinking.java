@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.xcompwiz.mystcraft.api.event.PortalLinkEvent;
+import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.client.gui.GuiBook;
@@ -30,7 +31,6 @@ import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.network.NetworkUtils;
-import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -121,10 +121,10 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 	@Override
 	public void onPortalCollision(ItemStack book, World worldObj, Entity entity, int par2, int par3, int par4) {
 		ILinkInfo info = ((ItemLinking) book.getItem()).getLinkInfo(book);
-		info.setFlag(ILinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM, true);
-		info.setFlag(ILinkPropertyAPI.FLAG_GENERATE_PLATFORM, false);
-		info.setFlag(ILinkPropertyAPI.FLAG_EXTERNAL, true);
-		info.setProperty(ILinkPropertyAPI.PROP_SOUND, Sounds.PORTALLINK);
+		info.setFlag(LinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM, true);
+		info.setFlag(LinkPropertyAPI.FLAG_GENERATE_PLATFORM, false);
+		info.setFlag(LinkPropertyAPI.FLAG_EXTERNAL, true);
+		info.setProperty(LinkPropertyAPI.PROP_SOUND, Sounds.PORTALLINK);
 		MinecraftForge.EVENT_BUS.post(new PortalLinkEvent(worldObj, entity, info));
 		LinkController.travelEntity(worldObj, entity, info);
 	}
@@ -137,7 +137,7 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 
 	@Override
 	public boolean hasEffect(ItemStack itemstack, int pass) {
-		return LinkOptions.getFlag(itemstack.stackTagCompound, ILinkPropertyAPI.FLAG_FOLLOWING);
+		return LinkOptions.getFlag(itemstack.stackTagCompound, LinkPropertyAPI.FLAG_FOLLOWING);
 	}
 
 	@Override
@@ -151,7 +151,7 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 	}
 
 	public boolean dropItemOnLink(ItemStack itemstack) {
-		return !LinkOptions.getFlag(itemstack.stackTagCompound, ILinkPropertyAPI.FLAG_FOLLOWING);
+		return !LinkOptions.getFlag(itemstack.stackTagCompound, LinkPropertyAPI.FLAG_FOLLOWING);
 	}
 
 	@Override

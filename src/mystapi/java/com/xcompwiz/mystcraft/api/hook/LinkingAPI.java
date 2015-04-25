@@ -12,7 +12,7 @@ import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
  * alter a link itself Do NOT implement this yourself!
  * @author xcompwiz
  */
-public interface ILinkingAPI {
+public interface LinkingAPI {
 
 	/**
 	 * Returns if a link is allowed. Note that this does not mean an attempted link will be successful. This only checks this entity, and not any entities

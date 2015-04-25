@@ -6,14 +6,14 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.WorldChunkManager;
 
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolBiomeControllerNative extends SymbolBase {
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		controller.registerInterface(new BiomeController(controller));
 	}
 
@@ -25,7 +25,7 @@ public class SymbolBiomeControllerNative extends SymbolBase {
 	private class BiomeController implements IBiomeController {
 		private WorldChunkManager	manager;
 
-		protected BiomeController(IAgeController controller) {
+		protected BiomeController(AgeDirector controller) {
 			this.manager = new WorldChunkManager(controller.getSeed(), WorldType.DEFAULT);
 		}
 

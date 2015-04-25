@@ -3,13 +3,13 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IFogColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorFog extends SymbolBase {
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		ColorGradient gradient = ModifierUtils.popGradient(controller, 0.7529412F, 0.8470588F, 1.0F);
 		controller.registerInterface(new FogColorizer(controller, gradient));
 	}
@@ -23,9 +23,9 @@ public class SymbolColorFog extends SymbolBase {
 		private static final Color	black	= new Color(0.0001F, 0.0001F, 0.0001F);
 
 		ColorGradient				gradient;
-		private IAgeController		controller;
+		private AgeDirector		controller;
 
-		public FogColorizer(IAgeController controller, ColorGradient gradient) {
+		public FogColorizer(AgeDirector controller, ColorGradient gradient) {
 			this.controller = controller;
 			this.gradient = gradient;
 		}

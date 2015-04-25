@@ -9,14 +9,14 @@ import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.TerrainGeneratorBase;
 
 public class SymbolTerrainGenEnd extends SymbolBase {
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		TerrainGenerator gen = new TerrainGenerator(controller);
 		BlockDescriptor block;
 		block = ModifierUtils.popBlockMatching(controller, BlockCategory.SEA);
@@ -55,7 +55,7 @@ public class SymbolTerrainGenEnd extends SymbolBase {
 		private double					noiseData4[];
 		private double					noiseData5[];
 
-		public TerrainGenerator(IAgeController controller) {
+		public TerrainGenerator(AgeDirector controller) {
 			super(controller);
 			rand = new Random(controller.getSeed());
 			bedrockGen = new Random(controller.getSeed());

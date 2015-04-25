@@ -6,14 +6,14 @@ import net.minecraft.init.Blocks;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
-import com.xcompwiz.mystcraft.api.world.IAgeController;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolTerrainGenFlat extends SymbolBase {
 
 	@Override
-	public void registerLogic(IAgeController controller, long seed) {
+	public void registerLogic(AgeDirector controller, long seed) {
 		TerrainGenerator gen = new TerrainGenerator(controller);
 		BlockDescriptor block;
 		block = ModifierUtils.popBlockMatching(controller, BlockCategory.SEA);
@@ -33,13 +33,13 @@ public class SymbolTerrainGenFlat extends SymbolBase {
 	}
 
 	private static class TerrainGenerator implements ITerrainGenerator {
-		private IAgeController	controller;
+		private AgeDirector	controller;
 		private Block			fillblock	= Blocks.stone;
 		private byte			fillmeta	= 0;
 		private Block			seablock	= Blocks.water;
 		private byte			seameta		= 0;
 
-		public TerrainGenerator(IAgeController controller) {
+		public TerrainGenerator(AgeDirector controller) {
 			this.controller = controller;
 		}
 
