@@ -174,6 +174,7 @@ public class GrammarRules {
 		registerRule(buildRule(0, GrammarData.BLOCK_CRYSTAL));
 		registerRule(buildRule(0, GrammarData.BLOCK_SEA));
 		registerRule(buildRule(0, GrammarData.BLOCK_FLUID));
+		registerRule(buildRule(0, GrammarData.BLOCK_GAS));
 		registerRule(buildRule(0, GrammarData.BLOCK_ANY));
 
 		registerRule(buildRule(1, BLOCK_NONSOLID, GrammarData.BLOCK_FLUID));
