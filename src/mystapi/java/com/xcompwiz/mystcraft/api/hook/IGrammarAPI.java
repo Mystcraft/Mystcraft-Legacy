@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.api.grammar;
+package com.xcompwiz.mystcraft.api.hook;
 
 import java.util.Collection;
 import java.util.List;

@@ -1,10 +1,11 @@
-package com.xcompwiz.mystcraft.api.linking;
+package com.xcompwiz.mystcraft.api.hook;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.api.event.LinkEvent;
+import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
 /**
  * Functions for interfacing with the linking mechanics. The implementation of this is provided by MystAPI. See {@link LinkEvent} for events to allow you to

@@ -67,14 +67,14 @@ public class GrammarData {
 	public static final String	COLOR_SEQ		= "Color";
 	/** Generates a Gradient sequence */
 	public static final String	GRADIENT_SEQ	= "Gradient";
-	/** Generates a singular Angle value (anything extending this must accept and produce an angle modifier) */
+	/** Generates a singular Angle value (any symbol expanding this must accept and produce an angle modifier) */
 	public static final String	ANGLE_BASIC		= "AngleBasic";
-	/** Generates a singular Period value (anything extending this must accept and produce a period modifier) */
+	/** Generates a singular Period value (any symbol expanding this must accept and produce a period modifier) */
 	public static final String	PERIOD_BASIC	= "PeriodBasic";
-	/** Generates a singular Phase value (anything extending this must accept and produce a phase modifier) */
+	/** Generates a singular Phase value (any symbol expanding this must accept and produce a phase modifier) */
 	public static final String	PHASE_BASIC		= "PhaseBasic";
-	/** Generates a singular Color (anything extending this must accept and produce a color modifier) */
+	/** Generates a singular Color (any symbol expanding this must accept and produce a color modifier) */
 	public static final String	COLOR_BASIC		= "ColorBasic";
-	/** Generates a singular Gradient (anything extending this must accept and produce a gradient modifier) */
+	/** Generates a singular Gradient (any symbol expanding this must accept and produce a gradient modifier) */
 	public static final String	GRADIENT_BASIC	= "GradientBasic";
 }

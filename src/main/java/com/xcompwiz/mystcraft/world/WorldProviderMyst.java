@@ -129,8 +129,8 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	@Override
-	public Vec3 getFogColor(float celestial_angle, float time) {
-		Vec3 fog = getAgeController().getFogColor(celestial_angle, time);
+	public Vec3 getFogColor(float celestial_angle, float partialtick) {
+		Vec3 fog = getAgeController().getFogColor(celestial_angle, partialtick);
 		if (fog == null) {
 			float f2 = MathHelper.cos(celestial_angle * 3.141593F * 2.0F) * 2.0F + 0.5F;
 			if (f2 < 0.0F) {

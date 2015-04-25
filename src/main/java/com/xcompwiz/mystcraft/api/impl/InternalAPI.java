@@ -3,8 +3,6 @@ package com.xcompwiz.mystcraft.api.impl;
 import java.util.HashMap;
 
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
-import com.xcompwiz.mystcraft.api.client.IRenderAPI;
-import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
 import com.xcompwiz.mystcraft.api.impl.client.RenderAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.grammar.GrammarAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.instability.InstabilityAPIDelegate;
@@ -15,35 +13,24 @@ import com.xcompwiz.mystcraft.api.impl.linking.LinkingAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.page.PageAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.symbol.SymbolAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.symbol.SymbolFactory;
-import com.xcompwiz.mystcraft.api.instability.IInstabilityAPI;
-import com.xcompwiz.mystcraft.api.instability.IInstabilityFactory;
-import com.xcompwiz.mystcraft.api.item.IItemFactory;
-import com.xcompwiz.mystcraft.api.linking.IDimensionAPI;
-import com.xcompwiz.mystcraft.api.linking.ILinkingAPI;
-import com.xcompwiz.mystcraft.api.symbol.ISymbolAPI;
-import com.xcompwiz.mystcraft.api.symbol.ISymbolFactory;
-import com.xcompwiz.mystcraft.api.word.IWordAPI;
-import com.xcompwiz.mystcraft.oldapi.internal.ILinkPropertyAPI;
-import com.xcompwiz.mystcraft.oldapi.internal.IPageAPI;
-import com.xcompwiz.mystcraft.oldapi.internal.ISymbolValuesAPI;
 import com.xcompwiz.mystcraft.page.SortingUtils.ComparatorItemSymbolAlphabetical;
 
 public class InternalAPI {
 
-	//FIXME: $ Change these to BaseImpls
-	public static IDimensionAPI			dimension;
-	public static ILinkingAPI			linking;
-	public static ILinkPropertyAPI		linkProperties;
-	public static IInstabilityAPI		instability;
-	public static IInstabilityFactory	instabilityFact;
-	public static ISymbolAPI			symbol;
-	public static IWordAPI				word;
-	public static ISymbolValuesAPI		symbolValues;
-	public static IGrammarAPI			grammar;
-	public static ISymbolFactory		symbolFact;
-	public static IPageAPI				page;
-	public static IItemFactory			itemFact;
-	public static IRenderAPI			render;
+	public static DimensionAPIDelegate		dimension;
+	public static LinkingAPIDelegate		linking;
+	public static LinkingAPIDelegate		linkProperties;
+	public static InstabilityAPIDelegate	instability;
+	public static SymbolAPIDelegate			symbol;
+	public static SymbolAPIDelegate			word;
+	public static SymbolAPIDelegate			symbolValues;
+	public static GrammarAPIDelegate		grammar;
+	public static PageAPIDelegate			page;
+	public static RenderAPIDelegate			render;
+
+	public static InstabilityFactory		instabilityFact;
+	public static SymbolFactory				symbolFact;
+	public static ItemFactory				itemFact;
 
 	public static void initAPI() {
 		LinkingAPIDelegate linking_delegate = new LinkingAPIDelegate();

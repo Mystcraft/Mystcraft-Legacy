@@ -2,9 +2,9 @@ package com.xcompwiz.mystcraft.api.impl.instability;
 
 import java.util.Collection;
 
+import com.xcompwiz.mystcraft.api.hook.IInstabilityAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
-import com.xcompwiz.mystcraft.api.instability.IInstabilityAPI;
 import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 
 public class InstabilityAPIWrapper extends APIWrapper implements IInstabilityAPI {

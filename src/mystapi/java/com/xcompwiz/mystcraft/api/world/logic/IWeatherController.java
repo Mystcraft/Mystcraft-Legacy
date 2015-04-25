@@ -6,7 +6,7 @@ import net.minecraft.world.chunk.Chunk;
 import com.xcompwiz.mystcraft.api.world.storage.IStorageObject;
 
 // FIXME: This interface needs to be revised/reworked completely
-// WARNING! If you use this interface, be prepared for your symbol to not update to the next API version
+// WARNING! If you use this interface, be prepared for this logic to vanish in a later version of the API
 public interface IWeatherController {
 	public abstract void setDataObject(IStorageObject infoObj);
 

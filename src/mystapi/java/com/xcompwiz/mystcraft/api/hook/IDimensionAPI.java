@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.api.linking;
+package com.xcompwiz.mystcraft.api.hook;
 
 import java.util.Collection;
 

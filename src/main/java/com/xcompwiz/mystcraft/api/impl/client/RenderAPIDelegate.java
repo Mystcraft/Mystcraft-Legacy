@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.api.impl.client;
 
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
-import com.xcompwiz.mystcraft.api.client.IRenderAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
@@ -14,9 +13,8 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class RenderAPIDelegate implements IRenderAPI {
+public class RenderAPIDelegate {
 
-	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerRenderEffect(ILinkPanelEffect renderer) {
 		LinkPanelEffectManager.registerEffect(renderer);
@@ -27,13 +25,11 @@ public class RenderAPIDelegate implements IRenderAPI {
 		GuiUtils.drawSymbol(FMLClientHandler.instance().getClient().renderEngine, zLevel, symbol, scale, x, y);
 	}
 
-	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawWord(float x, float y, float zLevel, float scale, String word) {
 		GuiUtils.drawWord(FMLClientHandler.instance().getClient().renderEngine, zLevel, DrawableWordManager.getDrawableWord(word), scale, x, y);
 	}
 
-	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawColorEye(float x, float y, float zLevel, float radius, Color color) {
 		DniColorRenderer.render(color.toAWT(), VectorPool.getFreeVector(x, y, zLevel), radius);

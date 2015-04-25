@@ -7,17 +7,15 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
-import com.xcompwiz.mystcraft.grammar.GrammarTree;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
+import com.xcompwiz.mystcraft.grammar.GrammarTree;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.util.CollectionUtils;
 
-public class GrammarAPIDelegate implements IGrammarAPI {
+public class GrammarAPIDelegate {
 
-	@Override
 	public void registerGrammarRule(String parent, Integer rank, String... args) {
 		ArrayList<String> list = CollectionUtils.buildList(args);
 		GrammarGenerator.registerRule(new Rule(parent, list, rank));
@@ -43,7 +41,6 @@ public class GrammarAPIDelegate implements IGrammarAPI {
 		return symbols;
 	}
 
-	@Override
 	public Collection<String> getTokensProducingToken(String token) {
 		Set<String> set = new HashSet<String>();
 		List<Rule> rules = GrammarGenerator.getParentRules(token);
@@ -53,13 +50,11 @@ public class GrammarAPIDelegate implements IGrammarAPI {
 		return set;
 	}
 
-	@Override
 	public List<String> generateFromToken(String root, Random rand) {
 		GrammarTree tree = new GrammarTree(root);
 		return tree.getExpanded(rand);
 	}
 
-	@Override
 	public List<String> generateFromToken(String root, Random rand, List<String> parsed) {
 		GrammarTree tree = new GrammarTree(root);
 		tree.parseTerminals(parsed, rand);

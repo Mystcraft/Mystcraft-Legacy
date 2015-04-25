@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * Adds a sky drop to the age This is rendered in front of the stars but behind the sun and the moon
+ * Adds a sky drop to the age. This is rendered in front of the stars but behind the sun and the moon.
  * @author XCompWiz
  */
 public interface ISkyDoodad {

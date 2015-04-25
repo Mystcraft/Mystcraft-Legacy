@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.api.client;
 
 import net.minecraft.item.ItemStack;
 
+import com.xcompwiz.mystcraft.api.hook.IRenderAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
 import cpw.mods.fml.relauncher.Side;

@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.hook.IGrammarAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 

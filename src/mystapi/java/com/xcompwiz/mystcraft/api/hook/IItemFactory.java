@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.api.item;
+package com.xcompwiz.mystcraft.api.hook;
 
 import net.minecraft.item.ItemStack;
 

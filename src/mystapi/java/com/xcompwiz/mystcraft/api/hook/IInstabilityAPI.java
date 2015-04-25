@@ -1,8 +1,9 @@
-package com.xcompwiz.mystcraft.api.instability;
+package com.xcompwiz.mystcraft.api.hook;
 
 import java.util.Collection;
 
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
+import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 
 /**
  * Provides methods for registering providers to and interacting with the instability system. The implementation of this is provided by {@link APIInstanceProvider}. Do NOT

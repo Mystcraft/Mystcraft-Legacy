@@ -7,7 +7,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
-import com.xcompwiz.mystcraft.api.item.IItemFactory;
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.data.ModItems;
@@ -18,19 +17,16 @@ import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.page.SortingUtils.ComparatorSymbolAlphabetical;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
-public class ItemFactory implements IItemFactory {
+public class ItemFactory {
 
-	@Override
 	public ItemStack buildPage() {
 		return Page.createPage();
 	}
 
-	@Override
 	public ItemStack buildSymbolPage(String identifier) {
 		return Page.createSymbolPage(identifier);
 	}
 
-	@Override
 	public ItemStack buildLinkPage(String... properties) {
 		ItemStack page = Page.createPage();
 		Page.makeLinkPanel(page);
@@ -40,7 +36,6 @@ public class ItemFactory implements IItemFactory {
 		return page;
 	}
 
-	@Override
 	public ItemStack buildCollectionItem(String name, String... tokens) {
 		// First, grab all the rules
 		HashSet<Rule> rules = new HashSet<Rule>();
@@ -75,7 +70,6 @@ public class ItemFactory implements IItemFactory {
 		return itemstack;
 	}
 
-	@Override
 	public ItemStack buildCollectionItem(String name, ItemStack... pages) {
 		ItemStack itemstack = new ItemStack(ModItems.portfolio, 1, 0);
 		IItemPageCollection item = (IItemPageCollection) itemstack.getItem();

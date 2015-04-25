@@ -1,5 +1,6 @@
-package com.xcompwiz.mystcraft.api.instability;
+package com.xcompwiz.mystcraft.api.hook;
 
+import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
 /**

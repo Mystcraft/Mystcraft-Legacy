@@ -1,12 +1,13 @@
 package com.xcompwiz.mystcraft.data;
 
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
+import com.xcompwiz.mystcraft.api.impl.word.WordAPIWrapper;
 import com.xcompwiz.mystcraft.api.word.WordData;
 
 public class ModWords {
 
 	public static void initialize() {
-		WordData.init(InternalAPI.word);
+		WordData.init(new WordAPIWrapper("Mystcraft")); //FIXME: This should use the API Provider 
 		for (int i = 0; i < 26; ++i) {
 			InternalAPI.word.registerWord("" + i, constructNumber(i));
 		}

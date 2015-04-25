@@ -1,8 +1,8 @@
-package com.xcompwiz.mystcraft.api.symbol;
+package com.xcompwiz.mystcraft.api.hook;
 
 import java.util.List;
 
-import com.xcompwiz.mystcraft.api.grammar.IGrammarAPI;
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 /**
  * Provides functions for registering different aspects to the Symbol system. You can blacklist identifiers and register your own symbols. The implementation of

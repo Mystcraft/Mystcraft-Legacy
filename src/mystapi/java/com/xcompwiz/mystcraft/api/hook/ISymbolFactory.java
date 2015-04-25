@@ -1,4 +1,7 @@
-package com.xcompwiz.mystcraft.api.symbol;
+package com.xcompwiz.mystcraft.api.hook;
+
+import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 import net.minecraft.block.Block;
 

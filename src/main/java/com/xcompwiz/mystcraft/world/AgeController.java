@@ -365,12 +365,12 @@ public class AgeController implements IAgeController {
 		return pvpEnabled != null ? pvpEnabled : true;
 	}
 
-	public Vec3 getFogColor(float celestial_angle, float time) {
+	public Vec3 getFogColor(float celestial_angle, float partialtick) {
 		validate();
 		if (fogColorProviders == null || fogColorProviders.size() == 0) { return null; }
 		Vec3 color = null;
 		for (IFogColorProvider mod : fogColorProviders) {
-			Color op = mod.getFogColor(celestial_angle, time);
+			Color op = mod.getFogColor(celestial_angle, partialtick);
 			if (op == null) continue;
 			if (color == null) {
 				color = Vec3.createVectorHelper(op.r, op.g, op.b);

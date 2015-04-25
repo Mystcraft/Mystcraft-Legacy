@@ -8,11 +8,11 @@ import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.IAgeController;
 
 /**
- * The modifier object class This wraps the modifier objects registered to the {@link IAgeController} during symbol logic initialization See
- * {@link ModifierUtils} for more advanced modifier usages
+ * The modifier object class This wraps the modifier objects registered to the {@link IAgeController} during symbol logic initialization. See
+ * {@link ModifierUtils} for more advanced modifier usages.
  * @author xcompwiz
  */
-public class Modifier {
+public final class Modifier {
 	private Object			value;
 
 	/** Amount of instability added if the modifier is left in the system */
