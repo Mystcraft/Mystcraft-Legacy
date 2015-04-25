@@ -1,7 +1,7 @@
 package com.xcompwiz.mystcraft.instability.providers;
 
-import com.xcompwiz.mystcraft.api.instability.InstabilityDirector;
 import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
+import com.xcompwiz.mystcraft.api.instability.InstabilityDirector;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.effects.EffectDecayBasic;
 import com.xcompwiz.mystcraft.effects.EffectExtraTicks;

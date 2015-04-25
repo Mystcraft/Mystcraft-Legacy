@@ -4,7 +4,6 @@ import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 import com.xcompwiz.mystcraft.api.hook.RenderAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
-import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.util.Color;
 
 public class RenderAPIWrapper extends APIWrapper implements RenderAPI {
@@ -29,8 +28,8 @@ public class RenderAPIWrapper extends APIWrapper implements RenderAPI {
 	}
 
 	@Override
-	public void drawSymbol(float x, float y, float zLevel, float scale, IAgeSymbol symbol) {
-		InternalAPI.render.drawSymbol(x, y, zLevel, scale, symbol);
+	public void drawSymbol(float x, float y, float zLevel, float scale, String identifier) {
+		InternalAPI.render.drawSymbol(x, y, zLevel, scale, InternalAPI.symbol.getSymbol(identifier));
 	}
 
 }

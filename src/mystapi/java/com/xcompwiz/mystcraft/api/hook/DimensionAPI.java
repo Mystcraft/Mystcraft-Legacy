@@ -2,8 +2,10 @@ package com.xcompwiz.mystcraft.api.hook;
 
 import java.util.Collection;
 
+import com.xcompwiz.mystcraft.api.APIInstanceProvider;
+
 /**
- * Functions for interacting with Mystcraft dimensions. The implementation of this is provided by MystAPI. Do NOT implement this yourself!
+ * Functions for interacting with Mystcraft dimensions. The implementation of this is provided by {@link APIInstanceProvider}. Do NOT implement this yourself!
  * @author xcompwiz
  */
 public interface DimensionAPI {

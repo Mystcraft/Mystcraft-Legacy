@@ -1,12 +1,12 @@
 package com.xcompwiz.mystcraft.inventory;
 
-import com.xcompwiz.mystcraft.data.ModItems;
-
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+
+import com.xcompwiz.mystcraft.data.ModItems;
 
 public class InventoryVillager implements IInventory {
 	public static final int	emerald_slot	= 0;

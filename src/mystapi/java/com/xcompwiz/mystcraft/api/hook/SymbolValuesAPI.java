@@ -4,11 +4,12 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
+import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 /**
  * Allows the setting of various treasure rarity and weighting values for symbols. See {@link GrammarAPI} for setting the grammar rule(s) for a symbol. These
- * should be set before post-init. The implementation of this is provided by MystAPI. Do NOT implement this yourself!
+ * should be set before post-init. The implementation of this is provided by {@link APIInstanceProvider}. Do NOT implement this yourself!
  * @author xcompwiz
  */
 public interface SymbolValuesAPI {

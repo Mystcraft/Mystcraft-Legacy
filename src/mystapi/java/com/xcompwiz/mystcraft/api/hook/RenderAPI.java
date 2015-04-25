@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.api.hook;
 
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
-import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.util.Color;
 
 import cpw.mods.fml.relauncher.Side;
@@ -38,10 +37,10 @@ public interface RenderAPI {
 	 * @param y The y location in pixels
 	 * @param zLevel The zLevel we're drawing on
 	 * @param scale The size in pixels of the square
-	 * @param symbol The symbol to draw
+	 * @param identifier The string identifier of the symbol to draw
 	 */
 	@SideOnly(Side.CLIENT)
-	public void drawSymbol(float x, float y, float zLevel, float scale, IAgeSymbol symbol);
+	public void drawSymbol(float x, float y, float zLevel, float scale, String identifier);
 
 	/**
 	 * Draws a D'ni color "eye". The eye will be in and represent the provided color.

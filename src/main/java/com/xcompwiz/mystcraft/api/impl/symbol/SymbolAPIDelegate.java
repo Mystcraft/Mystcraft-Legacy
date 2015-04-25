@@ -9,20 +9,7 @@ import com.xcompwiz.mystcraft.api.word.DrawableWord;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 
-import cpw.mods.fml.common.Loader;
-
 public class SymbolAPIDelegate {
-
-	private final String	modid;
-
-	public SymbolAPIDelegate() {
-		this(null);
-	}
-
-	public SymbolAPIDelegate(String modid) {
-		this.modid = modid;
-	}
-
 	public void setSymbolCardRank(IAgeSymbol symbol, int weight) {
 		SymbolManager.setSymbolItemCardRank(symbol.identifier(), weight);
 	}
@@ -55,12 +42,12 @@ public class SymbolAPIDelegate {
 		SymbolManager.blackListSymbol(identifier);
 	}
 
-	public boolean registerSymbol(IAgeSymbol symbol) {
-		return SymbolManager.registerSymbol(symbol, true, (modid != null ? modid : Loader.instance().activeModContainer().getModId()));
+	public boolean registerSymbol(IAgeSymbol symbol, String modid) {
+		return SymbolManager.registerSymbol(symbol, true, modid);
 	}
 
-	public boolean registerSymbol(IAgeSymbol symbol, boolean generateConfigOption) {
-		return SymbolManager.registerSymbol(symbol, generateConfigOption, (modid != null ? modid : Loader.instance().activeModContainer().getModId()));
+	public boolean registerSymbol(IAgeSymbol symbol, boolean generateConfigOption, String modid) {
+		return SymbolManager.registerSymbol(symbol, generateConfigOption, modid);
 	}
 
 	public void registerWord(String name, DrawableWord word) {

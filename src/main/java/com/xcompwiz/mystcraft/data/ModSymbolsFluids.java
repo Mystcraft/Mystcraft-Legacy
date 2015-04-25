@@ -13,6 +13,7 @@ import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.word.WordData;
@@ -53,7 +54,7 @@ public class ModSymbolsFluids {
 				if (!isBannedSea(fluidkey)) container.add(BlockCategory.SEA, grammarRank(fluidkey));
 				container.add(BlockCategory.FLUID, grammarRank(fluidkey));
 			}
-			if (container.getSymbol() != null) InternalAPI.symbol.registerSymbol(container.getSymbol());
+			if (container.getSymbol() != null) InternalAPI.symbol.registerSymbol(container.getSymbol(), MystObjects.MystcraftModId);
 		}
 		if (config != null && config.hasChanged()) config.save();
 	}

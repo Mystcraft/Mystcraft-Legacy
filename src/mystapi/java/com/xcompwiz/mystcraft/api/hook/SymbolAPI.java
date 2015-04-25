@@ -2,11 +2,13 @@ package com.xcompwiz.mystcraft.api.hook;
 
 import java.util.List;
 
+import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.api.world.AgeDirector;
 
 /**
  * Provides functions for registering different aspects to the Symbol system. You can blacklist identifiers and register your own symbols. The implementation of
- * this is provided by MystAPI. Do NOT implement this yourself!
+ * this is provided by {@link APIInstanceProvider}.
  * @author xcompwiz
  */
 public interface SymbolAPI {
@@ -18,7 +20,7 @@ public interface SymbolAPI {
 	public void blacklistIdentifier(String identifier);
 
 	/**
-	 * Registers a logic provider "Symbol" to the system. The symbol should provide logic elements, set values, or push modifier values to the IAgeController
+	 * Registers a logic provider "Symbol" to the system. The symbol should provide logic elements, set values, or push modifier values to the {@link AgeDirector}
 	 * passed to it. If a symbol throws an exception during profiling then the symbol will not be registered and the identifier will be blacklisted. Note: Don't
 	 * forget to create grammar rules for your symbols! See {@link GrammarAPI}
 	 * @param symbol The AgeSymbol to register
@@ -27,11 +29,11 @@ public interface SymbolAPI {
 	public boolean registerSymbol(IAgeSymbol symbol);
 
 	/**
-	 * Registers a logic provider "Symbol" to the system. The symbol should provide logic elements, set values, or push modifier values to the IAgeController
+	 * Registers a logic provider "Symbol" to the system. The symbol should provide logic elements, set values, or push modifier values to the {@link AgeDirector}
 	 * passed to it. If a symbol throws an exception during profiling then the symbol will not be registered and the identifier will be blacklisted. Note: Don't
 	 * forget to create grammar rules for your symbols! See {@link GrammarAPI}
 	 * @param symbol The AgeSymbol to register
-	 * @param generateConfigOption Whether or not a config entry should be created for the symbol
+	 * @param generateConfigOption True if a config entry should be created for the symbol in the Mystcraft configs
 	 * @return Success
 	 */
 	public boolean registerSymbol(IAgeSymbol symbol, boolean generateConfigOption);

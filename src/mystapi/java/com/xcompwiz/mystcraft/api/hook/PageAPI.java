@@ -2,11 +2,12 @@ package com.xcompwiz.mystcraft.api.hook;
 
 import java.util.Collection;
 
-
 import net.minecraft.item.ItemStack;
 
+import com.xcompwiz.mystcraft.api.APIInstanceProvider;
+
 /**
- * Provides methods for accessing and setting information in pages. The implementation of this is provided by MystAPI. Look at the {@link ItemFactory} for
+ * Provides methods for accessing and setting information in pages. The implementation of this is provided by {@link APIInstanceProvider}. Look at the {@link ItemFactory} for
  * methods for building page items.
  * @author xcompwiz
  */

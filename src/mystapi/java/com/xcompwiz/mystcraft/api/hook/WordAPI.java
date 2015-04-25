@@ -1,10 +1,11 @@
 package com.xcompwiz.mystcraft.api.hook;
 
+import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 import com.xcompwiz.mystcraft.api.word.DrawableWord;
 
 /**
  * Provides functions for interacting with the words system. You can use this to create your own Narayan words (See WordData for examples). The implementation
- * of this is provided by MystAPI. Do NOT implement this yourself!
+ * of this is provided by {@link APIInstanceProvider}. Do NOT implement this yourself!
  * @author xcompwiz
  */
 public interface WordAPI {

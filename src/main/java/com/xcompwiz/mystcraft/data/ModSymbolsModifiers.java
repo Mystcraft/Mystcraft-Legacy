@@ -17,6 +17,7 @@ import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
+import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBlock;
 import com.xcompwiz.mystcraft.symbol.modifiers.ModifierColor;
@@ -66,7 +67,7 @@ public class ModSymbolsModifiers {
 		}
 
 		private BlockModifierContainerObject register() {
-			if (symbol != null) InternalAPI.symbol.registerSymbol(symbol);
+			if (symbol != null) InternalAPI.symbol.registerSymbol(symbol, MystObjects.MystcraftModId);
 			return this;
 		}
 	}
@@ -75,7 +76,7 @@ public class ModSymbolsModifiers {
 		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.dirt, 0).register().add(BlockCategory.TERRAIN, 4).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
 		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.stone, 0).register().add(BlockCategory.TERRAIN, 1).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
 		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.sandstone, 0).register().add(BlockCategory.TERRAIN, 2).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
-		InternalAPI.symbol.registerSymbol(InternalAPI.symbolFact.createSymbol(Blocks.netherrack, 0, WordData.Terrain, 2, new CategoryPair(BlockCategory.TERRAIN, 3), new CategoryPair(BlockCategory.STRUCTURE, 2), new CategoryPair(BlockCategory.SOLID, 2)));
+		InternalAPI.symbol.registerSymbol(InternalAPI.symbolFact.createSymbol(Blocks.netherrack, 0, WordData.Terrain, 2, new CategoryPair(BlockCategory.TERRAIN, 3), new CategoryPair(BlockCategory.STRUCTURE, 2), new CategoryPair(BlockCategory.SOLID, 2)), MystObjects.MystcraftModId);
 		//BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.netherrack, 0).register().add(BlockCategory.TERRAIN, 3).add(BlockCategory.STRUCTURE, 2).add(BlockCategory.SOLID, 2);
 		BlockModifierContainerObject.create(WordData.Terrain, 3, Blocks.end_stone, 0).register().add(BlockCategory.TERRAIN, 4).add(BlockCategory.STRUCTURE, 3).add(BlockCategory.SOLID, 3);
 
@@ -125,21 +126,25 @@ public class ModSymbolsModifiers {
 		BlockModifierContainerObject.create(WordData.Sea, 3, Blocks.flowing_lava, 0).register().add(BlockCategory.FLUID, 2).add(BlockCategory.SEA, 2);
 
 		// color
-		InternalAPI.symbol.registerSymbol((new ModifierColor(0.50F, 0.00F, 0.00F, "Maroon")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(1.00F, 0.00F, 0.00F, "Red")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(0.50F, 0.50F, 0.00F, "Olive")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(1.00F, 1.00F, 0.00F, "Yellow")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(0.00F, 0.50F, 0.00F, "Dark Green")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(0.00F, 1.00F, 0.00F, "Green")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(0.00F, 0.50F, 0.50F, "Teal")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(0.00F, 1.00F, 1.00F, "Cyan")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(0.00F, 0.00F, 0.50F, "Navy")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(0.00F, 0.00F, 1.00F, "Blue")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(0.50F, 0.00F, 0.50F, "Purple")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(1.00F, 0.00F, 1.00F, "Magenta")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(0.00F, 0.00F, 0.00F, "Black")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(0.50F, 0.50F, 0.50F, "Grey")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(0.75F, 0.75F, 0.75F, "Silver")));
-		InternalAPI.symbol.registerSymbol((new ModifierColor(1.00F, 1.00F, 1.00F, "White")));
+		registerSymbol((new ModifierColor(0.50F, 0.00F, 0.00F, "Maroon")));
+		registerSymbol((new ModifierColor(1.00F, 0.00F, 0.00F, "Red")));
+		registerSymbol((new ModifierColor(0.50F, 0.50F, 0.00F, "Olive")));
+		registerSymbol((new ModifierColor(1.00F, 1.00F, 0.00F, "Yellow")));
+		registerSymbol((new ModifierColor(0.00F, 0.50F, 0.00F, "Dark Green")));
+		registerSymbol((new ModifierColor(0.00F, 1.00F, 0.00F, "Green")));
+		registerSymbol((new ModifierColor(0.00F, 0.50F, 0.50F, "Teal")));
+		registerSymbol((new ModifierColor(0.00F, 1.00F, 1.00F, "Cyan")));
+		registerSymbol((new ModifierColor(0.00F, 0.00F, 0.50F, "Navy")));
+		registerSymbol((new ModifierColor(0.00F, 0.00F, 1.00F, "Blue")));
+		registerSymbol((new ModifierColor(0.50F, 0.00F, 0.50F, "Purple")));
+		registerSymbol((new ModifierColor(1.00F, 0.00F, 1.00F, "Magenta")));
+		registerSymbol((new ModifierColor(0.00F, 0.00F, 0.00F, "Black")));
+		registerSymbol((new ModifierColor(0.50F, 0.50F, 0.50F, "Grey")));
+		registerSymbol((new ModifierColor(0.75F, 0.75F, 0.75F, "Silver")));
+		registerSymbol((new ModifierColor(1.00F, 1.00F, 1.00F, "White")));
+	}
+
+	private static void registerSymbol(SymbolBase symbol) {
+		InternalAPI.symbol.registerSymbol(symbol, MystObjects.MystcraftModId);
 	}
 }

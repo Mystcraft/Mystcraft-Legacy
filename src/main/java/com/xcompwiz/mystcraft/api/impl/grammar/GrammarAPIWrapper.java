@@ -7,6 +7,7 @@ import java.util.Random;
 import com.xcompwiz.mystcraft.api.hook.GrammarAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 public class GrammarAPIWrapper extends APIWrapper implements GrammarAPI {
 
@@ -32,6 +33,11 @@ public class GrammarAPIWrapper extends APIWrapper implements GrammarAPI {
 	@Override
 	public List<String> generateFromToken(String root, Random rand, List<String> written) {
 		return InternalAPI.grammar.generateFromToken(root, rand, written);
+	}
+
+	@Override
+	public Collection<IAgeSymbol> getSymbolsExpandingToken(String token) {
+		return InternalAPI.grammar.getSymbolsExpandingToken(token);
 	}
 
 }

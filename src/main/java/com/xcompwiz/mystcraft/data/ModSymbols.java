@@ -4,6 +4,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 
+import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.grammar.GrammarData;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.word.WordData;
@@ -104,7 +105,7 @@ public class ModSymbols {
 		if (poem.length != 4) LoggerUtils.warn("Weird poem length (%d) when registering %s", poem.length, identifier);
 		symbol.setWords(poem);
 		symbol.setCardRank(cardrank);
-		InternalAPI.symbol.registerSymbol(symbol);
+		InternalAPI.symbol.registerSymbol(symbol, MystObjects.MystcraftModId);
 	}
 
 	public static void generateBiomeSymbols() {
@@ -122,7 +123,7 @@ public class ModSymbols {
 			}
 
 			SymbolBase symbol = (new ModifierBiome(biome));
-			if (InternalAPI.symbol.registerSymbol(symbol)) {
+			if (InternalAPI.symbol.registerSymbol(symbol, MystObjects.MystcraftModId)) {
 				Integer rank = 1;
 				if (biome == BiomeGenBase.sky) {
 					rank = null;

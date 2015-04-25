@@ -6,11 +6,12 @@ import java.util.Map;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 
 /**
- * Provides functions for adding link properties. Also handles interactions with the ink mixing mechanics. The implementation of this is provided by MystAPI. Do
+ * Provides functions for adding link properties. Also handles interactions with the ink mixing mechanics. The implementation of this is provided by {@link APIInstanceProvider}. Do
  * NOT implement this yourself!
  * @author xcompwiz
  */

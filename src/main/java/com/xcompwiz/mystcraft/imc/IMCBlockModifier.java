@@ -83,7 +83,7 @@ public class IMCBlockModifier implements IMCProcessor {
 		if (symbol == null) {
 			LoggerUtils.warn("[%s] is attempting to create a block modifier symbol for an already registered block.", message.getSender());
 		} else {
-			InternalAPI.symbol.registerSymbol(symbol); //TODO: Replace with using the mod's own API instances
+			InternalAPI.symbol.registerSymbol(symbol, message.getSender()); //TODO: Replace with using the mod's own API instances
 		}
 	}
 

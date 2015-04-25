@@ -1,7 +1,7 @@
 package com.xcompwiz.mystcraft.instability;
 
-import com.xcompwiz.mystcraft.api.instability.InstabilityDirector;
 import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
+import com.xcompwiz.mystcraft.api.instability.InstabilityDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
 public class InstabilityProfiler implements InstabilityDirector {

@@ -20,12 +20,12 @@ public class SymbolAPIWrapper extends APIWrapper implements SymbolAPI {
 
 	@Override
 	public boolean registerSymbol(IAgeSymbol symbol) {
-		return InternalAPI.symbol.registerSymbol(symbol);
+		return InternalAPI.symbol.registerSymbol(symbol, this.getOwnerMod());
 	}
 
 	@Override
 	public boolean registerSymbol(IAgeSymbol symbol, boolean generateConfigOption) {
-		return InternalAPI.symbol.registerSymbol(symbol, generateConfigOption);
+		return InternalAPI.symbol.registerSymbol(symbol, generateConfigOption, this.getOwnerMod());
 	}
 
 	@Override

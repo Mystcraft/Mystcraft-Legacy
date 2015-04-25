@@ -4,8 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.api.APIInstanceProvider;
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+
 /**
- * Provides methods for interacting with the grammar rules for the symbol generation system. The implementation of this is provided by MystAPI. Do NOT implement
+ * Provides methods for interacting with the grammar rules for the symbol generation system. The implementation of this is provided by {@link APIInstanceProvider}. Do NOT implement
  * this yourself!
  * @author xcompwiz
  */
@@ -27,7 +30,7 @@ public interface GrammarAPI {
 	 * @param token The token to expand
 	 * @return A collection of the identifiers of all the symbols which are contained in rules which directly expand the token
 	 */
-	//Collection<IAgeSymbol> getSymbolsExpandingToken(String token);
+	Collection<IAgeSymbol> getSymbolsExpandingToken(String token);
 
 	/**
 	 * Produces a list of all the tokens which have rules that produce the provided token

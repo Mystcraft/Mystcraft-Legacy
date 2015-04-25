@@ -4,12 +4,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 import com.xcompwiz.mystcraft.api.event.LinkEvent;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
 /**
- * Functions for interfacing with the linking mechanics. The implementation of this is provided by MystAPI. See {@link LinkEvent} for events to allow you to
- * alter a link itself Do NOT implement this yourself!
+ * Functions for interfacing with the linking mechanics. The implementation of this is provided by {@link APIInstanceProvider}. See {@link LinkEvent} for events to allow you to
+ * alter a link itself.
  * @author xcompwiz
  */
 public interface LinkingAPI {
@@ -26,15 +27,15 @@ public interface LinkingAPI {
 	/**
 	 * Attempts to link (Teleport) the entity using the information provided by the link info object. Any mounted or riding entities will be linked as well.
 	 * This is not guaranteed to succeed. Note that the link can fail on individual entities in a mount chain but succeed on part of it (the rider may link
-	 * without the mount, for example).
+	 * without the mount, for example, even if this is only called on the mount).
 	 * @param entity The entity to link
 	 * @param linkinfo The link destination and information. A valid link info object can be created using the other functions from this interface.
 	 */
 	void linkEntity(Entity entity, ILinkInfo linkInfo);
 
 	/**
-	 * Returns a tag compound which contains all of the information to link an entity back to the present location Defaults to Non-Intra-Age, so the link only
-	 * works when changing dimensions Note that the Entity's yaw is maintained, but not its pitch
+	 * Returns a tag compound which contains all of the information to link an entity back to the present location. Defaults to Non-Intra-Age, so the link only
+	 * works when changing dimensions. Note that the Entity's yaw is maintained, but not its pitch.
 	 * @param worldObj The world to link to
 	 * @param Entity An entity which holds the position and orientation desired. Can be a dummy/fake entity.
 	 * @return The Link's descriptor. You can modify the link's properties through this.
