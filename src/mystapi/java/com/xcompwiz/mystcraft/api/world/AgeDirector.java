@@ -26,7 +26,7 @@ import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 /**
  * Interface to the controller system initialized along with an age that controls what symbol mechanics are added to the age. Getting values from here is
  * inconsistent until all symbols are initialized. Contains functions for setting values or adding logic elements to the age which should be called from
- * AgeSymbol.instantiate. Do NOT implement this yourself!
+ * AgeSymbol.instantiate.
  */
 public interface AgeDirector {
 

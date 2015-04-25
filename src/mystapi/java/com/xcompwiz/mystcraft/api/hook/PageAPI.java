@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import net.minecraft.item.ItemStack;
 
+import com.google.common.annotations.Beta;
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 
 /**
@@ -11,6 +12,7 @@ import com.xcompwiz.mystcraft.api.APIInstanceProvider;
  * methods for building page items.
  * @author xcompwiz
  */
+@Beta
 public interface PageAPI {
 
 	/**

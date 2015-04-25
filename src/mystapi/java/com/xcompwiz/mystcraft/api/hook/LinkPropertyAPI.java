@@ -6,6 +6,7 @@ import java.util.Map;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import com.google.common.annotations.Beta;
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
@@ -15,6 +16,7 @@ import com.xcompwiz.mystcraft.api.util.ColorGradient;
  * NOT implement this yourself!
  * @author xcompwiz
  */
+@Beta
 public interface LinkPropertyAPI {
 
 	/* String ids for standard link flags */

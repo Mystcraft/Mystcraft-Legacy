@@ -4,7 +4,7 @@ import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
 /**
  * Interface to the controller system initialized along with an age that controls what instability mechanics are added to the age. An instance of this will be
- * passed to your InstabilityProviders to allow logic registration. Do NOT implement this yourself!
+ * passed to your InstabilityProviders to allow logic registration.
  */
 public interface InstabilityDirector {
 

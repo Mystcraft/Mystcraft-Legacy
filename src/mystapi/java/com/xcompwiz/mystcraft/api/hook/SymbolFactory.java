@@ -8,7 +8,7 @@ import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 /**
  * Provides methods for generating boilerplate {@link IAgeSymbol}s. These methods do not register the symbol directly. Use the {@link SymbolAPI} for that. The
- * implementation of this is provided by {@link APIInstanceProvider} Do NOT implement this yourself!
+ * implementation of this is provided by {@link APIInstanceProvider}.
  * @author xcompwiz
  */
 public interface SymbolFactory {

@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.api.world.logic;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
+import com.google.common.annotations.Beta;
 import com.xcompwiz.mystcraft.api.util.Color;
 
 /**

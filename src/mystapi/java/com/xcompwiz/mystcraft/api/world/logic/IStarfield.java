@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.api.world.logic;
 
+import com.google.common.annotations.Beta;
+
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -9,6 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * Adds a starfield to the age This is rendered behind all of the other celestial objects
  * @author XCompWiz
  */
+@Beta
 public interface IStarfield {
 
 	/**

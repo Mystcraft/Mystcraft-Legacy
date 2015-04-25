@@ -4,6 +4,9 @@ import java.util.List;
 
 import net.minecraft.world.biome.BiomeGenBase;
 
+import com.google.common.annotations.Beta;
+
+@Beta
 public interface IBiomeController {
 	public abstract List<BiomeGenBase> getValidSpawnBiomes();
 

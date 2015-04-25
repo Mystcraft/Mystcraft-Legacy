@@ -10,8 +10,8 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 
 public class SymbolAPIDelegate {
-	public void setSymbolCardRank(IAgeSymbol symbol, int weight) {
-		SymbolManager.setSymbolItemCardRank(symbol.identifier(), weight);
+	public void setSymbolCardRank(IAgeSymbol symbol, int rank) {
+		SymbolManager.setSymbolItemCardRank(symbol.identifier(), rank);
 	}
 
 	public void setSymbolIsPurchasable(IAgeSymbol symbol, boolean flag) {

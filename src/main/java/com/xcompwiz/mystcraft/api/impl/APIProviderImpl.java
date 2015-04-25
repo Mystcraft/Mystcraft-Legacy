@@ -9,8 +9,16 @@ import com.xcompwiz.mystcraft.api.exception.APIVersionUndefined;
 import com.xcompwiz.mystcraft.api.impl.client.RenderAPIWrapper;
 import com.xcompwiz.mystcraft.api.impl.grammar.GrammarAPIWrapper;
 import com.xcompwiz.mystcraft.api.impl.instability.InstabilityAPIWrapper;
+import com.xcompwiz.mystcraft.api.impl.instability.InstabilityFactWrapper;
+import com.xcompwiz.mystcraft.api.impl.item.ItemFactAPIWrapper;
+import com.xcompwiz.mystcraft.api.impl.linking.DimensionAPIWrapper;
+import com.xcompwiz.mystcraft.api.impl.linking.LinkPropertyAPIWrapper;
 import com.xcompwiz.mystcraft.api.impl.linking.LinkingAPIWrapper;
+import com.xcompwiz.mystcraft.api.impl.page.PageAPIWrapper;
 import com.xcompwiz.mystcraft.api.impl.symbol.SymbolAPIWrapper;
+import com.xcompwiz.mystcraft.api.impl.symbol.SymbolFactoryAPIWrapper;
+import com.xcompwiz.mystcraft.api.impl.symbol.SymbolValuesAPIWrapper;
+import com.xcompwiz.mystcraft.api.impl.word.WordAPIWrapper;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 
 public class APIProviderImpl implements APIInstanceProvider {
@@ -44,11 +52,20 @@ public class APIProviderImpl implements APIInstanceProvider {
 	public static void init() {
 		if (apiCtors != null) return;
 		apiCtors = new HashMap<String, HashMap<Integer, WrapperBuilder>>();
-		getCtors("linking").put(1, new WrapperBuilder(LinkingAPIWrapper.class));
-		getCtors("render").put(1, new WrapperBuilder(RenderAPIWrapper.class));
+
+		getCtors("dimension").put(1, new WrapperBuilder(DimensionAPIWrapper.class));
 		getCtors("grammar").put(1, new WrapperBuilder(GrammarAPIWrapper.class));
 		getCtors("instability").put(1, new WrapperBuilder(InstabilityAPIWrapper.class));
+		getCtors("instabilityfact").put(1, new WrapperBuilder(InstabilityFactWrapper.class));
+		getCtors("itemfact").put(1, new WrapperBuilder(ItemFactAPIWrapper.class));
+		getCtors("linking").put(1, new WrapperBuilder(LinkingAPIWrapper.class));
+		getCtors("linkingprop").put(1, new WrapperBuilder(LinkPropertyAPIWrapper.class));
+		getCtors("page").put(1, new WrapperBuilder(PageAPIWrapper.class));
+		getCtors("render").put(1, new WrapperBuilder(RenderAPIWrapper.class));
 		getCtors("symbol").put(1, new WrapperBuilder(SymbolAPIWrapper.class));
+		getCtors("symbolfact").put(1, new WrapperBuilder(SymbolFactoryAPIWrapper.class));
+		getCtors("symbolvals").put(1, new WrapperBuilder(SymbolValuesAPIWrapper.class));
+		getCtors("word").put(1, new WrapperBuilder(WordAPIWrapper.class));
 	}
 
 	private static HashMap<Integer, WrapperBuilder> getCtors(String apiname) {

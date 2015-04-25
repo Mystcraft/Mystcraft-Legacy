@@ -1,9 +1,11 @@
 package com.xcompwiz.mystcraft.api.world.storage;
 
+import com.google.common.annotations.Beta;
+
 /**
- * Do NOT implement this yourself!
  * @author xcompwiz
  */
+@Beta
 public interface StorageObject {
 
 	public abstract boolean getBoolean(String string);

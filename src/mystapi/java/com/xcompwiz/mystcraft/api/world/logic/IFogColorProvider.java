@@ -1,7 +1,9 @@
 package com.xcompwiz.mystcraft.api.world.logic;
 
+import com.google.common.annotations.Beta;
 import com.xcompwiz.mystcraft.api.util.Color;
 
+@Beta
 public interface IFogColorProvider {
 	/**
 	 * Returns a color based on the provided information. Note that the produced color is dynamic, so this type of element can use gradients.

@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.api.world.logic;
 
+import com.google.common.annotations.Beta;
+
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -9,6 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * Adds a sun to the age
  * @author XCompWiz
  */
+@Beta
 public interface ISun {
 
 	/**

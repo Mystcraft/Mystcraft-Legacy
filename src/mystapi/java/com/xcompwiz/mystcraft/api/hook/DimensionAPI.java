@@ -5,7 +5,7 @@ import java.util.Collection;
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 
 /**
- * Functions for interacting with Mystcraft dimensions. The implementation of this is provided by {@link APIInstanceProvider}. Do NOT implement this yourself!
+ * Functions for interacting with Mystcraft dimensions. The implementation of this is provided by {@link APIInstanceProvider}.
  * @author xcompwiz
  */
 public interface DimensionAPI {
@@ -24,7 +24,7 @@ public interface DimensionAPI {
 
 	/**
 	 * Creates a new dimension as a Mystcraft Age. Mystcraft will handle tracking of the age for start up and communicate the id to the client for you. Note
-	 * that this will only work server side.
+	 * that this will only work server-side.
 	 * @return The id of the newly created dimension
 	 */
 	public int createAge();

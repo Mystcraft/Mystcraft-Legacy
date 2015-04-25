@@ -3,8 +3,10 @@ package com.xcompwiz.mystcraft.api.world.logic;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.biome.BiomeGenBase;
 
+import com.google.common.annotations.Beta;
 import com.xcompwiz.mystcraft.api.util.Color;
 
+@Beta
 public interface ISkyColorProvider {
 	/**
 	 * Returns a color based on the provided information. Note that the produced color is dynamic, so this type of element can use gradients.
