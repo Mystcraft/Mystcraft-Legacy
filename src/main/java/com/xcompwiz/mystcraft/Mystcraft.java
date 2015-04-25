@@ -308,10 +308,9 @@ public class Mystcraft {
 
 		ModSymbols.generateBiomeSymbols();
 		ModSymbolsFluids.modsLoaded();
-		SymbolRules.register();
-
 		SymbolManager.buildCardRanks();
-		GrammarGenerator.init();
+		SymbolManager.registerRules();
+		GrammarGenerator.buildGrammar();
 
 		// Treasure object
 		ChestGenHooks treasureinfo = ChestGenHooks.getInfo(MystObjects.MYST_TREASURE);

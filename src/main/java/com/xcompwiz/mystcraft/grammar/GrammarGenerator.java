@@ -177,7 +177,7 @@ public class GrammarGenerator {
 		return allpaths;
 	}
 
-	public static void init() {
+	public static void buildGrammar() {
 		buildShortestPaths();
 		buildRankWeights();
 	}

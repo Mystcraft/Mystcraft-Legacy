@@ -14,6 +14,8 @@ import net.minecraftforge.common.config.Configuration;
 
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.config.MystConfig;
+import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
+import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
 
@@ -236,6 +238,19 @@ public class SymbolManager {
 			cardrankweights.put(i, weight);
 			lasttotal = count * weight;
 			weight += step;
+		}
+	}
+
+	public static void registerRules() {
+		ArrayList<IAgeSymbol> symbols = getAgeSymbols();
+		for (IAgeSymbol symbol : symbols) {
+			if (symbol instanceof SymbolBase) {
+				ArrayList<Rule> rules = ((SymbolBase) symbol).getRules();
+				if (rules == null) continue;
+				for (Rule rule : rules) {
+					GrammarGenerator.registerRule(rule);
+				}
+			}
 		}
 	}
 }

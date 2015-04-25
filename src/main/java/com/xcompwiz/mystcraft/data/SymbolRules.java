@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.xcompwiz.mystcraft.api.grammar.GrammarData;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
-import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
@@ -119,19 +118,6 @@ public class SymbolRules {
 
 		addRule("GenSpikes", buildRule(3, GrammarData.POPULATOR, GrammarData.BLOCK_STRUCTURE, "GenSpikes"));
 		addRule("CryForm", buildRule(3, GrammarData.POPULATOR, GrammarData.BLOCK_CRYSTAL, "CryForm"));
-	}
-
-	public static void register() {
-		ArrayList<IAgeSymbol> symbols = SymbolManager.getAgeSymbols();
-		for (IAgeSymbol symbol : symbols) {
-			if (symbol instanceof SymbolBase) {
-				ArrayList<Rule> rules = ((SymbolBase) symbol).getRules();
-				if (rules == null) continue;
-				for (Rule rule : rules) {
-					GrammarGenerator.registerRule(rule);
-				}
-			}
-		}
 	}
 
 	private static void addRule(String string, Rule rule) {
