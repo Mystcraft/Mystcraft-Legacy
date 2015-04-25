@@ -48,10 +48,14 @@ minecraft {
 curse {
 	apiKey = config.curseforge_key // saved in my properties file. http://minecraft.curseforge.com/my-api-tokens
 	projectId = "224599" // my project url is http://minecraft.curseforge.com/mc-mods/224599-mystcraft/
-	changelog = project.publishChangelog.text
 	releaseType = "release" //The release type must be either 'alpha', 'beta', or 'release'
+
+	changelog = project.publishChangelog.text
+
 	// the default obfuscated jar is uploaded by default
 	// artifact = project.file("some/jar/to/upload.jar")
+	// additionalArtifact devJar
+
 	// allows you to add extra compatible MC versions. The one specified in the minecraft{} block is used by default.
 	// addGameVersion "1.7.1"
 	// addGameversion "1.7.0", "1.7.4"
