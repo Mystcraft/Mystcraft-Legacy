@@ -16,12 +16,12 @@ public class IMCHandler {
 	private static Map<String, IMCProcessor>	processors	= new HashMap<String, IMCProcessor>();
 
 	static {
+		processors.put("API", new IMCAPIRegister());
 		processors.put("blockmodifier", new IMCBlockModifier());
 		processors.put("blockinstability", new IMCBlockInstability());
 		processors.put("blacklistfluid", new IMCBlacklistFluid());
 		processors.put("blacklist", new IMCBlacklistSymbol());
 		processors.put("fluidsymboldata", new IMCFluidData());
-		processors.put("register", new IMCAPIRegister());
 	}
 
 	public static void process(ImmutableList<IMCMessage> messages) {

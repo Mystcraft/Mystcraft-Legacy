@@ -25,9 +25,9 @@ public interface APIInstanceProvider {
 	public Object getAPIInstance(String api) throws APIUndefined, APIVersionUndefined, APIVersionRemoved;
 
 	/*	Example Usage
-	In order to get an instance of this class, send an IMC message to Mystcraft with the key "register" and a string value which is a static method (with classpath)
+	In order to get an instance of this class, send an IMC message to Mystcraft with the key "API" and a string value which is a static method (with classpath)
 	which takes an instance of APIInstanceProvider as it's only param.
-	Example: FMLInterModComms.sendMessage("Mystcraft", "register", "com.xcompwiz.newmod.integration.mystcraft.register");
+	Example: FMLInterModComms.sendMessage("Mystcraft", "API", "com.xcompwiz.newmod.integration.mystcraft.register");
 
  	public static void register(APIInstanceProvider provider) {
 		try {
