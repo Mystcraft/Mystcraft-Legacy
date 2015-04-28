@@ -18,7 +18,7 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IChunkProviderFinalization;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 import com.xcompwiz.mystcraft.world.gen.MapGenAdvanced;
 import com.xcompwiz.mystcraft.world.gen.MapGenFloatingIslands;
 import com.xcompwiz.mystcraft.world.gen.MapGenFloatingIslands.IModifiedHandler;
@@ -32,7 +32,7 @@ public class SymbolFloatingIslands extends SymbolBase {
 
 		Random rand = new Random(seed);
 		if (biome == null) {
-			biome = ModifierBiome.getRandomBiome(rand);
+			biome = SymbolBiome.getRandomBiome(rand);
 		}
 		BiomeReplacer replacer = new BiomeReplacer(biome);
 		controller.registerInterface(new TerrainAlteration(seed, blockdesc, biome, replacer));

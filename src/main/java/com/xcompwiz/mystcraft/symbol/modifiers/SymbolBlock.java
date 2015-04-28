@@ -10,12 +10,12 @@ import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
-public class ModifierBlock extends SymbolBase {
+public class SymbolBlock extends SymbolBase {
 
 	private BlockDescriptor	blockDescriptor;
 	private String			displayName;
 
-	public ModifierBlock(BlockDescriptor block, String word) {
+	public SymbolBlock(BlockDescriptor block, String word) {
 		this.blockDescriptor = block;
 		this.setWords(new String[] { WordData.Modifier, WordData.Constraint, word, getBlockAsItem(block).getUnlocalizedName() });
 		this.displayName = formatted(block);

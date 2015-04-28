@@ -18,7 +18,7 @@ import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 import com.xcompwiz.mystcraft.world.gen.layer.GenLayerBiomeMyst;
 import com.xcompwiz.mystcraft.world.gen.layer.GenLayerZoomMyst;
 
@@ -69,7 +69,7 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 
 			Random rand = new Random(controller.getSeed());
 			while (biomes.size() < 3) {
-				biomes.add(ModifierBiome.getRandomBiome(rand));
+				biomes.add(SymbolBiome.getRandomBiome(rand));
 			}
 
 			allowedBiomes = new BiomeGenBase[biomes.size()];

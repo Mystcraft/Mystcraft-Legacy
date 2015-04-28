@@ -16,7 +16,7 @@ import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.gen.ChunkProviderServer;
 
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
@@ -126,7 +126,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		agedata.setSpawn(null);
 		agedata.setInstabilityEnabled(true);
 
-		for (BiomeGenBase biome : ModifierBiome.selectables) {
+		for (BiomeGenBase biome : SymbolBiome.selectables) {
 			agedata.addSymbol("Biome" + biome.biomeID, 0);
 		}
 		agedata.addSymbol("BioConGrid", 0);

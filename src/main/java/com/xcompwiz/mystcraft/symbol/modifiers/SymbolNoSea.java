@@ -8,11 +8,11 @@ import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
-public class ModifierNoSea extends SymbolBase {
+public class SymbolNoSea extends SymbolBase {
 
 	private BlockDescriptor	blockDescriptor;
 
-	public ModifierNoSea() {
+	public SymbolNoSea() {
 		blockDescriptor = new BlockDescriptor(Blocks.air);
 		blockDescriptor.setUsable(BlockCategory.SEA, true);
 	}

@@ -4,12 +4,12 @@ import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
-public class ModifierAngle extends SymbolBase {
+public class SymbolLength extends SymbolBase {
 	private final float		value;
 	private final String	identifier;
 	private final String	display;
 
-	public ModifierAngle(float value, String identifier, String display) {
+	public SymbolLength(float value, String identifier, String display) {
 		this.value = value;
 		this.identifier = identifier;
 		this.display = display;
@@ -17,15 +17,12 @@ public class ModifierAngle extends SymbolBase {
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
-		Float value = this.value;
-		Number prev = controller.popModifier(ModifierUtils.ANGLE).asNumber();
+		Number prev = controller.popModifier(ModifierUtils.FACTOR).asNumber();
+		float value = this.value;
 		if (prev != null) {
-			value = ModifierUtils.averageAngles(prev.floatValue(), value);
+			value = ModifierUtils.averageLengths(value, prev.floatValue());
 		}
-		if (value >= 360.0F) {
-			value -= 360.0F;
-		}
-		controller.setModifier(ModifierUtils.ANGLE, value);
+		controller.setModifier(ModifierUtils.FACTOR, value);
 	}
 
 	@Override
@@ -35,7 +32,7 @@ public class ModifierAngle extends SymbolBase {
 
 	@Override
 	public String displayName() {
-		//XXX: (Localization)
-		return display + " Direction";
+		//XXX (Localization)
+		return display;
 	}
 }

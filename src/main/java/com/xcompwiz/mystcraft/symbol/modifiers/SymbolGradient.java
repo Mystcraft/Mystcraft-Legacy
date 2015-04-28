@@ -5,8 +5,8 @@ import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
-public class ModifierGradient extends SymbolBase {
-	public ModifierGradient() {}
+public class SymbolGradient extends SymbolBase {
+	public SymbolGradient() {}
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {

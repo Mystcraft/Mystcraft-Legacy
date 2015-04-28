@@ -19,8 +19,8 @@ import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBlock;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierColor;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBlock;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolColor;
 import com.xcompwiz.util.CollectionUtils;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
@@ -29,9 +29,9 @@ public class ModSymbolsModifiers {
 
 	public static class BlockModifierContainerObject {
 		private BlockDescriptor	descriptor;
-		private ModifierBlock	symbol;
+		private SymbolBlock	symbol;
 
-		private BlockModifierContainerObject(BlockDescriptor descriptor, ModifierBlock symbol) {
+		private BlockModifierContainerObject(BlockDescriptor descriptor, SymbolBlock symbol) {
 			this.descriptor = descriptor;
 			this.symbol = symbol;
 		}
@@ -49,7 +49,7 @@ public class ModSymbolsModifiers {
 
 		public static BlockModifierContainerObject create(String word, int cardrank, Block block, byte metadata) {
 			BlockDescriptor descriptor = new BlockDescriptor(block, metadata);
-			ModifierBlock symbol = new ModifierBlock(descriptor, word);
+			SymbolBlock symbol = new SymbolBlock(descriptor, word);
 			if (SymbolManager.hasBinding(symbol.identifier())) {
 				LoggerUtils.info("Some Mod is attempting to register a block symbol over an existing registration.");
 				return new BlockModifierContainerObject();
@@ -126,22 +126,22 @@ public class ModSymbolsModifiers {
 		BlockModifierContainerObject.create(WordData.Sea, 3, Blocks.flowing_lava, 0).register().add(BlockCategory.FLUID, 2).add(BlockCategory.SEA, 2);
 
 		// color
-		registerSymbol((new ModifierColor(0.50F, 0.00F, 0.00F, "Maroon")));
-		registerSymbol((new ModifierColor(1.00F, 0.00F, 0.00F, "Red")));
-		registerSymbol((new ModifierColor(0.50F, 0.50F, 0.00F, "Olive")));
-		registerSymbol((new ModifierColor(1.00F, 1.00F, 0.00F, "Yellow")));
-		registerSymbol((new ModifierColor(0.00F, 0.50F, 0.00F, "Dark Green")));
-		registerSymbol((new ModifierColor(0.00F, 1.00F, 0.00F, "Green")));
-		registerSymbol((new ModifierColor(0.00F, 0.50F, 0.50F, "Teal")));
-		registerSymbol((new ModifierColor(0.00F, 1.00F, 1.00F, "Cyan")));
-		registerSymbol((new ModifierColor(0.00F, 0.00F, 0.50F, "Navy")));
-		registerSymbol((new ModifierColor(0.00F, 0.00F, 1.00F, "Blue")));
-		registerSymbol((new ModifierColor(0.50F, 0.00F, 0.50F, "Purple")));
-		registerSymbol((new ModifierColor(1.00F, 0.00F, 1.00F, "Magenta")));
-		registerSymbol((new ModifierColor(0.00F, 0.00F, 0.00F, "Black")));
-		registerSymbol((new ModifierColor(0.50F, 0.50F, 0.50F, "Grey")));
-		registerSymbol((new ModifierColor(0.75F, 0.75F, 0.75F, "Silver")));
-		registerSymbol((new ModifierColor(1.00F, 1.00F, 1.00F, "White")));
+		registerSymbol((new SymbolColor(0.50F, 0.00F, 0.00F, "Maroon")));
+		registerSymbol((new SymbolColor(1.00F, 0.00F, 0.00F, "Red")));
+		registerSymbol((new SymbolColor(0.50F, 0.50F, 0.00F, "Olive")));
+		registerSymbol((new SymbolColor(1.00F, 1.00F, 0.00F, "Yellow")));
+		registerSymbol((new SymbolColor(0.00F, 0.50F, 0.00F, "Dark Green")));
+		registerSymbol((new SymbolColor(0.00F, 1.00F, 0.00F, "Green")));
+		registerSymbol((new SymbolColor(0.00F, 0.50F, 0.50F, "Teal")));
+		registerSymbol((new SymbolColor(0.00F, 1.00F, 1.00F, "Cyan")));
+		registerSymbol((new SymbolColor(0.00F, 0.00F, 0.50F, "Navy")));
+		registerSymbol((new SymbolColor(0.00F, 0.00F, 1.00F, "Blue")));
+		registerSymbol((new SymbolColor(0.50F, 0.00F, 0.50F, "Purple")));
+		registerSymbol((new SymbolColor(1.00F, 0.00F, 1.00F, "Magenta")));
+		registerSymbol((new SymbolColor(0.00F, 0.00F, 0.00F, "Black")));
+		registerSymbol((new SymbolColor(0.50F, 0.50F, 0.50F, "Grey")));
+		registerSymbol((new SymbolColor(0.75F, 0.75F, 0.75F, "Silver")));
+		registerSymbol((new SymbolColor(1.00F, 1.00F, 1.00F, "White")));
 	}
 
 	private static void registerSymbol(SymbolBase symbol) {

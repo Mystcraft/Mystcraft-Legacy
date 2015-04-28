@@ -11,13 +11,13 @@ import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.util.CollectionUtils;
 
-public class ModifierColor extends SymbolBase {
+public class SymbolColor extends SymbolBase {
 	private float	red;
 	private float	green;
 	private float	blue;
 	private String	name;
 
-	public ModifierColor(float r, float g, float b, String name) {
+	public SymbolColor(float r, float g, float b, String name) {
 		this.name = name;
 		this.red = r;
 		this.green = g;

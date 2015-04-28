@@ -26,7 +26,7 @@ import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.network.packet.MPacketProfilingState;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 import com.xcompwiz.mystcraft.world.gen.ChunkProfilerManager;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -68,7 +68,7 @@ public class InstabilityDataCalculator {
 	public InstabilityDataCalculator(MinecraftServer mcserver) {
 		this.mcserver = mcserver;
 		this.storage = mcserver.worldServerForDimension(0).mapStorage;
-		this.minimumchunks = ModifierBiome.selectables.size() * 20;
+		this.minimumchunks = SymbolBiome.selectables.size() * 20;
 		final ChunkProfiler profiler = getChunkProfiler();
 
 		DebugNode node = getDebugNode();

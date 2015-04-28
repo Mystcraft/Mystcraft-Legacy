@@ -10,7 +10,7 @@ import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 
 public class SymbolBiomeControllerTiled extends SymbolBase {
 
@@ -26,7 +26,7 @@ public class SymbolBiomeControllerTiled extends SymbolBase {
 
 		Random rand = new Random(controller.getSeed());
 		while (biomes.size() < 2) {
-			biomes.add(ModifierBiome.getRandomBiome(rand));
+			biomes.add(SymbolBiome.getRandomBiome(rand));
 		}
 		controller.registerInterface(new BiomeController(biomes));
 	}

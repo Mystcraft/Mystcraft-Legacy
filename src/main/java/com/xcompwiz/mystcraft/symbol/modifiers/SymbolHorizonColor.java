@@ -6,7 +6,7 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
-public class ModifierHorizonColor extends SymbolBase {
+public class SymbolHorizonColor extends SymbolBase {
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		ColorGradient sunset = controller.popModifier(ModifierUtils.SUNSET).asGradient();

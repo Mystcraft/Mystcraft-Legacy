@@ -11,13 +11,13 @@ import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
-public class ModifierBiome extends SymbolBase {
+public class SymbolBiome extends SymbolBase {
 	public static ArrayList<BiomeGenBase>	selectables	= new ArrayList<BiomeGenBase>();
 
 	private BiomeGenBase					biome;
 	private String							displayName;
 
-	public ModifierBiome(BiomeGenBase biome) {
+	public SymbolBiome(BiomeGenBase biome) {
 		this.biome = biome;
 		this.displayName = formatted(biome);
 		this.setWords(new String[] { WordData.Nature, WordData.Nurture, WordData.Encourage, biome.biomeName + biome.biomeID });

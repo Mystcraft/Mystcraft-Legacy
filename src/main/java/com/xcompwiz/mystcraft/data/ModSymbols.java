@@ -13,14 +13,14 @@ import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierAngle;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierBiome;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierClear;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierGradient;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierHorizonColor;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierLength;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierNoSea;
-import com.xcompwiz.mystcraft.symbol.modifiers.ModifierPhase;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolAngle;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolClear;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolGradient;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolHorizonColor;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolLength;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolNoSea;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolPhase;
 import com.xcompwiz.mystcraft.symbol.symbols.SymbolAntiPvP;
 import com.xcompwiz.mystcraft.symbol.symbols.SymbolBiomeControllerGrid;
 import com.xcompwiz.mystcraft.symbol.symbols.SymbolBiomeControllerHuge;
@@ -122,7 +122,7 @@ public class ModSymbols {
 				continue;
 			}
 
-			SymbolBase symbol = (new ModifierBiome(biome));
+			SymbolBase symbol = (new SymbolBiome(biome));
 			if (InternalAPI.symbol.registerSymbol(symbol, MystObjects.MystcraftModId)) {
 				Integer rank = 1;
 				if (biome == BiomeGenBase.sky) {
@@ -132,7 +132,7 @@ public class ModSymbols {
 				}
 				GrammarGenerator.registerRule(new Rule(GrammarData.BIOME, CollectionUtils.buildList(symbol.identifier()), rank));
 				InternalAPI.symbolValues.setSymbolTradeItem(symbol, new ItemStack(Items.emerald, 1));
-				ModifierBiome.selectables.add(biome);
+				SymbolBiome.selectables.add(biome);
 			}
 
 			// Handle remappings
@@ -176,7 +176,7 @@ public class ModSymbols {
 		registerSymbol("BioConMedium", new SymbolBiomeControllerMedium(), 3, WordData.Constraint, WordData.Nature, WordData.Weave, "Medium");
 		registerSymbol("BioConSmall", new SymbolBiomeControllerSmall(), 3, WordData.Constraint, WordData.Nature, WordData.Weave, "Small");
 		registerSymbol("BioConTiny", new SymbolBiomeControllerTiny(), 3, WordData.Constraint, WordData.Nature, WordData.Weave, "Tiny");
-		registerSymbol("NoSea", new ModifierNoSea(), 2, WordData.Modifier, WordData.Constraint, WordData.Flow, WordData.Inhibit);
+		registerSymbol("NoSea", new SymbolNoSea(), 2, WordData.Modifier, WordData.Constraint, WordData.Flow, WordData.Inhibit);
 		registerSymbol("PvPOff", new SymbolAntiPvP(), null, WordData.Chain, WordData.Chaos, WordData.Encourage, WordData.Harmony);
 		registerSymbol("EnvAccel", new SymbolEnvAccelerated(), 3, WordData.Environment, WordData.Dynamic, WordData.Change, WordData.Spur);
 		registerSymbol("EnvExplosions", new SymbolEnvExplosions(), 3, WordData.Environment, WordData.Sacrifice, WordData.Power, WordData.Force);
@@ -187,21 +187,21 @@ public class ModSymbols {
 		registerSymbol("LightingBright", new SymbolLightingBright(), 3, WordData.Ethereal, WordData.Power, WordData.Infinite, WordData.Spur);
 		registerSymbol("LightingDark", new SymbolLightingDark(), 3, WordData.Ethereal, WordData.Void, WordData.Constraint, WordData.Inhibit);
 		registerSymbol("LightingNormal", new SymbolLightingNormal(), 2, WordData.Ethereal, WordData.Dynamic, WordData.Cycle, WordData.Balance);
-		registerSymbol("ModNorth", new ModifierAngle(000.0F, "ModNorth", "North"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Control);
-		registerSymbol("ModEast", new ModifierAngle(090.0F, "ModEast", "East"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Tradition);
-		registerSymbol("ModSouth", new ModifierAngle(180.0F, "ModSouth", "South"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Chaos);
-		registerSymbol("ModWest", new ModifierAngle(270.0F, "ModWest", "West"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Change);
-		registerSymbol("ModClear", new ModifierClear(), 0, WordData.Contradict, WordData.Transform, WordData.Change, WordData.Void);
-		registerSymbol("ModGradient", new ModifierGradient(), 0, WordData.Modifier, WordData.Image, WordData.Merge, WordData.Weave);
-		registerSymbol("ColorHorizon", new ModifierHorizonColor(), 0, WordData.Modifier, WordData.Image, WordData.Celestial, WordData.Change);
-		registerSymbol("ModZero", new ModifierLength(0.0F, "ModZero", "Zero Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Inhibit);
-		registerSymbol("ModHalf", new ModifierLength(0.5F, "ModHalf", "Half Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Stimulate);
-		registerSymbol("ModFull", new ModifierLength(1.0F, "ModFull", "Full Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Balance);
-		registerSymbol("ModDouble", new ModifierLength(2.0F, "ModDouble", "Double Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Sacrifice);
-		registerSymbol("ModEnd", new ModifierPhase(000F, "ModEnd", "Nadir"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Rebirth);
-		registerSymbol("ModRising", new ModifierPhase(090F, "ModRising", "Rising"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Growth);
-		registerSymbol("ModNoon", new ModifierPhase(180F, "ModNoon", "Zenith"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Harmony);
-		registerSymbol("ModSetting", new ModifierPhase(270F, "ModSetting", "Setting"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Future);
+		registerSymbol("ModNorth", new SymbolAngle(000.0F, "ModNorth", "North"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Control);
+		registerSymbol("ModEast", new SymbolAngle(090.0F, "ModEast", "East"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Tradition);
+		registerSymbol("ModSouth", new SymbolAngle(180.0F, "ModSouth", "South"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Chaos);
+		registerSymbol("ModWest", new SymbolAngle(270.0F, "ModWest", "West"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Change);
+		registerSymbol("ModClear", new SymbolClear(), 0, WordData.Contradict, WordData.Transform, WordData.Change, WordData.Void);
+		registerSymbol("ModGradient", new SymbolGradient(), 0, WordData.Modifier, WordData.Image, WordData.Merge, WordData.Weave);
+		registerSymbol("ColorHorizon", new SymbolHorizonColor(), 0, WordData.Modifier, WordData.Image, WordData.Celestial, WordData.Change);
+		registerSymbol("ModZero", new SymbolLength(0.0F, "ModZero", "Zero Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Inhibit);
+		registerSymbol("ModHalf", new SymbolLength(0.5F, "ModHalf", "Half Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Stimulate);
+		registerSymbol("ModFull", new SymbolLength(1.0F, "ModFull", "Full Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Balance);
+		registerSymbol("ModDouble", new SymbolLength(2.0F, "ModDouble", "Double Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Sacrifice);
+		registerSymbol("ModEnd", new SymbolPhase(000F, "ModEnd", "Nadir"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Rebirth);
+		registerSymbol("ModRising", new SymbolPhase(090F, "ModRising", "Rising"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Growth);
+		registerSymbol("ModNoon", new SymbolPhase(180F, "ModNoon", "Zenith"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Harmony);
+		registerSymbol("ModSetting", new SymbolPhase(270F, "ModSetting", "Setting"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Future);
 		registerSymbol("Caves", new SymbolCaves(), 2, WordData.Terrain, WordData.Transform, WordData.Void, WordData.Flow);
 		registerSymbol("Dungeons", new SymbolDungeons(), 2, WordData.Civilization, WordData.Constraint, WordData.Chain, WordData.Resurrect);
 		registerSymbol("FloatIslands", new SymbolFloatingIslands(), 3, WordData.Terrain, WordData.Transform, WordData.Form, WordData.Celestial);
