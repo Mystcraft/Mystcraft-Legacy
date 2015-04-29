@@ -33,7 +33,7 @@ public class SymbolStarsEndSky extends SymbolBase {
 	private static class SkyBackground extends CelestialBase {
 
 		private ColorGradient	gradient;
-		private AgeDirector	controller;
+		private AgeDirector		controller;
 
 		SkyBackground(AgeDirector controller, long seed, ColorGradient gradient) {
 			this.controller = controller;

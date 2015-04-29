@@ -617,8 +617,8 @@ public class AgeController implements AgeDirector {
 
 	@SideOnly(Side.CLIENT)
 	public void renderCelestials(TextureManager eng, World worldObj, float partial) {
-		for (ICelestial sun : suns) {
-			sun.render(eng, worldObj, partial);
+		for (ICelestial celestial : celestials) {
+			celestial.render(eng, worldObj, partial);
 		}
 	}
 
