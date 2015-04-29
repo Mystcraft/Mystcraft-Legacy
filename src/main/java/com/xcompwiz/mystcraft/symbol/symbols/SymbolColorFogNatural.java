@@ -1,16 +1,18 @@
 package com.xcompwiz.mystcraft.symbol.symbols;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.biome.BiomeGenBase;
 
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
-import com.xcompwiz.mystcraft.api.world.logic.IFogColorProvider;
+import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorFogNatural extends SymbolBase {
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new FogColorizer());
+		controller.registerInterface(new FogColorizer(), IDynamicColorProvider.FOG);
 	}
 
 	@Override
@@ -18,11 +20,11 @@ public class SymbolColorFogNatural extends SymbolBase {
 		return "ColorFogNat";
 	}
 
-	private static class FogColorizer implements IFogColorProvider {
+	private static class FogColorizer implements IDynamicColorProvider {
 		public FogColorizer() {}
 
 		@Override
-		public Color getFogColor(float celestial_angle, float time) {
+		public Color getColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle, float partialtick) {
 			float f2 = MathHelper.cos(celestial_angle * 3.141593F * 2.0F) * 2.0F + 0.5F;
 			if (f2 < 0.0F) {
 				f2 = 0.0F;

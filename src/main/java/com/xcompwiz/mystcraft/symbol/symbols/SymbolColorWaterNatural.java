@@ -12,7 +12,7 @@ public class SymbolColorWaterNatural extends SymbolBase {
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new StaticColorProvider(IStaticColorProvider.WATER));
+		controller.registerInterface(new StaticColorProvider(), IStaticColorProvider.WATER);
 	}
 
 	@Override
@@ -22,16 +22,9 @@ public class SymbolColorWaterNatural extends SymbolBase {
 
 	public class StaticColorProvider implements IStaticColorProvider {
 
-		private Object	type;
-
-		public StaticColorProvider(String type) {
-			this.type = type;
-		}
-
 		@Override
-		public Color getStaticColor(String type, World worldObj, BiomeGenBase biome, int x, int y, int z) {
-			if (type.equals(this.type)) { return new Color(biome.waterColorMultiplier); }
-			return null;
+		public Color getStaticColor(World worldObj, BiomeGenBase biome, int x, int y, int z) {
+			return new Color(biome.waterColorMultiplier);
 		}
 
 	}

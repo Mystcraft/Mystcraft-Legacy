@@ -10,13 +10,11 @@ import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.api.world.logic.IChunkProviderFinalization;
-import com.xcompwiz.mystcraft.api.world.logic.ICloudColorProvider;
+import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
-import com.xcompwiz.mystcraft.api.world.logic.IFogColorProvider;
 import com.xcompwiz.mystcraft.api.world.logic.ILightingController;
 import com.xcompwiz.mystcraft.api.world.logic.IMoon;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
-import com.xcompwiz.mystcraft.api.world.logic.ISkyColorProvider;
 import com.xcompwiz.mystcraft.api.world.logic.ISkyDoodad;
 import com.xcompwiz.mystcraft.api.world.logic.ISpawnModifier;
 import com.xcompwiz.mystcraft.api.world.logic.IStarfield;
@@ -226,31 +224,19 @@ public class SymbolProfiler implements AgeDirector {
 	}
 
 	@Override
-	public void registerInterface(IFogColorProvider reg) {
-		if (agent == null) return;
-		getInterfaceList(IFogColorProvider.class).add(agent);
-	}
-
-	@Override
 	public void registerInterface(ISpawnModifier reg) {
 		if (agent == null) return;
 		getInterfaceList(ISpawnModifier.class).add(agent);
 	}
 
 	@Override
-	public void registerInterface(ISkyColorProvider skyColorizer) {
+	public void registerInterface(IDynamicColorProvider reg, String type) {
 		if (agent == null) return;
-		getInterfaceList(ISkyColorProvider.class).add(agent);
+		getInterfaceList(IDynamicColorProvider.class).add(agent);
 	}
 
 	@Override
-	public void registerInterface(ICloudColorProvider reg) {
-		if (agent == null) return;
-		getInterfaceList(ICloudColorProvider.class).add(agent);
-	}
-
-	@Override
-	public void registerInterface(IStaticColorProvider reg) {
+	public void registerInterface(IStaticColorProvider reg, String type) {
 		if (agent == null) return;
 		getInterfaceList(IStaticColorProvider.class).add(agent);
 	}

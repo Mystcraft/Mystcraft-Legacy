@@ -5,13 +5,11 @@ import net.minecraft.world.biome.WorldChunkManager;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.api.world.logic.IChunkProviderFinalization;
-import com.xcompwiz.mystcraft.api.world.logic.ICloudColorProvider;
+import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
-import com.xcompwiz.mystcraft.api.world.logic.IFogColorProvider;
 import com.xcompwiz.mystcraft.api.world.logic.ILightingController;
 import com.xcompwiz.mystcraft.api.world.logic.IMoon;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
-import com.xcompwiz.mystcraft.api.world.logic.ISkyColorProvider;
 import com.xcompwiz.mystcraft.api.world.logic.ISkyDoodad;
 import com.xcompwiz.mystcraft.api.world.logic.ISpawnModifier;
 import com.xcompwiz.mystcraft.api.world.logic.IStarfield;
@@ -208,28 +206,16 @@ public interface AgeDirector {
 	public void registerInterface(ISpawnModifier reg);
 
 	/**
-	 * Registers a new {@link IFogModifier} interface Any number of these may be registered and the results are averaged together using the rolling average
-	 * method
-	 */
-	public void registerInterface(IFogColorProvider reg);
-
-	/**
-	 * Registers a new {@link ISkyColorProvider} interface Any number of these may be registered and the results are averaged together using the rolling average
-	 * method
-	 */
-	public void registerInterface(ISkyColorProvider skyColorizer);
-
-	/**
-	 * Registers a new {@link ICloudColorProvider} interface Any number of these may be registered and the results are averaged together using the rolling
+	 * Registers a new {@link IDynamicColorProvider} interface. Any number of these may be registered and the results are averaged together using the rolling
 	 * average method
 	 */
-	public void registerInterface(ICloudColorProvider reg);
+	public void registerInterface(IDynamicColorProvider reg, String type);
 
 	/**
 	 * Registers a new {@link IStaticColorProvider} interface Any number of these may be registered and the results are averaged together using the rolling
 	 * average method
 	 */
-	public void registerInterface(IStaticColorProvider reg);
+	public void registerInterface(IStaticColorProvider reg, String type);
 
 	/**
 	 * Registers a new {@link IEnvironmentalEffect} interface Any number of these may be registered

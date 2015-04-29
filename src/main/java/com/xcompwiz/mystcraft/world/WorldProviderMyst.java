@@ -4,7 +4,9 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
@@ -128,9 +130,13 @@ public class WorldProviderMyst extends WorldProvider {
 		return 1.0;
 	}
 
+    @SideOnly(Side.CLIENT)
 	@Override
 	public Vec3 getFogColor(float celestial_angle, float partialtick) {
-		Vec3 fog = getAgeController().getFogColor(celestial_angle, partialtick);
+		//XXX: Is this safe enough?  Should I do something more robust?
+		EntityLivingBase entity = Minecraft.getMinecraft().renderViewEntity;
+		BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posZ));
+		Vec3 fog = getAgeController().getFogColor(entity, biome, worldObj.getWorldTime(), celestial_angle, partialtick);
 		if (fog == null) {
 			float f2 = MathHelper.cos(celestial_angle * 3.141593F * 2.0F) * 2.0F + 0.5F;
 			if (f2 < 0.0F) {
@@ -150,6 +156,7 @@ public class WorldProviderMyst extends WorldProvider {
 		return fog;
 	}
 
+    @SideOnly(Side.CLIENT)
 	@Override
 	public Vec3 drawClouds(float partialtick) {
 		float celestial_angle = worldObj.getCelestialAngle(partialtick);
@@ -163,7 +170,10 @@ public class WorldProviderMyst extends WorldProvider {
 			var3 = 1.0F;
 		}
 
-		Vec3 temp = getAgeController().getCloudColor(worldObj.getWorldTime(), celestial_angle);
+		//XXX: Is this safe enough?  Should I do something more robust?
+		EntityLivingBase entity = Minecraft.getMinecraft().renderViewEntity;
+		BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posZ));
+		Vec3 temp = getAgeController().getCloudColor(entity, biome, worldObj.getWorldTime(), celestial_angle, partialtick);
 		float var4;
 		float var5;
 		float var6;
@@ -446,7 +456,7 @@ public class WorldProviderMyst extends WorldProvider {
 		float green = 0;
 		float blue = 0;
 		BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posZ));
-		Vec3 out = getAgeController().getSkyColor(entity, biome, worldObj.getWorldTime(), celestial_angle);
+		Vec3 out = getAgeController().getSkyColor(entity, biome, worldObj.getWorldTime(), celestial_angle, partialtick);
 		if (out == null) {
 			float var4 = MathHelper.cos(celestial_angle * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
 

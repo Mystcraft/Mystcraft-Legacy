@@ -6,14 +6,14 @@ import net.minecraft.world.biome.BiomeGenBase;
 
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
-import com.xcompwiz.mystcraft.api.world.logic.ISkyColorProvider;
+import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorSkyNatural extends SymbolBase {
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new Colorizer());
+		controller.registerInterface(new Colorizer(), IDynamicColorProvider.SKY);
 	}
 
 	@Override
@@ -21,11 +21,11 @@ public class SymbolColorSkyNatural extends SymbolBase {
 		return "ColorSkyNat";
 	}
 
-	private static class Colorizer implements ISkyColorProvider {
+	private static class Colorizer implements IDynamicColorProvider {
 		public Colorizer() {}
 
 		@Override
-		public Color getSkyColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle) {
+		public Color getColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle, float partialtick) {
 			float alpha = MathHelper.cos(celestial_angle * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
 
 			if (alpha < 0.0F) alpha = 0.0F;

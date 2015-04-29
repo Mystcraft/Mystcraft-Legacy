@@ -8,14 +8,14 @@ import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
-import com.xcompwiz.mystcraft.api.world.logic.ISkyColorProvider;
+import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorSkyNight extends SymbolBase {
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		ColorGradient gradient = ModifierUtils.popGradient(controller, 1, 1, 1);
-		controller.registerInterface(new Colorizer(controller, gradient));
+		controller.registerInterface(new Colorizer(controller, gradient), IDynamicColorProvider.SKY);
 	}
 
 	@Override
@@ -23,8 +23,8 @@ public class SymbolColorSkyNight extends SymbolBase {
 		return "ColorSkyNight";
 	}
 
-	private class Colorizer implements ISkyColorProvider {
-		ColorGradient			gradient;
+	private class Colorizer implements IDynamicColorProvider {
+		ColorGradient		gradient;
 		private AgeDirector	controller;
 
 		public Colorizer(AgeDirector controller, ColorGradient gradient) {
@@ -33,7 +33,7 @@ public class SymbolColorSkyNight extends SymbolBase {
 		}
 
 		@Override
-		public Color getSkyColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle) {
+		public Color getColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle, float partialtick) {
 			float alpha = MathHelper.cos(celestial_angle * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
 
 			if (alpha < 0.0F) alpha = 0.0F;

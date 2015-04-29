@@ -14,7 +14,7 @@ public class SymbolColorFoliage extends SymbolBase {
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		Color color = controller.popModifier(ModifierUtils.COLOR).asColor();
-		controller.registerInterface(new StaticColorProvider(IStaticColorProvider.FOLIAGE, color));
+		controller.registerInterface(new StaticColorProvider(color), IStaticColorProvider.FOLIAGE);
 	}
 
 	@Override
@@ -24,18 +24,15 @@ public class SymbolColorFoliage extends SymbolBase {
 
 	public class StaticColorProvider implements IStaticColorProvider {
 
-		private Object	type;
 		private Color	color;
 
-		public StaticColorProvider(String type, Color color) {
-			this.type = type;
+		public StaticColorProvider(Color color) {
 			this.color = color;
 		}
 
 		@Override
-		public Color getStaticColor(String type, World worldObj, BiomeGenBase biome, int x, int y, int z) {
-			if (type.equals(this.type)) return this.color;
-			return null;
+		public Color getStaticColor(World worldObj, BiomeGenBase biome, int x, int y, int z) {
+			return this.color;
 		}
 
 	}

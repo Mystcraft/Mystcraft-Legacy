@@ -14,7 +14,7 @@ public class SymbolColorFoliageNatural extends SymbolBase {
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new StaticColorProvider(IStaticColorProvider.FOLIAGE));
+		controller.registerInterface(new StaticColorProvider(), IStaticColorProvider.FOLIAGE);
 	}
 
 	@Override
@@ -24,20 +24,11 @@ public class SymbolColorFoliageNatural extends SymbolBase {
 
 	public class StaticColorProvider implements IStaticColorProvider {
 
-		private Object	type;
-
-		public StaticColorProvider(String type) {
-			this.type = type;
-		}
-
 		@Override
-		public Color getStaticColor(String type, World worldObj, BiomeGenBase biome, int x, int y, int z) {
-			if (type.equals(this.type)) {
-				double d0 = MathHelper.clamp_float(biome.getFloatTemperature(x, y, z), 0.0F, 1.0F);
-				double d1 = MathHelper.clamp_float(biome.getFloatRainfall(), 0.0F, 1.0F);
-				return new Color(ColorizerFoliage.getFoliageColor(d0, d1));
-			}
-			return null;
+		public Color getStaticColor(World worldObj, BiomeGenBase biome, int x, int y, int z) {
+			double d0 = MathHelper.clamp_float(biome.getFloatTemperature(x, y, z), 0.0F, 1.0F);
+			double d1 = MathHelper.clamp_float(biome.getFloatRainfall(), 0.0F, 1.0F);
+			return new Color(ColorizerFoliage.getFoliageColor(d0, d1));
 		}
 
 	}

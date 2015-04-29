@@ -6,6 +6,7 @@ import com.xcompwiz.mystcraft.api.hook.SymbolAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
 
 public class SymbolAPIWrapper extends APIWrapper implements SymbolAPI {
 
@@ -15,7 +16,8 @@ public class SymbolAPIWrapper extends APIWrapper implements SymbolAPI {
 
 	@Override
 	public void blacklistIdentifier(String identifier) {
-		InternalAPI.symbol.blacklistIdentifier(identifier);		
+		InternalAPI.symbol.blacklistIdentifier(identifier);
+		LoggerUtils.info(String.format("[%s] has blacklisted symbol identifier %s", this.getOwnerMod(), identifier));
 	}
 
 	@Override

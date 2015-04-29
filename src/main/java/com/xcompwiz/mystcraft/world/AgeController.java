@@ -30,13 +30,11 @@ import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.api.world.logic.IChunkProviderFinalization;
-import com.xcompwiz.mystcraft.api.world.logic.ICloudColorProvider;
+import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
-import com.xcompwiz.mystcraft.api.world.logic.IFogColorProvider;
 import com.xcompwiz.mystcraft.api.world.logic.ILightingController;
 import com.xcompwiz.mystcraft.api.world.logic.IMoon;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
-import com.xcompwiz.mystcraft.api.world.logic.ISkyColorProvider;
 import com.xcompwiz.mystcraft.api.world.logic.ISkyDoodad;
 import com.xcompwiz.mystcraft.api.world.logic.ISpawnModifier;
 import com.xcompwiz.mystcraft.api.world.logic.IStarfield;
@@ -64,57 +62,62 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class AgeController implements AgeDirector {
-	private static final int					MINCHUNKS			= 400;
+	private static final int								MINCHUNKS			= 400;
 
-	private World								world;
-	private WorldChunkManager					chunkManager;
-	private SkyRendererMyst						skyrenderer;
-	private CloudRendererMyst					cloudrenderer;
-	private WeatherRendererMyst					weatherrenderer;
-	private AgeData								agedata;
-	private InstabilityController				instabilityController;
-	private InstabilityBonusManager				instabilitybonusmanager;
+	private World											world;
+	private WorldChunkManager								chunkManager;
+	private SkyRendererMyst									skyrenderer;
+	private CloudRendererMyst								cloudrenderer;
+	private WeatherRendererMyst								weatherrenderer;
+	private AgeData											agedata;
+	private InstabilityController							instabilityController;
+	private InstabilityBonusManager							instabilitybonusmanager;
 
-	private Random								symbolseedrand;
+	private Random											symbolseedrand;
 
-	private IBiomeController					biomeController;
-	private IWeatherController					weatherController;
-	private ITerrainGenerator					genTerrain;
-	private ILightingController					lightingController;
+	private IBiomeController								biomeController;
+	private IWeatherController								weatherController;
+	private ITerrainGenerator								genTerrain;
+	private ILightingController								lightingController;
 
-	private List<ISun>							suns;
-	private List<IMoon>							moons;
-	private List<IStarfield>					starfields;
-	private List<ISkyDoodad>					skyDoodads;
-	private List<ITerrainAlteration>			terrainalterations;
-	private List<IChunkProviderFinalization>	chunkfinalizers;
-	private List<IPopulate>						populateFuncs;
-	private List<ITerrainFeatureLocator>		featureLocators;
-	private List<IFogColorProvider>				fogColorProviders;
-	private List<ISkyColorProvider>				skyColorProviders;
-	private List<IStaticColorProvider>			staticColorProviders;
-	private List<ICloudColorProvider>			cloudColorProvider;
-	private List<ISpawnModifier>				creatureAffecters;
-	private List<IEnvironmentalEffect>			envEffects;
+	private List<ISun>										suns;
+	private List<IMoon>										moons;
+	private List<IStarfield>								starfields;
+	private List<ISkyDoodad>								skyDoodads;
+	private List<ITerrainAlteration>						terrainalterations;
+	private List<IChunkProviderFinalization>				chunkfinalizers;
+	private List<IPopulate>									populateFuncs;
+	private List<ITerrainFeatureLocator>					featureLocators;
+	private List<IStaticColorProvider>						foliageColorProviders;
+	private List<IStaticColorProvider>						grassColorProviders;
+	private List<IStaticColorProvider>						waterColorProviders;
+	private List<IDynamicColorProvider>						cloudColorProviders;
+	private List<IDynamicColorProvider>						fogColorProviders;
+	private List<IDynamicColorProvider>						skyColorProviders;
+	private List<ISpawnModifier>							creatureAffecters;
+	private List<IEnvironmentalEffect>						envEffects;
 
-	private Float								cloudHeight;
-	private Double								horizon;
-	private Integer								groundlevel;
-	private Integer								sealevel;
-	private Boolean								renderHorizon;
-	private Boolean								renderVoid;
-	private Boolean								pvpEnabled;
-	private HashMap<String, Modifier>			modifiers;
-	private HashMap<String, Modifier>			globalMods;
+	private HashMap<String, List<IDynamicColorProvider>>	dynamicColorLists	= new HashMap<String, List<IDynamicColorProvider>>();
+	private HashMap<String, List<IStaticColorProvider>>		staticColorLists	= new HashMap<String, List<IStaticColorProvider>>();
 
-	private int									nextprofiled;
-	private int									symbolinstability;
-	private Integer								blockinstability	= null;
-	private HashMap<IAgeSymbol, Integer>		symbolcounts		= new HashMap<IAgeSymbol, Integer>();
-	protected int								debuginstability	= 0;
+	private Float											cloudHeight;
+	private Double											horizon;
+	private Integer											groundlevel;
+	private Integer											sealevel;
+	private Boolean											renderHorizon;
+	private Boolean											renderVoid;
+	private Boolean											pvpEnabled;
+	private HashMap<String, Modifier>						modifiers;
+	private HashMap<String, Modifier>						globalMods;
 
-	private Semaphore							semaphore			= new Semaphore(1, true);
-	private boolean								rebuilding;
+	private int												nextprofiled;
+	private int												symbolinstability;
+	private Integer											blockinstability	= null;
+	private HashMap<IAgeSymbol, Integer>					symbolcounts		= new HashMap<IAgeSymbol, Integer>();
+	protected int											debuginstability	= 0;
+
+	private Semaphore										semaphore			= new Semaphore(1, true);
+	private boolean											rebuilding;
 
 	public AgeController(World worldObj, AgeData age) {
 		world = worldObj;
@@ -148,6 +151,9 @@ public class AgeController implements AgeDirector {
 		long seed = agedata.getSeed();
 		symbolseedrand = new Random(seed);
 
+		dynamicColorLists.clear();
+		staticColorLists.clear();
+
 		biomeController = null;
 		weatherController = null;
 		genTerrain = null;
@@ -160,10 +166,12 @@ public class AgeController implements AgeDirector {
 		chunkfinalizers = new ArrayList<IChunkProviderFinalization>();
 		populateFuncs = new ArrayList<IPopulate>();
 		featureLocators = new ArrayList<ITerrainFeatureLocator>();
-		fogColorProviders = new ArrayList<IFogColorProvider>();
-		skyColorProviders = new ArrayList<ISkyColorProvider>();
-		cloudColorProvider = new ArrayList<ICloudColorProvider>();
-		staticColorProviders = new ArrayList<IStaticColorProvider>();
+		cloudColorProviders = new ArrayList<IDynamicColorProvider>();
+		fogColorProviders = new ArrayList<IDynamicColorProvider>();
+		skyColorProviders = new ArrayList<IDynamicColorProvider>();
+		foliageColorProviders = new ArrayList<IStaticColorProvider>();
+		grassColorProviders = new ArrayList<IStaticColorProvider>();
+		waterColorProviders = new ArrayList<IStaticColorProvider>();
 		creatureAffecters = new ArrayList<ISpawnModifier>();
 		envEffects = new ArrayList<IEnvironmentalEffect>();
 		cloudHeight = null;
@@ -178,6 +186,14 @@ public class AgeController implements AgeDirector {
 		symbolinstability = 0;
 		// conflicts = new ArrayList<ISun>();
 		instabilityController = null;
+
+		dynamicColorLists.put(IDynamicColorProvider.CLOUD, cloudColorProviders);
+		dynamicColorLists.put(IDynamicColorProvider.FOG, fogColorProviders);
+		dynamicColorLists.put(IDynamicColorProvider.SKY, skyColorProviders);
+
+		staticColorLists.put(IStaticColorProvider.FOLIAGE, foliageColorProviders);
+		staticColorLists.put(IStaticColorProvider.GRASS, grassColorProviders);
+		staticColorLists.put(IStaticColorProvider.WATER, waterColorProviders);
 
 		// Read Symbols
 		List<String> symbols = new ArrayList<String>(agedata.getSymbols(world.isRemote));
@@ -365,12 +381,12 @@ public class AgeController implements AgeDirector {
 		return pvpEnabled != null ? pvpEnabled : true;
 	}
 
-	public Vec3 getFogColor(float celestial_angle, float partialtick) {
+	public Vec3 getFogColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle, float partialtick) {
 		validate();
 		if (fogColorProviders == null || fogColorProviders.size() == 0) { return null; }
 		Vec3 color = null;
-		for (IFogColorProvider mod : fogColorProviders) {
-			Color op = mod.getFogColor(celestial_angle, partialtick);
+		for (IDynamicColorProvider mod : fogColorProviders) {
+			Color op = mod.getColor(entity, biome, time, celestial_angle, partialtick);
 			if (op == null) continue;
 			if (color == null) {
 				color = Vec3.createVectorHelper(op.r, op.g, op.b);
@@ -383,12 +399,12 @@ public class AgeController implements AgeDirector {
 		return color;
 	}
 
-	public Vec3 getCloudColor(float time, float celestial_angle) {
+	public Vec3 getCloudColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle, float partialtick) {
 		validate();
-		if (cloudColorProvider == null || cloudColorProvider.size() == 0) { return null; }
+		if (cloudColorProviders == null || cloudColorProviders.size() == 0) { return null; }
 		Vec3 color = null;
-		for (ICloudColorProvider mod : cloudColorProvider) {
-			Color op = mod.getCloudColor(time, celestial_angle);
+		for (IDynamicColorProvider mod : cloudColorProviders) {
+			Color op = mod.getColor(entity, biome, time, celestial_angle, partialtick);
 			if (op == null) continue;
 			if (color == null) {
 				color = Vec3.createVectorHelper(op.r, op.g, op.b);
@@ -408,12 +424,12 @@ public class AgeController implements AgeDirector {
 		return sunset.asGradient();
 	}
 
-	public Vec3 getSkyColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle) {
+	public Vec3 getSkyColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle, float partialtick) {
 		validate();
 		if (skyColorProviders == null || skyColorProviders.size() == 0) { return null; }
 		Vec3 color = null;
-		for (ISkyColorProvider mod : skyColorProviders) {
-			Color op = mod.getSkyColor(entity, biome, time, celestial_angle);
+		for (IDynamicColorProvider mod : skyColorProviders) {
+			Color op = mod.getColor(entity, biome, time, celestial_angle, partialtick);
 			if (op == null) continue;
 			if (color == null) {
 				color = Vec3.createVectorHelper(op.r, op.g, op.b);
@@ -428,10 +444,11 @@ public class AgeController implements AgeDirector {
 
 	public Color getStaticColor(String string, BiomeGenBase biome, int x, int y, int z) {
 		validate();
-		if (staticColorProviders == null || staticColorProviders.size() == 0) { return null; }
+		List<IStaticColorProvider> list = staticColorLists.get(string);
+		if (list == null || list.size() == 0) { return null; }
 		Color color = null;
-		for (IStaticColorProvider mod : staticColorProviders) {
-			Color op = mod.getStaticColor(string, this.world, biome, x, y, z);
+		for (IStaticColorProvider mod : list) {
+			Color op = mod.getStaticColor(this.world, biome, x, y, z);
 			if (op == null) continue;
 			if (color == null) {
 				color = new Color(op.r, op.g, op.b);
@@ -790,23 +807,17 @@ public class AgeController implements AgeDirector {
 	}
 
 	@Override
-	public void registerInterface(IFogColorProvider reg) {
-		fogColorProviders.add(reg);
+	public void registerInterface(IDynamicColorProvider reg, String type) {
+		List<IDynamicColorProvider> list = dynamicColorLists.get(type);
+		if (list == null) throw new RuntimeException("Invalid Dynamic Color Provider Type");
+		list.add(reg);
 	}
 
 	@Override
-	public void registerInterface(ISkyColorProvider reg) {
-		skyColorProviders.add(reg);
-	}
-
-	@Override
-	public void registerInterface(IStaticColorProvider reg) {
-		staticColorProviders.add(reg);
-	}
-
-	@Override
-	public void registerInterface(ICloudColorProvider reg) {
-		cloudColorProvider.add(reg);
+	public void registerInterface(IStaticColorProvider reg, String type) {
+		List<IStaticColorProvider> list = staticColorLists.get(type);
+		if (list == null) throw new RuntimeException("Invalid Static Color Provider Type");
+		list.add(reg);
 	}
 
 	@Override
