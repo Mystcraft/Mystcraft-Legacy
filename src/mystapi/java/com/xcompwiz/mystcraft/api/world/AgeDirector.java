@@ -4,17 +4,14 @@ import net.minecraft.world.biome.WorldChunkManager;
 
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
+import com.xcompwiz.mystcraft.api.world.logic.ICelestial;
 import com.xcompwiz.mystcraft.api.world.logic.IChunkProviderFinalization;
 import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.api.world.logic.ILightingController;
-import com.xcompwiz.mystcraft.api.world.logic.IMoon;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
-import com.xcompwiz.mystcraft.api.world.logic.ISkyDoodad;
 import com.xcompwiz.mystcraft.api.world.logic.ISpawnModifier;
-import com.xcompwiz.mystcraft.api.world.logic.IStarfield;
 import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
-import com.xcompwiz.mystcraft.api.world.logic.ISun;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainFeatureLocator;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
@@ -159,26 +156,10 @@ public interface AgeDirector {
 	public void registerInterface(IWeatherController reg);
 
 	/**
-	 * Registers a new {@link ISun} interface An age wants at least the minimum number of suns specified by the suns controller, and no more than the maximum
+	 * Registers a new {@link ICelestial} interface An age wants at least the minimum number of suns specified by the suns controller, and no more than the maximum
 	 * specified
 	 */
-	public void registerInterface(ISun reg);
-
-	/**
-	 * Registers a new {@link IMoon} interface An age wants at least the minimum number of moons specified by the moons controller, and no more than the maximum
-	 * specified
-	 */
-	public void registerInterface(IMoon reg);
-
-	/**
-	 * Registers a new {@link IStarfield} interface Any number of these may be registered
-	 */
-	public void registerInterface(IStarfield reg);
-
-	/**
-	 * Registers a new {@link ISkyDoodad} interface Any number of these may be registered
-	 */
-	public void registerInterface(ISkyDoodad reg);
+	public void registerInterface(ICelestial reg);
 
 	/**
 	 * Registers a new {@link ITerrainAlteration} interface Any number of these may be registered

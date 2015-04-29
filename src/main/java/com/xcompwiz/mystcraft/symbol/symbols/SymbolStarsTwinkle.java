@@ -14,7 +14,6 @@ import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
-import com.xcompwiz.mystcraft.api.world.logic.IStarfield;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import cpw.mods.fml.relauncher.Side;
@@ -35,7 +34,7 @@ public class SymbolStarsTwinkle extends SymbolBase {
 		return "StarsTwinkle";
 	}
 
-	private class SkyBackground implements IStarfield {
+	private class SkyBackground extends CelestialBase {
 
 		private static final int	layerscount	= 10;
 		private Random				rand;

@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
-import com.xcompwiz.mystcraft.api.world.logic.IMoon;
+import com.xcompwiz.mystcraft.api.world.logic.ICelestial;
 import com.xcompwiz.mystcraft.data.Assets.Vanilla;
 import com.xcompwiz.mystcraft.symbol.SunsetRenderer;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
@@ -35,7 +35,7 @@ public class SymbolMoonNormal extends SymbolBase {
 		return "MoonNormal";
 	}
 
-	private static class CelestialObject extends SunsetRenderer implements IMoon {
+	private static class CelestialObject extends SunsetRenderer implements ICelestial {
 		private Random	rand;
 
 		private long	period;
@@ -69,7 +69,7 @@ public class SymbolMoonNormal extends SymbolBase {
 			// Draw Moon
 			Tessellator tessellator = Tessellator.instance;
 			float invertRain = 1.0F - worldObj.getRainStrength(partial);
-			float celestial_period = getCelestialPeriod(worldObj.getWorldTime(), partial);
+			float celestial_period = getAltitudeAngle(worldObj.getWorldTime(), partial);
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, invertRain);
@@ -98,7 +98,8 @@ public class SymbolMoonNormal extends SymbolBase {
 			if (this.gradient != null) this.renderHorizon(eng, worldObj, celestial_period, angle, partial, 0.3F);
 		}
 
-		public float getCelestialPeriod(long time, float partialTime) {
+		@Override
+		public float getAltitudeAngle(long time, float partialTime) {
 			if (period == 0) return offset;
 			int i = (int) (time % period);
 			float f = (i + partialTime) / period + offset;
@@ -115,6 +116,16 @@ public class SymbolMoonNormal extends SymbolBase {
 		public int getMoonPhase(long time, float partialTime) {
 			if (period == 0) return 0;
 			return (int) (time / period) % 8;
+		}
+
+		@Override
+		public boolean providesLight() {
+			return false;
+		}
+
+		@Override
+		public Long getTimeToDawn(long time) {
+			return null;
 		}
 	}
 }

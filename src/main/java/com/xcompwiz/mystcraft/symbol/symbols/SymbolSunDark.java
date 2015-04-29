@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
-import com.xcompwiz.mystcraft.api.world.logic.ISun;
+import com.xcompwiz.mystcraft.api.world.logic.ICelestial;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolSunDark extends SymbolBase {
@@ -19,19 +19,24 @@ public class SymbolSunDark extends SymbolBase {
 		return "SunDark";
 	}
 
-	private class CelestialObject implements ISun {
+	private class CelestialObject implements ICelestial {
 
 		@Override
 		public void render(TextureManager eng, World worldObj, float partial) {}
 
 		@Override
-		public float getCelestialPeriod(long time, float partialTime) {
+		public float getAltitudeAngle(long time, float partialTime) {
 			return 0.5F;
 		}
 
 		@Override
-		public Long getTimeToSunrise(long time) {
+		public Long getTimeToDawn(long time) {
 			return null;
+		}
+
+		@Override
+		public boolean providesLight() {
+			return true;
 		}
 	}
 }

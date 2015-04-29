@@ -13,7 +13,6 @@ import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
-import com.xcompwiz.mystcraft.api.world.logic.IStarfield;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import cpw.mods.fml.relauncher.Side;
@@ -34,7 +33,7 @@ public class SymbolStarsNormal extends SymbolBase {
 		return "StarsNormal";
 	}
 
-	private class SkyBackground implements IStarfield {
+	private class SkyBackground extends CelestialBase {
 
 		private Random			rand;
 		private int				starGLCallList;

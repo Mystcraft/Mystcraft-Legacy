@@ -9,17 +9,14 @@ import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
+import com.xcompwiz.mystcraft.api.world.logic.ICelestial;
 import com.xcompwiz.mystcraft.api.world.logic.IChunkProviderFinalization;
 import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.api.world.logic.ILightingController;
-import com.xcompwiz.mystcraft.api.world.logic.IMoon;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
-import com.xcompwiz.mystcraft.api.world.logic.ISkyDoodad;
 import com.xcompwiz.mystcraft.api.world.logic.ISpawnModifier;
-import com.xcompwiz.mystcraft.api.world.logic.IStarfield;
 import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
-import com.xcompwiz.mystcraft.api.world.logic.ISun;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainFeatureLocator;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
@@ -248,27 +245,9 @@ public class SymbolProfiler implements AgeDirector {
 	}
 
 	@Override
-	public void registerInterface(ISun reg) {
+	public void registerInterface(ICelestial reg) {
 		if (agent == null) return;
-		getInterfaceList(ISun.class).add(agent);
-	}
-
-	@Override
-	public void registerInterface(IMoon reg) {
-		if (agent == null) return;
-		getInterfaceList(IMoon.class).add(agent);
-	}
-
-	@Override
-	public void registerInterface(IStarfield reg) {
-		if (agent == null) return;
-		getInterfaceList(IStarfield.class).add(agent);
-	}
-
-	@Override
-	public void registerInterface(ISkyDoodad reg) {
-		if (agent == null) return;
-		getInterfaceList(ISkyDoodad.class).add(agent);
+		getInterfaceList(ICelestial.class).add(agent);
 	}
 
 	private HashSet<IAgeSymbol> getModifierList(HashMap<String, HashSet<IAgeSymbol>> map, String id) {

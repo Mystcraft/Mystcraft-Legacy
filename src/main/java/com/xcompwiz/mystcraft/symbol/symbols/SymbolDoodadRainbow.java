@@ -11,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
-import com.xcompwiz.mystcraft.api.world.logic.ISkyDoodad;
 import com.xcompwiz.mystcraft.client.render.RenderRainbow;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
@@ -31,7 +30,7 @@ public class SymbolDoodadRainbow extends SymbolBase {
 		return "Rainbow";
 	}
 
-	private class CelestialObject implements ISkyDoodad {
+	private class CelestialObject extends CelestialBase {
 		private Random	rand;
 
 		private float	angle;
@@ -85,6 +84,5 @@ public class SymbolDoodadRainbow extends SymbolBase {
 				GL11.glEndList();
 			}
 		}
-
 	}
 }

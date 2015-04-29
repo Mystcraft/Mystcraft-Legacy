@@ -102,10 +102,7 @@ public class SkyRendererMyst extends IRenderHandler {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		controller.renderStarfields(renderEngine, world, partialTicks);
-		controller.renderSkyDoodads(renderEngine, world, partialTicks);
-		controller.renderSuns(renderEngine, world, partialTicks);
-		controller.renderMoons(renderEngine, world, partialTicks);
+		controller.renderCelestials(renderEngine, world, partialTicks);
 
 		// Draw horizon cutoff
 		GL11.glDisable(GL11.GL_BLEND);

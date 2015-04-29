@@ -11,7 +11,6 @@ import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
-import com.xcompwiz.mystcraft.api.world.logic.IStarfield;
 import com.xcompwiz.mystcraft.data.Assets.Vanilla;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
@@ -31,7 +30,7 @@ public class SymbolStarsEndSky extends SymbolBase {
 		return "StarsEndSky";
 	}
 
-	private static class SkyBackground implements IStarfield {
+	private static class SkyBackground extends CelestialBase {
 
 		private ColorGradient	gradient;
 		private AgeDirector	controller;

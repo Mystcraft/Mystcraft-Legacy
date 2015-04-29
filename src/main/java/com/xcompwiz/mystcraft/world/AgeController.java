@@ -29,17 +29,14 @@ import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
+import com.xcompwiz.mystcraft.api.world.logic.ICelestial;
 import com.xcompwiz.mystcraft.api.world.logic.IChunkProviderFinalization;
 import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.api.world.logic.ILightingController;
-import com.xcompwiz.mystcraft.api.world.logic.IMoon;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
-import com.xcompwiz.mystcraft.api.world.logic.ISkyDoodad;
 import com.xcompwiz.mystcraft.api.world.logic.ISpawnModifier;
-import com.xcompwiz.mystcraft.api.world.logic.IStarfield;
 import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
-import com.xcompwiz.mystcraft.api.world.logic.ISun;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainFeatureLocator;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
@@ -80,10 +77,8 @@ public class AgeController implements AgeDirector {
 	private ITerrainGenerator								genTerrain;
 	private ILightingController								lightingController;
 
-	private List<ISun>										suns;
-	private List<IMoon>										moons;
-	private List<IStarfield>								starfields;
-	private List<ISkyDoodad>								skyDoodads;
+	private List<ICelestial>								celestials;
+	private List<ICelestial>								suns;
 	private List<ITerrainAlteration>						terrainalterations;
 	private List<IChunkProviderFinalization>				chunkfinalizers;
 	private List<IPopulate>									populateFuncs;
@@ -158,10 +153,8 @@ public class AgeController implements AgeDirector {
 		weatherController = null;
 		genTerrain = null;
 		lightingController = null;
-		suns = new ArrayList<ISun>();
-		moons = new ArrayList<IMoon>();
-		starfields = new ArrayList<IStarfield>();
-		skyDoodads = new ArrayList<ISkyDoodad>();
+		celestials = new ArrayList<ICelestial>();
+		suns = new ArrayList<ICelestial>();
 		terrainalterations = new ArrayList<ITerrainAlteration>();
 		chunkfinalizers = new ArrayList<IChunkProviderFinalization>();
 		populateFuncs = new ArrayList<IPopulate>();
@@ -584,8 +577,8 @@ public class AgeController implements AgeDirector {
 		float lowest = 0.5F;
 		float highest = 0.5F;
 		float temp;
-		for (ISun sun : suns) {
-			temp = sun.getCelestialPeriod(time, f1);
+		for (ICelestial sun : suns) {
+			temp = sun.getAltitudeAngle(time, f1);
 			while (temp < 0.0F)
 				temp++;
 			while (temp > 1.0F)
@@ -604,8 +597,8 @@ public class AgeController implements AgeDirector {
 	public long getTimeToSunrise(long time) {
 		Long result = null;
 		Long temp;
-		for (ISun sun : suns) {
-			temp = sun.getTimeToSunrise(time);
+		for (ICelestial sun : suns) {
+			temp = sun.getTimeToDawn(time);
 			if (temp == null) continue;
 			if (result == null || temp < result) {
 				result = temp;
@@ -623,30 +616,9 @@ public class AgeController implements AgeDirector {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void renderStarfields(TextureManager eng, World worldObj, float partial) {
-		for (IStarfield starfield : starfields) {
-			starfield.render(eng, worldObj, partial);
-		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void renderSkyDoodads(TextureManager eng, World worldObj, float partial) {
-		for (ISkyDoodad doodad : skyDoodads) {
-			doodad.render(eng, worldObj, partial);
-		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void renderSuns(TextureManager eng, World worldObj, float partial) {
-		for (ISun sun : suns) {
+	public void renderCelestials(TextureManager eng, World worldObj, float partial) {
+		for (ICelestial sun : suns) {
 			sun.render(eng, worldObj, partial);
-		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	public void renderMoons(TextureManager eng, World worldObj, float partial) {
-		for (IMoon moon : moons) {
-			moon.render(eng, worldObj, partial);
 		}
 	}
 
@@ -767,23 +739,9 @@ public class AgeController implements AgeDirector {
 	}
 
 	@Override
-	public void registerInterface(ISun reg) {
-		suns.add(reg);
-	}
-
-	@Override
-	public void registerInterface(IMoon reg) {
-		moons.add(reg);
-	}
-
-	@Override
-	public void registerInterface(IStarfield reg) {
-		starfields.add(reg);
-	}
-
-	@Override
-	public void registerInterface(ISkyDoodad reg) {
-		skyDoodads.add(reg);
+	public void registerInterface(ICelestial reg) {
+		celestials.add(reg);
+		if (reg.providesLight()) suns.add(reg);
 	}
 
 	@Override
