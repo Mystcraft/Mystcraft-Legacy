@@ -98,7 +98,6 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 
 	public static void setBounds(int chunkX_min, int chunkX_max, int chunkZ_min, int chunkZ_max) {
 		WorldProviderMystDummy.chunkX_min = chunkX_min;
-		WorldProviderMystDummy.chunkX_max = chunkX_max;
 		WorldProviderMystDummy.chunkZ_min = chunkZ_min;
 		WorldProviderMystDummy.chunkZ_max = chunkZ_max;
 	}
@@ -111,7 +110,6 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 	private static ChunkProfiler	chunkprofiler;
 	private static int				chunkX_min;
 	private static int				chunkZ_min;
-	private static int				chunkX_max;
 	private static int				chunkZ_max;
 	private int						chunkX, chunkZ;
 	private boolean					chunkproviderreplaced;

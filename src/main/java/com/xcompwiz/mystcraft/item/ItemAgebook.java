@@ -46,7 +46,7 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		if (worldObj.isRemote) return;
 		if (itemstack.stackTagCompound == null) {
 			itemstack.stackTagCompound = new NBTTagCompound();
-			//FIXME: Empty books do what?
+			//An empty book is defaulted to having a single link panel in it. This code is fallback only; it doesn't happen in normal gameplay (only creative/NEI)
 			LinkOptions.setFlag(itemstack.stackTagCompound, LinkPropertyAPI.FLAG_GENERATE_PLATFORM, true);
 			((ItemAgebook)itemstack.getItem()).addPages(itemstack, Collections.singleton(Page.createLinkPage()));
 		}
@@ -82,6 +82,7 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 
 	@Override
 	@Deprecated
+	//TODO: Replace with an onLoad handler? Can we get such an event through Forge?
 	public void onUpdate(ItemStack itemstack, World worldObj, Entity entity, int i, boolean flag) {
 		super.onUpdate(itemstack, worldObj, entity, i, flag);
 		if (worldObj.isRemote) return;
@@ -90,7 +91,6 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 			if (dimid == null) return;
 			AgeData data = AgeData.getAge(dimid, worldObj.isRemote);
 			if (data == null) return;
-			//FIXME: ! Transition to new storage
 			if (!itemstack.stackTagCompound.hasKey("Pages")) addPages(itemstack, data.getPages());
 			if (!itemstack.stackTagCompound.hasKey("Authors")) addAuthors(itemstack, data.getAuthors());
 		}

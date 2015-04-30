@@ -30,9 +30,8 @@ public class RenderBookReceptacle extends TileEntitySpecialRenderer {
 		} else if (tileentity.getDisplayItem().getItem() == ModItems.linkbook) {
 			bindTexture(Entities.linkbook);
 		} else {
-			//FIXME: API Allow IPortalLinkItem items to control rendering somehow
+			//TODO: API Allow IItemPortalActivator items to control rendering somehow (IItemPortalActivator2?)
 			bindTexture(Entities.linkbook);
-			//return;
 		}
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) d, (float) d1 + 0.5F, (float) d2);

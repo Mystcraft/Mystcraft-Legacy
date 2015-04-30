@@ -8,11 +8,11 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.PlayerSelector;
-import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 public abstract class CommandBaseAdv extends CommandBase {
@@ -31,42 +31,23 @@ public abstract class CommandBaseAdv extends CommandBase {
 		return entityplayermp;
 	}
 
-	public static World getSenderWorld(ICommandSender sender) {
-		try {
-			if (sender instanceof CommandBlockLogic) { return ((CommandBlockLogic) sender).getEntityWorld(); }
-			EntityPlayerMP player = getCommandSenderAsPlayer(sender);
-			return player.worldObj;
-		} catch (Exception e) {
-			try {
-				TileEntity comblock = getCommandSenderAsTileEntity(sender);
-				return comblock.getWorldObj();
-			} catch (Exception ex) {
-				throw new CommandException("This command can only be sent from a player or command block");
-			}
-		}
-	}
-
 	public static Integer getSenderDimension(ICommandSender sender) {
-		try {
-			if (sender instanceof CommandBlockLogic) { return ((CommandBlockLogic) sender).getEntityWorld().provider.dimensionId; }
-			EntityPlayerMP player = getCommandSenderAsPlayer(sender);
-			return player.dimension;
-		} catch (Exception e) {
-			try {
-				TileEntity comblock = getCommandSenderAsTileEntity(sender);
-				return comblock.getWorldObj().provider.dimensionId;
-			} catch (Exception ex) {
-				throw new CommandException("You must specify a dimension to use this command from the commandline");
-			}
-		}
+		World w = sender.getEntityWorld();
+		if (w == null) throw new CommandException("You must specify a dimension to use this command from the commandline");
+		return w.provider.dimensionId;
 	}
 
 	/**
 	 * Returns the given ICommandSender as a EntityPlayer or throw an exception.
 	 */
 	public static TileEntity getCommandSenderAsTileEntity(ICommandSender sender) {
-		//FIXME: getCommandSenderAsTileEntity
-		throw new CommandException("Could not get tile entity", new Object[0]);
+		try {
+			World world = sender.getEntityWorld();
+			ChunkCoordinates coords = sender.getPlayerCoordinates();
+			return world.getTileEntity(coords.posX, coords.posY, coords.posZ);
+		} catch (Exception e) {
+			throw new CommandException("Could not get tile entity");
+		}
 	}
 
 	public static double handleRelativeNumber(ICommandSender sender, double origin, String arg) {
