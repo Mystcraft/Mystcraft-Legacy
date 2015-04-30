@@ -36,6 +36,15 @@ public class SymbolManager {
 	private static HashMap<String, Boolean>			tradeableOverrides			= new HashMap<String, Boolean>();
 	private static HashMap<String, List<ItemStack>>	tradeItemOverrides			= new HashMap<String, List<ItemStack>>();
 
+	private static HashMap<Integer, Integer>			defaultMaxStacks			= new HashMap<Integer, Integer>();
+	static {
+		defaultMaxStacks.put(null, 0);
+		defaultMaxStacks.put(0, 16);
+		defaultMaxStacks.put(1, 8);
+		defaultMaxStacks.put(2, 4);
+		defaultMaxStacks.put(3, 2);
+	}
+
 	public static void blackListSymbol(String identifier) {
 		blacklist.add(identifier);
 		IAgeSymbol symbol = ageSymbols.get(identifier);
@@ -178,8 +187,9 @@ public class SymbolManager {
 	}
 
 	public static int getSymbolTreasureMaxStack(IAgeSymbol symbol) {
-		//int weight = getSymbolItemWeight(symbol.identifier());
-		int dfault = 1;//FIXME: Treasure Max Stack (weight > 0 ? Math.min(16, Math.max(1, (int) (weight * 16))) : 0);
+		Integer rank = getSymbolItemCardRank(symbol.identifier());
+		Integer dfault = defaultMaxStacks.get(rank);
+		if (dfault == null) dfault = 1;
 		if (!maxTreasureStackOverrides.containsKey(symbol.identifier())) return dfault;
 		Integer override = maxTreasureStackOverrides.get(symbol.identifier());
 		if (override == null) return dfault;
