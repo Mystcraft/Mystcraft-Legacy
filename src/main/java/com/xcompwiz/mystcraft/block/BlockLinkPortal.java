@@ -120,7 +120,7 @@ public class BlockLinkPortal extends BlockBreakable {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public int colorMultiplier(IBlockAccess blockAccess, int i, int j, int k) {
-		World world = Minecraft.getMinecraft().theWorld; //FIXME: Referencing theWorld is problematic. Fix this.
+		World world = Minecraft.getMinecraft().theWorld; //TODO: Referencing theWorld is problematic. Fix this.
 		TileEntity entity = PortalUtils.getTileEntity(world, i, j, k);
 		if (entity != null && entity instanceof TileEntityBookReceptacle) {
 			TileEntityBookReceptacle book = (TileEntityBookReceptacle) entity;

@@ -413,7 +413,7 @@ public class GuiElementTextField extends GuiElement {
 		if (this.isFocused && button == 0) {
 			int l = mouseX - this.getLeft();
 
-			if (this.enableBackgroundDrawing) {
+			if (this.getEnableBackgroundDrawing()) {
 				l -= 4;
 			}
 
@@ -430,7 +430,6 @@ public class GuiElementTextField extends GuiElement {
 	 * Draws the textbox
 	 */
 	@Override
-	//FIXME: Renders border outside its bounds
 	public void _renderBackground(float f, int mouseX, int mouseY) {
 		if (!this.isVisible()) return;
 		int guiLeft = getLeft();
@@ -447,8 +446,8 @@ public class GuiElementTextField extends GuiElement {
 		String s = this.fontRenderer.trimStringToWidth(this.getText().substring(this.lineScrollOffset), this.getInnerWidth());
 		boolean flag = j >= 0 && j <= s.length();
 		boolean flag1 = this.isFocused && this.cursorCounter / 6 % 2 == 0 && flag;
-		int l = this.enableBackgroundDrawing ? guiLeft + 4 : guiLeft;
-		int i1 = this.enableBackgroundDrawing ? guiTop + (this.ySize - 8) / 2 : guiTop;
+		int l = this.getEnableBackgroundDrawing() ? guiLeft + 4 : guiLeft;
+		int i1 = this.getEnableBackgroundDrawing() ? guiTop + (this.ySize - 8) / 2 : guiTop;
 		int j1 = l;
 
 		if (k > s.length()) {

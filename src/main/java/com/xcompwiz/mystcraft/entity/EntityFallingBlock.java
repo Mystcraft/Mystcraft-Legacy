@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.entity;
 import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -11,33 +12,37 @@ import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
-import com.xcompwiz.mystcraft.data.ModBlocks;
+import com.xcompwiz.mystcraft.nbt.NBTUtils;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawnData {
 
-	public Block			block;
-	public int				metadata;
-	public int				fallTime;
-	private NBTTagCompound	tileentity;
-	private ArrayList		collidingBoundingBoxes	= new ArrayList();
+	private static final String	NBT_Drops				= "Drops";
+	private static final String	NBT_TE					= "TE";
+
+	public Block				block;
+	public int					metadata;
+	public int					fallTime;
+	private NBTTagCompound		data;
+	private ArrayList			collidingBoundingBoxes	= new ArrayList();
 
 	public EntityFallingBlock(World world) {
 		super(world);
 		fallTime = 0;
 	}
 
-	public EntityFallingBlock(World world, double d, double d1, double d2, Block block, int j, NBTTagCompound tileentity) {
+	private EntityFallingBlock(World world, double d, double d1, double d2, Block block, int j, NBTTagCompound data) {
 		super(world);
 		fallTime = 0;
 		this.block = block;
@@ -52,7 +57,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 		prevPosX = d;
 		prevPosY = d1;
 		prevPosZ = d2;
-		this.tileentity = tileentity;
+		this.data = data;
 	}
 
 	public static void cascade(World world, int i, int j, int k) {
@@ -76,11 +81,14 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 		if (world.isAirBlock(i, j, k)) return;
 		if (!world.isAirBlock(i, j - 1, k)) return;
 
-		NBTTagCompound data = null;
+		NBTTagCompound data = new NBTTagCompound();
+		List drops = world.getBlock(i, j, k).getDrops(world, i, j, k, world.getBlockMetadata(i, j, k), 0);
+		data.setTag(NBT_Drops, NBTUtils.writeItemStackCollection(new NBTTagList(), drops));
 		if (world.getTileEntity(i, j, k) != null) {
-			data = new NBTTagCompound();
-			world.getTileEntity(i, j, k).writeToNBT(data);
+			NBTTagCompound tedata = new NBTTagCompound();
+			world.getTileEntity(i, j, k).writeToNBT(tedata);
 			world.removeTileEntity(i, j, k);
+			data.setTag(NBT_TE, tedata);
 		}
 		EntityFallingBlock entityfalling = new EntityFallingBlock(world, i + 0.5F, j + 0.5F, k + 0.5F, world.getBlock(i, j, k), world.getBlockMetadata(i, j, k), data);
 		world.setBlock(i, j, k, Blocks.air, 0, 2);
@@ -120,44 +128,47 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 		motionX *= 0.98000001907348633D;
 		motionY *= 0.98000001907348633D;
 		motionZ *= 0.98000001907348633D;
-		int i = MathHelper.floor_double(posX);
-		int j = MathHelper.floor_double(posY);
-		int k = MathHelper.floor_double(posZ);
+		int x = MathHelper.floor_double(posX);
+		int y = MathHelper.floor_double(posY);
+		int z = MathHelper.floor_double(posZ);
 		if (onGround) {
 			if (worldObj.isRemote) return;
 			setDead();
-			if (!worldObj.setBlock(i, j, k, block, metadata, 2)) {
-				if (block != ModBlocks.decay) {
-					handleDrops();
-				}
-			} else {
-				worldObj.setBlockMetadataWithNotify(i, j, k, metadata, 2);
-				if (tileentity != null) {
-					tileentity.setInteger("x", i);
-					tileentity.setInteger("y", j);
-					tileentity.setInteger("z", k);
-					if (worldObj.getTileEntity(i, j, k) != null) {
-						worldObj.getTileEntity(i, j, k).readFromNBT(tileentity);
-					} else {
-						worldObj.setTileEntity(i, j, k, TileEntity.createAndLoadEntity(tileentity));
-					}
-				}
-			}
+			place(x, y, z);
 			return;
 		} else if ((posY < -10) && !worldObj.isRemote) {
 			setDead();
 			return;
 		}
 		if (fallTime == 1 && !worldObj.isRemote) {
-			cascade(worldObj, i - 1, j, k);
-			cascade(worldObj, i + 1, j, k);
-			cascade(worldObj, i, j, k - 1);
-			cascade(worldObj, i, j, k + 1);
-			drop(worldObj, i, j + 1, k);
-			drop(worldObj, i + 1, j + 1, k);
-			drop(worldObj, i - 1, j + 1, k);
-			drop(worldObj, i, j + 1, k + 1);
-			drop(worldObj, i, j + 1, k - 1);
+			cascade(worldObj, x - 1, y, z);
+			cascade(worldObj, x + 1, y, z);
+			cascade(worldObj, x, y, z - 1);
+			cascade(worldObj, x, y, z + 1);
+			drop(worldObj, x, y + 1, z);
+			drop(worldObj, x + 1, y + 1, z);
+			drop(worldObj, x - 1, y + 1, z);
+			drop(worldObj, x, y + 1, z + 1);
+			drop(worldObj, x, y + 1, z - 1);
+		}
+	}
+
+	private void place(int x, int y, int z) {
+		if (!worldObj.setBlock(x, y, z, block, metadata, 2)) {
+			handleDrops();
+		} else {
+			worldObj.setBlockMetadataWithNotify(x, y, z, metadata, 2);
+			if (data.hasKey(NBT_TE)) {
+				NBTTagCompound tileentity = data.getCompoundTag(NBT_TE);
+				tileentity.setInteger("x", x);
+				tileentity.setInteger("y", y);
+				tileentity.setInteger("z", z);
+				if (worldObj.getTileEntity(x, y, z) != null) {
+					worldObj.getTileEntity(x, y, z).readFromNBT(tileentity);
+				} else {
+					worldObj.setTileEntity(x, y, z, TileEntity.createAndLoadEntity(tileentity));
+				}
+			}
 		}
 	}
 
@@ -295,24 +306,11 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	private void handleDrops() {
-		List<ItemStack> items = getDrops();
+		NBTTagList drops = data.getTagList(NBT_Drops, Constants.NBT.TAG_COMPOUND);
+		Collection<ItemStack> items = NBTUtils.readItemStackCollection(drops, new ArrayList<ItemStack>());
 		for (ItemStack itemstack : items) {
 			entityDropItem(itemstack, 0.0F);
 		}
-	}
-
-	private List<ItemStack> getDrops() {
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-
-		//FIXME: This isn't what the block should be dropping.  Need to use getDrops... somehow...
-		int count = block.quantityDropped(metadata, 0, worldObj.rand);
-		for (int i = 0; i < count; i++) {
-			Item item = block.getItemDropped(metadata, worldObj.rand, 0);
-			if (item != null) {
-				ret.add(new ItemStack(item, 1, block.damageDropped(metadata)));
-			}
-		}
-		return ret;
 	}
 
 	@Override
@@ -320,8 +318,8 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 		nbttagcompound.setInteger("TileID", Block.getIdFromBlock(this.block));
 		nbttagcompound.setShort("Metadata", (short) metadata);
 		nbttagcompound.setShort("fallTime", (short) fallTime);
-		if (tileentity != null) {
-			nbttagcompound.setTag("TileEntity", tileentity);
+		if (data != null) {
+			nbttagcompound.setTag("Data", data);
 		}
 	}
 
@@ -334,8 +332,13 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 		}
 		metadata = nbttagcompound.getShort("Metadata");
 		fallTime = nbttagcompound.getShort("fallTime");
+		if (nbttagcompound.hasKey("Data")) {
+			data = nbttagcompound.getCompoundTag("Data");
+		}
 		if (nbttagcompound.hasKey("TileEntity")) {
-			tileentity = nbttagcompound.getCompoundTag("TileEntity");
+			NBTTagCompound tileentity = nbttagcompound.getCompoundTag("TileEntity");
+			data = new NBTTagCompound();
+			data.setTag(NBT_TE, tileentity);
 		}
 	}
 
