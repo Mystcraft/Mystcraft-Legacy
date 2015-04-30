@@ -13,6 +13,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
@@ -46,6 +47,9 @@ public class ItemFolder extends Item implements IItemOrderablePageProvider, IIte
 
 	private static final int	GuiID	= GuiHandlerManager.registerGuiNetHandler(new GuiHandlerFolder());
 
+	@SideOnly(Side.CLIENT)
+	protected IIcon				filledIcon;
+
 	public ItemFolder() {
 		setMaxStackSize(1);
 	}
@@ -54,7 +58,16 @@ public class ItemFolder extends Item implements IItemOrderablePageProvider, IIte
 	@Override
 	public void registerIcons(IIconRegister register) {
 		this.itemIcon = register.registerIcon("mystcraft:folder");
-		//FIXME: this.filledIcon = register.registerIcon("mystcraft:folder_filled");
+		this.filledIcon = register.registerIcon("mystcraft:folder_filled");
+	}
+
+	/**
+	 * Returns the icon index of the stack given as argument.
+	 */
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IIcon getIconIndex(ItemStack itemstack) {
+		return InventoryFolder.getLargestSlotId(itemstack) == -1 ? this.itemIcon : this.filledIcon;
 	}
 
 	/**
