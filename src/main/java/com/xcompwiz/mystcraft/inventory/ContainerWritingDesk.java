@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
 import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.inventory.PageCollectionPageReceiver.IItemProvider;
@@ -298,8 +299,10 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			ItemStack target = tileentity.getTarget();
 			if (target == null) return;
 			if (player.inventory.getItemStack() != null) return;
+			if (!(target.getItem() instanceof IItemOrderablePageProvider)) return;
+			IItemOrderablePageProvider itemdat = (IItemOrderablePageProvider) target.getItem();
 			int index = data.getInteger(Messages.TakeFromSlider);
-			player.inventory.setItemStack(InventoryFolder.removeItem(target, index));//FIXME: Reference to InventoryFolder outside folder
+			player.inventory.setItemStack(itemdat.removePage(player, target, index));
 		}
 		if (data.hasKey(Messages.InsertHeldAt)) {
 			ItemStack target = tileentity.getTarget();
@@ -307,8 +310,10 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			ItemStack stack = player.inventory.getItemStack();
 			if (stack == null) return;
 			if (stack.stackSize > 1) return;
+			if (!(target.getItem() instanceof IItemOrderablePageProvider)) return;
+			IItemOrderablePageProvider itemdat = (IItemOrderablePageProvider) target.getItem();
 			int index = data.getInteger(Messages.InsertHeldAt);
-			player.inventory.setItemStack(InventoryFolder.setItem(target, index, stack));//FIXME: Reference to InventoryFolder outside folder
+			player.inventory.setItemStack(itemdat.setPage(player, target, stack, index));
 		}
 	}
 
