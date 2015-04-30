@@ -5,15 +5,15 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffectPlaceOres;
 import com.xcompwiz.mystcraft.imc.IMCHandler.IMCProcessor;
-import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class IMCBlockInstability implements IMCProcessor {
+public class IMCMeteorBlock implements IMCProcessor {
 
 	@Override
 	public void process(IMCMessage message) {
@@ -24,7 +24,7 @@ public class IMCBlockInstability implements IMCProcessor {
 
 		if (nbt.hasKey("ItemStack")) {
 			ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("ItemStack"));
-			if (!(itemstack.getItem() instanceof ItemBlock)) throw new RuntimeException("Itemstacks references used for setting instability factors must extend ItemBlock");
+			if (!(itemstack.getItem() instanceof ItemBlock)) throw new RuntimeException("Itemstacks references used for adding meteor ores must extend ItemBlock");
 			block = ((ItemBlock)itemstack.getItem()).field_150939_a;
 			metadata = itemstack.getItemDamage();
 		}
@@ -33,18 +33,19 @@ public class IMCBlockInstability implements IMCProcessor {
 			String blockname = nbt.getString("BlockName");
 			block = GameRegistry.findBlock(message.getSender(), blockname);
 			if (block == null) {
-				LoggerUtils.error("Could not find block by name %s belonging to mod [%s] when setting instability factors via IMC message.", blockname, message.getSender());
+				LoggerUtils.error("Could not find block by name %s belonging to mod [%s] when adding meteor ores via IMC message.", blockname, message.getSender());
 				return;
 			}
 		}
 
 		if (block == null) {
-			LoggerUtils.error("No block specified when setting instability factors via IMC message from mod [%s].", message.getSender());
+			LoggerUtils.error("No block specified when adding meteor ores via IMC message from mod [%s].", message.getSender());
 			return;
 		}
 
 		if (nbt.hasKey("Metadata")) metadata = NBTUtils.readNumber(nbt.getTag("Metadata")).intValue();
 
-		InstabilityBlockManager.setInstabilityFactors(block, metadata, nbt.getFloat("Accessibility"), nbt.getFloat("Flat"));
+		ExplosionEffectPlaceOres.registerMeteorPlaceableBlock(block, metadata, nbt.getFloat("Weight"));
 	}
+
 }

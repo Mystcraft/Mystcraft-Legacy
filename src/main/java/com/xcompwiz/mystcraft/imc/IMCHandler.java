@@ -22,6 +22,7 @@ public class IMCHandler {
 		registerProcessor("blacklistfluid", new IMCBlacklistFluid());
 		registerProcessor("blacklist", new IMCBlacklistSymbol());
 		registerProcessor("fluidsymboldata", new IMCFluidData());
+		registerProcessor("meteorblock", new IMCMeteorBlock());
 	}
 
 	private static void registerProcessor(String key, IMCProcessor processor) {

@@ -46,7 +46,6 @@ public class ExplosionEffectPlaceOres extends ExplosionEffect {
 
 	private ExplosionEffectPlaceOres() {}
 
-	//TODO: (API) Connect this to the API
 	public static void registerMeteorPlaceableBlock(Block block, int meta, float weight) {
 		blocks.add(new WeightedBlockSelection(block, meta, weight));
 	}
