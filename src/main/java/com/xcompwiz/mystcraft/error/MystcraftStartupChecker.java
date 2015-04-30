@@ -89,6 +89,7 @@ public class MystcraftStartupChecker {
 			completed.add(check);
 			if (!check.hasRun()) {
 				if (check.run()) {
+					LoggerUtils.info("Mystcraft Start-Up Error Checking Reported an Error to the user.");
 					break;
 				}
 			}
