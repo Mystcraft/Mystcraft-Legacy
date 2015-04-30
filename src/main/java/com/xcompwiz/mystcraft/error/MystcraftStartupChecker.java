@@ -9,6 +9,7 @@ import net.minecraft.client.gui.GuiScreen;
 
 import com.xcompwiz.mystcraft.client.gui.error.GuiNonCriticalError;
 import com.xcompwiz.mystcraft.client.gui.overlay.GuiNotification;
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -58,7 +59,8 @@ public class MystcraftStartupChecker {
 		}
 	}
 
-	private HashSet<ErrorChecker>	checks	= new HashSet<ErrorChecker>();
+	private HashSet<ErrorChecker>	checks		= new HashSet<ErrorChecker>();
+	HashSet<ErrorChecker>			completed	= new HashSet<ErrorChecker>();
 
 	private GuiNotification			updateNotification;
 
@@ -69,9 +71,7 @@ public class MystcraftStartupChecker {
 	@SubscribeEvent
 	public void onClientTick(ClientTickEvent event) {
 		if (Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu) {
-			if (checkForErrors()) { return;
-			//FMLCommonHandler.instance().bus().unregister(this);
-			}
+			checkForErrors();
 		}
 	}
 
@@ -84,14 +84,20 @@ public class MystcraftStartupChecker {
 		}
 	}
 
-	private boolean checkForErrors() {
-		//FIXME: Optimize to remove completed checks
+	private synchronized void checkForErrors() {
 		for (ErrorChecker check : checks) {
+			completed.add(check);
 			if (!check.hasRun()) {
-				if (check.run()) { return true; }
+				if (check.run()) {
+					break;
+				}
 			}
 		}
-		return false;
+		for (ErrorChecker check : completed) {
+			checks.remove(check);
+		}
+		if (checks.size() == 0 && completed.size() > 0) LoggerUtils.info("Mystcraft Start-Up Error Checking Completed");
+		completed.clear();
 	}
 
 	public GuiNotification getNotificationGui() {
