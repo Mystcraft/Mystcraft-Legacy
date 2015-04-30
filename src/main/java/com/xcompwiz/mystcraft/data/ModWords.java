@@ -7,7 +7,7 @@ import com.xcompwiz.mystcraft.api.word.WordData;
 public class ModWords {
 
 	public static void initialize() {
-		WordData.init(new WordAPIWrapper("Mystcraft")); //FIXME: This should use the API Provider 
+		WordData.init(new WordAPIWrapper("Mystcraft")); //TODO: This should use the API Provider 
 		for (int i = 0; i < 26; ++i) {
 			InternalAPI.word.registerWord("" + i, constructNumber(i));
 		}

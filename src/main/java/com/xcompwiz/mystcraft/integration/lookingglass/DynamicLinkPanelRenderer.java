@@ -38,6 +38,8 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 	public static int	linkColorLoc;
 
 	private WorldView	activeview;
+	public float		colorScale	= 0.5f;
+	public float		waveScale	= 0.5f;
 
 	public DynamicLinkPanelRenderer() {}
 
@@ -56,6 +58,8 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 			ChunkCoordinates spawn = linkinfo.getSpawn();
 			activeview = ProxyWorldManager.getWorldView(dimid, spawn);
 			if (activeview != null) activeview.grab();
+			colorScale = 0.5f;
+			waveScale = 0.5f;
 		}
 		if (activeview == null) return;
 		int texture = activeview.texture;
@@ -70,19 +74,19 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 
 		if (OpenGlHelper.shadersSupported) {
 			float sinceOpened = 0;
-			if (activeview.openTime >= 0) sinceOpened = (Minecraft.getSystemTime() - activeview.openTime) * 0.0003f;
+			if (activeview.readyTime >= 0) sinceOpened = (Minecraft.getSystemTime() - activeview.readyTime) * 0.0003f;
 
 			int color = DimensionUtils.getLinkColor(linkinfo);
 			float linkColorR = ((color >> 16) & 255) / 255F;
 			float linkColorG = ((color >> 8) & 255) / 255F;
 			float linkColorB = (color & 255) / 255F;
 
-			activeview.waveScale += (proxyworld.rand.nextDouble() - 0.5d) / 10;
-			if (activeview.waveScale > 1) activeview.waveScale = 1;
-			if (activeview.waveScale < 0) activeview.waveScale = 0;
-			activeview.colorScale += (proxyworld.rand.nextDouble() - 0.5d) / 10;
-			if (activeview.colorScale > 1) activeview.colorScale = 1;
-			if (activeview.colorScale < 0.5F) activeview.colorScale = 0.5F;
+			waveScale += (proxyworld.rand.nextDouble() - 0.5d) / 10;
+			if (waveScale > 1) waveScale = 1;
+			if (waveScale < 0) waveScale = 0;
+			colorScale += (proxyworld.rand.nextDouble() - 0.5d) / 10;
+			if (colorScale > 1) colorScale = 1;
+			if (colorScale < 0.5F) colorScale = 0.5F;
 
 			ARBShaderObjects.glUseProgramObjectARB(shaderARB);
 
@@ -94,7 +98,7 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 			ARBShaderObjects.glUniform2fARB(resLoc, width, height);
 			ARBShaderObjects.glUniform1fARB(damageLoc, (bookDamage - 0.5f) * 2f);
 			ARBShaderObjects.glUniform1fARB(waveScaleLoc, 0);
-			ARBShaderObjects.glUniform1fARB(colorScaleLoc, activeview.colorScale);
+			ARBShaderObjects.glUniform1fARB(colorScaleLoc, colorScale);
 			ARBShaderObjects.glUniform4fARB(linkColorLoc, linkColorR, linkColorG, linkColorB, 1f);
 
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
