@@ -128,8 +128,10 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		if (slotIndex == slot_wrt && itemstack.getItem() instanceof IItemRenameable) return true;
 		if (slotIndex == slot_pap && itemstack.getItem() == Items.paper) return true;
 		if (slotIndex == slot_ctn && FluidContainerRegistry.isContainer(itemstack)) return true;
-		// if (slotIndex == slot_ctn && itemstack.getItem() instanceof
-		// IFluidContainerItem) return true; //TODO: (Fluids) Handle IFluidContainerItem
+//		if (slotIndex == slot_ctn && itemstack.getItem() instanceof IFluidContainerItem) { //TODO: (Fluids) Handle IFluidContainerItem
+//			if (((IFluidContainerItem)itemstack.getItem()).getFluid(itemstack) == null) return true;
+//			return inkwell.isFluidPermitted(((IFluidContainerItem)itemstack.getItem()).getFluid(itemstack).getFluid());
+//		}
 		slotIndex -= itemstacks.length;
 		if (slotIndex < 0) return false;
 		if (slotIndex >= tabitems.length) return false;

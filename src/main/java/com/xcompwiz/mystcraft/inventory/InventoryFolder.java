@@ -13,7 +13,7 @@ import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 
 public class InventoryFolder {
-//FIXME: Refactor me! I'm a mess!
+//TODO: Refactor me! I'm a mess!
 	public static boolean isItemValid(ItemStack itemstack) {
 		if (itemstack == null) return true;
 		if (itemstack.stackSize != 1) return false;
