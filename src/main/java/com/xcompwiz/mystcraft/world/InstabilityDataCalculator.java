@@ -52,7 +52,8 @@ public class InstabilityDataCalculator {
 
 	private Integer					providerId			= null;
 	private Integer					dimId				= null;
-	private World					world;
+	private World					world = null;
+	private boolean					running = false;
 
 	public static void loadConfigs(Configuration config) {
 		disconnectclients = config.get(MystConfig.CATEGORY_GENERAL, "options.profiling.baseline.disconnectclients", disconnectclients, "If set to true this will prevent clients from connecting while baseline profiling is ongoing (Only works on dedicated servers)").getBoolean(disconnectclients);
@@ -148,7 +149,9 @@ public class InstabilityDataCalculator {
 
 	private void cleanup() {
 		if (world != null) {
-			DimensionManager.unloadWorld(world.provider.dimensionId);
+			LoggerUtils.info("Baseline Profiling cleaning up.");
+			running = false;
+			DimensionManager.unloadWorld(dimId);
 			world = null;
 			mcserver.getConfigurationManager().sendPacketToAllPlayers(MPacketProfilingState.createPacket(false));
 		}
@@ -156,7 +159,13 @@ public class InstabilityDataCalculator {
 
 	@SubscribeEvent
 	public void onWorldUnload(WorldEvent.Unload event) {
+		if (running) {
+			LoggerUtils.info("Baseline Profiling world unloaded before time!");
+			world = null;
+			return;
+		}
 		if (dimId != null && event.world.provider.dimensionId == dimId) {
+			LoggerUtils.info("Baseline Profiling world unloading.");
 			if (dimId != null) DimensionManager.unregisterDimension(dimId);
 			dimId = null;
 			if (providerId != null) DimensionManager.unregisterProviderType(providerId);
@@ -219,22 +228,20 @@ public class InstabilityDataCalculator {
 	}
 
 	private void stepChunkGeneration(ChunkProfiler profiler) {
-		//If the world has yet to be established, we create a fake world to play with.
-		if (world == null) {
-			LoggerUtils.info("Baseline Profiling for Instability started. Expect some lag.");
-			WorldProviderMystDummy.setChunkProfiler(profiler);
-			WorldProviderMystDummy.setBounds(profiler.getCount() - 1, //TODO: Tie this to the needed chunk radius
-					minimumchunks + 2, -1, 2);
+		if (providerId == null) {
 			//First we need to create a provider specifically for this purpose.  We don't care at all for the id we get, so try something silly and then go from there.
 			providerId = Integer.MIN_VALUE;
 			while (true) {
 				try {
-					DimensionManager.registerProviderType(providerId, WorldProviderMystDummy.class, false);
+					DimensionManager.registerProviderType(providerId, WorldProviderMystDummy.class, true);
 					break;
 				} catch (Exception e) {
 					++providerId;
 				}
 			}
+			LoggerUtils.info("Baseline Profiling provider registered at %d", providerId);
+		}
+		if (dimId == null) {
 			//Next we get a dim id the same way.
 			dimId = Integer.MIN_VALUE;
 			while (true) {
@@ -245,6 +252,15 @@ public class InstabilityDataCalculator {
 					++dimId;
 				}
 			}
+			LoggerUtils.info("Baseline Profiling dimension registered at %d", dimId);
+		}
+		//If the world has yet to be established, we create a fake world to play with.
+		if (world == null) {
+			running = true;
+			LoggerUtils.info("Baseline Profiling for Instability started. Expect some lag.");
+			WorldProviderMystDummy.setChunkProfiler(profiler);
+			WorldProviderMystDummy.setBounds(profiler.getCount() - 1, //TODO: Tie this to the needed chunk radius
+					minimumchunks + 2, -1, 2);
 			//Finally we obtain a world instance and set the chunk profiler for it.
 			world = mcserver.worldServerForDimension(dimId);
 			if (world == null) throw new RuntimeException("Could not create Instability Comparison Dimension");

@@ -35,6 +35,7 @@ public class IMCHandler {
 			IMCProcessor process = processors.get(key);
 			if (process == null) {
 				LoggerUtils.error("IMC message '%s' from [%s] unrecognized", key, message.getSender());
+				continue;
 			}
 			try {
 				process.process(message);

@@ -48,7 +48,7 @@ minecraft {
 curse {
 	apiKey = config.curseforge_key // saved in my properties file. http://minecraft.curseforge.com/my-api-tokens
 	projectId = "224599" // my project url is http://minecraft.curseforge.com/mc-mods/224599-mystcraft/
-	releaseType = "beta" //The release type must be either 'alpha', 'beta', or 'release'
+	releaseType = "release" //The release type must be either 'alpha', 'beta', or 'release'
 
 	changelog = project.publishChangelog.text
 
