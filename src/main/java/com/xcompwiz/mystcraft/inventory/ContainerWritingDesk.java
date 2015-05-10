@@ -36,7 +36,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		public static final String	Link						= "Link";
 		public static final String	RemoveFromCollection		= "RemoveFromCollection";
 		public static final String	RemoveFromOrderedCollection	= "RemoveFromOrderedCollection";
-		public static final String	AddToCollection				= "AddToCollection";
+		public static final String	AddToTab				= "AddToCollection";
 		public static final String	AddToSurface				= "AddToSurface";
 		public static final String	WriteSymbol					= "WriteSymbol";
 		public static final String	SetActiveNotebook			= "SetActiveNotebook";
@@ -231,20 +231,34 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			int index = data.getInteger(Messages.RemoveFromOrderedCollection);
 			player.inventory.setItemStack(tileentity.removePageFromSurface(player, this.getTabSlot(this.activeslot), index));
 		}
-		if (data.hasKey(Messages.AddToCollection)) {
+		if (data.hasKey(Messages.AddToTab)) {
 			if (player.inventory.getItemStack() == null) return;
-			byte slot = data.getByte(Messages.AddToCollection);
+			byte slot = data.getByte(Messages.AddToTab);
 			if (tileentity.getTabItem(slot) == null) return;
 			boolean single = data.getBoolean("Single");
 			if (single) {
 				ItemStack stack = player.inventory.getItemStack();
-				ItemStack clone = stack.copy();
-				clone.stackSize = 1;
+				ItemStack one = stack.copy();
+				one.stackSize = 1;
+				ItemStack ret = tileentity.addPageToTab(player, tileentity.getTabItem(slot), one.copy());
+				if (ItemStack.areItemStackTagsEqual(ret, one) && ItemStack.areItemStacksEqual(ret, one)) return;
 				stack.stackSize -= 1;
 				if (stack.stackSize <= 0) stack = null;
 				player.inventory.setItemStack(stack);
+				if (ret == null) return;
+				if (stack == null) {
+					player.inventory.setItemStack(ret);
+					return;
+				}
+				if (ItemStack.areItemStackTagsEqual(ret, stack)) {
+					stack.stackSize += ret.stackSize;
+					//TODO: This is technically capable of exceeding max stack size
+					return;
+				}
+				//TODO: Push any leftover to player inventory
+			} else {
+				player.inventory.setItemStack(tileentity.addPageToTab(player, tileentity.getTabItem(slot), player.inventory.getItemStack()));
 			}
-			player.inventory.setItemStack(tileentity.addPageToCollection(player, tileentity.getTabItem(slot), player.inventory.getItemStack()));
 		}
 		if (data.hasKey(Messages.AddToSurface)) {
 			if (player.inventory.getItemStack() == null) return;

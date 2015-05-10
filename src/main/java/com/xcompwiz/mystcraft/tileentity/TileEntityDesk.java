@@ -338,10 +338,10 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		return result;
 	}
 
-	public ItemStack addPageToCollection(EntityPlayer player, ItemStack itemstack, ItemStack page) {
+	public ItemStack addPageToTab(EntityPlayer player, ItemStack itemstack, ItemStack page) {
 		if (itemstack == null) return page;
 		ItemStack result = page;
-		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).addPage(player, itemstack, page);
+		if (itemstack.getItem() instanceof IItemPageAcceptor) result = ((IItemPageAcceptor) itemstack.getItem()).addPage(player, itemstack, page);
 		if (result == page) return result;
 		this.markDirty();
 		return result;

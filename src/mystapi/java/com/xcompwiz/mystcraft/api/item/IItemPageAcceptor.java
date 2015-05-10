@@ -9,7 +9,8 @@ public interface IItemPageAcceptor {
 	 * @param player The player adding the page
 	 * @param itemstack The itemstack instance of this item
 	 * @param page The page being added. Not guaranteed to be a page item. May have stacksize > 1. May be null.
-	 * @return The result of the operation. The player's cursor item will be set to this.
+	 * @return The result of the operation. Typically, the player's cursor item will be set to this. This method allows you to modify the input item in some way
+	 *         and return the result.
 	 */
 	ItemStack addPage(EntityPlayer player, ItemStack itemstack, ItemStack page);
 }

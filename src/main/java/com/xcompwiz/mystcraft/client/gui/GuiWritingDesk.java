@@ -134,7 +134,7 @@ public class GuiWritingDesk extends GuiContainerElements {
 		public void onSurfaceTabClick(int button, byte slot) {
 			if (mc.thePlayer.inventory.getItemStack() != null) {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setByte(ContainerWritingDesk.Messages.AddToCollection, slot);
+				nbttagcompound.setByte(ContainerWritingDesk.Messages.AddToTab, slot);
 				nbttagcompound.setBoolean("Single", (button == 1));
 				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(inventorySlots.windowId, nbttagcompound));
 				container.processMessage(mc.thePlayer, nbttagcompound);
