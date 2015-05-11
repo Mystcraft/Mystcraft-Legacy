@@ -150,7 +150,11 @@ public class ChunkProviderMyst implements IChunkProvider {
 
 		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(ichunkprovider, worldObj, rand, chunkX, chunkZ, false));
 
-		biomegenbase.decorate(worldObj, rand, x, z);
+		try {
+			biomegenbase.decorate(worldObj, rand, x, z);
+		} catch (Exception e) {
+			throw new RuntimeException(String.format("Biome [%s] threw an error while populating chunk.", biomegenbase.biomeName), e);
+		}
 		this.scatteredFeatureGenerator.generateStructuresInChunk(this.worldObj, this.rand, chunkX, chunkZ);
 		SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, x + 8, z + 8, 16, 16, rand); // TODO: (Spawning) Rewrite to use getPossibleCreatures
 		controller.populate(worldObj, rand, x, z);
