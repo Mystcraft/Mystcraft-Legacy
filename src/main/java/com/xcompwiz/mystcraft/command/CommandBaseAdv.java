@@ -95,7 +95,7 @@ public abstract class CommandBaseAdv extends CommandBase {
 	public static Entity parsePlayerByName(String name) throws PlayerNotFoundException {
 		EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().func_152612_a(name);
 		if (player != null) { return player; }
-		throw new PlayerNotFoundException(String.format("Could not get Player by name: %s", name), new Object[0]);
+		throw new PlayerNotFoundException("commands.myst.generic.player.notfound", new Object[] { name });
 	}
 
 	public static float parseFloat(ICommandSender par0ICommandSender, String par1Str) {
