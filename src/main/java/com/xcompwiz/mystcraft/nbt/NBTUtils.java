@@ -9,6 +9,7 @@ import java.util.Map;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagDouble;
@@ -169,16 +170,30 @@ public final class NBTUtils {
 	}
 
 	/**
+	 * Reads a compressed NBTTagCompound from the InputStream
+	 */
+	public static NBTTagCompound readNBTTagCompound(ByteBuf data) throws IOException {
+		short length = data.readShort();
+
+		if (length < 0) { return null; }
+		byte[] abyte = new byte[length];
+		data.readBytes(abyte);
+		return CompressedStreamTools.func_152457_a(abyte, new NBTSizeTracker(2097152L));
+	}
+
+	/**
 	 * Writes a compressed NBTTagCompound to the OutputStream
 	 * @throws IOException
 	 */
-	public static void writeNBTTagCompound(NBTTagCompound par0NBTTagCompound, ByteBuf data) throws IOException {
-		if (par0NBTTagCompound == null) {
+	public static int writeNBTTagCompound(NBTTagCompound nbttagcompound, ByteBuf data) throws IOException {
+		if (nbttagcompound == null) {
 			data.writeShort(-1);
 		} else {
-			byte[] var2 = CompressedStreamTools.compress(par0NBTTagCompound);
-			data.writeShort((short) var2.length);
-			data.writeBytes(var2);
+			byte[] abyte = CompressedStreamTools.compress(nbttagcompound);
+			data.writeShort((short) abyte.length);
+			data.writeBytes(abyte);
+			return abyte.length;
 		}
+		return 0;
 	}
 }
