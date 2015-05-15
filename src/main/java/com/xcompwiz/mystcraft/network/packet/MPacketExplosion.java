@@ -14,7 +14,7 @@ import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffect;
 
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketExplosion extends PacketHandler {
+public class MPacketExplosion extends PacketBase {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -47,7 +47,7 @@ public class MPacketExplosion extends PacketHandler {
 	}
 
 	public static FMLProxyPacket createPacket(EntityPlayer player, ExplosionAdvanced explosion) {
-		ByteBuf data = PacketHandler.createDataBuffer(MPacketExplosion.class);
+		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 
 		data.writeDouble(explosion.explosionX);
 		data.writeDouble(explosion.explosionY);

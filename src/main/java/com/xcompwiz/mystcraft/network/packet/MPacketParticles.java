@@ -11,7 +11,7 @@ import com.xcompwiz.mystcraft.Mystcraft;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketParticles extends PacketHandler {
+public class MPacketParticles extends PacketBase {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -35,7 +35,7 @@ public class MPacketParticles extends PacketHandler {
 	}
 
 	public static FMLProxyPacket createPacket(Entity entity, String particle) {
-		ByteBuf data = PacketHandler.createDataBuffer(MPacketParticles.class);
+		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 
 		data.writeDouble(entity.posX);
 		data.writeDouble(entity.posY);

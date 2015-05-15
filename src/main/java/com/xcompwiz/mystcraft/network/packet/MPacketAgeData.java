@@ -10,7 +10,7 @@ import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketAgeData extends PacketHandler {
+public class MPacketAgeData extends PacketBase {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -29,7 +29,7 @@ public class MPacketAgeData extends PacketHandler {
 		NBTTagCompound nbttagcompound = new NBTTagCompound();
 		AgeData.getAge(uid, false).writeToNBT(nbttagcompound);
 
-		ByteBuf data = PacketHandler.createDataBuffer(MPacketAgeData.class);
+		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 
 		data.writeInt(uid);
 		ByteBufUtils.writeTag(data, nbttagcompound);

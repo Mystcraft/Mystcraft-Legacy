@@ -7,7 +7,7 @@ import com.xcompwiz.mystcraft.Mystcraft;
 
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketConfigs extends PacketHandler {
+public class MPacketConfigs extends PacketBase {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -15,7 +15,7 @@ public class MPacketConfigs extends PacketHandler {
 	}
 
 	public static FMLProxyPacket createPacket() {
-		ByteBuf data = PacketHandler.createDataBuffer(MPacketConfigs.class);
+		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 
 		//TODO: Generalize?
 		data.writeBoolean(Mystcraft.renderlabels);

@@ -12,7 +12,7 @@ import com.xcompwiz.mystcraft.network.IMessageReceiver;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketMessage extends PacketHandler {
+public class MPacketMessage extends PacketBase {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -47,7 +47,7 @@ public class MPacketMessage extends PacketHandler {
 	}
 
 	public static FMLProxyPacket createPacket(TileEntity tile, NBTTagCompound nbttagcompound) {
-		ByteBuf data = PacketHandler.createDataBuffer(MPacketMessage.class);
+		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setTag("Data", nbttagcompound);
@@ -61,7 +61,7 @@ public class MPacketMessage extends PacketHandler {
 	}
 
 	public static FMLProxyPacket createPacket(Entity entity, NBTTagCompound nbttagcompound) {
-		ByteBuf data = PacketHandler.createDataBuffer(MPacketMessage.class);
+		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setTag("Data", nbttagcompound);

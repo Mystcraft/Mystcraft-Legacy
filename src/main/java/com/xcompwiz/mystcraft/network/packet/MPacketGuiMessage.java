@@ -9,7 +9,7 @@ import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketGuiMessage extends PacketHandler {
+public class MPacketGuiMessage extends PacketBase {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -24,7 +24,7 @@ public class MPacketGuiMessage extends PacketHandler {
 	}
 
 	public static FMLProxyPacket createPacket(int windowId, NBTTagCompound nbttagcompound) {
-		ByteBuf data = PacketHandler.createDataBuffer(MPacketGuiMessage.class);
+		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 
 		data.writeInt(windowId);
 		ByteBufUtils.writeTag(data, nbttagcompound);

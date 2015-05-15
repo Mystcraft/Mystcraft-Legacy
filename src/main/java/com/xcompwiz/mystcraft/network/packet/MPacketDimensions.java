@@ -12,7 +12,7 @@ import com.xcompwiz.mystcraft.Mystcraft;
 
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketDimensions extends PacketHandler {
+public class MPacketDimensions extends PacketBase {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -38,7 +38,7 @@ public class MPacketDimensions extends PacketHandler {
 	}
 
 	public static FMLProxyPacket createPacket(Collection<Integer> set) {
-		ByteBuf data = PacketHandler.createDataBuffer(MPacketDimensions.class);
+		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 
 		data.writeInt(set.size());
 		for (Integer dimId : set)

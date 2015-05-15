@@ -10,7 +10,7 @@ import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
 //TODO: This packet is antiquated
-public class MPacketActivateItem extends PacketHandler {
+public class MPacketActivateItem extends PacketBase {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -29,7 +29,7 @@ public class MPacketActivateItem extends PacketHandler {
 	}
 
 	public static FMLProxyPacket createPacket(int slot) {
-		ByteBuf data = PacketHandler.createDataBuffer(MPacketActivateItem.class);
+		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 
 		data.writeByte(slot);
 

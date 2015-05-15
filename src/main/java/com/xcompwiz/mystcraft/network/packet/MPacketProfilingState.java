@@ -9,7 +9,7 @@ import com.xcompwiz.mystcraft.client.MystcraftClientProxy;
 
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketProfilingState extends PacketHandler {
+public class MPacketProfilingState extends PacketBase {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -22,7 +22,7 @@ public class MPacketProfilingState extends PacketHandler {
 	}
 
 	public static FMLProxyPacket createPacket(boolean running) {
-		ByteBuf data = PacketHandler.createDataBuffer(MPacketProfilingState.class);
+		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 
 		data.writeBoolean(running);
 

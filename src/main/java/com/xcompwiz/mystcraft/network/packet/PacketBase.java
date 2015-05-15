@@ -9,7 +9,7 @@ import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public abstract class PacketHandler {
+public abstract class PacketBase {
 
 	protected static Vec3 readCoordinates(ByteBuf data) {
 		Vec3 coords = Vec3.createVectorHelper(data.readDouble(), data.readDouble(), data.readDouble());
@@ -18,7 +18,7 @@ public abstract class PacketHandler {
 
 	public abstract void handle(ByteBuf data, EntityPlayer player);
 
-	public static ByteBuf createDataBuffer(Class<? extends PacketHandler> handlerclass) {
+	public static ByteBuf createDataBuffer(Class<? extends PacketBase> handlerclass) {
 		ByteBuf data = Unpooled.buffer();
 		data.writeByte(MystcraftPacketHandler.getId(handlerclass));
 		return data;

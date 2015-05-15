@@ -8,7 +8,7 @@ import com.xcompwiz.mystcraft.entity.EntityLightningBoltAdv;
 
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketSpawnLightningBolt extends PacketHandler {
+public class MPacketSpawnLightningBolt extends PacketBase {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -27,7 +27,7 @@ public class MPacketSpawnLightningBolt extends PacketHandler {
 	}
 
 	public static FMLProxyPacket createPacket(EntityLightningBoltAdv entity) {
-		ByteBuf data = PacketHandler.createDataBuffer(MPacketSpawnLightningBolt.class);
+		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 
 		try {
 			data.writeInt(entity.getEntityId());

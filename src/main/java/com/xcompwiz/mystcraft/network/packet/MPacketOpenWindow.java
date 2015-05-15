@@ -9,7 +9,7 @@ import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
 
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 
-public class MPacketOpenWindow extends PacketHandler {
+public class MPacketOpenWindow extends PacketBase {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
@@ -20,7 +20,7 @@ public class MPacketOpenWindow extends PacketHandler {
 	}
 
 	public static FMLProxyPacket createPacket(int windowId, int guiId, TileEntity tileEntity) {
-		ByteBuf data = PacketHandler.createDataBuffer(MPacketOpenWindow.class);
+		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 
 		data.writeByte(guiId);
 		data.writeByte(windowId);
@@ -32,7 +32,7 @@ public class MPacketOpenWindow extends PacketHandler {
 	}
 
 	public static FMLProxyPacket createPacket(int windowId, int guiId, Entity entity) {
-		ByteBuf data = PacketHandler.createDataBuffer(MPacketOpenWindow.class);
+		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 
 		data.writeByte(guiId);
 		data.writeByte(windowId);
@@ -42,7 +42,7 @@ public class MPacketOpenWindow extends PacketHandler {
 	}
 
 	public static FMLProxyPacket createPacket(int windowId, int guiId, byte slot) {
-		ByteBuf data = PacketHandler.createDataBuffer(MPacketOpenWindow.class);
+		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 
 		data.writeByte(guiId);
 		data.writeByte(windowId);
