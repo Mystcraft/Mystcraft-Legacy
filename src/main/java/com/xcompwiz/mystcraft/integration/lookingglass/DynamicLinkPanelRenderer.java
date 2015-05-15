@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL13;
 
 import com.xcompwiz.lookingglass.client.proxyworld.ProxyWorldManager;
 import com.xcompwiz.lookingglass.client.proxyworld.WorldView;
+import com.xcompwiz.lookingglass.entity.EntityAnimatorPivot;
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
@@ -40,6 +41,8 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 	private WorldView	activeview;
 	public float		colorScale	= 0.5f;
 	public float		waveScale	= 0.5f;
+	private long		readyTime;
+	private boolean		ready;
 
 	public DynamicLinkPanelRenderer() {}
 
@@ -56,13 +59,18 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 		}
 		if (activeview == null) {
 			ChunkCoordinates spawn = linkinfo.getSpawn();
-			activeview = ProxyWorldManager.getWorldView(dimid, spawn);
-			if (activeview != null) activeview.grab();
+			activeview = ProxyWorldManager.createWorldView(dimid, spawn, 132, 83);
+			if (activeview != null) {
+				activeview.grab();
+				activeview.camera.setAnimator(new EntityAnimatorPivot(activeview.camera));
+			}
 			colorScale = 0.5f;
 			waveScale = 0.5f;
+			readyTime = -1;
+			ready = false;
 		}
 		if (activeview == null) return;
-		int texture = activeview.texture;
+		int texture = activeview.getTexture();
 		if (texture == 0) return;
 
 		WorldClient proxyworld = ProxyWorldManager.getProxyworld(dimid);
@@ -70,11 +78,15 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 		float bookDamage = 0;
 		if (bookclone != null) bookDamage = ((float) bookclone.getItemDamageForDisplay()) / bookclone.getMaxDamage();
 
-		activeview.last_world_time = proxyworld.getTotalWorldTime();
+		activeview.markDirty();
 
 		if (OpenGlHelper.shadersSupported) {
 			float sinceOpened = 0;
-			if (activeview.readyTime >= 0) sinceOpened = (Minecraft.getSystemTime() - activeview.readyTime) * 0.0003f;
+			if (!ready && activeview.isReady()) {
+				ready = true;
+				readyTime = Minecraft.getSystemTime();
+			}
+			if (readyTime >= 0) sinceOpened = (Minecraft.getSystemTime() - readyTime) * 0.0003f;
 
 			int color = DimensionUtils.getLinkColor(linkinfo);
 			float linkColorR = ((color >> 16) & 255) / 255F;
@@ -136,5 +148,8 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 	}
 
 	@Override
-	public void onOpen() {}
+	public void onOpen() {
+		readyTime = -1;
+		ready = false;
+	}
 }
