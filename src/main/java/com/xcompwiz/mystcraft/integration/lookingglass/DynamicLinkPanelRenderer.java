@@ -1,7 +1,8 @@
 package com.xcompwiz.mystcraft.integration.lookingglass;
 
+import java.util.Random;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
@@ -11,9 +12,8 @@ import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import com.xcompwiz.lookingglass.client.proxyworld.ProxyWorldManager;
-import com.xcompwiz.lookingglass.client.proxyworld.WorldView;
-import com.xcompwiz.lookingglass.entity.EntityAnimatorPivot;
+import com.xcompwiz.lookingglass.api.ILookingGlassAPI;
+import com.xcompwiz.lookingglass.api.view.IWorldView;
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
@@ -26,43 +26,52 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 @SideOnly(Side.CLIENT)
 public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
-	public static int	shaderARB;
-	public static int	vertexARB;
-	public static int	fragmentARB;
+	private final ILookingGlassAPI	apiinst;
+	private Random					rand;
 
-	public static int	textureLoc;
-	public static int	damageLoc;
-	public static int	resLoc;
-	public static int	timeLoc;
-	public static int	waveScaleLoc;
-	public static int	colorScaleLoc;
-	public static int	linkColorLoc;
+	public static int				shaderARB;
+	public static int				vertexARB;
+	public static int				fragmentARB;
 
-	private WorldView	activeview;
-	public float		colorScale	= 0.5f;
-	public float		waveScale	= 0.5f;
-	private long		readyTime;
-	private boolean		ready;
+	public static int				textureLoc;
+	public static int				damageLoc;
+	public static int				resLoc;
+	public static int				timeLoc;
+	public static int				waveScaleLoc;
+	public static int				colorScaleLoc;
+	public static int				linkColorLoc;
 
-	public DynamicLinkPanelRenderer() {}
+	private Integer					activeDim;
+	private ChunkCoordinates		activeCoords;
+	private IWorldView				activeview;
+	public float					colorScale	= 0.5f;
+	public float					waveScale	= 0.5f;
+	private long					readyTime;
+	private boolean					ready;
+
+	public DynamicLinkPanelRenderer(ILookingGlassAPI apiinst) {
+		this.apiinst = apiinst;
+		this.rand = new Random();
+	}
 
 	@Override
 	public void render(int left, int top, int width, int height, ILinkInfo linkinfo, ItemStack bookclone) {
+		if (activeview != null && (detectLinkInfoChange(linkinfo))) {
+			activeview.release();
+			apiinst.freeView(activeview);
+			activeview = null;
+		}
 		if (linkinfo == null) return;
 		Integer dimid = linkinfo.getDimensionUID();
 		if (dimid == null) return;
-		if (activeview != null) {
-			if (activeview.worldObj.provider.dimensionId != dimid || !compareCoords(activeview.coords, linkinfo.getSpawn())) {
-				ProxyWorldManager.freeView(activeview);
-				activeview = null;
-			}
-		}
 		if (activeview == null) {
 			ChunkCoordinates spawn = linkinfo.getSpawn();
-			activeview = ProxyWorldManager.createWorldView(dimid, spawn, 132, 83);
+			activeview = apiinst.createWorldView(dimid, spawn, 132, 83);
 			if (activeview != null) {
 				activeview.grab();
-				activeview.camera.setAnimator(new EntityAnimatorPivot(activeview.camera));
+				apiinst.setPivotAnimation(activeview);
+				this.activeDim = dimid;
+				this.activeCoords = spawn;
 			}
 			colorScale = 0.5f;
 			waveScale = 0.5f;
@@ -72,8 +81,6 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 		if (activeview == null) return;
 		int texture = activeview.getTexture();
 		if (texture == 0) return;
-
-		WorldClient proxyworld = ProxyWorldManager.getProxyworld(dimid);
 
 		float bookDamage = 0;
 		if (bookclone != null) bookDamage = ((float) bookclone.getItemDamageForDisplay()) / bookclone.getMaxDamage();
@@ -93,10 +100,10 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 			float linkColorG = ((color >> 8) & 255) / 255F;
 			float linkColorB = (color & 255) / 255F;
 
-			waveScale += (proxyworld.rand.nextDouble() - 0.5d) / 10;
+			waveScale += (rand.nextDouble() - 0.5d) / 10;
 			if (waveScale > 1) waveScale = 1;
 			if (waveScale < 0) waveScale = 0;
-			colorScale += (proxyworld.rand.nextDouble() - 0.5d) / 10;
+			colorScale += (rand.nextDouble() - 0.5d) / 10;
 			if (colorScale > 1) colorScale = 1;
 			if (colorScale < 0.5F) colorScale = 0.5F;
 
@@ -139,6 +146,21 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 
 		}
+	}
+
+	private boolean detectLinkInfoChange(ILinkInfo linkinfo) {
+		if (this.activeDim == null && linkinfo == null) return false;
+		if (this.activeDim != null && linkinfo == null) {
+			this.activeDim = null;
+			this.activeCoords = null;
+			return true;
+		}
+		if (this.activeDim != linkinfo.getDimensionUID() || compareCoords(this.activeCoords, linkinfo.getSpawn())) {
+			this.activeDim = null;
+			this.activeCoords = null;
+			return true;
+		}
+		return false;
 	}
 
 	private boolean compareCoords(ChunkCoordinates coords, ChunkCoordinates spawn) {
