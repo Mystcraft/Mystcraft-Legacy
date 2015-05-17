@@ -78,6 +78,7 @@ public class APIProviderImpl implements APIInstanceProvider {
 	}
 
 	private static Object constructAPIWrapper(String owner, String apiname, int version) throws APIUndefined, APIVersionUndefined, APIVersionRemoved {
+		if (apiCtors == null) throw new RuntimeException("Something is broken. The Mystcraft API Provider hasn't constructed properly.");
 		HashMap<Integer, WrapperBuilder> ctors = apiCtors.get(apiname);
 		if (ctors == null) throw new APIUndefined(apiname);
 		if (!ctors.containsKey(version)) throw new APIVersionUndefined(apiname + "-" + version);
