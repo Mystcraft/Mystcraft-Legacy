@@ -34,8 +34,27 @@ configFile.withReader {
 
 version = "${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"
 
-group = "com.xcompwiz.mystcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group            = "com.xcompwiz.mystcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "mystcraft"
+nameCased        = "Mystcraft"
+curseId          = "224599" // my project url is http://minecraft.curseforge.com/mc-mods/224599-mystcraft/
+
+def deployments = [
+	'local' : {"${project.userHome}/Downloads/Game Misc/MultiMC5/instances/Testing ${minecraft.version}/minecraft/mods/"},
+	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
+	'patron': {"${project.userHome}/Google Drive/Mystcraft Patreon Builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
+	'FC1'   : {"F:/Seafile/incoming/ForgeCraft1/mods"},
+	'FC2'   : {"F:/Seafile/incoming/ForgeCraft2/mods"},
+]
+
+def APIDeploys = [
+	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
+]
+
+def changelogDeploys = [
+	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds"},
+	'patron': {"${project.userHome}/Google Drive/Mystcraft Patreon Builds"},
+]
 
 // Setup the forge minecraft plugin data. Specify the preferred forge/minecraft version here
 minecraft {
@@ -43,22 +62,6 @@ minecraft {
 	runDir = "eclipse/run/client"
 
 	replace "@VERSION@", project.version
-}
-
-curse {
-	apiKey = config.curseforge_key // saved in my properties file. http://minecraft.curseforge.com/my-api-tokens
-	projectId = "224599" // my project url is http://minecraft.curseforge.com/mc-mods/224599-mystcraft/
-	releaseType = "release" //The release type must be either 'alpha', 'beta', or 'release'
-
-	changelog = project.publishChangelog.text
-
-	// the default obfuscated jar is uploaded by default
-	// artifact = project.file("some/jar/to/upload.jar")
-	additionalArtifact {project.tasks.devJar.getArchivePath()}
-
-	// allows you to add extra compatible MC versions. The one specified in the minecraft{} block is used by default.
-	// addGameVersion "1.7.1"
-	// addGameversion "1.7.0", "1.7.4"
 }
 
 // add the api source folder
@@ -70,15 +73,9 @@ sourceSets {
 	}
 }
 
-// this sets our output jar to have a 'tag' of 'universal' on it
-// It also adds the minecraft version in a custom version name
-// The result is files named <projectname>-<mcversion>-<version>.jar
-jar {
-	classifier = project.version
-	version = project.minecraft.version
-	includeEmptyDirs = false
-	from sourceSets.api.output
-}
+// --------------------------
+// End local config
+// --------------------------
 
 processResources
 {
@@ -98,6 +95,16 @@ processResources
 	from(sourceSets.main.resources.srcDirs) {
 		exclude 'mcmod.info'
 	}
+}
+
+// this sets our output jar to have a 'tag' of 'universal' on it
+// It also adds the minecraft version in a custom version name
+// The result is files named <projectname>-<mcversion>-<version>.jar
+jar {
+	classifier = project.version
+	version = project.minecraft.version
+	includeEmptyDirs = false
+	from sourceSets.api.output
 }
 
 // -------------
@@ -170,23 +177,6 @@ task "deploy" // creates it for later
 task "deployjar" // creates it for later
 
 project.tasks.deploy.dependsOn project.tasks.deployjar
-
-def deployments = [
-	'local' : {"${project.userHome}/Downloads/Game Misc/MultiMC5/instances/Testing ${minecraft.version}/minecraft/mods/"},
-	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
-	'patron': {"${project.userHome}/Google Drive/Mystcraft Patreon Builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
-	'FC1'   : {"F:/Seafile/incoming/ForgeCraft1/mods"},
-	'FC2'   : {"F:/Seafile/incoming/ForgeCraft2/mods"},
-]
-
-def APIDeploys = [
-	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
-]
-
-def changelogDeploys = [
-	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds"},
-	'patron': {"${project.userHome}/Google Drive/Mystcraft Patreon Builds"},
-]
 
 deployments.each { name, dir ->
 	def deployer = task("deploy-${name}", type: Copy) {
@@ -277,4 +267,20 @@ types.eachWithIndex { type, index ->
 	project.tasks.uploadArchives.mustRunAfter incrementer
 	project.tasks.processResources.mustRunAfter incrementer
 	project.tasks.compileApiJava.mustRunAfter incrementer
+}
+
+curse {
+	apiKey = config.curseforge_key // saved in my properties file. http://minecraft.curseforge.com/my-api-tokens
+	projectId = project.curseId
+	releaseType = "release" //The release type must be either 'alpha', 'beta', or 'release'
+
+	changelog = project.publishChangelog.text
+
+	// the default obfuscated jar is uploaded by default
+	// artifact = project.file("some/jar/to/upload.jar")
+	additionalArtifact {project.tasks.devJar.getArchivePath()}
+
+	// allows you to add extra compatible MC versions. The one specified in the minecraft{} block is used by default.
+	// addGameVersion "1.7.1"
+	// addGameversion "1.7.0", "1.7.4"
 }
