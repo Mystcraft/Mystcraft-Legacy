@@ -58,7 +58,6 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 	public void render(int left, int top, int width, int height, ILinkInfo linkinfo, ItemStack bookclone) {
 		if (activeview != null && (detectLinkInfoChange(linkinfo))) {
 			activeview.release();
-			apiinst.freeView(activeview);
 			activeview = null;
 		}
 		if (linkinfo == null) return;
