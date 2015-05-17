@@ -141,9 +141,6 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		if (OpenGlHelper.shadersSupported) {
 			ARBShaderObjects.glUseProgramObjectARB(0);
-
-			GL13.glActiveTexture(GL13.GL_TEXTURE0);
-
 		}
 	}
 

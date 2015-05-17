@@ -25,4 +25,10 @@ public class MystcraftCommonProxy {
 	public void postInit() {}
 
 	public void createCreativeTabs() {}
+
+	public void initShaders() {}
+
+	public boolean isClientSideAvailable() {
+		return false;
+	}
 }

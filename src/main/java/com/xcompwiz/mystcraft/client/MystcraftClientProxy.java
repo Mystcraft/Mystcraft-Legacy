@@ -35,6 +35,7 @@ import com.xcompwiz.mystcraft.client.render.RenderMeteor;
 import com.xcompwiz.mystcraft.client.render.RenderModel;
 import com.xcompwiz.mystcraft.client.render.RenderStarFissure;
 import com.xcompwiz.mystcraft.client.render.RenderWritingDesk;
+import com.xcompwiz.mystcraft.client.shaders.ShaderUtils;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.Assets.Entities;
 import com.xcompwiz.mystcraft.data.InkEffects;
@@ -66,6 +67,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class MystcraftClientProxy extends MystcraftCommonProxy {
 
 	private MystcraftStartupChecker	startupchecker;
+
+	@Override
+	public boolean isClientSideAvailable() {
+		return true;
+	}
 
 	@Override
 	public Entity getEntityByID(World worldObj, int id) {
@@ -150,6 +156,11 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 
 		render = new RenderBookReceptacle();
 		cpw.mods.fml.client.registry.ClientRegistry.bindTileEntitySpecialRenderer(com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle.class, render);
+	}
+
+	@Override
+	public void initShaders() {
+		ShaderUtils.registerShaders();
 	}
 
 	@Override
