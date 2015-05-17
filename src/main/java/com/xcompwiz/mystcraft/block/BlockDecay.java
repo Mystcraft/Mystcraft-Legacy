@@ -80,7 +80,6 @@ public class BlockDecay extends Block {
 	 * @param target The full target the player is looking at
 	 * @return A ItemStack to add to the player's inventory, Null if nothing should be added.
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
 		return new ItemStack(this, 1, world.getBlockMetadata(x, y, z));
