@@ -66,12 +66,12 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 		if (dimid == null) return;
 		if (activeview == null) {
 			ChunkCoordinates spawn = linkinfo.getSpawn();
-			activeview = apiinst.createWorldView(dimid, spawn, 132, 83);
+			activeview = apiinst.createWorldView(dimid, spawn, 132, 83); //FIXME: Is this editing the passed in ChunkCoordinates object?
 			if (activeview != null) {
 				activeview.grab();
 				apiinst.setPivotAnimation(activeview);
 				this.activeDim = dimid;
-				this.activeCoords = spawn;
+				this.activeCoords = linkinfo.getSpawn();
 			}
 			colorScale = 0.5f;
 			waveScale = 0.5f;
@@ -155,7 +155,7 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 			this.activeCoords = null;
 			return true;
 		}
-		if (this.activeDim != linkinfo.getDimensionUID() || compareCoords(this.activeCoords, linkinfo.getSpawn())) {
+		if (this.activeDim != linkinfo.getDimensionUID() || !compareCoords(this.activeCoords, linkinfo.getSpawn())) {
 			this.activeDim = null;
 			this.activeCoords = null;
 			return true;
