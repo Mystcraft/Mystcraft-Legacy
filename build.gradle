@@ -1,3 +1,28 @@
+ext.forgeversion     = "1.7.10-10.13.0.1180"
+group                = "com.xcompwiz.mystcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+ext.archivesBaseName = "mystcraft"
+ext.nameCased        = "Mystcraft"
+ext.curseId          = "224599"  // my project url is http://minecraft.curseforge.com/mc-mods/224599-mystcraft/
+ext.curseReleaseType = "release" //The release type must be either 'alpha', 'beta', or 'release'
+ext.curseIncludeDev  = true
+
+// define some stuff.  hereafter referenced as project.varName
+ext.configFile = file "build.properties"
+ext.smallChangelog = file("changes.txt")
+ext.releaseChangelog = file("changelog.txt")
+ext.publishChangelog = file("changes.txt")
+ext.userHome = System.properties["user.home"]
+
+// --------------------------
+// End local config
+// --------------------------
+
+//Configure these through locations.gradle
+ext.jarDeploys = []
+ext.devDeploys = []
+ext.APIDeploys = []
+ext.changelogDeploys = []
+
 buildscript {
 	repositories {
 		mavenCentral()
@@ -15,15 +40,37 @@ buildscript {
 	}
 }
 
+repositories {
+	mavenLocal()
+	mavenCentral()
+	maven { // The repo from which to get waila
+		name "Mobius Repo"
+		url "http://mobiusstrip.eu/maven"
+	}
+	maven { // the repo from which to get NEI and stuff
+		name = "chickenbones"
+		url "http://chickenbones.net/maven/"
+	}
+	ivy {
+		name 'Forge FS legacy'
+		artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
+	}
+	maven {
+		name 'ForgeFS'
+		url 'http://files.minecraftforge.net/maven'
+	}
+	maven {
+		name 'MinecraftS3'
+		url 'http://s3.amazonaws.com/Minecraft.Download/libraries'
+	}
+}
+
 apply plugin: 'curseforge'
 apply plugin: 'forge'
 
-// define some stuff.  hereby referenced as project.varName
-ext.configFile = file "build.properties"
-ext.smallChangelog = file("changes.txt")
-ext.releaseChangelog = file("changelog.txt")
-ext.publishChangelog = file("changes.txt")
-ext.userHome = System.properties["user.home"]
+if (file('locations.gradle').exists()) {
+	apply from: 'locations.gradle'
+}
 
 configFile.withReader {
 	// read config. it shall from now on be referenced as simply config or as project.config
@@ -34,48 +81,13 @@ configFile.withReader {
 
 version = "${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"
 
-group            = "com.xcompwiz.mystcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "mystcraft"
-ext.nameCased    = "Mystcraft"
-ext.curseId      = "224599" // my project url is http://minecraft.curseforge.com/mc-mods/224599-mystcraft/
-
-def deployments = [
-	'local' : {"${project.userHome}/Downloads/Game Misc/MultiMC5/instances/Testing ${minecraft.version}/minecraft/mods/"},
-	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
-	'patron': {"${project.userHome}/Google Drive/Mystcraft Patreon Builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
-	'FC1'   : {"F:/Seafile/incoming/ForgeCraft1/mods"},
-	'FC2'   : {"F:/Seafile/incoming/ForgeCraft2/mods"},
-]
-
-def APIDeploys = [
-	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
-]
-
-def changelogDeploys = [
-	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds"},
-	'patron': {"${project.userHome}/Google Drive/Mystcraft Patreon Builds"},
-]
-
 // Setup the forge minecraft plugin data. Specify the preferred forge/minecraft version here
 minecraft {
-	version = "1.7.10-10.13.0.1180"
-	runDir = "eclipse/run/client"
+	version = project.forgeversion
+	runDir = "../run/client"
 
 	replace "@VERSION@", project.version
 }
-
-// add the api source folder
-sourceSets {
-	api {
-		java {
-			srcDir 'src/mystapi/java'
-		}
-	}
-}
-
-// --------------------------
-// End local config
-// --------------------------
 
 processResources
 {
@@ -178,7 +190,11 @@ task "deployjar" // creates it for later
 
 project.tasks.deploy.dependsOn project.tasks.deployjar
 
-deployments.each { name, dir ->
+project.tasks.deployjar.dependsOn project.tasks.reobf
+project.tasks.deployjar.dependsOn project.tasks.devJar
+project.tasks.deployjar.dependsOn project.tasks.apiJar
+
+jarDeploys.each { name, dir ->
 	def deployer = task("deploy-${name}", type: Copy) {
 		//from project.configurations.archives  // jars, API jars, whatever
 
@@ -186,7 +202,6 @@ deployments.each { name, dir ->
 		into dir
 		dependsOn "reobf"
 	}
-
 	project.tasks.deployjar.dependsOn deployer
 
 	def deleter = task("clean-${name}") << {
@@ -195,20 +210,45 @@ deployments.each { name, dir ->
 				file.delete()
 		}
 	}
+	deployer.dependsOn deleter
+}
 
+devDeploys.each { name, dir ->
+	def deployer = task("deploy-devjar-${name}", type: Copy) {
+		from {project.tasks.devJar.getArchivePath()} // the dev jar
+		into dir
+		dependsOn "devJar"
+		mustRunAfter "deployjar"
+	}
+	project.tasks.deploy.dependsOn deployer
+
+	def deleter = task("clean-devjar-${name}") << {
+		fileTree(dir()).each { file ->
+			if (!file.isDirectory() && file.name.startsWith(project.archivesBaseName) && file.name.endsWith("${project.devJar.classifier}.jar"))
+				file.delete()
+		}
+	}
+	deleter.mustRunAfter "devJar"
 	deployer.dependsOn deleter
 }
 
 APIDeploys.each { name, dir ->
-	def deployer = task("deploy-api-${name}", type: Copy) {
+	def deployer = task("deploy-apijar-${name}", type: Copy) {
 		from {project.tasks.apiJar.getArchivePath()} // the API
-		from {project.tasks.devJar.getArchivePath()} // the dev jar
 		into dir
-		dependsOn "apiJar", "devJar"
+		dependsOn "apiJar"
 		mustRunAfter "deployjar"
 	}
-
 	project.tasks.deploy.dependsOn deployer
+
+	def deleter = task("clean-apijar-${name}") << {
+		fileTree(dir()).each { file ->
+			if (!file.isDirectory() && file.name.startsWith(project.archivesBaseName) && file.name.endsWith("${project.apiJar.classifier}.jar"))
+				file.delete()
+		}
+	}
+	deleter.mustRunAfter "apiJar"
+	deployer.dependsOn deleter
 }
 
 changelogDeploys.each { name, dir ->
@@ -217,7 +257,6 @@ changelogDeploys.each { name, dir ->
 		into dir
 		mustRunAfter "updateChangelog"
 	}
-
 	project.tasks.deploy.dependsOn deployer
 }
 
@@ -272,13 +311,15 @@ types.eachWithIndex { type, index ->
 curse {
 	apiKey = config.curseforge_key // saved in my properties file. http://minecraft.curseforge.com/my-api-tokens
 	projectId = project.curseId
-	releaseType = "release" //The release type must be either 'alpha', 'beta', or 'release'
+	releaseType = project.curseReleaseType //The release type must be either 'alpha', 'beta', or 'release'
 
 	changelog = project.publishChangelog.text
 
 	// the default obfuscated jar is uploaded by default
 	// artifact = project.file("some/jar/to/upload.jar")
-	additionalArtifact {project.tasks.devJar.getArchivePath()}
+	if (project.curseIncludeDev) {
+		additionalArtifact {project.tasks.devJar.getArchivePath()}
+	}
 
 	// allows you to add extra compatible MC versions. The one specified in the minecraft{} block is used by default.
 	// addGameVersion "1.7.1"
