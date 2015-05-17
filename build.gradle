@@ -36,8 +36,8 @@ version = "${config.version.super}.${config.version.major}.${config.version.mino
 
 group            = "com.xcompwiz.mystcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "mystcraft"
-nameCased        = "Mystcraft"
-curseId          = "224599" // my project url is http://minecraft.curseforge.com/mc-mods/224599-mystcraft/
+ext.nameCased    = "Mystcraft"
+ext.curseId      = "224599" // my project url is http://minecraft.curseforge.com/mc-mods/224599-mystcraft/
 
 def deployments = [
 	'local' : {"${project.userHome}/Downloads/Game Misc/MultiMC5/instances/Testing ${minecraft.version}/minecraft/mods/"},
