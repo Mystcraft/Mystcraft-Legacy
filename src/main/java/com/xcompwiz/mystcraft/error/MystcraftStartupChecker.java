@@ -2,11 +2,17 @@ package com.xcompwiz.mystcraft.error;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
+import com.xcompwiz.mystcraft.api.world.logic.ILightingController;
+import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
+import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
 import com.xcompwiz.mystcraft.client.gui.error.GuiNonCriticalError;
 import com.xcompwiz.mystcraft.client.gui.overlay.GuiNotification;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
@@ -59,6 +65,31 @@ public class MystcraftStartupChecker {
 		}
 	}
 
+	public static class CheckSymbolLogicError extends ErrorChecker {
+		
+		private Class	clazz;
+		private String	type;
+
+		public CheckSymbolLogicError(Class clazz, String type) {
+			this.clazz = clazz;
+			this.type = type;
+		}
+
+		@Override
+		protected GuiScreen getErrorGui() {
+			IAgeSymbol symbol = SymbolManager.findAgeSymbolImplementing(new Random(0), clazz);
+			if (symbol == null){
+				ArrayList<String> messages = new ArrayList<String>();
+				messages.add("ERROR: Mystcraft detected errors on loadup.");
+				messages.add("There are no symbols which provide logic for " + type + ".");
+				messages.add("Mystcraft requires at least one symbol providing logic of this type.");
+				messages.add("Be aware the Mystcraft WILL crash should you try to enter an age.");
+				return new GuiNonCriticalError(messages);
+			}
+			return null;
+		}
+	}
+
 	private HashSet<ErrorChecker>	checks		= new HashSet<ErrorChecker>();
 	HashSet<ErrorChecker>			completed	= new HashSet<ErrorChecker>();
 
@@ -66,6 +97,10 @@ public class MystcraftStartupChecker {
 
 	public MystcraftStartupChecker() {
 		checks.add(new CheckSymbolLoadError());
+		checks.add(new CheckSymbolLogicError(IBiomeController.class, "Biome Distribution"));
+		checks.add(new CheckSymbolLogicError(ITerrainGenerator.class, "World Terrain Type"));
+		checks.add(new CheckSymbolLogicError(ILightingController.class, "Lighting"));
+		checks.add(new CheckSymbolLogicError(IWeatherController.class, "Weather"));
 	}
 
 	@SubscribeEvent
