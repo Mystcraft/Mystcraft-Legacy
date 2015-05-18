@@ -801,6 +801,7 @@ public class AgeController implements AgeDirector {
 
 	@Override
 	public void setModifier(String id, Modifier val) {
+		if (val == null) throw new RuntimeException("Something tried to register a null modifier!");
 		if (modifiers.containsKey(id)) {
 			symbolinstability += modifiers.get(id).dangling;
 		}
