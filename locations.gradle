@@ -4,11 +4,13 @@ def jarDeploys = [
 	'patron': {"${project.userHome}/Google Drive/Mystcraft Patreon Builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
 	'FC2'   : {"F:/Seafile/incoming/ForgeCraft2/mods"},
 ]
-
-def APIDeploys = [
+def devDeploys = [
 	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
 ]
-
+def APIDeploys = [
+	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
+	'sc'    : {"${project.userHome}/Development/projects/minecraft/slidercraft/libs/"},
+]
 def changelogDeploys = [
 	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds"},
 	'patron': {"${project.userHome}/Google Drive/Mystcraft Patreon Builds"},

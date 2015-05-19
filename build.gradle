@@ -132,13 +132,14 @@ task devJar(type: Jar) {
 }
 
 task apiJar(type: Jar) {
-    from sourceSets.api.java
+    from sourceSets.api.output
     classifier = 'api'
 	version = "${project.minecraft.version}-${project.version}"
 }
 
 task srcJar(type: Jar) {
     from sourceSets.main.java
+    from sourceSets.api.java
     classifier = 'src'
 	version = "${project.minecraft.version}-${project.version}"
 }
