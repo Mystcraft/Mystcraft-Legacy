@@ -68,6 +68,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 				Long olong = this.chunkqueue.get(0);
 				Chunk chunk = (Chunk) this.loadedChunkHashMap.getValueByKey(olong.longValue());
 				if (chunk != null) {
+                    chunk.onChunkUnload();
 					this.loadedChunks.remove(chunk);
 				}
 				chunkqueue.remove(0);
