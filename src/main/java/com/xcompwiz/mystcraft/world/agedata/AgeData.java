@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -38,6 +39,7 @@ public class AgeData extends WorldSavedData {
 		public String				agename;
 		public Set<String>			authors	= new HashSet<String>();
 		public long					seed;
+		public UUID					uuid;
 		public short				instability;
 		public boolean				instabilityEnabled;
 		public ChunkCoordinates		spawn;
@@ -53,6 +55,7 @@ public class AgeData extends WorldSavedData {
 	private String				agename;
 	private Set<String>			authors;
 	private long				seed;
+	private UUID				uuid;
 	private short				instability;
 	private boolean				instabilityEnabled;
 	private long				worldtime;
@@ -146,6 +149,10 @@ public class AgeData extends WorldSavedData {
 		return seed;
 	}
 
+	public UUID getUUID() {
+		return uuid;
+	}
+
 	public ChunkCoordinates getSpawn() {
 		return spawn;
 	}
@@ -226,6 +233,7 @@ public class AgeData extends WorldSavedData {
 		agename = loadeddata.agename;
 		authors = loadeddata.authors;
 		seed = loadeddata.seed;
+		uuid = loadeddata.uuid;
 		visited = loadeddata.visited;
 		worldtime = loadeddata.worldtime;
 
@@ -267,12 +275,11 @@ public class AgeData extends WorldSavedData {
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		nbttagcompound.setString("Version", "4.2");
-		if (agename == null || agename.isEmpty()) {
-			agename = "Unnamed Age";
-		}
+		nbttagcompound.setString("Version", "4.3"); //XXX: Current agedata version stored in multiple locations
+
 		nbttagcompound.setString("AgeName", agename);
 		nbttagcompound.setLong("Seed", seed);
+		nbttagcompound.setString("UUID", uuid.toString());
 		nbttagcompound.setShort("BaseIns", instability);
 		nbttagcompound.setBoolean("InstabilityEnabled", instabilityEnabled);
 		nbttagcompound.setBoolean("Visited", visited);
@@ -328,6 +335,7 @@ public class AgeData extends WorldSavedData {
 			storage.setData(s, age);
 			age.agename = (new StringBuilder()).append("Age ").append(uid).toString();
 			age.seed = Mystcraft.getLevelSeed(!isRemote) + new Random(uid).nextLong();
+			age.uuid = UUID.randomUUID();
 			age.setSpawn(null);
 			age.instability = 0;
 			age.instabilityEnabled = true;

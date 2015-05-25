@@ -1,6 +1,7 @@
 package com.xcompwiz.mystcraft.world.agedata;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -20,6 +21,8 @@ public class AgeDataLoaderManager {
 	private static HashMap<String, AgeDataLoader>	loaders			= new HashMap<String, AgeDataLoader>();
 
 	static {
+		//XXX: Current agedata version stored in multiple locations
+		loaders.put("4.3", new AgeDataLoaderV4_3());
 		loaders.put("4.2", new AgeDataLoaderV4_2());
 		loaders.put("4.1", new AgeDataLoaderV4_1());
 		loaders.put("4.0", new AgeDataLoaderV4());
@@ -52,7 +55,14 @@ public class AgeDataLoaderManager {
 			data.version = "4.2";
 		}
 
-		if (data.agename.isEmpty()) {
+		// Update 4.2 -> 4.3
+		if (data.version.equals("4.2")) {
+			data.uuid = UUID.randomUUID();
+			data.version = "4.3";
+		}
+
+		// Sanity fix
+		if (data.agename == null || data.agename.isEmpty()) {
 			data.agename = "Unnamed Age";
 		}
 		if (!data.version.equals(currentversion)) { throw new RuntimeException("Error updating old agedata file! Version is " + data.version); }
