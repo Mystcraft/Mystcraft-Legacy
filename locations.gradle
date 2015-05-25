@@ -1,17 +1,17 @@
-def jarDeploys = [
+ext.jarDeploys = [
 	'local' : {"${project.userHome}/Downloads/Game Misc/MultiMC5/instances/Testing ${minecraft.version}/minecraft/mods/"},
 	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
 	'patron': {"${project.userHome}/Google Drive/Mystcraft Patreon Builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
 	'FC2'   : {"F:/Seafile/incoming/ForgeCraft2/mods"},
 ]
-def devDeploys = [
+ext.devDeploys = [
 	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
 ]
-def APIDeploys = [
+ext.APIDeploys = [
 	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
 	'sc'    : {"${project.userHome}/Development/projects/minecraft/slidercraft/libs/"},
 ]
-def changelogDeploys = [
+ext.changelogDeploys = [
 	'dev'   : {"F:/Copy/Mystcraft/Mystcraft Testing/builds"},
 	'patron': {"${project.userHome}/Google Drive/Mystcraft Patreon Builds"},
 ]

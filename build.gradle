@@ -1,10 +1,10 @@
-ext.forgeversion     = "1.7.10-10.13.0.1180"
+ext.forgeversion     = "1.7.10-10.13.2.1277"
 group                = "com.xcompwiz.mystcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 ext.archivesBaseName = "mystcraft"
 ext.nameCased        = "Mystcraft"
 ext.curseId          = "224599"  // my project url is http://minecraft.curseforge.com/mc-mods/224599-mystcraft/
 ext.curseReleaseType = "release" //The release type must be either 'alpha', 'beta', or 'release'
-ext.curseIncludeDev  = true
+ext.curseIncludeAPI  = true
 
 // define some stuff.  hereafter referenced as project.varName
 ext.configFile = file "build.properties"
@@ -318,8 +318,8 @@ curse {
 
 	// the default obfuscated jar is uploaded by default
 	// artifact = project.file("some/jar/to/upload.jar")
-	if (project.curseIncludeDev) {
-		additionalArtifact {project.tasks.devJar.getArchivePath()}
+	if (project.curseIncludeAPI) {
+		additionalArtifact {project.tasks.apiJar.getArchivePath()}
 	}
 
 	// allows you to add extra compatible MC versions. The one specified in the minecraft{} block is used by default.
