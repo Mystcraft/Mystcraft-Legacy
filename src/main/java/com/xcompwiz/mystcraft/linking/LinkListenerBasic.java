@@ -47,6 +47,10 @@ public class LinkListenerBasic {
 			event.setCanceled(true);
 		} else if (entity.worldObj.provider.dimensionId == dimid && !info.getFlag(LinkPropertyAPI.FLAG_INTRA_LINKING)) {
 			event.setCanceled(true);
+		} else if (DimensionUtils.isDimensionDead(dimid)) {
+			event.setCanceled(true);
+		} else if (!DimensionUtils.checkDimensionUUID(dimid, info.getTargetUUID())) {
+			event.setCanceled(true);
 		} else if (info.getFlag(LinkPropertyAPI.FLAG_DISARM)) {
 			if (entity instanceof EntityItem) {
 				event.setCanceled(true);

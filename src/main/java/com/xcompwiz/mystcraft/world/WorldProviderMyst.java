@@ -521,7 +521,11 @@ public class WorldProviderMyst extends WorldProvider {
 
 	@Override
 	public String getSaveFolder() {
-		return "DIM_MYST" + ageUID;
+		return getSaveFolderName(ageUID);
+	}
+
+	public static String getSaveFolderName(int dimid) {
+		return "DIM_MYST" + dimid;
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.ChunkPosition;
@@ -45,10 +46,12 @@ import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 import com.xcompwiz.mystcraft.client.render.CloudRendererMyst;
 import com.xcompwiz.mystcraft.client.render.WeatherRendererMyst;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
+import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugTaskCallback;
 import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
 import com.xcompwiz.mystcraft.instability.InstabilityController;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.instability.bonus.InstabilityBonusManager;
+import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
@@ -247,6 +250,18 @@ public class AgeController implements AgeDirector {
 		final ChunkProfiler profiler = this.getChunkProfiler();
 		final InstabilityBonusManager bonusmanager = getInstabilityBonusManager();
 //@formatter:off
+		node.getOrCreateNode("experimental").addChild("mark_dead", new DebugTaskCallback() {
+			@Override
+			public void run(ICommandSender agent, Object... args) {
+				int dimid = world.provider.dimensionId;
+				if (DimensionUtils.markDimensionDead(dimid)) {
+					agent.addChatMessage(new ChatComponentText("Dimension " + dimid + " marked as dead."));
+				} else {
+					agent.addChatMessage(new ChatComponentText("ERROR: Could not mark dimension " + dimid + " as dead."));
+				}
+			}
+		});
+
 		node.addChild("profiled_chunks", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + profiler.getCount(); }});
 		node = node.getOrCreateNode("instability");
 		node.addChild("symbols", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + symbolinstability; }});

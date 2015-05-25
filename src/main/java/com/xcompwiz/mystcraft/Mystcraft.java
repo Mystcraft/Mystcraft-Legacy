@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Set;
 
 import net.minecraft.command.ServerCommandManager;
@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.DimensionManager;
@@ -60,7 +61,6 @@ import com.xcompwiz.mystcraft.linking.LinkListenerBasic;
 import com.xcompwiz.mystcraft.linking.LinkListenerEffects;
 import com.xcompwiz.mystcraft.linking.LinkListenerForgeServer;
 import com.xcompwiz.mystcraft.linking.LinkListenerPermissions;
-import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.network.MystcraftConnectionHandler;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketActivateItem;
@@ -83,12 +83,14 @@ import com.xcompwiz.mystcraft.villager.VillageCreationHandlerArchivistHouse;
 import com.xcompwiz.mystcraft.villager.VillagerArchivist;
 import com.xcompwiz.mystcraft.world.InstabilityDataCalculator;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
+import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.mystcraft.world.gen.ChunkProfilerManager;
 import com.xcompwiz.mystcraft.world.gen.MystWorldGenerator;
 import com.xcompwiz.mystcraft.world.gen.structure.ComponentScatteredFeatureSmallLibrary;
 import com.xcompwiz.mystcraft.world.gen.structure.ComponentVillageArchivistHouse;
 import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
 import com.xcompwiz.mystcraft.world.gen.structure.StructureScatteredFeatureStartMyst;
+import com.xcompwiz.mystcraft.world.storage.FileUtils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -136,6 +138,7 @@ public class Mystcraft {
 
 	public static int					providerId;
 	public static Collection<Integer>	registeredDims;
+	public static LinkedList<Integer>	deadDims;
 
 	public static int					archivistId;
 	private VillagerArchivist			archivist;
@@ -148,6 +151,11 @@ public class Mystcraft {
 	public static Set<String>			validInks;
 
 	public static MapStorage			clientStorage		= null;
+
+	/** Forces the Dimension UUID check on login */
+	public static boolean				requireUUID			= false;	//TODO: Configable
+
+	public static int					homeDimension		= 0;		//TODO: Configable
 
 	@EventHandler
 	public void load(FMLPreInitializationEvent event) {
@@ -362,8 +370,7 @@ public class Mystcraft {
 		profilingThread = new ChunkProfilerManager();
 		profilingThread.start();
 
-		File datafolder = mcserver.worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile();
-		registerDimensions(datafolder);
+		registerDimensions(mcserver.worldServerForDimension(0).getSaveHandler());
 		LinkListenerPermissions.loadState();
 		instabilitycalculator = new InstabilityDataCalculator(mcserver);
 		FMLCommonHandler.instance().bus().register(instabilitycalculator);
@@ -398,36 +405,14 @@ public class Mystcraft {
 		return overworld.mapStorage;
 	}
 
-	public static long getLevelSeed(boolean isServer) {
-		if (!isServer) return 0;
+	public static long getLevelSeed() {
 		MinecraftServer mcServer = MinecraftServer.getServer();
 		if (mcServer == null) return 0;
 		return mcServer.worldServerForDimension(0).getSeed();
 	}
 
-	private static List<Integer> getExistingAgeList(File dataDir) {
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		File[] var2 = dataDir.listFiles();
-		int var4 = var2.length;
-
-		for (int var5 = 0; var5 < var4; ++var5) {
-			File var6 = var2[var5];
-
-			if (var6.getName().startsWith("agedata_") && var6.getName().endsWith(".dat")) {
-				try {
-					String dimStr = var6.getName();
-					dimStr = dimStr.substring(8, dimStr.length() - 4);
-					list.add(Integer.parseInt(dimStr));
-				} catch (Exception e) {
-					LoggerUtils.warn("Error parsing dim id from " + var6.getName());
-				}
-			}
-		}
-
-		return list;
-	}
-
 	public static void unregisterDimensions() {
+		deadDims = null;
 		if (registeredDims == null) return;
 		for (Integer dimId : registeredDims) {
 			DimensionManager.unregisterDimension(dimId);
@@ -435,10 +420,14 @@ public class Mystcraft {
 		registeredDims = null;
 	}
 
-	public static void registerDimensions(File worldSaveDir) {
-		registeredDims = Mystcraft.getExistingAgeList(worldSaveDir);
+	public static void registerDimensions(ISaveHandler savehandler) {
+		registeredDims = FileUtils.getExistingAgeList(savehandler.getMapFileFromName("dummy").getParentFile());
+		deadDims = new LinkedList<Integer>();
+		MapStorage tempstorage = new MapStorage(savehandler);
 		for (Integer dimId : registeredDims) {
 			DimensionManager.registerDimension(dimId, providerId);
+			AgeData data = AgeData.getAge(dimId, tempstorage);
+			if (data.isDead()) deadDims.add(dimId);
 		}
 	}
 

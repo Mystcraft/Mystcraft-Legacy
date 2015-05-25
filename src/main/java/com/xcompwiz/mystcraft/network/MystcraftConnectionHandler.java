@@ -1,10 +1,13 @@
 package com.xcompwiz.mystcraft.network;
 
+import java.util.UUID;
+
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.network.packet.MPacketConfigs;
 import com.xcompwiz.mystcraft.network.packet.MPacketDimensions;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
@@ -34,6 +37,10 @@ public class MystcraftConnectionHandler {
 	@SubscribeEvent
 	public void playerLoggedIn(PlayerLoggedInEvent event) {
 		EntityPlayer player = event.player;
+		UUID checkUUID = DimensionUtils.getPlayerDimensionUUID(player);
+		if ((checkUUID == null && Mystcraft.requireUUID) || (DimensionUtils.isDimensionDead(player.worldObj.provider.dimensionId)) || (checkUUID != null && !DimensionUtils.checkDimensionUUID(player.worldObj.provider.dimensionId, checkUUID))) {
+			DimensionUtils.ejectPlayerFromDimension(event.player);
+		}
 		if (player.worldObj.provider instanceof WorldProviderMyst) {
 			NetworkUtils.sendAgeData(player.worldObj, player, player.dimension); // Sends age data
 		}

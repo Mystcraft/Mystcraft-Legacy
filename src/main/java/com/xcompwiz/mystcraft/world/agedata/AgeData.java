@@ -46,6 +46,7 @@ public class AgeData extends WorldSavedData {
 		public List<ItemStack>		pages	= new ArrayList<ItemStack>();
 		public List<String>			symbols	= new ArrayList<String>();
 		public boolean				visited;
+		public boolean				dead;
 		public NBTTagCompound		datacompound;
 		public long					worldtime;
 		public String				version;
@@ -63,6 +64,7 @@ public class AgeData extends WorldSavedData {
 	private List<ItemStack>		pages			= new ArrayList<ItemStack>();
 	private List<String>		symbols			= new ArrayList<String>();
 	private boolean				visited;
+	private boolean				dead;
 	private NBTTagCompound		datacompound;
 
 	public Map<String, NBTBase>	cruft			= new HashMap<String, NBTBase>();
@@ -120,6 +122,17 @@ public class AgeData extends WorldSavedData {
 		if (visited != true) this.markDirty();
 		visited = true;
 		updated = false;
+	}
+
+	public boolean isDead() {
+		return dead;
+	}
+
+	/**
+	 * This should only be called from DimensionUtils
+	 */
+	public void markDead() {
+		this.dead = true;
 	}
 
 	public void onConstruct() {
@@ -235,6 +248,7 @@ public class AgeData extends WorldSavedData {
 		seed = loadeddata.seed;
 		uuid = loadeddata.uuid;
 		visited = loadeddata.visited;
+		dead = loadeddata.dead;
 		worldtime = loadeddata.worldtime;
 
 		instability = loadeddata.instability;
@@ -283,6 +297,7 @@ public class AgeData extends WorldSavedData {
 		nbttagcompound.setShort("BaseIns", instability);
 		nbttagcompound.setBoolean("InstabilityEnabled", instabilityEnabled);
 		nbttagcompound.setBoolean("Visited", visited);
+		nbttagcompound.setBoolean("Dead", dead);
 		nbttagcompound.setTag("DataCompound", datacompound);
 		nbttagcompound.setLong("WorldTime", worldtime);
 
@@ -324,26 +339,50 @@ public class AgeData extends WorldSavedData {
 	}
 
 	public static AgeData getAge(int uid, boolean isRemote) {
-		if (!DimensionManager.isDimensionRegistered(uid)) return null;
-		if (DimensionManager.getProviderType(uid) != Mystcraft.providerId) return null;
-		String s = getStringID(uid);
 		MapStorage storage = Mystcraft.getStorage(!isRemote);
 		if (storage == null) throw new RuntimeException("Mystcraft could not load the agedata file.  The storage object is null. (Attempted as " + (isRemote ? "remote" : "server") + ")");
+		return getAge(uid, storage);
+	}
+	public static AgeData getAge(int uid, MapStorage storage) {
+		if (!DimensionManager.isDimensionRegistered(uid)) return null;
+		if (DimensionManager.getProviderType(uid) != Mystcraft.providerId) return null;
+		if (storage == null) throw new RuntimeException("Mystcraft could not load the agedata file.  The storage object is null.)");
+		String s = getStringID(uid);
 		AgeData age = (AgeData) storage.loadData(AgeData.class, s);
 		if (age == null) {
 			age = new AgeData(s);
 			storage.setData(s, age);
 			age.agename = (new StringBuilder()).append("Age ").append(uid).toString();
-			age.seed = Mystcraft.getLevelSeed(!isRemote) + new Random(uid).nextLong();
+			age.seed = Mystcraft.getLevelSeed() + new Random(uid).nextLong();
 			age.uuid = UUID.randomUUID();
+			age.worldtime = 0;
 			age.setSpawn(null);
 			age.instability = 0;
 			age.instabilityEnabled = true;
 			age.visited = false;
+			age.dead = false;
 			age.updated = false;
 			age.markDirty();
 		}
 		return age;
+	}
+
+	public void recreate(int uid) {
+		this.agename = (new StringBuilder()).append("Age ").append(uid).toString();
+		this.seed = this.seed + new Random(uid).nextLong();
+		this.uuid = UUID.randomUUID();
+		this.worldtime = 0;
+		this.setSpawn(null);
+		this.instability = 0;
+		this.instabilityEnabled = true;
+		this.visited = false;
+		this.dead = false;
+		this.updated = false;
+		this.pages.clear();
+		this.symbols.clear();
+		if (authors != null) this.authors.clear();
+		this.datacompound = new NBTTagCompound();
+		this.markDirty();
 	}
 
 	public static String getStringID(int uid) {

@@ -13,6 +13,7 @@ import net.minecraft.util.ChatComponentTranslation;
 
 import com.xcompwiz.mystcraft.debug.DebugHierarchy;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
+import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugTaskCallback;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugValueCallback;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.IDebugElement;
 import com.xcompwiz.mystcraft.debug.DebugUtils;
@@ -69,12 +70,7 @@ public class CommandDebug extends CommandBaseAdv {
 	private String getAddress(String[] args) {
 		if (args.length == 0) return null;
 		StringBuilder str = new StringBuilder();
-		String command = args[0];
-		int max = args.length;
-		if (command.equals("set")) {
-			--max;
-		}
-		for (int i = 1; i < max; ++i) {
+		for (int i = 1; i < args.length; ++i) {
 			if (str.length() > 0) str.append(".");
 			str.append(args[i]);
 		}
@@ -85,15 +81,20 @@ public class CommandDebug extends CommandBaseAdv {
 	public void processCommand(ICommandSender agent, String[] args) {
 		String command = null;
 		String address = null;
+		String setval = null;
 
 		if (args.length > 1) {
 			command = args[0];
+			if (command.equals("set")) {
+				setval = args[args.length-1];
+				args = Arrays.copyOf(args, args.length-1);
+			}
 			address = getAddress(args);
 		} else {
 			throw new WrongUsageException("Could not parse command.");
 		}
+		IDebugElement elem = DebugUtils.getElement(address);
 		if (command.equals("read")) {
-			IDebugElement elem = DebugUtils.getElement(address);
 			if (elem instanceof DebugValueCallback) {
 				String value = ((DebugValueCallback) elem).get(agent);
 				agent.addChatMessage(new ChatComponentText(value));
@@ -103,12 +104,14 @@ public class CommandDebug extends CommandBaseAdv {
 			} else {
 				throw new CommandException("myst.debug.address.invalid");
 			}
+		} else if (command.equals("run")) {
+			if (elem instanceof DebugTaskCallback) {
+				((DebugTaskCallback) elem).run(agent, setval);
+			}
 		} else if (command.equals("set")) {
-			IDebugElement elem = DebugUtils.getElement(address);
 			if (elem instanceof DebugValueCallback) {
 				if (args.length <= 2) throw new WrongUsageException("Could not parse command.");
-				String b = args[args.length - 1];
-				((DebugValueCallback) elem).set(agent, b);
+				((DebugValueCallback) elem).set(agent, setval);
 			} else {
 				throw new CommandException("myst.debug.address.invalid");
 			}

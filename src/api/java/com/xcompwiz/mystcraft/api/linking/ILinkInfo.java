@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.api.linking;
 
+import java.util.UUID;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 
@@ -23,14 +25,25 @@ public interface ILinkInfo {
 	void setDisplayName(String displayname);
 
 	/**
-	 * Gets the destination's unique Dimension identifier, if one is set.
+	 * Gets the destination's Dimension identifier.
 	 */
 	Integer getDimensionUID();
 
 	/**
-	 * Sets the destination's unique Dimension identifier. Use getDimensionUID(World worldObj) to get the dimension's UID.
+	 * Sets the destination's Dimension identifier. This is the dim id in the world provider.
 	 */
 	void setDimensionUID(int uid);
+
+	/**
+	 * Gets the destination's unique identifier. This allows reusing dimension ids within Mystcraft.
+	 * @return A UUID instance which is bound to the dimension. May be null.
+	 */
+	UUID getTargetUUID();
+
+	/**
+	 * Sets the destination's unique identifier. Use getDimensionUUID(World worldObj) to get the dimension's UUID.
+	 */
+	void setTargetUUID(UUID uuid);
 
 	/**
 	 * Gets the point which the link targets. If null then the link mechanics will use the dimension's spawn point.

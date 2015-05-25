@@ -14,6 +14,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.event.StarFissureLinkEvent;
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
@@ -29,7 +30,7 @@ public class BlockStarFissure extends BlockContainer {
 
 	private static LinkOptions	defaultstarfissure	= new LinkOptions(null);
 	static {
-		defaultstarfissure.setDimensionUID(0);
+		defaultstarfissure.setDimensionUID(Mystcraft.homeDimension);
 		defaultstarfissure.setFlag(LinkPropertyAPI.FLAG_NATURAL, true);
 		defaultstarfissure.setFlag(LinkPropertyAPI.FLAG_EXTERNAL, true);
 		defaultstarfissure.setProperty(LinkPropertyAPI.PROP_SOUND, Sounds.FISSURELINK);

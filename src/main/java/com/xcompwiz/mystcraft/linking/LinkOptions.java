@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.linking;
 
+import java.util.UUID;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 
@@ -31,6 +33,11 @@ public class LinkOptions implements ILinkInfo {
 	@Override
 	public Integer getDimensionUID() {
 		return getDimensionUID(data);
+	}
+
+	@Override
+	public UUID getTargetUUID() {
+		return getUUID(data);
 	}
 
 	@Override
@@ -71,6 +78,11 @@ public class LinkOptions implements ILinkInfo {
 	@Override
 	public void setDimensionUID(int uid) {
 		data = setDimensionUID(data, uid);
+	}
+
+	@Override
+	public void setTargetUUID(UUID uuid) {
+		data = setUUID(data, uuid);
 	}
 
 	@Override
@@ -134,6 +146,23 @@ public class LinkOptions implements ILinkInfo {
 	public static Integer getDimensionUID(NBTTagCompound nbttagcompound) {
 		if (nbttagcompound != null && nbttagcompound.hasKey("Dimension")) { return nbttagcompound.getInteger("Dimension"); }
 		if (nbttagcompound != null && nbttagcompound.hasKey("AgeUID")) { return nbttagcompound.getInteger("AgeUID"); }
+		return null;
+	}
+
+	public static NBTTagCompound setUUID(NBTTagCompound nbttagcompound, UUID uuid) {
+		if (nbttagcompound == null) {
+			nbttagcompound = new NBTTagCompound();
+		}
+		if (uuid != null) {
+			nbttagcompound.setString("TargetUUID", uuid.toString());
+		} else {
+			nbttagcompound.removeTag("TargetUUID");
+		}
+		return nbttagcompound;
+	}
+
+	public static UUID getUUID(NBTTagCompound nbttagcompound) {
+		if (nbttagcompound != null && nbttagcompound.hasKey("TargetUUID")) { return UUID.fromString(nbttagcompound.getString("TargetUUID")); }
 		return null;
 	}
 

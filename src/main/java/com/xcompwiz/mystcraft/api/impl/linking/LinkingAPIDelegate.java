@@ -34,6 +34,7 @@ public class LinkingAPIDelegate {
 	public ILinkInfo createLinkInfoFromPosition(World world, Entity location) {
 		LinkOptions link = new LinkOptions(null);
 		link.setDimensionUID(world.provider.dimensionId);
+		link.setTargetUUID(DimensionUtils.getDimensionUUID(world.provider.dimensionId));
 		link.setSpawn(new ChunkCoordinates((int) Math.floor(location.posX), (int) Math.floor(location.posY), (int) Math.floor(location.posZ)));
 		link.setSpawnYaw(location.rotationYaw);
 		link.setDisplayName(DimensionUtils.getDimensionName(world.provider));

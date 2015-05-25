@@ -52,12 +52,13 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		}
 	}
 
-	public static void initializeCompound(ItemStack itemstack, int dimId, AgeData bookdata) {
+	public static void initializeCompound(ItemStack itemstack, int dimId, AgeData agedata) {
 		itemstack.setTagCompound(new NBTTagCompound());
 		LinkOptions.setDimensionUID(itemstack.stackTagCompound, dimId);
-		LinkOptions.setDisplayName(itemstack.stackTagCompound, bookdata.getAgeName());
+		LinkOptions.setUUID(itemstack.stackTagCompound, agedata.getUUID());
+		LinkOptions.setDisplayName(itemstack.stackTagCompound, agedata.getAgeName());
 		LinkOptions.setFlag(itemstack.stackTagCompound, LinkPropertyAPI.FLAG_GENERATE_PLATFORM, true);
-		((ItemAgebook)itemstack.getItem()).addPages(itemstack, bookdata.getPages());
+		((ItemAgebook)itemstack.getItem()).addPages(itemstack, agedata.getPages());
 	}
 
 	public static void create(ItemStack agebook, EntityPlayer player, List<ItemStack> pages, String pendingtitle) {
@@ -112,9 +113,10 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		if (itemstack.stackTagCompound == null) return;
 		Integer dimid = LinkOptions.getDimensionUID(itemstack.stackTagCompound);
 		if (dimid != null) return;
-		dimid = DimensionUtils.getNewDimensionUID();
-		AgeData agedata = DimensionUtils.createAge(DimensionUtils.convertDimensionUIDToID(dimid));
+		dimid = DimensionUtils.createAge();
+		AgeData agedata = AgeData.getAge(dimid, false);
 		LinkOptions.setDimensionUID(itemstack.stackTagCompound, dimid);
+		LinkOptions.setUUID(itemstack.stackTagCompound, agedata.getUUID());
 		agedata.setAgeName(LinkOptions.getDisplayName(itemstack.stackTagCompound));
 		agedata.setPages(getPageList(null, itemstack));
 	}

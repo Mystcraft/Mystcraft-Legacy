@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentMap;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 import com.google.common.collect.MapMaker;
+import com.xcompwiz.mystcraft.linking.DimensionUtils;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
@@ -65,6 +66,7 @@ public class EventManager {
 
 	@SubscribeEvent
 	public void onPlayerChangedDimension(PlayerChangedDimensionEvent event) {
+		DimensionUtils.setPlayerDimensionUUID(event.player, DimensionUtils.getDimensionUUID(event.toDim));
 		for (IOnPlayerChangedDimension listener : dimchangelisteners.keySet()) {
 			listener.onPlayerChangedDimension(event);
 		}

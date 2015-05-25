@@ -17,9 +17,7 @@ public class DimensionAPIDelegate {
 	}
 
 	public int createAge() {
-		int dimId = DimensionUtils.getNewDimensionUID();
-		DimensionUtils.createAge(dimId);
-		return dimId;
+		return DimensionUtils.createAge();
 	}
 
 }

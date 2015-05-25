@@ -16,7 +16,7 @@ public class AgeDataLoaderManager {
 		public abstract AgeDataData load(NBTTagCompound nbt);
 	}
 
-	private static final String						currentversion	= "4.2";
+	private static final String						currentversion	= "4.3"; //XXX: Current agedata version stored in multiple locations
 
 	private static HashMap<String, AgeDataLoader>	loaders			= new HashMap<String, AgeDataLoader>();
 
@@ -58,6 +58,7 @@ public class AgeDataLoaderManager {
 		// Update 4.2 -> 4.3
 		if (data.version.equals("4.2")) {
 			data.uuid = UUID.randomUUID();
+			data.dead = false;
 			data.version = "4.3";
 		}
 

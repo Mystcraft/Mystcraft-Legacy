@@ -23,6 +23,7 @@ public class AgeDataLoaderV4_3 extends AgeDataLoader {
 		data.seed = nbttagcompound.getLong("Seed");
 		data.uuid = UUID.fromString(nbttagcompound.getString("UUID"));
 		data.visited = nbttagcompound.getBoolean("Visited");
+		data.dead = nbttagcompound.getBoolean("Dead");
 		data.worldtime = nbttagcompound.getLong("WorldTime");
 
 		data.instability = nbttagcompound.getShort("BaseIns");

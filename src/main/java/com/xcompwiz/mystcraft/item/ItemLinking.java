@@ -100,6 +100,7 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 		if (itemstack.stackTagCompound == null) return;
 		ILinkInfo linkinfo = this.getLinkInfo(itemstack);
 		if (LinkListenerManager.isLinkPermitted(world, entity, linkinfo)) {
+			LinkOptions.setUUID(itemstack.stackTagCompound, DimensionUtils.getDimensionUUID(linkinfo.getDimensionUID())); //TODO: Remove me (Updates old)
 			onLink(itemstack, world, entity);
 			LinkController.travelEntity(world, entity, linkinfo);
 		}
