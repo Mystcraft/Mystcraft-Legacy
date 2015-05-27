@@ -94,7 +94,7 @@ public final class NetworkUtils {
 		player.openContainer.addCraftingToCrafters(player);
 	}
 
-	public static void sendAgeData(World worldObj, EntityPlayer player, int ageUID) {
+	public static void sendAgeData(EntityPlayer player, int ageUID) {
 		if (!(player instanceof EntityPlayerMP)) return;
 		if (!Mystcraft.registeredDims.contains(ageUID)) return;
 		if (AgeData.getAge(ageUID, false) == null) return;

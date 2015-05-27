@@ -214,6 +214,7 @@ public class InstabilityDataCalculator {
 		//TODO: We should probably try and prohibit teleportation to this dimension...
 		//Alternatively, detect player changed dimension and queue them to teleport again next tick
 		if (dimId != null && event.toDim == dimId) {
+			//FIXME: I worry about this causing other mods issues in processing this event, as we'll create another PlayerChangedDimensionEvent event within this one... Mods may process the earlier one after the new one due to immediate sending.
 			DimensionUtils.ejectPlayerFromDimension(event.player);
 		}
 	}

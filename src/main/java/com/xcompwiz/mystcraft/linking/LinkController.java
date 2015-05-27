@@ -26,8 +26,6 @@ import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAlter;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
-import com.xcompwiz.mystcraft.network.NetworkUtils;
-import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 public class LinkController {
 
@@ -78,9 +76,6 @@ public class LinkController {
 			if (changingworlds) {
 				player.dimension = dimension;
 				player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension, player.worldObj.difficultySetting, newworld.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
-				if (newworld.provider instanceof WorldProviderMyst) {
-					NetworkUtils.sendAgeData(newworld, player, newworld.provider.dimensionId);
-				}
 				((WorldServer) origin).getPlayerManager().removePlayer(player);
 			}
 		}

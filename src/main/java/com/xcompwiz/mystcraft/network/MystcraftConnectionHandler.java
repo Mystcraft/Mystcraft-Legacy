@@ -13,6 +13,7 @@ import com.xcompwiz.mystcraft.network.packet.MPacketDimensions;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
@@ -42,9 +43,24 @@ public class MystcraftConnectionHandler {
 			DimensionUtils.ejectPlayerFromDimension(event.player);
 		}
 		if (player.worldObj.provider instanceof WorldProviderMyst) {
-			NetworkUtils.sendAgeData(player.worldObj, player, player.dimension); // Sends age data
+			NetworkUtils.sendAgeData(player, player.dimension); // Sends age data
 		}
 	}
+
+	@SubscribeEvent
+	public void onPlayerChangedDimension(PlayerChangedDimensionEvent event) {
+		EntityPlayer player = event.player;
+		if (DimensionUtils.isDimensionDead(event.toDim)) {
+			//FIXME: I worry about this causing other mods issues in processing this event, as we'll create another PlayerChangedDimensionEvent event within this one... Mods may process the earlier one after the new one due to immediate sending.
+			DimensionUtils.ejectPlayerFromDimension(event.player);
+			return;
+		}
+		DimensionUtils.setPlayerDimensionUUID(event.player, DimensionUtils.getDimensionUUID(event.toDim));
+		if (Mystcraft.registeredDims.contains(event.toDim)) {
+			NetworkUtils.sendAgeData(player, event.toDim); // Sends age data
+		}
+	}
+
 
 	@SubscribeEvent
 	public void connectionOpened(ClientConnectedToServerEvent event) {

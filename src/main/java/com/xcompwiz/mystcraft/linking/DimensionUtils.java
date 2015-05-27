@@ -63,6 +63,7 @@ public class DimensionUtils {
 	}
 
 	public static boolean markDimensionDead(int dimId) {
+		if (Mystcraft.homeDimension == dimId) return false; //TODO: !Throw exception on this case
 		if (!DimensionManager.isDimensionRegistered(dimId)) return false;
 		if (!Mystcraft.registeredDims.contains(dimId)) return false;
 		AgeData.getAge(dimId, false).markDead();
@@ -135,6 +136,7 @@ public class DimensionUtils {
 	}
 
 	public static void ejectPlayerFromDimension(EntityPlayer player) {
+		if (isDimensionDead(Mystcraft.homeDimension)) throw new RuntimeException("The Mystcraft Home Dimension is flagged as dead. This is a serious problem...");
 		ILinkInfo link = new LinkOptions(null);
 		link.setDimensionUID(Mystcraft.homeDimension);
 		link.setFlag(LinkPropertyAPI.FLAG_TPCOMMAND, true);

@@ -342,7 +342,7 @@ public class WorldProviderMyst extends WorldProvider {
 		if (this.agedata.needsResend() == true && world.getTotalWorldTime() % 200 == 0) {
 			this.agedata.resent();
 			for (Object player : this.worldObj.playerEntities) {
-				NetworkUtils.sendAgeData(worldObj, (EntityPlayer) player, this.dimensionId);
+				NetworkUtils.sendAgeData((EntityPlayer) player, this.dimensionId);
 			}
 		}
 	}
