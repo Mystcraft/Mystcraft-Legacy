@@ -12,7 +12,8 @@ import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import com.xcompwiz.lookingglass.api.ILookingGlassAPI;
+import com.xcompwiz.lookingglass.api.IWorldViewAPI;
+import com.xcompwiz.lookingglass.api.animator.EntityAnimatorPivot;
 import com.xcompwiz.lookingglass.api.view.IWorldView;
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
@@ -26,30 +27,30 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 @SideOnly(Side.CLIENT)
 public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
-	private final ILookingGlassAPI	apiinst;
-	private Random					rand;
+	private final IWorldViewAPI	apiinst;
+	private Random				rand;
 
-	public static int				shaderARB;
-	public static int				vertexARB;
-	public static int				fragmentARB;
+	public static int			shaderARB;
+	public static int			vertexARB;
+	public static int			fragmentARB;
 
-	public static int				textureLoc;
-	public static int				damageLoc;
-	public static int				resLoc;
-	public static int				timeLoc;
-	public static int				waveScaleLoc;
-	public static int				colorScaleLoc;
-	public static int				linkColorLoc;
+	public static int			textureLoc;
+	public static int			damageLoc;
+	public static int			resLoc;
+	public static int			timeLoc;
+	public static int			waveScaleLoc;
+	public static int			colorScaleLoc;
+	public static int			linkColorLoc;
 
-	private Integer					activeDim;
-	private ChunkCoordinates		activeCoords;
-	private IWorldView				activeview;
-	public float					colorScale	= 0.5f;
-	public float					waveScale	= 0.5f;
-	private long					readyTime;
-	private boolean					ready;
+	private Integer				activeDim;
+	private ChunkCoordinates	activeCoords;
+	private IWorldView			activeview;
+	public float				colorScale	= 0.5f;
+	public float				waveScale	= 0.5f;
+	private long				readyTime;
+	private boolean				ready;
 
-	public DynamicLinkPanelRenderer(ILookingGlassAPI apiinst) {
+	public DynamicLinkPanelRenderer(IWorldViewAPI apiinst) {
 		this.apiinst = apiinst;
 		this.rand = new Random();
 	}
@@ -65,10 +66,10 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 		if (dimid == null) return;
 		if (activeview == null) {
 			ChunkCoordinates spawn = linkinfo.getSpawn();
-			activeview = apiinst.createWorldView(dimid, spawn, 132, 83); //FIXME: Is this editing the passed in ChunkCoordinates object?
+			activeview = apiinst.createWorldView(dimid, spawn, 132, 83);
 			if (activeview != null) {
 				activeview.grab();
-				apiinst.setPivotAnimation(activeview);
+				activeview.setAnimator(new EntityAnimatorPivot(activeview.getCamera()));
 				this.activeDim = dimid;
 				this.activeCoords = linkinfo.getSpawn();
 			}
