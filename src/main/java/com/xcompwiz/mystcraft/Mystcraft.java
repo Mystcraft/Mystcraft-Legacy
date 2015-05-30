@@ -153,9 +153,9 @@ public class Mystcraft {
 	public static MapStorage			clientStorage		= null;
 
 	/** Forces the Dimension UUID check on login */
-	public static boolean				requireUUID			= false;	//TODO: Configable
+	public static boolean				requireUUID			= false;
 
-	public static int					homeDimension		= 0;		//TODO: Configable
+	public static int					homeDimension		= 0;
 
 	@EventHandler
 	public void load(FMLPreInitializationEvent event) {
@@ -209,8 +209,10 @@ public class Mystcraft {
 		fastRainbows = config.get(MystConfig.CATEGORY_GENERAL, "options.fastRainbows", fastRainbows).getBoolean(fastRainbows);
 		respawnInAges = config.get(MystConfig.CATEGORY_GENERAL, "options.respawnInAges", respawnInAges).getBoolean(respawnInAges);
 		villageDeskGen = config.get(MystConfig.CATEGORY_GENERAL, "options.villageDeskGen", villageDeskGen).getBoolean(villageDeskGen);
+		requireUUID = config.get(MystConfig.CATEGORY_GENERAL, "options.requireUUIDTest", requireUUID, "If set to true, the dimension matching test will be strict. This will force new players to the \"home\" dimension.").getBoolean(requireUUID);
 		serverLabels = renderlabels;
 
+		homeDimension = config.get(MystConfig.CATEGORY_GENERAL, "options.homedim", homeDimension).getInt();
 		archivistId = config.get(MystConfig.CATEGORY_GENERAL, "villager.archivist.id", 1210950779).getInt();
 		providerId = config.get(MystConfig.CATEGORY_GENERAL, "options.providerId", 1210950779).getInt();
 
