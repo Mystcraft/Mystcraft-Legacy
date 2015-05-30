@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
 import com.xcompwiz.lookingglass.api.IWorldViewAPI;
-import com.xcompwiz.lookingglass.api.animator.EntityAnimatorPivot;
+import com.xcompwiz.lookingglass.api.animator.CameraAnimatorPivot;
 import com.xcompwiz.lookingglass.api.view.IWorldView;
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
@@ -69,7 +69,7 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 			activeview = apiinst.createWorldView(dimid, spawn, 132, 83);
 			if (activeview != null) {
 				activeview.grab();
-				activeview.setAnimator(new EntityAnimatorPivot(activeview.getCamera()));
+				activeview.setAnimator(new CameraAnimatorPivot(activeview.getCamera()));
 				this.activeDim = dimid;
 				this.activeCoords = linkinfo.getSpawn();
 			}
@@ -85,9 +85,8 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 		float bookDamage = 0;
 		if (bookclone != null) bookDamage = ((float) bookclone.getItemDamageForDisplay()) / bookclone.getMaxDamage();
 
-		activeview.markDirty();
-
-		if (OpenGlHelper.shadersSupported) {
+		boolean useshaders = OpenGlHelper.shadersSupported;
+		if (useshaders) {
 			float sinceOpened = 0;
 			if (!ready && activeview.isReady()) {
 				ready = true;
@@ -127,22 +126,23 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.setColorRGBA_F(0, 0, 0, 1);
 		tessellator.startDrawingQuads();
-		if (OpenGlHelper.shadersSupported) {
+		if (useshaders) { //TODO: The shaders are somehow flipping the texture upside down 
 			tessellator.addVertexWithUV(left, height + top, 0.0D, 0.0D, 1.0D);
 			tessellator.addVertexWithUV(width + left, height + top, 0.0D, 1.0D, 1.0D);
 			tessellator.addVertexWithUV(width + left, top, 0.0D, 1.0D, 0.0D);
 			tessellator.addVertexWithUV(left, top, 0.0D, 0.0D, 0.0D);
 		} else {
-			tessellator.addVertexWithUV(left, top, 0.0D, 0.0D, 1.0D);
-			tessellator.addVertexWithUV(width + left, top, 0.0D, 1.0D, 1.0D);
-			tessellator.addVertexWithUV(width + left, height + top, 0.0D, 1.0D, 0.0D);
 			tessellator.addVertexWithUV(left, height + top, 0.0D, 0.0D, 0.0D);
+			tessellator.addVertexWithUV(width + left, height + top, 0.0D, 1.0D, 0.0D);
+			tessellator.addVertexWithUV(width + left, top, 0.0D, 1.0D, 1.0D);
+			tessellator.addVertexWithUV(left, top, 0.0D, 0.0D, 1.0D);
 		}
 		tessellator.draw();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-		if (OpenGlHelper.shadersSupported) {
+		if (useshaders) {
 			ARBShaderObjects.glUseProgramObjectARB(0);
 		}
+		activeview.markDirty();
 	}
 
 	private boolean detectLinkInfoChange(ILinkInfo linkinfo) {
