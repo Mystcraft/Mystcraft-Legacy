@@ -49,8 +49,8 @@ public class CommandDebug extends CommandBaseAdv {
 	 */
 	@Override
 	public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] args) {
-		if (args.length < 2) return getListOfStringsMatchingLastWord(args, new String[] { "read", "set" });
-		if (args.length >= 2 && (args[0].equals("read") || args[0].equals("set"))) return getListOfStringsMatchingLastWord(args, this.getKeys(args));
+		if (args.length < 2) return getListOfStringsMatchingLastWord(args, new String[] { "read", "set", "run" });
+		if (args.length >= 2 && (args[0].equals("read") || args[0].equals("set") || args[0].equals("run"))) return getListOfStringsMatchingLastWord(args, this.getKeys(args));
 		return null;
 	}
 
