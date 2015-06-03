@@ -17,10 +17,10 @@ public class LookingGlassIntegration {
 
 		MinecraftForge.EVENT_BUS.register(new MystcraftLookingGlassEventHandler());
 
-		getAlphaAPI(provider);
+		getViewAPI(provider);
 	}
 
-	private static void getAlphaAPI(APIInstanceProvider provider) {
+	private static void getViewAPI(APIInstanceProvider provider) {
 		try {
 			Object apiinst = provider.getAPIInstance("view-1");
 			if (Mystcraft.sidedProxy.isClientSideAvailable()) LookingGlassIntegrationView1.onAPIGetClient(apiinst);
