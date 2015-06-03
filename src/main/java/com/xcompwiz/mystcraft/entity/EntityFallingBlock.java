@@ -158,7 +158,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 			handleDrops();
 		} else {
 			worldObj.setBlockMetadataWithNotify(x, y, z, metadata, 2);
-			if (data.hasKey(NBT_TE)) {
+			if (data != null && data.hasKey(NBT_TE)) {
 				NBTTagCompound tileentity = data.getCompoundTag(NBT_TE);
 				tileentity.setInteger("x", x);
 				tileentity.setInteger("y", y);

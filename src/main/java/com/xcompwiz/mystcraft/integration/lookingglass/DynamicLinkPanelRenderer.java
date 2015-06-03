@@ -121,12 +121,13 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		}
+		//TODO: if not ready and shaders off render black
 
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.setColorRGBA_F(0, 0, 0, 1);
 		tessellator.startDrawingQuads();
-		if (useshaders) { //TODO: The shaders are somehow flipping the texture upside down 
+		if (useshaders) { //TODO: The shaders are somehow flipping the texture upside down
 			tessellator.addVertexWithUV(left, height + top, 0.0D, 0.0D, 1.0D);
 			tessellator.addVertexWithUV(width + left, height + top, 0.0D, 1.0D, 1.0D);
 			tessellator.addVertexWithUV(width + left, top, 0.0D, 1.0D, 0.0D);
