@@ -167,6 +167,7 @@ public class ModSymbols {
 		registerSymbol("StarsNormal", new SymbolStarsNormal(), 1, WordData.Celestial, WordData.Harmony, WordData.Ethereal, WordData.Order);
 		registerSymbol("StarsTwinkle", new SymbolStarsTwinkle(), 1, WordData.Celestial, WordData.Harmony, WordData.Ethereal, WordData.Entropy);
 		registerSymbol("SunDark", new SymbolSunDark(), 1, WordData.Celestial, WordData.Void, WordData.Inhibit, WordData.Energy);
+		registerSymbol("SunNormal", new SymbolSunNormal(), 2, WordData.Celestial, WordData.Image, WordData.Stimulate, WordData.Energy);
 		registerSymbol("BioConGrid", new SymbolBiomeControllerGrid(), 3, WordData.Constraint, WordData.Nature, WordData.Chain, WordData.Mutual);
 		registerSymbol("BioConNative", new SymbolBiomeControllerNative(), 3, WordData.Constraint, WordData.Nature, WordData.Tradition, WordData.Sustain);
 		registerSymbol("BioConSingle", new SymbolBiomeControllerSingle(), 3, WordData.Constraint, WordData.Nature, WordData.Infinite, WordData.Static);
@@ -183,7 +184,6 @@ public class ModSymbols {
 		registerSymbol("EnvLightning", new SymbolEnvLightning(), 3, WordData.Environment, WordData.Sacrifice, WordData.Power, WordData.Energy);
 		registerSymbol("EnvMeteor", new SymbolEnvMeteor(), 3, WordData.Environment, WordData.Sacrifice, WordData.Power, WordData.Momentum);
 		registerSymbol("EnvScorch", new SymbolEnvScorched(), 3, WordData.Environment, WordData.Sacrifice, WordData.Power, WordData.Chaos);
-		registerSymbol("SunNormal", new SymbolSunNormal(), 2, WordData.Celestial, WordData.Image, WordData.Stimulate, WordData.Energy);
 		registerSymbol("LightingBright", new SymbolLightingBright(), 3, WordData.Ethereal, WordData.Power, WordData.Infinite, WordData.Spur);
 		registerSymbol("LightingDark", new SymbolLightingDark(), 3, WordData.Ethereal, WordData.Void, WordData.Constraint, WordData.Inhibit);
 		registerSymbol("LightingNormal", new SymbolLightingNormal(), 2, WordData.Ethereal, WordData.Dynamic, WordData.Cycle, WordData.Balance);
