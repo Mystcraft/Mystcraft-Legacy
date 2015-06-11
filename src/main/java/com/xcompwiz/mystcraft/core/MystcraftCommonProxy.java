@@ -1,9 +1,12 @@
 package com.xcompwiz.mystcraft.core;
 
+import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
 
 public class MystcraftCommonProxy {
@@ -30,5 +33,31 @@ public class MystcraftCommonProxy {
 
 	public boolean isClientSideAvailable() {
 		return false;
+	}
+
+	private InstabilityDataCalculator	instabilitycalculator;
+
+	/**
+	 * Server-side only logic to start up the instability calculator
+	 * Instability profiling is done differently client-side. (See {@link MystcraftStartupChecker})
+	 * @param mcserver The server object for the game
+	 */
+	public void onServerStart(MinecraftServer mcserver) {
+		instabilitycalculator = new InstabilityDataCalculator(mcserver, mcserver.worldServerForDimension(0).mapStorage);
+		FMLCommonHandler.instance().bus().register(instabilitycalculator);
+		MinecraftForge.EVENT_BUS.register(instabilitycalculator);
+	}
+
+	/**
+	 * Server-side only logic to stop the instability calculator
+	 * Instability profiling is done differently client-side. (See {@link MystcraftStartupChecker})
+	 */
+	public void onServerStop() {
+		if (instabilitycalculator != null) {
+			instabilitycalculator.shutdown();
+			MinecraftForge.EVENT_BUS.unregister(instabilitycalculator);
+			FMLCommonHandler.instance().bus().unregister(instabilitycalculator);
+			instabilitycalculator = null;
+		}
 	}
 }

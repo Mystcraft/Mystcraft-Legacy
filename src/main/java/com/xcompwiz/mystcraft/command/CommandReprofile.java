@@ -6,8 +6,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.world.ChunkProfiler;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
+import com.xcompwiz.mystcraft.world.profiling.ChunkProfiler;
 
 public class CommandReprofile extends CommandBaseAdv {
 

@@ -10,8 +10,10 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.MinecraftForge;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
@@ -87,6 +89,7 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 	public void preinit() {
 		startupchecker = new MystcraftStartupChecker();
 		FMLCommonHandler.instance().bus().register(startupchecker);
+		MinecraftForge.EVENT_BUS.register(startupchecker);
 	}
 
 	@Override
@@ -202,4 +205,10 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 		}
 		ModPageCollections.addSymbolPages(pageTab);
 	}
+
+	@Override
+	public void onServerStart(MinecraftServer mcserver) {}
+
+	@Override
+	public void onServerStop() {}
 }

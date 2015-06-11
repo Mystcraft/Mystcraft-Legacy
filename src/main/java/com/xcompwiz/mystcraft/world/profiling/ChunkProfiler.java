@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.world;
+package com.xcompwiz.mystcraft.world.profiling;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,7 +26,6 @@ import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugValueCallback;
 import com.xcompwiz.mystcraft.debug.DebugUtils;
 import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
 import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
-import com.xcompwiz.mystcraft.world.gen.ChunkProfilerManager;
 
 public class ChunkProfiler extends WorldSavedData {
 	public static final String	ID			= "MystChunkProfile";

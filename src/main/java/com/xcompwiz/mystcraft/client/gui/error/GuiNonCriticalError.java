@@ -21,6 +21,14 @@ public class GuiNonCriticalError extends GuiYesNo {
 		this.cancelButtonText = I18n.format("menu.quit", new Object[0]);
 	}
 
+	/**
+	 * Returns true if this GUI should pause the game when it is displayed in single-player
+	 */
+	@Override
+	public boolean doesGuiPauseGame() {
+		return false;
+	}
+
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton) {
 		if (par1GuiButton.id == 0) {

@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.world.gen;
+package com.xcompwiz.mystcraft.world.profiling;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,7 +9,6 @@ import net.minecraft.world.chunk.Chunk;
 
 import com.xcompwiz.mystcraft.debug.DebugUtils;
 import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
-import com.xcompwiz.mystcraft.world.ChunkProfiler;
 
 public class ChunkProfilerManager extends Thread {
 

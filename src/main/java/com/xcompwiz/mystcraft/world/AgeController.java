@@ -55,7 +55,8 @@ import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
-import com.xcompwiz.mystcraft.world.gen.ChunkProfilerManager;
+import com.xcompwiz.mystcraft.world.profiling.ChunkProfiler;
+import com.xcompwiz.mystcraft.world.profiling.ChunkProfilerManager;
 import com.xcompwiz.util.SpiralOutwardIterator;
 
 import cpw.mods.fml.relauncher.Side;

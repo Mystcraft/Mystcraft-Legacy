@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.world;
+package com.xcompwiz.mystcraft.world.profiling;
 
 import java.io.File;
 import java.util.HashMap;
@@ -24,7 +24,6 @@ import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.network.packet.MPacketProfilingState;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
-import com.xcompwiz.mystcraft.world.gen.ChunkProfilerManager;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
@@ -35,24 +34,28 @@ import cpw.mods.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEve
 
 public class InstabilityDataCalculator {
 
-	private static final String		StorageID			= "myst_baseline";
+	private static final String			StorageID			= "myst_baseline";
 
-	private static boolean			disconnectclients	= false;
+	private static boolean				disconnectclients	= false;
 
-	private MinecraftServer			mcserver;
-	private MapStorage				storage;
+	private static int					minimumchunks;							//TODO: Make this configurable
+	private static float				tolerance;								//TODO: Make this configurable
 
-	private int						minimumchunks;							//TODO: Make this configurable
-	private float					tolerance			= 1.05F;			//TODO: Make this configurable
+	private MinecraftServer				mcserver;
+	private MapStorage					storage;
 
-	private HashMap<String, Number>	freevals;
+	private HashMap<String, Number>		freevals;
 
-	private Integer					providerId			= null;
-	private Integer					dimId				= null;
-	private World					world = null;
-	private boolean					running = false;
+	private Integer						providerId			= null;
+	private Integer						dimId				= null;
+	private World						world				= null;
+	private boolean						running				= false;
+
+	private IMystcraftProfilingCallback	callback;
 
 	public static void loadConfigs(Configuration config) {
+		minimumchunks = 0;
+		tolerance = 1.05F;
 		disconnectclients = config.get(MystConfig.CATEGORY_GENERAL, "options.profiling.baseline.disconnectclients", disconnectclients, "If set to true this will prevent clients from connecting while baseline profiling is ongoing (Only works on dedicated servers)").getBoolean(disconnectclients);
 	}
 
@@ -63,11 +66,10 @@ public class InstabilityDataCalculator {
 		return current;
 	}
 
-	public InstabilityDataCalculator(MinecraftServer mcserver) {
+	public InstabilityDataCalculator(MinecraftServer mcserver, MapStorage storage) {
 		this.mcserver = mcserver;
-		this.storage = mcserver.worldServerForDimension(0).mapStorage;
-		this.minimumchunks = SymbolBiome.selectables.size() * 20;
-		final ChunkProfiler profiler = getChunkProfiler();
+		this.storage = storage;
+		final ChunkProfiler profiler = getChunkProfiler(storage);
 
 		DebugNode node = getDebugNode();
 		//@formatter:off
@@ -105,25 +107,39 @@ public class InstabilityDataCalculator {
 	public void onServerTick(ServerTickEvent event) {
 		if (event.phase == Phase.START) return;
 		if (mcserver == null) return;
-		ChunkProfiler profiler = getChunkProfiler();
-		int chunksremaining = minimumchunks - profiler.getCount();
+		ChunkProfiler profiler = getChunkProfiler(storage);
+		int chunksremaining = getChunksRemaining(profiler);
+		if (callback != null) callback.setCompleted(profiler.getCount());
+		if (callback != null) callback.setRemaining(chunksremaining);
 		if (chunksremaining > 0) {
 			// We check to see if the profiling queue is backed up (might be enough chunks generated.
+			if (callback != null) callback.setQueued(ChunkProfilerManager.getSize());
 			if (ChunkProfilerManager.getSize() < chunksremaining) stepChunkGeneration(profiler);
 		} else {
 			if (world != null) LoggerUtils.info("Baseline Profiling for Instability completed.");
 			cleanup();
-			HashMap<String, Float> constants = profiler.calculateSplitInstability();
-			freevals = new HashMap<String, Number>();
-			for (String key : constants.keySet()) {
-				float val = constants.get(key);
-				val = (val * tolerance);
-				val = (float) (Math.ceil(val / 100) * 100);
-				freevals.put(key, val);
-			}
-			InstabilityBlockManager.setBaselineStability(freevals);
+			freevals = updateInstabilityData(profiler);
 			mcserver = null;
+			if (callback != null) callback.onFinished();
 		}
+	}
+
+	public static HashMap<String, Number> updateInstabilityData(ChunkProfiler profiler) {
+		HashMap<String, Float> constants = profiler.calculateSplitInstability();
+		HashMap<String, Number> freevals = new HashMap<String, Number>();
+		for (String key : constants.keySet()) {
+			float val = constants.get(key);
+			val = (val * tolerance);
+			val = (float) (Math.ceil(val / 100) * 100);
+			freevals.put(key, val);
+		}
+		InstabilityBlockManager.setBaselineStability(freevals);
+		return freevals;
+	}
+
+	public static int getChunksRemaining(ChunkProfiler profiler) {
+		if (minimumchunks == 0) minimumchunks = SymbolBiome.selectables.size() * 20; // TODO: Make configurable
+		return minimumchunks - profiler.getCount();
 	}
 
 	public void shutdown() {
@@ -135,7 +151,7 @@ public class InstabilityDataCalculator {
 		node.parent.removeChild(node);
 	}
 
-	private ChunkProfiler getChunkProfiler() {
+	public static ChunkProfiler getChunkProfiler(MapStorage storage) {
 		ChunkProfiler chunkprofiler = (ChunkProfiler) storage.loadData(ChunkProfiler.class, StorageID);
 		if (chunkprofiler == null) {
 			chunkprofiler = new ChunkProfiler(StorageID);
@@ -259,5 +275,9 @@ public class InstabilityDataCalculator {
 		}
 
 		((WorldProviderMystDummy) world.provider).generateNextChunk();
+	}
+
+	public void setCallback(IMystcraftProfilingCallback callback) {
+		this.callback = callback;
 	}
 }

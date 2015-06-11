@@ -5,9 +5,16 @@ import java.util.HashSet;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiDownloadTerrain;
+import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiSelectWorld;
+import net.minecraft.client.multiplayer.GuiConnecting;
+import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
+import com.xcompwiz.mystcraft.MystcraftFirstRun;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.api.world.logic.ILightingController;
@@ -106,7 +113,40 @@ public class MystcraftStartupChecker {
 	@SubscribeEvent
 	public void onClientTick(ClientTickEvent event) {
 		if (Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu) {
-			checkForErrors();
+			if (checkForErrors()) MystcraftFirstRun.start();
+		}
+	}
+
+	@SubscribeEvent
+	public void onWorldSave(WorldEvent.Save event) {
+		if (MystcraftFirstRun.isReady()) return;
+		MystcraftFirstRun.onSaveEvent(event);
+	}
+
+	@SubscribeEvent
+	public void onClientOpenGUI(GuiOpenEvent event) {
+		if (MystcraftFirstRun.isReady()) return;
+		if (event.gui == null) {
+			MystcraftFirstRun.showProfilingGui();
+			event.setCanceled(true);
+		}
+		if (event.gui instanceof GuiDownloadTerrain) {
+			MystcraftFirstRun.showProfilingGui();
+			event.setCanceled(true);
+		}
+		if (event.gui instanceof GuiIngameMenu) {
+			MystcraftFirstRun.showProfilingGui();
+			event.setCanceled(true);
+		}
+		if (event.gui instanceof GuiSelectWorld) {
+			ArrayList<String> messages = new ArrayList<String>();
+			messages.add("Mystcraft hasn't finished it's profiling yet.");
+			messages.add("Mystcraft requires some information about the generation provided by the mods in your game.");
+			messages.add("In order to do this, it does a first-time profiling. This must finish before you play. Sorry for the wait!");
+			event.gui = new GuiNonCriticalError(messages);
+		}
+		if (event.gui instanceof GuiConnecting) {
+			MystcraftFirstRun.stop();
 		}
 	}
 
@@ -119,7 +159,7 @@ public class MystcraftStartupChecker {
 		}
 	}
 
-	private synchronized void checkForErrors() {
+	private synchronized boolean checkForErrors() {
 		for (ErrorChecker check : checks) {
 			completed.add(check);
 			if (!check.hasRun()) {
@@ -132,8 +172,13 @@ public class MystcraftStartupChecker {
 		for (ErrorChecker check : completed) {
 			checks.remove(check);
 		}
-		if (checks.size() == 0 && completed.size() > 0) LoggerUtils.info("Mystcraft Start-Up Error Checking Completed");
+		boolean ret = false;
+		if (checks.size() == 0 && completed.size() > 0) {
+			LoggerUtils.info("Mystcraft Start-Up Error Checking Completed");
+			ret = true;
+		}
 		completed.clear();
+		return ret;
 	}
 
 	public GuiNotification getNotificationGui() {

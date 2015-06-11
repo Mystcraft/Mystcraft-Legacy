@@ -40,6 +40,7 @@ import com.xcompwiz.mystcraft.command.CommandToggleWorldInstability;
 import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.core.MystcraftEventHandler;
+import com.xcompwiz.mystcraft.core.TaskQueueManager;
 import com.xcompwiz.mystcraft.data.GrammarRules;
 import com.xcompwiz.mystcraft.data.InkEffects;
 import com.xcompwiz.mystcraft.data.ModAchievements;
@@ -81,15 +82,15 @@ import com.xcompwiz.mystcraft.treasure.TreasureGenWrapper;
 import com.xcompwiz.mystcraft.villager.MerchantRecipeProviderItem;
 import com.xcompwiz.mystcraft.villager.VillageCreationHandlerArchivistHouse;
 import com.xcompwiz.mystcraft.villager.VillagerArchivist;
-import com.xcompwiz.mystcraft.world.InstabilityDataCalculator;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
-import com.xcompwiz.mystcraft.world.gen.ChunkProfilerManager;
-import com.xcompwiz.mystcraft.world.gen.MystWorldGenerator;
 import com.xcompwiz.mystcraft.world.gen.structure.ComponentScatteredFeatureSmallLibrary;
 import com.xcompwiz.mystcraft.world.gen.structure.ComponentVillageArchivistHouse;
 import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
 import com.xcompwiz.mystcraft.world.gen.structure.StructureScatteredFeatureStartMyst;
+import com.xcompwiz.mystcraft.world.profiling.ChunkProfilerManager;
+import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
+import com.xcompwiz.mystcraft.world.profiling.MystWorldGenerator;
 import com.xcompwiz.mystcraft.world.storage.FileUtils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -142,8 +143,6 @@ public class Mystcraft {
 
 	public static int					archivistId;
 	private VillagerArchivist			archivist;
-
-	private InstabilityDataCalculator	instabilitycalculator;
 
 	private ChunkProfilerManager		profilingThread;
 
@@ -372,21 +371,15 @@ public class Mystcraft {
 		profilingThread = new ChunkProfilerManager();
 		profilingThread.start();
 
+		sidedProxy.onServerStart(mcserver);
 		registerDimensions(mcserver.worldServerForDimension(0).getSaveHandler());
 		LinkListenerPermissions.loadState();
-		instabilitycalculator = new InstabilityDataCalculator(mcserver);
-		FMLCommonHandler.instance().bus().register(instabilitycalculator);
-		MinecraftForge.EVENT_BUS.register(instabilitycalculator);
 	}
 
 	@EventHandler
 	public void serverStop(FMLServerStoppedEvent event) {
-		if (instabilitycalculator != null) {
-			instabilitycalculator.shutdown();
-			MinecraftForge.EVENT_BUS.unregister(instabilitycalculator);
-			FMLCommonHandler.instance().bus().unregister(instabilitycalculator);
-			instabilitycalculator = null;
-		}
+		TaskQueueManager.onServerStop();
+		sidedProxy.onServerStop();
 		if (profilingThread != null) {
 			profilingThread.halt();
 			profilingThread = null;

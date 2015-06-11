@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.world.gen;
+package com.xcompwiz.mystcraft.world.profiling;
 
 import java.util.Random;
 
@@ -10,7 +10,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import com.xcompwiz.mystcraft.world.AgeController;
-import com.xcompwiz.mystcraft.world.ChunkProfiler;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import cpw.mods.fml.common.IWorldGenerator;

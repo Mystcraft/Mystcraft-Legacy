@@ -1,4 +1,4 @@
-package com.xcompwiz.mystcraft.world;
+package com.xcompwiz.mystcraft.world.profiling;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -17,6 +17,8 @@ import net.minecraft.world.gen.ChunkProviderServer;
 
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
+import com.xcompwiz.mystcraft.world.AgeController;
+import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
