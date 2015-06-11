@@ -56,8 +56,10 @@ public class GuiElementTextField extends GuiElement {
 
 	/** other selection position, maybe the same as the cursor */
 	private int					selectionEnd;
-	private int					enabledColor			= 14737632;
-	private int					disabledColor			= 7368816;
+	private int					enabledColor			= 0xFFE0E0E0;
+	private int					disabledColor			= 0xFF707070;
+	private int					borderColor				= 0xFFA0A0A0;
+	private int					backgroundColor			= 0xFF000000;
 
 	public GuiElementTextField(IGuiTextProvider textprovider, IGuiOnTextChange changehandler, String id, int guiLeft, int guiTop, int xSize, int ySize) {
 		super(guiLeft, guiTop, xSize, ySize);
@@ -436,8 +438,8 @@ public class GuiElementTextField extends GuiElement {
 		int guiTop = getTop();
 
 		if (this.getEnableBackgroundDrawing()) {
-			drawRect(guiLeft, guiTop, guiLeft + this.xSize, guiTop + this.ySize, -6250336);
-			drawRect(guiLeft + 1, guiTop + 1, guiLeft + this.xSize - 1, guiTop + this.ySize - 1, -16777216);
+			drawRect(guiLeft, guiTop, guiLeft + this.xSize, guiTop + this.ySize, this.borderColor);
+			drawRect(guiLeft + 1, guiTop + 1, guiLeft + this.xSize - 1, guiTop + this.ySize - 1, this.backgroundColor);
 		}
 
 		int i = (this.isEnabled() && !this.isReadOnly()) ? this.enabledColor : this.disabledColor;
@@ -537,19 +539,33 @@ public class GuiElementTextField extends GuiElement {
 	/**
 	 * enable drawing background and outline
 	 */
-	public void setEnableBackgroundDrawing(boolean par1) {
-		this.enableBackgroundDrawing = par1;
+	public void setEnableBackgroundDrawing(boolean flag) {
+		this.enableBackgroundDrawing = flag;
 	}
 
 	/**
-	 * Sets the text colour for this textbox (disabled text will not use this colour)
+	 * Sets the text color for this textbox (disabled text will not use this color)
 	 */
-	public void setTextColor(int par1) {
-		this.enabledColor = par1;
+	public void setTextColor(int color) {
+		this.enabledColor = color;
 	}
 
-	public void setDisabledTextColour(int par1) {
-		this.disabledColor = par1;
+	public void setDisabledTextColor(int color) {
+		this.disabledColor = color;
+	}
+
+	/**
+	 * Sets the border color for this textbox
+	 */
+	public void setBorderColor(int color) {
+		this.borderColor = color;
+	}
+
+	/**
+	 * Sets the background color for this textbox
+	 */
+	public void setBackgroundColor(int color) {
+		this.backgroundColor = color;
 	}
 
 	/**

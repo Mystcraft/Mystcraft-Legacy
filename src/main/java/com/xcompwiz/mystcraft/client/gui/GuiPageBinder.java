@@ -65,6 +65,10 @@ public class GuiPageBinder extends GuiContainerElements {
 
 	private ContainerPageBinder	container;
 
+	private GuiElementTextField	txtBookName;
+	private int					errorcolor	= 0xFFFF0000;
+	private int					txtcolor	= 0xFFA0A0A0;
+
 	public GuiPageBinder(InventoryPlayer inventoryplayer, TileEntityBookBinder tileentity) {
 		super(new ContainerPageBinder(inventoryplayer, tileentity));
 		this.container = (ContainerPageBinder) this.inventorySlots;
@@ -78,9 +82,9 @@ public class GuiPageBinder extends GuiContainerElements {
 		guiLeft = (width - xSize) / 2;
 		guiTop = (height - ySize) / 2;
 		TextBoxHandler txtbxhdnlr = new TextBoxHandler();
-		GuiElementTextField txt_box = new GuiElementTextField(txtbxhdnlr, txtbxhdnlr, "ItemName", 7, 9, xSize - 60, 14);
-		txt_box.setMaxLength(21);
-		addElement(txt_box);
+		txtBookName = new GuiElementTextField(txtbxhdnlr, txtbxhdnlr, "ItemName", 7, 9, xSize - 60, 14);
+		txtBookName.setMaxLength(21);
+		addElement(txtBookName);
 		PageListHandler pagelistHandler = new PageListHandler();
 		addElement(new GuiElementScrollablePages(pagelistHandler, pagelistHandler, mc, 7, 45, xSize - 14, 40));
 	}
@@ -88,6 +92,7 @@ public class GuiPageBinder extends GuiContainerElements {
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
+		txtBookName.setBorderColor(txtBookName.getText().equals("") ? errorcolor : txtcolor);
 		this.container.updateCraftResult();
 	}
 
