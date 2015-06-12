@@ -47,7 +47,7 @@ public class MystcraftFirstRun {
 			return;
 		}
 		// Display a gui to the user
-		guiscreen = new GuiMystcraftProfiling(mc.currentScreen);
+		if (guiscreen == null) guiscreen = new GuiMystcraftProfiling(mc.currentScreen);
 		mc.displayGuiScreen(guiscreen);
 
 		// Spin up a server instance
@@ -65,16 +65,28 @@ public class MystcraftFirstRun {
 	}
 
 	public synchronized static void stop() {
-		//TODO:
-	}
-
-	@SideOnly(Side.CLIENT)
-	public synchronized static void end() {
+		if (storage == null || instabilitycalculator == null) return;
 		storage.saveAllData();
 		instabilitycalculator.shutdown();
 		MinecraftForge.EVENT_BUS.unregister(instabilitycalculator);
 		FMLCommonHandler.instance().bus().unregister(instabilitycalculator);
+		storage = null;
 		instabilitycalculator = null;
+		// Spin down the server instance
+		// Minecraft.getMinecraft().getIntegratedServer().initiateShutdown();
+		Minecraft mc = Minecraft.getMinecraft();
+		if (mc.theWorld != null) {
+			mc.theWorld.sendQuittingDisconnectingPacket();
+			mc.loadWorld((WorldClient) null);
+		}
+	}
+
+	public static boolean isStopped() {
+		return storage == null && guiscreen != null;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public synchronized static void end() {
 		Runnable deleteworld = new Runnable() {
 			@Override
 			public void run() {
@@ -86,11 +98,7 @@ public class MystcraftFirstRun {
 			}
 		};
 		TaskQueueManager.runOnServerShutdown(deleteworld);
-		// Spin down the server instance
-		//Minecraft.getMinecraft().getIntegratedServer().initiateShutdown();
-		Minecraft mc = Minecraft.getMinecraft();
-		mc.theWorld.sendQuittingDisconnectingPacket();
-		mc.loadWorld((WorldClient) null);
+		stop();
 	}
 
 	@SideOnly(Side.CLIENT)

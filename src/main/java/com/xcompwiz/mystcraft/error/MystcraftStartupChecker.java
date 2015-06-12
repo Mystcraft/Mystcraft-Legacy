@@ -24,6 +24,7 @@ import com.xcompwiz.mystcraft.client.gui.error.GuiNonCriticalError;
 import com.xcompwiz.mystcraft.client.gui.overlay.GuiNotification;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
+import com.xcompwiz.mystcraft.world.profiling.GuiMystcraftProfiling;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -126,6 +127,16 @@ public class MystcraftStartupChecker {
 	@SubscribeEvent
 	public void onClientOpenGUI(GuiOpenEvent event) {
 		if (MystcraftFirstRun.isReady()) return;
+		if (event.gui instanceof GuiMystcraftProfiling) return;
+		if (MystcraftFirstRun.isStopped() && Minecraft.getMinecraft().func_147104_D() == null) MystcraftFirstRun.start();
+		if (event.gui instanceof GuiSelectWorld) {
+			ArrayList<String> messages = new ArrayList<String>();
+			messages.add("Mystcraft hasn't finished it's profiling yet.");
+			messages.add("Mystcraft requires some information about the generation provided by the mods in your game.");
+			messages.add("In order to do this, it does a first-time profiling. This must finish before you play. Sorry for the wait!");
+			event.gui = new GuiNonCriticalError(messages);
+		}
+		if (MystcraftFirstRun.isStopped()) return;
 		if (event.gui == null) {
 			MystcraftFirstRun.showProfilingGui();
 			event.setCanceled(true);
@@ -137,13 +148,6 @@ public class MystcraftStartupChecker {
 		if (event.gui instanceof GuiIngameMenu) {
 			MystcraftFirstRun.showProfilingGui();
 			event.setCanceled(true);
-		}
-		if (event.gui instanceof GuiSelectWorld) {
-			ArrayList<String> messages = new ArrayList<String>();
-			messages.add("Mystcraft hasn't finished it's profiling yet.");
-			messages.add("Mystcraft requires some information about the generation provided by the mods in your game.");
-			messages.add("In order to do this, it does a first-time profiling. This must finish before you play. Sorry for the wait!");
-			event.gui = new GuiNonCriticalError(messages);
 		}
 		if (event.gui instanceof GuiConnecting) {
 			MystcraftFirstRun.stop();
