@@ -36,7 +36,7 @@ public class ModSymbolsFluids {
 		Map<String, Fluid> map = FluidRegistry.getRegisteredFluids();
 		for (Entry<String, Fluid> entry : map.entrySet()) {
 			Fluid fluid = entry.getValue();
-			if (blacklist.contains(fluid)) return;
+			if (blacklist.contains(fluid)) continue;
 			Block block = fluid.getBlock();
 			if (block == Blocks.water) continue;
 			if (block == Blocks.lava) continue;
