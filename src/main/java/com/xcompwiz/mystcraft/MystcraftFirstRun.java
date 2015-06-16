@@ -31,6 +31,12 @@ public class MystcraftFirstRun {
 	private static GuiMystcraftProfiling		guiscreen;
 
 	@SideOnly(Side.CLIENT)
+	public static void enable() {
+		Minecraft mc = Minecraft.getMinecraft();
+		if (guiscreen == null) guiscreen = new GuiMystcraftProfiling(mc.currentScreen);
+	}
+
+	@SideOnly(Side.CLIENT)
 	public synchronized static void start() {
 		if (instabilitycalculator != null) return;
 		Minecraft mc = Minecraft.getMinecraft();
@@ -112,5 +118,9 @@ public class MystcraftFirstRun {
 
 	public static void onSaveEvent(Save event) {
 		if (storage != null) storage.saveAllData();
+	}
+
+	public static boolean isEnabled() {
+		return guiscreen != null;
 	}
 }
