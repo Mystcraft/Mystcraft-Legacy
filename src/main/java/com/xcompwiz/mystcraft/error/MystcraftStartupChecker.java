@@ -12,6 +12,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSelectWorld;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
 import com.xcompwiz.mystcraft.MystcraftFirstRun;
@@ -74,7 +75,7 @@ public class MystcraftStartupChecker {
 	}
 
 	public static class CheckSymbolLogicError extends ErrorChecker {
-		
+
 		private Class	clazz;
 		private String	type;
 
@@ -86,7 +87,7 @@ public class MystcraftStartupChecker {
 		@Override
 		protected GuiScreen getErrorGui() {
 			IAgeSymbol symbol = SymbolManager.findAgeSymbolImplementing(new Random(0), clazz);
-			if (symbol == null){
+			if (symbol == null) {
 				ArrayList<String> messages = new ArrayList<String>();
 				messages.add("ERROR: Mystcraft detected errors on loadup.");
 				messages.add("There are no symbols which provide logic for " + type + ".");
@@ -112,21 +113,27 @@ public class MystcraftStartupChecker {
 	}
 
 	@SubscribeEvent
-	public void onClientTick(ClientTickEvent event) {
-		if (Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu) {
-			if (checkForErrors()) MystcraftFirstRun.start();
-		}
-	}
-
-	@SubscribeEvent
 	public void onWorldSave(WorldEvent.Save event) {
 		if (MystcraftFirstRun.isReady()) return;
 		MystcraftFirstRun.onSaveEvent(event);
 	}
 
 	@SubscribeEvent
+	public void onClientTick(ClientTickEvent event) {
+		if (MystcraftFirstRun.isStopped() && Minecraft.getMinecraft().func_147104_D() == null) MystcraftFirstRun.start();
+	}
+
+	@SubscribeEvent
+	public void onClientInitGUI(InitGuiEvent.Post event) {
+		if (event.gui instanceof GuiMainMenu) {
+			if (checkForErrors()) MystcraftFirstRun.enable();
+		}
+	}
+
+	@SubscribeEvent
 	public void onClientOpenGUI(GuiOpenEvent event) {
 		if (MystcraftFirstRun.isReady()) return;
+		if (!MystcraftFirstRun.isEnabled()) return;
 		if (event.gui instanceof GuiMystcraftProfiling) return;
 		if (MystcraftFirstRun.isStopped() && Minecraft.getMinecraft().func_147104_D() == null) MystcraftFirstRun.start();
 		if (event.gui instanceof GuiSelectWorld) {
