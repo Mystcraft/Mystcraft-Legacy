@@ -111,6 +111,6 @@ public class MystcraftFirstRun {
 	}
 
 	public static void onSaveEvent(Save event) {
-		storage.saveAllData();
+		if (storage != null) storage.saveAllData();
 	}
 }
