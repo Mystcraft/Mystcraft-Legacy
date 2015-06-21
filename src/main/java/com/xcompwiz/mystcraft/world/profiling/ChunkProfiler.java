@@ -52,13 +52,24 @@ public class ChunkProfiler extends WorldSavedData {
 	}
 
 	private int								count;
-	private ChunkProfileData				solid;
+	private ChunkProfileData				solidmap;
 	private Map<String, ChunkProfileData>	blockmaps;
-	private static boolean					outputfiles	= false;
+	private static boolean					outputfiles		= false;
 
 	private HashMap<String, Float>			lastsplitcalc;
 
-	private Semaphore						semaphore	= new Semaphore(1, true);
+	private float							accessibility[]	= null;
+	private float							averages[]		= null;
+	private float							filtered[]		= null;
+	private boolean							nonzero[]		= null;
+	private boolean							solid[]			= null;
+	private float							rounded[]		= null;
+	private float							maximum			= 0;
+	private float							minimum			= 1;
+	private float							groundsum		= 0;
+	private int								groundcount		= 0;
+
+	private Semaphore						semaphore		= new Semaphore(1, true);
 
 	static {
 		DebugUtils.register("global.profiler.file_output", new DebugValueCallback() {
@@ -85,7 +96,7 @@ public class ChunkProfiler extends WorldSavedData {
 	public ChunkProfiler(String id) {
 		super(id);
 		count = 0;
-		solid = new ChunkProfileData();
+		solidmap = new ChunkProfileData();
 		blockmaps = new HashMap<String, ChunkProfileData>();
 		for (String blockkey : InstabilityBlockManager.getWatchedBlocks()) {
 			blockmaps.put(blockkey, new ChunkProfileData());
@@ -107,20 +118,58 @@ public class ChunkProfiler extends WorldSavedData {
 		return Math.round(instability);
 	}
 
+	//TODO: Have this recalc in a separate thread and submit the results
 	public HashMap<String, Float> calculateSplitInstability() {
 		try {
 			semaphore.acquire();
 		} catch (InterruptedException e) {
 			throw new RuntimeException("Failed to acquire semaphore to profile chunk (interrupted)!");
 		}
-		int layers = solid.data.length / 256;
+		int layers = solidmap.data.length / 256;
+		maximum = 0;
+		minimum = 1;
+		groundsum = 0;
+		groundcount = 0;
+		if (accessibility == null || accessibility.length < layers) accessibility = new float[layers];
+		if (averages == null || averages.length < layers) averages = new float[layers];
+		if (filtered == null || filtered.length < layers) filtered = new float[layers];
+		if (rounded == null || rounded.length < layers) rounded = new float[layers];
+		if (nonzero == null || nonzero.length < layers) nonzero = new boolean[layers];
+		if (solid == null || solid.length < layers) solid = new boolean[layers];
+		for (int y = 0; y < layers; ++y) {
+			averages[y] = 0;
+			for (int z = 0; z < 16; ++z) {
+				for (int x = 0; x < 16; ++x) {
+					int coords = y << 8 | z << 4 | x;
+					averages[y] += (solidmap.data[coords] / (float) solidmap.count);
+				}
+			}
+			averages[y] /= 256;
+			if (minimum > averages[y]) minimum = averages[y];
+			if (maximum < averages[y]) maximum = averages[y];
+		}
+		for (int y = 0; y < layers; ++y) {
+			filtered[y] = averages[y] - minimum;
+			if (filtered[y] < 0) filtered[y] = 0;
+			nonzero[y] = filtered[y] > 0;
+			rounded[y] = Math.round(100 * filtered[y]) / 100F;
+			if (rounded[y] > 0) {
+				groundsum += rounded[y];
+				++groundcount;
+			}
+		}
+		float ground = groundsum / groundcount;
+		for (int y = 0; y < layers; ++y) {
+			solid[y] = rounded[y] > ground;
+			accessibility[y] = (solid[y] ? 1 - rounded[y] : 1);
+		}
 		HashMap<String, Float> split = new HashMap<String, Float>();
 		//For all cells, calculate instability
 		for (int y = 0; y < layers; ++y) {
 			for (int z = 0; z < 16; ++z) {
 				for (int x = 0; x < 16; ++x) {
 					int coords = y << 8 | z << 4 | x;
-					float availability = 1 - (solid.data[coords] / (float) solid.count);
+					float availability = accessibility[y];
 					for (String blockkey : InstabilityBlockManager.getWatchedBlocks()) {
 						ChunkProfileData map = blockmaps.get(blockkey);
 						if (map.count < 100) continue;
@@ -147,7 +196,7 @@ public class ChunkProfiler extends WorldSavedData {
 		} catch (InterruptedException e) {
 			throw new RuntimeException("Failed to acquire semaphore to profile chunk (interrupted)!");
 		}
-		profileChunk(chunk, solid, blockmaps);
+		profileChunk(chunk, solidmap, blockmaps);
 		++count;
 		this.markDirty();
 		semaphore.release();
@@ -201,7 +250,7 @@ public class ChunkProfiler extends WorldSavedData {
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		ChunkProfilerManager.ensureSafeSave();
-		nbt.setTag("solid", solid.writeToNBT(new NBTTagCompound()));
+		nbt.setTag("solid", solidmap.writeToNBT(new NBTTagCompound()));
 		if (blockmaps == null) return;
 		for (Map.Entry<String, ChunkProfileData> entry : blockmaps.entrySet()) {
 			String blockkey = entry.getKey();
@@ -213,8 +262,8 @@ public class ChunkProfiler extends WorldSavedData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		solid.readFromNBT(nbt.getCompoundTag("solid"));
-		count = solid.count;
+		solidmap.readFromNBT(nbt.getCompoundTag("solid"));
+		count = solidmap.count;
 		if (nbt.hasKey("tile.myst.fluid")) {
 			nbt.setTag("tile.myst.fluid.myst.ink.black", nbt.getTag("tile.myst.fluid"));
 		}
@@ -234,7 +283,7 @@ public class ChunkProfiler extends WorldSavedData {
 		} catch (InterruptedException e) {
 			throw new RuntimeException("Failed to acquire semaphore to profile chunk (interrupted)!");
 		}
-		outputDebug(solid.data, solid.count, "logs/profiling/solid2.txt");
+		outputDebug(solidmap.data, solidmap.count, "logs/profiling/solid2.txt");
 		if (blockmaps != null) {
 			for (Map.Entry<String, ChunkProfileData> entry : blockmaps.entrySet()) {
 				ChunkProfileData map = entry.getValue();
@@ -293,7 +342,7 @@ public class ChunkProfiler extends WorldSavedData {
 		try {
 			semaphore.acquire();
 			count = 0;
-			solid = new ChunkProfileData();
+			solidmap = new ChunkProfileData();
 			blockmaps = new HashMap<String, ChunkProfileData>();
 			for (String blockkey : InstabilityBlockManager.getWatchedBlocks()) {
 				blockmaps.put(blockkey, new ChunkProfileData());
