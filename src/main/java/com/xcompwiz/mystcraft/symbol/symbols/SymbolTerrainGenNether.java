@@ -37,11 +37,6 @@ public class SymbolTerrainGenNether extends SymbolBase {
 		return "TerrainNether";
 	}
 
-	@Override
-	public int instabilityModifier(int count) {
-		return InstabilityData.symbol.caveworld;
-	}
-
 	private static class TerrainGenerator extends TerrainGeneratorBase {
 		private Random					rand;
 		private NoiseGeneratorOctaves	noiseGen1;
