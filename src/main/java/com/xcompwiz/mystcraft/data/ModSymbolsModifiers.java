@@ -93,6 +93,8 @@ public class ModSymbolsModifiers {
 		BlockModifierContainerObject.create(WordData.Ore, 3, Blocks.iron_ore, 0).register().add(BlockCategory.SOLID, 4).add(BlockCategory.STRUCTURE, 4);
 		BlockModifierContainerObject.create(WordData.Ore, 3, Blocks.coal_ore, 0).register().add(BlockCategory.SOLID, 4).add(BlockCategory.STRUCTURE, 4);
 		BlockModifierContainerObject.create(WordData.Ore, 4, Blocks.redstone_ore, 0).register().add(BlockCategory.SOLID, 5).add(BlockCategory.STRUCTURE, 5);
+		BlockModifierContainerObject.create(WordData.Ore, 3, Blocks.lapis_ore, 0).register().add(BlockCategory.SOLID, 4).add(BlockCategory.STRUCTURE, 4);
+		BlockModifierContainerObject.create(WordData.Ore, 4, Blocks.emerald_ore, 0).register().add(BlockCategory.SOLID, 5).add(BlockCategory.STRUCTURE, 5);
 
 		BlockModifierContainerObject.create(WordData.Chain, 2, Blocks.ice, 0).register().add(BlockCategory.SOLID, 3).add(BlockCategory.FLUID, 3).add(BlockCategory.SEA, 2).add(BlockCategory.STRUCTURE, 3).add(BlockCategory.CRYSTAL, 3);
 		BlockModifierContainerObject.create(WordData.Chain, 2, Blocks.packed_ice, 0).register().add(BlockCategory.SOLID, 3).add(BlockCategory.FLUID, 3).add(BlockCategory.TERRAIN, 3).add(BlockCategory.SEA, 3).add(BlockCategory.STRUCTURE, 3).add(BlockCategory.CRYSTAL, 3);

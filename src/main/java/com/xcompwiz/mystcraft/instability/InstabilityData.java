@@ -22,13 +22,11 @@ import com.xcompwiz.mystcraft.instability.providers.ProviderScorched;
 
 public class InstabilityData {
 	private static class deckcost {
-
 		public static int	basic		= 0;
 		public static int	harsh		= 2500;
 		public static int	destructive	= 10000;
 		public static int	eating		= 15000;
 		public static int	death		= 20000;
-
 	}
 
 	@SuppressWarnings("unused")
@@ -109,15 +107,17 @@ public class InstabilityData {
 	}
 
 	public static void initialize() {
-		InstabilityBlockManager.setInstabilityFactors(Blocks.coal_ore, 5, 1);			// 200
-		InstabilityBlockManager.setInstabilityFactors(Blocks.iron_ore, 60, 1);		// 500
-		InstabilityBlockManager.setInstabilityFactors(Blocks.redstone_ore, 250, 2);	// 500
-		InstabilityBlockManager.setInstabilityFactors(Blocks.gold_ore, 750, 4);		// 500
-		InstabilityBlockManager.setInstabilityFactors(Blocks.diamond_ore, 4000, 20);	//1000
+		InstabilityBlockManager.setInstabilityFactors(Blocks.coal_ore, 5, 1);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.lapis_ore, 5, 1);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.iron_ore, 60, 1);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.emerald_ore, 200, 2);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.redstone_ore, 250, 2);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.gold_ore, 750, 4);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.diamond_ore, 4000, 20);
 
-		InstabilityBlockManager.setInstabilityFactors(ModBlocks.crystal, 20, 4);		//   0
-		InstabilityBlockManager.setInstabilityFactors(Blocks.glowstone, 50, 4);		//   0
-		InstabilityBlockManager.setInstabilityFactors(Blocks.quartz_ore, 20, 4);		//   0
+		InstabilityBlockManager.setInstabilityFactors(ModBlocks.crystal, 20, 4);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.glowstone, 50, 4);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.quartz_ore, 20, 4);
 
 		//TODO: (Instability) Implement missing Instability effects
 		InstabilityManager.setDeckCost("basic", deckcost.basic);

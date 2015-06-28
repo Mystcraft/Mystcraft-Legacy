@@ -86,6 +86,8 @@ public class InstabilityDataCalculator {
 		defaults.put("tile.oreCoal", 300);
 		defaults.put("tile.oreIron", 500);
 		defaults.put("tile.oreGold", 500);
+		defaults.put("tile.oreLapis", 100);
+		defaults.put("tile.oreEmerald", 100);
 		defaults.put("tile.oreRedstone", 600);
 		defaults.put("tile.oreDiamond", 1000);
 		defaults.put("tile.myst_crystal", 0);
