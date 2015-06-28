@@ -10,13 +10,16 @@ import com.google.common.annotations.Beta;
 public interface IBiomeController {
 	public abstract List<BiomeGenBase> getValidSpawnBiomes();
 
-	public abstract float[] getRainfallField(float af[], int x, int z, int x1, int z1);
+	/**
+	 * In practice, this function is useless.  Minecraft has it and it is called, but the results are never used.
+	 */
+	public abstract float[] getRainfallField(float rainfall[], int x, int z, int xSize, int zSize);
 
-	public abstract BiomeGenBase getBiomeAtCoords(int i, int j);
+	public abstract BiomeGenBase getBiomeAtCoords(int x, int z);
 
-	public abstract BiomeGenBase[] getBiomesAtCoords(BiomeGenBase abiomegenbase[], int i, int j, int k, int l, boolean flag);
+	public abstract BiomeGenBase[] getBiomesAtCoords(BiomeGenBase abiomegenbase[], int x, int z, int xSize, int zSize, boolean usecache);
 
-	public abstract BiomeGenBase[] getBiomesFromGenerationField(BiomeGenBase[] abiomegenbase, int i, int j, int k, int l);
+	public abstract BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] abiomegenbase, int x, int z, int xSize, int zSize);
 
 	public abstract void cleanupCache();
 }

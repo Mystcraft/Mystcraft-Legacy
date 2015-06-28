@@ -511,6 +511,36 @@ public class AgeController implements AgeDirector {
 		return chunkprofiler;
 	}
 
+	public void modifyBiomeAt(BiomeGenBase biome, int x, int z) {
+		validate();
+		//TODO: Biome Modifications
+//		if (biomemodifiers != null && biomemodifiers.size() > 0) {
+//			for (IBiomeAlteration mod : biomemodifiers) {
+//				mod.modifyBiomesAt(abiomegenbase, x, z, xSize, zSize, usecache);
+//			}
+//		}
+	}
+
+	public void modifyBiomesAt(BiomeGenBase abiomegenbase[], int x, int z, int xSize, int zSize, boolean usecache) {
+		validate();
+		//TODO: Biome Modifications
+//		if (biomemodifiers != null && biomemodifiers.size() > 0) {
+//			for (IBiomeAlteration mod : biomemodifiers) {
+//				mod.modifyBiomesAt(abiomegenbase, x, z, xSize, zSize, usecache);
+//			}
+//		}
+	}
+
+	public void modifyGenerationBiomesAt(BiomeGenBase abiomegenbase[], int x, int z, int xSize, int zSize) {
+		validate();
+		//TODO: Biome Modifications
+//		if (biomemodifiers != null && biomemodifiers.size() > 0) {
+//			for (IBiomeAlteration mod : biomemodifiers) {
+//				mod.modifyGenerationBiomesAt(abiomegenbase, x, z, xSize, zSize, usecache);
+//			}
+//		}
+	}
+
 	public void generateTerrain(int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {
 		validate();
 		getTerrainGenerator().generateTerrain(chunkX, chunkZ, blocks, metadata);

@@ -17,39 +17,26 @@ public class WorldChunkManagerMyst extends WorldChunkManager {
 	}
 
 	@Override
-	public List getBiomesToSpawnIn() {
-		return controller.getBiomeController().getValidSpawnBiomes();
+	public List<BiomeGenBase> getBiomesToSpawnIn() {
+		List<BiomeGenBase> list = controller.getBiomeController().getValidSpawnBiomes();
+		return list;
 	}
 
 	@Override
-	public BiomeGenBase getBiomeGenAt(int i, int j) {
-		return controller.getBiomeController().getBiomeAtCoords(i, j);
+	public BiomeGenBase getBiomeGenAt(int x, int z) {
+		BiomeGenBase biome = controller.getBiomeController().getBiomeAtCoords(x, z);
+		controller.modifyBiomeAt(biome, x, z);
+		return biome;
 	}
 
-	/**
-	 * I'm not really sure why this function exists. The only use for it is to build an array in the BiomeCache that nothing ever reads from.
-	 */
 	@Override
-	public float[] getRainfall(float af[], int i, int j, int k, int l) {
+	public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase abiomegenbase[], int x, int z, int xSize, int zSize) {
 		IntCache.resetIntCache();
-		if (af == null || af.length < k * l) {
-			af = new float[k * l];
+		if (abiomegenbase == null || abiomegenbase.length < xSize * zSize) {
+			abiomegenbase = new BiomeGenBase[xSize * zSize];
 		}
-		return controller.getBiomeController().getRainfallField(af, i, j, k, l);
-	}
-
-	@Override
-	public float getTemperatureAtHeight(float temp, int y) {
-		return controller.getTemperatureAtHeight(temp, y);
-	}
-
-	@Override
-	public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase abiomegenbase[], int i, int j, int k, int l) {
-		IntCache.resetIntCache();
-		if (abiomegenbase == null || abiomegenbase.length < k * l) {
-			abiomegenbase = new BiomeGenBase[k * l];
-		}
-		abiomegenbase = controller.getBiomeController().getBiomesFromGenerationField(abiomegenbase, i, j, k, l);
+		abiomegenbase = controller.getBiomeController().getBiomesForGeneration(abiomegenbase, x, z, xSize, zSize);
+		controller.modifyGenerationBiomesAt(abiomegenbase, x, z, xSize, zSize);
 		return abiomegenbase;
 	}
 
@@ -59,14 +46,19 @@ public class WorldChunkManagerMyst extends WorldChunkManager {
 	}
 
 	@Override
-	public BiomeGenBase[] getBiomeGenAt(BiomeGenBase abiomegenbase[], int i, int j, int k, int l, boolean flag) {
+	public BiomeGenBase[] getBiomeGenAt(BiomeGenBase abiomegenbase[], int x, int z, int xSize, int zSize, boolean usecache) {
 		IntCache.resetIntCache();
-		if (abiomegenbase == null || abiomegenbase.length < k * l) {
-			abiomegenbase = new BiomeGenBase[k * l];
+		if (abiomegenbase == null || abiomegenbase.length < xSize * zSize) {
+			abiomegenbase = new BiomeGenBase[xSize * zSize];
 		}
-		abiomegenbase = controller.getBiomeController().getBiomesAtCoords(abiomegenbase, i, j, k, l, flag);
-
+		abiomegenbase = controller.getBiomeController().getBiomesAtCoords(abiomegenbase, x, z, xSize, zSize, usecache);
+		controller.modifyBiomesAt(abiomegenbase, x, z, xSize, zSize, usecache);
 		return abiomegenbase;
+	}
+
+	@Override
+	public float getTemperatureAtHeight(float temp, int y) {
+		return controller.getTemperatureAtHeight(temp, y);
 	}
 
 	@Override
@@ -106,6 +98,18 @@ public class WorldChunkManagerMyst extends WorldChunkManager {
 		}
 
 		return chunkposition;
+	}
+
+	/**
+	 * I'm not really sure why this function exists. The only use for it is to build an array in the BiomeCache that nothing ever reads from.
+	 */
+	@Override
+	public float[] getRainfall(float af[], int i, int j, int k, int l) {
+		IntCache.resetIntCache();
+		if (af == null || af.length < k * l) {
+			af = new float[k * l];
+		}
+		return controller.getBiomeController().getRainfallField(af, i, j, k, l);
 	}
 
 	@Override

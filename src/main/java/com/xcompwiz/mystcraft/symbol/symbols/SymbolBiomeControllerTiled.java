@@ -74,26 +74,26 @@ public class SymbolBiomeControllerTiled extends SymbolBase {
 		}
 
 		@Override
-		public BiomeGenBase[] getBiomesFromGenerationField(BiomeGenBase[] abiomegenbase, int i, int j, int k, int l) {
-			if (abiomegenbase == null || abiomegenbase.length < k * l) {
-				abiomegenbase = new BiomeGenBase[k * l];
+		public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] abiomegenbase, int x, int z, int xSize, int zSize) {
+			if (abiomegenbase == null || abiomegenbase.length < xSize * zSize) {
+				abiomegenbase = new BiomeGenBase[xSize * zSize];
 			}
 
-			for (int var7 = 0; var7 < k * l; ++var7) {
-				abiomegenbase[var7] = getBiomeAtCoords(i + var7 % k, j + var7 / k);
+			for (int i = 0; i < xSize * zSize; ++i) {
+				abiomegenbase[i] = getBiomeAtCoords(x + i % xSize, z + i / xSize);
 			}
 
 			return abiomegenbase;
 		}
 
 		@Override
-		public BiomeGenBase[] getBiomesAtCoords(BiomeGenBase[] abiomegenbase, int i, int j, int k, int l, boolean flag) {
-			if (abiomegenbase == null || abiomegenbase.length < k * l) {
-				abiomegenbase = new BiomeGenBase[k * l];
+		public BiomeGenBase[] getBiomesAtCoords(BiomeGenBase[] abiomegenbase, int x, int z, int xSize, int zSize, boolean flag) {
+			if (abiomegenbase == null || abiomegenbase.length < xSize * zSize) {
+				abiomegenbase = new BiomeGenBase[xSize * zSize];
 			}
-			if (flag && k == 16 && l == 16 && (i & 0xf) == 0 && (j & 0xf) == 0) { return createBiomeArray(abiomegenbase, i, j, k, l); }
-			for (int i1 = 0; i1 < k * l; i1++) {
-				abiomegenbase[i1] = getBiomeAtCoords(i + i1 % k, j + i1 / k);
+			if (flag && xSize == 16 && zSize == 16 && (x & 0xf) == 0 && (z & 0xf) == 0) { return createBiomeArray(abiomegenbase, x, z, xSize, zSize); }
+			for (int i = 0; i < xSize * zSize; i++) {
+				abiomegenbase[i] = getBiomeAtCoords(x + i % xSize, z + i / xSize);
 			}
 
 			return abiomegenbase;

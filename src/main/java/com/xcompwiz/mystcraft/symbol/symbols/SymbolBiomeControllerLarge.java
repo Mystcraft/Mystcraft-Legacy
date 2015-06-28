@@ -124,7 +124,7 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 		 * Returns an array of biomes for the location input.
 		 */
 		@Override
-		public BiomeGenBase[] getBiomesFromGenerationField(BiomeGenBase par1ArrayOfBiomeGenBase[], int par2, int par3, int par4, int par5) {
+		public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase par1ArrayOfBiomeGenBase[], int par2, int par3, int par4, int par5) {
 			IntCache.resetIntCache();
 
 			if (par1ArrayOfBiomeGenBase == null || par1ArrayOfBiomeGenBase.length < par4 * par5) {

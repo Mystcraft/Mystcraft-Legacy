@@ -74,7 +74,7 @@ public class SymbolBiomeControllerGrid extends SymbolBase {
 		}
 
 		@Override
-		public BiomeGenBase[] getBiomesFromGenerationField(BiomeGenBase[] abiomegenbase, int i, int j, int k, int l) {
+		public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] abiomegenbase, int i, int j, int k, int l) {
 			if (abiomegenbase == null || abiomegenbase.length < k * l) {
 				abiomegenbase = new BiomeGenBase[k * l];
 			}

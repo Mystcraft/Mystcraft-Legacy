@@ -56,7 +56,7 @@ public class SymbolBiomeControllerNative extends SymbolBase {
 		 * Returns an array of biomes for the location input.
 		 */
 		@Override
-		public BiomeGenBase[] getBiomesFromGenerationField(BiomeGenBase par1ArrayOfBiomeGenBase[], int par2, int par3, int par4, int par5) {
+		public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase par1ArrayOfBiomeGenBase[], int par2, int par3, int par4, int par5) {
 			return manager.getBiomesForGeneration(par1ArrayOfBiomeGenBase, par2, par3, par4, par5);
 		}
 
