@@ -120,8 +120,10 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 			ARBShaderObjects.glUniform4fARB(linkColorLoc, linkColorR, linkColorG, linkColorB, 1f);
 
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		} else if (!activeview.isReady()) {
+			//TODO: if not ready and shaders off render black
+			return;
 		}
-		//TODO: if not ready and shaders off render black
 
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
 		Tessellator tessellator = Tessellator.instance;
