@@ -18,10 +18,18 @@ public class GrammarData {
 	public static final String	TERRAIN			= "TerrainGen";
 	/** Generates a Visual Effect like Sky or Fog Color */
 	public static final String	VISUAL_EFFECT	= "Visual";
-	/** Generates a Terrain Alteration */
-	public static final String	TERRAINALT		= "TerrainAlt";
-	/** Generates a Populator */
-	public static final String	POPULATOR		= "Populator";
+	/** Generates a small world feature */
+	public static final String	FEATURE_SMALL	= "FeatureSmall";
+	/** Generates a small world feature */
+	public static final String	FEATURE_MEDIUM	= "FeatureMedium";
+	/** Generates a small world feature */
+	public static final String	FEATURE_LARGE	= "FeatureLarge";
+	/** @deprecated Use one of the FEATURE tokens. This now maps to FEATURE_LARGE. */
+	@Deprecated
+	public static final String	TERRAINALT		= FEATURE_LARGE;
+	/** @deprecated Use one of the FEATURE tokens. This now maps to FEATURE_MEDIUM. */
+	@Deprecated
+	public static final String	POPULATOR		= FEATURE_MEDIUM;
 	/** Generates a world Effect, like Accelerated */
 	public static final String	EFFECT			= "Effect";
 	/** Generates a Sun */

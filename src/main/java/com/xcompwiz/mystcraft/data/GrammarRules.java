@@ -16,11 +16,14 @@ public class GrammarRules {
 	private static final String	VISUAL_EFFECT_GEN	= "VisualsAdv";
 	private static final String	VISUAL_EFFECT_EXT	= "VisualsExt";
 
-	private static final String	TERRAINALT_GEN		= "TerrainAltAdv";
-	private static final String	TERRAINALT_EXT		= "TerrainAltExt";
+	private static final String	FEATURE_LARGE_GEN	= "FeatureLargeAdv";
+	private static final String	FEATURE_LARGE_EXT	= "FeatureLargeExt";
 
-	private static final String	POPULATOR_GEN		= "PopulatorAdv";
-	private static final String	POPULATOR_EXT		= "PopulatorExt";
+	private static final String	FEATURE_MEDIUM_GEN	= "FeatureMediumAdv";
+	private static final String	FEATURE_MEDIUM_EXT	= "FeatureMediumExt";
+
+	private static final String	FEATURE_SMALL_GEN	= "FeatureSmallAdv";
+	private static final String	FEATURE_SMALL_EXT	= "FeatureSmallExt";
 
 	private static final String	EFFECT_GEN			= "EffectsAdv";
 	private static final String	EFFECT_EXT			= "EffectsExt";
@@ -53,7 +56,7 @@ public class GrammarRules {
 	public static final String	BLOCK_NONSOLID		= "BLOCK_NONSOLID";
 
 	public static void initialize() {
-		registerRule(buildRule(0, ROOT, GrammarData.TERRAIN, GrammarData.BIOMECONTROLLER, GrammarData.WEATHER, GrammarData.LIGHTING, "Spawning0", "Suns0", "Moons0", "Starfields0", "Doodads0", "Visuals0", "TerrainAlts0", "Populators0", "Effects0"));
+		registerRule(buildRule(0, ROOT, GrammarData.TERRAIN, GrammarData.BIOMECONTROLLER, GrammarData.WEATHER, GrammarData.LIGHTING, "Spawning0", "Suns0", "Moons0", "Starfields0", "Doodads0", "Visuals0", "FeatureSmalls0", "FeatureMediums0", "FeatureLarges0", "Effects0"));
 
 		registerRule(buildRule(10, "Spawning0"));
 
@@ -102,21 +105,29 @@ public class GrammarRules {
 		registerRule(buildRule(1, VISUAL_EFFECT_EXT));
 		registerRule(buildRule(1, GrammarData.VISUAL_EFFECT));
 
-		registerRule(buildRule(1, "TerrainAlts0", TERRAINALT_GEN));
-		registerRule(buildRule(2, TERRAINALT_GEN, TERRAINALT_GEN, GrammarData.TERRAINALT));
-		registerRule(buildRule(2, TERRAINALT_GEN, GrammarData.TERRAINALT));
-		registerRule(buildRule(null, "TerrainAlts0", TERRAINALT_EXT, GrammarData.TERRAINALT));
-		registerRule(buildRule(null, TERRAINALT_EXT, TERRAINALT_EXT, GrammarData.TERRAINALT));
-		registerRule(buildRule(1, TERRAINALT_EXT));
-		registerRule(buildRule(4, GrammarData.TERRAINALT));
+		registerRule(buildRule(1, "FeatureLarges0", FEATURE_LARGE_GEN));
+		registerRule(buildRule(2, FEATURE_LARGE_GEN, FEATURE_LARGE_GEN, GrammarData.FEATURE_LARGE));
+		registerRule(buildRule(2, FEATURE_LARGE_GEN, GrammarData.FEATURE_LARGE));
+		registerRule(buildRule(null, "FeatureLarges0", FEATURE_LARGE_EXT, GrammarData.FEATURE_LARGE));
+		registerRule(buildRule(null, FEATURE_LARGE_EXT, FEATURE_LARGE_EXT, GrammarData.FEATURE_LARGE));
+		registerRule(buildRule(1, FEATURE_LARGE_EXT));
+		registerRule(buildRule(4, GrammarData.FEATURE_LARGE));
 
-		registerRule(buildRule(1, "Populators0", POPULATOR_GEN));
-		registerRule(buildRule(2, POPULATOR_GEN, POPULATOR_GEN, GrammarData.POPULATOR));
-		registerRule(buildRule(3, POPULATOR_GEN, GrammarData.POPULATOR, GrammarData.POPULATOR));
-		registerRule(buildRule(null, "Populators0", POPULATOR_EXT, GrammarData.POPULATOR));
-		registerRule(buildRule(null, POPULATOR_EXT, POPULATOR_EXT, GrammarData.POPULATOR));
-		registerRule(buildRule(1, POPULATOR_EXT));
-		registerRule(buildRule(4, GrammarData.POPULATOR));
+		registerRule(buildRule(1, "FeatureMediums0", FEATURE_MEDIUM_GEN));
+		registerRule(buildRule(2, FEATURE_MEDIUM_GEN, FEATURE_MEDIUM_GEN, GrammarData.FEATURE_MEDIUM));
+		registerRule(buildRule(3, FEATURE_MEDIUM_GEN, GrammarData.FEATURE_MEDIUM));
+		registerRule(buildRule(null, "FeatureMediums0", FEATURE_MEDIUM_EXT, GrammarData.FEATURE_MEDIUM));
+		registerRule(buildRule(null, FEATURE_MEDIUM_EXT, FEATURE_MEDIUM_EXT, GrammarData.FEATURE_MEDIUM));
+		registerRule(buildRule(1, FEATURE_MEDIUM_EXT));
+		registerRule(buildRule(4, GrammarData.FEATURE_MEDIUM));
+
+		registerRule(buildRule(1, "FeatureSmalls0", FEATURE_SMALL_GEN));
+		registerRule(buildRule(2, FEATURE_SMALL_GEN, FEATURE_SMALL_GEN, GrammarData.FEATURE_SMALL));
+		registerRule(buildRule(4, FEATURE_SMALL_GEN, GrammarData.FEATURE_SMALL));
+		registerRule(buildRule(null, "FeatureSmalls0", FEATURE_SMALL_EXT, GrammarData.FEATURE_SMALL));
+		registerRule(buildRule(null, FEATURE_SMALL_EXT, FEATURE_SMALL_EXT, GrammarData.FEATURE_SMALL));
+		registerRule(buildRule(1, FEATURE_SMALL_EXT));
+		registerRule(buildRule(4, GrammarData.FEATURE_SMALL));
 
 		registerRule(buildRule(1, "Effects0", EFFECT_GEN));
 		registerRule(buildRule(3, EFFECT_GEN, EFFECT_GEN, GrammarData.EFFECT));

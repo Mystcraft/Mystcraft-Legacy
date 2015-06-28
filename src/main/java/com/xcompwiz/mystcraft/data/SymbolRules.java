@@ -96,28 +96,27 @@ public class SymbolRules {
 		addRule("BioConLarge", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST, GrammarData.BIOME, GrammarData.BIOME, "BioConLarge"));
 		addRule("BioConHuge", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST, GrammarData.BIOME, GrammarData.BIOME, "BioConHuge"));
 
-		addRule("FloatIslands", buildRule(4, GrammarData.TERRAINALT, GrammarData.BIOME, GrammarData.BLOCK_STRUCTURE, "FloatIslands"));
-		addRule("Tendrils", buildRule(4, GrammarData.TERRAINALT, GrammarData.BLOCK_STRUCTURE, "Tendrils"));
-		addRule("Skylands", buildRule(5, GrammarData.TERRAINALT, "Skylands"));
-		addRule("Ravines", buildRule(1, GrammarData.TERRAINALT, "Ravines"));
-		addRule("Caves", buildRule(1, GrammarData.TERRAINALT, "Caves"));
-		addRule("TerModSpheres", buildRule(3, GrammarData.TERRAINALT, GrammarData.BLOCK_STRUCTURE, "TerModSpheres"));
+		addRule("FloatIslands", buildRule(4, GrammarData.FEATURE_LARGE, GrammarData.BIOME, GrammarData.BLOCK_STRUCTURE, "FloatIslands"));
+		addRule("Tendrils", buildRule(4, GrammarData.FEATURE_LARGE, GrammarData.BLOCK_STRUCTURE, "Tendrils"));
+		addRule("Skylands", buildRule(5, GrammarData.FEATURE_LARGE, "Skylands"));
+		addRule("Caves", buildRule(1, GrammarData.FEATURE_LARGE, "Caves"));
+		addRule("DenseOres", buildRule(null, GrammarData.FEATURE_LARGE, "DenseOres"));
+		addRule("HugeTrees", buildRule(2, GrammarData.FEATURE_LARGE, "HugeTrees"));
+		addRule("NetherFort", buildRule(2, GrammarData.FEATURE_LARGE, "NetherFort"));
+		addRule("Villages", buildRule(1, GrammarData.FEATURE_LARGE, "Villages"));
+		addRule("Strongholds", buildRule(1, GrammarData.FEATURE_LARGE, "Strongholds"));
+		addRule("Mineshafts", buildRule(1, GrammarData.FEATURE_LARGE, "Mineshafts"));
 
-		addRule("NetherFort", buildRule(2, GrammarData.POPULATOR, "NetherFort"));
-		addRule("Villages", buildRule(1, GrammarData.POPULATOR, "Villages"));
-		addRule("Strongholds", buildRule(1, GrammarData.POPULATOR, "Strongholds"));
-		addRule("Mineshafts", buildRule(1, GrammarData.POPULATOR, "Mineshafts"));
-		addRule("Dungeons", buildRule(2, GrammarData.POPULATOR, "Dungeons"));
-		addRule("Obelisks", buildRule(3, GrammarData.POPULATOR, GrammarData.BLOCK_STRUCTURE, "Obelisks"));
-		addRule("DenseOres", buildRule(null, GrammarData.POPULATOR, "DenseOres"));
+		addRule("Ravines", buildRule(1, GrammarData.FEATURE_MEDIUM, "Ravines"));
+		addRule("TerModSpheres", buildRule(3, GrammarData.FEATURE_MEDIUM, GrammarData.BLOCK_STRUCTURE, "TerModSpheres"));
+		addRule("Dungeons", buildRule(2, GrammarData.FEATURE_MEDIUM, "Dungeons"));
+		addRule("GenSpikes", buildRule(3, GrammarData.FEATURE_MEDIUM, GrammarData.BLOCK_STRUCTURE, "GenSpikes"));
+		addRule("StarFissure", buildRule(3, GrammarData.FEATURE_MEDIUM, "StarFissure"));
 
-		addRule("StarFissure", buildRule(3, GrammarData.POPULATOR, "StarFissure"));
-		addRule("LakesSurface", buildRule(1, GrammarData.POPULATOR, GrammarData.BLOCK_FLUID, "LakesSurface"));
-		addRule("LakesDeep", buildRule(1, GrammarData.POPULATOR, GrammarRules.BLOCK_NONSOLID, "LakesDeep"));
-		addRule("HugeTrees", buildRule(2, GrammarData.POPULATOR, "HugeTrees"));
-
-		addRule("GenSpikes", buildRule(3, GrammarData.POPULATOR, GrammarData.BLOCK_STRUCTURE, "GenSpikes"));
-		addRule("CryForm", buildRule(3, GrammarData.POPULATOR, GrammarData.BLOCK_CRYSTAL, "CryForm"));
+		addRule("Obelisks", buildRule(3, GrammarData.FEATURE_SMALL, GrammarData.BLOCK_STRUCTURE, "Obelisks"));
+		addRule("LakesSurface", buildRule(1, GrammarData.FEATURE_SMALL, GrammarData.BLOCK_FLUID, "LakesSurface"));
+		addRule("LakesDeep", buildRule(1, GrammarData.FEATURE_SMALL, GrammarRules.BLOCK_NONSOLID, "LakesDeep"));
+		addRule("CryForm", buildRule(3, GrammarData.FEATURE_SMALL, GrammarData.BLOCK_CRYSTAL, "CryForm"));
 	}
 
 	private static void addRule(String string, Rule rule) {
