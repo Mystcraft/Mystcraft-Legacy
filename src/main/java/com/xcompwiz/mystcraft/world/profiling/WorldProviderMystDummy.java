@@ -171,17 +171,17 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		return "CONTROL";
 	}
 
-	//We implement this to bypass the special biome wrappers
+	//We implement this to avoid the weather object updates (since we didn't instantiate them)
 	@Override
 	public void updateWeather() {
 		getAgeController().tick();
 		getAgeController().getWeatherController().updateRaining();
 	}
 
-	//We implement this to avoid the weather object updates (since we didn't instantiate them)
+	//We implement this to bypass the special biome wrappers (since we didn't instantiate them)
 	@Override
 	public BiomeGenBase getBiomeGenForCoords(int x, int z) {
-		return controller.getBiomeController().getBiomeAtCoords(x, z);
+		return this.worldChunkMgr.getBiomeGenAt(x, z);
 	}
 
 	@Override

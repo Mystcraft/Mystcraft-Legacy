@@ -26,6 +26,9 @@ public class WorldChunkManagerMyst extends WorldChunkManager {
 		return controller.getBiomeController().getBiomeAtCoords(i, j);
 	}
 
+	/**
+	 * I'm not really sure why this function exists. The only use for it is to build an array in the BiomeCache that nothing ever reads from.
+	 */
 	@Override
 	public float[] getRainfall(float af[], int i, int j, int k, int l) {
 		IntCache.resetIntCache();

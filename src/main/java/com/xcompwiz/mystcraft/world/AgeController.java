@@ -628,7 +628,7 @@ public class AgeController implements AgeDirector {
 	}
 
 	public float getTemperatureAtHeight(float temp, int y) {
-		return temp;
+		return temp; //TODO: This function could be expanded upon
 	}
 
 	@SideOnly(Side.CLIENT)
