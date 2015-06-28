@@ -15,6 +15,11 @@ import com.xcompwiz.mystcraft.world.gen.feature.WorldGenMystCrystalFormation;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
 public class SymbolCrystalFormation extends SymbolBase {
+
+	public SymbolCrystalFormation(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		WorldGenMystCrystalFormation generator;
@@ -25,11 +30,6 @@ public class SymbolCrystalFormation extends SymbolBase {
 			generator = new WorldGenMystCrystalFormation(ModBlocks.crystal);
 		}
 		controller.registerInterface(new Populator(generator));
-	}
-
-	@Override
-	public String identifier() {
-		return "CryForm";
 	}
 
 	private static class Populator implements IPopulate {

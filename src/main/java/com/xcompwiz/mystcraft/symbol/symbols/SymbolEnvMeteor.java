@@ -6,14 +6,14 @@ import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolEnvMeteor extends SymbolBase {
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new EffectMeteor());
+	
+	public SymbolEnvMeteor(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "EnvMeteor";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new EffectMeteor());
 	}
 
 	@Override

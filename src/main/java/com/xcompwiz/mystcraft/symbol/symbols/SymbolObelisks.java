@@ -16,15 +16,14 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolObelisks extends SymbolBase {
 
+	public SymbolObelisks(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		BlockDescriptor block = ModifierUtils.popBlockMatching(controller, BlockCategory.STRUCTURE);
 		controller.registerInterface(new Populator(block));
-	}
-
-	@Override
-	public String identifier() {
-		return "Obelisks";
 	}
 
 	private class Populator implements IPopulate {

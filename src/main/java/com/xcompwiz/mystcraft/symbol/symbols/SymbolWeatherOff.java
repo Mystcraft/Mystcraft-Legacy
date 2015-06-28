@@ -6,16 +6,13 @@ import com.xcompwiz.mystcraft.symbol.WeatherControllerToggleable;
 
 public class SymbolWeatherOff extends SymbolBase {
 
-	public SymbolWeatherOff() {}
+	public SymbolWeatherOff(String identifier) {
+		super(identifier);
+	}
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		controller.registerInterface(new WeatherController());
-	}
-
-	@Override
-	public String identifier() {
-		return "WeatherOff";
 	}
 
 	private static class WeatherController extends WeatherControllerToggleable {

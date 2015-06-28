@@ -7,14 +7,13 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolLightingBright extends SymbolBase {
 
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new LightingController());
+	public SymbolLightingBright(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "LightingBright";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new LightingController());
 	}
 
 	@Override

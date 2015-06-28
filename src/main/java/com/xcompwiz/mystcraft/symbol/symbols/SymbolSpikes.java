@@ -15,6 +15,11 @@ import com.xcompwiz.mystcraft.world.gen.feature.WorldGenSpikesAdv;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
 public class SymbolSpikes extends SymbolBase {
+
+	public SymbolSpikes(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		BlockDescriptor block = ModifierUtils.popBlockMatching(controller, BlockCategory.STRUCTURE);
@@ -25,11 +30,6 @@ public class SymbolSpikes extends SymbolBase {
 			generator = new WorldGenSpikesAdv(Blocks.stone);
 		}
 		controller.registerInterface(new Populator(generator));
-	}
-
-	@Override
-	public String identifier() {
-		return "GenSpikes";
 	}
 
 	private static class Populator implements IPopulate {

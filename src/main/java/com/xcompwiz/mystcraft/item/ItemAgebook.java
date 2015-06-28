@@ -23,6 +23,7 @@ import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.page.Page;
+import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 import cpw.mods.fml.relauncher.Side;
@@ -118,7 +119,7 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		LinkOptions.setDimensionUID(itemstack.stackTagCompound, dimid);
 		LinkOptions.setUUID(itemstack.stackTagCompound, agedata.getUUID());
 		agedata.setAgeName(LinkOptions.getDisplayName(itemstack.stackTagCompound));
-		agedata.setPages(getPageList(null, itemstack));
+		agedata.setPages(SymbolRemappings.remap(getPageList(null, itemstack)));
 	}
 
 	@Override

@@ -12,7 +12,8 @@ public class SymbolNoSea extends SymbolBase {
 
 	private BlockDescriptor	blockDescriptor;
 
-	public SymbolNoSea() {
+	public SymbolNoSea(String identifier) {
+		super(identifier);
 		blockDescriptor = new BlockDescriptor(Blocks.air);
 		blockDescriptor.setUsable(BlockCategory.SEA, true);
 	}
@@ -20,10 +21,5 @@ public class SymbolNoSea extends SymbolBase {
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		ModifierUtils.pushBlock(controller, blockDescriptor);
-	}
-
-	@Override
-	public String identifier() {
-		return "NoSea";
 	}
 }

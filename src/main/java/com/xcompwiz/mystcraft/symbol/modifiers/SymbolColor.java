@@ -15,14 +15,13 @@ public class SymbolColor extends SymbolBase {
 	private float	red;
 	private float	green;
 	private float	blue;
-	private String	name;
 
-	public SymbolColor(float r, float g, float b, String name) {
-		this.name = name;
+	public SymbolColor(float r, float g, float b, String identifier) {
+		super(identifier);
 		this.red = r;
 		this.green = g;
 		this.blue = b;
-		this.setWords(new String[] { WordData.Modifier, WordData.Image, WordData.Weave, this.name });
+		this.setWords(new String[] { WordData.Modifier, WordData.Image, WordData.Weave, this.identifier });
 		this.setCardRank(0);
 	}
 
@@ -40,16 +39,5 @@ public class SymbolColor extends SymbolBase {
 			color = new Color(red, green, blue);
 		}
 		controller.setModifier(ModifierUtils.COLOR, color);
-	}
-
-	@Override
-	public String identifier() {
-		return "Mod" + name;
-	}
-
-	@Override
-	public String displayName() {
-		//XXX (Localization)
-		return name + " Color";
 	}
 }

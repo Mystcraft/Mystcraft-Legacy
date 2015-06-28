@@ -5,13 +5,12 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolAntiPvP extends SymbolBase {
 
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.setPvPEnabled(false);
+	public SymbolAntiPvP(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "PvPOff";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.setPvPEnabled(false);
 	}
 }

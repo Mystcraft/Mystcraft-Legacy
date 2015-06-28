@@ -14,17 +14,17 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainFeatureLocator;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolStrongholds extends SymbolBase {
+
+	public SymbolStrongholds(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		MapGenStronghold generator = new MapGenStronghold();
 		controller.registerInterface(new TerrainAlteration(generator));
 		controller.registerInterface(new Populator(generator));
 		controller.registerInterface(new FeatureLocator(generator));
-	}
-
-	@Override
-	public String identifier() {
-		return "Strongholds";
 	}
 
 	@Override

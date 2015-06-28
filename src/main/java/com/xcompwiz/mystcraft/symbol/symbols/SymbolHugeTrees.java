@@ -11,14 +11,13 @@ import com.xcompwiz.mystcraft.world.gen.feature.WorldGenMystBigTree;
 
 public class SymbolHugeTrees extends SymbolBase {
 
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new Populator());
+	public SymbolHugeTrees(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "HugeTrees";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new Populator());
 	}
 
 	private class Populator implements IPopulate {

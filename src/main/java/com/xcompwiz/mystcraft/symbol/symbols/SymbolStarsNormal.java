@@ -20,17 +20,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class SymbolStarsNormal extends SymbolBase {
 
+	public SymbolStarsNormal(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		Number period = controller.popModifier(ModifierUtils.FACTOR).asNumber();
 		Number angle = controller.popModifier(ModifierUtils.ANGLE).asNumber();
 		ColorGradient gradient = ModifierUtils.popGradient(controller, 1, 1, 1);
 		controller.registerInterface(new SkyBackground(controller, seed, period, angle, gradient));
-	}
-
-	@Override
-	public String identifier() {
-		return "StarsNormal";
 	}
 
 	private class SkyBackground extends CelestialBase {

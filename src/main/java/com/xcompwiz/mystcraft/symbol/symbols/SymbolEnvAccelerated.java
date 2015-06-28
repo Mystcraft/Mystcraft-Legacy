@@ -7,14 +7,13 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolEnvAccelerated extends SymbolBase {
 
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new EffectExtraTicks());
+	public SymbolEnvAccelerated(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "EnvAccel";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new EffectExtraTicks());
 	}
 
 	@Override

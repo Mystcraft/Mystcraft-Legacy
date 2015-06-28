@@ -6,14 +6,13 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolLightingDark extends SymbolBase {
 
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new LightingController());
+	public SymbolLightingDark(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "LightingDark";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new LightingController());
 	}
 
 	private class LightingController implements ILightingController {

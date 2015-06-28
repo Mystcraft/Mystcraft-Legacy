@@ -19,15 +19,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class SymbolDoodadRainbow extends SymbolBase {
 
+	public SymbolDoodadRainbow(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		Number angle = controller.popModifier(ModifierUtils.ANGLE).asNumber();
 		controller.registerInterface(new CelestialObject(controller, seed, angle));
-	}
-
-	@Override
-	public String identifier() {
-		return "Rainbow";
 	}
 
 	private class CelestialObject extends CelestialBase {

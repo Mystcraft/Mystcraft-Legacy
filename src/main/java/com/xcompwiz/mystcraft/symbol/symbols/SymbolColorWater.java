@@ -11,15 +11,14 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorWater extends SymbolBase {
 
+	public SymbolColorWater(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		Color color = controller.popModifier(ModifierUtils.COLOR).asColor();
 		controller.registerInterface(new StaticColorProvider(color), IStaticColorProvider.WATER);
-	}
-
-	@Override
-	public String identifier() {
-		return "ColorWater";
 	}
 
 	public class StaticColorProvider implements IStaticColorProvider {

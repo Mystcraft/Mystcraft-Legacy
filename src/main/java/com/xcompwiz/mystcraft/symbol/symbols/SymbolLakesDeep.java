@@ -15,6 +15,11 @@ import com.xcompwiz.mystcraft.world.gen.feature.WorldGenLakesAdv;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
 public class SymbolLakesDeep extends SymbolBase {
+
+	public SymbolLakesDeep(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		BlockDescriptor block = ModifierUtils.popBlockMatching(controller, BlockCategory.FLUID, BlockCategory.GAS);
@@ -25,11 +30,6 @@ public class SymbolLakesDeep extends SymbolBase {
 			generator = new WorldGenLakesAdv(Blocks.lava);
 		}
 		controller.registerInterface(new Populator(controller, generator));
-	}
-
-	@Override
-	public String identifier() {
-		return "LakesDeep";
 	}
 
 	private class Populator implements IPopulate {

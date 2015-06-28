@@ -10,14 +10,14 @@ import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolDungeons extends SymbolBase {
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new Populator());
+
+	public SymbolDungeons(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "Dungeons";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new Populator());
 	}
 
 	private class Populator implements IPopulate {

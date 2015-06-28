@@ -11,15 +11,15 @@ import com.xcompwiz.mystcraft.world.gen.MapGenAdvanced;
 import com.xcompwiz.mystcraft.world.gen.MapGenRavineMyst;
 
 public class SymbolRavines extends SymbolBase {
+
+	public SymbolRavines(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		MapGenAdvanced generator = new MapGenRavineMyst(seed, Blocks.air);
 		controller.registerInterface(new TerrainAlteration(generator));
-	}
-
-	@Override
-	public String identifier() {
-		return "Ravines";
 	}
 
 	private class TerrainAlteration implements ITerrainAlteration {

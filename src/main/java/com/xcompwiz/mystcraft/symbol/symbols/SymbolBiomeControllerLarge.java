@@ -24,6 +24,10 @@ import com.xcompwiz.mystcraft.world.gen.layer.GenLayerZoomMyst;
 
 public class SymbolBiomeControllerLarge extends SymbolBase {
 
+	public SymbolBiomeControllerLarge(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		List<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
@@ -35,11 +39,6 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 		}
 
 		controller.registerInterface(new BiomeController(controller, 3, biomes));
-	}
-
-	@Override
-	public String identifier() {
-		return "BioConLarge";
 	}
 
 	static class BiomeController implements IBiomeController {

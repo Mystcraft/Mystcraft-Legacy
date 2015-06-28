@@ -6,14 +6,14 @@ import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolEnvExplosions extends SymbolBase {
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new EffectExplosions());
+
+	public SymbolEnvExplosions(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "EnvExplosions";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new EffectExplosions());
 	}
 
 	@Override

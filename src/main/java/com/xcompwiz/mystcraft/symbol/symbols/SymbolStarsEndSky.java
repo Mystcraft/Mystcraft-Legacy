@@ -16,6 +16,10 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolStarsEndSky extends SymbolBase {
 
+	public SymbolStarsEndSky(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		ColorGradient gradient = ModifierUtils.popGradient(controller, .156F, .156F, .156F); // 2631720 = 0010 1000 0010 1000 0010 1000 = #282828
@@ -23,11 +27,6 @@ public class SymbolStarsEndSky extends SymbolBase {
 		controller.setHorizon(0);
 		controller.setDrawHorizon(false);
 		controller.setDrawVoid(false);
-	}
-
-	@Override
-	public String identifier() {
-		return "StarsEndSky";
 	}
 
 	private static class SkyBackground extends CelestialBase {

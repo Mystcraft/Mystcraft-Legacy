@@ -8,6 +8,11 @@ import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolEnvLightning extends SymbolBase {
+
+	public SymbolEnvLightning(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		ColorGradient gradient = ModifierUtils.popGradient(controller);
@@ -16,11 +21,6 @@ public class SymbolEnvLightning extends SymbolBase {
 		} else {
 			controller.registerInterface(new EffectLightning(gradient));
 		}
-	}
-
-	@Override
-	public String identifier() {
-		return "EnvLightning";
 	}
 
 	@Override

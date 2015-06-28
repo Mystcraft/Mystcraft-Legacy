@@ -11,15 +11,15 @@ import com.xcompwiz.mystcraft.world.gen.MapGenAdvanced;
 import com.xcompwiz.mystcraft.world.gen.MapGenCavesMyst;
 
 public class SymbolCaves extends SymbolBase {
+
+	public SymbolCaves(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		MapGenAdvanced generator = new MapGenCavesMyst(seed, 15, 40, Blocks.air);
 		controller.registerInterface(new TerrainAlteration(generator));
-	}
-
-	@Override
-	public String identifier() {
-		return "Caves";
 	}
 
 	private static class TerrainAlteration implements ITerrainAlteration {

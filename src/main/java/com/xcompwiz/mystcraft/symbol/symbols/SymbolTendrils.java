@@ -15,6 +15,10 @@ import com.xcompwiz.mystcraft.world.gen.MapGenCavesMyst;
 
 public class SymbolTendrils extends SymbolBase {
 
+	public SymbolTendrils(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		MapGenAdvanced generator;
@@ -25,11 +29,6 @@ public class SymbolTendrils extends SymbolBase {
 			generator = new MapGenCavesMyst(seed, 15, 18, Blocks.log);
 		}
 		controller.registerInterface(new TerrainAlteration(generator));
-	}
-
-	@Override
-	public String identifier() {
-		return "Tendrils";
 	}
 
 	private class TerrainAlteration implements ITerrainAlteration {

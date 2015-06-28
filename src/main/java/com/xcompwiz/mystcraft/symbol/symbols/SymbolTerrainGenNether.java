@@ -13,6 +13,10 @@ import com.xcompwiz.mystcraft.symbol.TerrainGeneratorBase;
 
 public class SymbolTerrainGenNether extends SymbolBase {
 
+	public SymbolTerrainGenNether(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		TerrainGenerator gen = new TerrainGenerator(controller);
@@ -29,11 +33,6 @@ public class SymbolTerrainGenNether extends SymbolBase {
 		controller.setCloudHeight(200);
 		controller.setHorizon(128);
 		controller.setSeaLevel(32);
-	}
-
-	@Override
-	public String identifier() {
-		return "TerrainNether";
 	}
 
 	private static class TerrainGenerator extends TerrainGeneratorBase {

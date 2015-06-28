@@ -16,6 +16,7 @@ public class SymbolBlock extends SymbolBase {
 	private String			displayName;
 
 	public SymbolBlock(BlockDescriptor block, String word) {
+		super("ModMat_" + getBlockAsItem(block).getUnlocalizedName());
 		this.blockDescriptor = block;
 		this.setWords(new String[] { WordData.Modifier, WordData.Constraint, word, getBlockAsItem(block).getUnlocalizedName() });
 		this.displayName = formatted(block);
@@ -41,11 +42,6 @@ public class SymbolBlock extends SymbolBase {
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		ModifierUtils.pushBlock(controller, blockDescriptor);
-	}
-
-	@Override
-	public String identifier() {
-		return "ModMat_" + getBlockAsItem(blockDescriptor).getUnlocalizedName();
 	}
 
 	@Override

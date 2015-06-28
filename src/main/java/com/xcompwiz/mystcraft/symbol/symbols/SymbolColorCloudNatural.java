@@ -9,14 +9,14 @@ import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorCloudNatural extends SymbolBase {
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new CloudColorizer(), IDynamicColorProvider.CLOUD);
+
+	public SymbolColorCloudNatural(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "ColorCloudNat";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new CloudColorizer(), IDynamicColorProvider.CLOUD);
 	}
 
 	private class CloudColorizer implements IDynamicColorProvider {

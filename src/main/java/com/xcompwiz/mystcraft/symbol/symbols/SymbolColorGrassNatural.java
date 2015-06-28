@@ -12,14 +12,13 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorGrassNatural extends SymbolBase {
 
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new StaticColorProvider(), IStaticColorProvider.GRASS);
+	public SymbolColorGrassNatural(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "ColorGrassNat";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new StaticColorProvider(), IStaticColorProvider.GRASS);
 	}
 
 	public class StaticColorProvider implements IStaticColorProvider {

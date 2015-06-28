@@ -14,14 +14,14 @@ import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolDenseOres extends SymbolBase {
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new Populator());
+
+	public SymbolDenseOres(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "DenseOres";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new Populator());
 	}
 
 	private class Populator implements IPopulate {

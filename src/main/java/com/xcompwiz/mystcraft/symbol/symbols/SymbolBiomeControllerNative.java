@@ -12,14 +12,13 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolBiomeControllerNative extends SymbolBase {
 
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new BiomeController(controller));
+	public SymbolBiomeControllerNative(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "BioConNative";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new BiomeController(controller));
 	}
 
 	private class BiomeController implements IBiomeController {

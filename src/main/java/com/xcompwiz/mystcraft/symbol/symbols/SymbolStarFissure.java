@@ -12,14 +12,13 @@ import com.xcompwiz.mystcraft.world.gen.feature.WorldGenMystStarFissure;
 
 public class SymbolStarFissure extends SymbolBase {
 
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new Populator());
+	public SymbolStarFissure(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "StarFissure";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new Populator());
 	}
 
 	private class Populator implements IPopulate {

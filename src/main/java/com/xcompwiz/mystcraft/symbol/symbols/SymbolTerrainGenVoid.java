@@ -8,6 +8,10 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolTerrainGenVoid extends SymbolBase {
 
+	public SymbolTerrainGenVoid(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		controller.registerInterface(new TerrainGenerator());
@@ -15,11 +19,6 @@ public class SymbolTerrainGenVoid extends SymbolBase {
 		controller.setHorizon(0);
 		controller.setDrawHorizon(false);
 		controller.setDrawVoid(false);
-	}
-
-	@Override
-	public String identifier() {
-		return "Void";
 	}
 
 	private class TerrainGenerator implements ITerrainGenerator {

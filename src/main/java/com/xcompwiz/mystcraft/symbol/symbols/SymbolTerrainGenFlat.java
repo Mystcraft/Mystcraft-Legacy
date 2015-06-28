@@ -12,6 +12,10 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolTerrainGenFlat extends SymbolBase {
 
+	public SymbolTerrainGenFlat(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		TerrainGenerator gen = new TerrainGenerator(controller);
@@ -25,11 +29,6 @@ public class SymbolTerrainGenFlat extends SymbolBase {
 			gen.setTerrainBlock(block.block, block.metadata);
 		}
 		controller.registerInterface(gen);
-	}
-
-	@Override
-	public String identifier() {
-		return "Flat";
 	}
 
 	private static class TerrainGenerator implements ITerrainGenerator {

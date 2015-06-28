@@ -6,12 +6,11 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolLength extends SymbolBase {
 	private final float		value;
-	private final String	identifier;
 	private final String	display;
 
-	public SymbolLength(float value, String identifier, String display) {
+	public SymbolLength(String identifier, float value, String display) {
+		super(identifier);
 		this.value = value;
-		this.identifier = identifier;
 		this.display = display;
 	}
 
@@ -23,11 +22,6 @@ public class SymbolLength extends SymbolBase {
 			value = ModifierUtils.averageLengths(value, prev.floatValue());
 		}
 		controller.setModifier(ModifierUtils.FACTOR, value);
-	}
-
-	@Override
-	public String identifier() {
-		return identifier;
 	}
 
 	@Override

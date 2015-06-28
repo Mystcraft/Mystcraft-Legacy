@@ -12,16 +12,16 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolVillages extends SymbolBase {
+
+	public SymbolVillages(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		MapGenVillage generator = new MapGenVillage();
 		controller.registerInterface(new TerrainAlteration(generator));
 		controller.registerInterface(new Populator(generator));
-	}
-
-	@Override
-	public String identifier() {
-		return "Villages";
 	}
 
 	@Override

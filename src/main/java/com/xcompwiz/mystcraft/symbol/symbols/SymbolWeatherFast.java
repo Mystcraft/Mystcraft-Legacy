@@ -6,16 +6,13 @@ import com.xcompwiz.mystcraft.symbol.WeatherControllerBase;
 
 public class SymbolWeatherFast extends SymbolBase {
 
-	public SymbolWeatherFast() {}
+	public SymbolWeatherFast(String identifier) {
+		super(identifier);
+	}
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		controller.registerInterface(new WeatherController());
-	}
-
-	@Override
-	public String identifier() {
-		return "WeatherFast";
 	}
 
 	private class WeatherController extends WeatherControllerBase {

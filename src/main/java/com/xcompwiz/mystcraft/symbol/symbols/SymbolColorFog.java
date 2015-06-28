@@ -11,15 +11,15 @@ import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorFog extends SymbolBase {
+	
+	public SymbolColorFog(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		ColorGradient gradient = ModifierUtils.popGradient(controller, 0.7529412F, 0.8470588F, 1.0F);
 		controller.registerInterface(new FogColorizer(gradient), IDynamicColorProvider.FOG);
-	}
-
-	@Override
-	public String identifier() {
-		return "ColorFog";
 	}
 
 	private static class FogColorizer implements IDynamicColorProvider {

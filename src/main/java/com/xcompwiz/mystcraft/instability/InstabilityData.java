@@ -75,12 +75,15 @@ public class InstabilityData {
 	}
 
 	public static class symbol {
-		public static int	accelerated	= 1000;
-		public static int	bright		= 500;
-		public static int	charged		= -500;
-		public static int	meteors		= -1000;
-		public static int	explosion	= -500;
-		public static int	scorched	= -500;
+		public static int	accelerated			= 1000;
+		public static int	bright				= 500;
+		public static int	charged				= -500;
+		public static int	meteors				= -1000;
+		public static int	explosion			= -500;
+		public static int	scorched			= -500;
+		public static int	dummyFeatureLarge	= 0;
+		public static int	dummyFeatureMedium	= 1000;
+		public static int	dummyFeatureSmall	= 2000;
 	}
 
 	public static float	clearPercentage	= 0.20F;

@@ -6,12 +6,11 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolAngle extends SymbolBase {
 	private final float		value;
-	private final String	identifier;
 	private final String	display;
 
-	public SymbolAngle(float value, String identifier, String display) {
+	public SymbolAngle(String identifier, float value, String display) {
+		super(identifier);
 		this.value = value;
-		this.identifier = identifier;
 		this.display = display;
 	}
 
@@ -26,11 +25,6 @@ public class SymbolAngle extends SymbolBase {
 			value -= 360.0F;
 		}
 		controller.setModifier(ModifierUtils.ANGLE, value);
-	}
-
-	@Override
-	public String identifier() {
-		return identifier;
 	}
 
 	@Override

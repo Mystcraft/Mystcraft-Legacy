@@ -11,15 +11,14 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorGrass extends SymbolBase {
 
+	public SymbolColorGrass(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		Color color = controller.popModifier(ModifierUtils.COLOR).asColor();
 		controller.registerInterface(new StaticColorProvider(color), IStaticColorProvider.GRASS);
-	}
-
-	@Override
-	public String identifier() {
-		return "ColorGrass";
 	}
 
 	public class StaticColorProvider implements IStaticColorProvider {

@@ -10,14 +10,14 @@ import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorFogNatural extends SymbolBase {
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new FogColorizer(), IDynamicColorProvider.FOG);
+	
+	public SymbolColorFogNatural(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "ColorFogNat";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new FogColorizer(), IDynamicColorProvider.FOG);
 	}
 
 	private static class FogColorizer implements IDynamicColorProvider {

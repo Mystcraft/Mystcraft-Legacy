@@ -11,6 +11,10 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolBiomeControllerMedium extends SymbolBase {
 
+	public SymbolBiomeControllerMedium(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		List<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
@@ -22,10 +26,5 @@ public class SymbolBiomeControllerMedium extends SymbolBase {
 		}
 
 		controller.registerInterface(new SymbolBiomeControllerLarge.BiomeController(controller, 2, biomes));
-	}
-
-	@Override
-	public String identifier() {
-		return "BioConMedium";
 	}
 }

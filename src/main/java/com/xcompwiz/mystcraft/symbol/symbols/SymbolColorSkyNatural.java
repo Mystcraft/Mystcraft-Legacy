@@ -11,14 +11,13 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorSkyNatural extends SymbolBase {
 
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new Colorizer(), IDynamicColorProvider.SKY);
+	public SymbolColorSkyNatural(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "ColorSkyNat";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new Colorizer(), IDynamicColorProvider.SKY);
 	}
 
 	private static class Colorizer implements IDynamicColorProvider {

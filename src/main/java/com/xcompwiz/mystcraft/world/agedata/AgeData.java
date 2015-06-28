@@ -267,22 +267,8 @@ public class AgeData extends WorldSavedData {
 		}
 
 		// Handle SymbolRemappings
-		for (int i = 0; i < pages.size();) {
-			ItemStack page = pages.remove(i);
-			List<ItemStack> mapping = SymbolRemappings.remap(page);
-			pages.addAll(i, mapping);
-			if (mapping.size() > 0 && page.equals(mapping.get(0))) {
-				++i;
-			}
-		}
-		for (int i = 0; i < symbols.size();) {
-			String symbol = symbols.remove(i);
-			List<String> mapping = SymbolRemappings.remap(symbol);
-			symbols.addAll(i, mapping);
-			if (mapping.size() > 0 && symbol.equals(mapping.get(0))) {
-				++i;
-			}
-		}
+		SymbolRemappings.remap(pages);
+		SymbolRemappings.remap(symbols);
 
 		updated = true;
 	}

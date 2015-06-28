@@ -11,15 +11,15 @@ import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorCloud extends SymbolBase {
+
+	public SymbolColorCloud(String string) {
+		super(string);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		ColorGradient gradient = ModifierUtils.popGradient(controller, 1, 1, 1);
 		controller.registerInterface(new CloudColorizer(controller, gradient), IDynamicColorProvider.CLOUD);
-	}
-
-	@Override
-	public String identifier() {
-		return "ColorCloud";
 	}
 
 	private class CloudColorizer implements IDynamicColorProvider {

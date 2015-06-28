@@ -21,6 +21,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class SymbolSunNormal extends SymbolBase {
 
+	public SymbolSunNormal(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		Number period = controller.popModifier(ModifierUtils.FACTOR).asNumber();
@@ -28,11 +32,6 @@ public class SymbolSunNormal extends SymbolBase {
 		Number offset = controller.popModifier(ModifierUtils.PHASE).asNumber();
 		ColorGradient sunset = controller.popModifier(ModifierUtils.SUNSET).asGradient();
 		controller.registerInterface(new CelestialObject(controller, seed, period, angle, offset, sunset));
-	}
-
-	@Override
-	public String identifier() {
-		return "SunNormal";
 	}
 
 	private static class CelestialObject extends SunsetRenderer implements ICelestial {

@@ -6,7 +6,10 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolGradient extends SymbolBase {
-	public SymbolGradient() {}
+
+	public SymbolGradient(String identifier) {
+		super(identifier);
+	}
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
@@ -18,10 +21,5 @@ public class SymbolGradient extends SymbolBase {
 		if (gradient == null) gradient = new ColorGradient();
 		gradient.pushColor(controller.popModifier(ModifierUtils.COLOR).asColor(), factor.floatValue());
 		controller.setModifier(ModifierUtils.GRADIENT, gradient);
-	}
-
-	@Override
-	public String identifier() {
-		return "ModGradient";
 	}
 }

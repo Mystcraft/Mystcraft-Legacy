@@ -12,15 +12,15 @@ import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorSky extends SymbolBase {
+
+	public SymbolColorSky(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		ColorGradient gradient = ModifierUtils.popGradient(controller, 1, 1, 1);
 		controller.registerInterface(new Colorizer(controller, gradient), IDynamicColorProvider.SKY);
-	}
-
-	@Override
-	public String identifier() {
-		return "ColorSky";
 	}
 
 	private class Colorizer implements IDynamicColorProvider {

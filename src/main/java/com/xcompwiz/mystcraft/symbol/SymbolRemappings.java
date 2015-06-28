@@ -18,6 +18,23 @@ public class SymbolRemappings {
 		skyColorRemappings();
 		horizonColorRemappings();
 
+		addSymbolRemapping("ModMaroon", "ModColorMaroon");
+		addSymbolRemapping("ModRed", "ModColorRed");
+		addSymbolRemapping("ModOlive", "ModColorOlive");
+		addSymbolRemapping("ModYellow", "ModColorYellow");
+		addSymbolRemapping("ModDark Green", "ModColorDarkGreen");
+		addSymbolRemapping("ModGreen", "ModColorGreen");
+		addSymbolRemapping("ModTeal", "ModColorTeal");
+		addSymbolRemapping("ModCyan", "ModColorCyan");
+		addSymbolRemapping("ModNavy", "ModColorNavy");
+		addSymbolRemapping("ModBlue", "ModColorBlue");
+		addSymbolRemapping("ModPurple", "ModColorPurple");
+		addSymbolRemapping("ModMagenta", "ModColorMagenta");
+		addSymbolRemapping("ModBlack", "ModColorBlack");
+		addSymbolRemapping("ModGrey", "ModColorGrey");
+		addSymbolRemapping("ModSilver", "ModColorSilver");
+		addSymbolRemapping("ModWhite", "ModColorWhite");
+
 		addSymbolRemapping("LavaLakes", "ModMat_tile.lava", "LakesDeep");
 		addSymbolRemapping("Lakes", "ModMat_tile.water", "LakesSurface");
 
@@ -333,6 +350,21 @@ public class SymbolRemappings {
 			result.add(page);
 		}
 		return result;
+	}
+
+	public static <T> List<T> remap(List<T> collection) {
+		for (int i = 0; i < collection.size();) {
+			T element = collection.remove(i);
+			List<T> mapping = null;
+			if (element instanceof String) mapping = (List<T>) SymbolRemappings.remap((String)element);
+			if (element instanceof ItemStack) mapping = (List<T>) SymbolRemappings.remap((ItemStack)element);
+			if (mapping == null) continue;
+			collection.addAll(i, mapping);
+			if (mapping.size() > 0 && element.equals(mapping.get(0))) {
+				++i;
+			}
+		}
+		return collection;
 	}
 
 	private static void addSymbolRemapping(String id, List<String> mapping) {

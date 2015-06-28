@@ -14,6 +14,10 @@ import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 
 public class SymbolBiomeControllerTiled extends SymbolBase {
 
+	public SymbolBiomeControllerTiled(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		List<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
@@ -29,11 +33,6 @@ public class SymbolBiomeControllerTiled extends SymbolBase {
 			biomes.add(SymbolBiome.getRandomBiome(rand));
 		}
 		controller.registerInterface(new BiomeController(biomes));
-	}
-
-	@Override
-	public String identifier() {
-		return "BioConTiled";
 	}
 
 	private class BiomeController implements IBiomeController {

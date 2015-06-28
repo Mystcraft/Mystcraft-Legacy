@@ -10,14 +10,13 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorWaterNatural extends SymbolBase {
 
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new StaticColorProvider(), IStaticColorProvider.WATER);
+	public SymbolColorWaterNatural(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "ColorWaterNat";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new StaticColorProvider(), IStaticColorProvider.WATER);
 	}
 
 	public class StaticColorProvider implements IStaticColorProvider {

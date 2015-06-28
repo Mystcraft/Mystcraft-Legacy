@@ -13,17 +13,16 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolSkylands extends SymbolBase {
 
+	public SymbolSkylands(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		NoiseGeneratorOctaves noise = new NoiseGeneratorOctaves(new Random(controller.getSeed()), 7);
 		controller.registerInterface(new TerrainAlteration(noise));
 		controller.setCloudHeight(42.5F);
 		controller.setHorizon(0);
-	}
-
-	@Override
-	public String identifier() {
-		return "Skylands";
 	}
 
 	private static class TerrainAlteration implements ITerrainAlteration {

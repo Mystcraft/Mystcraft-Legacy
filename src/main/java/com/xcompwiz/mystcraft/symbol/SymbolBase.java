@@ -11,8 +11,13 @@ import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 
 public abstract class SymbolBase implements IAgeSymbol {
 
+	protected final String	identifier;
 	private ArrayList<Rule>	rules;
 	private String[]		words;
+
+	public SymbolBase(String identifier) {
+		this.identifier = identifier;
+	}
 
 	public void setWords(String[] words) {
 		this.words = words;
@@ -42,6 +47,11 @@ public abstract class SymbolBase implements IAgeSymbol {
 		rules.add(rule);
 	}
 
+	@Override
+	public final String identifier() {
+		return this.identifier;
+	}
+
 	/**
 	 * Returns the unlocalized name
 	 * @return The lookup key used to map the symbol to a user readable text string
@@ -66,9 +76,6 @@ public abstract class SymbolBase implements IAgeSymbol {
 	public int instabilityModifier(int count) {
 		return 0;
 	}
-
-	@Override
-	public abstract String identifier();
 
 	@Override
 	public final String[] getPoem() {

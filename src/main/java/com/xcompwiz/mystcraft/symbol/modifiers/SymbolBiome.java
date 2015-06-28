@@ -18,6 +18,7 @@ public class SymbolBiome extends SymbolBase {
 	private String							displayName;
 
 	public SymbolBiome(BiomeGenBase biome) {
+		super("Biome" + biome.biomeID);
 		this.biome = biome;
 		this.displayName = formatted(biome);
 		this.setWords(new String[] { WordData.Nature, WordData.Nurture, WordData.Encourage, biome.biomeName + biome.biomeID });
@@ -37,11 +38,6 @@ public class SymbolBiome extends SymbolBase {
 	public void registerLogic(AgeDirector controller, long seed) {
 		controller.setAverageGroundLevel((int) ((biome.rootHeight) * 64 + 64));
 		ModifierUtils.pushBiome(controller, biome);
-	}
-
-	@Override
-	public String identifier() {
-		return "Biome" + biome.biomeID;
 	}
 
 	@Override

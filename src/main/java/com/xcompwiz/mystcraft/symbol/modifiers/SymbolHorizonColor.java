@@ -7,6 +7,11 @@ import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolHorizonColor extends SymbolBase {
+	
+	public SymbolHorizonColor(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		ColorGradient sunset = controller.popModifier(ModifierUtils.SUNSET).asGradient();
@@ -14,10 +19,5 @@ public class SymbolHorizonColor extends SymbolBase {
 		ColorGradient gradient = ModifierUtils.popGradient(controller);
 		sunset.appendGradient(gradient); // Append gradient to sunset
 		controller.setModifier(ModifierUtils.SUNSET, new Modifier(sunset, 0));
-	}
-
-	@Override
-	public String identifier() {
-		return "ColorHorizon";
 	}
 }

@@ -12,14 +12,13 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorFoliageNatural extends SymbolBase {
 
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		controller.registerInterface(new StaticColorProvider(), IStaticColorProvider.FOLIAGE);
+	public SymbolColorFoliageNatural(String identifier) {
+		super(identifier);
 	}
 
 	@Override
-	public String identifier() {
-		return "ColorFoliageNat";
+	public void registerLogic(AgeDirector controller, long seed) {
+		controller.registerInterface(new StaticColorProvider(), IStaticColorProvider.FOLIAGE);
 	}
 
 	public class StaticColorProvider implements IStaticColorProvider {

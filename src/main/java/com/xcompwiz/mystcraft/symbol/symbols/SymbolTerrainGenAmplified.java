@@ -9,6 +9,10 @@ import com.xcompwiz.mystcraft.symbol.symbols.SymbolTerrainGenNormal.TerrainGener
 
 public class SymbolTerrainGenAmplified extends SymbolBase {
 
+	public SymbolTerrainGenAmplified(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		TerrainGeneratorNormal gen = new TerrainGeneratorNormal(controller, true);
@@ -22,10 +26,5 @@ public class SymbolTerrainGenAmplified extends SymbolBase {
 			gen.setTerrainBlock(block.block, block.metadata);
 		}
 		controller.registerInterface(gen);
-	}
-
-	@Override
-	public String identifier() {
-		return "TerrainAmplified";
 	}
 }

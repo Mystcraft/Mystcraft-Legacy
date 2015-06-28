@@ -13,16 +13,15 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolMineshafts extends SymbolBase {
 
+	public SymbolMineshafts(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 		controller.registerInterface(new TerrainAlteration(mineshaftGenerator));
 		controller.registerInterface(new Populator(mineshaftGenerator));
-	}
-
-	@Override
-	public String identifier() {
-		return "Mineshafts";
 	}
 
 	@Override

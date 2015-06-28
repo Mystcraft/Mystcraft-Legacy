@@ -11,15 +11,14 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolColorFoliage extends SymbolBase {
 
+	public SymbolColorFoliage(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		Color color = controller.popModifier(ModifierUtils.COLOR).asColor();
 		controller.registerInterface(new StaticColorProvider(color), IStaticColorProvider.FOLIAGE);
-	}
-
-	@Override
-	public String identifier() {
-		return "ColorFoliage";
 	}
 
 	public class StaticColorProvider implements IStaticColorProvider {

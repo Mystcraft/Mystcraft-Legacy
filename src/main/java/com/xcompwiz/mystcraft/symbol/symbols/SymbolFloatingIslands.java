@@ -25,6 +25,10 @@ import com.xcompwiz.mystcraft.world.gen.MapGenFloatingIslands.IModifiedHandler;
 
 public class SymbolFloatingIslands extends SymbolBase {
 
+	public SymbolFloatingIslands(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		BiomeGenBase biome = ModifierUtils.popBiome(controller);
@@ -37,11 +41,6 @@ public class SymbolFloatingIslands extends SymbolBase {
 		BiomeReplacer replacer = new BiomeReplacer(biome);
 		controller.registerInterface(new TerrainAlteration(seed, blockdesc, biome, replacer));
 		controller.registerInterface(replacer);
-	}
-
-	@Override
-	public String identifier() {
-		return "FloatIslands";
 	}
 
 	private class TerrainAlteration implements ITerrainAlteration {

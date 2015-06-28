@@ -126,22 +126,22 @@ public class ModSymbolsModifiers {
 		BlockModifierContainerObject.create(WordData.Sea, 3, Blocks.flowing_lava, 0).register().add(BlockCategory.FLUID, 2).add(BlockCategory.SEA, 2);
 
 		// color
-		registerSymbol((new SymbolColor(0.50F, 0.00F, 0.00F, "Maroon")));
-		registerSymbol((new SymbolColor(1.00F, 0.00F, 0.00F, "Red")));
-		registerSymbol((new SymbolColor(0.50F, 0.50F, 0.00F, "Olive")));
-		registerSymbol((new SymbolColor(1.00F, 1.00F, 0.00F, "Yellow")));
-		registerSymbol((new SymbolColor(0.00F, 0.50F, 0.00F, "Dark Green")));
-		registerSymbol((new SymbolColor(0.00F, 1.00F, 0.00F, "Green")));
-		registerSymbol((new SymbolColor(0.00F, 0.50F, 0.50F, "Teal")));
-		registerSymbol((new SymbolColor(0.00F, 1.00F, 1.00F, "Cyan")));
-		registerSymbol((new SymbolColor(0.00F, 0.00F, 0.50F, "Navy")));
-		registerSymbol((new SymbolColor(0.00F, 0.00F, 1.00F, "Blue")));
-		registerSymbol((new SymbolColor(0.50F, 0.00F, 0.50F, "Purple")));
-		registerSymbol((new SymbolColor(1.00F, 0.00F, 1.00F, "Magenta")));
-		registerSymbol((new SymbolColor(0.00F, 0.00F, 0.00F, "Black")));
-		registerSymbol((new SymbolColor(0.50F, 0.50F, 0.50F, "Grey")));
-		registerSymbol((new SymbolColor(0.75F, 0.75F, 0.75F, "Silver")));
-		registerSymbol((new SymbolColor(1.00F, 1.00F, 1.00F, "White")));
+		registerSymbol((new SymbolColor(0.50F, 0.00F, 0.00F, "ModColorMaroon")));
+		registerSymbol((new SymbolColor(1.00F, 0.00F, 0.00F, "ModColorRed")));
+		registerSymbol((new SymbolColor(0.50F, 0.50F, 0.00F, "ModColorOlive")));
+		registerSymbol((new SymbolColor(1.00F, 1.00F, 0.00F, "ModColorYellow")));
+		registerSymbol((new SymbolColor(0.00F, 0.50F, 0.00F, "ModColorDarkGreen")));
+		registerSymbol((new SymbolColor(0.00F, 1.00F, 0.00F, "ModColorGreen")));
+		registerSymbol((new SymbolColor(0.00F, 0.50F, 0.50F, "ModColorTeal")));
+		registerSymbol((new SymbolColor(0.00F, 1.00F, 1.00F, "ModColorCyan")));
+		registerSymbol((new SymbolColor(0.00F, 0.00F, 0.50F, "ModColorNavy")));
+		registerSymbol((new SymbolColor(0.00F, 0.00F, 1.00F, "ModColorBlue")));
+		registerSymbol((new SymbolColor(0.50F, 0.00F, 0.50F, "ModColorPurple")));
+		registerSymbol((new SymbolColor(1.00F, 0.00F, 1.00F, "ModColorMagenta")));
+		registerSymbol((new SymbolColor(0.00F, 0.00F, 0.00F, "ModColorBlack")));
+		registerSymbol((new SymbolColor(0.50F, 0.50F, 0.50F, "ModColorGrey")));
+		registerSymbol((new SymbolColor(0.75F, 0.75F, 0.75F, "ModColorSilver")));
+		registerSymbol((new SymbolColor(1.00F, 1.00F, 1.00F, "ModColorWhite")));
 	}
 
 	private static void registerSymbol(SymbolBase symbol) {

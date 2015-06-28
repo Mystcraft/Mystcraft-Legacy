@@ -6,12 +6,11 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolPhase extends SymbolBase {
 	private final float		value;
-	private final String	identifier;
 	private final String	display;
 
-	public SymbolPhase(float value, String identifier, String display) {
+	public SymbolPhase(String identifier, float value, String display) {
+		super(identifier);
 		this.value = value;
-		this.identifier = identifier;
 		this.display = display;
 	}
 
@@ -26,11 +25,6 @@ public class SymbolPhase extends SymbolBase {
 			value -= 360.0F;
 		}
 		controller.setModifier(ModifierUtils.PHASE, value);
-	}
-
-	@Override
-	public String identifier() {
-		return identifier;
 	}
 
 	@Override

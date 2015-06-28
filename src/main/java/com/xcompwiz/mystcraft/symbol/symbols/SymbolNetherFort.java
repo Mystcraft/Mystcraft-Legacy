@@ -15,17 +15,16 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 public class SymbolNetherFort extends SymbolBase {
 
+	public SymbolNetherFort(String identifier) {
+		super(identifier);
+	}
+
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		MapGenNetherBridge generator = new MapGenNetherBridge();
 		controller.registerInterface(new TerrainAlteration(generator));
 		controller.registerInterface(new Populator(generator));
 		controller.registerInterface(new FeatureLocator(generator));
-	}
-
-	@Override
-	public String identifier() {
-		return "NetherFort";
 	}
 
 	@Override
