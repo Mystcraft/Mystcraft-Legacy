@@ -23,9 +23,14 @@ import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 
 public class ModSymbolsFluids {
 	private static MystConfig	config;
+	private static MystConfig	refconfig;
 
 	public static void setConfig(MystConfig mystconfig) {
 		config = mystconfig;
+	}
+
+	public static void setReferenceConfig(MystConfig mystconfig) {
+		refconfig = mystconfig;
 	}
 
 	public static void init() {
@@ -57,6 +62,7 @@ public class ModSymbolsFluids {
 			if (container.getSymbol() != null) InternalAPI.symbol.registerSymbol(container.getSymbol(), MystObjects.MystcraftModId);
 		}
 		if (config != null && config.hasChanged()) config.save();
+		if (refconfig != null && refconfig.hasChanged()) refconfig.save();
 	}
 
 	public static class FluidData {
@@ -125,6 +131,7 @@ public class ModSymbolsFluids {
 		Boolean value = bannedsea.get(fluidkey);
 		if (value != null) return value;
 		boolean val = getDefaultValue(fluidkey).seabanned;
+		if (refconfig != null) refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".seabanned", val).set(val);
 		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".seabanned", val);
 		return val;
 	}
@@ -133,6 +140,7 @@ public class ModSymbolsFluids {
 		Integer value = cardranks.get(fluidkey);
 		if (value != null) return value;
 		int val = getDefaultValue(fluidkey).cardrank;
+		if (refconfig != null) refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".cardrank", val).set(val);
 		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".cardrank", val);
 		return val;
 	}
@@ -141,6 +149,7 @@ public class ModSymbolsFluids {
 		Integer value = grammarranks.get(fluidkey);
 		if (value != null) return value;
 		int val = getDefaultValue(fluidkey).grammar;
+		if (refconfig != null) refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".grammar", val).set(val);
 		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".grammar", val);
 		return val;
 	}
@@ -149,6 +158,7 @@ public class ModSymbolsFluids {
 		Float value = factor1s.get(fluidkey);
 		if (value != null) return value;
 		float val = getDefaultValue(fluidkey).factor1;
+		if (refconfig != null) refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".instability.factor_accessibility", val).set(val);
 		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".instability.factor_accessibility", val);
 		return val;
 	}
@@ -157,6 +167,7 @@ public class ModSymbolsFluids {
 		Float value = factor2s.get(fluidkey);
 		if (value != null) return value;
 		float val = getDefaultValue(fluidkey).factor2;
+		if (refconfig != null) refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".instability.factor_flat", val).set(val);
 		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".instability.factor_flat", val);
 		return val;
 	}

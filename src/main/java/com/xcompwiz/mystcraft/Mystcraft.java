@@ -198,6 +198,8 @@ public class Mystcraft {
 		ModSymbolsFluids.setConfig(balanceconfig);
 		InstabilityDataCalculator.setBalanceConfig(balanceconfig);
 
+		boolean generate_template = config.get(MystConfig.CATEGORY_GENERAL, "configs.generate_template.balance", false).getBoolean(false);
+
 		spawnmeteorEnabled = config.get(MystConfig.CATEGORY_GENERAL, "commands.spawnmeteor.enabled", spawnmeteorEnabled).getBoolean(spawnmeteorEnabled);
 
 		difficulty = balanceconfig.getOptional(MystConfig.CATEGORY_INSTABILITY, "global.difficulty", difficulty);
@@ -216,6 +218,7 @@ public class Mystcraft {
 		providerId = config.get(MystConfig.CATEGORY_GENERAL, "ids.dim_provider", 1210950779).getInt();
 
 		serverLabels = renderlabels;
+		if (generate_template) ModSymbolsFluids.setReferenceConfig(new MystConfig(new File(configroot, "mystcraft/balance_template.cfg")));
 
 		ModFluids.loadConfigs(config);
 		ModItems.loadConfigs(config);
