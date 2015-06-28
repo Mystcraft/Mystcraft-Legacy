@@ -1,7 +1,9 @@
 package com.xcompwiz.mystcraft.world.profiling;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -36,7 +38,12 @@ public class InstabilityDataCalculator {
 
 	private static final String			StorageID			= "myst_baseline";
 
+	private static MystConfig			balanceconfig;
+
+	private static boolean				persave				= true;
 	private static boolean				disconnectclients	= false;
+	private static boolean				useconfigs			= false;
+	private static int					tickrate			= 5;
 
 	private static int					minimumchunks;							//TODO: Make this configurable
 	private static float				tolerance;								//TODO: Make this configurable
@@ -45,18 +52,70 @@ public class InstabilityDataCalculator {
 	private MapStorage					storage;
 
 	private HashMap<String, Number>		freevals;
+	private static Map<String, Number>	defaults;
 
 	private Integer						providerId			= null;
 	private Integer						dimId				= null;
 	private World						world				= null;
 	private boolean						running				= false;
+	private int							tickAccumulator;
 
 	private IMystcraftProfilingCallback	callback;
 
 	public static void loadConfigs(Configuration config) {
 		minimumchunks = 0;
 		tolerance = 1.05F;
-		disconnectclients = config.get(MystConfig.CATEGORY_GENERAL, "options.profiling.baseline.disconnectclients", disconnectclients, "If set to true this will prevent clients from connecting while baseline profiling is ongoing (Only works on dedicated servers)").getBoolean(disconnectclients);
+		persave = config.get(MystConfig.CATEGORY_BASELINING, "client.persave", persave, "If false, the profiling will run on game startup with the loading bar. If true, it will run in the background when playing. Setting this to false disables tickrate checking, even on the server.").getBoolean(persave);
+		useconfigs = config.get(MystConfig.CATEGORY_BASELINING, "useconfigs", useconfigs, "If true, the baseline calculations won't run and instead a config file will be read.").getBoolean(useconfigs);
+		disconnectclients = config.get(MystConfig.CATEGORY_BASELINING, "server.disconnectclients", disconnectclients, "If set to true this will prevent clients from connecting while baseline profiling is ongoing (Only works on dedicated servers)").getBoolean(disconnectclients);
+		tickrate = config.get(MystConfig.CATEGORY_BASELINING, "tickrate.minimum", tickrate, "This controls the minimum number ot ticks to wait before a new chunk will be generated when doing the baseline profiling in the background.").getInt(tickrate);
+		if (!persave) tickrate = 1;
+	}
+
+	public static void loadBalanceData() {
+		if (useconfigs) {
+			setBaselineDefaults();
+			loadBaselineFromConfig(balanceconfig);
+		}
+	}
+
+	private static void setBaselineDefaults() {
+		defaults = new HashMap<String, Number>();
+		defaults.put("tile.lightgem", 0);
+		defaults.put("tile.netherquartz", 0);
+		defaults.put("tile.oreCoal", 300);
+		defaults.put("tile.oreIron", 500);
+		defaults.put("tile.oreGold", 500);
+		defaults.put("tile.oreRedstone", 600);
+		defaults.put("tile.oreDiamond", 1000);
+		defaults.put("tile.myst_crystal", 0);
+		defaults.put("tile.myst_fluid_myst_ink_black", 0);
+	}
+
+	private static void loadBaselineFromConfig(Configuration config) {
+		Collection<String> keyset = InstabilityBlockManager.getWatchedBlocks();
+		HashMap<String, Number> freevals = new HashMap<String, Number>();
+		for (String key : keyset) {
+			int def = getBaselineVanillaDefault(key);
+			float val = config.get(MystConfig.CATEGORY_BASELINING, key, def).getInt(def);
+			freevals.put(key, val);
+		}
+		InstabilityBlockManager.setBaselineStability(freevals);
+		if (config != null && config.hasChanged()) config.save();
+	}
+
+	private static int getBaselineVanillaDefault(String key) {
+		Number def = defaults.get(key);
+		if (def == null) return 0;
+		return def.intValue();
+	}
+
+	public static boolean isPerSave() {
+		return persave;
+	}
+
+	public static boolean isDisabled() {
+		return useconfigs;
 	}
 
 	public static DebugNode getDebugNode() {
@@ -111,9 +170,11 @@ public class InstabilityDataCalculator {
 		int chunksremaining = getChunksRemaining(profiler);
 		if (callback != null) callback.setCompleted(profiler.getCount());
 		if (callback != null) callback.setRemaining(chunksremaining);
+		if (callback != null) callback.setQueued(ChunkProfilerManager.getSize());
+		if (++tickAccumulator < tickrate) return;
+		tickAccumulator = 0;
 		if (chunksremaining > 0) {
 			// We check to see if the profiling queue is backed up (might be enough chunks generated.
-			if (callback != null) callback.setQueued(ChunkProfilerManager.getSize());
 			if (ChunkProfilerManager.getSize() < chunksremaining) stepChunkGeneration(profiler);
 		} else {
 			if (world != null) LoggerUtils.info("Baseline Profiling for Instability completed.");
@@ -125,10 +186,10 @@ public class InstabilityDataCalculator {
 	}
 
 	public static HashMap<String, Number> updateInstabilityData(ChunkProfiler profiler) {
-		HashMap<String, Float> constants = profiler.calculateSplitInstability();
+		HashMap<String, Float> generated = profiler.calculateSplitInstability();
 		HashMap<String, Number> freevals = new HashMap<String, Number>();
-		for (String key : constants.keySet()) {
-			float val = constants.get(key);
+		for (String key : generated.keySet()) {
+			float val = generated.get(key);
 			val = (val * tolerance);
 			val = (float) (Math.ceil(val / 100) * 100);
 			freevals.put(key, val);
@@ -144,8 +205,8 @@ public class InstabilityDataCalculator {
 
 	public void shutdown() {
 		this.cleanup();
-		InstabilityBlockManager.clearBaselineStability();
 		mcserver = null;
+		if (persave) InstabilityBlockManager.clearBaselineStability();
 
 		DebugNode node = getDebugNode();
 		node.parent.removeChild(node);
@@ -279,5 +340,9 @@ public class InstabilityDataCalculator {
 
 	public void setCallback(IMystcraftProfilingCallback callback) {
 		this.callback = callback;
+	}
+
+	public static void setBalanceConfig(MystConfig config) {
+		balanceconfig = config;
 	}
 }

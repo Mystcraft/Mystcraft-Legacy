@@ -26,6 +26,7 @@ import com.xcompwiz.mystcraft.client.gui.overlay.GuiNotification;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.world.profiling.GuiMystcraftProfiling;
+import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -126,12 +127,14 @@ public class MystcraftStartupChecker {
 	@SubscribeEvent
 	public void onClientInitGUI(InitGuiEvent.Post event) {
 		if (event.gui instanceof GuiMainMenu) {
-			if (checkForErrors()) MystcraftFirstRun.enable();
+			if (checkForErrors() && !InstabilityDataCalculator.isPerSave() && !InstabilityDataCalculator.isDisabled()) MystcraftFirstRun.enable();
 		}
 	}
 
 	@SubscribeEvent
 	public void onClientOpenGUI(GuiOpenEvent event) {
+		if (InstabilityDataCalculator.isPerSave()) return;
+		if (InstabilityDataCalculator.isDisabled()) return;
 		if (MystcraftFirstRun.isReady()) return;
 		if (!MystcraftFirstRun.isEnabled()) return;
 		if (event.gui instanceof GuiMystcraftProfiling) return;

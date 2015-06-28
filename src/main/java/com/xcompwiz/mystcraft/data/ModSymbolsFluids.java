@@ -125,7 +125,7 @@ public class ModSymbolsFluids {
 		Boolean value = bannedsea.get(fluidkey);
 		if (value != null) return value;
 		boolean val = getDefaultValue(fluidkey).seabanned;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".seabanned", val);
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".seabanned", val);
 		return val;
 	}
 
@@ -133,7 +133,7 @@ public class ModSymbolsFluids {
 		Integer value = cardranks.get(fluidkey);
 		if (value != null) return value;
 		int val = getDefaultValue(fluidkey).cardrank;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".cardrank", val);
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".cardrank", val);
 		return val;
 	}
 
@@ -141,7 +141,7 @@ public class ModSymbolsFluids {
 		Integer value = grammarranks.get(fluidkey);
 		if (value != null) return value;
 		int val = getDefaultValue(fluidkey).grammar;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".grammar", val);
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".grammar", val);
 		return val;
 	}
 
@@ -149,7 +149,7 @@ public class ModSymbolsFluids {
 		Float value = factor1s.get(fluidkey);
 		if (value != null) return value;
 		float val = getDefaultValue(fluidkey).factor1;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".instability.factor_accessibility", val);
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".instability.factor_accessibility", val);
 		return val;
 	}
 
@@ -157,7 +157,7 @@ public class ModSymbolsFluids {
 		Float value = factor2s.get(fluidkey);
 		if (value != null) return value;
 		float val = getDefaultValue(fluidkey).factor2;
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_BALANCE, fluidkey + ".instability.factor_flat", val);
+		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".instability.factor_flat", val);
 		return val;
 	}
 

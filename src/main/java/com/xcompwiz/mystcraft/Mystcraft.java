@@ -131,10 +131,6 @@ public class Mystcraft {
 	public static boolean				respawnInAges		= true;
 	public static boolean				villageDeskGen		= true;
 
-	private static int					ent_link_id;
-	private static int					ent_gravblock_id;
-	private static int					ent_meteor_id;
-
 	public static boolean				serverLabels;
 
 	public static int					providerId;
@@ -196,24 +192,30 @@ public class Mystcraft {
 		}
 
 		MystConfig config = new MystConfig(configfile);
+		MystConfig balanceconfig = new MystConfig(new File(configroot, "mystcraft/balance.cfg"));
 		SymbolManager.setConfig(new MystConfig(new File(configroot, "mystcraft/symbols.cfg")));
 		InstabilityManager.setConfig(new MystConfig(new File(configroot, "mystcraft/instabilities.cfg")));
-		ModSymbolsFluids.setConfig(config);
+		ModSymbolsFluids.setConfig(balanceconfig);
+		InstabilityDataCalculator.setBalanceConfig(balanceconfig);
 
-		spawnmeteorEnabled = config.get(MystConfig.CATEGORY_GENERAL, "options.command.spawnmeteor.enabled", spawnmeteorEnabled).getBoolean(spawnmeteorEnabled);
+		spawnmeteorEnabled = config.get(MystConfig.CATEGORY_GENERAL, "commands.spawnmeteor.enabled", spawnmeteorEnabled).getBoolean(spawnmeteorEnabled);
 
-		difficulty = config.getOptional(MystConfig.CATEGORY_GENERAL, "options.instability.difficulty", difficulty);
-		instabilityEnabled = config.get(MystConfig.CATEGORY_GENERAL, "options.instability.enabled", instabilityEnabled).getBoolean(instabilityEnabled);
-		renderlabels = config.get(MystConfig.CATEGORY_GENERAL, "options.renderlabels", renderlabels).getBoolean(renderlabels);
-		fastRainbows = config.get(MystConfig.CATEGORY_GENERAL, "options.fastRainbows", fastRainbows).getBoolean(fastRainbows);
-		respawnInAges = config.get(MystConfig.CATEGORY_GENERAL, "options.respawnInAges", respawnInAges).getBoolean(respawnInAges);
-		villageDeskGen = config.get(MystConfig.CATEGORY_GENERAL, "options.villageDeskGen", villageDeskGen).getBoolean(villageDeskGen);
-		requireUUID = config.get(MystConfig.CATEGORY_GENERAL, "options.requireUUIDTest", requireUUID, "If set to true, the dimension matching test will be strict. This will force new players to the \"home\" dimension.").getBoolean(requireUUID);
+		difficulty = balanceconfig.getOptional(MystConfig.CATEGORY_INSTABILITY, "global.difficulty", difficulty);
+		instabilityEnabled = balanceconfig.get(MystConfig.CATEGORY_INSTABILITY, "global.enabled", instabilityEnabled).getBoolean(instabilityEnabled);
+
+		renderlabels = config.get(MystConfig.CATEGORY_RENDER, "renderlabels", renderlabels, "If set to false on the server config, this will override client settings.").getBoolean(renderlabels);
+		fastRainbows = config.get(MystConfig.CATEGORY_RENDER, "fast_rainbows", fastRainbows).getBoolean(fastRainbows);
+
+		respawnInAges = config.get(MystConfig.CATEGORY_GENERAL, "respawning.respawnInAges", respawnInAges).getBoolean(respawnInAges);
+		villageDeskGen = config.get(MystConfig.CATEGORY_GENERAL, "generation.villageDeskGen", villageDeskGen).getBoolean(villageDeskGen);
+
+		requireUUID = config.get(MystConfig.CATEGORY_GENERAL, "teleportation.requireUUIDTest", requireUUID, "If set to true, the dimension matching test will be strict. This will force new players to the \"home\" dimension.").getBoolean(requireUUID);
+		homeDimension = config.get(MystConfig.CATEGORY_GENERAL, "teleportation.homedim", homeDimension).getInt();
+
+		archivistId = config.get(MystConfig.CATEGORY_GENERAL, "ids.villager.archivist", 1210950779).getInt();
+		providerId = config.get(MystConfig.CATEGORY_GENERAL, "ids.dim_provider", 1210950779).getInt();
+
 		serverLabels = renderlabels;
-
-		homeDimension = config.get(MystConfig.CATEGORY_GENERAL, "options.homedim", homeDimension).getInt();
-		archivistId = config.get(MystConfig.CATEGORY_GENERAL, "villager.archivist.id", 1210950779).getInt();
-		providerId = config.get(MystConfig.CATEGORY_GENERAL, "options.providerId", 1210950779).getInt();
 
 		ModFluids.loadConfigs(config);
 		ModItems.loadConfigs(config);
@@ -221,10 +223,6 @@ public class Mystcraft {
 		ModRecipes.loadConfigs(config);
 		ModLinkEffects.setConfigs(config);
 		InstabilityDataCalculator.loadConfigs(config);
-
-		ent_link_id = config.get(MystConfig.CATEGORY_ENTITY, "entity.book.id", 219).getInt();
-		ent_gravblock_id = config.get(MystConfig.CATEGORY_ENTITY, "entity.falling.id", 218).getInt();
-		ent_meteor_id = config.get(MystConfig.CATEGORY_ENTITY, "entity.meteor.id", 217).getInt();
 
 		if (config.hasChanged()) config.save();
 
@@ -278,9 +276,9 @@ public class Mystcraft {
 		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer.class, "myst.InkMixer");
 
 		// Init Entities
-		EntityRegistry.registerModEntity(com.xcompwiz.mystcraft.entity.EntityLinkbook.class, "myst.book", ent_link_id, this, 64, 10, true);
-		EntityRegistry.registerModEntity(com.xcompwiz.mystcraft.entity.EntityFallingBlock.class, "myst.block", ent_gravblock_id, this, 16, 60, false);
-		EntityRegistry.registerModEntity(com.xcompwiz.mystcraft.entity.EntityMeteor.class, "myst.meteor", ent_meteor_id, this, 192, 30, false);
+		EntityRegistry.registerModEntity(com.xcompwiz.mystcraft.entity.EntityLinkbook.class, "myst.book", 219, this, 64, 10, true);
+		EntityRegistry.registerModEntity(com.xcompwiz.mystcraft.entity.EntityFallingBlock.class, "myst.block", 218, this, 16, 60, false);
+		EntityRegistry.registerModEntity(com.xcompwiz.mystcraft.entity.EntityMeteor.class, "myst.meteor", 217, this, 192, 30, false);
 
 		// Init Symbol System
 		ModSymbols.initialize();
@@ -320,6 +318,8 @@ public class Mystcraft {
 		SymbolManager.buildCardRanks();
 		SymbolManager.registerRules();
 		GrammarGenerator.buildGrammar();
+
+		InstabilityDataCalculator.loadBalanceData();
 
 		// Treasure object
 		ChestGenHooks treasureinfo = ChestGenHooks.getInfo(MystObjects.MYST_TREASURE);
@@ -371,7 +371,7 @@ public class Mystcraft {
 		profilingThread = new ChunkProfilerManager();
 		profilingThread.start();
 
-		sidedProxy.onServerStart(mcserver);
+		sidedProxy.startBaselineProfiling(mcserver);
 		registerDimensions(mcserver.worldServerForDimension(0).getSaveHandler());
 		LinkListenerPermissions.loadState();
 	}
@@ -379,7 +379,7 @@ public class Mystcraft {
 	@EventHandler
 	public void serverStop(FMLServerStoppedEvent event) {
 		TaskQueueManager.onServerStop();
-		sidedProxy.onServerStop();
+		sidedProxy.stopBaselineProfiling();
 		if (profilingThread != null) {
 			profilingThread.halt();
 			profilingThread = null;

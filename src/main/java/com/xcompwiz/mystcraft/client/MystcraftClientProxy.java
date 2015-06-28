@@ -58,6 +58,7 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityBookstand;
 import com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
+import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -207,8 +208,12 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 	}
 
 	@Override
-	public void onServerStart(MinecraftServer mcserver) {}
+	public void startBaselineProfiling(MinecraftServer mcserver) {
+		if (InstabilityDataCalculator.isPerSave()) super.startBaselineProfiling(mcserver);
+	}
 
 	@Override
-	public void onServerStop() {}
+	public void stopBaselineProfiling() {
+		if (InstabilityDataCalculator.isPerSave()) super.stopBaselineProfiling();		
+	}
 }

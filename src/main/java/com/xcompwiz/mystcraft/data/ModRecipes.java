@@ -25,16 +25,16 @@ public class ModRecipes {
 	private static boolean	InkMixer;
 
 	public static void loadConfigs(MystConfig config) {
-		Linkbook = config.get(MystConfig.CATEGORY_GENERAL, "options.linkbook.enabled", true).getBoolean(true);
-		Folder = config.get(MystConfig.CATEGORY_GENERAL, "options.folder.enabled", true).getBoolean(true);
-		Portfolio = config.get(MystConfig.CATEGORY_GENERAL, "options.portfolio.enabled", true).getBoolean(true);
-		BookReceptacle = config.get(MystConfig.CATEGORY_GENERAL, "options.receptacle.enabled", true).getBoolean(true);
-		Lectern = config.get(MystConfig.CATEGORY_GENERAL, "options.lectern.enabled", true).getBoolean(true);
-		Bookstand = config.get(MystConfig.CATEGORY_GENERAL, "options.bookstand.enabled", true).getBoolean(true);
-		WritingDesk = config.get(MystConfig.CATEGORY_GENERAL, "options.desk.enabled", true).getBoolean(true);
-		WritingDeskBack = config.get(MystConfig.CATEGORY_GENERAL, "options.deskback.enabled", true).getBoolean(true);
-		BookBinder = config.get(MystConfig.CATEGORY_GENERAL, "options.binder.enabled", true).getBoolean(true);
-		InkMixer = config.get(MystConfig.CATEGORY_GENERAL, "options.inkmixer.enabled", true).getBoolean(true);
+		Linkbook = config.get(MystConfig.CATEGORY_GENERAL, "crafting.linkbook.enabled", true).getBoolean(true);
+		Folder = config.get(MystConfig.CATEGORY_GENERAL, "crafting.folder.enabled", true).getBoolean(true);
+		Portfolio = config.get(MystConfig.CATEGORY_GENERAL, "crafting.portfolio.enabled", true).getBoolean(true);
+		BookReceptacle = config.get(MystConfig.CATEGORY_GENERAL, "crafting.receptacle.enabled", true).getBoolean(true);
+		Lectern = config.get(MystConfig.CATEGORY_GENERAL, "crafting.lectern.enabled", true).getBoolean(true);
+		Bookstand = config.get(MystConfig.CATEGORY_GENERAL, "crafting.bookstand.enabled", true).getBoolean(true);
+		WritingDesk = config.get(MystConfig.CATEGORY_GENERAL, "crafting.desk.enabled", true).getBoolean(true);
+		WritingDeskBack = config.get(MystConfig.CATEGORY_GENERAL, "crafting.deskback.enabled", true).getBoolean(true);
+		BookBinder = config.get(MystConfig.CATEGORY_GENERAL, "crafting.binder.enabled", true).getBoolean(true);
+		InkMixer = config.get(MystConfig.CATEGORY_GENERAL, "crafting.inkmixer.enabled", true).getBoolean(true);
 	}
 
 	public static void addRecipes(CraftingManager craftingmanager) {

@@ -11,9 +11,11 @@ public class MystConfig extends Configuration {
 	public static final String	CATEGORY_DEBUG			= "debug";
 	public static final String	CATEGORY_SYMBOLS		= "symbol";
 	public static final String	CATEGORY_INSTABILITY	= "instability";
-	public static final String	CATEGORY_BALANCE		= "balance";
-	public static final String	CATAGORY_RENDER			= "render";
-	public static final String	CATAGORY_SERVER			= "server";
+	public static final String	CATEGORY_FLUIDS			= "fluids";
+	public static final String	CATEGORY_RENDER			= "render";
+	public static final String	CATEGORY_CLIENT			= "client";
+	public static final String	CATEGORY_SERVER			= "server";
+	public static final String	CATEGORY_BASELINING 	= "baselining";
 
 	private boolean				allowoptional			= true;
 
