@@ -12,7 +12,6 @@ import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import com.xcompwiz.lookingglass.api.IWorldViewAPI;
 import com.xcompwiz.lookingglass.api.animator.CameraAnimatorPivot;
 import com.xcompwiz.lookingglass.api.view.IWorldView;
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
@@ -27,30 +26,30 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 @SideOnly(Side.CLIENT)
 public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
-	private final IWorldViewAPI	apiinst;
-	private Random				rand;
+	private final ILookingGlassWrapper	apiinst;
+	private Random						rand;
 
-	public static int			shaderARB;
-	public static int			vertexARB;
-	public static int			fragmentARB;
+	public static int					shaderARB;
+	public static int					vertexARB;
+	public static int					fragmentARB;
 
-	public static int			textureLoc;
-	public static int			damageLoc;
-	public static int			resLoc;
-	public static int			timeLoc;
-	public static int			waveScaleLoc;
-	public static int			colorScaleLoc;
-	public static int			linkColorLoc;
+	public static int					textureLoc;
+	public static int					damageLoc;
+	public static int					resLoc;
+	public static int					timeLoc;
+	public static int					waveScaleLoc;
+	public static int					colorScaleLoc;
+	public static int					linkColorLoc;
 
-	private Integer				activeDim;
-	private ChunkCoordinates	activeCoords;
-	private IWorldView			activeview;
-	public float				colorScale	= 0.5f;
-	public float				waveScale	= 0.5f;
-	private long				readyTime;
-	private boolean				ready;
+	private Integer						activeDim;
+	private ChunkCoordinates			activeCoords;
+	private IWorldView					activeview;
+	public float						colorScale	= 0.5f;
+	public float						waveScale	= 0.5f;
+	private long						readyTime;
+	private boolean						ready;
 
-	public DynamicLinkPanelRenderer(IWorldViewAPI apiinst) {
+	public DynamicLinkPanelRenderer(ILookingGlassWrapper apiinst) {
 		this.apiinst = apiinst;
 		this.rand = new Random();
 	}
@@ -58,7 +57,7 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 	@Override
 	public void render(int left, int top, int width, int height, ILinkInfo linkinfo, ItemStack bookclone) {
 		if (activeview != null && (detectLinkInfoChange(linkinfo))) {
-			activeview.release();
+			apiinst.release(activeview);
 			activeview = null;
 		}
 		if (linkinfo == null) return;
@@ -68,7 +67,6 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 			ChunkCoordinates spawn = linkinfo.getSpawn();
 			activeview = apiinst.createWorldView(dimid, spawn, 132, 83);
 			if (activeview != null) {
-				activeview.grab();
 				activeview.setAnimator(new CameraAnimatorPivot(activeview.getCamera()));
 				this.activeDim = dimid;
 				this.activeCoords = linkinfo.getSpawn();
