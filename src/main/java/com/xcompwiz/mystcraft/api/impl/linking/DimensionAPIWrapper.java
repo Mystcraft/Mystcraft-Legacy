@@ -26,5 +26,4 @@ public class DimensionAPIWrapper extends APIWrapper implements DimensionAPI {
 	public int createAge() {
 		return InternalAPI.dimension.createAge();
 	}
-
 }
