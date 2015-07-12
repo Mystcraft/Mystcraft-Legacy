@@ -127,12 +127,14 @@ jar {
 task devJar(type: Jar) {
     from sourceSets.main.output
     from sourceSets.api.output
+    from sourceSets.api.allSource
     classifier = 'dev'
 	version = "${project.minecraft.version}-${project.version}"
 }
 
 task apiJar(type: Jar) {
     from sourceSets.api.output
+    from sourceSets.api.allSource
     classifier = 'api'
 	version = "${project.minecraft.version}-${project.version}"
 }
