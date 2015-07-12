@@ -5,6 +5,7 @@ ext.nameCased        = "Mystcraft"
 ext.curseId          = "224599"  // my project url is http://minecraft.curseforge.com/mc-mods/224599-mystcraft/
 ext.curseReleaseType = "release" //The release type must be either 'alpha', 'beta', or 'release'
 ext.curseIncludeAPI  = true
+ext.curseIncludeDev  = true
 
 // define some stuff.  hereafter referenced as project.varName
 ext.configFile = file "build.properties"
@@ -322,6 +323,9 @@ curse {
 	// artifact = project.file("some/jar/to/upload.jar")
 	if (project.curseIncludeAPI) {
 		additionalArtifact {project.tasks.apiJar.getArchivePath()}
+	}
+	if (project.curseIncludeDev) {
+		additionalArtifact {project.tasks.devJar.getArchivePath()}
 	}
 
 	// allows you to add extra compatible MC versions. The one specified in the minecraft{} block is used by default.
