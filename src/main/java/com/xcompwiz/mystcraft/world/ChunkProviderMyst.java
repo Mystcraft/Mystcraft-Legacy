@@ -26,6 +26,7 @@ import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
 
@@ -134,7 +135,13 @@ public class ChunkProviderMyst implements IChunkProvider {
 
 	@Override
 	public boolean chunkExists(int i, int j) {
-		return true;
+		try {
+			throw new RuntimeException("Something has called chunkExists on the lower-level generation logic. This is a logic error.  Please report this if you see it.");
+		} catch (Exception e) {
+			LoggerUtils.warn(e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
