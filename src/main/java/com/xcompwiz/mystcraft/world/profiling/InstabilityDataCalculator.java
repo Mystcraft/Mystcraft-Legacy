@@ -235,22 +235,25 @@ public class InstabilityDataCalculator {
 
 	@SubscribeEvent
 	public void onWorldUnload(WorldEvent.Unload event) {
+		if (dimId == null || event.world.provider.dimensionId != dimId) return;
+		if (event.world != world) {
+			LoggerUtils.error("World with matching dim id to profiling dim unloaded!");
+			return;
+		}
 		if (running) {
 			LoggerUtils.info("Baseline Profiling world unloaded before time!");
 			world = null;
 			return;
 		}
-		if (dimId != null && event.world.provider.dimensionId == dimId) {
-			LoggerUtils.info("Baseline Profiling world unloading.");
-			if (dimId != null) DimensionManager.unregisterDimension(dimId);
-			dimId = null;
-			if (providerId != null) DimensionManager.unregisterProviderType(providerId);
-			providerId = null;
-			File dir = event.world.getSaveHandler().getWorldDirectory();
-			dir = new File(dir, event.world.provider.getSaveFolder());
-			dir.deleteOnExit();
-			//TODO: Request for the profile data to save NOW
-		}
+		LoggerUtils.info("Baseline Profiling world unloading.");
+		if (dimId != null) DimensionManager.unregisterDimension(dimId);
+		dimId = null;
+		if (providerId != null) DimensionManager.unregisterProviderType(providerId);
+		providerId = null;
+		File dir = event.world.getSaveHandler().getWorldDirectory();
+		dir = new File(dir, event.world.provider.getSaveFolder());
+		dir.deleteOnExit();
+		//TODO: Request for the profile data to save NOW
 	}
 
 	@SubscribeEvent
