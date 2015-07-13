@@ -404,9 +404,11 @@ public class Mystcraft {
 	}
 
 	public static long getLevelSeed() {
+		if (clientStorage != null) return 0; 
 		MinecraftServer mcServer = MinecraftServer.getServer();
 		if (mcServer == null) return 0;
-		return mcServer.worldServerForDimension(0).getSeed();
+		if (DimensionManager.getWorld(0) == null) return 0;
+		return DimensionManager.getWorld(0).getSeed();
 	}
 
 	public static void unregisterDimensions() {
