@@ -284,7 +284,7 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	private boolean checkLinkPermitted() {
 		ILinkInfo linkinfo = getLinkInfo();
 		if (linkinfo == null) { return false; }
-		if (ItemAgebook.isNewAgebook(getBook())) return true;
+		if (ItemAgebook.isNewAgebook(getBook())) return true; //TODO: Generalize this
 		return LinkListenerManager.isLinkPermitted(inventoryplayer.player.worldObj, inventoryplayer.player, linkinfo);
 	}
 

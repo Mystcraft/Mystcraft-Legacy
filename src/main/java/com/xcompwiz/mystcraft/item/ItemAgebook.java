@@ -72,11 +72,12 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		if (Page.isLinkPanel(linkpanel)) Page.applyLinkPanel(linkpanel, agebook);
 	}
 
-	public static boolean isNewAgebook(ItemStack agebook) {
-		if (agebook.stackTagCompound == null) return false;
-		Integer dimid = LinkOptions.getDimensionUID(agebook.stackTagCompound);
+	public static boolean isNewAgebook(ItemStack itemstack) {
+		if (!(itemstack.getItem() instanceof ItemAgebook)) return false;
+		if (itemstack.stackTagCompound == null) return false;
+		Integer dimid = LinkOptions.getDimensionUID(itemstack.stackTagCompound);
 		if (dimid != null) return false;
-		List<ItemStack> pages = ((ItemAgebook)agebook.getItem()).getPageList(null, agebook);
+		List<ItemStack> pages = ((ItemAgebook)itemstack.getItem()).getPageList(null, itemstack);
 		if (pages.isEmpty()) return false;
 		if (!Page.isLinkPanel(pages.get(0))) return false;
 		return true;
