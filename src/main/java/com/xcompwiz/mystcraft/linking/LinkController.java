@@ -94,7 +94,12 @@ public class LinkController {
 			if (!(entity instanceof EntityPlayer)) {
 				NBTTagCompound entityNBT = new NBTTagCompound();
 				entity.isDead = false;
-				entityNBT.setString("id", EntityList.getEntityString(entity));
+				String entitystr = EntityList.getEntityString(entity);
+				if (entitystr == null) {
+					LoggerUtils.warn("Failed to save entity when linking");
+					return null;
+				}
+				entityNBT.setString("id", entitystr);
 				entity.writeToNBT(entityNBT);
 				entity.isDead = true;
 				entity = EntityList.createEntityFromNBT(entityNBT, newworld);
