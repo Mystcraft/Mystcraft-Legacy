@@ -6,7 +6,9 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
+import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
 import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.item.ItemBoosterPack;
 
 public class InventoryVillager implements IInventory {
 	public static final int	emerald_slot	= 0;
@@ -14,8 +16,14 @@ public class InventoryVillager implements IInventory {
 	public static final int	boostercost		= 10;
 
 	private ItemStack		inventory[]		= new ItemStack[1];
+	private boolean			dirty;
 
 	private EntityVillager	villager;
+
+	private long			lastrestock;
+	private long			lastupdated;
+
+	private ItemStack		portfolio;
 
 	public InventoryVillager(EntityVillager villager) {
 		this.villager = villager;
@@ -69,7 +77,15 @@ public class InventoryVillager implements IInventory {
 
 	@Override
 	public void markDirty() {
-		//TODO: Write back to villager
+		this.setDirty(true);
+	}
+
+	public void setDirty(boolean b) {
+		dirty = b;
+	}
+
+	public boolean isDirty() {
+		return dirty;
 	}
 
 	@Override
@@ -113,5 +129,23 @@ public class InventoryVillager implements IInventory {
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
 		return false;
+	}
+
+	public long getLastChanged() {
+		return lastupdated;
+	}
+
+	public ItemStack removePageFromCollection(EntityPlayer player, ItemStack page) {
+		ItemStack itemstack = getCollection();
+		ItemStack result = null;
+		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).remove(player, itemstack, page);
+		if (result == null) return result;
+		this.markDirty();
+		return result;
+	}
+
+	public ItemStack getCollection() {
+		if (this.portfolio == null) this.portfolio = ItemBoosterPack.generateBooster(new ItemStack(ModItems.portfolio, 1, 0), villager.getRNG(), 7, 4, 4, 1);
+		return portfolio;
 	}
 }

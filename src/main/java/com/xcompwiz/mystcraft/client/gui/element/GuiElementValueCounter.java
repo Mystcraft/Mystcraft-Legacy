@@ -40,7 +40,7 @@ public class GuiElementValueCounter extends GuiElement implements IGuiOnClickHan
 		addElement(createButton(this, "-", buttonWidth, buttonYPadding, buttonWidth));
 		addElement(createButton(this, "+", this.xSize - buttonWidth - buttonWidth, buttonYPadding, buttonWidth));
 		addElement(createButton(this, "++", this.xSize - buttonWidth, buttonYPadding, buttonWidth));
-		addElement(new GuiElementLabel(this, (buttonWidth) * 2, buttonYPadding, this.xSize - (buttonWidth) * 4, ySize - buttonYPadding * 2, 0x7F000000, 0xFFFFFFFF));
+		addElement(new GuiElementLabel(this, null, (buttonWidth) * 2, buttonYPadding, this.xSize - (buttonWidth) * 4, ySize - buttonYPadding * 2, 0x7F000000, 0xFFFFFFFF));
 	}
 
 	private GuiElement createButton(IGuiOnClickHandler eventhandler, String id, int guiLeft, int guiTop, int width) {
@@ -75,12 +75,12 @@ public class GuiElementValueCounter extends GuiElement implements IGuiOnClickHan
 	}
 
 	@Override
-	public String getText() {
+	public String getText(GuiElementLabel caller) {
 		return String.valueOf(this.getValue());
 	}
 
 	@Override
-	public List<String> getTooltip() {
+	public List<String> getTooltip(GuiElementLabel caller) {
 		return null;
 	}
 

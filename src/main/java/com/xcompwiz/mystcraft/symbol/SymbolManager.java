@@ -145,9 +145,9 @@ public class SymbolManager {
 	}
 
 	/**
-	 * Retrieves all symbols which have an item weight in the provide range. The range is (min, max]. If null is passed for part of the range, it counts as
+	 * Retrieves all symbols which have an item weight in the provide range. The range is [min, max]. If null is passed for part of the range, it counts as
 	 * infinity in that direction.
-	 * @param min The minimum weight, non-inclusive or null
+	 * @param min The minimum weight, inclusive or null
 	 * @param max The maximum weight, inclusive or null
 	 * @return The collection of symbols with an item weight in the range
 	 */
@@ -213,7 +213,7 @@ public class SymbolManager {
 	}
 
 	public static List<ItemStack> getSymbolTradeItems(String identifier) {
-		ItemStack dfault = new ItemStack(Items.emerald, Math.max(1, (int) (65F - 64F * getSymbolItemWeight(identifier))));
+		ItemStack dfault = new ItemStack(Items.emerald, Math.max(1, (int) (12F * getSymbolItemCardRank(identifier))));
 		if (!tradeItemOverrides.containsKey(identifier)) return Arrays.asList(dfault);
 		List<ItemStack> override = tradeItemOverrides.get(identifier);
 		if (override == null) return Arrays.asList(dfault);

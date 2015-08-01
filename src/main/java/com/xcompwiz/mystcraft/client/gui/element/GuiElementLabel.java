@@ -7,27 +7,35 @@ import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 public class GuiElementLabel extends GuiElement {
 
 	public interface IGuiLabelDataProvider {
-		String getText();
+		String getText(GuiElementLabel caller);
 
-		List<String> getTooltip();
+		List<String> getTooltip(GuiElementLabel caller);
 	}
 
+	//TODO: Alignment options
+
 	private IGuiLabelDataProvider	provider;
+	private String					id;
 	private int						bkgdcolor;
 	private int						textcolor;
 
 	private boolean					hovered	= false;
 
-	public GuiElementLabel(IGuiLabelDataProvider provider, int guiLeft, int guiTop, int width, int height, int bkgdcolor, int textcolor) {
+	public GuiElementLabel(IGuiLabelDataProvider provider, String id, int guiLeft, int guiTop, int width, int height, int bkgdcolor, int textcolor) {
 		super(guiLeft, guiTop, width, height);
 		this.provider = provider;
+		this.id = id;
 		this.bkgdcolor = bkgdcolor;
 		this.textcolor = textcolor;
 	}
 
+	public String getId() {
+		return id;
+	}
+
 	@Override
 	public List<String> _getTooltipInfo() {
-		if (this.hovered) { return provider.getTooltip(); }
+		if (this.hovered) { return provider.getTooltip(this); }
 		return super._getTooltipInfo();
 	}
 
@@ -37,6 +45,6 @@ public class GuiElementLabel extends GuiElement {
 		int guiLeft = getLeft();
 		int guiTop = getTop();
 		drawRect(guiLeft, guiTop, guiLeft + this.xSize, guiTop + ySize, bkgdcolor);
-		GuiUtils.drawScaledText(provider.getText(), guiLeft + 2, guiTop + 2, this.xSize - 4, this.ySize - 4, textcolor);
+		GuiUtils.drawScaledText(provider.getText(this), guiLeft + 2, guiTop + 2, this.xSize - 4, this.ySize - 4, textcolor);
 	}
 }

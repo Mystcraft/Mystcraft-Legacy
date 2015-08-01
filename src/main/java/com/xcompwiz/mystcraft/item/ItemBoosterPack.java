@@ -38,7 +38,7 @@ public class ItemBoosterPack extends Item {
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
 		if (world.isRemote) return itemstack;
-		ItemStack newitemstack = generateBooster(entityplayer.getRNG(), 7, 4, 4, 1);
+		ItemStack newitemstack = generateBooster(null, entityplayer.getRNG(), 7, 4, 4, 1);
 		if (newitemstack == null) return itemstack;
 		itemstack.stackSize--;
 		if (itemstack.stackSize <= 0) {
@@ -54,8 +54,8 @@ public class ItemBoosterPack extends Item {
 	}
 
 	//XXX: Generalize to allow for alternate rank sets (any rank, >=2, etc)
-	public static ItemStack generateBooster(Random rand, int verycommon, int common, int uncommon, int rare) {
-		ItemStack itemstack = new ItemStack(ModItems.folder, 1, 0);
+	public static ItemStack generateBooster(ItemStack itemstack, Random rand, int verycommon, int common, int uncommon, int rare) {
+		if (itemstack == null) itemstack = new ItemStack(ModItems.folder, 1, 0);
 		IItemPageAcceptor item = (IItemPageAcceptor) itemstack.getItem();
 
 		Collection<IAgeSymbol> symbols_vc = SymbolManager.getSymbolsByRank(0);

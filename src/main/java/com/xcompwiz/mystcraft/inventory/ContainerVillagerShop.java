@@ -1,35 +1,44 @@
 package com.xcompwiz.mystcraft.inventory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
 
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
+import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
+import com.xcompwiz.mystcraft.villager.VillagerTradeSystem;
 
 public class ContainerVillagerShop extends ContainerBase implements IGuiMessageHandler {
 	public static class Messages {
+		public static final String	UpdateVillagerCollection	= "UVC";
+		public static final String	PurchaseBooster				= "PB";
 	}
 
 	private InventoryPlayer		inventoryplayer;
 	private EntityVillager		villager;
 	private InventoryVillager	villagerinv;
 
+	private long				villagerinv_timestamp;
+
 	public ContainerVillagerShop(InventoryPlayer inventoryplayer, EntityVillager villager) {
 		this.inventoryplayer = inventoryplayer;
 		this.villager = villager;
-		this.villagerinv = new InventoryVillager(villager);
+		this.villagerinv = VillagerTradeSystem.getVillagerInventory(villager);
 		updateSlots();
 	}
 
 	public void updateSlots() {
 		this.inventorySlots.clear();
 		this.inventoryItemStacks.clear();
-		addSlotToContainer(new SlotFiltered(villagerinv, InventoryVillager.booster_slot, 8, 9));
-		addSlotToContainer(new SlotFiltered(villagerinv, InventoryVillager.emerald_slot, 8, 28));
-
 		int i;
 		for (i = 0; i < 3; ++i) {
 			for (int j = 0; j < 9; ++j) {
@@ -42,23 +51,52 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 		}
 
 		collections.clear();
-		SlotCollection internal = null;
 		SlotCollection maininv = null;
 		SlotCollection hotbar = null;
-		internal = new SlotCollection(this, 1, 2);
-		maininv = new SlotCollection(this, 2, 2 + 27);
-		hotbar = new SlotCollection(this, 2 + 27, 2 + 27 + 9);
+		maininv = new SlotCollection(this, 0, 0 + 27);
+		hotbar = new SlotCollection(this, 0 + 27, 0 + 27 + 9);
 
-		internal.pushTargetFront(maininv);
-		internal.pushTargetFront(hotbar);
 		maininv.pushTargetFront(hotbar);
-		maininv.pushTargetFront(internal);
 		hotbar.pushTargetFront(maininv);
-		hotbar.pushTargetFront(internal);
 
-		collections.add(internal);
 		collections.add(maininv);
 		collections.add(hotbar);
+	}
+
+	@Override
+	public void detectAndSendChanges() {
+		List<Packet> packets = new ArrayList<Packet>();
+		for (int slotId = 0; slotId < this.inventorySlots.size(); ++slotId) {
+			ItemStack actual = ((Slot) this.inventorySlots.get(slotId)).getStack();
+			ItemStack stored = (ItemStack) this.inventoryItemStacks.get(slotId);
+
+			if (!ItemStack.areItemStacksEqual(stored, actual)) {
+				stored = actual == null ? null : actual.copy();
+				this.inventoryItemStacks.set(slotId, stored);
+
+				for (int var4 = 0; var4 < this.crafters.size(); ++var4) {
+					((ICrafting) this.crafters.get(var4)).sendSlotContents(this, slotId, stored);
+				}
+			}
+		}
+		if (this.villagerinv_timestamp != villagerinv.getLastChanged()) {
+			NBTTagCompound nbttagcompound = new NBTTagCompound();
+			NBTTagCompound inventorynbt = new NBTTagCompound();
+			//TODO: if (villagerinv != null) villagerinv.writeToNBT(inventorynbt);
+			nbttagcompound.setTag(Messages.UpdateVillagerCollection, inventorynbt);
+			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
+		}
+		if (packets.size() > 0) {
+			for (int var4 = 0; var4 < this.crafters.size(); ++var4) {
+				ICrafting crafter = ((ICrafting) this.crafters.get(var4));
+				if (crafter instanceof EntityPlayerMP) {
+					EntityPlayerMP player = (EntityPlayerMP) crafter;
+					for (Packet pkt : packets) {
+						player.playerNetServerHandler.sendPacket(pkt);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -68,7 +106,13 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 	}
 
 	@Override
-	public void processMessage(EntityPlayer player, NBTTagCompound nbttagcompound) {}
+	public void processMessage(EntityPlayer player, NBTTagCompound data) {
+		if (data.hasKey(Messages.UpdateVillagerCollection)) {
+			if (this.villager.worldObj.isRemote) { //Only allow the updates to the client this way
+				//TODO: this.villagerinv.readFromNBT(data.getCompoundTag(Messages.UpdateVillagerCollection));
+			}
+		}
+	}
 
 	/**
 	 * Called when the container is closed.
@@ -90,5 +134,6 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 		if (itemstack != null) {
 			player.dropPlayerItemWithRandomChoice(itemstack, false);
 		}
+		VillagerTradeSystem.release(villagerinv);
 	}
 }

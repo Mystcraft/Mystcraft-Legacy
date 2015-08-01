@@ -2,6 +2,8 @@ package com.xcompwiz.mystcraft.client.gui.element;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
@@ -10,7 +12,10 @@ import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 
 public abstract class GuiElementButtonBase extends GuiElement {
 
+	private static RenderItem	itemrenderer	= new RenderItem();
+
 	private IIcon			icon;
+	private ItemStack		itemstack;
 	private String			text;
 	private List<String>	tooltip;
 
@@ -23,6 +28,12 @@ public abstract class GuiElementButtonBase extends GuiElement {
 
 	public void setIcon(IIcon icon) {
 		this.icon = icon;
+		this.itemstack = null;
+	}
+
+	public void setIcon(ItemStack itemstack) {
+		this.icon = null;
+		this.itemstack = itemstack;
 	}
 
 	public void setText(String string) {
@@ -91,6 +102,27 @@ public abstract class GuiElementButtonBase extends GuiElement {
 		// Render button icon/text
 		if (icon != null) {
 			GuiUtils.drawIcon(guiLeft, guiTop, icon, xSize, ySize, getZLevel());
+		}
+		if (itemstack != null) {
+			//TODO: Make this a helper function (see also GuiElementIcon)
+			int slotX = getLeft();
+			int slotY = getTop();
+			float smallest = Math.min(xSize, ySize);
+			float scale = smallest/16.F;
+
+			GuiUtils.startGlScissor(slotX, slotY, this.xSize, this.ySize);
+
+			GL11.glPushMatrix();
+			GL11.glTranslatef(slotX, slotY, 1);
+			GL11.glScalef(scale, scale, 1);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			itemrenderer.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.getTextureManager(), this.itemstack, 0, 0);
+			itemrenderer.renderItemOverlayIntoGUI(this.mc.fontRenderer, this.mc.getTextureManager(), itemstack, 0, 0, null);
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			GL11.glPopMatrix();
+
+			GuiUtils.endGlScissor();
 		}
 		if (text != null) {
 			GL11.glDisable(GL11.GL_DEPTH_TEST);
