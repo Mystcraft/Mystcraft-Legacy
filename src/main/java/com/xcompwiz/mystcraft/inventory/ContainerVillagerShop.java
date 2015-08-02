@@ -21,6 +21,7 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 	public static class Messages {
 		public static final String	UpdateVillagerCollection	= "UVC";
 		public static final String	PurchaseBooster				= "PB";
+		public static final String	PurchaseItem				= "PI";
 	}
 
 	private InventoryPlayer		inventoryplayer;
@@ -28,6 +29,8 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 	private InventoryVillager	villagerinv;
 
 	private long				villagerinv_timestamp;
+	private Integer				playerEmeralds;
+	private long				lastEmeraldsUpdate;
 
 	public ContainerVillagerShop(InventoryPlayer inventoryplayer, EntityVillager villager) {
 		this.inventoryplayer = inventoryplayer;
@@ -80,9 +83,10 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 			}
 		}
 		if (this.villagerinv_timestamp != villagerinv.getLastChanged()) {
+			villagerinv_timestamp = villagerinv.getLastChanged();
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			NBTTagCompound inventorynbt = new NBTTagCompound();
-			//TODO: if (villagerinv != null) villagerinv.writeToNBT(inventorynbt);
+			villagerinv.writeToNBT(inventorynbt);
 			nbttagcompound.setTag(Messages.UpdateVillagerCollection, inventorynbt);
 			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
 		}
@@ -109,8 +113,18 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 	public void processMessage(EntityPlayer player, NBTTagCompound data) {
 		if (data.hasKey(Messages.UpdateVillagerCollection)) {
 			if (this.villager.worldObj.isRemote) { //Only allow the updates to the client this way
-				//TODO: this.villagerinv.readFromNBT(data.getCompoundTag(Messages.UpdateVillagerCollection));
+				this.villagerinv.readFromNBT(data.getCompoundTag(Messages.UpdateVillagerCollection));
 			}
+			return;
+		}
+		if (data.hasKey(Messages.PurchaseBooster)) {
+			if (villagerinv.purchaseBooster(inventoryplayer)) getPlayerEmeralds(true);
+			return;
+		}
+		if (data.hasKey(Messages.PurchaseItem)) {
+			int index = data.getInteger(Messages.PurchaseItem);
+			if (villagerinv.purchaseShopItem(inventoryplayer, index)) getPlayerEmeralds(true);
+			return;
 		}
 	}
 
@@ -120,20 +134,35 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);
-
-		if (this.inventoryplayer.player.worldObj.isRemote) return;
-
-		ItemStack itemstack = this.villagerinv.getStackInSlotOnClosing(InventoryVillager.emerald_slot);
-
-		if (itemstack != null) {
-			player.dropPlayerItemWithRandomChoice(itemstack, false);
-		}
-
-		itemstack = this.villagerinv.getStackInSlotOnClosing(1);
-
-		if (itemstack != null) {
-			player.dropPlayerItemWithRandomChoice(itemstack, false);
-		}
 		VillagerTradeSystem.release(villagerinv);
+		if (this.inventoryplayer.player.worldObj.isRemote) return;
+	}
+
+	public ItemStack getShopItem(int index) {
+		return villagerinv.getShopItem(index);
+	}
+
+	public int getShopItemPrice(int index) {
+		return villagerinv.getShopItemPrice(index);
+	}
+
+	public int getBoosterCount() {
+		return villagerinv.getBoosterCount();
+	}
+
+	public int getBoosterCost() {
+		return villagerinv.getBoosterCost();
+	}
+
+	public int getPlayerEmeralds() {
+		return getPlayerEmeralds(false);
+	}
+
+	private int getPlayerEmeralds(boolean forceupdate) {
+		if (playerEmeralds == null || forceupdate || lastEmeraldsUpdate + 100 < villager.worldObj.getTotalWorldTime()) {
+			lastEmeraldsUpdate = villager.worldObj.getTotalWorldTime();
+			playerEmeralds = villagerinv.getPlayerEmeralds(this.inventoryplayer);
+		}
+		return playerEmeralds;
 	}
 }

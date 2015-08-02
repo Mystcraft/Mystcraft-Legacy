@@ -1,6 +1,6 @@
 package com.xcompwiz.mystcraft.client.gui;
 
-import java.util.Random;
+import java.util.List;
 
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -10,10 +10,11 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.lwjgl.opengl.GL11;
 
-import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton.IGuiOnClickHandler;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementIcon;
+import com.xcompwiz.mystcraft.client.gui.element.GuiElementLabel;
+import com.xcompwiz.mystcraft.client.gui.element.GuiElementLabel.IGuiLabelDataProvider;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementShopItem;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementShopItem.IGuiShopHandler;
 import com.xcompwiz.mystcraft.client.gui.element.data.GuiIconItemStack;
@@ -23,37 +24,41 @@ import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.ContainerVillagerShop;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
-import com.xcompwiz.mystcraft.page.Page;
-import com.xcompwiz.mystcraft.symbol.SymbolManager;
-import com.xcompwiz.mystcraft.treasure.WeightProviderSymbolItem;
-import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
-import com.xcompwiz.mystcraft.villager.VillagerTradeSystem;
 
 public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClickHandler, IItemStackProvider {
 
-	public class ShopHandler implements IGuiShopHandler {
+	public class EmeraldsHandler implements IGuiLabelDataProvider {
 
-		private ItemStack	pageitems[] = new ItemStack[3];
+		@Override
+		public String getText(GuiElementLabel caller) {
+			return Integer.toString(container.getPlayerEmeralds());
+		}
+
+		@Override
+		public List<String> getTooltip(GuiElementLabel caller) {
+			return null;
+		}
+
+	}
+
+	public class ShopHandler implements IGuiShopHandler {
 
 		@Override
 		public void onPurchase(GuiElementShopItem caller) {
-			// TODO Auto-generated method stub
-
+			NBTTagCompound nbttagcompound = new NBTTagCompound();
+			nbttagcompound.setInteger(ContainerVillagerShop.Messages.PurchaseItem, caller.getId());
+			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
+			container.processMessage(mc.thePlayer, nbttagcompound);
 		}
 
 		@Override
 		public String getPriceText(GuiElementShopItem caller) {
-			ItemStack itemstack = this.getItemstack(caller);
-			return Integer.toString(VillagerTradeSystem.getCardCost(itemstack));
+			return Integer.toString(container.getShopItemPrice(caller.getId()));
 		}
 
 		@Override
 		public ItemStack getItemstack(GuiElementShopItem caller) {
-			if (this.pageitems[caller.getId()] == null) {
-				IAgeSymbol symbol = WeightedItemSelector.getRandomItem(new Random(), SymbolManager.getSymbolsByRank(caller.getId()+1, null), WeightProviderSymbolItem.instance);
-				this.pageitems[caller.getId()] = Page.createSymbolPage(symbol.identifier());
-			}
-			return this.pageitems[caller.getId()];
+			return container.getShopItem(caller.getId());
 		}
 
 	}
@@ -74,6 +79,8 @@ public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClick
 		int padding = 3;
 		int shop_slot_width = (xSize-slotleft-padding-3)/3-1;
 		int shop_slot_height = shop_slot_width * 3 / 2;
+		int labelY = 10;
+		int labelX = 40;
 
 		IGuiShopHandler shophandler = new ShopHandler();
 		addElement(new GuiElementShopItem(shophandler, 0, slotleft, 4, shop_slot_width, shop_slot_height));
@@ -87,6 +94,9 @@ public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClick
 		button.setIcon(new GuiIconItemStack(this, "buybtnb"));
 		button.setText("Buy");
 		addElement(button);
+
+		addElement(new GuiElementLabel(new EmeraldsHandler(), "emeralds", xSize - 4 - labelX, 81, labelX, labelY, 0x44000000, 0xFF88FF88));
+		addElement(new GuiElementIcon(new GuiIconItemStack(new ItemStack(Items.emerald)), xSize - 4 - labelX - labelY, 81, labelY, labelY));
 	}
 
 	@Override
@@ -108,8 +118,8 @@ public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClick
 
 	@Override
 	public ItemStack getItemStack(GuiIconItemStack caller) {
-		if (caller.getId().equals("booster")) return new ItemStack(ModItems.booster, 5);
-		if (caller.getId().equals("buybtnb")) return new ItemStack(Items.emerald, 10);
+		if (caller.getId().equals("booster")) return new ItemStack(ModItems.booster, container.getBoosterCount());
+		if (caller.getId().equals("buybtnb")) return new ItemStack(Items.emerald, container.getBoosterCost());
 		return null;
 	}
 }
