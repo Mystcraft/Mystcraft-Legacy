@@ -337,7 +337,7 @@ public class Mystcraft {
 		//treasureinfo.addItem(new TreasureGenBooster(7, 4, 4, 1, 1000));
 		// 11 commons, 3 uncommon, 1 rare, and a basic land
 		//if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderBooster(7, 4, 4, 1));
-		if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderItem(new ItemStack(Items.emerald, 10), null, new ItemStack(ModItems.booster, 1)));
+		if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderItem(new ItemStack(Items.emerald, 25), null, new ItemStack(ModItems.booster, 1)));
 
 		TreasureGenWrapper mystTreasureSub = new TreasureGenWrapper(MystObjects.MYST_TREASURE, 10);
 		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(mystTreasureSub);

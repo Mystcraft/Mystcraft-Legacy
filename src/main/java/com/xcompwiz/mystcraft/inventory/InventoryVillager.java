@@ -68,7 +68,7 @@ public class InventoryVillager {
 	}
 
 	public int getBoosterCost() {
-		return 10;
+		return 20;
 	}
 
 	public void simulate() {
