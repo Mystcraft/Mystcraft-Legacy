@@ -102,19 +102,20 @@ public class SymbolRules {
 		addRule("Caves", buildRule(1, GrammarData.FEATURE_LARGE, "Caves"));
 		addRule("DenseOres", buildRule(null, GrammarData.FEATURE_LARGE, "DenseOres"));
 		addRule("HugeTrees", buildRule(2, GrammarData.FEATURE_LARGE, "HugeTrees"));
-		addRule("NetherFort", buildRule(2, GrammarData.FEATURE_LARGE, "NetherFort"));
-		addRule("Villages", buildRule(1, GrammarData.FEATURE_LARGE, "Villages"));
-		addRule("Strongholds", buildRule(1, GrammarData.FEATURE_LARGE, "Strongholds"));
-		addRule("Mineshafts", buildRule(1, GrammarData.FEATURE_LARGE, "Mineshafts"));
 		addRule("FeatureLargeDummy", buildRule(5, GrammarData.FEATURE_LARGE, "FeatureLargeDummy"));
+
+		addRule("NetherFort", buildRule(2, GrammarData.FEATURE_MEDIUM, "NetherFort"));
+		addRule("Villages", buildRule(1, GrammarData.FEATURE_MEDIUM, "Villages"));
+		addRule("Strongholds", buildRule(1, GrammarData.FEATURE_MEDIUM, "Strongholds"));
+		addRule("Mineshafts", buildRule(1, GrammarData.FEATURE_MEDIUM, "Mineshafts"));
 
 		addRule("Ravines", buildRule(1, GrammarData.FEATURE_MEDIUM, "Ravines"));
 		addRule("TerModSpheres", buildRule(3, GrammarData.FEATURE_MEDIUM, GrammarData.BLOCK_STRUCTURE, "TerModSpheres"));
 		addRule("Dungeons", buildRule(2, GrammarData.FEATURE_MEDIUM, "Dungeons"));
 		addRule("GenSpikes", buildRule(3, GrammarData.FEATURE_MEDIUM, GrammarData.BLOCK_STRUCTURE, "GenSpikes"));
-		addRule("StarFissure", buildRule(3, GrammarData.FEATURE_MEDIUM, "StarFissure"));
 		addRule("FeatureMediumDummy", buildRule(5, GrammarData.FEATURE_MEDIUM, "FeatureMediumDummy"));
 
+		addRule("StarFissure", buildRule(3, GrammarData.FEATURE_SMALL, "StarFissure"));
 		addRule("Obelisks", buildRule(3, GrammarData.FEATURE_SMALL, GrammarData.BLOCK_STRUCTURE, "Obelisks"));
 		addRule("LakesSurface", buildRule(1, GrammarData.FEATURE_SMALL, GrammarData.BLOCK_FLUID, "LakesSurface"));
 		addRule("LakesDeep", buildRule(1, GrammarData.FEATURE_SMALL, GrammarRules.BLOCK_NONSOLID, "LakesDeep"));
