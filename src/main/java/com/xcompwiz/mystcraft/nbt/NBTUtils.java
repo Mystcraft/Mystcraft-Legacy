@@ -196,4 +196,10 @@ public final class NBTUtils {
 		}
 		return 0;
 	}
+
+	public static NBTTagCompound forceGetCompound(NBTTagCompound nbt, String key) {
+		NBTTagCompound tagcompound = nbt.getCompoundTag(key);
+		nbt.setTag(key, tagcompound);
+		return tagcompound;
+	}
 }
