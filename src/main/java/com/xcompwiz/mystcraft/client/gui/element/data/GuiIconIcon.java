@@ -11,7 +11,7 @@ public class GuiIconIcon implements IGuiIcon {
 	}
 
 	private IIconProvider	provider;
-	private String				id;
+	private String			id;
 	private IIcon			icon;
 
 	public GuiIconIcon(IIcon icon) {
