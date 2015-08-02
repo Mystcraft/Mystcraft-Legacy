@@ -79,10 +79,25 @@ public abstract class GuiElementButtonBase extends GuiElement {
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		}
 		// Render button
-		if (isDepressed()) {
-			GuiUtils.drawSprite(guiLeft, guiTop, xSize, ySize, 0, 0, this.getZLevel());
+		if (xSize != ySize) {
+			int color1 = 0xFF373737;
+			int color2 = 0xFFFFFFFF;
+			if (isDepressed()) {
+				int temp = color1;
+				color1 = color2;
+				color2 = temp;
+			}
+			int innercolor = 0xFF8b8b8b;
+			drawRect(guiLeft, guiTop, guiLeft + this.xSize, guiTop + ySize, innercolor);
+			drawRect(guiLeft, guiTop, guiLeft + this.xSize-1, guiTop + ySize-1, color2);
+			drawRect(guiLeft+1, guiTop+1, guiLeft + this.xSize, guiTop + ySize, color1);
+			drawRect(guiLeft+1, guiTop+1, guiLeft + this.xSize-1, guiTop + ySize-1, innercolor);
 		} else {
-			GuiUtils.drawSprite(guiLeft, guiTop, xSize, ySize, 0, 18, this.getZLevel());
+			if (isDepressed()) {
+				GuiUtils.drawSprite(guiLeft, guiTop, xSize, ySize, 0, 0, this.getZLevel());
+			} else {
+				GuiUtils.drawSprite(guiLeft, guiTop, xSize, ySize, 0, 18, this.getZLevel());
+			}
 		}
 		if (hovered) {
 			GuiUtils.drawGradientRect(guiLeft, guiTop, guiLeft + xSize, guiTop + ySize, 0x90FFFFFF, 0x90FFFFFF, this.getZLevel());
