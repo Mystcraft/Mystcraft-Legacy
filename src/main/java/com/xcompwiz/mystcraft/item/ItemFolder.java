@@ -27,7 +27,7 @@ import com.xcompwiz.mystcraft.network.NetworkUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemFolder extends Item implements IItemOrderablePageProvider, IItemWritable {
+public class ItemFolder extends Item implements IItemOrderablePageProvider, IItemWritable, IItemOnLoadable {
 
 	public static class GuiHandlerFolder extends GuiHandlerManager.GuiHandler {
 		@Override
@@ -106,7 +106,6 @@ public class ItemFolder extends Item implements IItemOrderablePageProvider, IIte
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
 		if (!world.isRemote) {
-			InventoryFolder.updatePages(itemstack);
 			NetworkUtils.displayGui(entityplayer, world, GuiID, itemstack);
 		}
 		return itemstack;
@@ -149,5 +148,11 @@ public class ItemFolder extends Item implements IItemOrderablePageProvider, IIte
 	@Override
 	public ItemStack addPage(EntityPlayer player, ItemStack folder, ItemStack page) {
 		return InventoryFolder.addItem(folder, page);
+	}
+
+	@Override
+	public ItemStack onLoad(ItemStack itemstack) {
+		InventoryFolder.updatePages(itemstack);
+		return itemstack;
 	}
 }

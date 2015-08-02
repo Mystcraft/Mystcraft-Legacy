@@ -16,7 +16,9 @@ import com.xcompwiz.mystcraft.inventory.IItemBuilder;
 import com.xcompwiz.mystcraft.inventory.InventoryFolder;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemPage;
+import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.page.Page;
+import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 
 public class TileEntityBookBinder extends TileEntityRotatable implements IItemBuilder, ISidedInventory {
 
@@ -133,20 +135,10 @@ public class TileEntityBookBinder extends TileEntityRotatable implements IItemBu
 	@Override
 	public void readFromNBT(NBTTagCompound nbttagcompound) {
 		super.readFromNBT(nbttagcompound);
-		NBTTagList nbttaglist = nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
-		for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-			NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-			byte byte0 = nbttagcompound1.getByte("Slot");
-			if (byte0 >= 0 && byte0 < itemstacks.length) {
-				itemstacks[byte0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-			}
-		}
+		NBTUtils.readInventoryArray(nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND), itemstacks);
 		pages.clear();
-		nbttaglist = nbttagcompound.getTagList("Pages", Constants.NBT.TAG_COMPOUND);
-		for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-			NBTTagCompound tag = nbttaglist.getCompoundTagAt(i);
-			pages.add(ItemStack.loadItemStackFromNBT(tag));
-		}
+		NBTUtils.readItemStackCollection(nbttagcompound.getTagList("Pages", Constants.NBT.TAG_COMPOUND), pages);
+		SymbolRemappings.remap(pages);
 		if (nbttagcompound.hasKey("PendingTitle")) {
 			pendingtitle = nbttagcompound.getString("PendingTitle");
 		}

@@ -146,6 +146,8 @@ public class ChunkProviderMyst implements IChunkProvider {
 
 	@Override
 	public void populate(IChunkProvider ichunkprovider, int chunkX, int chunkZ) {
+		Chunk chunk = worldObj.getChunkFromChunkCoords(chunkX, chunkZ);
+		chunk.isTerrainPopulated = false;
 		BlockFalling.fallInstantly = true;
 		int x = chunkX * 16;
 		int z = chunkZ * 16;
@@ -189,6 +191,7 @@ public class ChunkProviderMyst implements IChunkProvider {
 		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(ichunkprovider, worldObj, rand, chunkX, chunkZ, false));
 
 		BlockFalling.fallInstantly = false;
+		chunk.isTerrainPopulated = true;
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class TileEntityLinkModifier extends TileEntityBookRotateable {
 		ItemStack itemstack = getBook();
 		if (itemstack != null) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-				ItemLinking.validate(worldObj, itemstack, new EntityDummy(worldObj, this.xCoord, this.yCoord, this.zCoord, 0, 0));
+				((ItemLinking)itemstack.getItem()).validate(worldObj, itemstack, new EntityDummy(worldObj, this.xCoord, this.yCoord, this.zCoord, 0, 0));
 				return "" + String.valueOf(LinkOptions.getDimensionUID(itemstack.stackTagCompound));
 			}
 		}
@@ -43,7 +43,7 @@ public class TileEntityLinkModifier extends TileEntityBookRotateable {
 		ItemStack itemstack = getBook();
 		if (itemstack != null) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-				ItemLinking.validate(worldObj, itemstack, new EntityDummy(worldObj, this.xCoord, this.yCoord, this.zCoord, 0, 0));
+				((ItemLinking)itemstack.getItem()).validate(worldObj, itemstack, new EntityDummy(worldObj, this.xCoord, this.yCoord, this.zCoord, 0, 0));
 				return LinkOptions.getFlag(itemstack.stackTagCompound, name);
 			}
 		}
@@ -54,7 +54,7 @@ public class TileEntityLinkModifier extends TileEntityBookRotateable {
 		ItemStack itemstack = getBook();
 		if (itemstack != null) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-				ItemLinking.validate(worldObj, itemstack, new EntityDummy(worldObj, this.xCoord, this.yCoord, this.zCoord, 0, 0));
+				((ItemLinking)itemstack.getItem()).validate(worldObj, itemstack, new EntityDummy(worldObj, this.xCoord, this.yCoord, this.zCoord, 0, 0));
 				LinkOptions.setFlag(itemstack.stackTagCompound, name, value);
 			}
 		}

@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
+import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.page.Page;
 
 public class SymbolRemappings {
@@ -335,9 +336,11 @@ public class SymbolRemappings {
 	}
 
 	public static List<ItemStack> remap(ItemStack page) {
+		List<ItemStack> result = new ArrayList<ItemStack>();
+		if (page == null) return result;
+		if (!(page.getItem() instanceof ItemPage)) return result;
 		String symbol = Page.getSymbol(page);
 		List<String> symbols = mappings.get(symbol);
-		List<ItemStack> result = new ArrayList<ItemStack>();
 		if (symbols != null) {
 			for (String mapping : symbols) {
 				result.add(Page.createSymbolPage(mapping));

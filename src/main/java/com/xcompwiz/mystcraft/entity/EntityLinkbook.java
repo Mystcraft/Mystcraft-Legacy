@@ -25,6 +25,7 @@ import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.ContainerBook;
 import com.xcompwiz.mystcraft.inventory.InventoryBook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
+import com.xcompwiz.mystcraft.item.ItemStackUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.network.IMessageReceiver;
 import com.xcompwiz.mystcraft.network.NetworkUtils;
@@ -163,7 +164,7 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 			this.inventory.getBook().stackTagCompound = nbttagcompound.getCompoundTag("Book Data");
 		} else {
 			NBTTagCompound item = nbttagcompound.getCompoundTag("Item");
-			this.inventory.setBook(ItemStack.loadItemStackFromNBT(item));
+			this.inventory.setBook(ItemStackUtils.loadItemStackFromNBT(item));
 		}
 		if (this.inventory.getBook() == null) {
 			this.setDead();

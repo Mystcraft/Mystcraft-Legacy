@@ -29,7 +29,7 @@ import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPageProvider {
+public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPageProvider, IItemOnLoadable {
 
 	@SideOnly(Side.CLIENT)
 	@Override
@@ -43,14 +43,31 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 	}
 
 	@Override
-	protected void initialize(World worldObj, ItemStack itemstack, Entity entity) {
-		if (worldObj.isRemote) return;
+	protected void initialize(World world, ItemStack itemstack, Entity entity) {
 		if (itemstack.stackTagCompound == null) {
 			itemstack.stackTagCompound = new NBTTagCompound();
 			//An empty book is defaulted to having a single link panel in it. This code is fallback only; it doesn't happen in normal gameplay (only creative/NEI)
 			LinkOptions.setFlag(itemstack.stackTagCompound, LinkPropertyAPI.FLAG_GENERATE_PLATFORM, true);
-			((ItemAgebook)itemstack.getItem()).addPages(itemstack, Collections.singleton(Page.createLinkPage()));
+			this.addPages(itemstack, getDefaultPages(itemstack));
 		}
+	}
+
+	@Override
+	public void validate(World worldObj, ItemStack itemstack, Entity entity) {
+		super.validate(worldObj, itemstack, entity);
+		if (itemstack.stackTagCompound != null) {
+			if (!itemstack.stackTagCompound.hasKey("Pages")) addPages(itemstack, getDefaultPages(itemstack));
+		}
+	}
+
+	private Collection<ItemStack> getDefaultPages(ItemStack itemstack) {
+		Collection<ItemStack> collection = Collections.singleton(Page.createLinkPage());
+		Integer dimid = LinkOptions.getDimensionUID(itemstack.stackTagCompound);
+		if (dimid == null) return collection;
+		AgeData data = AgeData.getAge(dimid, false); //TODO: We're always assuming we are the server when grabbing age data on Agebook load
+		if (data == null) return collection;
+		collection = data.getPages();
+		return collection;
 	}
 
 	public static void initializeCompound(ItemStack itemstack, int dimId, AgeData agedata) {
@@ -84,22 +101,6 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 	}
 
 	@Override
-	@Deprecated
-	//TODO: Replace with an onLoad handler? Can we get such an event through Forge?
-	public void onUpdate(ItemStack itemstack, World worldObj, Entity entity, int i, boolean flag) {
-		super.onUpdate(itemstack, worldObj, entity, i, flag);
-		if (worldObj.isRemote) return;
-		if (itemstack.stackTagCompound != null) {
-			Integer dimid = LinkOptions.getDimensionUID(itemstack.stackTagCompound);
-			if (dimid == null) return;
-			AgeData data = AgeData.getAge(dimid, worldObj.isRemote);
-			if (data == null) return;
-			if (!itemstack.stackTagCompound.hasKey("Pages")) addPages(itemstack, data.getPages());
-			if (!itemstack.stackTagCompound.hasKey("Authors")) addAuthors(itemstack, data.getAuthors());
-		}
-	}
-
-	@Override
 	public void onCreated(ItemStack par1ItemStack, World par2World, EntityPlayer player) {
 		player.addStat(ModAchievements.agebook, 1);
 	}
@@ -120,7 +121,8 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		LinkOptions.setDimensionUID(itemstack.stackTagCompound, dimid);
 		LinkOptions.setUUID(itemstack.stackTagCompound, agedata.getUUID());
 		agedata.setAgeName(LinkOptions.getDisplayName(itemstack.stackTagCompound));
-		agedata.setPages(SymbolRemappings.remap(getPageList(null, itemstack)));
+		updatePageList(itemstack);
+		agedata.setPages(getPageList(null, itemstack));
 	}
 
 	@Override
@@ -167,19 +169,21 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		return NBTUtils.readItemStackCollection(nbttagcompound.getTagList("Pages", Constants.NBT.TAG_COMPOUND), new ArrayList<ItemStack>());
 	}
 
+	private void setPageList(ItemStack itemstack, List<ItemStack> pagelist) {
+		if (itemstack.stackTagCompound == null) return;
+		NBTTagCompound nbttagcompound = itemstack.stackTagCompound;
+		nbttagcompound.setTag("Pages", NBTUtils.writeItemStackCollection(new NBTTagList(), pagelist));
+	}
+
+	private void updatePageList(ItemStack itemstack) {
+		setPageList(itemstack, SymbolRemappings.remap(getPageList(null, itemstack)));
+	}
+
 	private void addAuthor(ItemStack itemstack, EntityPlayer player) {
 		if (itemstack.stackTagCompound == null) return;
 		NBTTagCompound nbttagcompound = itemstack.stackTagCompound;
 		Collection<String> list = NBTUtils.readStringCollection(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), new ArrayList<String>());
 		list.add(player.getDisplayName());
-		nbttagcompound.setTag("Authors", NBTUtils.writeStringCollection(new NBTTagList(), list));
-	}
-
-	private void addAuthors(ItemStack itemstack, Collection<String> authors) {
-		if (itemstack.stackTagCompound == null) return;
-		NBTTagCompound nbttagcompound = itemstack.stackTagCompound;
-		Collection<String> list = NBTUtils.readStringCollection(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), new ArrayList<String>());
-		list.addAll(authors);
 		nbttagcompound.setTag("Authors", NBTUtils.writeStringCollection(new NBTTagList(), list));
 	}
 
@@ -201,5 +205,14 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		AgeData agedata = getAgeData(itemstack, isRemote);
 		if (agedata == null) return false;
 		return agedata.isVisited();
+	}
+
+	@Override
+	public ItemStack onLoad(ItemStack itemstack) {
+		updatePageList(itemstack);
+		this.initialize(null, itemstack, null);
+		this.validate(null, itemstack, null);
+		if (getPageList(null, itemstack).isEmpty()) addPages(itemstack, getDefaultPages(itemstack)); //TODO: Make this an "onItemEnteredPlayerInventory" call as well
+		return itemstack;
 	}
 }

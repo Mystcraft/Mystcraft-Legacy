@@ -26,7 +26,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemPage extends Item implements IItemWritable, IItemPageProvider {
+public class ItemPage extends Item implements IItemWritable, IItemPageProvider, IItemOnLoadable {
 
 	public ItemPage() {
 		super();
@@ -88,7 +88,7 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider {
 		if (mapping.size() == 0) {
 			itemstack.stackSize = 0;
 		}
-		if (mapping.size() != 1) {
+		if (mapping.size() != 1 && player != null) {
 			ItemStack folder = new ItemStack(ModItems.folder);
 			IItemOrderablePageProvider item = (IItemOrderablePageProvider) folder.getItem();
 			folder.stackTagCompound = new NBTTagCompound();
@@ -127,5 +127,11 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider {
 	@Override
 	public List<ItemStack> getPageList(EntityPlayer player, ItemStack itemstack) {
 		return Arrays.asList(itemstack);
+	}
+
+	@Override
+	public ItemStack onLoad(ItemStack itemstack) {
+		remapItemstack(null, itemstack);
+		return itemstack;
 	}
 }

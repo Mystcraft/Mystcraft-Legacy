@@ -20,6 +20,8 @@ import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 
+import com.xcompwiz.mystcraft.item.ItemStackUtils;
+
 public final class NBTUtils {
 	public static Number readNumber(NBTBase tag) {
 		if (tag == null) { return 0; }
@@ -43,7 +45,7 @@ public final class NBTUtils {
 			NBTTagCompound nbttagcompound1 = tagList.getCompoundTagAt(i);
 			byte byte0 = nbttagcompound1.getByte("Slot");
 			if (byte0 >= 0 && byte0 < inventory.length) {
-				inventory[byte0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+				inventory[byte0] = ItemStackUtils.loadItemStackFromNBT(nbttagcompound1);
 			}
 		}
 	}

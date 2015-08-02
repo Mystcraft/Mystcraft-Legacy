@@ -218,9 +218,9 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 		return health;
 	}
 
-	public static void validate(World worldObj, ItemStack itemstack, Entity entity) {
+	public void validate(World worldObj, ItemStack itemstack, Entity entity) {
 		if (itemstack.stackTagCompound == null) {
-			((ItemLinking) itemstack.getItem()).initialize(worldObj, itemstack, entity);
+			this.initialize(worldObj, itemstack, entity);
 		}
 	}
 
