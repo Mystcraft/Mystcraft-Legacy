@@ -16,12 +16,12 @@ import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiOnTextChange;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiTextProvider;
 import com.xcompwiz.mystcraft.data.Assets.GUIs;
-import com.xcompwiz.mystcraft.inventory.ContainerPageBinder;
+import com.xcompwiz.mystcraft.inventory.ContainerBookBinder;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
 
-public class GuiPageBinder extends GuiContainerElements {
+public class GuiBookBinder extends GuiContainerElements {
 
 	public class PageListHandler implements IGuiPageListProvider, IGuiScrollableClickHandler {
 
@@ -34,7 +34,7 @@ public class GuiPageBinder extends GuiContainerElements {
 		public void onItemPlace(GuiElementScrollablePages guiElementScrollablePages, int index, int mousebutton) {
 			// Inform server container to remove the page from the 'hand' and put it in the page container at index
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setInteger(ContainerPageBinder.Messages.InsertHeldAt, index);
+			nbttagcompound.setInteger(ContainerBookBinder.Messages.InsertHeldAt, index);
 			nbttagcompound.setBoolean("Single", (mousebutton == 1));
 			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
 			container.processMessage(mc.thePlayer, nbttagcompound);
@@ -43,7 +43,7 @@ public class GuiPageBinder extends GuiContainerElements {
 		@Override
 		public void onItemRemove(GuiElementScrollablePages guiElementScrollablePages, int clickedpage) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setInteger(ContainerPageBinder.Messages.TakeFromSlider, clickedpage);
+			nbttagcompound.setInteger(ContainerBookBinder.Messages.TakeFromSlider, clickedpage);
 			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
 		}
 	}
@@ -57,21 +57,21 @@ public class GuiPageBinder extends GuiContainerElements {
 		@Override
 		public void onTextChange(GuiElementTextField caller, String text) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setString(ContainerPageBinder.Messages.SetTitle, text);
+			nbttagcompound.setString(ContainerBookBinder.Messages.SetTitle, text);
 			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
 			container.processMessage(mc.thePlayer, nbttagcompound);
 		}
 	}
 
-	private ContainerPageBinder	container;
+	private ContainerBookBinder	container;
 
 	private GuiElementTextField	txtBookName;
 	private int					errorcolor	= 0xFFFF0000;
 	private int					txtcolor	= 0xFFA0A0A0;
 
-	public GuiPageBinder(InventoryPlayer inventoryplayer, TileEntityBookBinder tileentity) {
-		super(new ContainerPageBinder(inventoryplayer, tileentity));
-		this.container = (ContainerPageBinder) this.inventorySlots;
+	public GuiBookBinder(InventoryPlayer inventoryplayer, TileEntityBookBinder tileentity) {
+		super(new ContainerBookBinder(inventoryplayer, tileentity));
+		this.container = (ContainerBookBinder) this.inventorySlots;
 		guiLeft = 0;
 	}
 

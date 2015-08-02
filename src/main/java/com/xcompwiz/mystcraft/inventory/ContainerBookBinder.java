@@ -19,7 +19,7 @@ import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
 
-public class ContainerPageBinder extends ContainerBase implements IGuiMessageHandler {
+public class ContainerBookBinder extends ContainerBase implements IGuiMessageHandler {
 	public static class Messages {
 
 		public static final String	InsertHeldAt	= "InsertHeldAt";
@@ -44,7 +44,7 @@ public class ContainerPageBinder extends ContainerBase implements IGuiMessageHan
 	private List<ItemStack>			page_list		= new ArrayList<ItemStack>();
 	private ItemStack				cached_helditem;
 
-	public ContainerPageBinder(InventoryPlayer inventoryplayer, TileEntityBookBinder tileentity) {
+	public ContainerBookBinder(InventoryPlayer inventoryplayer, TileEntityBookBinder tileentity) {
 		this.tileentity = tileentity;
 		this.inventoryplayer = inventoryplayer;
 		// addSlotToContainer(new Slot(this.tileentity, 0, 152+shift, 8));

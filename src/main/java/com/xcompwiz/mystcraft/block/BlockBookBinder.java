@@ -20,8 +20,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
-import com.xcompwiz.mystcraft.client.gui.GuiPageBinder;
-import com.xcompwiz.mystcraft.inventory.ContainerPageBinder;
+import com.xcompwiz.mystcraft.client.gui.GuiBookBinder;
+import com.xcompwiz.mystcraft.inventory.ContainerBookBinder;
 import com.xcompwiz.mystcraft.network.NetworkUtils;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
 
@@ -38,7 +38,7 @@ public class BlockBookBinder extends BlockContainer {
 
 		@Override
 		public Container getContainer(EntityPlayerMP player, World worldObj, TileEntity tileentity, int i, int j, int k) {
-			return new ContainerPageBinder(player.inventory, (TileEntityBookBinder) tileentity);
+			return new ContainerBookBinder(player.inventory, (TileEntityBookBinder) tileentity);
 		}
 
 		@Override
@@ -48,7 +48,7 @@ public class BlockBookBinder extends BlockContainer {
 			int y = data.readInt();
 			int z = data.readInt();
 			TileEntityBookBinder tileentity = (TileEntityBookBinder) player.worldObj.getTileEntity(x, y, z);
-			return new GuiPageBinder(player.inventory, tileentity);
+			return new GuiBookBinder(player.inventory, tileentity);
 		}
 	}
 
