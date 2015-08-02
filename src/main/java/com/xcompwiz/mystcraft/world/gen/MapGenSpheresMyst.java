@@ -155,14 +155,13 @@ public class MapGenSpheresMyst extends MapGenAdvanced {
 	 */
 	@Override
 	protected void recursiveGenerate(World par1World, int x, int z, int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {
-		int maxNodes = rand.nextInt(rand.nextInt(rand.nextInt(2) + 1) + 1);
+		float roll = rand.nextFloat();
+		if (roll > 0.05F) return;
 
-		for (int count = 0; count < maxNodes; ++count) {
-			double dx = x * 16 + rand.nextInt(16);
-			double dy = rand.nextInt(rand.nextInt(223) + 32);
-			double dz = z * 16 + rand.nextInt(16);
-			// generateLargeCaveNode(rand.nextLong(), chunkX, chunkZ, blocks, metadata, dx, dy, dz);
-			generateCaveNode(rand.nextLong(), chunkX, chunkZ, blocks, metadata, dx, dy, dz, 1.0F + rand.nextFloat() * 4F, 0.0F, 0.0F, -1, -1, 1.0D);
-		}
+		double dx = x * 16 + rand.nextInt(16);
+		double dy = rand.nextInt(rand.nextInt(192) + 1) + 32;
+		double dz = z * 16 + rand.nextInt(16);
+		// generateLargeCaveNode(rand.nextLong(), chunkX, chunkZ, blocks, metadata, dx, dy, dz);
+		generateCaveNode(rand.nextLong(), chunkX, chunkZ, blocks, metadata, dx, dy, dz, 1.0F + rand.nextFloat() * 4F, 0.0F, 0.0F, -1, -1, 1.0D);
 	}
 }
