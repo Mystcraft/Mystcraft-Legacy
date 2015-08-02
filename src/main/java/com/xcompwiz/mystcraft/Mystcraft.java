@@ -40,6 +40,7 @@ import com.xcompwiz.mystcraft.command.CommandToggleWorldInstability;
 import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.core.MystcraftEventHandler;
+import com.xcompwiz.mystcraft.core.MystcraftTickHandler;
 import com.xcompwiz.mystcraft.core.TaskQueueManager;
 import com.xcompwiz.mystcraft.data.GrammarRules;
 import com.xcompwiz.mystcraft.data.InkEffects;
@@ -179,6 +180,7 @@ public class Mystcraft {
 		EventManager eventmanager = new EventManager();
 		MinecraftForge.EVENT_BUS.register(eventmanager);
 		FMLCommonHandler.instance().bus().register(eventmanager);
+		FMLCommonHandler.instance().bus().register(new MystcraftTickHandler());
 		EventManager.set(eventmanager);
 
 		// Load configs
