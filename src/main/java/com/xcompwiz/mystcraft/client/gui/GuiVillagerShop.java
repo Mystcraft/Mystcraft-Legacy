@@ -16,6 +16,8 @@ import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton.IGuiOnClickHan
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementIcon;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementShopItem;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementShopItem.IGuiShopHandler;
+import com.xcompwiz.mystcraft.client.gui.element.data.GuiIconItemStack;
+import com.xcompwiz.mystcraft.client.gui.element.data.GuiIconItemStack.IItemStackProvider;
 import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.ContainerVillagerShop;
@@ -27,7 +29,7 @@ import com.xcompwiz.mystcraft.treasure.WeightProviderSymbolItem;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
 import com.xcompwiz.mystcraft.villager.VillagerTradeSystem;
 
-public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClickHandler {
+public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClickHandler, IItemStackProvider {
 
 	public class ShopHandler implements IGuiShopHandler {
 
@@ -80,9 +82,9 @@ public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClick
 		slotleft += shop_slot_width + padding;
 		addElement(new GuiElementShopItem(shophandler, 2, slotleft, 4, shop_slot_width, shop_slot_height));
 
-		addElement(new GuiElementIcon(new ItemStack(ModItems.booster, 3), 8, 9, 16, 16)); //TODO: Dynamic display of boosters remaining
+		addElement(new GuiElementIcon(new GuiIconItemStack(this, "booster"), 8, 9, 16, 16));
 		GuiElementButton button = new GuiElementButton(this, "booster", 7, 27, 18, 18);
-		button.setIcon(new ItemStack(Items.emerald, 10)); //TODO: Dynamic booster pack price
+		button.setIcon(new GuiIconItemStack(this, "buybtnb"));
 		button.setText("Buy");
 		addElement(button);
 	}
@@ -102,5 +104,12 @@ public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClick
 			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
 			container.processMessage(mc.thePlayer, nbttagcompound);
 		}
+	}
+
+	@Override
+	public ItemStack getItemStack(GuiIconItemStack caller) {
+		if (caller.getId().equals("booster")) return new ItemStack(ModItems.booster, 5);
+		if (caller.getId().equals("buybtnb")) return new ItemStack(Items.emerald, 10);
+		return null;
 	}
 }

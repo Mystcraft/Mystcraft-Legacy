@@ -8,12 +8,13 @@ import net.minecraft.item.ItemStack;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton.IGuiOnClickHandler;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementLabel.IGuiLabelDataProvider;
-import com.xcompwiz.mystcraft.client.gui.element.GuiElementPage.IGuiPageProvider;
+import com.xcompwiz.mystcraft.client.gui.element.data.GuiIconItemStack;
+import com.xcompwiz.mystcraft.client.gui.element.data.GuiIconItemStack.IItemStackProvider;
 import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
-public class GuiElementShopItem extends GuiElement implements IGuiOnClickHandler, IGuiLabelDataProvider, IGuiPageProvider {
+public class GuiElementShopItem extends GuiElement implements IGuiOnClickHandler, IGuiLabelDataProvider, IItemStackProvider {
 
 	public interface IGuiShopHandler {
 		public void onPurchase(GuiElementShopItem caller);
@@ -34,21 +35,17 @@ public class GuiElementShopItem extends GuiElement implements IGuiOnClickHandler
 		int buttonY = 10;
 		int labelY = 10;
 		int panelY = ySize - buttonY - labelY - labelY;
-		float pageSizeX = xSize / 2;
-		float pageSizeY = panelY * 3.F / 5.F;
-		int paddingX = (int) (xSize - pageSizeX) / 2;
-		int paddingY = (int) (panelY - pageSizeY) / 2;
+		float itemSizeX = xSize / 2;
+		int paddingX = (int) (xSize - itemSizeX) / 2;
+		int paddingY = (int) (panelY - itemSizeX) / 2;
 
 		GuiElementPanel panel = new GuiElementPanel(0, 0, xSize, panelY);
 		panel.setBackground(0xFF888888, 0xFF444444);
 		addElement(panel);
-		//TODO: Handle non-page shop items
-		GuiElement currentitem = new GuiElementIcon(null, paddingX, (int) (panelY - pageSizeX) / 2, (int) pageSizeX, (int) pageSizeX);
-		panel.addElement(currentitem);
-		panel.addElement(new GuiElementPage(this, paddingX, paddingY, pageSizeX, pageSizeY));
+		panel.addElement(new GuiElementIcon(new GuiIconItemStack(this, "itemstack"), paddingX, paddingY, (int) itemSizeX, (int) itemSizeX));
 		addElement(new GuiElementLabel(this, "name", 0, ySize - buttonY - labelY - labelY, xSize, labelY, 0x7F000000, 0xFFDDDDDD));
 		addElement(new GuiElementLabel(this, "price", 0, ySize - buttonY - labelY, xSize - labelY, labelY, 0x7F000000, 0xFF88FF88));
-		addElement(new GuiElementIcon(new ItemStack(Items.emerald), xSize - labelY, ySize - buttonY - labelY, labelY, labelY));
+		addElement(new GuiElementIcon(new GuiIconItemStack(new ItemStack(Items.emerald)), xSize - labelY, ySize - buttonY - labelY, labelY, labelY));
 		addElement(createButton(this, "Buy", 0, ySize - buttonY, xSize, buttonY));
 	}
 
@@ -93,10 +90,7 @@ public class GuiElementShopItem extends GuiElement implements IGuiOnClickHandler
 	}
 
 	@Override
-	public ItemStack getPageItemStack(GuiElementPage elem) {
-		ItemStack itemstack = shop.getItemstack(this);
-		if (itemstack == null) return null;
-		if (itemstack.getItem() instanceof ItemPage) return itemstack;
-		return null;
+	public ItemStack getItemStack(GuiIconItemStack caller) {
+		return shop.getItemstack(this);
 	}
 }
