@@ -22,7 +22,7 @@ import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
 import com.xcompwiz.mystcraft.villager.VillagerTradeSystem;
 
 public class InventoryVillager {
-	private static final long	step_size	= 6000;
+	private static final long	step_size	= 12000;
 
 	private boolean			dirty;
 	private long			lastrestock;
