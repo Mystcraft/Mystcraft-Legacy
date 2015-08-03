@@ -1,0 +1,17 @@
+repositories {
+	maven {
+		name "xcompwiz"
+		url "http://maven.xcompwiz.com"
+	}
+	maven { // The repo from which to get waila
+		name "mobius"
+		url "http://mobiusstrip.eu/maven"
+	}
+	maven { // the repo from which to get NEI and stuff
+		name = "chickenbones"
+		url "http://chickenbones.net/maven/"
+	}
+}
+dependencies {
+    compile "com.xcompwiz.lookingglass:lookingglass:0.2.0.00:dev"
+}

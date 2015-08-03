@@ -44,14 +44,6 @@ buildscript {
 repositories {
 	mavenLocal()
 	mavenCentral()
-	maven { // The repo from which to get waila
-		name "Mobius Repo"
-		url "http://mobiusstrip.eu/maven"
-	}
-	maven { // the repo from which to get NEI and stuff
-		name = "chickenbones"
-		url "http://chickenbones.net/maven/"
-	}
 	ivy {
 		name 'Forge FS legacy'
 		artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
@@ -71,6 +63,10 @@ apply plugin: 'forge'
 
 if (file('locations.gradle').exists()) {
 	apply from: 'locations.gradle'
+}
+
+if (file('dependencies.gradle').exists()) {
+	apply from: 'dependencies.gradle'
 }
 
 configFile.withReader {
@@ -114,8 +110,7 @@ processResources
 // It also adds the minecraft version in a custom version name
 // The result is files named <projectname>-<mcversion>-<version>.jar
 jar {
-	classifier = project.version
-	version = project.minecraft.version
+	version = "${project.minecraft.version}-${project.version}"
 	includeEmptyDirs = false
 	from sourceSets.api.output
 }
@@ -154,7 +149,6 @@ artifacts {
 	// the default jar is already here by default
 	archives devJar
 	archives apiJar
-	archives srcJar
 }
 
 // ---------------------------
@@ -291,11 +285,12 @@ types.eachWithIndex { type, index ->
 			config.toProperties().store(it, "")
 		}
 		project.version = "${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"
-		jar.classifier = "${project.version}"
+		jar.version    = "${project.minecraft.version}-${project.version}"
 		devJar.version = "${project.minecraft.version}-${project.version}"
 		apiJar.version = "${project.minecraft.version}-${project.version}"
 		srcJar.version = "${project.minecraft.version}-${project.version}"
 		project.tasks.sourceMainJava.replace "@VERSION@", project.version
+		uploadArchives.repositories.mavenDeployer.pom.version = project.version
 	}
 
 	task("deploy-$type") {
@@ -331,4 +326,42 @@ curse {
 	// allows you to add extra compatible MC versions. The one specified in the minecraft{} block is used by default.
 	// addGameVersion "1.7.1"
 	// addGameversion "1.7.0", "1.7.4"
+}
+
+// deployment stuff
+
+configurations { deployerJars }
+
+dependencies { deployerJars "org.apache.maven.wagon:wagon-ssh:2.2" }
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            configuration = configurations.deployerJars
+
+            repository(url: "scp://maven.xcompwiz.com/home/xcompwiz/maven") {
+				authentication(userName: config.mavenuser, password: config.mavenpass)
+            }
+
+            pom {
+                groupId = project.group
+                version = "${-> project.version}"
+                artifactId = project.archivesBaseName
+                project {
+                    name project.archivesBaseName
+                    packaging 'jar'
+                    description project.nameCased
+                    //url project.url //'https://github.com/XCompWiz/...'
+
+                    developers {
+                        developer {
+                            id 'XCompWiz'
+                            name 'XCompWiz'
+                            roles { role 'developer' }
+                        }
+                    }
+                }
+            }
+        }
+	}
 }
