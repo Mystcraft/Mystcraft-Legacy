@@ -73,14 +73,14 @@ public class InventoryVillager {
 
 	public void simulate() {
 		long deltatime = villager.worldObj.getTotalWorldTime() - lastrestock;
-		while (deltatime >= 100) {
+		while (deltatime >= step_size) {
 			deltatime -= step_size;
+			lastrestock += step_size;
 			restock();
 		}
 	}
 
 	private void restock() {
-		lastrestock = villager.worldObj.getTotalWorldTime();
 		int nonechance = 1;
 		int boosterchance = 3;
 		int roll = rand.nextInt(nonechance + boosterchance + pageitems.length);

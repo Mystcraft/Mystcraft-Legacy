@@ -60,7 +60,7 @@ public class VillagerTradeSystem {
 
 	//TODO: On tick, simulate villager restock for loaded villager inventories
 	public static void onTick() {
-		if (tick_accumulator++ % 1000 == 0) {
+		if (++tick_accumulator % 1000 == 0) {
 			for (InventoryVillager villagerinv : villagers.values()) {
 				villagerinv.simulate();
 			}
