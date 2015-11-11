@@ -339,7 +339,7 @@ public class AgeData extends WorldSavedData {
 			age = new AgeData(s);
 			storage.setData(s, age);
 			age.agename = (new StringBuilder()).append("Age ").append(uid).toString();
-			age.seed = Mystcraft.getLevelSeed() + new Random(uid).nextLong();
+			age.seed = Mystcraft.getLevelSeed(storage) + new Random(uid).nextLong();
 			age.uuid = UUID.randomUUID();
 			age.worldtime = 0;
 			age.setSpawn(null);

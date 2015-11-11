@@ -405,8 +405,8 @@ public class Mystcraft {
 		return overworld.mapStorage;
 	}
 
-	public static long getLevelSeed() {
-		if (clientStorage != null) return 0; 
+	public static long getLevelSeed(MapStorage storage) {
+		if (clientStorage == storage) return 0;
 		MinecraftServer mcServer = MinecraftServer.getServer();
 		if (mcServer == null) return 0;
 		if (DimensionManager.getWorld(0) == null) return 0;
