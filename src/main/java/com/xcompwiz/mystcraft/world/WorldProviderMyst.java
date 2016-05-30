@@ -81,6 +81,7 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	public void setWorldInfo() {
+		if (worldObj.getWorldInfo() instanceof WorldInfoMyst) return;
 		ObfuscationReflectionHelper.setPrivateValue(World.class, worldObj, new WorldInfoMyst(this, worldObj.getWorldInfo()), "worldInfo", "field" + "_72986_A");
 	}
 

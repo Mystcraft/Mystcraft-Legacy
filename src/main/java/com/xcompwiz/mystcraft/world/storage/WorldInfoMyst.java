@@ -23,6 +23,9 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 		super(worldInfo);
 		this.provider = provider;
 		this.tickcounter = 0;
+		if (worldInfo instanceof WorldInfoMyst) {
+			throw new RuntimeException("Attempting to create a WorldInfoMyst instance pointed at a WorldInfoMyst instance");
+		}
 	}
 
 	/**
