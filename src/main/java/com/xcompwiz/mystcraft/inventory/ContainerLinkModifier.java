@@ -8,9 +8,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 
+import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
@@ -20,6 +22,7 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 
 		public static final String	SetTitle	= "SetTitle";
 		public static final String	SetFlag		= "SetFlag";
+		public static final String	SetSeed 	= "SetSeed";
 	}
 
 	private TileEntityLinkModifier	tileentity		= null;
@@ -107,14 +110,31 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 		if (data.hasKey(Messages.SetFlag)) {
 			tileentity.setLinkOption(data.getString(Messages.SetFlag), data.getBoolean("Value"));
 		}
+		if (data.hasKey(Messages.SetSeed)) {
+			String seedstr = data.getString(Messages.SetSeed);
+			Long seed = null;
+			if (seedstr == null || seedstr.equals("")) {
+				//XXX: Hardcoded string reference Agebook "Seed"
+				 tileentity.setLinkProperty("Seed", null);
+			} else {
+				try {
+					seed = Long.parseLong(seedstr);
+				} catch (Exception e) {
+				}
+			}
+			if (seed != null) {
+				//XXX: This isn't particularly generalized, but only this kind of item supports a seed atm.
+				ItemStack book = tileentity.getBook();
+				if (book != null && book.getItem() instanceof ItemAgebook) {
+					ItemAgebook item = (ItemAgebook) tileentity.getBook().getItem();
+					item.setSeed(player, tileentity.getBook(), seed);
+				}
+			}
+		}
 		if (data.hasKey(Messages.SetTitle)) {
 			cached_title = data.getString(Messages.SetTitle);
 			this.tileentity.setBookTitle(player, cached_title);
 		}
-	}
-
-	public Object getBook() {
-		return tileentity.getStackInSlot(0);
 	}
 
 	public String getBookTitle() {
@@ -127,5 +147,16 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 
 	public String getLinkDimensionUID() {
 		return tileentity.getLinkDimensionUID();
+	}
+
+	public String getItemSeed() {
+		//XXX: Hardcoded string reference Agebook "Seed"
+		return tileentity.getLinkProperty("Seed");
+	}
+
+	public boolean hasItemSeed() {
+		//XXX: This isn't particularly generalized, but only this kind of item supports a seed atm.
+		ItemStack book = tileentity.getBook();
+		return book != null && book.getItem() instanceof ItemAgebook;
 	}
 }

@@ -59,4 +59,25 @@ public class TileEntityLinkModifier extends TileEntityBookRotateable {
 			}
 		}
 	}
+
+	public String getLinkProperty(String name) {
+		ItemStack itemstack = getBook();
+		if (itemstack != null) {
+			if (itemstack.getItem() instanceof ItemLinking) {
+				((ItemLinking)itemstack.getItem()).validate(worldObj, itemstack, new EntityDummy(worldObj, this.xCoord, this.yCoord, this.zCoord, 0, 0));
+				return LinkOptions.getProperty(itemstack.stackTagCompound, name);
+			}
+		}
+		return null;
+	}
+
+	public void setLinkProperty(String name, String value) {
+		ItemStack itemstack = getBook();
+		if (itemstack != null) {
+			if (itemstack.getItem() instanceof ItemLinking) {
+				((ItemLinking)itemstack.getItem()).validate(worldObj, itemstack, new EntityDummy(worldObj, this.xCoord, this.yCoord, this.zCoord, 0, 0));
+				LinkOptions.setProperty(itemstack.stackTagCompound, name, value);
+			}
+		}
+	}
 }

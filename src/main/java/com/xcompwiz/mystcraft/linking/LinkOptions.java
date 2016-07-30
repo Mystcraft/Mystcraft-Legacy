@@ -126,7 +126,12 @@ public class LinkOptions implements ILinkInfo {
 		if (nbttagcompound == null) {
 			nbttagcompound = new NBTTagCompound();
 		}
-		getPropertyCompound(nbttagcompound).setString(flag, value);
+		NBTTagCompound props = getPropertyCompound(nbttagcompound);
+		if (value == null) {
+			props.removeTag(flag);
+		} else {
+			props.setString(flag, value);
+		}
 		return nbttagcompound;
 	}
 

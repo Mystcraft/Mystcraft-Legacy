@@ -44,28 +44,55 @@ public class GuiLinkModifier extends GuiContainerElements {
 	public class TextBoxHandler implements IGuiTextProvider, IGuiOnTextChange {
 		@Override
 		public String getText(GuiElementTextField caller) {
-			return container.getBookTitle();
+			if (caller.getId().equals("ItemName")) {
+				return container.getBookTitle();
+			}
+			if (caller.getId().equals("Seed")) {
+				return container.getItemSeed();
+			}
+			return "Huh?";
 		}
 
 		@Override
 		public void onTextChange(GuiElementTextField caller, String text) {
-			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setString(ContainerLinkModifier.Messages.SetTitle, text);
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
-			container.processMessage(mc.thePlayer, nbttagcompound);
+			if (caller.getId().equals("ItemName")) {
+				NBTTagCompound nbttagcompound = new NBTTagCompound();
+				nbttagcompound.setString(ContainerLinkModifier.Messages.SetTitle, text);
+				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
+				container.processMessage(mc.thePlayer, nbttagcompound);
+			}
+			if (caller.getId().equals("Seed")) {
+				NBTTagCompound nbttagcompound = new NBTTagCompound();
+				nbttagcompound.setString(ContainerLinkModifier.Messages.SetSeed, text);
+				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
+				container.processMessage(mc.thePlayer, nbttagcompound);
+			}
 		}
 	}
 
 	private ContainerLinkModifier	container;
 
+	private GuiElementTextField txt_seed;
+
 	public GuiLinkModifier(InventoryPlayer inventoryplayer, TileEntityLinkModifier tileentity) {
 		super(new ContainerLinkModifier(inventoryplayer, tileentity));
 		this.container = (ContainerLinkModifier) this.inventorySlots;
+	}
+	
+	@Override
+	public void updateScreen() {
+		super.updateScreen();
+		if (txt_seed != null) {
+			txt_seed.setVisible(container.hasItemSeed());
+		}
 	}
 
 	@Override
 	public void validate() {
 		TextBoxHandler txtbxhdnlr = new TextBoxHandler();
+		txt_seed = new GuiElementTextField(txtbxhdnlr, txtbxhdnlr, "Seed", 80, 15, xSize - 80 - 9, 14);
+		txt_seed.setMaxLength(21);
+		addElement(txt_seed);
 		GuiElementTextField txt_box = new GuiElementTextField(txtbxhdnlr, txtbxhdnlr, "ItemName", 80, 56, xSize - 80 - 9, 14);
 		txt_box.setMaxLength(21);
 		addElement(txt_box);
