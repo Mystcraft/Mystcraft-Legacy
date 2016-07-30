@@ -157,6 +157,11 @@ public class AgeData extends WorldSavedData {
 		if (authors == null) authors = new HashSet<String>();
 		authors.add(name);
 	}
+	
+	public void setSeed(long seed) {
+		if (this.visited) return;
+		this.seed = seed;
+	}
 
 	public long getSeed() {
 		return seed;

@@ -122,7 +122,7 @@ public class LinkOptions implements ILinkInfo {
 		return false;
 	}
 
-	public NBTTagCompound setProperty(NBTTagCompound nbttagcompound, String flag, String value) {
+	public static NBTTagCompound setProperty(NBTTagCompound nbttagcompound, String flag, String value) {
 		if (nbttagcompound == null) {
 			nbttagcompound = new NBTTagCompound();
 		}

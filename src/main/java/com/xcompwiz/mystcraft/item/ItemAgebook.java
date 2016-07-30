@@ -121,6 +121,8 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		LinkOptions.setDimensionUID(itemstack.stackTagCompound, dimid);
 		LinkOptions.setUUID(itemstack.stackTagCompound, agedata.getUUID());
 		agedata.setAgeName(LinkOptions.getDisplayName(itemstack.stackTagCompound));
+		String seed = LinkOptions.getProperty(itemstack.stackTagCompound, "Seed");
+		if (seed != null) agedata.setSeed(Long.parseLong(seed));
 		updatePageList(itemstack);
 		agedata.setPages(getPageList(null, itemstack));
 	}
@@ -137,6 +139,12 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		if (data != null) data.setAgeName(name);
 	}
 
+	public void setSeed(EntityPlayer player, ItemStack itemstack, long seed) {
+		LinkOptions.setProperty(itemstack.stackTagCompound, "Seed", Long.toString(seed));
+		AgeData data = getAgeData(itemstack, player.worldObj.isRemote);
+		if (data != null) data.setSeed(seed);
+	}
+	
 	@Override
 	public boolean writeSymbol(EntityPlayer player, ItemStack itemstack, String symbol) {
 		if (isVisited(itemstack, player.worldObj.isRemote)) return false;
