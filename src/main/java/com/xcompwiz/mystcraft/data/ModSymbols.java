@@ -132,11 +132,6 @@ public class ModSymbols {
 				InternalAPI.symbolValues.setSymbolTradeItem(symbol, new ItemStack(Items.emerald, 1));
 				SymbolBiome.selectables.add(biome);
 			}
-
-			// Handle remappings
-			if (!SymbolRemappings.hasRemapping(biome.biomeName)) {
-				SymbolRemappings.addSymbolRemapping(biome.biomeName, symbol.identifier());
-			}
 		}
 	}
 
