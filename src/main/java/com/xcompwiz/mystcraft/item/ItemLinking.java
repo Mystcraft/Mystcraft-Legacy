@@ -1,59 +1,32 @@
 package com.xcompwiz.mystcraft.item;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-
+import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.event.PortalLinkEvent;
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
-import com.xcompwiz.mystcraft.client.gui.GuiBook;
-import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
+import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.data.Sounds;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
-import com.xcompwiz.mystcraft.inventory.ContainerBook;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
-import com.xcompwiz.mystcraft.network.NetworkUtils;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 public abstract class ItemLinking extends Item implements IItemPortalActivator {
-
-	public static class GuiHandlerBookItem extends GuiHandlerManager.GuiHandler {
-		@Override
-		public Container getContainer(EntityPlayerMP player, World worldObj, ItemStack itemstack, int slot) {
-			return new ContainerBook(player.inventory, slot);
-		}
-
-		@Override
-		@SideOnly(Side.CLIENT)
-		public GuiScreen getGuiScreen(EntityPlayer player, ByteBuf data) {
-			byte slot = data.readByte();
-			ItemStack itemstack = player.inventory.getStackInSlot(slot);
-			if (itemstack != null) { return new GuiBook(player.inventory, slot); }
-			return null;
-		}
-	}
-
-	private static final int	GuiID	= GuiHandlerManager.registerGuiNetHandler(new GuiHandlerBookItem());
 
 	protected ItemLinking() {
 		setMaxStackSize(1);
@@ -157,9 +130,8 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-		if (!world.isRemote) {
-			NetworkUtils.displayGui(entityplayer, world, GuiID, itemstack);
-		}
+		if (world.isRemote) return itemstack;
+		entityplayer.openGui(Mystcraft.instance, ModGUIs.BOOK.ordinal(), world, MathHelper.floor_double(entityplayer.posX + 0.5D), MathHelper.floor_double(entityplayer.posY + 0.5D), MathHelper.floor_double(entityplayer.posZ + 0.5D));
 		return itemstack;
 	}
 

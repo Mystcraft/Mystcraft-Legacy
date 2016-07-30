@@ -1,64 +1,30 @@
 package com.xcompwiz.mystcraft.block;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.client.gui.GuiBook;
-import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
-import com.xcompwiz.mystcraft.inventory.ContainerBook;
-import com.xcompwiz.mystcraft.network.NetworkUtils;
+import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBook;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookRotateable;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public abstract class BlockBookDisplay extends BlockContainer {
-
-	public static class GuiHandlerBookDisplay extends GuiHandlerManager.GuiHandler {
-		@Override
-		public TileEntity getTileEntity(EntityPlayerMP player, World worldObj, int i, int j, int k) {
-			return player.worldObj.getTileEntity(i, j, k);
-		}
-
-		@Override
-		public Container getContainer(EntityPlayerMP player, World worldObj, TileEntity tileentity, int i, int j, int k) {
-			// Sends age data packet
-			return new ContainerBook(player.inventory, (TileEntityBookRotateable) tileentity);
-		}
-
-		@Override
-		@SideOnly(Side.CLIENT)
-		public GuiScreen getGuiScreen(EntityPlayer player, ByteBuf data) {
-			int x = data.readInt();
-			int y = data.readInt();
-			int z = data.readInt();
-			TileEntityBookRotateable tileentity = (TileEntityBookRotateable) player.worldObj.getTileEntity(x, y, z);
-			return new GuiBook(player.inventory, tileentity);
-		}
-	}
-
-	static final int	GuiID	= GuiHandlerManager.registerGuiNetHandler(new GuiHandlerBookDisplay());
 
 	protected BlockBookDisplay(Material material) {
 		super(material);
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int side, float posX, float pozY, float posZ) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityplayer, int side, float posX, float pozY, float posZ) {
 		if (world.isRemote) return true;
-		TileEntityBookRotateable tileentity = (TileEntityBookRotateable) world.getTileEntity(i, j, k);
+		TileEntityBookRotateable tileentity = (TileEntityBookRotateable) world.getTileEntity(x, y, z);
 		if (tileentity == null) { return true; }
 		if (tileentity.getBook() == null) {
 			ItemStack itemstack = entityplayer.inventory.getCurrentItem();
@@ -69,7 +35,8 @@ public abstract class BlockBookDisplay extends BlockContainer {
 				tileentity.setBook(copy);
 				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, itemstack);
 			} else {
-				NetworkUtils.displayGui(entityplayer, world, GuiID, i, j, k);
+				entityplayer.openGui(Mystcraft.instance, ModGUIs.BOOK_DISPLAY.ordinal(), world, x, y, z);
+				return true;
 			}
 		} else {
 			if (entityplayer.isSneaking() && entityplayer.inventory.getCurrentItem() == null) {
@@ -78,7 +45,8 @@ public abstract class BlockBookDisplay extends BlockContainer {
 				tileentity.setBook(null);
 				return true;
 			}
-			NetworkUtils.displayGui(entityplayer, world, GuiID, i, j, k);
+			entityplayer.openGui(Mystcraft.instance, ModGUIs.BOOK_DISPLAY.ordinal(), world, x, y, z);
+			return true;
 		}
 		return true;
 	}

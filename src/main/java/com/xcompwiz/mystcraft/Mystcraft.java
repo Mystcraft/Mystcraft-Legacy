@@ -59,6 +59,7 @@ import com.xcompwiz.mystcraft.imc.IMCHandler;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.instability.InstabilityManager;
 import com.xcompwiz.mystcraft.instability.bonus.EventManager;
+import com.xcompwiz.mystcraft.inventory.GuiHandler;
 import com.xcompwiz.mystcraft.linking.LinkListenerBasic;
 import com.xcompwiz.mystcraft.linking.LinkListenerEffects;
 import com.xcompwiz.mystcraft.linking.LinkListenerForgeServer;
@@ -72,7 +73,6 @@ import com.xcompwiz.mystcraft.network.packet.MPacketDimensions;
 import com.xcompwiz.mystcraft.network.packet.MPacketExplosion;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.network.packet.MPacketMessage;
-import com.xcompwiz.mystcraft.network.packet.MPacketOpenWindow;
 import com.xcompwiz.mystcraft.network.packet.MPacketParticles;
 import com.xcompwiz.mystcraft.network.packet.MPacketProfilingState;
 import com.xcompwiz.mystcraft.network.packet.MPacketSpawnLightningBolt;
@@ -165,7 +165,6 @@ public class Mystcraft {
 		MystcraftPacketHandler.registerPacketHandler(new MPacketParticles(), (byte) 25); // 20
 		MystcraftPacketHandler.registerPacketHandler(new MPacketMessage(), (byte) 132); // 132
 		MystcraftPacketHandler.registerPacketHandler(new MPacketGuiMessage(), (byte) 140); // 140
-		MystcraftPacketHandler.registerPacketHandler(new MPacketOpenWindow(), (byte) 134); // 134
 		MystcraftPacketHandler.registerPacketHandler(new MPacketActivateItem(), (byte) 137); // 137
 		MystcraftPacketHandler.registerPacketHandler(new MPacketAgeData(), (byte) 135); // 135
 		MystcraftPacketHandler.registerPacketHandler(new MPacketExplosion(), (byte) 100); // 100
@@ -267,6 +266,8 @@ public class Mystcraft {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		FMLInterModComms.sendMessage("LookingGlass", "API", "com.xcompwiz.mystcraft.integration.lookingglass.LookingGlassIntegration.register");
+		// Register the GUI Handler
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		// Init Recipes
 		ModRecipes.addRecipes(CraftingManager.getInstance());
 

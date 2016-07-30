@@ -1,14 +1,10 @@
 package com.xcompwiz.mystcraft.entity;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityMinecartHopper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,43 +15,15 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.client.gui.GuiBook;
-import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
+import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.inventory.ContainerBook;
 import com.xcompwiz.mystcraft.inventory.InventoryBook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.item.ItemStackUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.network.IMessageReceiver;
-import com.xcompwiz.mystcraft.network.NetworkUtils;
-import com.xcompwiz.mystcraft.network.packet.MPacketMessage;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityLinkbook extends EntityLiving implements IInventory, IMessageReceiver {
-
-	public static class GuiHandlerBookEntity extends GuiHandlerManager.GuiHandler {
-		@Override
-		public Container getContainer(EntityPlayerMP player, World worldObj, Entity entity) {
-			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			((EntityLinkbook) entity).writeEntityToNBT(nbttagcompound);
-			player.playerNetServerHandler.sendPacket(MPacketMessage.createPacket(entity, nbttagcompound));
-			return new ContainerBook(player.inventory, ((EntityLinkbook) entity).inventory);
-		}
-
-		@Override
-		@SideOnly(Side.CLIENT)
-		public GuiScreen getGuiScreen(EntityPlayer player, ByteBuf data) {
-			int entityId = data.readInt();
-			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.worldObj, entityId);
-			if (entity != null && entity instanceof EntityLinkbook) { return new GuiBook(player.inventory, (EntityLinkbook) entity); }
-			return null;
-		}
-	}
-
-	private static final int	GuiID		= GuiHandlerManager.registerGuiNetHandler(new GuiHandlerBookEntity());
 
 	private int					decaytimer;
 	public InventoryBook		inventory;
@@ -194,7 +162,7 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 			setDead();
 			return true;
 		}
-		NetworkUtils.displayGui(entityplayer, worldObj, GuiID, this);
+		entityplayer.openGui(Mystcraft.instance, ModGUIs.BOOK_ENTITY.ordinal(), worldObj, this.getEntityId(), 0, 0);
 		return true;
 	}
 

@@ -1,19 +1,14 @@
 package com.xcompwiz.mystcraft.block;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -24,46 +19,15 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
-import com.xcompwiz.mystcraft.client.gui.GuiWritingDesk;
+import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.inventory.ContainerWritingDesk;
-import com.xcompwiz.mystcraft.logging.LoggerUtils;
-import com.xcompwiz.mystcraft.network.NetworkUtils;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockWritingDesk extends Block {
-
-	public static class GuiHandlerDesk extends GuiHandlerManager.GuiHandler {
-		@Override
-		public TileEntity getTileEntity(EntityPlayerMP player, World worldObj, int i, int j, int k) {
-			TileEntityDesk tileentity = BlockWritingDesk.getTileEntity(worldObj, i, j, k);
-			if (tileentity == null) {
-				LoggerUtils.warn(String.format("Desk TileEntity Missing"));
-			}
-			return tileentity;
-		}
-
-		@Override
-		public Container getContainer(EntityPlayerMP player, World worldObj, TileEntity tileentity, int i, int j, int k) {
-			// Sends age data packet
-			return new ContainerWritingDesk(player.inventory, (TileEntityDesk) tileentity);
-		}
-
-		@Override
-		@SideOnly(Side.CLIENT)
-		public GuiScreen getGuiScreen(EntityPlayer player, ByteBuf data) {
-			int x = data.readInt();
-			int y = data.readInt();
-			int z = data.readInt();
-			return new GuiWritingDesk(player.inventory, BlockWritingDesk.getTileEntity(player.worldObj, x, y, z));
-		}
-	}
-
-	private static final int	GuiID			= GuiHandlerManager.registerGuiNetHandler(new GuiHandlerDesk());
 
 	private static final int	headFootMap[][]	= { { 0, 1 }, { -1, 0 }, { 0, -1 }, { 1, 0 } };
 
@@ -182,9 +146,9 @@ public class BlockWritingDesk extends Block {
 
 	@Override
 	// world, x, y, z, player, side, origin?
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int side, float posX, float pozY, float posZ) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityplayer, int side, float posX, float pozY, float posZ) {
 		if (world.isRemote) return true;
-		NetworkUtils.displayGui(entityplayer, world, GuiID, i, j, k);
+		entityplayer.openGui(Mystcraft.instance, ModGUIs.WRITING_DESK.ordinal(), world, x, y, z);
 		return true;
 	}
 

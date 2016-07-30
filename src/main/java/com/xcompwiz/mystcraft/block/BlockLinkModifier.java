@@ -1,16 +1,12 @@
 package com.xcompwiz.mystcraft.block;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -19,40 +15,14 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
-import com.xcompwiz.mystcraft.client.gui.GuiLinkModifier;
-import com.xcompwiz.mystcraft.inventory.ContainerLinkModifier;
-import com.xcompwiz.mystcraft.network.NetworkUtils;
+import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockLinkModifier extends BlockContainer {
-
-	public static class GuiHandlerModifier extends GuiHandlerManager.GuiHandler {
-		@Override
-		public TileEntity getTileEntity(EntityPlayerMP player, World worldObj, int i, int j, int k) {
-			return player.worldObj.getTileEntity(i, j, k);
-		}
-
-		@Override
-		public Container getContainer(EntityPlayerMP player, World worldObj, TileEntity tileentity, int i, int j, int k) {
-			return new ContainerLinkModifier(player.inventory, (TileEntityLinkModifier) tileentity);
-		}
-
-		@Override
-		@SideOnly(Side.CLIENT)
-		public GuiScreen getGuiScreen(EntityPlayer player, ByteBuf data) {
-			int x = data.readInt();
-			int y = data.readInt();
-			int z = data.readInt();
-			TileEntityLinkModifier tileentity = (TileEntityLinkModifier) player.worldObj.getTileEntity(x, y, z);
-			return new GuiLinkModifier(player.inventory, tileentity);
-		}
-	}
-
-	private static final int	GuiID	= GuiHandlerManager.registerGuiNetHandler(new GuiHandlerModifier());
 
 	private IIcon				iconTop;
 	private IIcon				iconSide2;
@@ -102,9 +72,9 @@ public class BlockLinkModifier extends BlockContainer {
 
 	@Override
 	// world, x, y, z, player, side, origin?
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int side, float posX, float pozY, float posZ) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityplayer, int side, float posX, float pozY, float posZ) {
 		if (world.isRemote) return true;
-		NetworkUtils.displayGui(entityplayer, world, GuiID, i, j, k);
+		entityplayer.openGui(Mystcraft.instance, ModGUIs.LINK_MODIFIER.ordinal(), world, x, y, z);
 		return true;
 	}
 

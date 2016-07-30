@@ -30,7 +30,7 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 		this(new ContainerBook(inventoryplayer, tileentity));
 	}
 
-	public GuiBook(InventoryPlayer inventoryplayer, byte slot) {
+	public GuiBook(InventoryPlayer inventoryplayer, int slot) {
 		this(new ContainerBook(inventoryplayer, slot));
 	}
 

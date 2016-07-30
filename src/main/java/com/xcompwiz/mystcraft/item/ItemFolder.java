@@ -1,51 +1,27 @@
 package com.xcompwiz.mystcraft.item;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.List;
 
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
 import com.xcompwiz.mystcraft.api.item.IItemWritable;
-import com.xcompwiz.mystcraft.client.gui.GuiHandlerManager;
-import com.xcompwiz.mystcraft.client.gui.GuiInventoryFolder;
-import com.xcompwiz.mystcraft.inventory.ContainerFolder;
+import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.inventory.InventoryFolder;
-import com.xcompwiz.mystcraft.network.NetworkUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemFolder extends Item implements IItemOrderablePageProvider, IItemWritable, IItemOnLoadable {
-
-	public static class GuiHandlerFolder extends GuiHandlerManager.GuiHandler {
-		@Override
-		public Container getContainer(EntityPlayerMP player, World worldObj, ItemStack itemstack, int slot) {
-			return new ContainerFolder(player.inventory, slot);
-		}
-
-		@Override
-		@SideOnly(Side.CLIENT)
-		public GuiScreen getGuiScreen(EntityPlayer player, ByteBuf data) {
-			byte slot = data.readByte();
-			ItemStack itemstack = player.inventory.getStackInSlot(slot);
-			if (itemstack != null) { return new GuiInventoryFolder(player.inventory, slot); }
-			return null;
-		}
-	}
-
-	private static final int	GuiID	= GuiHandlerManager.registerGuiNetHandler(new GuiHandlerFolder());
 
 	@SideOnly(Side.CLIENT)
 	protected IIcon				filledIcon;
@@ -105,9 +81,8 @@ public class ItemFolder extends Item implements IItemOrderablePageProvider, IIte
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-		if (!world.isRemote) {
-			NetworkUtils.displayGui(entityplayer, world, GuiID, itemstack);
-		}
+		if (world.isRemote) return itemstack;
+		entityplayer.openGui(Mystcraft.instance, ModGUIs.FOLDER.ordinal(), world, MathHelper.floor_double(entityplayer.posX + 0.5D), MathHelper.floor_double(entityplayer.posY + 0.5D), MathHelper.floor_double(entityplayer.posZ + 0.5D));
 		return itemstack;
 	}
 
