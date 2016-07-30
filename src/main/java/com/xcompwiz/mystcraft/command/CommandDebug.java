@@ -58,7 +58,7 @@ public class CommandDebug extends CommandBaseAdv {
 		String address = getAddress(Arrays.copyOf(args, args.length-1));
 		IDebugElement elem = DebugUtils.getElement(address);
 		if (elem == null) elem = DebugHierarchy.root;
-		Collection<String> allflags = Collections.EMPTY_LIST;
+		Collection<String> allflags = Collections.emptyList();
 		if (elem instanceof DebugNode) {
 			allflags = ((DebugNode) elem).getChildren();
 		}

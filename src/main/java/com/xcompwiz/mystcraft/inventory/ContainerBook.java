@@ -351,7 +351,7 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	@Override
 	public Collection<String> getBookAuthors() {
 		ItemStack book = getBook();
-		if (book == null || !(book.getItem() instanceof ItemLinking)) return Collections.EMPTY_SET;
+		if (book == null || !(book.getItem() instanceof ItemLinking)) return Collections.emptySet();
 		return ((ItemLinking) book.getItem()).getAuthors(book);
 	}
 }

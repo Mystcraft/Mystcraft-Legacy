@@ -172,7 +172,7 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 
 	@Override
 	public List<ItemStack> getPageList(EntityPlayer player, ItemStack itemstack) {
-		if (itemstack.stackTagCompound == null) return Collections.EMPTY_LIST;
+		if (itemstack.stackTagCompound == null) return Collections.emptyList();
 		NBTTagCompound nbttagcompound = itemstack.stackTagCompound;
 		return NBTUtils.readItemStackCollection(nbttagcompound.getTagList("Pages", Constants.NBT.TAG_COMPOUND), new ArrayList<ItemStack>());
 	}
@@ -197,7 +197,7 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 
 	@Override
 	public Collection<String> getAuthors(ItemStack itemstack) {
-		if (itemstack.stackTagCompound == null) return Collections.EMPTY_LIST;
+		if (itemstack.stackTagCompound == null) return Collections.emptyList();
 		NBTTagCompound nbttagcompound = itemstack.stackTagCompound;
 		return NBTUtils.readStringCollection(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), new ArrayList<String>());
 	}

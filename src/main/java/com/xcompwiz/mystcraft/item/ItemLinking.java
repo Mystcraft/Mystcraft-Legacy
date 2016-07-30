@@ -239,6 +239,6 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 
 	//TODO: Move to IItemWritable?
 	public Collection<String> getAuthors(ItemStack book) {
-		return Collections.EMPTY_SET;
+		return Collections.emptySet();
 	}
 }

@@ -458,7 +458,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	@Override
 	public Collection<String> getBookAuthors() {
 		ItemStack book = getBook();
-		if (book == null) return Collections.EMPTY_SET;
+		if (book == null) return Collections.emptySet();
 		return ((ItemLinking) book.getItem()).getAuthors(book);
 	}
 
