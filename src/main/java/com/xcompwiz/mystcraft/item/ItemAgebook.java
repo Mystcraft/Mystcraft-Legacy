@@ -122,7 +122,11 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		LinkOptions.setUUID(itemstack.stackTagCompound, agedata.getUUID());
 		agedata.setAgeName(LinkOptions.getDisplayName(itemstack.stackTagCompound));
 		String seed = LinkOptions.getProperty(itemstack.stackTagCompound, "Seed");
-		if (seed != null) agedata.setSeed(Long.parseLong(seed));
+		if (seed != null) {
+			agedata.setSeed(Long.parseLong(seed));
+		} else {
+			LinkOptions.setProperty(itemstack.stackTagCompound, "Seed", Long.toString(agedata.getSeed()));
+		}
 		updatePageList(itemstack);
 		agedata.setPages(getPageList(null, itemstack));
 	}
@@ -140,9 +144,13 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 	}
 
 	public void setSeed(EntityPlayer player, ItemStack itemstack, long seed) {
-		LinkOptions.setProperty(itemstack.stackTagCompound, "Seed", Long.toString(seed));
 		AgeData data = getAgeData(itemstack, player.worldObj.isRemote);
-		if (data != null) data.setSeed(seed);
+		if (data != null) {
+			data.setSeed(seed);
+			LinkOptions.setProperty(itemstack.stackTagCompound, "Seed", Long.toString(data.getSeed()));
+		} else {
+			LinkOptions.setProperty(itemstack.stackTagCompound, "Seed", Long.toString(seed));
+		}
 	}
 	
 	@Override
