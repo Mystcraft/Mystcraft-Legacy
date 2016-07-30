@@ -9,6 +9,9 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 /**
  * Provides functions for registering different aspects to the Symbol system. You can blacklist identifiers and register your own symbols. The implementation of
  * this is provided by {@link APIInstanceProvider}.
+ * 
+ * Note: Don't forget to create grammar rules for your symbols! See {@link GrammarAPI}
+ * Note: Don't forget to set treasure rarities! See {@link SymbolValuesAPI}
  * @author xcompwiz
  */
 public interface SymbolAPI {
@@ -21,8 +24,7 @@ public interface SymbolAPI {
 
 	/**
 	 * Registers a logic provider "Symbol" to the system. The symbol should provide logic elements, set values, or push modifier values to the {@link AgeDirector}
-	 * passed to it. If a symbol throws an exception during profiling then the symbol will not be registered and the identifier will be blacklisted. Note: Don't
-	 * forget to create grammar rules for your symbols! See {@link GrammarAPI}
+	 * passed to it. If a symbol throws an exception during profiling then the symbol will not be registered and the identifier will be blacklisted.
 	 * @param symbol The AgeSymbol to register
 	 * @return Success
 	 */
@@ -30,8 +32,7 @@ public interface SymbolAPI {
 
 	/**
 	 * Registers a logic provider "Symbol" to the system. The symbol should provide logic elements, set values, or push modifier values to the {@link AgeDirector}
-	 * passed to it. If a symbol throws an exception during profiling then the symbol will not be registered and the identifier will be blacklisted. Note: Don't
-	 * forget to create grammar rules for your symbols! See {@link GrammarAPI}
+	 * passed to it. If a symbol throws an exception during profiling then the symbol will not be registered and the identifier will be blacklisted.
 	 * @param symbol The AgeSymbol to register
 	 * @param generateConfigOption True if a config entry should be created for the symbol in the Mystcraft configs
 	 * @return Success
@@ -39,8 +40,8 @@ public interface SymbolAPI {
 	public boolean registerSymbol(IAgeSymbol symbol, boolean generateConfigOption);
 
 	/**
-	 * Returns a list of all of the registered symbol identifiers in the system
-	 * @return A new list of all the symbol identifiers
+	 * Returns a list of all of the registered symbols in the system
+	 * @return A new list of all the symbols
 	 */
 	public List<IAgeSymbol> getAllRegisteredSymbols();
 
