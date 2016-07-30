@@ -233,9 +233,9 @@ public class ModSymbols {
 		registerSymbol(new SymbolWeatherStorm("WeatherStorm"), 3, WordData.Sustain, WordData.Static, WordData.Nature, WordData.Power);
 		registerSymbol(new SymbolTerrainGenAmplified("TerrainAmplified"), 3, WordData.Terrain, WordData.Form, WordData.Tradition, WordData.Spur);
 		registerSymbol(new SymbolTerrainGenEnd("TerrainEnd"), 4, WordData.Terrain, WordData.Form, WordData.Ethereal, WordData.Flow);
-		registerSymbol(new SymbolTerrainGenFlat("Flat"), 3, WordData.Terrain, WordData.Form, WordData.Inhibit, WordData.Motion);
+		registerSymbol(new SymbolTerrainGenFlat("TerrainFlat"), 3, WordData.Terrain, WordData.Form, WordData.Inhibit, WordData.Motion);
 		registerSymbol(new SymbolTerrainGenNether("TerrainNether"), 4, WordData.Terrain, WordData.Form, WordData.Constraint, WordData.Entropy);
 		registerSymbol(new SymbolTerrainGenNormal("TerrainNormal"), 2, WordData.Terrain, WordData.Form, WordData.Tradition, WordData.Flow);
-		registerSymbol(new SymbolTerrainGenVoid("Void"), 4, WordData.Terrain, WordData.Form, WordData.Infinite, WordData.Void);
+		registerSymbol(new SymbolTerrainGenVoid("TerrainVoid"), 4, WordData.Terrain, WordData.Form, WordData.Infinite, WordData.Void);
 	}
 }

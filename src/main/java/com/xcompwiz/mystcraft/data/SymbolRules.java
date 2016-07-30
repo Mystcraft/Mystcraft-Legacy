@@ -44,11 +44,11 @@ public class SymbolRules {
 		addRule("WeatherNorm", buildRule(1, GrammarData.WEATHER, "WeatherNorm"));
 		addRule("WeatherFast", buildRule(2, GrammarData.WEATHER, "WeatherFast"));
 
-		addRule("Void", buildRule(3, GrammarData.TERRAIN, "Void"));
+		addRule("TerrainVoid", buildRule(3, GrammarData.TERRAIN, "TerrainVoid"));
 		addRule("TerrainNormal", buildRule(1, GrammarData.TERRAIN, GrammarData.BLOCK_TERRAIN, GrammarData.BLOCK_SEA, "TerrainNormal"));
 		addRule("TerrainAmplified", buildRule(3, GrammarData.TERRAIN, GrammarData.BLOCK_TERRAIN, GrammarData.BLOCK_SEA, "TerrainAmplified"));
 		addRule("TerrainNether", buildRule(3, GrammarData.TERRAIN, GrammarData.BLOCK_TERRAIN, GrammarData.BLOCK_SEA, "TerrainNether"));
-		addRule("Flat", buildRule(2, GrammarData.TERRAIN, GrammarData.BLOCK_TERRAIN, GrammarData.BLOCK_SEA, "Flat"));
+		addRule("TerrainFlat", buildRule(2, GrammarData.TERRAIN, GrammarData.BLOCK_TERRAIN, GrammarData.BLOCK_SEA, "TerrainFlat"));
 		addRule("TerrainEnd", buildRule(3, GrammarData.TERRAIN, GrammarData.BLOCK_TERRAIN, GrammarData.BLOCK_SEA, "TerrainEnd"));
 
 		addRule("LightingNormal", buildRule(1, GrammarData.LIGHTING, "LightingNormal"));

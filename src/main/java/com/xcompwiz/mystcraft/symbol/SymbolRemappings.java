@@ -115,11 +115,11 @@ public class SymbolRemappings {
 
 		addSymbolRemapping("NativeBiomeController", "BioConLarge");
 
-		addSymbolRemapping("Flat Sea", "Flat");
+		addSymbolRemapping("Flat Sea", "TerrainFlat");
 
 		addSymbolRemapping("Sky Islands", "Skylands");
 
-		addSymbolRemapping("Tree Age", "Huge Trees", "Flat", "Swampland", "BioConSingle");
+		addSymbolRemapping("Tree Age", "Huge Trees", "TerrainFlat", "Swampland", "BioConSingle");
 
 		addSymbolRemapping("DefaultBiome", "BioConSingle");
 
@@ -128,6 +128,9 @@ public class SymbolRemappings {
 		addSymbolRemapping("DefaultSunrise", "Normal Sunset Colors");
 
 		addSymbolRemapping("DefaultTerrain", "Standard Terrain");
+
+		addSymbolRemapping("Flat", "TerrainFlat");
+		addSymbolRemapping("Void", "TerrainVoid");
 	}
 
 	private static void addChromaticGradients(List<String> mapping) {
