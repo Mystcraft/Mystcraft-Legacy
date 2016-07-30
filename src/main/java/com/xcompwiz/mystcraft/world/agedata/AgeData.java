@@ -292,7 +292,7 @@ public class AgeData extends WorldSavedData {
 		nbttagcompound.setTag("DataCompound", datacompound);
 		nbttagcompound.setLong("WorldTime", worldtime);
 
-		if (getSpawn() != null) {
+		if (spawn != null) {
 			nbttagcompound.setInteger("SpawnX", spawn.posX);
 			nbttagcompound.setInteger("SpawnY", spawn.posY);
 			nbttagcompound.setInteger("SpawnZ", spawn.posZ);
