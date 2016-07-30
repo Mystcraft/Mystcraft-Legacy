@@ -102,7 +102,6 @@ public class SymbolRules {
 		addRule("Caves", buildRule(1, GrammarData.FEATURE_LARGE, "Caves"));
 		addRule("DenseOres", buildRule(null, GrammarData.FEATURE_LARGE, "DenseOres"));
 		addRule("HugeTrees", buildRule(2, GrammarData.FEATURE_LARGE, "HugeTrees"));
-		addRule("FeatureLargeDummy", buildRule(5, GrammarData.FEATURE_LARGE, "FeatureLargeDummy"));
 
 		addRule("NetherFort", buildRule(2, GrammarData.FEATURE_MEDIUM, "NetherFort"));
 		addRule("Villages", buildRule(1, GrammarData.FEATURE_MEDIUM, "Villages"));
@@ -113,14 +112,22 @@ public class SymbolRules {
 		addRule("TerModSpheres", buildRule(3, GrammarData.FEATURE_MEDIUM, GrammarData.BLOCK_STRUCTURE, "TerModSpheres"));
 		addRule("Dungeons", buildRule(2, GrammarData.FEATURE_MEDIUM, "Dungeons"));
 		addRule("GenSpikes", buildRule(3, GrammarData.FEATURE_MEDIUM, GrammarData.BLOCK_STRUCTURE, "GenSpikes"));
-		addRule("FeatureMediumDummy", buildRule(5, GrammarData.FEATURE_MEDIUM, "FeatureMediumDummy"));
 
 		addRule("StarFissure", buildRule(3, GrammarData.FEATURE_SMALL, "StarFissure"));
 		addRule("Obelisks", buildRule(3, GrammarData.FEATURE_SMALL, GrammarData.BLOCK_STRUCTURE, "Obelisks"));
 		addRule("LakesSurface", buildRule(1, GrammarData.FEATURE_SMALL, GrammarData.BLOCK_FLUID, "LakesSurface"));
 		addRule("LakesDeep", buildRule(1, GrammarData.FEATURE_SMALL, GrammarRules.BLOCK_NONSOLID, "LakesDeep"));
 		addRule("CryForm", buildRule(3, GrammarData.FEATURE_SMALL, GrammarData.BLOCK_CRYSTAL, "CryForm"));
-		addRule("FeatureSmallDummy", buildRule(null, GrammarData.FEATURE_SMALL, "FeatureSmallDummy"));
+
+		//XXX: Direct string references to primary grammar rules
+		// The dummy features should take up the entire rule chain when generating
+		// However, if the player wrote a dummy and some features (or multiple of the same dummy), everything should be able to connect to the grammar 
+		addRule("FeatureLargeDummy", buildRule(5, "FeatureLarges0", GrammarRules.FEATURE_LARGE_EXT, "FeatureLargeDummy"));
+		addRule("FeatureMediumDummy", buildRule(5, "FeatureMediums0", GrammarRules.FEATURE_MEDIUM_EXT, "FeatureMediumDummy"));
+		addRule("FeatureSmallDummy", buildRule(null, "FeatureSmalls0", GrammarRules.FEATURE_SMALL_EXT, "FeatureSmallDummy"));
+		addRule("FeatureLargeDummy", buildRule(null, GrammarRules.FEATURE_LARGE_EXT, "FeatureLargeDummy"));
+		addRule("FeatureMediumDummy", buildRule(null, GrammarRules.FEATURE_MEDIUM_EXT, "FeatureMediumDummy"));
+		addRule("FeatureSmallDummy", buildRule(null, GrammarRules.FEATURE_SMALL_EXT, "FeatureSmallDummy"));
 	}
 
 	private static void addRule(String string, Rule rule) {

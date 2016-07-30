@@ -17,13 +17,13 @@ public class GrammarRules {
 	private static final String	VISUAL_EFFECT_EXT	= "VisualsExt";
 
 	private static final String	FEATURE_LARGE_GEN	= "FeatureLargeAdv";
-	private static final String	FEATURE_LARGE_EXT	= "FeatureLargeExt";
+	public  static final String	FEATURE_LARGE_EXT	= "FeatureLargeExt";
 
 	private static final String	FEATURE_MEDIUM_GEN	= "FeatureMediumAdv";
-	private static final String	FEATURE_MEDIUM_EXT	= "FeatureMediumExt";
+	public  static final String	FEATURE_MEDIUM_EXT	= "FeatureMediumExt";
 
 	private static final String	FEATURE_SMALL_GEN	= "FeatureSmallAdv";
-	private static final String	FEATURE_SMALL_EXT	= "FeatureSmallExt";
+	public  static final String	FEATURE_SMALL_EXT	= "FeatureSmallExt";
 
 	private static final String	EFFECT_GEN			= "EffectsAdv";
 	private static final String	EFFECT_EXT			= "EffectsExt";
