@@ -2,8 +2,8 @@ package com.xcompwiz.mystcraft.network.packet;
 
 import io.netty.buffer.ByteBuf;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.DimensionManager;
@@ -20,7 +20,7 @@ public class MPacketDimensions extends PacketBase {
 	}
 
 	private static void registerDimensions(ByteBuf data) {
-		if (Mystcraft.registeredDims == null) Mystcraft.registeredDims = new ArrayList<Integer>();
+		if (Mystcraft.registeredDims == null) Mystcraft.registeredDims = new HashSet<Integer>();
 		int length = data.readInt();
 		for (int i = 0; i < length; ++i) {
 			int dimId = data.readInt();
@@ -32,7 +32,7 @@ public class MPacketDimensions extends PacketBase {
 	}
 
 	public static FMLProxyPacket createPacket(Integer dim) {
-		ArrayList<Integer> set = new ArrayList<Integer>();
+		HashSet<Integer> set = new HashSet<Integer>();
 		set.add(dim);
 		return createPacket(set);
 	}

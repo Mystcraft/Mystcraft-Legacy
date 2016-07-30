@@ -2,8 +2,8 @@ package com.xcompwiz.mystcraft.world.storage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.minecraftforge.common.DimensionManager;
 
@@ -12,8 +12,8 @@ import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 public class FileUtils {
 
-	public static List<Integer> getExistingAgeList(File dataDir) {
-		ArrayList<Integer> list = new ArrayList<Integer>();
+	public static Set<Integer> getExistingAgeList(File dataDir) {
+		HashSet<Integer> list = new HashSet<Integer>();
 		File[] var2 = dataDir.listFiles();
 		int var4 = var2.length;
 	
