@@ -68,7 +68,7 @@ public class InstabilityDataCalculator {
 		persave = config.get(MystConfig.CATEGORY_BASELINING, "client.persave", persave, "If false, the profiling will run on game startup with the loading bar. If true, it will run in the background when playing. Setting this to false disables tickrate checking, even on the server.").getBoolean(persave);
 		useconfigs = config.get(MystConfig.CATEGORY_BASELINING, "useconfigs", useconfigs, "If true, the baseline calculations won't run and instead a config file will be read.").getBoolean(useconfigs);
 		disconnectclients = config.get(MystConfig.CATEGORY_BASELINING, "server.disconnectclients", disconnectclients, "If set to true this will prevent clients from connecting while baseline profiling is ongoing (Only works on dedicated servers)").getBoolean(disconnectclients);
-		tickrate = config.get(MystConfig.CATEGORY_BASELINING, "tickrate.minimum", tickrate, "This controls the minimum number ot ticks to wait before a new chunk will be generated when doing the baseline profiling in the background.").getInt(tickrate);
+		tickrate = config.get(MystConfig.CATEGORY_BASELINING, "tickrate.minimum", tickrate, "This controls the minimum number of ticks to wait before a new chunk will be generated when doing the baseline profiling in the background.").getInt(tickrate);
 		if (!persave) tickrate = 1;
 	}
 

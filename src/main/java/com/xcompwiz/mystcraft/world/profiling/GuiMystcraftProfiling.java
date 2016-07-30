@@ -29,12 +29,13 @@ public class GuiMystcraftProfiling extends GuiScreen implements IMystcraftProfil
 	public GuiMystcraftProfiling(GuiScreen parentscreen) {
 		this.parentscreen = parentscreen;
 		ArrayList<String> messages = new ArrayList<String>();
-		messages.add("Mystcraft is doing some first time setup.");
-		messages.add("Mystcraft requires some information about the generation done by the mods in your game.");
-		messages.add("In order to do this, it does a first-time profiling. This must finish before you can play.");
+		messages.add("Mystcraft is setting up. It requires a profile be made of the mods in use.");
+		messages.add("The profiling runs once each time you add and/or remove mods.");
+		messages.add("The process must complete before you can play a single-player game.");
 		messages.add("Sorry for the wait!");
 		messages.add("");
-		messages.add("You can set this to run in the background, but cannot start a single player game until it finishes.");
+		messages.add("This can be run in the background without affecting the profile.");
+		messages.add("You can still join a multiplayer game.");
 		this.message = messages;
 		this.buttonText = I18n.format("gui.toMenu", new Object[0]);
 	}

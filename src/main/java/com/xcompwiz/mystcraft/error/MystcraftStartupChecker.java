@@ -143,9 +143,10 @@ public class MystcraftStartupChecker {
 			if (MystcraftFirstRun.isStopped()) {
 				ArrayList<String> messages = new ArrayList<String>();
 				messages.add("Mystcraft hasn't finished it's profiling yet.");
+				messages.add("Unfortunately, this does not seem to be running. Try restarting your client.");
+				messages.add("");
 				messages.add("Mystcraft requires some information about the generation provided by the mods in your game.");
 				messages.add("In order to do this, it does a first-time profiling. This must finish before you start a Single Player game.");
-				messages.add("Unfortunately, this does not seem to be running. Try restarting your client.");
 				event.gui = new GuiNonCriticalError(messages);
 			} else {
 				MystcraftFirstRun.showProfilingGui();
