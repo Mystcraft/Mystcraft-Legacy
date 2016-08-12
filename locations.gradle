@@ -1,10 +1,8 @@
 ext.jarDeploys = [
-	'patron': {"D:/Google Drive/development/projects/minecraft/mystcraft/Mystcraft Patreon Builds/${minecraft.version}/${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"},
 ]
 ext.devDeploys = [
 ]
 ext.APIDeploys = [
 ]
 ext.changelogDeploys = [
-	'patron': {"D:/Google Drive/development/projects/minecraft/mystcraft/Mystcraft Patreon Builds"},
 ]

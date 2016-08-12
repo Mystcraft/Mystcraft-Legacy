@@ -13,5 +13,5 @@ repositories {
 	}
 }
 dependencies {
-    //compile "com.xcompwiz.lookingglass:lookingglass:0.2.0.00:dev"
+    compile "com.xcompwiz.lookingglass:lookingglass:0.2.0.01:dev"
 }
