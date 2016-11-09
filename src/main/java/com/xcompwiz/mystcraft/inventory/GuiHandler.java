@@ -1,6 +1,7 @@
 package com.xcompwiz.mystcraft.inventory;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.block.BlockWritingDesk;
 import com.xcompwiz.mystcraft.client.gui.GuiBook;
 import com.xcompwiz.mystcraft.client.gui.GuiBookBinder;
 import com.xcompwiz.mystcraft.client.gui.GuiInkMixer;
@@ -48,7 +49,7 @@ public class GuiHandler implements IGuiHandler {
 			return new ContainerLinkModifier(player.inventory, tileentity);
 		}
 		if (id == ModGUIs.WRITING_DESK.ordinal()) {
-			TileEntityDesk tileentity = (TileEntityDesk) world.getTileEntity(x, y, z);
+			TileEntityDesk tileentity = BlockWritingDesk.getTileEntity(world, x, y, z);
 			return new ContainerWritingDesk(player.inventory, tileentity);
 		}
 
@@ -101,7 +102,7 @@ public class GuiHandler implements IGuiHandler {
 			return new GuiLinkModifier(player.inventory, tileentity);
 		}
 		if (id == ModGUIs.WRITING_DESK.ordinal()) {
-			TileEntityDesk tileentity = (TileEntityDesk) world.getTileEntity(x, y, z);
+			TileEntityDesk tileentity = BlockWritingDesk.getTileEntity(world, x, y, z);
 			return new GuiWritingDesk(player.inventory, tileentity);
 		}
 
