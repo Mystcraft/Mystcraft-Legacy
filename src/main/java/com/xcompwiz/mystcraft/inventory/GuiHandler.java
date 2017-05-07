@@ -20,12 +20,13 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 import com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
 
-import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 
 public class GuiHandler implements IGuiHandler {
 
@@ -33,19 +34,19 @@ public class GuiHandler implements IGuiHandler {
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		// TEs
 		if (id == ModGUIs.BOOK_BINDER.ordinal()) {
-			TileEntityBookBinder tileentity = (TileEntityBookBinder) world.getTileEntity(x, y, z);
+			TileEntityBookBinder tileentity = (TileEntityBookBinder) world.getTileEntity(new BlockPos(x, y, z));
 			return new ContainerBookBinder(player.inventory, tileentity);
 		}
 		if (id == ModGUIs.BOOK_DISPLAY.ordinal()) {
-			TileEntityBookRotateable tileentity = (TileEntityBookRotateable) player.worldObj.getTileEntity(x, y, z);
+			TileEntityBookRotateable tileentity = (TileEntityBookRotateable) player.world.getTileEntity(new BlockPos(x, y, z));
 			return new ContainerBook(player.inventory, tileentity);
 		}
 		if (id == ModGUIs.INK_MIXER.ordinal()) {
-			TileEntityInkMixer tileentity = (TileEntityInkMixer) world.getTileEntity(x, y, z);
+			TileEntityInkMixer tileentity = (TileEntityInkMixer) world.getTileEntity(new BlockPos(x, y, z));
 			return new ContainerInkMixer(player.inventory, tileentity);
 		}
 		if (id == ModGUIs.LINK_MODIFIER.ordinal()) {
-			TileEntityLinkModifier tileentity = (TileEntityLinkModifier) world.getTileEntity(x, y, z);
+			TileEntityLinkModifier tileentity = (TileEntityLinkModifier) world.getTileEntity(new BlockPos(x, y, z));
 			return new ContainerLinkModifier(player.inventory, tileentity);
 		}
 		if (id == ModGUIs.WRITING_DESK.ordinal()) {
@@ -72,11 +73,11 @@ public class GuiHandler implements IGuiHandler {
 		
 		// Entities
 		if (id == ModGUIs.BOOK_ENTITY.ordinal()) {
-			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.worldObj, x);
+			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.world, x);
 			if (entity != null && entity instanceof EntityLinkbook) { return new ContainerBook(player.inventory, (EntityLinkbook) entity); }
 		}
 		if (id == ModGUIs.VILLAGER.ordinal()) {
-			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.worldObj, x);
+			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.world, x);
 			if (entity != null && entity instanceof EntityVillager) { return new ContainerVillagerShop(player.inventory, (EntityVillager) entity); }
 		}
 		return null;
@@ -86,19 +87,19 @@ public class GuiHandler implements IGuiHandler {
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 		// TEs
 		if (id == ModGUIs.BOOK_BINDER.ordinal()) {
-			TileEntityBookBinder tileentity = (TileEntityBookBinder) player.worldObj.getTileEntity(x, y, z);
+			TileEntityBookBinder tileentity = (TileEntityBookBinder) player.world.getTileEntity(new BlockPos(x, y, z));
 			return new GuiBookBinder(player.inventory, tileentity);
 		}
 		if (id == ModGUIs.BOOK_DISPLAY.ordinal()) {
-			TileEntityBookRotateable tileentity = (TileEntityBookRotateable) player.worldObj.getTileEntity(x, y, z);
+			TileEntityBookRotateable tileentity = (TileEntityBookRotateable) player.world.getTileEntity(new BlockPos(x, y, z));
 			return new GuiBook(player.inventory, tileentity);
 		}
 		if (id == ModGUIs.INK_MIXER.ordinal()) {
-			TileEntityInkMixer tileentity = (TileEntityInkMixer) world.getTileEntity(x, y, z);
+			TileEntityInkMixer tileentity = (TileEntityInkMixer) world.getTileEntity(new BlockPos(x, y, z));
 			return new GuiInkMixer(player.inventory, tileentity);
 		}
 		if (id == ModGUIs.LINK_MODIFIER.ordinal()) {
-			TileEntityLinkModifier tileentity = (TileEntityLinkModifier) world.getTileEntity(x, y, z);
+			TileEntityLinkModifier tileentity = (TileEntityLinkModifier) world.getTileEntity(new BlockPos(x, y, z));
 			return new GuiLinkModifier(player.inventory, tileentity);
 		}
 		if (id == ModGUIs.WRITING_DESK.ordinal()) {
@@ -125,11 +126,11 @@ public class GuiHandler implements IGuiHandler {
 		
 		// Entities
 		if (id == ModGUIs.BOOK_ENTITY.ordinal()) {
-			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.worldObj, x);
+			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.world, x);
 			if (entity != null && entity instanceof EntityLinkbook) { return new GuiBook(player.inventory, (EntityLinkbook) entity); }
 		}
 		if (id == ModGUIs.VILLAGER.ordinal()) {
-			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.worldObj, x);
+			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.world, x);
 			if (entity != null && entity instanceof EntityVillager) { return new GuiVillagerShop(player.inventory, (EntityVillager) entity); }
 		}
 		return null;
