@@ -3,8 +3,6 @@ package com.xcompwiz.mystcraft.symbol;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import net.minecraft.world.biome.WorldChunkManager;
-
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
@@ -22,6 +20,8 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainFeatureLocator;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
 import com.xcompwiz.mystcraft.api.world.logic.Modifier;
+
+import net.minecraft.world.biome.WorldChunkManager;
 
 public class SymbolProfiler implements AgeDirector {
 

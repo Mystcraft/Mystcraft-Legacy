@@ -1,12 +1,12 @@
 package com.xcompwiz.mystcraft.symbol.modifiers;
 
-import net.minecraft.init.Blocks;
-
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+
+import net.minecraft.init.Blocks;
 
 public class SymbolNoSea extends SymbolBase {
 

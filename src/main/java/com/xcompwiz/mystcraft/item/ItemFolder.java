@@ -2,6 +2,12 @@ package com.xcompwiz.mystcraft.item;
 
 import java.util.List;
 
+import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
+import com.xcompwiz.mystcraft.api.item.IItemWritable;
+import com.xcompwiz.mystcraft.data.ModGUIs;
+import com.xcompwiz.mystcraft.inventory.InventoryFolder;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,17 +15,9 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
-import com.xcompwiz.mystcraft.api.item.IItemWritable;
-import com.xcompwiz.mystcraft.data.ModGUIs;
-import com.xcompwiz.mystcraft.inventory.InventoryFolder;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemFolder extends Item implements IItemOrderablePageProvider, IItemWritable, IItemOnLoadable {
 

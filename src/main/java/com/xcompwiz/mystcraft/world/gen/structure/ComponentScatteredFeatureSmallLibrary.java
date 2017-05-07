@@ -2,19 +2,19 @@ package com.xcompwiz.mystcraft.world.gen.structure;
 
 import java.util.Random;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraftforge.common.ChestGenHooks;
-
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraftforge.common.ChestGenHooks;
 
 public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFeatureMyst {
 	private int						averageGroundLevel	= -1; //Used to track the library generation height

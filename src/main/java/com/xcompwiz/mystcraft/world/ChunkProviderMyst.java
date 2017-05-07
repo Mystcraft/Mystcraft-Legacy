@@ -5,6 +5,10 @@ import static net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.Ev
 import java.util.List;
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
+import com.xcompwiz.mystcraft.world.agedata.AgeData;
+import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
@@ -14,8 +18,8 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.SpawnerAnimals;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
@@ -25,12 +29,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
-
-import com.xcompwiz.mystcraft.logging.LoggerUtils;
-import com.xcompwiz.mystcraft.world.agedata.AgeData;
-import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
-
-import cpw.mods.fml.common.eventhandler.Event.Result;
 
 public class ChunkProviderMyst implements IChunkProvider {
 	private AgeController				controller;

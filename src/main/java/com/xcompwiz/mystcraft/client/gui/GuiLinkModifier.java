@@ -2,9 +2,6 @@ package com.xcompwiz.mystcraft.client.gui;
 
 import java.util.List;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
@@ -22,6 +19,9 @@ import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
 import com.xcompwiz.util.CollectionUtils;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GuiLinkModifier extends GuiContainerElements {
 	private class ButtonHandler implements IGuiOnClickHandler, IGuiStateProvider {

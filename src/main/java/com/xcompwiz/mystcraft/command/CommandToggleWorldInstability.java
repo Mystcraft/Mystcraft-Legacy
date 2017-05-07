@@ -3,11 +3,11 @@ package com.xcompwiz.mystcraft.command;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
+
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
 
 public class CommandToggleWorldInstability extends CommandBaseAdv {
 

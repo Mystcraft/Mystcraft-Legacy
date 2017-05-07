@@ -2,9 +2,9 @@ package com.xcompwiz.mystcraft.instability.decay;
 
 import java.util.Random;
 
-import net.minecraft.world.World;
-
 import com.xcompwiz.mystcraft.data.ModBlocks;
+
+import net.minecraft.world.World;
 
 public abstract class DecayHandlerSpreading extends DecayHandler {
 

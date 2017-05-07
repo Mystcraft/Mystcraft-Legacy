@@ -1,10 +1,20 @@
 package com.xcompwiz.mystcraft.client.render;
 
+import org.lwjgl.opengl.GL11;
+
+import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.client.model.ModelLectern;
+import com.xcompwiz.mystcraft.data.Assets.Entities;
+import com.xcompwiz.mystcraft.data.Assets.Vanilla;
+import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.item.ItemLinking;
+import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelBook;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureCompass;
@@ -15,18 +25,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.storage.MapData;
-
-import org.lwjgl.opengl.GL11;
-
-import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.client.model.ModelLectern;
-import com.xcompwiz.mystcraft.data.Assets.Entities;
-import com.xcompwiz.mystcraft.data.Assets.Vanilla;
-import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.item.ItemLinking;
-import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 
 public class RenderLectern extends TileEntitySpecialRenderer {
 

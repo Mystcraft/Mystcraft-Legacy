@@ -2,11 +2,6 @@ package com.xcompwiz.mystcraft.data;
 
 import java.util.ArrayList;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.hook.SymbolFactory.CategoryPair;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
@@ -23,7 +18,11 @@ import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBlock;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolColor;
 import com.xcompwiz.util.CollectionUtils;
 
-import cpw.mods.fml.common.event.FMLInterModComms;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 
 public class ModSymbolsModifiers {
 

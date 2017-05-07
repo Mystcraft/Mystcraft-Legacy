@@ -1,15 +1,15 @@
 package com.xcompwiz.mystcraft.client.render;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.model.ModelMeteor;
 import com.xcompwiz.mystcraft.data.Assets.Vanilla;
 import com.xcompwiz.mystcraft.entity.EntityMeteor;
+
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 
 public class RenderMeteor extends Render {
 	private ModelBase	model;

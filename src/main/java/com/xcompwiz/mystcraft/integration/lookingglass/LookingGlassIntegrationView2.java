@@ -3,8 +3,7 @@ package com.xcompwiz.mystcraft.integration.lookingglass;
 import com.xcompwiz.lookingglass.api.hook.WorldViewAPI2;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class LookingGlassIntegrationView2 {
 

@@ -2,16 +2,16 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.MapGenStronghold;
-
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainFeatureLocator;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+
+import net.minecraft.block.Block;
+import net.minecraft.world.ChunkPosition;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.MapGenStronghold;
 
 public class SymbolStrongholds extends SymbolBase {
 

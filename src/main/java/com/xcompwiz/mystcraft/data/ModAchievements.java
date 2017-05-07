@@ -1,11 +1,11 @@
 package com.xcompwiz.mystcraft.data;
 
-import net.minecraft.stats.Achievement;
-import net.minecraftforge.common.AchievementPage;
-
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.page.Page;
+
+import net.minecraft.stats.Achievement;
+import net.minecraftforge.common.AchievementPage;
 
 public class ModAchievements {
 

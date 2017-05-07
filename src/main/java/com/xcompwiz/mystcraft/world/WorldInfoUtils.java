@@ -1,9 +1,9 @@
 package com.xcompwiz.mystcraft.world;
 
+import com.xcompwiz.mystcraft.world.agedata.AgeData;
+
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-
-import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 public class WorldInfoUtils {
 

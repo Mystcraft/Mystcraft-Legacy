@@ -3,13 +3,13 @@ package com.xcompwiz.mystcraft.effects;
 import java.util.HashMap;
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
+import com.xcompwiz.mystcraft.data.ModBlocks;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-
-import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
-import com.xcompwiz.mystcraft.data.ModBlocks;
 
 public class EffectCrumble implements IEnvironmentalEffect {
 	public static class BlockSpec {

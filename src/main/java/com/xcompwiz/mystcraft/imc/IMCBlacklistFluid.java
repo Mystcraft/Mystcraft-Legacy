@@ -1,17 +1,16 @@
 package com.xcompwiz.mystcraft.imc;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.BlockFluidBase;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-
 import com.xcompwiz.mystcraft.data.ModSymbolsFluids;
 import com.xcompwiz.mystcraft.imc.IMCHandler.IMCProcessor;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
-import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 
 public class IMCBlacklistFluid implements IMCProcessor {
 

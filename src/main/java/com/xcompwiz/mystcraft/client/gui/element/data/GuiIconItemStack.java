@@ -1,13 +1,13 @@
 package com.xcompwiz.mystcraft.client.gui.element.data;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 
 public class GuiIconItemStack implements IGuiIcon {
 	public interface IItemStackProvider {

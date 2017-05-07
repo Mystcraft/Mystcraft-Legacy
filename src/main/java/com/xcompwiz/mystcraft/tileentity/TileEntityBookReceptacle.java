@@ -1,11 +1,11 @@
 package com.xcompwiz.mystcraft.tileentity;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
 import com.xcompwiz.mystcraft.network.IMessageReceiver;
 import com.xcompwiz.mystcraft.portal.PortalUtils;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class TileEntityBookReceptacle extends TileEntityBookRotateable implements IMessageReceiver {
 

@@ -1,9 +1,9 @@
 package com.xcompwiz.mystcraft.api.hook;
 
-import net.minecraft.item.ItemStack;
-
 import com.google.common.annotations.Beta;
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
+
+import net.minecraft.item.ItemStack;
 
 /**
  * Provides a set of functions for building Mystcraft items. The implementation of this is provided by {@link APIInstanceProvider}.

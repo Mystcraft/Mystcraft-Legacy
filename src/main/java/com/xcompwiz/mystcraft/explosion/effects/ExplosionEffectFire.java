@@ -2,12 +2,12 @@ package com.xcompwiz.mystcraft.explosion.effects;
 
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.explosion.ExplosionAdvanced;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.explosion.ExplosionAdvanced;
 
 public class ExplosionEffectFire extends ExplosionEffect {
 

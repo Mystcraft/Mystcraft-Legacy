@@ -2,6 +2,15 @@ package com.xcompwiz.mystcraft.world;
 
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.util.Color;
+import com.xcompwiz.mystcraft.client.render.CloudRendererMyst;
+import com.xcompwiz.mystcraft.client.render.WeatherRendererMyst;
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
+import com.xcompwiz.mystcraft.network.NetworkUtils;
+import com.xcompwiz.mystcraft.world.agedata.AgeData;
+import com.xcompwiz.mystcraft.world.storage.WorldInfoMyst;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -10,8 +19,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
@@ -22,19 +31,8 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.IRenderHandler;
-
-import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.api.util.Color;
-import com.xcompwiz.mystcraft.client.render.CloudRendererMyst;
-import com.xcompwiz.mystcraft.client.render.WeatherRendererMyst;
-import com.xcompwiz.mystcraft.logging.LoggerUtils;
-import com.xcompwiz.mystcraft.network.NetworkUtils;
-import com.xcompwiz.mystcraft.world.agedata.AgeData;
-import com.xcompwiz.mystcraft.world.storage.WorldInfoMyst;
-
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldProviderMyst extends WorldProvider {
 

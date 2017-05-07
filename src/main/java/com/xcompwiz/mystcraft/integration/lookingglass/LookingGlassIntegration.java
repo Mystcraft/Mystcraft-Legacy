@@ -1,13 +1,13 @@
 package com.xcompwiz.mystcraft.integration.lookingglass;
 
-import net.minecraftforge.common.MinecraftForge;
-
-import com.xcompwiz.lookingglass.api.APIInstanceProvider;
-import com.xcompwiz.lookingglass.api.APIUndefined;
-import com.xcompwiz.lookingglass.api.APIVersionRemoved;
-import com.xcompwiz.lookingglass.api.APIVersionUndefined;
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.APIInstanceProvider;
+import com.xcompwiz.mystcraft.api.exception.APIUndefined;
+import com.xcompwiz.mystcraft.api.exception.APIVersionRemoved;
+import com.xcompwiz.mystcraft.api.exception.APIVersionUndefined;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
+
+import net.minecraftforge.common.MinecraftForge;
 
 public class LookingGlassIntegration {
 

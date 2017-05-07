@@ -1,16 +1,14 @@
 package com.xcompwiz.mystcraft.item;
 
+import com.xcompwiz.mystcraft.data.Assets;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.data.Assets;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMyGlasses extends ItemArmor {
 

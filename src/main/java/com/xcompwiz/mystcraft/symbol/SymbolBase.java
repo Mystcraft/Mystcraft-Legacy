@@ -2,12 +2,12 @@ package com.xcompwiz.mystcraft.symbol;
 
 import java.util.ArrayList;
 
-import net.minecraft.util.StatCollector;
-
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
+
+import net.minecraft.util.StatCollector;
 
 public abstract class SymbolBase implements IAgeSymbol {
 

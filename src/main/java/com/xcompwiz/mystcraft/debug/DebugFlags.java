@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
-
 import com.xcompwiz.mystcraft.data.GrammarRules;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugTaskCallback;
 import com.xcompwiz.mystcraft.grammar.GrammarTree;
+
+import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentText;
 
 public final class DebugFlags {
 	public static boolean	instability	= false;

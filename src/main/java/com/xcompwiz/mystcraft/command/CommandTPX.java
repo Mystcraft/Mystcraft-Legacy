@@ -2,6 +2,12 @@ package com.xcompwiz.mystcraft.command;
 
 import java.util.List;
 
+import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
+import com.xcompwiz.mystcraft.api.impl.InternalAPI;
+import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
+import com.xcompwiz.mystcraft.linking.LinkController;
+import com.xcompwiz.mystcraft.linking.LinkOptions;
+
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
@@ -9,12 +15,6 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
-
-import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
-import com.xcompwiz.mystcraft.api.impl.InternalAPI;
-import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
-import com.xcompwiz.mystcraft.linking.LinkController;
-import com.xcompwiz.mystcraft.linking.LinkOptions;
 
 public class CommandTPX extends CommandBaseAdv {
 

@@ -2,22 +2,20 @@ package com.xcompwiz.mystcraft.client.render;
 
 import java.util.Random;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.client.IRenderHandler;
-
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.world.AgeController;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.client.IRenderHandler;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WeatherRendererMyst extends IRenderHandler {
 	private static final ResourceLocation	locationRainPng	= new ResourceLocation("textures/environment/rain.png");

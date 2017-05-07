@@ -1,13 +1,12 @@
 package com.xcompwiz.mystcraft.network.packet;
 
+import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-
-import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
-
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 public class MPacketGuiMessage extends PacketBase {
 

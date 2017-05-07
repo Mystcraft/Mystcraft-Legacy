@@ -1,5 +1,12 @@
 package com.xcompwiz.mystcraft;
 
+import com.xcompwiz.mystcraft.core.TaskQueueManager;
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
+import com.xcompwiz.mystcraft.world.profiling.ChunkProfiler;
+import com.xcompwiz.mystcraft.world.profiling.GuiMystcraftProfiling;
+import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
+import com.xcompwiz.mystcraft.world.storage.ExternalSaveHandler;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.server.MinecraftServer;
@@ -9,17 +16,8 @@ import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent.Save;
-
-import com.xcompwiz.mystcraft.core.TaskQueueManager;
-import com.xcompwiz.mystcraft.logging.LoggerUtils;
-import com.xcompwiz.mystcraft.world.profiling.ChunkProfiler;
-import com.xcompwiz.mystcraft.world.profiling.GuiMystcraftProfiling;
-import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
-import com.xcompwiz.mystcraft.world.storage.ExternalSaveHandler;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MystcraftFirstRun {
 	private static final String					SAVE_NAME	= "mystcraft_profiling";

@@ -2,12 +2,12 @@ package com.xcompwiz.mystcraft.effects;
 
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
+import com.xcompwiz.mystcraft.entity.EntityMeteor;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-
-import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
-import com.xcompwiz.mystcraft.entity.EntityMeteor;
 
 public class EffectMeteor implements IEnvironmentalEffect {
 

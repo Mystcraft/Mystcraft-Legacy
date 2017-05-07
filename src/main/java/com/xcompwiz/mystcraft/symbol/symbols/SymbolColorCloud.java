@@ -1,14 +1,14 @@
 package com.xcompwiz.mystcraft.symbol.symbols;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.world.biome.BiomeGenBase;
-
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.world.biome.BiomeGenBase;
 
 public class SymbolColorCloud extends SymbolBase {
 

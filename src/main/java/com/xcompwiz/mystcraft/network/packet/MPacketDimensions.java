@@ -1,16 +1,14 @@
 package com.xcompwiz.mystcraft.network.packet;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.Collection;
 import java.util.HashSet;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.DimensionManager;
-
 import com.xcompwiz.mystcraft.Mystcraft;
 
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 public class MPacketDimensions extends PacketBase {
 

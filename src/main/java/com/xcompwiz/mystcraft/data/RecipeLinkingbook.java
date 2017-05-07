@@ -1,13 +1,13 @@
 package com.xcompwiz.mystcraft.data;
 
+import com.xcompwiz.mystcraft.item.ItemLinkbookUnlinked;
+import com.xcompwiz.mystcraft.page.Page;
+
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.item.ItemLinkbookUnlinked;
-import com.xcompwiz.mystcraft.page.Page;
 
 public class RecipeLinkingbook implements IRecipe {
 

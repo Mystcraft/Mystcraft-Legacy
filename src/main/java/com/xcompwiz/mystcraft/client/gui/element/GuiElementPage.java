@@ -3,13 +3,13 @@ package com.xcompwiz.mystcraft.client.gui.element;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
+
+import net.minecraft.item.ItemStack;
 
 public class GuiElementPage extends GuiElement {
 	public interface IGuiPageProvider {

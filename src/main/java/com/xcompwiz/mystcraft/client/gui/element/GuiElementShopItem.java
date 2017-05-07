@@ -2,9 +2,6 @@ package com.xcompwiz.mystcraft.client.gui.element;
 
 import java.util.List;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton.IGuiOnClickHandler;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementLabel.IGuiLabelDataProvider;
@@ -13,6 +10,9 @@ import com.xcompwiz.mystcraft.client.gui.element.data.GuiIconItemStack.IItemStac
 import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
+
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 
 public class GuiElementShopItem extends GuiElement implements IGuiOnClickHandler, IGuiLabelDataProvider, IItemStackProvider {
 

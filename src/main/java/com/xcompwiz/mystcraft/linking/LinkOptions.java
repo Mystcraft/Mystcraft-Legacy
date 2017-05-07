@@ -2,10 +2,10 @@ package com.xcompwiz.mystcraft.linking;
 
 import java.util.UUID;
 
+import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
-
-import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
 public class LinkOptions implements ILinkInfo {
 

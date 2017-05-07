@@ -2,12 +2,12 @@ package com.xcompwiz.mystcraft.symbol;
 
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
+import com.xcompwiz.mystcraft.api.world.storage.StorageObject;
+
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-
-import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
-import com.xcompwiz.mystcraft.api.world.storage.StorageObject;
 
 public abstract class WeatherControllerToggleable implements IWeatherController {
 	private StorageObject	infoObj;

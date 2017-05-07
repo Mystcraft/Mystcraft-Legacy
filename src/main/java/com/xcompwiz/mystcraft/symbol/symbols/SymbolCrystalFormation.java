@@ -2,8 +2,6 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import java.util.Random;
 
-import net.minecraft.world.World;
-
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
@@ -13,6 +11,8 @@ import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGenMystCrystalFormation;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
+
+import net.minecraft.world.World;
 
 public class SymbolCrystalFormation extends SymbolBase {
 

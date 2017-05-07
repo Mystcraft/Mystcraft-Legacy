@@ -2,10 +2,10 @@ package com.xcompwiz.mystcraft.api.hook;
 
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+
+import net.minecraft.item.ItemStack;
 
 /**
  * Allows the setting of various treasure rarity and weighting values for symbols. See {@link GrammarAPI} for setting the grammar rule(s) for a symbol. These

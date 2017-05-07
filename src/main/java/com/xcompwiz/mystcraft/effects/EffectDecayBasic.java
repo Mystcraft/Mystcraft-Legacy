@@ -4,13 +4,13 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-
 import com.xcompwiz.mystcraft.api.instability.InstabilityDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.data.ModBlocks;
+
+import net.minecraft.block.material.Material;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 public class EffectDecayBasic implements IEnvironmentalEffect {
 

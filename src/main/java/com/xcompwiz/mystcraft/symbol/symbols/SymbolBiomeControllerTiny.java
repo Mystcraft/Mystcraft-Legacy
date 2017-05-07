@@ -3,11 +3,11 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.world.biome.BiomeGenBase;
-
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+
+import net.minecraft.world.biome.BiomeGenBase;
 
 public class SymbolBiomeControllerTiny extends SymbolBase {
 

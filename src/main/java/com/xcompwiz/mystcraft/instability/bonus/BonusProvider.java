@@ -2,12 +2,12 @@ package com.xcompwiz.mystcraft.instability.bonus;
 
 import java.lang.reflect.Constructor;
 
-import net.minecraft.world.World;
-
 import com.google.common.collect.ObjectArrays;
 import com.xcompwiz.mystcraft.instability.bonus.InstabilityBonusManager.IInstabilityBonus;
 import com.xcompwiz.mystcraft.instability.bonus.InstabilityBonusManager.IInstabilityBonusProvider;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
+
+import net.minecraft.world.World;
 
 public class BonusProvider implements IInstabilityBonusProvider {
 

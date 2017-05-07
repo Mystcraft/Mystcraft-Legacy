@@ -1,9 +1,5 @@
 package com.xcompwiz.mystcraft.data;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
@@ -17,7 +13,10 @@ import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.item.ItemPortfolio;
 import com.xcompwiz.mystcraft.item.ItemWritingDesk;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ModItems {
 	public static Item			page;

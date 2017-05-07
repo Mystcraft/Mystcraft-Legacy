@@ -1,14 +1,14 @@
 package com.xcompwiz.mystcraft.symbol.symbols;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 
 public class SymbolTerrainGenFlat extends SymbolBase {
 

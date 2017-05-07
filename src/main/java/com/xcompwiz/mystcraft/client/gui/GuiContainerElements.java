@@ -2,11 +2,11 @@ package com.xcompwiz.mystcraft.client.gui;
 
 import java.util.List;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.Container;
-
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementPanel;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.inventory.Container;
 
 public abstract class GuiContainerElements extends GuiContainer {
 

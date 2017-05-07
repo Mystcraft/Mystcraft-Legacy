@@ -6,19 +6,18 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAllow;
+import com.xcompwiz.mystcraft.command.CommandTPX;
+import com.xcompwiz.mystcraft.nbt.NBTDataContainer;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.Constants;
-
-import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAllow;
-import com.xcompwiz.mystcraft.command.CommandTPX;
-import com.xcompwiz.mystcraft.nbt.NBTDataContainer;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class LinkListenerPermissions {
 	private static final String						data_file		= "mystcraft-linking-permissions";

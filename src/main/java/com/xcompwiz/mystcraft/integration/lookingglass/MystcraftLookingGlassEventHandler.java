@@ -1,14 +1,13 @@
 package com.xcompwiz.mystcraft.integration.lookingglass;
 
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.World;
-
 import com.xcompwiz.lookingglass.api.event.ClientWorldInfoEvent;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketAgeData;
 import com.xcompwiz.mystcraft.world.WorldInfoUtils;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class MystcraftLookingGlassEventHandler {
 

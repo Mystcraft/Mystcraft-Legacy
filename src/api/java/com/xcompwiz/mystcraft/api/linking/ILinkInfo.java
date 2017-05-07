@@ -2,11 +2,11 @@ package com.xcompwiz.mystcraft.api.linking;
 
 import java.util.UUID;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
-
 import com.xcompwiz.mystcraft.api.event.LinkEvent;
 import com.xcompwiz.mystcraft.api.hook.LinkingAPI;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChunkCoordinates;
 
 /**
  * This is an object describing all the information needed to link an entity using the Mystcraft teleport mechanics. Conversion functions to and from

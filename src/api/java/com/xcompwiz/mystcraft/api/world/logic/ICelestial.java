@@ -2,8 +2,7 @@ package com.xcompwiz.mystcraft.api.world.logic;
 
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Adds a celestial body to the age. Ages can have any number of these.

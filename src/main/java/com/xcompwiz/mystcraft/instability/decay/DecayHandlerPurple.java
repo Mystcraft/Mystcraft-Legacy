@@ -1,11 +1,11 @@
 package com.xcompwiz.mystcraft.instability.decay;
 
+import com.xcompwiz.mystcraft.data.ModBlocks;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.data.ModBlocks;
 
 public class DecayHandlerPurple extends DecayHandlerSpreading {
 

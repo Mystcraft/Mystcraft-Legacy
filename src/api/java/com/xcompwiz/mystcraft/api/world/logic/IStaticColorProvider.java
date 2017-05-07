@@ -1,9 +1,9 @@
 package com.xcompwiz.mystcraft.api.world.logic;
 
+import com.xcompwiz.mystcraft.api.util.Color;
+
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-
-import com.xcompwiz.mystcraft.api.util.Color;
 
 /**
  * Used to produce a color once. This color cannot change over time.

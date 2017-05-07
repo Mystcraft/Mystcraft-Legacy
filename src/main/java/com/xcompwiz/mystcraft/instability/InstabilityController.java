@@ -5,9 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Random;
 
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-
 import com.google.common.collect.HashMultiset;
 import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 import com.xcompwiz.mystcraft.api.instability.InstabilityDirector;
@@ -15,6 +12,9 @@ import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.world.AgeController;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import com.xcompwiz.mystcraft.world.storage.StorageInstabilityData;
+
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 public class InstabilityController implements InstabilityDirector {
 	private AgeController						controller;

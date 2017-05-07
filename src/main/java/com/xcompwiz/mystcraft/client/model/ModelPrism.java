@@ -1,13 +1,11 @@
 package com.xcompwiz.mystcraft.client.model;
 
+import com.xcompwiz.mystcraft.client.render.TexturedSquare;
+
 import net.minecraft.client.model.PositionTextureVertex;
 import net.minecraft.client.model.TexturedQuad;
 import net.minecraft.client.renderer.Tessellator;
-
-import com.xcompwiz.mystcraft.client.render.TexturedSquare;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModelPrism extends ModelElement {
 	/**

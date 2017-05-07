@@ -2,11 +2,11 @@ package com.xcompwiz.mystcraft.command;
 
 import java.util.List;
 
+import com.xcompwiz.mystcraft.linking.LinkListenerPermissions;
+
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
-
-import com.xcompwiz.mystcraft.linking.LinkListenerPermissions;
 
 public class CommandMystPermissions extends CommandBaseAdv {
 	@Override

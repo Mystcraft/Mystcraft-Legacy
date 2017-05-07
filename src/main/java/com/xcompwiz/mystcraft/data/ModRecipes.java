@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.data;
 
+import com.xcompwiz.mystcraft.config.MystConfig;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -8,8 +10,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-
-import com.xcompwiz.mystcraft.config.MystConfig;
 
 public class ModRecipes {
 

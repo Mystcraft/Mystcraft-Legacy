@@ -2,6 +2,9 @@ package com.xcompwiz.mystcraft.tileentity;
 
 import java.util.Iterator;
 
+import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.item.ItemLinking;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -10,9 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.world.storage.MapData;
-
-import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.item.ItemLinking;
 
 public class TileEntityLectern extends TileEntityBookRotateable {
 

@@ -7,7 +7,7 @@ import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.imc.IMCHandler.IMCProcessor;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 
-import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 
 public class IMCAPIRegister implements IMCProcessor {
 

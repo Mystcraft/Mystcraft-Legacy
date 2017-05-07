@@ -1,13 +1,13 @@
 package com.xcompwiz.mystcraft.command;
 
-import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
-
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.util.CollectionUtils;
+
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.command.WrongUsageException;
 
 public class CommandCreateDim extends CommandBaseAdv {
 

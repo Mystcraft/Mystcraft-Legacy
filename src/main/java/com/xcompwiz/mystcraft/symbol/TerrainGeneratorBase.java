@@ -2,11 +2,11 @@ package com.xcompwiz.mystcraft.symbol;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 
 public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 

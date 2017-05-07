@@ -1,16 +1,14 @@
 package com.xcompwiz.mystcraft.item;
 
+import com.xcompwiz.mystcraft.block.BlockFluidWrapper;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
-
-import com.xcompwiz.mystcraft.block.BlockFluidWrapper;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockFluid extends ItemBlock {
 	/** Instance of the Blocks. */

@@ -3,6 +3,11 @@ package com.xcompwiz.mystcraft.inventory;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.xcompwiz.mystcraft.item.ItemAgebook;
+import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
+import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
+import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,11 +16,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
-
-import com.xcompwiz.mystcraft.item.ItemAgebook;
-import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
-import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
-import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
 
 public class ContainerLinkModifier extends ContainerBase implements IGuiMessageHandler {
 	public static class Messages {

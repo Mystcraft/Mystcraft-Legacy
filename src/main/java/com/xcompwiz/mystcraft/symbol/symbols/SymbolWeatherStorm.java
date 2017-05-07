@@ -2,13 +2,13 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import java.util.Random;
 
-import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.WeatherControllerToggleable;
+
+import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 public class SymbolWeatherStorm extends SymbolBase {
 

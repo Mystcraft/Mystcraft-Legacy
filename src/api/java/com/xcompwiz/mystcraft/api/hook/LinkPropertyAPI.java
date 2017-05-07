@@ -3,13 +3,13 @@ package com.xcompwiz.mystcraft.api.hook;
 import java.util.Collection;
 import java.util.Map;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
 import com.google.common.annotations.Beta;
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 /**
  * Provides functions for adding link properties. Also handles interactions with the ink mixing mechanics. The implementation of this is provided by {@link APIInstanceProvider}. Do

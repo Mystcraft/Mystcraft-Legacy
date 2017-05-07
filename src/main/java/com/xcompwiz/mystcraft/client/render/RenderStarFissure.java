@@ -3,16 +3,16 @@ package com.xcompwiz.mystcraft.client.render;
 import java.nio.FloatBuffer;
 import java.util.Random;
 
+import org.lwjgl.opengl.GL11;
+
+import com.xcompwiz.mystcraft.data.Assets.Vanilla;
+import com.xcompwiz.mystcraft.tileentity.TileEntityStarFissure;
+
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-
-import org.lwjgl.opengl.GL11;
-
-import com.xcompwiz.mystcraft.data.Assets.Vanilla;
-import com.xcompwiz.mystcraft.tileentity.TileEntityStarFissure;
 
 public class RenderStarFissure extends TileEntitySpecialRenderer {
 	FloatBuffer	field_40448_a;

@@ -2,6 +2,10 @@ package com.xcompwiz.mystcraft.tileentity;
 
 import java.util.Arrays;
 
+import com.xcompwiz.mystcraft.item.ItemLinking;
+import com.xcompwiz.mystcraft.linking.LinkOptions;
+import com.xcompwiz.mystcraft.nbt.NBTUtils;
+
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -10,10 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
-
-import com.xcompwiz.mystcraft.item.ItemLinking;
-import com.xcompwiz.mystcraft.linking.LinkOptions;
-import com.xcompwiz.mystcraft.nbt.NBTUtils;
 
 public class TileEntityBook extends TileEntity implements ISidedInventory {
 

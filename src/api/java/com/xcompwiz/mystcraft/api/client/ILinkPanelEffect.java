@@ -1,12 +1,10 @@
 package com.xcompwiz.mystcraft.api.client;
 
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.api.hook.RenderAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * This interface allows for you to add render layers to the link panel in a book. Register it through the {@link RenderAPI}.

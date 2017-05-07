@@ -1,13 +1,12 @@
 package com.xcompwiz.mystcraft.imc;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-
 import com.xcompwiz.mystcraft.data.ModSymbolsFluids;
 import com.xcompwiz.mystcraft.imc.IMCHandler.IMCProcessor;
 
-import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 
 public class IMCFluidData implements IMCProcessor {
 

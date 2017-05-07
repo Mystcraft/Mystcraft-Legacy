@@ -1,13 +1,13 @@
 package com.xcompwiz.mystcraft.symbol.symbols;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.biome.BiomeGenBase;
-
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.biome.BiomeGenBase;
 
 public class SymbolColorSkyNatural extends SymbolBase {
 

@@ -2,6 +2,15 @@ package com.xcompwiz.mystcraft.inventory;
 
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.nbt.NBTUtils;
+import com.xcompwiz.mystcraft.page.Page;
+import com.xcompwiz.mystcraft.symbol.SymbolManager;
+import com.xcompwiz.mystcraft.treasure.WeightProviderSymbolItem;
+import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
+import com.xcompwiz.mystcraft.villager.VillagerTradeSystem;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,15 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-
-import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
-import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.nbt.NBTUtils;
-import com.xcompwiz.mystcraft.page.Page;
-import com.xcompwiz.mystcraft.symbol.SymbolManager;
-import com.xcompwiz.mystcraft.treasure.WeightProviderSymbolItem;
-import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
-import com.xcompwiz.mystcraft.villager.VillagerTradeSystem;
 
 public class InventoryVillager {
 	private static final long	step_size	= 12000;

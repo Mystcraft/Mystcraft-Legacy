@@ -2,12 +2,12 @@ package com.xcompwiz.mystcraft.effects;
 
 import java.util.List;
 
+import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
+
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-
-import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
 public class EffectScorched implements IEnvironmentalEffect {
 	int	level;

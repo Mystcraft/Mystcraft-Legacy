@@ -5,16 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.command.ICommandSender;
-import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.World;
-import net.minecraft.world.storage.MapStorage;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.event.world.WorldEvent;
-
 import com.mojang.authlib.GameProfile;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAllow;
 import com.xcompwiz.mystcraft.config.MystConfig;
@@ -27,12 +17,20 @@ import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.network.packet.MPacketProfilingState;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
+import net.minecraft.world.storage.MapStorage;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
 
 public class InstabilityDataCalculator {
 

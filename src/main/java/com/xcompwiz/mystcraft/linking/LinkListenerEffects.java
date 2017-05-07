@@ -1,10 +1,5 @@
 package com.xcompwiz.mystcraft.linking;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.network.Packet;
-import net.minecraft.server.MinecraftServer;
-
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventEnd;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventStart;
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
@@ -13,8 +8,12 @@ import com.xcompwiz.mystcraft.data.Sounds;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
 import com.xcompwiz.mystcraft.network.packet.MPacketParticles;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.network.Packet;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class LinkListenerEffects {
 

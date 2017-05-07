@@ -1,14 +1,14 @@
 package com.xcompwiz.mystcraft.symbol.symbols;
 
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.ColorizerFoliage;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.ColorizerFoliage;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 
 public class SymbolColorFoliageNatural extends SymbolBase {
 

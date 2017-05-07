@@ -2,12 +2,12 @@ package com.xcompwiz.mystcraft.instability.decay;
 
 import java.util.Random;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.entity.EntityFallingBlock;
 import com.xcompwiz.mystcraft.world.WorldInfoUtils;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.world.World;
 
 public class DecayHandlerBlack extends DecayHandler {
 

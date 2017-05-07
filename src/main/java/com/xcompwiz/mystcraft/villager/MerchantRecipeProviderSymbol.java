@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.item.ItemStack;
-import net.minecraft.village.MerchantRecipe;
-
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
+
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.item.ItemStack;
+import net.minecraft.village.MerchantRecipe;
 
 public class MerchantRecipeProviderSymbol implements IMerchantRecipeProvider {
 

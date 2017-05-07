@@ -12,6 +12,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Semaphore;
 
+import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
+import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugValueCallback;
+import com.xcompwiz.mystcraft.debug.DebugUtils;
+import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
+import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
@@ -20,12 +26,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-
-import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
-import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugValueCallback;
-import com.xcompwiz.mystcraft.debug.DebugUtils;
-import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
-import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 
 public class ChunkProfiler extends WorldSavedData {
 	public static final String	ID			= "MystChunkProfile";

@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAlter;
+import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -15,17 +20,12 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
-
-import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAlter;
-import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
-import com.xcompwiz.mystcraft.logging.LoggerUtils;
 
 public class LinkController {
 

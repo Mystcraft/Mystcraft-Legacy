@@ -3,17 +3,15 @@ package com.xcompwiz.mystcraft.instability.decay;
 import java.util.HashMap;
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.data.ModBlocks;
+import com.xcompwiz.mystcraft.world.WorldInfoUtils;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.data.ModBlocks;
-import com.xcompwiz.mystcraft.world.WorldInfoUtils;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class DecayHandler {
 	public static final int							BLACK		= 0;

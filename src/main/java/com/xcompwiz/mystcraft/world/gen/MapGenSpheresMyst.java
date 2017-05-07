@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.world.gen;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class MapGenSpheresMyst extends MapGenAdvanced {

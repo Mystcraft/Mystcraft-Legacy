@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import net.minecraft.entity.monster.EntityWitch;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.StructureStart;
 

@@ -1,11 +1,12 @@
 package com.xcompwiz.mystcraft.nbt;
 
-import io.netty.buffer.ByteBuf;
-
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
+import com.xcompwiz.mystcraft.item.ItemStackUtils;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
@@ -19,8 +20,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
-
-import com.xcompwiz.mystcraft.item.ItemStackUtils;
 
 public final class NBTUtils {
 	public static Number readNumber(NBTBase tag) {

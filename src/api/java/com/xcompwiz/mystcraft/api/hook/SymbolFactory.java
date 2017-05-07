@@ -1,10 +1,10 @@
 package com.xcompwiz.mystcraft.api.hook;
 
-import net.minecraft.block.Block;
-
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+
+import net.minecraft.block.Block;
 
 /**
  * Provides methods for generating boilerplate {@link IAgeSymbol}s. These methods do not register the symbol directly. Use the {@link SymbolAPI} for that. The

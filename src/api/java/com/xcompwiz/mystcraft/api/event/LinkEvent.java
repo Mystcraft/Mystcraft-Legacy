@@ -1,13 +1,11 @@
 package com.xcompwiz.mystcraft.api.event;
 
+import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
-
-import cpw.mods.fml.common.eventhandler.Cancelable;
-import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
 /**
  * Mystcraft link (teleport) events. These events are all fired server-side only. Client-side functionality should be handled by listening on the server side

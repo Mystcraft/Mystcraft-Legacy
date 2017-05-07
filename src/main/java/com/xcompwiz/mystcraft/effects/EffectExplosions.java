@@ -2,11 +2,11 @@ package com.xcompwiz.mystcraft.effects;
 
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-
-import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
 public class EffectExplosions implements IEnvironmentalEffect {
 

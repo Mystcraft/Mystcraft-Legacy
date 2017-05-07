@@ -2,12 +2,12 @@ package com.xcompwiz.mystcraft.api.impl.symbol;
 
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.api.hook.SymbolValuesAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+
+import net.minecraft.item.ItemStack;
 
 public class SymbolValuesAPIWrapper extends APIWrapper implements SymbolValuesAPI {
 

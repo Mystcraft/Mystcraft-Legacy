@@ -1,18 +1,16 @@
 package com.xcompwiz.mystcraft.network.packet;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.ChunkPosition;
 
 import com.xcompwiz.mystcraft.explosion.ExplosionAdvanced;
 import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffect;
 
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.ChunkPosition;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 public class MPacketExplosion extends PacketBase {
 

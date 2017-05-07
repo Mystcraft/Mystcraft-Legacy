@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.page.Page;
+
+import net.minecraft.item.ItemStack;
 
 public class SymbolRemappings {
 

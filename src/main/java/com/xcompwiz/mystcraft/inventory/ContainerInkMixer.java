@@ -7,6 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.xcompwiz.mystcraft.api.impl.InternalAPI;
+import com.xcompwiz.mystcraft.api.util.ColorGradient;
+import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
+import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
+import com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,12 +23,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
-
-import com.xcompwiz.mystcraft.api.impl.InternalAPI;
-import com.xcompwiz.mystcraft.api.util.ColorGradient;
-import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
-import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
-import com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer;
 
 public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandler {
 	public static class Messages {

@@ -3,13 +3,13 @@ package com.xcompwiz.mystcraft.world.profiling;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.xcompwiz.mystcraft.MystcraftFirstRun;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiOptionButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
-
-import com.xcompwiz.mystcraft.MystcraftFirstRun;
 
 public class GuiMystcraftProfiling extends GuiScreen implements IMystcraftProfilingCallback {
 

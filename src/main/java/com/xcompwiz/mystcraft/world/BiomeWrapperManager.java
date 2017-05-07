@@ -2,10 +2,10 @@ package com.xcompwiz.mystcraft.world;
 
 import java.util.HashMap;
 
+import com.xcompwiz.mystcraft.world.biome.BiomeWrapperMyst;
+
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
-
-import com.xcompwiz.mystcraft.world.biome.BiomeWrapperMyst;
 
 public class BiomeWrapperManager {
 

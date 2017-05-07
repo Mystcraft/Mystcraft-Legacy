@@ -10,10 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
 import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
@@ -30,6 +26,10 @@ import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField.IGuiTextPro
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.page.SortingUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPagesProvider, IGuiOnClickHandler, IGuiStateProvider, IGuiTextProvider, IGuiOnTextChange {
 	private Minecraft				mc;

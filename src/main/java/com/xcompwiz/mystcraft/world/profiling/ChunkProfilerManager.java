@@ -4,11 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-import net.minecraft.command.ICommandSender;
-import net.minecraft.world.chunk.Chunk;
-
 import com.xcompwiz.mystcraft.debug.DebugUtils;
 import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
+
+import net.minecraft.command.ICommandSender;
+import net.minecraft.world.chunk.Chunk;
 
 public class ChunkProfilerManager extends Thread {
 

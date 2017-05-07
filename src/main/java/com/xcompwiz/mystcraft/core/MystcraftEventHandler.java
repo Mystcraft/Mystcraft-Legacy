@@ -1,5 +1,14 @@
 package com.xcompwiz.mystcraft.core;
 
+import com.xcompwiz.mystcraft.data.ModBlocks;
+import com.xcompwiz.mystcraft.data.ModFluids;
+import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
+import com.xcompwiz.mystcraft.debug.DebugUtils;
+import com.xcompwiz.mystcraft.effects.EffectCrumble;
+import com.xcompwiz.mystcraft.entity.EntityUtils;
+import com.xcompwiz.mystcraft.villager.VillagerTradeSystem;
+import com.xcompwiz.mystcraft.world.WorldProviderMyst;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
@@ -13,23 +22,10 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
-
-import com.xcompwiz.mystcraft.data.ModBlocks;
-import com.xcompwiz.mystcraft.data.ModFluids;
-import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
-import com.xcompwiz.mystcraft.debug.DebugUtils;
-import com.xcompwiz.mystcraft.effects.EffectCrumble;
-import com.xcompwiz.mystcraft.entity.EntityUtils;
-import com.xcompwiz.mystcraft.villager.VillagerTradeSystem;
-import com.xcompwiz.mystcraft.world.WorldProviderMyst;
-
-import cpw.mods.fml.common.eventhandler.Event;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class MystcraftEventHandler {
 

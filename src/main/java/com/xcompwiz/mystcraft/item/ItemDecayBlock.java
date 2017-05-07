@@ -1,14 +1,12 @@
 package com.xcompwiz.mystcraft.item;
 
+import com.xcompwiz.mystcraft.instability.decay.DecayHandler;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-
-import com.xcompwiz.mystcraft.instability.decay.DecayHandler;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDecayBlock extends ItemBlock {
 	/** Instance of the Blocks. */

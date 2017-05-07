@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.minecraftforge.common.config.Configuration;
-
 import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
+
+import net.minecraftforge.common.config.Configuration;
 
 public class InstabilityManager {
 	private static HashMap<String, IInstabilityProvider>	providers		= new HashMap<String, IInstabilityProvider>();

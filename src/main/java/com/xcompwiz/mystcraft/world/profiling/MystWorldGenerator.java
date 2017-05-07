@@ -2,17 +2,16 @@ package com.xcompwiz.mystcraft.world.profiling;
 
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.world.AgeController;
+import com.xcompwiz.mystcraft.world.WorldProviderMyst;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-
-import com.xcompwiz.mystcraft.world.AgeController;
-import com.xcompwiz.mystcraft.world.WorldProviderMyst;
-
-import cpw.mods.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class MystWorldGenerator implements IWorldGenerator {
 

@@ -6,14 +6,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
+import com.xcompwiz.mystcraft.data.ModBlocks;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.data.ModBlocks;
 
 public final class PortalUtils {
 

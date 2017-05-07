@@ -1,8 +1,8 @@
 package com.xcompwiz.mystcraft.inventory;
 
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
+
+import net.minecraft.item.ItemStack;
 
 public class BinderPageReceiver implements ITargetInventory {
 

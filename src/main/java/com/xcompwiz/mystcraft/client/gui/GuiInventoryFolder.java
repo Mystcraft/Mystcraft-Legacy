@@ -2,11 +2,6 @@ package com.xcompwiz.mystcraft.client.gui;
 
 import java.util.Arrays;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
@@ -20,8 +15,11 @@ import com.xcompwiz.mystcraft.inventory.ContainerFolder;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryFolder extends GuiContainerElements {

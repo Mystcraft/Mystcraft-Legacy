@@ -1,15 +1,14 @@
 package com.xcompwiz.mystcraft.core;
 
+import com.xcompwiz.mystcraft.error.MystcraftStartupChecker;
+import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
-
-import com.xcompwiz.mystcraft.error.MystcraftStartupChecker;
-import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
-
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class MystcraftCommonProxy {
 	public Entity getEntityByID(World worldObj, int id) {

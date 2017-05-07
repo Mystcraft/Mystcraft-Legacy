@@ -3,14 +3,14 @@ package com.xcompwiz.mystcraft.api.impl.linking;
 import java.util.Collection;
 import java.util.Map;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class LinkPropertyAPIWrapper extends APIWrapper implements LinkPropertyAPI {
 

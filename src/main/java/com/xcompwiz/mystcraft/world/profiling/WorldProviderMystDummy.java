@@ -4,6 +4,12 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
+import com.xcompwiz.mystcraft.world.AgeController;
+import com.xcompwiz.mystcraft.world.WorldProviderMyst;
+import com.xcompwiz.mystcraft.world.agedata.AgeData;
+
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -14,14 +20,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.gen.ChunkProviderServer;
-
-import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
-import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
-import com.xcompwiz.mystcraft.world.AgeController;
-import com.xcompwiz.mystcraft.world.WorldProviderMyst;
-import com.xcompwiz.mystcraft.world.agedata.AgeData;
-
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class WorldProviderMystDummy extends WorldProviderMyst {
 

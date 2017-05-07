@@ -1,9 +1,9 @@
 package com.xcompwiz.mystcraft.integration.lookingglass;
 
-import net.minecraft.util.ChunkCoordinates;
-
 import com.xcompwiz.lookingglass.api.IWorldViewAPI;
 import com.xcompwiz.lookingglass.api.view.IWorldView;
+
+import net.minecraft.util.ChunkCoordinates;
 
 @SuppressWarnings("deprecation")
 public class LookingGlassWrapper1 implements ILookingGlassWrapper {

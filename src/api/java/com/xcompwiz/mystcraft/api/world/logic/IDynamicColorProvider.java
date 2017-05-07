@@ -1,9 +1,9 @@
 package com.xcompwiz.mystcraft.api.world.logic;
 
+import com.xcompwiz.mystcraft.api.util.Color;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.world.biome.BiomeGenBase;
-
-import com.xcompwiz.mystcraft.api.util.Color;
 
 public interface IDynamicColorProvider {
 	public final static String	CLOUD	= "cloud";

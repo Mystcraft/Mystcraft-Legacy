@@ -1,7 +1,5 @@
 package com.xcompwiz.mystcraft.api.world;
 
-import net.minecraft.world.biome.WorldChunkManager;
-
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.api.world.logic.ICelestial;
@@ -17,6 +15,8 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainFeatureLocator;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
 import com.xcompwiz.mystcraft.api.world.logic.Modifier;
+
+import net.minecraft.world.biome.WorldChunkManager;
 
 /**
  * Interface to the controller system initialized along with an age that controls what symbol mechanics are added to the age. Getting values from here is

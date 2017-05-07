@@ -1,16 +1,14 @@
 package com.xcompwiz.mystcraft.block;
 
+import com.xcompwiz.mystcraft.portal.PortalUtils;
+import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.portal.PortalUtils;
-import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCrystal extends Block {
 

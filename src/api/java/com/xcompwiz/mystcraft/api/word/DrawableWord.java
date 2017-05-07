@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.util.ResourceLocation;
-
 import com.xcompwiz.mystcraft.api.hook.WordAPI;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * This is the "word" class for the Narayan Poems. You can use this class to do very advanced words, but generally it should be sufficient to use

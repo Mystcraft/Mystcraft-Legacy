@@ -1,10 +1,5 @@
 package com.xcompwiz.mystcraft.data;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemBlock;
-
 import com.xcompwiz.mystcraft.api.MystObjects.Blocks;
 import com.xcompwiz.mystcraft.block.BlockBookBinder;
 import com.xcompwiz.mystcraft.block.BlockBookReceptacle;
@@ -23,7 +18,11 @@ import com.xcompwiz.mystcraft.instability.decay.DecayHandler;
 import com.xcompwiz.mystcraft.item.ItemBlockFluid;
 import com.xcompwiz.mystcraft.item.ItemDecayBlock;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ModBlocks {
 	public static Block	inkmixer;

@@ -2,6 +2,8 @@ package com.xcompwiz.mystcraft.effects;
 
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockStaticLiquid;
@@ -9,8 +11,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.feature.WorldGenLakes;
-
-import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
 public class EffectErosion implements IEnvironmentalEffect {
 

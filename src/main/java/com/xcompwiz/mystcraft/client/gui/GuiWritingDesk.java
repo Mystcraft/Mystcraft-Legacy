@@ -3,11 +3,6 @@ package com.xcompwiz.mystcraft.client.gui;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
@@ -38,6 +33,11 @@ import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GuiWritingDesk extends GuiContainerElements {
 

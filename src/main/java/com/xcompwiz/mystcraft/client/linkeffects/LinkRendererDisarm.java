@@ -3,17 +3,15 @@ package com.xcompwiz.mystcraft.client.linkeffects;
 import java.util.ArrayList;
 import java.util.Random;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class LinkRendererDisarm implements ILinkPanelEffect {

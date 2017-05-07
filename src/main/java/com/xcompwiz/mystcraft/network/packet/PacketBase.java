@@ -1,13 +1,12 @@
 package com.xcompwiz.mystcraft.network.packet;
 
+import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Vec3;
-
-import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
-
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 public abstract class PacketBase {
 

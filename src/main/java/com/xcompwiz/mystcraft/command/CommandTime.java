@@ -2,14 +2,14 @@ package com.xcompwiz.mystcraft.command;
 
 import java.util.List;
 
+import com.xcompwiz.mystcraft.world.WorldInfoUtils;
+
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
-
-import com.xcompwiz.mystcraft.world.WorldInfoUtils;
 
 public class CommandTime extends CommandBaseAdv {
 

@@ -1,11 +1,10 @@
 package com.xcompwiz.mystcraft.linking;
 
-import net.minecraft.entity.player.EntityPlayer;
-
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventEnd;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class LinkListenerForgeServer {
 

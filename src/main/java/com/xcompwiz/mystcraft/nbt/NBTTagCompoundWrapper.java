@@ -1,8 +1,8 @@
 package com.xcompwiz.mystcraft.nbt;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.xcompwiz.mystcraft.api.world.storage.StorageObject;
+
+import net.minecraft.nbt.NBTTagCompound;
 
 public class NBTTagCompoundWrapper implements StorageObject {
 

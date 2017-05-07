@@ -2,10 +2,10 @@ package com.xcompwiz.mystcraft.api.hook;
 
 import java.util.Collection;
 
-import net.minecraft.item.ItemStack;
-
 import com.google.common.annotations.Beta;
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
+
+import net.minecraft.item.ItemStack;
 
 /**
  * Provides methods for accessing and setting information in pages. The implementation of this is provided by {@link APIInstanceProvider}. Look at the {@link ItemFactory} for

@@ -2,6 +2,9 @@ package com.xcompwiz.mystcraft.item;
 
 import java.util.List;
 
+import com.xcompwiz.mystcraft.block.BlockWritingDesk;
+import com.xcompwiz.mystcraft.data.ModBlocks;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -10,14 +13,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.block.BlockWritingDesk;
-import com.xcompwiz.mystcraft.data.ModBlocks;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemWritingDesk extends Item {
 	private IIcon	icontop;

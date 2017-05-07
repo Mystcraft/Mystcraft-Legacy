@@ -1,10 +1,10 @@
 package com.xcompwiz.mystcraft.client.gui.element;
 
-import net.minecraft.client.renderer.Tessellator;
-
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
+
+import net.minecraft.client.renderer.Tessellator;
 
 public class GuiElementPanel extends GuiElement {
 

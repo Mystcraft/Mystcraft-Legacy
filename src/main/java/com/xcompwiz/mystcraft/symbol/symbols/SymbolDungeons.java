@@ -2,12 +2,12 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import java.util.Random;
 
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenDungeons;
-
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+
+import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenDungeons;
 
 public class SymbolDungeons extends SymbolBase {
 

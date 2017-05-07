@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.data.InkEffects;
+import com.xcompwiz.mystcraft.page.Page;
+
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
-
-import com.xcompwiz.mystcraft.data.InkEffects;
-import com.xcompwiz.mystcraft.page.Page;
 
 public class MerchantRecipeProviderLinkpanel implements IMerchantRecipeProvider {
 

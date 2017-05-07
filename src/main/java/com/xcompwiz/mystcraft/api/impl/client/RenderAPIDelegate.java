@@ -9,9 +9,8 @@ import com.xcompwiz.mystcraft.client.render.DniColorRenderer;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 import com.xcompwiz.util.VectorPool;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RenderAPIDelegate {
 

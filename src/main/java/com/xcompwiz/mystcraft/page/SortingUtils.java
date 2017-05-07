@@ -2,11 +2,11 @@ package com.xcompwiz.mystcraft.page;
 
 import java.util.Comparator;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * Provides helper methods and classes for sorting items, pages, and symbols

@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.data.ModItems;
@@ -16,6 +14,8 @@ import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.page.SortingUtils.ComparatorSymbolAlphabetical;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
+
+import net.minecraft.item.ItemStack;
 
 public class ItemFactoryImpl {
 

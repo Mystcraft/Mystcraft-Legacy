@@ -3,11 +3,6 @@ package com.xcompwiz.mystcraft.client.gui;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementIcon;
@@ -25,6 +20,11 @@ import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 public class GuiBookBinder extends GuiContainerElements {
 	private static final List<String>	panel_tooltip	= Arrays.asList("Missing Link Panel", "Add a link panel as the first page of the book.");	;

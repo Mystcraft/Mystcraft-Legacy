@@ -3,8 +3,7 @@ package com.xcompwiz.mystcraft.api.hook;
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 import com.xcompwiz.mystcraft.api.util.Color;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Exposes functions for rendering Mystcraft elements, such as symbols, words, and colors

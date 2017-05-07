@@ -1,9 +1,5 @@
 package com.xcompwiz.mystcraft.client.render;
 
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.IItemRenderer;
-
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
@@ -12,7 +8,10 @@ import com.xcompwiz.mystcraft.data.Assets.GUIs;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
-import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class ItemRendererPage implements IItemRenderer {
 	final float	held_width			= 1.0F;

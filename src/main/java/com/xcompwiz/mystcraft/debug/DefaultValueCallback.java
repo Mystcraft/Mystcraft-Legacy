@@ -1,9 +1,9 @@
 package com.xcompwiz.mystcraft.debug;
 
+import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugValueCallback;
+
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-
-import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugValueCallback;
 
 public abstract class DefaultValueCallback implements DebugValueCallback {
 

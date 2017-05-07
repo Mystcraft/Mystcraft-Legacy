@@ -5,12 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.chunk.Chunk;
-
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
@@ -22,6 +16,12 @@ import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 import com.xcompwiz.mystcraft.world.gen.MapGenAdvanced;
 import com.xcompwiz.mystcraft.world.gen.MapGenFloatingIslands;
 import com.xcompwiz.mystcraft.world.gen.MapGenFloatingIslands.IModifiedHandler;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.Chunk;
 
 public class SymbolFloatingIslands extends SymbolBase {
 

@@ -8,14 +8,14 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
+import com.xcompwiz.mystcraft.api.util.Color;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
-
-import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
-import com.xcompwiz.mystcraft.api.util.Color;
 
 public class InkEffects {
 

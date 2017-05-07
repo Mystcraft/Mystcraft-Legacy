@@ -2,14 +2,14 @@ package com.xcompwiz.mystcraft.effects;
 
 import java.util.Random;
 
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
-
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.entity.EntityLightningBoltAdv;
 import com.xcompwiz.mystcraft.network.packet.MPacketSpawnLightningBolt;
+
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 
 public class EffectLightning implements IEnvironmentalEffect {
 

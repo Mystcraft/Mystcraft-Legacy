@@ -2,12 +2,12 @@ package com.xcompwiz.mystcraft.effects;
 
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-
-import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
 public class EffectExtraTicks implements IEnvironmentalEffect {
 

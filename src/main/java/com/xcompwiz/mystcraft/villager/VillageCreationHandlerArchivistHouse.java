@@ -3,13 +3,12 @@ package com.xcompwiz.mystcraft.villager;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.gen.structure.StructureVillagePieces.PieceWeight;
-import net.minecraft.world.gen.structure.StructureVillagePieces.Start;
-
 import com.xcompwiz.mystcraft.world.gen.structure.ComponentVillageArchivistHouse;
 
-import cpw.mods.fml.common.registry.VillagerRegistry.IVillageCreationHandler;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.gen.structure.StructureVillagePieces.PieceWeight;
+import net.minecraft.world.gen.structure.StructureVillagePieces.Start;
+import net.minecraftforge.fml.common.registry.VillagerRegistry.IVillageCreationHandler;
 
 public class VillageCreationHandlerArchivistHouse implements IVillageCreationHandler {
 

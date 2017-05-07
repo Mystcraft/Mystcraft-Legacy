@@ -2,11 +2,11 @@ package com.xcompwiz.mystcraft.world.gen.feature;
 
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.data.ModBlocks;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-
-import com.xcompwiz.mystcraft.data.ModBlocks;
 
 public class WorldGenMystStarFissure extends WorldGenerator {
 

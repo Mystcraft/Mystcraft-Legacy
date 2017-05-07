@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraftforge.common.DimensionManager;
-
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
+
+import net.minecraftforge.common.DimensionManager;
 
 public class FileUtils {
 

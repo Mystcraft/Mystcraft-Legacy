@@ -1,22 +1,8 @@
 package com.xcompwiz.mystcraft.entity;
 
-import io.netty.buffer.ByteBuf;
+import static net.minecraft.entity.Entity.renderDistanceWeight;
 
 import java.util.Iterator;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 
 import com.xcompwiz.mystcraft.api.event.MeteorEvent.MetorExplosion;
 import com.xcompwiz.mystcraft.api.event.MeteorEvent.MetorImpact;
@@ -30,10 +16,23 @@ import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffectPlaceOres;
 import com.xcompwiz.mystcraft.network.packet.MPacketExplosion;
 import com.xcompwiz.mystcraft.network.packet.MPacketParticles;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 

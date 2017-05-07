@@ -2,6 +2,9 @@ package com.xcompwiz.mystcraft.world.storage;
 
 import java.util.Map;
 
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
+import com.xcompwiz.mystcraft.world.WorldProviderMyst;
+
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.GameRules;
@@ -9,9 +12,6 @@ import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.storage.DerivedWorldInfo;
 import net.minecraft.world.storage.WorldInfo;
-
-import com.xcompwiz.mystcraft.logging.LoggerUtils;
-import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 public class WorldInfoMyst extends DerivedWorldInfo {
 

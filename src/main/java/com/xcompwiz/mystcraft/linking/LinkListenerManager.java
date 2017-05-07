@@ -1,9 +1,5 @@
 package com.xcompwiz.mystcraft.linking;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAllow;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventEnd;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventEnterWorld;
@@ -11,7 +7,9 @@ import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventExitWorld;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventStart;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
-import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraft.entity.Entity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 public class LinkListenerManager {
 	public static boolean isLinkPermitted(World world, Entity entity, ILinkInfo info) {

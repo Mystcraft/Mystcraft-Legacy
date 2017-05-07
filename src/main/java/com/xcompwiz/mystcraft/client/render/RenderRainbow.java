@@ -1,8 +1,8 @@
 package com.xcompwiz.mystcraft.client.render;
 
-import net.minecraft.client.renderer.Tessellator;
-
 import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.renderer.Tessellator;
 
 // A huge thank you to Briman0094 for writing this code!
 // Minor edits by XCompWiz

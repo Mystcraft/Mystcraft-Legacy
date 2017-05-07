@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.item;
 
+import com.xcompwiz.mystcraft.client.render.IMaskRender;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.Item;
@@ -8,11 +10,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import com.xcompwiz.mystcraft.client.render.IMaskRender;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemInkVial extends Item implements IMaskRender {
 

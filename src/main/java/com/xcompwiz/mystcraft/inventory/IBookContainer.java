@@ -2,9 +2,9 @@ package com.xcompwiz.mystcraft.inventory;
 
 import java.util.Collection;
 
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
+
+import net.minecraft.item.ItemStack;
 
 // XXX: Refactor this into helpers and multiple interfaces
 // Keep getBook

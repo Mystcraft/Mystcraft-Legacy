@@ -3,6 +3,12 @@ package com.xcompwiz.mystcraft.world.gen.structure;
 import java.util.List;
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.MystObjects;
+import com.xcompwiz.mystcraft.block.BlockWritingDesk;
+import com.xcompwiz.mystcraft.data.ModBlocks;
+import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -12,12 +18,6 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraftforge.common.ChestGenHooks;
-
-import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.api.MystObjects;
-import com.xcompwiz.mystcraft.block.BlockWritingDesk;
-import com.xcompwiz.mystcraft.data.ModBlocks;
-import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 
 public class ComponentVillageArchivistHouse extends StructureVillagePieces.Village {
 	private int						averageGroundLevel	= -1;										// Used to shift the location of the bounding box on gen

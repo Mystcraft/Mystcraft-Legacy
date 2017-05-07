@@ -2,19 +2,6 @@ package com.xcompwiz.mystcraft.linking;
 
 import java.util.Random;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
-
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAllow;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAlter;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventEnd;
@@ -28,8 +15,20 @@ import com.xcompwiz.mystcraft.entity.EntityLinkbook;
 import com.xcompwiz.mystcraft.item.ItemLinkbook;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class LinkListenerBasic {
 

@@ -1,8 +1,5 @@
 package com.xcompwiz.mystcraft.client.gui;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
@@ -14,6 +11,9 @@ import com.xcompwiz.mystcraft.inventory.ContainerBook;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookRotateable;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 

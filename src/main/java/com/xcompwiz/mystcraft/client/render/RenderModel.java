@@ -1,13 +1,13 @@
 package com.xcompwiz.mystcraft.client.render;
 
+import org.lwjgl.opengl.GL11;
+
+import com.xcompwiz.mystcraft.tileentity.ITileEntityRotateable;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
-import com.xcompwiz.mystcraft.tileentity.ITileEntityRotateable;
 
 public class RenderModel extends TileEntitySpecialRenderer {
 

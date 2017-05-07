@@ -3,13 +3,13 @@ package com.xcompwiz.mystcraft.instability.bonus;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minecraft.command.ICommandSender;
-import net.minecraft.world.World;
-
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
 import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
 import com.xcompwiz.mystcraft.world.AgeController;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
+
+import net.minecraft.command.ICommandSender;
+import net.minecraft.world.World;
 
 public class InstabilityBonusManager {
 

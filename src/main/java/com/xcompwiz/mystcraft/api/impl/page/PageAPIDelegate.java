@@ -2,9 +2,9 @@ package com.xcompwiz.mystcraft.api.impl.page;
 
 import java.util.Collection;
 
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.page.Page;
+
+import net.minecraft.item.ItemStack;
 
 public class PageAPIDelegate {
 

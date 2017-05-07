@@ -1,18 +1,18 @@
 package com.xcompwiz.mystcraft.client.render;
 
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.model.ModelBook;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.data.Assets.Entities;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
+
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.model.ModelBook;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 
 public class RenderLinkbook extends Render {
 	private ModelBook	bookmodel;

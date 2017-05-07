@@ -1,9 +1,5 @@
 package com.xcompwiz.mystcraft.data;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.biome.BiomeGenBase;
-
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.grammar.GrammarData;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
@@ -13,7 +9,6 @@ import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
-import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolAngle;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolClear;
@@ -96,6 +91,10 @@ import com.xcompwiz.mystcraft.symbol.symbols.SymbolWeatherSlow;
 import com.xcompwiz.mystcraft.symbol.symbols.SymbolWeatherSnow;
 import com.xcompwiz.mystcraft.symbol.symbols.SymbolWeatherStorm;
 import com.xcompwiz.util.CollectionUtils;
+
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.biome.BiomeGenBase;
 
 public class ModSymbols {
 

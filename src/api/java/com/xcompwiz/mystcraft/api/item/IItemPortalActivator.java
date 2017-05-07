@@ -3,8 +3,7 @@ package com.xcompwiz.mystcraft.api.item;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * This interface can be applied to an Item data class to create items which can be used to activate Mystcraft portals. The processing of the teleport is up to

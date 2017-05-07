@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.ChunkPosition;
-import cpw.mods.fml.common.eventhandler.Event;
 
 /**
  * The base event for the meteor. Used as the abstract parent class for all of the meteor events. These events are sent over the Forge event bus and are

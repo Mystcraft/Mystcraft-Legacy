@@ -2,11 +2,11 @@ package com.xcompwiz.mystcraft.explosion.effects;
 
 import java.util.Random;
 
-import net.minecraft.util.MathHelper;
+import com.xcompwiz.mystcraft.explosion.ExplosionAdvanced;
+
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.explosion.ExplosionAdvanced;
 
 public class ExplosionEffectBasic extends ExplosionEffect {
 

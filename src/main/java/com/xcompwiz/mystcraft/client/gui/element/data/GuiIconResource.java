@@ -1,9 +1,9 @@
 package com.xcompwiz.mystcraft.client.gui.element.data;
 
+import com.xcompwiz.mystcraft.client.gui.GuiUtils;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
-
-import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 
 public class GuiIconResource implements IGuiIcon {
 	private ResourceLocation	resource;

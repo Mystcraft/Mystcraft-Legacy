@@ -2,19 +2,19 @@ package com.xcompwiz.mystcraft.world.agedata;
 
 import java.util.HashSet;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.util.Constants;
-
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderManager.AgeDataLoader;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.util.Constants;
 
 public class AgeDataLegacy extends AgeDataLoader {
 	public static class AgeDataData extends com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderV4.AgeDataData {}

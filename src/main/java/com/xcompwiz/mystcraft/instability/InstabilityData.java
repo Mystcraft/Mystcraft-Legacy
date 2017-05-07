@@ -1,8 +1,5 @@
 package com.xcompwiz.mystcraft.instability;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.potion.Potion;
-
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 import com.xcompwiz.mystcraft.data.ModBlocks;
@@ -19,6 +16,9 @@ import com.xcompwiz.mystcraft.instability.providers.ProviderExplosion;
 import com.xcompwiz.mystcraft.instability.providers.ProviderLightning;
 import com.xcompwiz.mystcraft.instability.providers.ProviderMeteor;
 import com.xcompwiz.mystcraft.instability.providers.ProviderScorched;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.potion.Potion;
 
 public class InstabilityData {
 	private static class deckcost {

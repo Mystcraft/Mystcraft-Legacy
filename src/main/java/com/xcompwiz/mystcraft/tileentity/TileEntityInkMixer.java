@@ -6,6 +6,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.data.InkEffects;
+import com.xcompwiz.mystcraft.data.ModLinkEffects;
+import com.xcompwiz.mystcraft.fluids.FluidUtils;
+import com.xcompwiz.mystcraft.inventory.IItemBuilder;
+import com.xcompwiz.mystcraft.item.ItemPage;
+import com.xcompwiz.mystcraft.nbt.NBTUtils;
+import com.xcompwiz.mystcraft.page.Page;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
@@ -15,15 +24,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.data.InkEffects;
-import com.xcompwiz.mystcraft.data.ModLinkEffects;
-import com.xcompwiz.mystcraft.fluids.FluidUtils;
-import com.xcompwiz.mystcraft.inventory.IItemBuilder;
-import com.xcompwiz.mystcraft.item.ItemPage;
-import com.xcompwiz.mystcraft.nbt.NBTUtils;
-import com.xcompwiz.mystcraft.page.Page;
 
 public class TileEntityInkMixer extends TileEntityRotatable implements IItemBuilder, ISidedInventory {
 

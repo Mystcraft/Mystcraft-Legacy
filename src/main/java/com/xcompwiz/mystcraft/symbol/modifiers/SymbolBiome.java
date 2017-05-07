@@ -3,13 +3,13 @@ package com.xcompwiz.mystcraft.symbol.modifiers;
 import java.util.ArrayList;
 import java.util.Random;
 
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.biome.BiomeGenBase;
-
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.biome.BiomeGenBase;
 
 public class SymbolBiome extends SymbolBase {
 	public static ArrayList<BiomeGenBase>	selectables	= new ArrayList<BiomeGenBase>();

@@ -11,15 +11,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.WorldSavedData;
-import net.minecraft.world.storage.MapStorage;
-import net.minecraftforge.common.DimensionManager;
-
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.world.storage.StorageObject;
 import com.xcompwiz.mystcraft.data.GrammarRules;
@@ -29,6 +20,15 @@ import com.xcompwiz.mystcraft.nbt.NBTTagCompoundWrapper;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.MapStorage;
+import net.minecraftforge.common.DimensionManager;
 
 // XXX: (AgeData) can we move to this class being server-side, and then having sub-objects which are sent to the clients?
 // Needed things on client-side:

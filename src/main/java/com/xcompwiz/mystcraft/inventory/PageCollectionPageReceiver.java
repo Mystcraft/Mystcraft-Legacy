@@ -1,10 +1,10 @@
 package com.xcompwiz.mystcraft.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
 import com.xcompwiz.mystcraft.data.ModItems;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 public class PageCollectionPageReceiver implements ITargetInventory {
 

@@ -2,13 +2,13 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import java.util.Random;
 
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
-
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGenMystStarFissure;
+
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.World;
 
 public class SymbolStarFissure extends SymbolBase {
 

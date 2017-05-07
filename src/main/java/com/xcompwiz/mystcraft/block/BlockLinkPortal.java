@@ -2,6 +2,10 @@ package com.xcompwiz.mystcraft.block;
 
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
+import com.xcompwiz.mystcraft.portal.PortalUtils;
+import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
@@ -12,17 +16,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
-import com.xcompwiz.mystcraft.portal.PortalUtils;
-import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockLinkPortal extends BlockBreakable {
 	public BlockLinkPortal(int par2) {

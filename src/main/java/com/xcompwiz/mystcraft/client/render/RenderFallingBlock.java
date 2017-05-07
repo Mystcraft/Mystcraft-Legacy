@@ -1,5 +1,9 @@
 package com.xcompwiz.mystcraft.client.render;
 
+import org.lwjgl.opengl.GL11;
+
+import com.xcompwiz.mystcraft.entity.EntityFallingBlock;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.BlockDragonEgg;
@@ -8,12 +12,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
-import com.xcompwiz.mystcraft.entity.EntityFallingBlock;
+import net.minecraft.util.math.MathHelper;
 
 public class RenderFallingBlock extends Render {
 	private RenderBlocks	renderBlocks;

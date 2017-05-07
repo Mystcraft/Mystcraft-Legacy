@@ -2,11 +2,11 @@ package com.xcompwiz.mystcraft.api.impl.page;
 
 import java.util.Collection;
 
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.api.hook.PageAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
+
+import net.minecraft.item.ItemStack;
 
 public class PageAPIWrapper extends APIWrapper implements PageAPI {
 

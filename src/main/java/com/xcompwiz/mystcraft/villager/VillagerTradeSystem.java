@@ -2,10 +2,6 @@ package com.xcompwiz.mystcraft.villager;
 
 import java.util.concurrent.ConcurrentMap;
 
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.entity.player.EntityInteractEvent;
-
 import com.google.common.collect.MapMaker;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.data.ModGUIs;
@@ -13,6 +9,10 @@ import com.xcompwiz.mystcraft.inventory.InventoryVillager;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
+
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.entity.player.EntityInteractEvent;
 
 public class VillagerTradeSystem {
 

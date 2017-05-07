@@ -1,11 +1,5 @@
 package com.xcompwiz.mystcraft.client.gui;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.Fluid;
-
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.util.Color;
@@ -19,6 +13,12 @@ import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer;
 import com.xcompwiz.util.Vector;
 import com.xcompwiz.util.VectorPool;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
 
 public class GuiInkMixer extends GuiContainer {
 

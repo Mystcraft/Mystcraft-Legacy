@@ -2,10 +2,6 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import java.util.Random;
 
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.world.World;
-
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.Mystcraft;
@@ -14,8 +10,10 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.client.render.RenderRainbow;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SymbolDoodadRainbow extends SymbolBase {
 

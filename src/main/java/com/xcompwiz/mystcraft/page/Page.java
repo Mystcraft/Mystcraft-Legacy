@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.xcompwiz.mystcraft.data.InkEffects;
+import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.linking.LinkOptions;
+import com.xcompwiz.mystcraft.nbt.NBTUtils;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
-
-import com.xcompwiz.mystcraft.data.InkEffects;
-import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.linking.LinkOptions;
-import com.xcompwiz.mystcraft.nbt.NBTUtils;
 
 public abstract class Page {
 

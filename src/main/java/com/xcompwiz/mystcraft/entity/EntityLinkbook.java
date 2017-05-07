@@ -1,5 +1,16 @@
 package com.xcompwiz.mystcraft.entity;
 
+import static net.minecraft.entity.Entity.renderDistanceWeight;
+
+import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.data.ModGUIs;
+import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.inventory.InventoryBook;
+import com.xcompwiz.mystcraft.item.ItemLinking;
+import com.xcompwiz.mystcraft.item.ItemStackUtils;
+import com.xcompwiz.mystcraft.linking.LinkOptions;
+import com.xcompwiz.mystcraft.network.IMessageReceiver;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,17 +22,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.data.ModGUIs;
-import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.inventory.InventoryBook;
-import com.xcompwiz.mystcraft.item.ItemLinking;
-import com.xcompwiz.mystcraft.item.ItemStackUtils;
-import com.xcompwiz.mystcraft.linking.LinkOptions;
-import com.xcompwiz.mystcraft.network.IMessageReceiver;
 
 public class EntityLinkbook extends EntityLiving implements IInventory, IMessageReceiver {
 

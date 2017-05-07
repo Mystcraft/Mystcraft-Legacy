@@ -1,12 +1,12 @@
 package com.xcompwiz.mystcraft.command;
 
+import com.xcompwiz.mystcraft.entity.EntityMeteor;
+
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.entity.EntityMeteor;
 
 public class CommandSpawnMeteor extends CommandBaseAdv {
 

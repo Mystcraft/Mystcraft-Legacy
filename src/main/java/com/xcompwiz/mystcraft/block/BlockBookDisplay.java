@@ -1,5 +1,10 @@
 package com.xcompwiz.mystcraft.block;
 
+import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.data.ModGUIs;
+import com.xcompwiz.mystcraft.tileentity.TileEntityBook;
+import com.xcompwiz.mystcraft.tileentity.TileEntityBookRotateable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -9,11 +14,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.data.ModGUIs;
-import com.xcompwiz.mystcraft.tileentity.TileEntityBook;
-import com.xcompwiz.mystcraft.tileentity.TileEntityBookRotateable;
 
 public abstract class BlockBookDisplay extends BlockContainer {
 

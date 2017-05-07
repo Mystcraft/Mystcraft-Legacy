@@ -1,11 +1,11 @@
 package com.xcompwiz.mystcraft.api.impl.symbol;
 
-import net.minecraft.block.Block;
-
 import com.xcompwiz.mystcraft.api.hook.SymbolFactory.CategoryPair;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.data.ModSymbolsModifiers.BlockModifierContainerObject;
+
+import net.minecraft.block.Block;
 
 public class SymbolFactoryImpl {
 

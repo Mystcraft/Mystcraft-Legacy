@@ -1,13 +1,12 @@
 package com.xcompwiz.mystcraft.network.packet;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 //TODO: This packet is antiquated
 public class MPacketActivateItem extends PacketBase {

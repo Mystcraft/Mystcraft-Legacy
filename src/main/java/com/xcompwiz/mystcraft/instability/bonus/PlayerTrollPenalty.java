@@ -1,10 +1,5 @@
 package com.xcompwiz.mystcraft.instability.bonus;
 
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-
 import com.xcompwiz.mystcraft.instability.bonus.EventManager.IOnEntityDeath;
 import com.xcompwiz.mystcraft.instability.bonus.EventManager.IOnPlayerChangedDimension;
 import com.xcompwiz.mystcraft.instability.bonus.EventManager.IOnPlayerLoggedIn;
@@ -12,9 +7,13 @@ import com.xcompwiz.mystcraft.instability.bonus.EventManager.IOnPlayerLoggedOut;
 import com.xcompwiz.mystcraft.instability.bonus.InstabilityBonusManager.IInstabilityBonus;
 import com.xcompwiz.mystcraft.network.NetworkUtils;
 
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 
 public class PlayerTrollPenalty implements IInstabilityBonus, IOnEntityDeath, IOnPlayerChangedDimension, IOnPlayerLoggedIn, IOnPlayerLoggedOut {
 

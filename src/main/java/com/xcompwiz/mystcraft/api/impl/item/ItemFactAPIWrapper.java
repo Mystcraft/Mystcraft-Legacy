@@ -1,10 +1,10 @@
 package com.xcompwiz.mystcraft.api.impl.item;
 
-import net.minecraft.item.ItemStack;
-
 import com.xcompwiz.mystcraft.api.hook.ItemFactory;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
+
+import net.minecraft.item.ItemStack;
 
 public class ItemFactAPIWrapper extends APIWrapper implements ItemFactory {
 

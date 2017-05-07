@@ -1,8 +1,7 @@
 package com.xcompwiz.mystcraft.tileentity;
 
 import net.minecraft.tileentity.TileEntity;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityStarFissure extends TileEntity {
 

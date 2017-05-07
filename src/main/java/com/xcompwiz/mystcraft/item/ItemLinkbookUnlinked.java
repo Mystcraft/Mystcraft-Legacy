@@ -2,18 +2,16 @@ package com.xcompwiz.mystcraft.item;
 
 import java.util.List;
 
+import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.page.Page;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-
-import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.page.Page;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemLinkbookUnlinked extends Item {
 
