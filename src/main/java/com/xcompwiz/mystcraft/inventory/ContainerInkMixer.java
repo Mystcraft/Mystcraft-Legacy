@@ -185,7 +185,7 @@ public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandl
 			if (!tileentity.getHasInk()) return;
 			ItemStack itemstack = player.inventory.getItemStack();
 
-			int amount = itemstack.stackSize;
+			int amount = itemstack.getCount();
 			if (data.getBoolean("Single")) amount = 1;
 
 			player.inventory.setItemStack(this.tileentity.addItems(itemstack, amount));

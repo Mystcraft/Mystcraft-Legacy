@@ -96,7 +96,7 @@ public class InventoryVillager {
 			}
 			return;
 		}
-		if (pageitems[roll] != null && pageitems[roll].stackSize < 5) ++pageitems[roll].stackSize;
+		if (pageitems[roll] != null && pageitems[roll].getCount() < 5) ++pageitems[roll].stackSize;
 		markUpdated();
 	}
 
@@ -123,7 +123,7 @@ public class InventoryVillager {
 		ItemStack original = getShopItem(index);
 		if (original == null) return false;
 		ItemStack clone = original.copy();
-		if (clone.stackSize <= 0) return false;
+		if (clone.getCount() <= 0) return false;
 		clone.stackSize = 1;
 		int price = getShopItemPrice(index);
 		int playerEmeralds = getPlayerEmeralds(inventoryplayer);

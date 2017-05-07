@@ -96,7 +96,7 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 				item.addPage(player, folder, mappeditemstack);
 			}
 			itemstack = folder;
-			itemstack.stackSize = folder.stackSize;
+			itemstack.stackSize = folder.getCount();
 			itemstack.stackTagCompound = folder.stackTagCompound;
 		}
 	}

@@ -16,7 +16,7 @@ public class InventoryFolder {
 //TODO: Refactor me! I'm a mess!
 	public static boolean isItemValid(ItemStack itemstack) {
 		if (itemstack == null) return true;
-		if (itemstack.stackSize != 1) return false;
+		if (itemstack.getCount() != 1) return false;
 		if (itemstack.getItem() == ModItems.page) return true;
 		if (itemstack.getItem() == Items.paper) return true;
 		return false;
@@ -86,7 +86,7 @@ public class InventoryFolder {
 		if (data == null) return page;
 		ItemStack previous = null;
 		previous = removeItem(folder, slot);
-		if (page != null && page.stackSize > 0) {
+		if (page != null && page.getCount() > 0) {
 			data.setTag("" + slot, page.writeToNBT(new NBTTagCompound()));
 		} else {
 			data.removeTag("" + slot);
@@ -117,7 +117,7 @@ public class InventoryFolder {
 				clone.stackSize = 1;
 				data.setTag("" + slot, clone.writeToNBT(new NBTTagCompound()));
 				--page.stackSize;
-				if (page.stackSize == 0) page = null;
+				if (page.getCount() == 0) page = null;
 			}
 			++slot;
 		}

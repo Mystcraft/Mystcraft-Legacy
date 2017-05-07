@@ -62,14 +62,14 @@ public class InventoryBook implements IInventory {
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		if (itemstacks[i] != null) {
-			if (itemstacks[i].stackSize <= j) {
+			if (itemstacks[i].getCount() <= j) {
 				ItemStack itemstack = itemstacks[i];
 				itemstacks[i] = null;
 				owner.setDead();
 				return itemstack;
 			}
 			ItemStack itemstack1 = itemstacks[i].splitStack(j);
-			if (itemstacks[i].stackSize == 0) {
+			if (itemstacks[i].getCount() == 0) {
 				itemstacks[i] = null;
 				owner.setDead();
 			}
@@ -99,7 +99,7 @@ public class InventoryBook implements IInventory {
 			return;
 		}
 		itemstacks[i] = itemstack;
-		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
+		if (itemstack != null && itemstack.getCount() > getInventoryStackLimit()) {
 			itemstack.stackSize = getInventoryStackLimit();
 		}
 	}

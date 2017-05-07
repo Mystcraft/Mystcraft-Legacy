@@ -110,14 +110,14 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 		if (itemstack.stackTagCompound == null) itemstack.stackTagCompound = new NBTTagCompound();
 		Collection<NBTTagCompound> compounds = NBTUtils.readTagCompoundCollection(itemstack.stackTagCompound.getTagList("Collection", Constants.NBT.TAG_COMPOUND), new LinkedList<NBTTagCompound>());
 		NBTTagCompound nbt = new NBTTagCompound();
-		int count = page.stackSize;
+		int count = page.getCount();
 		page.stackSize = 1;
 		page.writeToNBT(nbt);
 		page.stackSize = 0;
-		while (page.stackSize < count && compounds.remove(nbt)) {
+		while (page.getCount() < count && compounds.remove(nbt)) {
 			++page.stackSize;
 		}
-		if (page.stackSize == 0) return null;
+		if (page.getCount() == 0) return null;
 		itemstack.stackTagCompound.setTag("Collection", NBTUtils.writeTagCompoundCollection(new NBTTagList(), compounds));
 		return page;
 	}
@@ -127,7 +127,7 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 		if (itemstack == null) return page;
 		if (page == null) return page;
 		if (page.getItem() instanceof IItemPageCollection) {
-			if (page.stackSize != 1) return page;
+			if (page.getCount() != 1) return page;
 			IItemPageCollection otheritem = (IItemPageCollection) page.getItem();
 			List<ItemStack> pages = otheritem.getItems(player, page);
 			for (ItemStack p : pages) {
@@ -137,7 +137,7 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 			return page;
 		}
 		if (page.getItem() instanceof IItemOrderablePageProvider) {
-			if (page.stackSize != 1) return page;
+			if (page.getCount() != 1) return page;
 			IItemOrderablePageProvider otheritem = (IItemOrderablePageProvider) page.getItem();
 			List<ItemStack> pages = otheritem.getPageList(player, page);
 			for (int i = 0; i < pages.size(); ++i) {
@@ -150,7 +150,7 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 		if (itemstack.stackTagCompound == null) itemstack.stackTagCompound = new NBTTagCompound();
 		Collection<NBTTagCompound> compounds = NBTUtils.readTagCompoundCollection(itemstack.stackTagCompound.getTagList("Collection", Constants.NBT.TAG_COMPOUND), new LinkedList<NBTTagCompound>());
 		NBTTagCompound nbt = new NBTTagCompound();
-		int count = page.stackSize;
+		int count = page.getCount();
 		page.stackSize = 1;
 		for (int i = 0; i < count; ++i) {
 			page.writeToNBT(nbt);

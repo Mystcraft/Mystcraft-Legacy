@@ -327,12 +327,12 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 				break;
 			}
 
-			if (original.stackSize == 0) {
+			if (original.getCount() == 0) {
 				slot.putStack(null);
 			} else {
 				slot.onSlotChanged();
 			}
-			if (original.stackSize != clone.stackSize) {
+			if (original.getCount() != clone.getCount()) {
 				slot.onPickupFromSlot(player, original);
 			} else {
 				return null;

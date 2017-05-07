@@ -51,12 +51,12 @@ public class SlotCollection implements ITargetInventory {
 
 		// Try merging stack
 		if (itemstack.isStackable()) {
-			while (itemstack.stackSize > 0 && (!reverse && slotId < end || reverse && slotId >= begin)) {
+			while (itemstack.getCount() > 0 && (!reverse && slotId < end || reverse && slotId >= begin)) {
 				slot = (Slot) container.inventorySlots.get(slotId);
 				destStack = slot.getStack();
 
 				if (destStack != null && destStack == itemstack && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == destStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, destStack)) {
-					int totalSize = destStack.stackSize + itemstack.stackSize;
+					int totalSize = destStack.getCount() + itemstack.getCount();
 					int maxdestsize = itemstack.getMaxStackSize();
 					if (slot.getSlotStackLimit() < maxdestsize) maxdestsize = slot.getSlotStackLimit();
 
@@ -65,8 +65,8 @@ public class SlotCollection implements ITargetInventory {
 						destStack.stackSize = totalSize;
 						slot.onSlotChanged();
 						success = true;
-					} else if (destStack.stackSize < maxdestsize) {
-						itemstack.stackSize -= maxdestsize - destStack.stackSize;
+					} else if (destStack.getCount() < maxdestsize) {
+						itemstack.stackSize -= maxdestsize - destStack.getCount();
 						destStack.stackSize = maxdestsize;
 						slot.onSlotChanged();
 						success = true;
@@ -82,23 +82,23 @@ public class SlotCollection implements ITargetInventory {
 		}
 
 		// If left overs, put in a free slot
-		if (itemstack.stackSize > 0) {
+		if (itemstack.getCount() > 0) {
 			if (reverse) {
 				slotId = end - 1;
 			} else {
 				slotId = begin;
 			}
 
-			while ((!reverse && slotId < end || reverse && slotId >= begin) && itemstack.stackSize > 0) {
+			while ((!reverse && slotId < end || reverse && slotId >= begin) && itemstack.getCount() > 0) {
 				slot = (Slot) container.inventorySlots.get(slotId);
 				destStack = slot.getStack();
 
 				if (destStack == null && slot.isItemValid(itemstack)) {
 					ItemStack clone = itemstack.copy();
-					if (clone.stackSize > slot.getSlotStackLimit()) clone.stackSize = slot.getSlotStackLimit();
+					if (clone.getCount() > slot.getSlotStackLimit()) clone.stackSize = slot.getSlotStackLimit();
 					slot.putStack(clone);
 					slot.onSlotChanged();
-					itemstack.stackSize -= clone.stackSize;
+					itemstack.stackSize -= clone.getCount();
 					success = true;
 				}
 

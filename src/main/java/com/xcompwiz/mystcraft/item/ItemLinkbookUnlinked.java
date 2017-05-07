@@ -50,7 +50,7 @@ public class ItemLinkbookUnlinked extends Item {
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-		if (world.isRemote || itemstack.stackSize > 1) return itemstack;
+		if (world.isRemote || itemstack.getCount() > 1) return itemstack;
 		ItemStack linkbook = new ItemStack(ModItems.linkbook);
 		((ItemLinkbook) ModItems.linkbook).initialize(world, linkbook, entityplayer);
 		Page.applyLinkPanel(itemstack, linkbook);

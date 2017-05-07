@@ -30,19 +30,19 @@ public class TargetInventory implements ITargetInventory {
 
 		// Try merging stack
 		if (itemstack.isStackable()) {
-			while (itemstack.stackSize > 0 && (!reverse && slotId < end || reverse && slotId >= begin)) {
+			while (itemstack.getCount() > 0 && (!reverse && slotId < end || reverse && slotId >= begin)) {
 				destStack = inventory.getStackInSlot(slotId);
 
 				if (destStack != null && destStack == itemstack && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == destStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, destStack)) {
-					int totalSize = destStack.stackSize + itemstack.stackSize;
+					int totalSize = destStack.getCount() + itemstack.getCount();
 
 					if (totalSize <= itemstack.getMaxStackSize()) {
 						itemstack.stackSize = 0;
 						destStack.stackSize = totalSize;
 						inventory.setInventorySlotContents(slotId, destStack);
 						success = true;
-					} else if (destStack.stackSize < itemstack.getMaxStackSize()) {
-						itemstack.stackSize -= itemstack.getMaxStackSize() - destStack.stackSize;
+					} else if (destStack.getCount() < itemstack.getMaxStackSize()) {
+						itemstack.stackSize -= itemstack.getMaxStackSize() - destStack.getCount();
 						destStack.stackSize = itemstack.getMaxStackSize();
 						inventory.setInventorySlotContents(slotId, destStack);
 						success = true;
@@ -58,7 +58,7 @@ public class TargetInventory implements ITargetInventory {
 		}
 
 		// If left overs, put in a free slot
-		if (itemstack.stackSize > 0) {
+		if (itemstack.getCount() > 0) {
 			if (reverse) {
 				slotId = end - 1;
 			} else {

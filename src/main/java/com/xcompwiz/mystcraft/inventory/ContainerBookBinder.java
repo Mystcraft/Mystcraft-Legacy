@@ -223,7 +223,7 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 					clone.stackSize = 1;
 					if (tileentity.insertPage(clone, index) == null) {
 						stack.stackSize -= 1;
-						if (stack.stackSize <= 0) stack = null;
+						if (stack.getCount() <= 0) stack = null;
 						player.inventory.setItemStack(stack);
 					}
 				} else {

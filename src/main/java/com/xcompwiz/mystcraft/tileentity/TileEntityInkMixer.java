@@ -73,13 +73,13 @@ public class TileEntityInkMixer extends TileEntityRotatable implements IItemBuil
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		if (itemstacks[i] != null) {
-			if (itemstacks[i].stackSize <= j) {
+			if (itemstacks[i].getCount() <= j) {
 				ItemStack itemstack = itemstacks[i];
 				itemstacks[i] = null;
 				return itemstack;
 			}
 			ItemStack itemstack1 = itemstacks[i].splitStack(j);
-			if (itemstacks[i].stackSize == 0) {
+			if (itemstacks[i].getCount() == 0) {
 				itemstacks[i] = null;
 			}
 			return itemstack1;
@@ -90,7 +90,7 @@ public class TileEntityInkMixer extends TileEntityRotatable implements IItemBuil
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		itemstacks[i] = itemstack;
-		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
+		if (itemstack != null && itemstack.getCount() > getInventoryStackLimit()) {
 			itemstack.stackSize = getInventoryStackLimit();
 		}
 	}
@@ -158,7 +158,7 @@ public class TileEntityInkMixer extends TileEntityRotatable implements IItemBuil
 			hasInk = false;
 			ink_probabilities.clear();
 			--(itemstacks[paper].stackSize);
-			if (itemstacks[paper].stackSize <= 0) itemstacks[paper] = null;
+			if (itemstacks[paper].getCount() <= 0) itemstacks[paper] = null;
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			this.markDirty();
 		} else {
@@ -235,7 +235,7 @@ public class TileEntityInkMixer extends TileEntityRotatable implements IItemBuil
 				ItemStack result = fillBasinWithContainer(container);
 				if (result != null) {
 					itemstacks[ink_out] = mergeItemStacksLeft(itemstacks[ink_out], result);
-					if (container.stackSize == 0) itemstacks[ink_in] = null;
+					if (container.getCount() == 0) itemstacks[ink_in] = null;
 				}
 			}
 		}
@@ -270,9 +270,9 @@ public class TileEntityInkMixer extends TileEntityRotatable implements IItemBuil
 			return left;
 		} else if (left.getItem().getHasSubtypes() && left.getItemDamage() != right.getItemDamage()) {
 			return left;
-		} else if (left.stackSize + right.stackSize > left.getMaxStackSize()) { return left; }
+		} else if (left.getCount() + right.getCount() > left.getMaxStackSize()) { return left; }
 		left = left.copy();
-		left.stackSize += right.stackSize;
+		left.stackSize += right.getCount();
 		right.stackSize = 0;
 		return left;
 	}
@@ -296,7 +296,7 @@ public class TileEntityInkMixer extends TileEntityRotatable implements IItemBuil
 		}
 		float inverse = 1 - total;
 
-		if (amount > itemstack.stackSize) amount = itemstack.stackSize;
+		if (amount > itemstack.getCount()) amount = itemstack.getCount();
 		for (int i = 0; i < amount; ++i) {
 			--itemstack.stackSize;
 			for (Entry<String, Float> entry : ink_probabilities.entrySet()) {
@@ -311,7 +311,7 @@ public class TileEntityInkMixer extends TileEntityRotatable implements IItemBuil
 				ink_probabilities.put(entry.getKey(), prob);
 			}
 		}
-		if (itemstack.stackSize <= 0) {
+		if (itemstack.getCount() <= 0) {
 			itemstack = null;
 		}
 		return itemstack;

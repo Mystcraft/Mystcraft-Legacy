@@ -188,7 +188,7 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
 					ItemStack item = null;
 					while (!lectern.isItemValidForSlot(0, item)) {
 						item = info.getOneItem(rand);
-						if (item.stackSize > 0) item.stackSize = 1;
+						if (item.getCount() > 0) item.stackSize = 1;
 					}
 					lectern.setBook(item);
 				}

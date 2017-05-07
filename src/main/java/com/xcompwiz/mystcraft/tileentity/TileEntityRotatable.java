@@ -47,7 +47,7 @@ public class TileEntityRotatable extends TileEntity implements IMessageReceiver,
 	}
 
 	@Override
-	public Packet getDescriptionPacket() {
+	public Packet getUpdatePacket() {
 		NBTTagCompound nbttagcompound = new NBTTagCompound();
 		nbttagcompound.setShort("Yaw", yaw);
 		return MPacketMessage.createPacket(this, nbttagcompound);

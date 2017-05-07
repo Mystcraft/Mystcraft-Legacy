@@ -185,11 +185,11 @@ public class LinkListenerBasic {
 			float f1 = worldObj.rand.nextFloat() * 0.8F + 0.1F;
 			float f2 = worldObj.rand.nextFloat() * 0.8F + 0.1F;
 
-			while (itemstack.stackSize > 0) {
+			while (itemstack.getCount() > 0) {
 				int j = worldObj.rand.nextInt(21) + 10;
 
-				if (j > itemstack.stackSize) {
-					j = itemstack.stackSize;
+				if (j > itemstack.getCount()) {
+					j = itemstack.getCount();
 				}
 
 				itemstack.stackSize -= j;

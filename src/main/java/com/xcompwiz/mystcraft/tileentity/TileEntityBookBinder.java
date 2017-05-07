@@ -76,14 +76,14 @@ public class TileEntityBookBinder extends TileEntityRotatable implements IItemBu
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		if (itemstacks[i] != null) {
-			if (itemstacks[i].stackSize <= j) {
+			if (itemstacks[i].getCount() <= j) {
 				ItemStack itemstack = itemstacks[i];
 				itemstacks[i] = null;
 				handleItemChange(itemstacks[i], i);
 				return itemstack;
 			}
 			ItemStack itemstack1 = itemstacks[i].splitStack(j);
-			if (itemstacks[i].stackSize == 0) {
+			if (itemstacks[i].getCount() == 0) {
 				itemstacks[i] = null;
 			}
 			handleItemChange(itemstacks[i], i);
@@ -99,7 +99,7 @@ public class TileEntityBookBinder extends TileEntityRotatable implements IItemBu
 			return;
 		}
 		itemstacks[i] = itemstack;
-		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
+		if (itemstack != null && itemstack.getCount() > getInventoryStackLimit()) {
 			itemstack.stackSize = getInventoryStackLimit();
 		}
 		handleItemChange(itemstacks[i], i);
@@ -186,7 +186,7 @@ public class TileEntityBookBinder extends TileEntityRotatable implements IItemBu
 			pages.clear();
 			pendingtitle = null;
 			--(itemstacks[1].stackSize);
-			if (itemstacks[1].stackSize <= 0) itemstacks[1] = null;
+			if (itemstacks[1].getCount() <= 0) itemstacks[1] = null;
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			this.markDirty();
 		} else {
@@ -224,18 +224,18 @@ public class TileEntityBookBinder extends TileEntityRotatable implements IItemBu
 	public ItemStack insertPage(ItemStack stack, int i) {
 		if (stack == null) return null;
 		if (stack.getItem() == Items.paper) {
-			while (stack.stackSize > 0) {
+			while (stack.getCount() > 0) {
 				ItemStack clone = stack.copy();
 				clone.stackSize = 1;
 				clone = ItemPage.createItemstack(clone);
 				if (clone == null || insertPage(clone, i) != null) return stack;
 				--stack.stackSize;
 			}
-			if (stack.stackSize == 0) stack = null;
+			if (stack.getCount() == 0) stack = null;
 			return stack;
 		}
 		if (stack.getItem() != ModItems.page) return stack;
-		while (stack.stackSize > 0) {
+		while (stack.getCount() > 0) {
 			ItemStack clone = stack.copy();
 			clone.stackSize = 1;
 			pages.add(i, clone);

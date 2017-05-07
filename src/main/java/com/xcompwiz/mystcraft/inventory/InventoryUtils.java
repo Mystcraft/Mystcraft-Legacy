@@ -32,7 +32,7 @@ public abstract class InventoryUtils {
 		for (int i = 0; i < inventory.getSizeInventory(); ++i) {
 			ItemStack itemstack = inventory.getStackInSlot(i);
 			if (itemstack == null) continue;
-			if (match == null || (itemstack.isItemEqual(match) && ItemStack.areItemStackTagsEqual(itemstack, match))) count += Math.max(0, itemstack.stackSize);
+			if (match == null || (itemstack.isItemEqual(match) && ItemStack.areItemStackTagsEqual(itemstack, match))) count += Math.max(0, itemstack.getCount());
 		}
 		return count;
 	}
@@ -43,10 +43,10 @@ public abstract class InventoryUtils {
 			ItemStack itemstack = inventory.getStackInSlot(i);
 			if (itemstack == null) continue;
 			if (itemstack.isItemEqual(match) && ItemStack.areItemStackTagsEqual(itemstack, match)) {
-				int temp = Math.min(amount, itemstack.stackSize);
+				int temp = Math.min(amount, itemstack.getCount());
 				amount -= temp;
 				itemstack.stackSize -= temp;
-				if (itemstack.stackSize <= 0) inventory.setInventorySlotContents(i, null);
+				if (itemstack.getCount() <= 0) inventory.setInventorySlotContents(i, null);
 			}
 		}
 		return amount;

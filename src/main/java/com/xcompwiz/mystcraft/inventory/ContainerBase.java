@@ -25,12 +25,12 @@ public abstract class ContainerBase extends Container {
 				break;
 			}
 
-			if (original.stackSize == 0) {
+			if (original.getCount() == 0) {
 				slot.putStack(null);
 			} else {
 				slot.onSlotChanged();
 			}
-			if (original.stackSize != clone.stackSize) {
+			if (original.getCount() != clone.getCount()) {
 				slot.onPickupFromSlot(player, original);
 			} else {
 				return null;
@@ -56,20 +56,20 @@ public abstract class ContainerBase extends Container {
 
 		// Try merging stack
 		if (itemstack.isStackable()) {
-			while (itemstack.stackSize > 0 && (!reverse && slotId < end || reverse && slotId >= start)) {
+			while (itemstack.getCount() > 0 && (!reverse && slotId < end || reverse && slotId >= start)) {
 				slot = (Slot) this.inventorySlots.get(slotId);
 				destStack = slot.getStack();
 
 				if (destStack != null && destStack == itemstack && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == destStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, destStack)) {
-					int totalSize = destStack.stackSize + itemstack.stackSize;
+					int totalSize = destStack.getCount() + itemstack.getCount();
 
 					if (totalSize <= itemstack.getMaxStackSize()) {
 						itemstack.stackSize = 0;
 						destStack.stackSize = totalSize;
 						slot.onSlotChanged();
 						success = true;
-					} else if (destStack.stackSize < itemstack.getMaxStackSize()) {
-						itemstack.stackSize -= itemstack.getMaxStackSize() - destStack.stackSize;
+					} else if (destStack.getCount() < itemstack.getMaxStackSize()) {
+						itemstack.stackSize -= itemstack.getMaxStackSize() - destStack.getCount();
 						destStack.stackSize = itemstack.getMaxStackSize();
 						slot.onSlotChanged();
 						success = true;
@@ -85,7 +85,7 @@ public abstract class ContainerBase extends Container {
 		}
 
 		// If left overs, put in a free slot
-		if (itemstack.stackSize > 0) {
+		if (itemstack.getCount() > 0) {
 			if (reverse) {
 				slotId = end - 1;
 			} else {

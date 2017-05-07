@@ -46,8 +46,8 @@ public class GuiIconItemStack implements IGuiIcon {
 		float scale = smallest / 16.F;
 
 		String itemslottext = null;
-		if (itemstack.stackSize <= 0) {
-			itemslottext = EnumChatFormatting.RED + Integer.toString(itemstack.stackSize);
+		if (itemstack.getCount() <= 0) {
+			itemslottext = EnumChatFormatting.RED + Integer.toString(itemstack.getCount());
 		}
 
 		GuiUtils.startGlScissor(guiLeft, guiTop, xSize, ySize);

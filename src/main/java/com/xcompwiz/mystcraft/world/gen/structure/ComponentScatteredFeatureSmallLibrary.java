@@ -815,7 +815,7 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 					if (symbolid == null) continue;
 					symbol = SymbolManager.getAgeSymbol(symbolid);
 				}
-				if (item.stackSize > 0) item.stackSize = 1;
+				if (item.getCount() > 0) item.stackSize = 1;
 				lectern.setBook(item);
 			}
 

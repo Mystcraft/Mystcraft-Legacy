@@ -101,9 +101,9 @@ public class ContainerFolder extends ContainerBase implements IGuiMessageHandler
 				ItemStack clone = stack.copy();
 				clone.stackSize = 1;
 				ItemStack returned = placePageOnSurface(player, this.getInventoryItem(), clone, index);
-				if (returned == null || stack.stackSize == 1) {
+				if (returned == null || stack.getCount() == 1) {
 					stack.stackSize -= 1;
-					if (stack.stackSize <= 0) stack = returned;
+					if (stack.getCount() <= 0) stack = returned;
 					player.inventory.setItemStack(stack);
 				} else {
 					placePageOnSurface(player, this.getInventoryItem(), returned, index);

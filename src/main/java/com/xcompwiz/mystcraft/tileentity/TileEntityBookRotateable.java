@@ -63,7 +63,7 @@ public class TileEntityBookRotateable extends TileEntityBook implements IMessage
 	}
 
 	@Override
-	public Packet getDescriptionPacket() {
+	public Packet getUpdatePacket() {
 		NBTTagCompound nbttagcompound = new NBTTagCompound();
 		nbttagcompound.setShort("Yaw", yaw);
 		nbttagcompound.setShort("Pitch", pitch);

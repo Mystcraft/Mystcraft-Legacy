@@ -29,8 +29,8 @@ public class InkEffects {
 			if (Item.getIdFromItem(paramT1.getItem()) > Item.getIdFromItem(paramT2.getItem())) return 1;
 			if (paramT1.getItemDamage() < paramT2.getItemDamage()) return -1;
 			if (paramT1.getItemDamage() > paramT2.getItemDamage()) return 1;
-			if (paramT1.stackSize < paramT2.stackSize) return -1;
-			if (paramT1.stackSize > paramT2.stackSize) return 1;
+			if (paramT1.getCount() < paramT2.getCount()) return -1;
+			if (paramT1.getCount() > paramT2.getCount()) return 1;
 			if (paramT1.stackTagCompound == null) return -1;
 			if (paramT2.stackTagCompound == null) return 1;
 			return paramT1.toString().compareTo(paramT2.toString());

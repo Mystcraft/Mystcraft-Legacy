@@ -77,14 +77,14 @@ public class TileEntityBook extends TileEntity implements ISidedInventory {
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		if (itemstacks[i] != null) {
-			if (itemstacks[i].stackSize <= j) {
+			if (itemstacks[i].getCount() <= j) {
 				ItemStack itemstack = itemstacks[i];
 				itemstacks[i] = null;
 				handleItemChange(i);
 				return itemstack;
 			}
 			ItemStack itemstack1 = itemstacks[i].splitStack(j);
-			if (itemstacks[i].stackSize == 0) {
+			if (itemstacks[i].getCount() == 0) {
 				itemstacks[i] = null;
 			}
 			handleItemChange(i);
@@ -96,7 +96,7 @@ public class TileEntityBook extends TileEntity implements ISidedInventory {
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
 		itemstacks[i] = itemstack;
-		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
+		if (itemstack != null && itemstack.getCount() > getInventoryStackLimit()) {
 			itemstack.stackSize = getInventoryStackLimit();
 		}
 		handleItemChange(i);

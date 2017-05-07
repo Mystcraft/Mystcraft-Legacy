@@ -41,7 +41,7 @@ public class ItemBoosterPack extends Item {
 		ItemStack newitemstack = generateBooster(null, entityplayer.getRNG(), 7, 4, 4, 1);
 		if (newitemstack == null) return itemstack;
 		itemstack.stackSize--;
-		if (itemstack.stackSize <= 0) {
+		if (itemstack.getCount() <= 0) {
 			entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
 			itemstack = newitemstack;
 		} else {

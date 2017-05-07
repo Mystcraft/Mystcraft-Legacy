@@ -102,10 +102,10 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 					if (newpos == null) {
 						newpos = new PositionableItem();
 						newpos.itemstack = page;
-						newpos.count = page.stackSize;
+						newpos.count = page.getCount();
 						collection.put(key, newpos);
 					} else {
-						newpos.count += page.stackSize;
+						newpos.count += page.getCount();
 					}
 				}
 			}
