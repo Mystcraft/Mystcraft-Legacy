@@ -167,7 +167,7 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 		Collection<NBTTagCompound> compounds = NBTUtils.readTagCompoundCollection(itemstack.stackTagCompound.getTagList("Collection", Constants.NBT.TAG_COMPOUND), new LinkedList<NBTTagCompound>());
 		List<ItemStack> items = new ArrayList<ItemStack>();
 		for (NBTTagCompound nbt : compounds) {
-			ItemStack page = ItemStack.loadItemStackFromNBT(nbt);
+			ItemStack page = new ItemStack(nbt);
 			items.add(page);
 		}
 		return items;

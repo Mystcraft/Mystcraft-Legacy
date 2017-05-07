@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class ItemStackUtils {
 
 	public static ItemStack loadItemStackFromNBT(NBTTagCompound item) {
-		ItemStack itemstack = ItemStack.loadItemStackFromNBT(item);
+		ItemStack itemstack = new ItemStack(item);
 		if (itemstack != null && itemstack.getItem() instanceof IItemOnLoadable) {
 			itemstack = ((IItemOnLoadable)itemstack.getItem()).onLoad(itemstack);
 		}

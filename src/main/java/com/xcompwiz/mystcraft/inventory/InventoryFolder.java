@@ -76,7 +76,7 @@ public class InventoryFolder {
 
 	public static ItemStack getItem(ItemStack folder, int slot) {
 		NBTTagCompound data = getInventoryCompound(folder);
-		if (data != null && data.hasKey("" + slot)) { return ItemStack.loadItemStackFromNBT(data.getCompoundTag("" + slot)); }
+		if (data != null && data.hasKey("" + slot)) { return new ItemStack(data.getCompoundTag("" + slot)); }
 		return null;
 	}
 
@@ -99,7 +99,7 @@ public class InventoryFolder {
 		ItemStack itemstack = null;
 		if (data != null) {
 			if (data.hasKey("" + slot)) {
-				itemstack = ItemStack.loadItemStackFromNBT(data.getCompoundTag("" + slot));
+				itemstack = new ItemStack(data.getCompoundTag("" + slot));
 			}
 			data.removeTag("" + slot);
 		}
@@ -134,7 +134,7 @@ public class InventoryFolder {
 			int slot = Integer.parseInt(tagname);
 			while (pages.size() <= slot)
 				pages.add(null);
-			pages.set(slot, ItemStack.loadItemStackFromNBT(pagedata));
+			pages.set(slot, new ItemStack(pagedata));
 		}
 		return pages;
 	}
@@ -149,7 +149,7 @@ public class InventoryFolder {
 		tagnames.addAll(compound.func_150296_c());
 		for (String tagname : tagnames) {
 			NBTTagCompound pagedata = compound.getCompoundTag(tagname);
-			ItemStack page = ItemStack.loadItemStackFromNBT(pagedata);
+			ItemStack page = new ItemStack(pagedata);
 			List<ItemStack> results = SymbolRemappings.remap(page);
 			int slot = Integer.parseInt(tagname);
 			if (results.size() == 0) {

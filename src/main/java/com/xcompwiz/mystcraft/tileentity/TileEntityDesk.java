@@ -94,18 +94,18 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		if (itemstack != null) {
 			nbttagcompound.setTag("PaperItem", itemstack.writeToNBT(new NBTTagCompound()));
 		}
-		return MPacketMessage.createPacket(this, nbttagcompound);
+		return new SPacketUpdateTileEntity(this.pos, 0, nbttagcompound);
 	}
 
 	@Override
 	public void processMessageData(NBTTagCompound nbttagcompound) {
 		if (nbttagcompound.hasKey("DisItem")) {
-			this.setInventorySlotContents(slot_wrt, ItemStack.loadItemStackFromNBT(nbttagcompound.getCompoundTag("DisItem")));
+			this.setInventorySlotContents(slot_wrt, new ItemStack(nbttagcompound.getCompoundTag("DisItem")));
 		} else {
 			this.setInventorySlotContents(slot_wrt, null);
 		}
 		if (nbttagcompound.hasKey("PaperItem")) {
-			this.setInventorySlotContents(slot_pap, ItemStack.loadItemStackFromNBT(nbttagcompound.getCompoundTag("PaperItem")));
+			this.setInventorySlotContents(slot_pap, new ItemStack(nbttagcompound.getCompoundTag("PaperItem")));
 		} else {
 			this.setInventorySlotContents(slot_pap, null);
 		}

@@ -76,7 +76,7 @@ public class TileEntityBookRotateable extends TileEntityBook implements IMessage
 		yaw = nbttagcompound.getShort("Yaw");
 		pitch = nbttagcompound.getShort("Pitch");
 		if (nbttagcompound.hasKey("Item")) {
-			setBook(ItemStack.loadItemStackFromNBT(nbttagcompound.getCompoundTag("Item")));
+			setBook(new ItemStack(nbttagcompound.getCompoundTag("Item")));
 		} else {
 			setBook(null);
 		}

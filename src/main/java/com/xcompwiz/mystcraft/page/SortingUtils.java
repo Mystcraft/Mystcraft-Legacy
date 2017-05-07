@@ -23,8 +23,8 @@ public final class SortingUtils {
 
 		@Override
 		public int compare(NBTTagCompound itemdata1, NBTTagCompound itemdata2) {
-			ItemStack itemstack1 = ItemStack.loadItemStackFromNBT(itemdata1);
-			ItemStack itemstack2 = ItemStack.loadItemStackFromNBT(itemdata2);
+			ItemStack itemstack1 = new ItemStack(itemdata1);
+			ItemStack itemstack2 = new ItemStack(itemdata2);
 			return ComparatorItemSymbolAlphabetical.instance.compare(itemstack1, itemstack2);
 		}
 

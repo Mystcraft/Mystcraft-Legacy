@@ -8,7 +8,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -222,7 +221,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		}
 		if (data.hasKey(Messages.RemoveFromCollection)) {
 			if (player.inventory.getItemStack() != null) return;
-			ItemStack page = ItemStack.loadItemStackFromNBT(data.getCompoundTag(Messages.RemoveFromCollection));
+			ItemStack page = new ItemStack(data.getCompoundTag(Messages.RemoveFromCollection));
 			ItemStack itemstack = tileentity.removePageFromSurface(player, this.getTabSlot(this.activeslot), page);
 			player.inventory.setItemStack(itemstack);
 		}
@@ -243,7 +242,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 				ItemStack ret = tileentity.addPageToTab(player, tileentity.getTabItem(slot), one.copy());
 				if (ItemStack.areItemStackTagsEqual(ret, one) && ItemStack.areItemStacksEqual(ret, one)) return;
 				stack.stackSize -= 1;
-				if (stack.stackSize <= 0) stack = null;
+				if (stack.getCount() <= 0) stack = null;
 				player.inventory.setItemStack(stack);
 				if (ret == null) return;
 				if (stack == null) {
@@ -251,7 +250,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 					return;
 				}
 				if (ItemStack.areItemStackTagsEqual(ret, stack)) {
-					stack.stackSize += ret.stackSize;
+					stack.stackSize += ret.getCount();
 					//TODO: This is technically capable of exceeding max stack size
 					return;
 				}
@@ -272,9 +271,9 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 				ItemStack clone = stack.copy();
 				clone.stackSize = 1;
 				ItemStack returned = tileentity.placePageOnSurface(player, tileentity.getTabItem(slot), clone, index);
-				if (returned == null || stack.stackSize == 1) {
+				if (returned == null || stack.getCount() == 1) {
 					stack.stackSize -= 1;
-					if (stack.stackSize <= 0) stack = returned;
+					if (stack.getCount() <= 0) stack = returned;
 					player.inventory.setItemStack(stack);
 				} else {
 					tileentity.placePageOnSurface(player, tileentity.getTabItem(slot), returned, index);
@@ -323,7 +322,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			if (target == null) return;
 			ItemStack stack = player.inventory.getItemStack();
 			if (stack == null) return;
-			if (stack.stackSize > 1) return;
+			if (stack.getCount() > 1) return;
 			if (!(target.getItem() instanceof IItemOrderablePageProvider)) return;
 			IItemOrderablePageProvider itemdat = (IItemOrderablePageProvider) target.getItem();
 			int index = data.getInteger(Messages.InsertHeldAt);

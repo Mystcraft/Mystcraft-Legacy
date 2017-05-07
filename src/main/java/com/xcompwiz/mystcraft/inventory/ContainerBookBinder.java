@@ -181,7 +181,7 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 		}
 		if (data.hasKey(Messages.CSetHeldItem)) {
 			if (tileentity.getWorldObj().isRemote) {
-				player.inventory.setItemStack(ItemStack.loadItemStackFromNBT(data.getCompoundTag(Messages.CSetHeldItem)));
+				player.inventory.setItemStack(new ItemStack(data.getCompoundTag(Messages.CSetHeldItem)));
 			}
 		}
 		if (data.hasKey(Messages.CSetPageCount)) {
@@ -189,7 +189,7 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 			tileentity.setPages(page_list);
 		}
 		if (data.hasKey(Messages.CSetPage)) {
-			ItemStack item = ItemStack.loadItemStackFromNBT(data.getCompoundTag("Item"));
+			ItemStack item = new ItemStack(data.getCompoundTag("Item"));
 			int i = data.getInteger(Messages.CSetPage);
 			while (page_list.size() < i) {
 				page_list.add(null);

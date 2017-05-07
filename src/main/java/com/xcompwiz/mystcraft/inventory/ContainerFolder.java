@@ -81,7 +81,7 @@ public class ContainerFolder extends ContainerBase implements IGuiMessageHandler
 	public void processMessage(EntityPlayer player, NBTTagCompound data) {
 		if (data.hasKey(Messages.RemoveFromCollection)) {
 			if (player.inventory.getItemStack() != null) return;
-			ItemStack page = ItemStack.loadItemStackFromNBT(data.getCompoundTag(Messages.RemoveFromCollection));
+			ItemStack page = new ItemStack(data.getCompoundTag(Messages.RemoveFromCollection));
 			ItemStack itemstack = removePageFromSurface(player, this.getInventoryItem(), page);
 			player.inventory.setItemStack(itemstack);
 		}

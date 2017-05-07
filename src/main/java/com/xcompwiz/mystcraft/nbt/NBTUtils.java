@@ -166,7 +166,7 @@ public final class NBTUtils {
 
 	public static <T extends Collection<ItemStack>> T readItemStackCollection(NBTTagList nbttaglist, T collection) {
 		for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-			collection.add(ItemStack.loadItemStackFromNBT(nbttaglist.getCompoundTagAt(i)));
+			collection.add(new ItemStack(nbttaglist.getCompoundTagAt(i)));
 		}
 		return collection;
 	}
