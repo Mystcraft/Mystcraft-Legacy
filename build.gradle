@@ -14,6 +14,8 @@ ext.releaseChangelog = file("changelog.txt")
 ext.publishChangelog = file("changes.txt")
 ext.userHome = System.properties["user.home"]
 
+ext.pass = []
+
 // --------------------------
 // End local config
 // --------------------------
@@ -66,6 +68,10 @@ repositories {
 apply plugin: 'maven'
 apply plugin: 'com.matthewprenger.cursegradle'
 apply plugin: 'net.minecraftforge.gradle.forge'
+
+if (file('passwords.gradle').exists()) {
+	apply from: 'locations.gradle'
+}
 
 if (file('locations.gradle').exists()) {
 	apply from: 'locations.gradle'
@@ -317,7 +323,7 @@ types.eachWithIndex { type, index ->
 }
 
 curseforge {
-	apiKey = config.curseforge_key // saved in my properties file. http://minecraft.curseforge.com/my-api-tokens
+	apiKey = pass.curseforge_key // saved in my properties file. http://minecraft.curseforge.com/my-api-tokens
 	project {
 		id = project.curseId
 		releaseType = project.curseReleaseType //The release type must be either 'alpha', 'beta', or 'release'
@@ -352,8 +358,8 @@ uploadArchives {
         mavenDeployer {
             configuration = configurations.deployerJars
 
-            repository(url: config.mavenurl) {
-				authentication(userName: config.mavenuser, password: config.mavenpass)
+            repository(url: pass.mavenurl) {
+				authentication(userName: pass.mavenuser, password: pass.mavenpass)
             }
 
             pom {
