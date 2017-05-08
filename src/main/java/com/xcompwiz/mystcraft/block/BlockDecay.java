@@ -6,6 +6,7 @@ import java.util.Random;
 import com.xcompwiz.mystcraft.instability.decay.DecayHandler;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -21,6 +22,8 @@ public class BlockDecay extends Block {
 	public BlockDecay() {
 		super(Material.sand);
 		setTickRandomly(false);
+		setSoundType(SoundType.SAND);
+		setUnlocalizedName("myst.unstable");
 	}
 
 	/**

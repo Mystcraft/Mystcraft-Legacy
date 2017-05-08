@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.data;
 
+import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.MystObjects.Blocks;
 import com.xcompwiz.mystcraft.block.BlockBookBinder;
 import com.xcompwiz.mystcraft.block.BlockBookReceptacle;
@@ -19,10 +20,15 @@ import com.xcompwiz.mystcraft.item.ItemBlockFluid;
 import com.xcompwiz.mystcraft.item.ItemDecayBlock;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModBlocks {
 	public static Block	inkmixer;
@@ -41,38 +47,70 @@ public class ModBlocks {
 	public static void loadConfigs(MystConfig config) {}
 
 	public static void init() {
-		inkmixer = (new BlockInkMixer(Material.wood)).setHardness(2.0F).setResistance(2F).setStepSound(Block.soundTypeWood).setBlockName("myst.inkmixer").setCreativeTab(CreativeTabs.tabDecorations);
-		bookbinder = (new BlockBookBinder(Material.wood)).setHardness(2.0F).setResistance(2F).setStepSound(Block.soundTypeWood).setBlockName("myst.bookbinder").setCreativeTab(CreativeTabs.tabDecorations);
-		receptacle = (new BlockBookReceptacle()).setHardness(1.0F).setStepSound(Block.soundTypeGlass).setBlockName("myst.receptacle").setCreativeTab(CreativeTabs.tabDecorations);
-		bookstand = (new BlockBookstand(Material.wood)).setHardness(2.0F).setResistance(2F).setStepSound(Block.soundTypeWood).setBlockName("myst.bookstand").setCreativeTab(CreativeTabs.tabDecorations);
-		lectern = (new BlockLectern(Material.wood)).setHardness(2.0F).setResistance(2F).setStepSound(Block.soundTypeWood).setBlockName("myst.lectern").setCreativeTab(CreativeTabs.tabDecorations);
-		decay = (new BlockDecay()).setStepSound(Block.soundTypeSand).setBlockName("myst.unstable");
-		linkmodifier = (new BlockLinkModifier(Material.iron)).setHardness(2.0F).setResistance(2F).setStepSound(Block.soundTypeMetal).setBlockName("myst.linkmodifier").setCreativeTab(CreativeTabs.tabDecorations);
-		crystal = (new BlockCrystal()).setHardness(1.0F).setStepSound(Block.soundTypeGlass).setLightLevel(0.5F).setBlockName("myst.crystal").setCreativeTab(CreativeTabs.tabBlock);
-		portal = (new BlockLinkPortal(15)).setHardness(-1F).setStepSound(Block.soundTypeGlass).setLightLevel(0.75F).setBlockName("myst.linkportal");
-		writingdesk = (new BlockWritingDesk()).setHardness(2.5F).setStepSound(Block.soundTypeWood).setBlockName("myst.writing_desk");
-		starfissure = (new BlockStarFissure(Material.portal)).setBlockUnbreakable().setBlockName("myst.starfissure");
-		black_ink = (new BlockFluidWrapper(ModFluids.black_ink, Material.water)).setBlockName("myst.fluid");
+		inkmixer = new BlockInkMixer();
+		bookbinder = new BlockBookBinder();
+		receptacle = new BlockBookReceptacle();
+		bookstand = new BlockBookstand();
+		lectern = new BlockLectern();
+		decay = new BlockDecay();
+		linkmodifier = new BlockLinkModifier();
+		crystal = new BlockCrystal();
+		portal = new BlockLinkPortal();
+		writingdesk = new BlockWritingDesk();
+		starfissure = new BlockStarFissure(Material.PORTAL);
+		black_ink = new BlockFluidWrapper(ModFluids.black_ink, new MaterialLiquid(MapColor.WATER));//).setUnlocalizedName("myst.fluid");
 
-		GameRegistry.registerBlock(inkmixer, ItemBlock.class, Blocks.inkmixer);
-		GameRegistry.registerBlock(bookbinder, ItemBlock.class, Blocks.bookbinder);
-		GameRegistry.registerBlock(receptacle, ItemBlock.class, Blocks.crystal_receptacle);
-		GameRegistry.registerBlock(bookstand, ItemBlock.class, Blocks.bookstand);
-		GameRegistry.registerBlock(lectern, ItemBlock.class, Blocks.book_lectern);
-		GameRegistry.registerBlock(decay, ItemDecayBlock.class, Blocks.decay);
-		GameRegistry.registerBlock(linkmodifier, ItemBlock.class, Blocks.link_modifer);
-		GameRegistry.registerBlock(crystal, ItemBlock.class, Blocks.crystal);
-		GameRegistry.registerBlock(portal, ItemBlock.class, Blocks.portal);
-		GameRegistry.registerBlock(writingdesk, ItemBlock.class, Blocks.writing_desk_block);
-		GameRegistry.registerBlock(starfissure, ItemBlock.class, Blocks.star_fissure);
-		GameRegistry.registerBlock(black_ink, ItemBlockFluid.class, "BlockFluidMyst", black_ink);
+		inkmixer.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.inkmixer));
+		bookbinder.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.bookbinder));
+		receptacle.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.crystal_receptacle));
+		bookstand.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.bookstand));
+		lectern.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.book_lectern));
+		decay.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.decay));
+		linkmodifier.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.link_modifer));
+		crystal.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.crystal));
+		portal.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.portal));
+		writingdesk.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.writing_desk_block));
+		starfissure.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.star_fissure));
+
+		black_ink.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.fluidblock_black_ink));
+
+		GameRegistry.register(inkmixer);
+		GameRegistry.register(new ItemBlock(inkmixer));
+		GameRegistry.register(bookbinder);
+		GameRegistry.register(new ItemBlock(bookbinder));
+		GameRegistry.register(receptacle);
+		GameRegistry.register(new ItemBlock(receptacle));
+		GameRegistry.register(bookstand);
+		GameRegistry.register(new ItemBlock(bookstand));
+		GameRegistry.register(lectern);
+		GameRegistry.register(new ItemBlock(lectern));
+		GameRegistry.register(decay);
+		GameRegistry.register(new ItemDecayBlock(decay));
+		GameRegistry.register(linkmodifier);
+		GameRegistry.register(new ItemBlock(linkmodifier));
+		GameRegistry.register(crystal);
+		GameRegistry.register(new ItemBlock(crystal));
+		GameRegistry.register(portal);
+		GameRegistry.register(new ItemBlock(portal));
+		GameRegistry.register(writingdesk);
+		GameRegistry.register(new ItemBlock(writingdesk));
+		GameRegistry.register(starfissure);
+		GameRegistry.register(new ItemBlock(starfissure));
+		GameRegistry.register(black_ink);
+		GameRegistry.register(new ItemBlockFluid(black_ink));
 
 		// Set mining difficulties/tools
-		decay.setHarvestLevel("pickaxe", 0, DecayHandler.BLUE);
-		decay.setHarvestLevel("shovel", 0, DecayHandler.RED);
-		decay.setHarvestLevel("pickaxe", 0, DecayHandler.PURPLE);
-		decay.setHarvestLevel("pickaxe", 2, DecayHandler.WHITE);
-		decay.setHarvestLevel("shovel", 0, DecayHandler.BLACK);
+		decay.setHarvestLevel("pickaxe",   0, decay.getStateFromMeta(DecayHandler.BLUE));
+		decay.setHarvestLevel("shovel",    0, decay.getStateFromMeta(DecayHandler.RED));
+		decay.setHarvestLevel("pickaxe",   0, decay.getStateFromMeta(DecayHandler.PURPLE));
+		decay.setHarvestLevel("pickaxe",   2, decay.getStateFromMeta(DecayHandler.WHITE));
+		decay.setHarvestLevel("shovel",    0, decay.getStateFromMeta(DecayHandler.BLACK));
 		crystal.setHarvestLevel("pickaxe", 0);
 	}
+
+	@SideOnly(Side.CLIENT)
+	public static void registerModels() {
+
+	}
+
 }

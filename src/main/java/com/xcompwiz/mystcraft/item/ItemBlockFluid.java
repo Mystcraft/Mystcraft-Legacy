@@ -11,7 +11,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockFluid extends ItemBlock {
-	/** Instance of the Blocks. */
+
 	private final BlockFluidBase	theBlock;
 
 	public ItemBlockFluid(Block block, BlockFluidWrapper par2Block) {

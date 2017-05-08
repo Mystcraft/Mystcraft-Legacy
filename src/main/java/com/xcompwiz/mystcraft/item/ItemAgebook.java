@@ -17,6 +17,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -28,6 +29,11 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPageProvider, IItemOnLoadable {
+
+	public ItemAgebook() {
+		setUnlocalizedName("myst.agebook");
+		setCreativeTab(CreativeTabs.TRANSPORTATION);
+	}
 
 	@SideOnly(Side.CLIENT)
 	@Override

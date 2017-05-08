@@ -13,6 +13,7 @@ import com.xcompwiz.mystcraft.treasure.WeightProviderSymbolItem;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,6 +21,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBoosterPack extends Item {
+
+	public ItemBoosterPack() {
+		setUnlocalizedName("myst.booster");
+		setCreativeTab(CreativeTabs.MISC);
+	}
 
 	@SideOnly(Side.CLIENT)
 	@Override

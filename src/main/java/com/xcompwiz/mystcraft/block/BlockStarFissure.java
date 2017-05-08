@@ -15,6 +15,7 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityStarFissure;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
@@ -23,6 +24,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 public class BlockStarFissure extends BlockContainer {
 
@@ -38,16 +41,30 @@ public class BlockStarFissure extends BlockContainer {
 		super(material);
 		setLightLevel(0.4F);
 		setTickRandomly(false);
+		setBlockUnbreakable();
+		setUnlocalizedName("myst.starfissure");
 	}
 
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileEntityStarFissure();
+	}
+
+	//HellFire> obsolete. kept awkward legacy for edge cases.
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		return new TileEntityStarFissure();
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {}
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public void registerBlockIcons(IIconRegister par1IconRegister) {}
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k) {
@@ -67,10 +84,10 @@ public class BlockStarFissure extends BlockContainer {
 		return false;
 	}
 
-	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
+	//@Override
+	//public boolean renderAsNormalBlock() {
+	//	return false;
+	//}
 
 	@Override
 	public int quantityDropped(Random random) {
@@ -85,10 +102,10 @@ public class BlockStarFissure extends BlockContainer {
 		LinkController.travelEntity(worldObj, entity, info);
 	}
 
-	@Override
-	public int getRenderType() {
-		return -1;
-	}
+	//@Override
+	//public int getRenderType() {
+	//	return -1;
+	//}
 
 	@Override
 	public void onBlockAdded(World world, int i, int j, int k) {}

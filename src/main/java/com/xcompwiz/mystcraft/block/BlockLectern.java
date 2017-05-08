@@ -2,8 +2,11 @@ package com.xcompwiz.mystcraft.block;
 
 import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -15,34 +18,38 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockLectern extends BlockBookDisplay {
 
-	public BlockLectern(Material material) {
-		super(material);
+	public BlockLectern() {
+		super(Material.WOOD);
 		setLightOpacity(255);
-		canBlockGrass = true;
 		useNeighborBrightness = true;
-		setBlockBounds(0F, 0F, 0F, 1F, 0.4375F, 1F);
+		//setBlockBounds(0F, 0F, 0F, 1F, 0.4375F, 1F); //TODO Hellfire> reflect in bounding box return statements.
+		setHardness(2F);
+		setResistance(2F);
+		setSoundType(SoundType.WOOD);
+		setUnlocalizedName("myst.lectern");
+		setCreativeTab(CreativeTabs.DECORATIONS);
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
-		this.blockIcon = Blocks.crafting_table.getBlockTextureFromSide(0);
-	}
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public void registerBlockIcons(IIconRegister par1IconRegister) {
+	//	this.blockIcon = Blocks.crafting_table.getBlockTextureFromSide(0);
+	//}
 
 	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
 
-	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
+	//@Override
+	//public boolean renderAsNormalBlock() {
+	//	return false;
+	//}
 
-	@Override
-	public int getRenderType() {
-		return -1;
-	}
+	//@Override
+	//public int getRenderType() {
+	//	return -1;
+	//}
 
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase entityliving, ItemStack itemstack) {

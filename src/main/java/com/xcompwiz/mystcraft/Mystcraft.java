@@ -84,16 +84,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.MapStorage;
-import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -171,7 +168,7 @@ public class Mystcraft {
 		MystcraftPacketHandler.registerPacketHandler(new MPacketExplosion(), (byte) 100); // 100
 		MystcraftPacketHandler.registerPacketHandler(new MPacketSpawnLightningBolt(), (byte) 101); // 101
 
-		FMLCommonHandler.instance().bus().register(new MystcraftConnectionHandler());
+		MinecraftForge.EVENT_BUS.register(new MystcraftConnectionHandler());
 		MystcraftPacketHandler.bus = NetworkRegistry.INSTANCE.newEventDrivenChannel(MystcraftPacketHandler.CHANNEL);
 		MystcraftPacketHandler.bus.register(new MystcraftPacketHandler());
 
@@ -179,8 +176,7 @@ public class Mystcraft {
 		MinecraftForge.EVENT_BUS.register(new MystcraftEventHandler());
 		EventManager eventmanager = new EventManager();
 		MinecraftForge.EVENT_BUS.register(eventmanager);
-		FMLCommonHandler.instance().bus().register(eventmanager);
-		FMLCommonHandler.instance().bus().register(new MystcraftTickHandler());
+		MinecraftForge.EVENT_BUS.register(new MystcraftTickHandler());
 		EventManager.set(eventmanager);
 
 		// Load configs
@@ -224,7 +220,7 @@ public class Mystcraft {
 
 		ModFluids.loadConfigs(config);
 		ModItems.loadConfigs(config);
-		ModBlocks.loadConfigs(config);
+		ModBlocks.loadConfigs(config); //HellFire> it is necessary that fluids get registered before blocks now.
 		ModRecipes.loadConfigs(config);
 		ModLinkEffects.setConfigs(config);
 		InstabilityDataCalculator.loadConfigs(config);
@@ -404,12 +400,12 @@ public class Mystcraft {
 			if (clientStorage == null) throw new RuntimeException("Client-Side Storage Missing (Attempted as " + (isServer ? "server" : "remote") + ")");
 			return clientStorage;
 		}
-		return overworld.mapStorage;
+		return overworld.getMapStorage();
 	}
 
 	public static long getLevelSeed(MapStorage storage) {
 		if (clientStorage == storage) return 0;
-		MinecraftServer mcServer = MinecraftServer.getServer();
+		MinecraftServer mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
 		if (mcServer == null) return 0;
 		if (DimensionManager.getWorld(0) == null) return 0;
 		return DimensionManager.getWorld(0).getSeed();

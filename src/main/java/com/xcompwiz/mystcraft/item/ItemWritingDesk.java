@@ -1,49 +1,44 @@
 package com.xcompwiz.mystcraft.item;
 
-import java.util.List;
-
 import com.xcompwiz.mystcraft.block.BlockWritingDesk;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemWritingDesk extends Item {
-	private IIcon	icontop;
 
 	public ItemWritingDesk() {
 		this.setHasSubtypes(true);
+		setUnlocalizedName("myst.writingdesk");
+		setCreativeTab(CreativeTabs.DECORATIONS);
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerIcons(IIconRegister register) {
-		this.itemIcon = register.registerIcon("mystcraft:writingdesk");
-		icontop = register.registerIcon("mystcraft:deskext");
-	}
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public void registerIcons(IIconRegister register) {
+	//	this.itemIcon = register.registerIcon("mystcraft:writingdesk");
+	//	icontop = register.registerIcon("mystcraft:deskext");
+	//}
 
-	/**
-	 * Gets an icon index based on an item's damage value
-	 */
-	@Override
-	public IIcon getIconFromDamage(int meta) {
-		if (meta == 1) { return icontop; }
-		return this.itemIcon;
-	}
+	//@Override
+	//public IIcon getIconFromDamage(int meta) {
+	//	if (meta == 1) { return icontop; }
+	//	return this.itemIcon;
+	//}
+
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tabs, List list) {
-		super.getSubItems(item, tabs, list);
-		list.add(new ItemStack(item, 1, 1));
+	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+		super.getSubItems(itemIn, tab, subItems);
+		subItems.add(new ItemStack(itemIn, 1, 1));
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -30,6 +31,8 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 
 	public ItemPortfolio() {
 		setMaxStackSize(1);
+		setUnlocalizedName("myst.portfolio");
+		setCreativeTab(CreativeTabs.MISC);
 	}
 
 	@SideOnly(Side.CLIENT)

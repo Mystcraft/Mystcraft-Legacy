@@ -8,6 +8,7 @@ import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -30,7 +31,10 @@ public class BlockWritingDesk extends Block {
 	private static final int	headFootMap[][]	= { { 0, 1 }, { -1, 0 }, { 0, -1 }, { 1, 0 } };
 
 	public BlockWritingDesk() {
-		super(Material.wood);
+		super(Material.WOOD);
+		setHardness(2.5F);
+		setSoundType(SoundType.WOOD);
+		setUnlocalizedName("myst.writing_desk");
 	}
 
 	@Override
@@ -79,31 +83,31 @@ public class BlockWritingDesk extends Block {
 		return AxisAlignedBB.getBoundingBox(par2 + this.minX, par3 + this.minY, par4 + this.minZ, par2 + this.maxX, par3 + this.maxY, par4 + this.maxZ);
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public IIcon getIcon(int i, int j) {
-		if (i <= 1) { return Blocks.crafting_table.getBlockTextureFromSide(i); }
-		return Blocks.bookshelf.getBlockTextureFromSide(i);
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {}
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public IIcon getIcon(int i, int j) {
+	//	if (i <= 1) { return Blocks.crafting_table.getBlockTextureFromSide(i); }
+	//	return Blocks.bookshelf.getBlockTextureFromSide(i);
+	//}
+//
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public void registerBlockIcons(IIconRegister par1IconRegister) {}
 
 	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
 
-	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
-
-	@Override
-	public int getRenderType() {
-		return -1;
-	}
+	//@Override
+	//public boolean renderAsNormalBlock() {
+	//	return false;
+	//}
+//
+	//@Override
+	//public int getRenderType() {
+	//	return -1;
+	//}
 
 	@Override
 	public void onNeighborBlockChange(World worldObj, int i, int j, int k, Block block) {

@@ -4,6 +4,8 @@ import com.xcompwiz.mystcraft.client.render.IMaskRender;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -14,18 +16,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemInkVial extends Item implements IMaskRender {
 
-	protected IIcon	mask;
-
 	public ItemInkVial() {
 		setMaxStackSize(16);
+		setUnlocalizedName("myst.vial");
+		setCreativeTab(CreativeTabs.MATERIALS);
+		setContainerItem(Items.GLASS_BOTTLE);
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerIcons(IIconRegister register) {
-		this.itemIcon = register.registerIcon("mystcraft:inkvial");
-		this.mask = register.registerIcon("mystcraft:inkvialmask");
-	}
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public void registerIcons(IIconRegister register) {
+	//	this.itemIcon = register.registerIcon("mystcraft:inkvial");
+	//	this.mask = register.registerIcon("mystcraft:inkvialmask");
+	//}
 
 	public FluidStack getFluidStack(ItemStack itemstack) {
 		return FluidContainerRegistry.getFluidForFilledItem(itemstack);

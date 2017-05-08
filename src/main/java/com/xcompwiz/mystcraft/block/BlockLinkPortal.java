@@ -8,7 +8,9 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -16,6 +18,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IBlockAccess;
@@ -23,16 +26,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockLinkPortal extends BlockBreakable {
-	public BlockLinkPortal(int par2) {
-		super("portal", Material.portal, false);
+
+	public BlockLinkPortal() {
+		super(Material.PORTAL, false);
 		setTickRandomly(true);
+		setBlockUnbreakable();
+		setSoundType(SoundType.GLASS);
+		setLightLevel(0.75F);
+		setUnlocalizedName("myst.linkportal");
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
-		this.blockIcon = par1IconRegister.registerIcon("mystcraft:portal");
-	}
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public void registerBlockIcons(IIconRegister par1IconRegister) {
+	//	this.blockIcon = par1IconRegister.registerIcon("mystcraft:portal");
+	//}
 
 	/**
 	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been cleared to be reused)
@@ -83,34 +91,25 @@ public class BlockLinkPortal extends BlockBreakable {
 		return false;
 	}
 
-	/**
-	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-	 */
-	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
+	//@Override
+	//public boolean renderAsNormalBlock() {
+	//	return false;
+	//}
 
-	/**
-	 * The type of render function that is called for this block
-	 */
-	@Override
-	public int getRenderType() {
-		return 0;
-	}
+	//@Override
+	//public int getRenderType() {
+	//	return 0;
+	//}
 
-	@Override
-	public int getBlockColor() {
-		return 0x3333ff;
-	}
-
-	/**
-	 * Returns the color this block should be rendered. Used by leaves.
-	 */
-	@Override
-	public int getRenderColor(int par1) {
-		return getBlockColor();
-	}
+	//@Override //TODO Hellfire> custom iBlockColor impl
+	//public int getBlockColor() {
+	//	return 0x3333ff;
+	//}
+//
+	//@Override
+	//public int getRenderColor(int par1) {
+	//	return getBlockColor();
+	//}
 
 	/**
 	 * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called when first determining what to render.
@@ -145,12 +144,9 @@ public class BlockLinkPortal extends BlockBreakable {
 		return 0;
 	}
 
-	/**
-	 * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
-	 */
 	@Override
-	public int getRenderBlockPass() {
-		return 1;
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+		return layer == BlockRenderLayer.TRANSLUCENT;
 	}
 
 	/**

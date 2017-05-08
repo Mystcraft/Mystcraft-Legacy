@@ -4,8 +4,10 @@ import com.xcompwiz.mystcraft.portal.PortalUtils;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -13,16 +15,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockCrystal extends Block {
 
 	public BlockCrystal() {
-		super(Material.glass);
+		super(Material.GLASS);
 		setTickRandomly(false);
 		useNeighborBrightness = true;
+		setHardness(1F);
+		setSoundType(SoundType.GLASS);
+		setLightLevel(0.5F);
+		setUnlocalizedName("myst.crystal");
+		setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
-		this.blockIcon = par1IconRegister.registerIcon("mystcraft:crystal");
-	}
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public void registerBlockIcons(IIconRegister par1IconRegister) {
+	//	this.blockIcon = par1IconRegister.registerIcon("mystcraft:crystal");
+	//}
 
 	// /**
 	// * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called

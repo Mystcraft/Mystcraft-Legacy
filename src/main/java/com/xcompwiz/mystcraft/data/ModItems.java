@@ -16,7 +16,10 @@ import com.xcompwiz.mystcraft.item.ItemWritingDesk;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModItems {
 	public static Item			page;
@@ -33,25 +36,42 @@ public class ModItems {
 	public static void loadConfigs(MystConfig config) {}
 
 	public static void init() {
-		page = (new ItemPage()).setUnlocalizedName("myst.page").setCreativeTab(null);
-		agebook = (ItemAgebook) (new ItemAgebook()).setUnlocalizedName("myst.agebook").setCreativeTab(CreativeTabs.tabTransport);
-		linkbook = (new ItemLinkbook()).setUnlocalizedName("myst.linkbook").setCreativeTab(CreativeTabs.tabTransport);
-		unlinked = (new ItemLinkbookUnlinked()).setUnlocalizedName("myst.unlinkedbook").setCreativeTab(CreativeTabs.tabTransport);
-		booster = (new ItemBoosterPack()).setUnlocalizedName("myst.booster").setCreativeTab(CreativeTabs.tabMisc);
-		folder = (new ItemFolder()).setUnlocalizedName("myst.folder").setCreativeTab(CreativeTabs.tabMisc);
-		portfolio = (new ItemPortfolio()).setUnlocalizedName("myst.portfolio").setCreativeTab(CreativeTabs.tabMisc);
-		desk = (new ItemWritingDesk()).setUnlocalizedName("myst.writingdesk").setCreativeTab(CreativeTabs.tabDecorations);
-		inkvial = (ItemInkVial) (new ItemInkVial()).setUnlocalizedName("myst.vial").setCreativeTab(CreativeTabs.tabMaterials).setContainerItem(Items.glass_bottle);
+		page = new ItemPage();
+		agebook = new ItemAgebook();
+		linkbook = new ItemLinkbook();
+		unlinked = new ItemLinkbookUnlinked();
+		booster = new ItemBoosterPack();
+		folder = new ItemFolder();
+		portfolio = new ItemPortfolio();
+		desk = new ItemWritingDesk();
+		inkvial = new ItemInkVial();
 
-		GameRegistry.registerItem(page, MystObjects.Items.page);
-		GameRegistry.registerItem(agebook, MystObjects.Items.descriptive_book);
-		GameRegistry.registerItem(linkbook, MystObjects.Items.linkbook);
-		GameRegistry.registerItem(unlinked, MystObjects.Items.linkbook_unlinked);
-		GameRegistry.registerItem(booster, MystObjects.Items.booster);
-		GameRegistry.registerItem(folder, MystObjects.Items.folder);
-		GameRegistry.registerItem(portfolio, MystObjects.Items.portfolio);
-		GameRegistry.registerItem(desk, MystObjects.Items.writing_desk);
-		GameRegistry.registerItem(inkvial, MystObjects.Items.inkvial);
-		GameRegistry.registerItem(glasses, "glasses");
+		page.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, MystObjects.Items.page));
+		agebook.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, MystObjects.Items.descriptive_book));
+		linkbook.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, MystObjects.Items.linkbook));
+		unlinked.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, MystObjects.Items.linkbook_unlinked));
+		booster.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, MystObjects.Items.booster));
+		folder.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, MystObjects.Items.folder));
+		portfolio.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, MystObjects.Items.portfolio));
+		desk.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, MystObjects.Items.writing_desk));
+		inkvial.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, MystObjects.Items.inkvial));
+		glasses.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, "glasses"));
+
+		GameRegistry.register(page);
+		GameRegistry.register(agebook);
+		GameRegistry.register(linkbook);
+		GameRegistry.register(unlinked);
+		GameRegistry.register(booster);
+		GameRegistry.register(folder);
+		GameRegistry.register(portfolio);
+		GameRegistry.register(desk);
+		GameRegistry.register(inkvial);
+		GameRegistry.register(glasses);
 	}
+
+	@SideOnly(Side.CLIENT)
+	public static void registerModels() {
+
+	}
+
 }

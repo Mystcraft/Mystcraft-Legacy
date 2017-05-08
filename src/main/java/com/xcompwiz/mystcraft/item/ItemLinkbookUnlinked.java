@@ -6,6 +6,7 @@ import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.page.Page;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,8 @@ public class ItemLinkbookUnlinked extends Item {
 
 	public ItemLinkbookUnlinked() {
 		setMaxStackSize(16);
+		setUnlocalizedName("myst.unlinkedbook");
+		setCreativeTab(CreativeTabs.TRANSPORTATION);
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -28,21 +28,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemPage extends Item implements IItemWritable, IItemPageProvider, IItemOnLoadable {
 
 	public ItemPage() {
-		super();
 		setMaxStackSize(64);
 		setHasSubtypes(true);
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerIcons(IIconRegister register) {}
-
-	/**
-	 * If this function returns true the ItemStack's NBT tag will be sent to the client.
-	 */
-	@Override
-	public boolean getShareTag() {
-		return true;
+		setUnlocalizedName("myst.page");
+		setCreativeTab(null);
 	}
 
 	@Override

@@ -11,8 +11,11 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,33 +31,34 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
+
 public class BlockBookReceptacle extends BlockContainer {
 
-	private IIcon	iconFace;
-
 	public BlockBookReceptacle() {
-		super(Material.glass);
+		super(Material.GLASS);
 		setTickRandomly(false);
 		useNeighborBrightness = true;
-		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.375F);
+		//setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.375F); //TODO Hellfire> duh. reflect in bounding box return statements.
+		setHardness(1F);
+		setSoundType(SoundType.GLASS);
+		setUnlocalizedName("myst.receptacle");
+		setCreativeTab(CreativeTabs.DECORATIONS);
 	}
 
-	/**
-	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-	 */
-	@SideOnly(Side.CLIENT)
-	@Override
-	public IIcon getIcon(int par1, int par2) {
-		if (par1 == par2) { return iconFace; }
-		return blockIcon;
-	}
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public IIcon getIcon(int par1, int par2) {
+	//	if (par1 == par2) { return iconFace; }
+	//	return blockIcon;
+	//}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
-		this.blockIcon = par1IconRegister.registerIcon("mystcraft:crystal");
-		this.iconFace = par1IconRegister.registerIcon("mystcraft:book_receptacle");
-	}
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public void registerBlockIcons(IIconRegister par1IconRegister) {
+	//	this.blockIcon = par1IconRegister.registerIcon("mystcraft:crystal");
+	//	this.iconFace = par1IconRegister.registerIcon("mystcraft:book_receptacle");
+	//}
 
 	/**
 	 * Is this block (a) opaque and (b) a full 1m cube? This determines whether or not to render the shared face of two adjacent blocks and also whether the
@@ -65,13 +69,10 @@ public class BlockBookReceptacle extends BlockContainer {
 		return false;
 	}
 
-	/**
-	 * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-	 */
-	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
+	//@Override
+	//public boolean renderAsNormalBlock() {
+	//	return false;
+	//}
 
 	/**
 	 * Returns the quantity of items to drop on block destruction.
@@ -81,21 +82,15 @@ public class BlockBookReceptacle extends BlockContainer {
 		return 1;
 	}
 
-	/**
-	 * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
-	 */
-	@Override
-	public int getRenderBlockPass() {
-		return 0;
-	}
+	//@Override
+	//public int getRenderBlockPass() {
+	//	return 0;
+	//}
 
-	/**
-	 * The type of render function that is called for this block
-	 */
-	@Override
-	public int getRenderType() {
-		return 0;
-	}
+	//@Override
+	//public int getRenderType() {
+	//	return 0;
+	//}
 
 	/**
 	 * Sets the block's bounds for rendering it as an item
@@ -296,6 +291,18 @@ public class BlockBookReceptacle extends BlockContainer {
 		return false;
 	}
 
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileEntityBookReceptacle();
+	}
+
+	//HellFire> obsolete. kept awkward legacy for edge cases.
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		return new TileEntityBookReceptacle();

@@ -4,65 +4,75 @@ import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
 
+import com.xcompwiz.mystcraft.tileentity.TileEntityBookstand;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
+
 public class BlockBookBinder extends BlockContainer {
 
-	private IIcon				iconTop;
-	private IIcon				iconBottom;
-
-	public BlockBookBinder(Material material) {
-		super(material);
+	public BlockBookBinder() {
+		super(Material.WOOD);
+		setHardness(2F);
+		setResistance(2F);
+		setSoundType(SoundType.WOOD);
+		setUnlocalizedName("myst.bookbinder");
+		setCreativeTab(CreativeTabs.DECORATIONS);
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public IIcon getIcon(int i, int j) {
-		if (i == 1) {
-			return iconTop;
-		} else if (i == 0) {
-			return iconBottom;
-		} else {
-			return blockIcon;
-		}
-	}
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public IIcon getIcon(int i, int j) {
+	//	if (i == 1) {
+	//		return iconTop;
+	//	} else if (i == 0) {
+	//		return iconBottom;
+	//	} else {
+	//		return blockIcon;
+	//	}
+	//}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
-		this.blockIcon = par1IconRegister.registerIcon("mystcraft:bookbinder_side");
-		this.iconTop = par1IconRegister.registerIcon("mystcraft:bookbinder_top");
-		this.iconBottom = par1IconRegister.registerIcon("mystcraft:bookbinder_bottom");
-	}
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public void registerBlockIcons(IIconRegister par1IconRegister) {
+	//	this.blockIcon = par1IconRegister.registerIcon("mystcraft:bookbinder_side");
+	//	this.iconTop = par1IconRegister.registerIcon("mystcraft:bookbinder_top");
+	//	this.iconBottom = par1IconRegister.registerIcon("mystcraft:bookbinder_bottom");
+	//}
 
 	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
 
-	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
+	//@Override
+	//public boolean renderAsNormalBlock() {
+	//	return false;
+	//}
 
-	@Override
-	public int getRenderType() {
-		return -1;
-	}
+	//@Override
+	//public int getRenderType() {
+	//	return -1;
+	//}
 
 	@Override
 	// world, x, y, z, player, side, origin?
@@ -122,11 +132,24 @@ public class BlockBookBinder extends BlockContainer {
 		return true;
 	}
 
+	@Nullable
 	@Override
-	public ForgeDirection[] getValidRotations(World worldObj, int x, int y, int z) {
-		return ForgeDirection.VALID_DIRECTIONS;
+	public EnumFacing[] getValidRotations(World world, BlockPos pos) {
+		return EnumFacing.VALUES;
 	}
 
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileEntityBookBinder();
+	}
+
+	//HellFire> obsolete. kept awkward legacy for edge cases.
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		return new TileEntityBookBinder();

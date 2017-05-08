@@ -8,49 +8,44 @@ import com.xcompwiz.mystcraft.api.item.IItemWritable;
 import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.inventory.InventoryFolder;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemFolder extends Item implements IItemOrderablePageProvider, IItemWritable, IItemOnLoadable {
 
-	@SideOnly(Side.CLIENT)
-	protected IIcon				filledIcon;
+	//@SideOnly(Side.CLIENT)
+	//protected IIcon				filledIcon;
 
 	public ItemFolder() {
 		setMaxStackSize(1);
+		setUnlocalizedName("myst.folder");
+		setCreativeTab(CreativeTabs.MISC);
 	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerIcons(IIconRegister register) {
-		this.itemIcon = register.registerIcon("mystcraft:folder");
-		this.filledIcon = register.registerIcon("mystcraft:folder_filled");
-	}
-
-	/**
-	 * Returns the icon index of the stack given as argument.
-	 */
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIconIndex(ItemStack itemstack) {
-		return InventoryFolder.getLargestSlotId(itemstack) == -1 ? this.itemIcon : this.filledIcon;
-	}
-
-	/**
-	 * If this function returns true (or the item is damageable), the ItemStack's NBT tag will be sent to the client.
-	 */
-	@Override
-	public boolean getShareTag() {
-		return true;
-	}
+//
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public void registerIcons(IIconRegister register) {
+	//	this.itemIcon = register.registerIcon("mystcraft:folder");
+	//	this.filledIcon = register.registerIcon("mystcraft:folder_filled");
+	//}
+//
+	///**
+	// * Returns the icon index of the stack given as argument.
+	// */
+	//@Override
+	//@SideOnly(Side.CLIENT)
+	//public IIcon getIconIndex(ItemStack itemstack) {
+	//	return InventoryFolder.getLargestSlotId(itemstack) == -1 ? this.itemIcon : this.filledIcon;
+	//}
 
 	@Override
 	public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean advancedTooltip) {
@@ -74,14 +69,14 @@ public class ItemFolder extends Item implements IItemOrderablePageProvider, IIte
 
 	@Override
 	public EnumRarity getRarity(ItemStack itemstack) {
-		return EnumRarity.uncommon;
+		return EnumRarity.UNCOMMON;
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-		if (world.isRemote) return itemstack;
-		entityplayer.openGui(Mystcraft.instance, ModGUIs.FOLDER.ordinal(), world, MathHelper.floor_double(entityplayer.posX + 0.5D), MathHelper.floor_double(entityplayer.posY + 0.5D), MathHelper.floor_double(entityplayer.posZ + 0.5D));
-		return itemstack;
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		if (worldIn.isRemote) return ActionResult.newResult(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
+		playerIn.openGui(Mystcraft.instance, ModGUIs.FOLDER.ordinal(), worldIn, MathHelper.floor(playerIn.posX + 0.5D), MathHelper.floor(playerIn.posY + 0.5D), MathHelper.floor(playerIn.posZ + 0.5D));
+		return super.onItemRightClick(worldIn, playerIn, handIn);
 	}
 
 	private void initialize(World world, ItemStack itemstack, Entity entity) {}

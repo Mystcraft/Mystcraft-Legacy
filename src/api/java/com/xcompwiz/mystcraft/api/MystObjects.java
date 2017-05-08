@@ -10,7 +10,7 @@ import net.minecraftforge.common.AchievementPage;
 public final class MystObjects {
 
 	/** You'll need this to look up the blocks and items */
-	public static final String	MystcraftModId		= "Mystcraft";
+	public static final String	MystcraftModId		= "mystcraft";
 
 	/** The Creative Tab for items. This is set during Post-Init. */
 	//public CreativeTabs			creativeTab;
@@ -18,24 +18,26 @@ public final class MystObjects {
 	//public CreativeTabs			pageTab;
 
 	/** For use with ChestGenHooks. Treasure is not built until post-init. */
-	public static final String	MYST_TREASURE		= "mystcraftTreasure";
+	public static final String	MYST_TREASURE		= "mystcraftTreasure"; //FIXME Hellfire> might be most likely subject for removal...
 
 	/** For registering Mystcraft related achievements. See {@link AchievementPage}. */
 	public static final String	ACHIEVEMENT_PAGE	= "Mystcraft";
 
 	public static final class Blocks {
-		public static final String	portal				= "LinkPortal";
-		public static final String	crystal				= "BlockCrystal";
-		public static final String	crystal_receptacle	= "BlockBookReceptacle";
-		public static final String	decay				= "BlockDecay";
-		public static final String	bookstand			= "BlockBookstand";
-		public static final String	book_lectern		= "BlockLectern";
-		public static final String	writing_desk_block	= "WritingDesk";
-		public static final String	bookbinder			= "BlockBookBinder";
-		public static final String	inkmixer			= "BlockInkMixer";
-		public static final String	star_fissure		= "BlockStarFissure";
+		public static final String	portal				= "linkportal";
+		public static final String	crystal				= "blockcrystal";
+		public static final String	crystal_receptacle	= "blockbookreceptacle";
+		public static final String	decay				= "blockdecay";
+		public static final String	bookstand			= "blockbookstand";
+		public static final String	book_lectern		= "blocklectern";
+		public static final String	writing_desk_block	= "writingdesk";
+		public static final String	bookbinder			= "blockbookbinder";
+		public static final String	inkmixer			= "blockinkmixer";
+		public static final String	star_fissure		= "blockstarfissure";
 		/** Remember that this is a debug block! */
-		public static final String	link_modifer		= "BlockLinkModifier";
+		public static final String	link_modifer		= "blocklinkmodifier";
+
+		public static final String fluidblock_black_ink = "fluidblockblackink";
 
 	}
 

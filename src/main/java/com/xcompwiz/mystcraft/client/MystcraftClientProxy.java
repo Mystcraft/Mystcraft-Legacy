@@ -27,12 +27,8 @@ import com.xcompwiz.mystcraft.client.render.RenderStarFissure;
 import com.xcompwiz.mystcraft.client.render.RenderWritingDesk;
 import com.xcompwiz.mystcraft.client.shaders.ShaderUtils;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
+import com.xcompwiz.mystcraft.data.*;
 import com.xcompwiz.mystcraft.data.Assets.Entities;
-import com.xcompwiz.mystcraft.data.InkEffects;
-import com.xcompwiz.mystcraft.data.ModBlocks;
-import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.data.ModLinkEffects;
-import com.xcompwiz.mystcraft.data.ModPageCollections;
 import com.xcompwiz.mystcraft.entity.EntityFallingBlock;
 import com.xcompwiz.mystcraft.entity.EntityLightningBoltAdv;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
@@ -77,7 +73,7 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 
 	@Override
 	public Entity getEntityByID(World worldObj, int id) {
-		if (worldObj instanceof WorldClient) return ((WorldClient) worldObj).getEntityByID(id);
+		if (worldObj instanceof WorldClient) return worldObj.getEntityByID(id);
 		return super.getEntityByID(worldObj, id);
 	}
 
@@ -88,8 +84,11 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 	@Override
 	public void preinit() {
 		startupchecker = new MystcraftStartupChecker();
-		FMLCommonHandler.instance().bus().register(startupchecker);
 		MinecraftForge.EVENT_BUS.register(startupchecker);
+
+		ModBlocks.registerModels();
+		ModItems.registerModels();
+		ModFluids.registerModels();
 	}
 
 	@Override

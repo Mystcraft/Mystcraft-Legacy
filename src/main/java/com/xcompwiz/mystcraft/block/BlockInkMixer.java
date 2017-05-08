@@ -6,8 +6,10 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,47 +24,49 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockInkMixer extends BlockContainer {
 
-	private IIcon				iconTop;
-	private IIcon				iconBottom;
-
-	public BlockInkMixer(Material material) {
-		super(material);
+	public BlockInkMixer() {
+		super(Material.WOOD);
+		setHardness(2F);
+		setResistance(2F);
+		setSoundType(SoundType.WOOD);
+		setUnlocalizedName("myst.inkmixer");
+		setCreativeTab(CreativeTabs.DECORATIONS);
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public IIcon getIcon(int i, int j) {
-		if (i == 1) {
-			return iconTop;
-		} else if (i == 0) {
-			return iconBottom;
-		} else {
-			return blockIcon;
-		}
-	}
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public IIcon getIcon(int i, int j) {
+	//	if (i == 1) {
+	//		return iconTop;
+	//	} else if (i == 0) {
+	//		return iconBottom;
+	//	} else {
+	//		return blockIcon;
+	//	}
+	//}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
-		this.blockIcon = par1IconRegister.registerIcon("mystcraft:inkmixer_side");
-		this.iconTop = par1IconRegister.registerIcon("mystcraft:inkmixer_top");
-		this.iconBottom = par1IconRegister.registerIcon("mystcraft:inkmixer_bottom");
-	}
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public void registerBlockIcons(IIconRegister par1IconRegister) {
+	//	this.blockIcon = par1IconRegister.registerIcon("mystcraft:inkmixer_side");
+	//	this.iconTop = par1IconRegister.registerIcon("mystcraft:inkmixer_top");
+	//	this.iconBottom = par1IconRegister.registerIcon("mystcraft:inkmixer_bottom");
+	//}
 
 	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
 
-	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
+	//@Override
+	//public boolean renderAsNormalBlock() {
+	//	return false;
+	//}
 
-	@Override
-	public int getRenderType() {
-		return -1;
-	}
+	//@Override
+	//public int getRenderType() {
+	//	return -1;
+	//}
 
 	@Override
 	// world, x, y, z, player, side, origin?

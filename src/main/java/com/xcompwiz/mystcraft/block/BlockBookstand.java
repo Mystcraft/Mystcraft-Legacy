@@ -2,19 +2,27 @@ package com.xcompwiz.mystcraft.block;
 
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookstand;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 public class BlockBookstand extends BlockBookDisplay {
 
@@ -26,34 +34,38 @@ public class BlockBookstand extends BlockBookDisplay {
 		boxes[2] = new float[] { 0.15F, 0.4F, 0.15F, 0.85F, 0.7F, 0.85F };
 	}
 
-	public BlockBookstand(Material material) {
-		super(material);
+	public BlockBookstand() {
+		super(Material.WOOD);
 		setLightOpacity(0);
-		canBlockGrass = true;
 		useNeighborBrightness = true;
-		setBlockBounds(0.125F, 0F, 0.125F, 0.875F, 0.75F, 0.875F);
+		//setBlockBounds(0.125F, 0F, 0.125F, 0.875F, 0.75F, 0.875F); //TODO Hellfire> reflect in bounding box return statements.
+		setHardness(2F);
+		setResistance(2F);
+		setSoundType(SoundType.WOOD);
+		setUnlocalizedName("myst.bookstand");
+		setCreativeTab(CreativeTabs.DECORATIONS);
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
-		this.blockIcon = Blocks.crafting_table.getBlockTextureFromSide(0);
-	}
+	//@SideOnly(Side.CLIENT)
+	//@Override
+	//public void registerBlockIcons(IIconRegister par1IconRegister) {
+	//	this.blockIcon = Blocks.crafting_table.getBlockTextureFromSide(0);
+	//}
 
 	@Override
 	public boolean isOpaqueCube() {
 		return false;
 	}
 
-	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
+	//@Override
+	//public boolean renderAsNormalBlock() {
+	//	return false;
+	//}
 
-	@Override
-	public int getRenderType() {
-		return -1;
-	}
+	//@Override
+	//public int getRenderType() {
+	//	return -1;
+	//}
 
 	/**
 	 * Returns the bounding box of the wired rectangular prism to render.
@@ -140,13 +152,27 @@ public class BlockBookstand extends BlockBookDisplay {
 		return true;
 	}
 
+	@Nullable
 	@Override
-	public ForgeDirection[] getValidRotations(World worldObj, int x, int y, int z) {
-		return ForgeDirection.VALID_DIRECTIONS;
+	public EnumFacing[] getValidRotations(World world, BlockPos pos) {
+		return EnumFacing.VALUES;
 	}
 
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileEntityBookstand();
+	}
+
+	//HellFire> obsolete. kept awkward legacy for edge cases.
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		return new TileEntityBookstand();
 	}
+
 }

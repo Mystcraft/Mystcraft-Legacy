@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
@@ -46,6 +47,11 @@ public class BlockFluidWrapper extends BlockFluidClassic {
 	@Override
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4) {
 		return this.getFluid().getColor();
+	}
+
+	@Override
+	protected void flowIntoBlock(World world, BlockPos pos, int meta) {
+		super.flowIntoBlock(world, pos, meta);
 	}
 
 	@Override
