@@ -7,7 +7,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -74,7 +74,7 @@ public class SkyRendererMyst extends IRenderHandler {
 		TextureManager renderEngine = mc.getTextureManager();
 
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		Vec3 var2 = world.getSkyColor(mc.renderViewEntity, partialTicks);
+		Vec3d var2 = world.getSkyColor(mc.renderViewEntity, partialTicks);
 		float skyRed = (float) var2.xCoord;
 		float skyGreen = (float) var2.yCoord;
 		float skyBlue = (float) var2.zCoord;

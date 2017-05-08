@@ -47,9 +47,9 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.Vec3;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
@@ -390,40 +390,36 @@ public class AgeController implements AgeDirector {
 		return pvpEnabled != null ? pvpEnabled : true;
 	}
 
-	public Vec3 getFogColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick) {
+	public Vec3d getFogColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick) {
 		validate();
 		if (fogColorProviders == null || fogColorProviders.size() == 0) { return null; }
-		Vec3 color = null;
+		Color color = null;
 		for (IDynamicColorProvider mod : fogColorProviders) {
 			Color op = mod.getColor(entity, biome, time, celestial_angle, partialtick);
 			if (op == null) continue;
 			if (color == null) {
-				color = Vec3.createVectorHelper(op.r, op.g, op.b);
+				color = op;
 			} else {
-				color.xCoord = (color.xCoord + op.r) / 2;
-				color.yCoord = (color.yCoord + op.g) / 2;
-				color.zCoord = (color.zCoord + op.b) / 2;
+				color = color.average(op);
 			}
 		}
-		return color;
+		return new Vec3d(color.r, color.g, color.b);
 	}
 
-	public Vec3 getCloudColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick) {
+	public Vec3d getCloudColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick) {
 		validate();
 		if (cloudColorProviders == null || cloudColorProviders.size() == 0) { return null; }
-		Vec3 color = null;
+		Color color = null;
 		for (IDynamicColorProvider mod : cloudColorProviders) {
 			Color op = mod.getColor(entity, biome, time, celestial_angle, partialtick);
 			if (op == null) continue;
 			if (color == null) {
-				color = Vec3.createVectorHelper(op.r, op.g, op.b);
+				color = op;
 			} else {
-				color.xCoord = (color.xCoord + op.r) / 2;
-				color.yCoord = (color.yCoord + op.g) / 2;
-				color.zCoord = (color.zCoord + op.b) / 2;
+				color = color.average(op);
 			}
 		}
-		return color;
+		return new Vec3d(color.r, color.g, color.b);
 	}
 
 	@Override
@@ -433,22 +429,20 @@ public class AgeController implements AgeDirector {
 		return sunset.asGradient();
 	}
 
-	public Vec3 getSkyColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick) {
+	public Vec3d getSkyColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick) {
 		validate();
 		if (skyColorProviders == null || skyColorProviders.size() == 0) { return null; }
-		Vec3 color = null;
+		Color color = null;
 		for (IDynamicColorProvider mod : skyColorProviders) {
 			Color op = mod.getColor(entity, biome, time, celestial_angle, partialtick);
 			if (op == null) continue;
 			if (color == null) {
-				color = Vec3.createVectorHelper(op.r, op.g, op.b);
+				color = op;
 			} else {
-				color.xCoord = (color.xCoord + op.r) / 2;
-				color.yCoord = (color.yCoord + op.g) / 2;
-				color.zCoord = (color.zCoord + op.b) / 2;
+				color = color.average(op);
 			}
 		}
-		return color;
+		return new Vec3d(color.r, color.g, color.b);
 	}
 
 	public Color getStaticColor(String string, Biome biome, int x, int y, int z) {

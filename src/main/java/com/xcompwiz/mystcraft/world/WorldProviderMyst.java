@@ -16,12 +16,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.Vec3;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -126,11 +126,11 @@ public class WorldProviderMyst extends WorldProvider {
 
     @SideOnly(Side.CLIENT)
 	@Override
-	public Vec3 getFogColor(float celestial_angle, float partialtick) {
+	public Vec3d getFogColor(float celestial_angle, float partialtick) {
 		//XXX: Is this safe enough?  Should I do something more robust?
-		EntityLivingBase entity = Minecraft.getMinecraft().renderViewEntity;
-		Biome biome = this.world.getBiomeGenForCoords(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posZ));
-		Vec3 fog = getAgeController().getFogColor(entity, biome, world.getWorldTime(), celestial_angle, partialtick);
+		Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+		Biome biome = this.world.getBiome(new BlockPos(entity));
+		Vec3d fog = getAgeController().getFogColor(entity, biome, world.getWorldTime(), celestial_angle, partialtick);
 		if (fog == null) {
 			float f2 = MathHelper.cos(celestial_angle * 3.141593F * 2.0F) * 2.0F + 0.5F;
 			if (f2 < 0.0F) {
@@ -145,14 +145,14 @@ public class WorldProviderMyst extends WorldProvider {
 			f3 *= f2 * 0.94F + 0.06F;
 			f4 *= f2 * 0.94F + 0.06F;
 			f5 *= f2 * 0.91F + 0.09F;
-			return Vec3.createVectorHelper(f3, f4, f5);
+			return new Vec3d(f3, f4, f5);
 		}
 		return fog;
 	}
 
     @SideOnly(Side.CLIENT)
 	@Override
-	public Vec3 drawClouds(float partialtick) {
+	public Vec3d getCloudColor(float partialtick) {
 		float celestial_angle = world.getCelestialAngle(partialtick);
 		float var3 = MathHelper.cos(celestial_angle * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
 
@@ -165,47 +165,47 @@ public class WorldProviderMyst extends WorldProvider {
 		}
 
 		//XXX: Is this safe enough?  Should I do something more robust?
-		EntityLivingBase entity = Minecraft.getMinecraft().renderViewEntity;
-		Biome biome = this.world.getBiomeGenForCoords(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posZ));
-		Vec3 temp = getAgeController().getCloudColor(entity, biome, world.getWorldTime(), celestial_angle, partialtick);
-		float var4;
-		float var5;
-		float var6;
+		Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+		Biome biome = this.world.getBiome(new BlockPos(entity));
+		Vec3d temp = getAgeController().getCloudColor(entity, biome, world.getWorldTime(), celestial_angle, partialtick);
+		float red;
+		float grn;
+		float blu;
 		if (temp != null) {
-			var4 = (float) temp.xCoord;
-			var5 = (float) temp.yCoord;
-			var6 = (float) temp.zCoord;
+			red = (float) temp.xCoord;
+			grn = (float) temp.yCoord;
+			blu = (float) temp.zCoord;
 		} else {
-			var4 = 1.0F;
-			var5 = 1.0F;
-			var6 = 1.0F;
+			red = 1.0F;
+			grn = 1.0F;
+			blu = 1.0F;
 		}
 		float var7 = world.getRainStrength(partialtick);
 		float var8;
 		float var9;
 
 		if (var7 > 0.0F) {
-			var8 = (var4 * 0.3F + var5 * 0.59F + var6 * 0.11F) * 0.6F;
+			var8 = (red * 0.3F + grn * 0.59F + blu * 0.11F) * 0.6F;
 			var9 = 1.0F - var7 * 0.95F;
-			var4 = var4 * var9 + var8 * (1.0F - var9);
-			var5 = var5 * var9 + var8 * (1.0F - var9);
-			var6 = var6 * var9 + var8 * (1.0F - var9);
+			red = red * var9 + var8 * (1.0F - var9);
+			grn = grn * var9 + var8 * (1.0F - var9);
+			blu = blu * var9 + var8 * (1.0F - var9);
 		}
 
-		var4 *= var3 * 0.9F + 0.1F;
-		var5 *= var3 * 0.9F + 0.1F;
-		var6 *= var3 * 0.85F + 0.15F;
+		red *= var3 * 0.9F + 0.1F;
+		grn *= var3 * 0.9F + 0.1F;
+		blu *= var3 * 0.85F + 0.15F;
 		var8 = world.getThunderStrength(partialtick);
 
 		if (var8 > 0.0F) {
-			var9 = (var4 * 0.3F + var5 * 0.59F + var6 * 0.11F) * 0.2F;
+			var9 = (red * 0.3F + grn * 0.59F + blu * 0.11F) * 0.2F;
 			float var10 = 1.0F - var8 * 0.95F;
-			var4 = var4 * var10 + var9 * (1.0F - var10);
-			var5 = var5 * var10 + var9 * (1.0F - var10);
-			var6 = var6 * var10 + var9 * (1.0F - var10);
+			red = red * var10 + var9 * (1.0F - var10);
+			grn = grn * var10 + var9 * (1.0F - var10);
+			blu = blu * var10 + var9 * (1.0F - var10);
 		}
 
-		return Vec3.createVectorHelper(var4, var5, var6);
+		return new Vec3d(red, grn, blu);
 	}
 
 	@Override
@@ -436,14 +436,14 @@ public class WorldProviderMyst extends WorldProvider {
 	 * Calculates the color for the skybox
 	 */
 	@Override
-	public Vec3 getSkyColor(Entity entity, float partialtick) {
+	public Vec3d getSkyColor(Entity entity, float partialtick) {
 		float celestial_angle = this.world.getCelestialAngle(partialtick);
 		float red = 0;
 		float green = 0;
 		float blue = 0;
 		BlockPos blockPos = new BlockPos(entity);
 		Biome biome = this.world.getBiome(blockPos);
-		Vec3 out = getAgeController().getSkyColor(entity, biome, world.getWorldTime(), celestial_angle, partialtick);
+		Vec3d out = getAgeController().getSkyColor(entity, biome, world.getWorldTime(), celestial_angle, partialtick);
 		if (out == null) {
 			float var4 = MathHelper.cos(celestial_angle * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
 
@@ -503,7 +503,7 @@ public class WorldProviderMyst extends WorldProvider {
 			blue = blue * (1.0F - var15) + 1.0F * var15;
 		}
 
-		return Vec3.createVectorHelper(red, green, blue);
+		return new Vec3d(red, green, blue);
 	}
 
 	@Override
@@ -571,5 +571,10 @@ public class WorldProviderMyst extends WorldProvider {
 
 	public boolean getEnableRain(boolean canSpawnLightningBolt, int biomeId) {
 		return getAgeController().getWeatherController().getEnableRain(canSpawnLightningBolt, biomeId);
+	}
+
+	@Override
+	public DimensionType getDimensionType() {
+		return Mystcraft.dimensionType;
 	}
 }
