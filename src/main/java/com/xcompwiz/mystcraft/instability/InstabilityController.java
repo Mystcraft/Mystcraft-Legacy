@@ -17,16 +17,18 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 public class InstabilityController implements InstabilityDirector {
-	private AgeController						controller;
-	private StorageInstabilityData				deckdata;
-	private boolean								enabled;
-	private int									lastScore;
+	private AgeController controller;
+	private World world;
 
-	private Collection<Deck>					decks;
-	private HashMap<String, Integer>			providerlevels	= new HashMap<String, Integer>();
-	private Collection<IEnvironmentalEffect>	effects			= new ArrayList<IEnvironmentalEffect>();
+	private StorageInstabilityData deckdata;
+	private boolean enabled;
+	private int lastScore;
 
-	public InstabilityController(WorldProviderMyst provider, AgeController controller) {
+	private Collection<Deck> decks;
+	private HashMap<String, Integer> providerlevels = new HashMap<String, Integer>();
+	private Collection<IEnvironmentalEffect> effects = new ArrayList<IEnvironmentalEffect>();
+
+	public InstabilityController(WorldProviderMyst provider, AgeController controller, World world) {
 		this.controller = controller;
 		this.enabled = (controller.isInstabilityEnabled());
 		deckdata = getDataStorage(provider);
@@ -35,10 +37,10 @@ public class InstabilityController implements InstabilityDirector {
 	}
 
 	private StorageInstabilityData getDataStorage(WorldProviderMyst provider) {
-		StorageInstabilityData data = (StorageInstabilityData) provider.worldObj.perWorldStorage.loadData(StorageInstabilityData.class, StorageInstabilityData.ID);
+		StorageInstabilityData data = (StorageInstabilityData) world.getPerWorldStorage().getOrLoadData(StorageInstabilityData.class, StorageInstabilityData.ID);
 		if (data == null) {
 			data = new StorageInstabilityData(StorageInstabilityData.ID);
-			provider.worldObj.perWorldStorage.setData(StorageInstabilityData.ID, data);
+			world.getPerWorldStorage().setData(StorageInstabilityData.ID, data);
 		}
 		data.setAgeData(provider.agedata);
 		return data;

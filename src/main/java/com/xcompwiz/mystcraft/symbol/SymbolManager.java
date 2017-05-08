@@ -213,7 +213,7 @@ public class SymbolManager {
 	}
 
 	public static List<ItemStack> getSymbolTradeItems(String identifier) {
-		ItemStack dfault = new ItemStack(Items.emerald, Math.max(1, (int) (12F * getSymbolItemCardRank(identifier))));
+		ItemStack dfault = new ItemStack(Items.EMERALD, Math.max(1, (int) (12F * getSymbolItemCardRank(identifier))));
 		if (!tradeItemOverrides.containsKey(identifier)) return Arrays.asList(dfault);
 		List<ItemStack> override = tradeItemOverrides.get(identifier);
 		if (override == null) return Arrays.asList(dfault);

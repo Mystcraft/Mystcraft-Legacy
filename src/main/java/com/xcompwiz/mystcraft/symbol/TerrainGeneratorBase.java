@@ -10,23 +10,23 @@ import net.minecraft.init.Blocks;
 
 public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 
-	protected AgeDirector	controller;
+	protected AgeDirector controller;
 
-	protected Random			bedrockGen;
-	private double				noise_field[];
+	protected Random bedrockGen;
+	private double noise_field[];
 
-	protected Block				seablock		= Blocks.WATER;
-	protected byte				seameta			= 0;
-	protected Block				fillblock		= Blocks.STONE;
-	protected byte				fillmeta		= 0;
-	protected boolean			genBedrock		= true;
+	protected Block seablock = Blocks.WATER;
+	protected byte seameta = 0;
+	protected Block fillblock = Blocks.STONE;
+	protected byte fillmeta = 0;
+	protected boolean genBedrock = true;
 
-	private boolean				profiling		= false;
-	private int					fillcounttotal	= 0;
-	private int					seacounttotal	= 0;
-	private int					chunkcount		= 0;
-	private int					fillchunk		= 0;
-	private int					seachunk		= 0;
+	private boolean profiling = false;
+	private int fillcounttotal = 0;
+	private int seacounttotal = 0;
+	private int chunkcount = 0;
+	private int fillchunk = 0;
+	private int seachunk = 0;
 
 	public TerrainGeneratorBase(AgeDirector controller) {
 		super();
@@ -98,7 +98,7 @@ public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 								Block block = Blocks.AIR;
 								byte meta = 0;
 								if (genBedrock && y <= 0 + bedrockGen.nextInt(5)) {
-									block = Blocks.bedrock;
+									block = Blocks.BEDROCK;
 								} else if (xczcyc > 0.0D) {
 									block = fillblock;
 									meta = fillmeta;

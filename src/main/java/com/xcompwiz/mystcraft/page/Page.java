@@ -24,8 +24,8 @@ public abstract class Page {
 	public static int getTotalQuality(ItemStack page) {
 		NBTTagCompound compound = getQualityStruct(page);
 		int sum = 0;
-		for (Object tagname : compound.func_150296_c()) {
-			sum += compound.getInteger((String) tagname);
+		for (String tagname : compound.getKeySet()) {
+			sum += compound.getInteger(tagname);
 		}
 		return sum;
 	}
@@ -38,7 +38,7 @@ public abstract class Page {
 
 	private static NBTTagCompound getData(ItemStack item) {
 		if (item == null) return null;
-		return item.stackTagCompound;
+		return item.getTagCompound();
 	}
 
 	private static NBTTagCompound getQualityStruct(ItemStack page) {
@@ -63,7 +63,7 @@ public abstract class Page {
 	public static void makeLinkPanel(ItemStack page) {
 		NBTTagCompound data = getData(page);
 		if (data == null) {
-			page.stackTagCompound = createDefault();
+			page.setTagCompound(createDefault());
 			data = getData(page);
 		}
 		if (!data.hasKey("linkpanel")) {
@@ -75,7 +75,7 @@ public abstract class Page {
 		if (page == null) return;
 		NBTTagCompound data = getData(page);
 		if (data == null) {
-			page.stackTagCompound = createDefault();
+			page.setTagCompound(createDefault());
 			data = getData(page);
 		}
 		if (!data.hasKey("linkpanel")) {
@@ -101,7 +101,7 @@ public abstract class Page {
 		Collection<String> properties = getLinkProperties(linkpanel);
 		if (properties == null) return;
 		for (String property : properties) {
-			LinkOptions.setFlag(linkingitem.stackTagCompound, property, true);
+			LinkOptions.setFlag(linkingitem.getTagCompound(), property, true);
 		}
 	}
 
@@ -140,34 +140,34 @@ public abstract class Page {
 
 	public static ItemStack createPage() {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
-		page.stackTagCompound = createDefault();
+		page.setTagCompound(createDefault());
 		return page;
 	};
 
 	public static ItemStack createLinkPage() {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
-		page.stackTagCompound = createDefault();
+		page.setTagCompound(createDefault());
 		makeLinkPanel(page);
 		return page;
 	};
 
 	public static ItemStack createLinkPage(String property) {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
-		page.stackTagCompound = createDefault();
+		page.setTagCompound(createDefault());
 		addLinkProperty(page, property);
 		return page;
 	};
 
 	public static ItemStack createSymbolPage(String symbol) {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
-		page.stackTagCompound = createDefault();
+		page.setTagCompound(createDefault());
 		setSymbol(page, symbol);
 		return page;
 	};
 
 	public static ItemStack createPage(NBTTagCompound pagedata) {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
-		page.stackTagCompound = pagedata;
+		page.setTagCompound(pagedata);
 		return page;
 	}
 

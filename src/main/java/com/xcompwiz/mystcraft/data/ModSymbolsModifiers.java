@@ -19,6 +19,7 @@ import com.xcompwiz.mystcraft.symbol.modifiers.SymbolColor;
 import com.xcompwiz.util.CollectionUtils;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -46,8 +47,8 @@ public class ModSymbolsModifiers {
 			return this;
 		}
 
-		public static BlockModifierContainerObject create(String word, int cardrank, Block block, byte metadata) {
-			BlockDescriptor descriptor = new BlockDescriptor(block, metadata);
+		public static BlockModifierContainerObject create(String word, int cardrank, IBlockState blockstate) {
+			BlockDescriptor descriptor = new BlockDescriptor(blockstate);
 			SymbolBlock symbol = new SymbolBlock(descriptor, word);
 			if (SymbolManager.hasBinding(symbol.identifier())) {
 				LoggerUtils.info("Some Mod is attempting to register a block symbol over an existing registration.");
@@ -75,7 +76,7 @@ public class ModSymbolsModifiers {
 		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.DIRT, 0).register().add(BlockCategory.TERRAIN, 4).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
 		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.STONE, 0).register().add(BlockCategory.TERRAIN, 1).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
 		BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.SANDSTONE, 0).register().add(BlockCategory.TERRAIN, 2).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
-		InternalAPI.symbol.registerSymbol(InternalAPI.symbolFact.createSymbol(Blocks.NETHERRACK, 0, WordData.Terrain, 2, new CategoryPair(BlockCategory.TERRAIN, 3), new CategoryPair(BlockCategory.STRUCTURE, 2), new CategoryPair(BlockCategory.SOLID, 2)), MystObjects.MystcraftModId);
+		InternalAPI.symbol.registerSymbol(InternalAPI.symbolFact.createSymbol(Blocks.NETHERRACK, WordData.Terrain, 2, new CategoryPair(BlockCategory.TERRAIN, 3), new CategoryPair(BlockCategory.STRUCTURE, 2), new CategoryPair(BlockCategory.SOLID, 2)), MystObjects.MystcraftModId);
 		//BlockModifierContainerObject.create(WordData.Terrain, 2, Blocks.NETHERRACK, 0).register().add(BlockCategory.TERRAIN, 3).add(BlockCategory.STRUCTURE, 2).add(BlockCategory.SOLID, 2);
 		BlockModifierContainerObject.create(WordData.Terrain, 3, Blocks.END_STONE, 0).register().add(BlockCategory.TERRAIN, 4).add(BlockCategory.STRUCTURE, 3).add(BlockCategory.SOLID, 3);
 

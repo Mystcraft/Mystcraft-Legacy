@@ -21,7 +21,7 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
 import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 
-import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.biome.BiomeProvider;
 
 public class SymbolProfiler implements AgeDirector {
 
@@ -120,7 +120,7 @@ public class SymbolProfiler implements AgeDirector {
 	}
 
 	@Override
-	public WorldChunkManager getWorldChunkManager() {
+	public BiomeProvider getWorldChunkManager() {
 		return null;
 	}
 

@@ -78,7 +78,7 @@ public class IMCBlockModifier implements IMCProcessor {
 		}
 
 		CategoryPair[] args = (objects != null ? objects.toArray(new CategoryPair[] {}) : null);
-		IAgeSymbol symbol = InternalAPI.symbolFact.createSymbol(block, metadata, thirdword, rank, args);
+		IAgeSymbol symbol = InternalAPI.symbolFact.createSymbol(block.getStateFromMeta(metadata), thirdword, rank, args);
 		if (symbol == null) {
 			LoggerUtils.warn("[%s] is attempting to create a block modifier symbol for an already registered block.", message.getSender());
 		} else {

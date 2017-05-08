@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.api.symbol;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
-
+import net.minecraft.block.state.IBlockState;
 
 /**
  * For defining information for block modifiers This handles the block modifier system. Use this to get block modifiers for usage as well as to push block
@@ -11,18 +11,15 @@ import net.minecraft.block.Block;
  * @author xcompwiz
  */
 public final class BlockDescriptor {
-	public final Block						block;
-	public final byte						metadata;
-	private final HashMap<String, Boolean>	useable	= new HashMap<String, Boolean>();
+	public final IBlockState blockstate;
+	private final HashMap<String, Boolean> useable = new HashMap<String, Boolean>();
 
 	/**
 	 * Describes a block
-	 * @param blockId ID of the block to use in generation
-	 * @param metadata Metadata value of the block to use in generation
+	 * @param blockstate blockstate to use in generation
 	 */
-	public BlockDescriptor(Block block, byte metadata) {
-		this.block = block;
-		this.metadata = metadata;
+	public BlockDescriptor(IBlockState blockstate) {
+		this.blockstate = blockstate;
 	}
 
 	/**
@@ -30,7 +27,7 @@ public final class BlockDescriptor {
 	 * @param blockId ID of the block to use in generation
 	 */
 	public BlockDescriptor(Block block) {
-		this(block, (byte) 0);
+		this(block.getDefaultState());
 	}
 
 	/**

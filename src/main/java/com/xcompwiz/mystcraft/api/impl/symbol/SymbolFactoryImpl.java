@@ -6,11 +6,16 @@ import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.data.ModSymbolsModifiers.BlockModifierContainerObject;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 
 public class SymbolFactoryImpl {
 
-	public IAgeSymbol createSymbol(Block block, int metadata, String thirdword, int rank, CategoryPair... pairs) {
-		BlockModifierContainerObject container = BlockModifierContainerObject.create(thirdword, rank, block, metadata);
+	public IAgeSymbol createSymbol(Block block, String thirdword, int rank, CategoryPair... pairs) {
+		return createSymbol(block.getDefaultState(), thirdword, rank, pairs);
+	}
+
+	public IAgeSymbol createSymbol(IBlockState blockstate, String thirdword, int rank, CategoryPair... pairs) {
+		BlockModifierContainerObject container = BlockModifierContainerObject.create(thirdword, rank, blockstate);
 		if (pairs != null) for (CategoryPair pair : pairs) {
 			BlockCategory cat = pair.category;
 			Integer c_rank = pair.rank;

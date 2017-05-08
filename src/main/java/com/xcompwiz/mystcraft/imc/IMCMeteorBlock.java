@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class IMCMeteorBlock implements IMCProcessor {
 
@@ -45,7 +44,7 @@ public class IMCMeteorBlock implements IMCProcessor {
 
 		if (nbt.hasKey("Metadata")) metadata = NBTUtils.readNumber(nbt.getTag("Metadata")).intValue();
 
-		ExplosionEffectPlaceOres.registerMeteorPlaceableBlock(block, metadata, nbt.getFloat("Weight"));
+		ExplosionEffectPlaceOres.registerMeteorPlaceableBlock(block.getStateFromMeta(metadata), nbt.getFloat("Weight"));
 	}
 
 }
