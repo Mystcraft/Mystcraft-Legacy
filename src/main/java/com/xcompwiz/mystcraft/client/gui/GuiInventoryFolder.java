@@ -19,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
@@ -41,8 +42,8 @@ public class GuiInventoryFolder extends GuiContainerElements {
 			nbttagcompound.setByte(ContainerFolder.Messages.AddToSurface, (byte) 0);
 			nbttagcompound.setBoolean("Single", single);
 			nbttagcompound.setInteger("Index", index);
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-			container.processMessage(mc.thePlayer, nbttagcompound);
+			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.player.openContainer.windowId, nbttagcompound));
+			container.processMessage(mc.player, nbttagcompound);
 		}
 
 		@Override
@@ -54,19 +55,19 @@ public class GuiInventoryFolder extends GuiContainerElements {
 				ItemStack page = collectionelement.itemstack;
 				if (GuiWritingDesk.isShiftKeyDown()) {
 					page = page.copy();
-					page.stackSize = 64;
+					page.setCount(64);
 				}
 				page.writeToNBT(itemdata);
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setTag(ContainerFolder.Messages.RemoveFromCollection, itemdata);
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-				container.processMessage(mc.thePlayer, nbttagcompound);
+				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.player.openContainer.windowId, nbttagcompound));
+				container.processMessage(mc.player, nbttagcompound);
 			} else {
 				int index = collectionelement.slotId;
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setInteger(ContainerFolder.Messages.RemoveFromOrderedCollection, index);
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-				container.processMessage(mc.thePlayer, nbttagcompound);
+				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.player.openContainer.windowId, nbttagcompound));
+				container.processMessage(mc.player, nbttagcompound);
 			}
 		}
 

@@ -11,10 +11,10 @@ import java.util.TreeMap;
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.util.Color;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class InkEffects {
@@ -55,7 +55,7 @@ public class InkEffects {
 	}
 
 	public static String getLocalizedName(String property) {
-		return StatCollector.translateToLocal(getUnlocalizedName(property));
+		return I18n.format(getUnlocalizedName(property));
 	}
 
 	public static String getUnlocalizedName(String property) {

@@ -85,6 +85,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.storage.ISaveHandler;
@@ -134,6 +135,7 @@ public class Mystcraft {
 	public static boolean				serverLabels;
 
 	public static int					providerId;
+	public static DimensionType			dimensionType;
 	public static Collection<Integer>	registeredDims;
 	public static LinkedList<Integer>	deadDims;
 
@@ -230,15 +232,15 @@ public class Mystcraft {
 		if (config.hasChanged()) config.save();
 
 		MapGenStructureIO.registerStructure(StructureScatteredFeatureStartMyst.class, MapGenScatteredFeatureMyst.stringId);
-		MapGenStructureIO.func_143031_a(ComponentScatteredFeatureSmallLibrary.class, "TeMystSL");
-		MapGenStructureIO.func_143031_a(ComponentVillageArchivistHouse.class, "ViMystAH");
+		MapGenStructureIO.registerStructureComponent(ComponentScatteredFeatureSmallLibrary.class, "TeMystSL");
+		MapGenStructureIO.registerStructureComponent(ComponentVillageArchivistHouse.class, "ViMystAH");
 
 		// Pre-init symbol system
 		SymbolRemappings.initialize();
 		GrammarRules.initialize();
 
 		// Bind dim provider to id
-		DimensionManager.registerProviderType(Mystcraft.providerId, WorldProviderMyst.class, false);
+		dimensionType = DimensionType.register("Mystcraft", "_myst", Mystcraft.providerId, WorldProviderMyst.class, false);
 		GameRegistry.registerWorldGenerator(new MystWorldGenerator(), Integer.MAX_VALUE);
 
 		sidedProxy.preinit();
@@ -255,7 +257,7 @@ public class Mystcraft {
 		ModBlocks.init();
 		InkEffects.init();
 
-		FluidContainerRegistry.registerFluidContainer(ModFluids.black_ink, new ItemStack(ModItems.inkvial, 1, 0), new ItemStack(Items.glass_bottle));
+		FluidContainerRegistry.registerFluidContainer(ModFluids.black_ink, new ItemStack(ModItems.inkvial, 1, 0), new ItemStack(Items.GLASS_BOTTLE));
 		ModSymbolsFluids.init();
 
 		// Init Achievements
@@ -427,7 +429,7 @@ public class Mystcraft {
 		deadDims = new LinkedList<Integer>();
 		MapStorage tempstorage = new MapStorage(savehandler);
 		for (Integer dimId : registeredDims) {
-			DimensionManager.registerDimension(dimId, providerId);
+			DimensionManager.registerDimension(dimId, dimensionType);
 			AgeData data = AgeData.getAge(dimId, tempstorage);
 			if (data.isDead()) deadDims.add(dimId);
 		}

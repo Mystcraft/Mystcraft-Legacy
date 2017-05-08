@@ -98,16 +98,16 @@ public class WorldGenMystCrystalFormation extends WorldGeneratorAdv {
 
 	private boolean validLocation() {
 		Block i = worldObj.getBlock(crystalbase[0], crystalbase[1], crystalbase[2]);
-		while (i == Blocks.air) {
+		while (i == Blocks.AIR) {
 			++crystalbase[1];
 			if (crystalbase[1] > worldObj.getHeight()) return false;
 			i = worldObj.getBlock(crystalbase[0], crystalbase[1], crystalbase[2]);
 		}
-		while (i != Blocks.water && i != Blocks.water && i != Blocks.air) {
+		while (i != Blocks.WATER && i != Blocks.WATER && i != Blocks.AIR) {
 			++crystalbase[1];
 			i = worldObj.getBlock(crystalbase[0], crystalbase[1], crystalbase[2]);
 		}
 		crystalbase[1] -= 2;
-		return worldObj.getBlock(crystalbase[0], crystalbase[1], crystalbase[2]) != Blocks.air;
+		return worldObj.getBlock(crystalbase[0], crystalbase[1], crystalbase[2]) != Blocks.AIR;
 	}
 }

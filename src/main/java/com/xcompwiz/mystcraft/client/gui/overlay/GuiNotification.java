@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
@@ -51,7 +52,7 @@ public class GuiNotification extends Gui {
 		GL11.glLoadIdentity();
 		this.displayWidth = this.mc.displayWidth;
 		this.displayHeight = this.mc.displayHeight;
-		ScaledResolution scaledresolution = new ScaledResolution(this.mc, this.mc.displayWidth, this.mc.displayHeight);
+		ScaledResolution scaledresolution = new ScaledResolution(this.mc);
 		this.displayWidth = scaledresolution.getScaledWidth();
 		this.displayHeight = scaledresolution.getScaledHeight();
 		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
@@ -64,7 +65,7 @@ public class GuiNotification extends Gui {
 	}
 
 	public void render() {
-		if (this.starttime != 0L && Minecraft.getMinecraft().thePlayer != null) {
+		if (this.starttime != 0L && Minecraft.getMinecraft().player != null) {
 			double d0 = (Minecraft.getSystemTime() - this.starttime) / 10000.0D;
 
 			if (this.autohide) {
@@ -108,16 +109,16 @@ public class GuiNotification extends Gui {
 				GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 				GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 				GL11.glEnable(GL11.GL_LIGHTING);
-				this.renderitem.renderItemAndEffectIntoGUI(this.mc.fontRenderer, this.mc.getTextureManager(), itemstack, i + 8, j + 8);
+				this.renderitem.renderItemAndEffectIntoGUI(itemstack, i + 8, j + 8);
 				GL11.glDisable(GL11.GL_LIGHTING);
 				i += 22;
 			}
 
 			if (this.title == null) {
-				this.mc.fontRenderer.drawSplitString(this.message, i + 8, j + 7, this.displayWidth - i, -1);
+				this.mc.fontRendererObj.drawSplitString(this.message, i + 8, j + 7, this.displayWidth - i, -1);
 			} else {
-				this.mc.fontRenderer.drawString(this.title, i + 8, j + 7, -256);
-				this.mc.fontRenderer.drawString(this.message, i + 8, j + 18, -1);
+				this.mc.fontRendererObj.drawString(this.title, i + 8, j + 7, -256);
+				this.mc.fontRendererObj.drawString(this.message, i + 8, j + 18, -1);
 			}
 
 			GL11.glDepthMask(true);

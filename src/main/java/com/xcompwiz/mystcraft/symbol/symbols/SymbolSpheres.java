@@ -26,7 +26,7 @@ public class SymbolSpheres extends SymbolBase {
 		if (block != null) {
 			generator = new MapGenSpheresMyst(seed, block.block, block.metadata);
 		} else {
-			generator = new MapGenSpheresMyst(seed, Blocks.cobblestone);
+			generator = new MapGenSpheresMyst(seed, Blocks.COBBLESTONE);
 		}
 		controller.registerInterface(new TerrainAlteration(generator));
 	}

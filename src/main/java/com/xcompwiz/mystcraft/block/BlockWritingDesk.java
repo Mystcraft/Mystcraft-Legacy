@@ -113,16 +113,16 @@ public class BlockWritingDesk extends Block {
 				if (!worldObj.isRemote) {
 					dropBlockAsItem(worldObj, i, j, k, meta, 0);
 				}
-				worldObj.setBlock(i, j, k, Blocks.air);
+				worldObj.setBlock(i, j, k, Blocks.AIR);
 			}
 		}
 		int direction = getDirectionFromMetadata(meta);
 		if (isBlockFoot(meta)) {
 			if (worldObj.getBlock(i - headFootMap[direction][0], j, k - headFootMap[direction][1]) != this) {
-				worldObj.setBlock(i, j, k, Blocks.air);
+				worldObj.setBlock(i, j, k, Blocks.AIR);
 			}
 		} else if (worldObj.getBlock(i + headFootMap[direction][0], j, k + headFootMap[direction][1]) != this) {
-			worldObj.setBlock(i, j, k, Blocks.air);
+			worldObj.setBlock(i, j, k, Blocks.AIR);
 		}
 	}
 
@@ -135,9 +135,9 @@ public class BlockWritingDesk extends Block {
 			worldObj.setBlockToAir(x, y + 1, z);
 			int direction = getDirectionFromMetadata(meta);
 			if (isBlockFoot(meta)) {
-				worldObj.setBlock(x - headFootMap[direction][0], y + 1, z - headFootMap[direction][1], Blocks.air);
+				worldObj.setBlock(x - headFootMap[direction][0], y + 1, z - headFootMap[direction][1], Blocks.AIR);
 			} else {
-				worldObj.setBlock(z + headFootMap[direction][0], y + 1, z + headFootMap[direction][1], Blocks.air);
+				worldObj.setBlock(z + headFootMap[direction][0], y + 1, z + headFootMap[direction][1], Blocks.AIR);
 			}
 		}
 	}
@@ -293,11 +293,11 @@ public class BlockWritingDesk extends Block {
 		if (facing == 3) {
 			xOffset = 1;
 		}
-		if (world.getBlock(i + xOffset, j, k + zOffset) == Blocks.air) {
+		if (world.getBlock(i + xOffset, j, k + zOffset) == Blocks.AIR) {
 			world.setBlockMetadataWithNotify(i, j, k, facing, 3);
 			world.setBlock(i + xOffset, j, k + zOffset, this, facing + 8, 3);
 		} else {
-			world.setBlock(i, j, k, Blocks.air, 0, 3);
+			world.setBlock(i, j, k, Blocks.AIR, 0, 3);
 		}
 	}
 

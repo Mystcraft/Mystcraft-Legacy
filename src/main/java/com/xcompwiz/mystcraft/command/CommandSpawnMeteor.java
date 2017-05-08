@@ -5,7 +5,7 @@ import com.xcompwiz.mystcraft.entity.EntityMeteor;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
 public class CommandSpawnMeteor extends CommandBaseAdv {
@@ -33,7 +33,7 @@ public class CommandSpawnMeteor extends CommandBaseAdv {
 		World worldObj = sender.getEntityWorld();
 		if (worldObj == null) throw new CommandException("This command does not function from the commandline");
 		Integer dimId = worldObj.provider.dimensionId;
-		ChunkCoordinates coords = sender.getPlayerCoordinates();
+		ChunkPos coords = sender.getPlayerCoordinates();
 		Double originx = 0.5D + coords.posX;
 		Double originy = 500D;
 		Double originz = 0.5D + coords.posZ;

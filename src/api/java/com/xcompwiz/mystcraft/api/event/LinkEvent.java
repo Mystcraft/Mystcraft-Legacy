@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.api.event;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
@@ -44,7 +44,7 @@ public abstract class LinkEvent extends Event {
 	 */
 	public static class LinkEventAlter extends LinkEvent {
 		/** Set this to alter the link (null until set) */
-		public ChunkCoordinates	spawn;
+		public ChunkPos	spawn;
 		/** Set this to alter the link (null until set) */
 		public Float			rotationYaw;
 

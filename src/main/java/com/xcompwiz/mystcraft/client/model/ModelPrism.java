@@ -5,6 +5,7 @@ import com.xcompwiz.mystcraft.client.render.TexturedSquare;
 import net.minecraft.client.model.PositionTextureVertex;
 import net.minecraft.client.model.TexturedQuad;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModelPrism extends ModelElement {

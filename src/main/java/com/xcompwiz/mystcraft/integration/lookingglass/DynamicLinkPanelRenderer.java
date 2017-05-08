@@ -16,7 +16,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
@@ -40,7 +41,7 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 	public static int					linkColorLoc;
 
 	private Integer						activeDim;
-	private ChunkCoordinates			activeCoords;
+	private ChunkPos					activeCoords;
 	private IWorldView					activeview;
 	public float						colorScale	= 0.5f;
 	public float						waveScale	= 0.5f;
@@ -62,7 +63,7 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 		Integer dimid = linkinfo.getDimensionUID();
 		if (dimid == null) return;
 		if (activeview == null) {
-			ChunkCoordinates spawn = linkinfo.getSpawn();
+			ChunkPos spawn = linkinfo.getSpawn();
 			activeview = apiinst.createWorldView(dimid, spawn, 132, 83);
 			if (activeview != null) {
 				activeview.setAnimator(new CameraAnimatorPivot(activeview.getCamera()));
@@ -159,7 +160,7 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 		return false;
 	}
 
-	private boolean compareCoords(ChunkCoordinates coords, ChunkCoordinates spawn) {
+	private boolean compareCoords(ChunkPos coords, ChunkPos spawn) {
 		if (coords == spawn) return true;
 		if (coords == null && spawn != null) return false;
 		return coords.equals(spawn);

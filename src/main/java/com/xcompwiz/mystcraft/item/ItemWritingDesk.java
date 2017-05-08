@@ -137,7 +137,7 @@ public class ItemWritingDesk extends Item {
 		Block block = world.getBlock(x, y, z);
 		if (world.isAirBlock(x, y, z)) return true;
 		if (block.isReplaceable(world, x, y, z)) return true;
-		if (block == Blocks.snow || block == Blocks.vine || block == Blocks.tallgrass || block == Blocks.deadbush) return true;
+		if (block == Blocks.snow || block == Blocks.vine || block == Blocks.TALLGRASS || block == Blocks.deadbush) return true;
 		return false;
 	}
 }

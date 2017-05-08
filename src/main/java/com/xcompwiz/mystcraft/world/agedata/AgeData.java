@@ -25,7 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
@@ -42,7 +42,7 @@ public class AgeData extends WorldSavedData {
 		public UUID					uuid;
 		public short				instability;
 		public boolean				instabilityEnabled;
-		public ChunkCoordinates		spawn;
+		public ChunkPos		spawn;
 		public List<ItemStack>		pages	= new ArrayList<ItemStack>();
 		public List<String>			symbols	= new ArrayList<String>();
 		public boolean				visited;
@@ -60,7 +60,7 @@ public class AgeData extends WorldSavedData {
 	private short				instability;
 	private boolean				instabilityEnabled;
 	private long				worldtime;
-	private ChunkCoordinates	spawn;
+	private ChunkPos	spawn;
 	private List<ItemStack>		pages			= new ArrayList<ItemStack>();
 	private List<String>		symbols			= new ArrayList<String>();
 	private boolean				visited;
@@ -171,11 +171,11 @@ public class AgeData extends WorldSavedData {
 		return uuid;
 	}
 
-	public ChunkCoordinates getSpawn() {
+	public ChunkPos getSpawn() {
 		return spawn;
 	}
 
-	public void setSpawn(ChunkCoordinates spawn) {
+	public void setSpawn(ChunkPos spawn) {
 		this.spawn = spawn;
 	}
 
@@ -320,7 +320,7 @@ public class AgeData extends WorldSavedData {
 		MapStorage storage = Mystcraft.getStorage(false);
 		String s = getStringID(uid);
 		if (storage == null) throw new RuntimeException("Mystcraft could not retrieve the agedata file.  The storage object is null.");
-		AgeData age = (AgeData) storage.loadData(AgeData.class, s);
+		AgeData age = (AgeData) storage.getOrLoadData(AgeData.class, s);
 		if (age == null) {
 			age = new AgeData(s);
 			storage.setData(s, age);
@@ -336,10 +336,10 @@ public class AgeData extends WorldSavedData {
 	}
 	public static AgeData getAge(int uid, MapStorage storage) {
 		if (!DimensionManager.isDimensionRegistered(uid)) return null;
-		if (DimensionManager.getProviderType(uid) != Mystcraft.providerId) return null;
+		if (DimensionManager.getProviderType(uid) != Mystcraft.dimensionType) return null;
 		if (storage == null) throw new RuntimeException("Mystcraft could not load the agedata file.  The storage object is null.)");
 		String s = getStringID(uid);
-		AgeData age = (AgeData) storage.loadData(AgeData.class, s);
+		AgeData age = (AgeData) storage.getOrLoadData(AgeData.class, s);
 		if (age == null) {
 			age = new AgeData(s);
 			storage.setData(s, age);

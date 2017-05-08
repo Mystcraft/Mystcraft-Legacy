@@ -82,7 +82,7 @@ public class WorldGenLakesAdv extends WorldGeneratorAdv {
 			for (j2 = 0; j2 < 16; ++j2) {
 				for (i2 = 0; i2 < 8; ++i2) {
 					if (aboolean[(i1 * 16 + j2) * 8 + i2]) {
-						placeBlock(worldObj, x + i1, y + i2, z + j2, i2 >= 4 ? Blocks.air : this.block, this.metadata, 2);
+						placeBlock(worldObj, x + i1, y + i2, z + j2, i2 >= 4 ? Blocks.AIR : this.block, this.metadata, 2);
 					}
 				}
 			}

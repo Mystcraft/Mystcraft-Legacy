@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.integration.lookingglass;
 import com.xcompwiz.lookingglass.api.IWorldViewAPI;
 import com.xcompwiz.lookingglass.api.view.IWorldView;
 
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
 
 @SuppressWarnings("deprecation")
 public class LookingGlassWrapper1 implements ILookingGlassWrapper {
@@ -14,7 +14,7 @@ public class LookingGlassWrapper1 implements ILookingGlassWrapper {
 	}
 
 	@Override
-	public IWorldView createWorldView(Integer dimid, ChunkCoordinates spawn, int i, int j) {
+	public IWorldView createWorldView(Integer dimid, ChunkPos spawn, int i, int j) {
 		return apiinst.createWorldView(dimid, spawn, 132, 83);
 	}
 

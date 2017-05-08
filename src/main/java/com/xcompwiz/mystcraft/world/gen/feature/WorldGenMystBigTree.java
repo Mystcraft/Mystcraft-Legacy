@@ -159,7 +159,7 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		for (int i1 = j + leafDistanceLimit; l < i1; l++) {
 			float f = leafSize(l - j);
 			if (f < 0) continue;
-			genTreeLayer(i, l, k, f, (byte) 1, Blocks.leaves);
+			genTreeLayer(i, l, k, f, (byte) 1, Blocks.LEAVES);
 		}
 	}
 
@@ -215,17 +215,17 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		int l = trueBase[2];
 		int ai[] = { i, j, l };
 		int ai1[] = { i, k, l };
-		placeBlockLine(ai, ai1, Blocks.log);
+		placeBlockLine(ai, ai1, Blocks.LOG);
 		if (trunkSize == 2) {
 			ai[0]++;
 			ai1[0]++;
-			placeBlockLine(ai, ai1, Blocks.log);
+			placeBlockLine(ai, ai1, Blocks.LOG);
 			ai[2]++;
 			ai1[2]++;
-			placeBlockLine(ai, ai1, Blocks.log);
+			placeBlockLine(ai, ai1, Blocks.LOG);
 			ai[0]--;
 			ai1[0]--;
-			placeBlockLine(ai, ai1, Blocks.log);
+			placeBlockLine(ai, ai1, Blocks.LOG);
 		}
 	}
 
@@ -242,7 +242,7 @@ public class WorldGenMystBigTree extends WorldGenerator {
 			ai1[0] = i + rand.nextInt(9) - 4;
 			ai1[1] = j - rand.nextInt(range + 1) - 3;
 			ai1[2] = k + rand.nextInt(9) - 4;
-			placeBlockLine(ai, ai1, Blocks.log);
+			placeBlockLine(ai, ai1, Blocks.LOG);
 		}
 	}
 
@@ -256,7 +256,7 @@ public class WorldGenMystBigTree extends WorldGenerator {
 			ai[1] = ai1[3];
 			int k = ai[1] - basePos[1];
 			if (leafNodeNeedsBase(k)) {
-				placeBlockLine(ai, ai2, Blocks.log);
+				placeBlockLine(ai, ai2, Blocks.LOG);
 			}
 		}
 	}
@@ -324,11 +324,11 @@ public class WorldGenMystBigTree extends WorldGenerator {
 	boolean validTreeLocation() {
 		int ai[] = { basePos[0], basePos[1], basePos[2] };
 		Block block = getBlock(basePos[0], basePos[1] - 1, basePos[2]);
-		while (block == Blocks.water || block == Blocks.flowing_water) {
+		while (block == Blocks.WATER || block == Blocks.flowing_water) {
 			--basePos[1];
 			block = getBlock(basePos[0], basePos[1] - 1, basePos[2]);
 		}
-		if (block != Blocks.dirt && block != Blocks.grass) { return false; }
+		if (block != Blocks.DIRT && block != Blocks.GRASS) { return false; }
 		int ai1[] = { basePos[0], (basePos[1] + heightLimit) - 1, basePos[2] };
 		int j = checkBlockLine(ai, ai1);
 		if (j == -1) { return true; }
@@ -338,7 +338,7 @@ public class WorldGenMystBigTree extends WorldGenerator {
 	}
 
 	private Block getBlock(int i, int j, int k) {
-		if (i >> 4 != ((trueBase[0]) >> 4) || k >> 4 != ((trueBase[2]) >> 4)) return Blocks.air;
+		if (i >> 4 != ((trueBase[0]) >> 4) || k >> 4 != ((trueBase[2]) >> 4)) return Blocks.AIR;
 		return worldObj.getBlock(i, j, k);
 	}
 

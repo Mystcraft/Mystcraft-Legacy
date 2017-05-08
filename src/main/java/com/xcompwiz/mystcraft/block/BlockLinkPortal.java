@@ -16,8 +16,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -134,7 +134,7 @@ public class BlockLinkPortal extends BlockBreakable {
 	@Override
 	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5) {
 		if (par1World.isRemote) return;
-		PortalUtils.validatePortal(par1World, new ChunkCoordinates(par2, par3, par4));
+		PortalUtils.validatePortal(par1World, new ChunkPos(par2, par3, par4));
 	}
 
 	/**
@@ -161,12 +161,12 @@ public class BlockLinkPortal extends BlockBreakable {
 		if (worldObj.isRemote) return;
 		TileEntity tileentity = PortalUtils.getTileEntity(worldObj, par2, par3, par4);
 		if (tileentity == null || !(tileentity instanceof TileEntityBookReceptacle)) {
-			worldObj.setBlock(par2, par3, par4, Blocks.air);
+			worldObj.setBlock(par2, par3, par4, Blocks.AIR);
 			return;
 		}
 		TileEntityBookReceptacle container = (TileEntityBookReceptacle) tileentity;
 		if (container.getBook() == null) {
-			worldObj.setBlock(par2, par3, par4, Blocks.air);
+			worldObj.setBlock(par2, par3, par4, Blocks.AIR);
 			return;
 		}
 		ItemStack book = container.getBook();
@@ -192,7 +192,7 @@ public class BlockLinkPortal extends BlockBreakable {
 	public void breakBlock(World world, int i, int j, int k, Block block, int meta) {
 		super.breakBlock(world, i, j, k, block, meta);
 		// if(world.isRemote) return;
-		// validate(world, new ChunkCoordinates(i,j,k));
+		// validate(world, new ChunkPos(i,j,k));
 	}
 
 	//	/**

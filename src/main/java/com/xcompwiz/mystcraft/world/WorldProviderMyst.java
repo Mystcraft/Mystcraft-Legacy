@@ -18,8 +18,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.EnumSkyBlock;
@@ -253,7 +253,7 @@ public class WorldProviderMyst extends WorldProvider {
 		if (y >= 0 && y < 256 && worldObj.getSavedLightValue(EnumSkyBlock.Block, x, y, z) < 10) {
 			Block block = worldObj.getBlock(x, y, z);
 
-			if ((block == Blocks.water || block == Blocks.flowing_water) && worldObj.getBlockMetadata(x, y, z) == 0) {
+			if ((block == Blocks.WATER || block == Blocks.flowing_water) && worldObj.getBlockMetadata(x, y, z) == 0) {
 				if (!reqLand) { return true; }
 
 				boolean var8 = true;
@@ -362,26 +362,26 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	@Override
-	public ChunkCoordinates getSpawnPoint() {
+	public ChunkPos getSpawnPoint() {
 		verifySpawn();
-		return new ChunkCoordinates(agedata.getSpawn());
+		return new ChunkPos(agedata.getSpawn());
 	}
 
 	@Override
-	public ChunkCoordinates getRandomizedSpawnPoint() {
+	public ChunkPos getRandomizedSpawnPoint() {
 		return getSpawnPoint();
 	}
 
 	@Override
-	public ChunkCoordinates getEntrancePortalLocation() {
+	public ChunkPos getEntrancePortalLocation() {
 		verifySpawn();
-		return new ChunkCoordinates(agedata.getSpawn());
+		return new ChunkPos(agedata.getSpawn());
 	}
 
 	private void verifySpawn() {
 		if (agedata.getSpawn() != null) return;
 		if (worldObj.isRemote) {
-			agedata.setSpawn(new ChunkCoordinates(0, 0, 0));
+			agedata.setSpawn(new ChunkPos(0, 0, 0));
 			return;
 		}
 		worldObj.findingSpawnPoint = true;
@@ -408,7 +408,7 @@ public class WorldProviderMyst extends WorldProvider {
 			while (!worldObj.isAirBlock(x, y, z)) {
 				++y;
 			}
-			agedata.setSpawn(new ChunkCoordinates(x, y, z));
+			agedata.setSpawn(new ChunkPos(x, y, z));
 		}
 		worldObj.findingSpawnPoint = false;
 	}

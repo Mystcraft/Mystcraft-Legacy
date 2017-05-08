@@ -18,24 +18,24 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
 public class LinkingAPIDelegate {
 
 	public boolean isLinkAllowed(Entity entity, ILinkInfo linkinfo) {
-		return LinkListenerManager.isLinkPermitted(entity.worldObj, entity, linkinfo);
+		return LinkListenerManager.isLinkPermitted(entity.world, entity, linkinfo);
 	}
 
 	public void linkEntity(Entity entity, ILinkInfo linkInfo) {
-		LinkController.travelEntity(entity.worldObj, entity, linkInfo);
+		LinkController.travelEntity(entity.world, entity, linkInfo);
 	}
 
 	public ILinkInfo createLinkInfoFromPosition(World world, Entity location) {
 		LinkOptions link = new LinkOptions(null);
-		link.setDimensionUID(world.provider.dimensionId);
-		link.setTargetUUID(DimensionUtils.getDimensionUUID(world.provider.dimensionId));
-		link.setSpawn(new ChunkCoordinates((int) Math.floor(location.posX), (int) Math.floor(location.posY), (int) Math.floor(location.posZ)));
+		link.setDimensionUID(world.provider.getDimension());
+		link.setTargetUUID(DimensionUtils.getDimensionUUID(world.provider.getDimension()));
+		link.setSpawn(new ChunkPos((int) Math.floor(location.posX), (int) Math.floor(location.posZ)));
 		link.setSpawnYaw(location.rotationYaw);
 		link.setDisplayName(DimensionUtils.getDimensionName(world.provider));
 		return link;

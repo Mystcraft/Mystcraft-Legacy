@@ -15,9 +15,9 @@ public class ProviderDecayBlack implements IInstabilityProvider {
 	public void addEffects(InstabilityDirector controller, Integer level) {
 		for (int i = 0; i < level; ++i) {
 			EffectDecayBasic effect = new EffectDecayBasic(controller, DecayHandler.BLACK, 0, 12);
-			effect.banMaterial(Material.air);
-			effect.banMaterial(Material.water);
-			effect.banMaterial(Material.lava);
+			effect.banMaterial(Material.AIR);
+			effect.banMaterial(Material.WATER);
+			effect.banMaterial(Material.LAVA);
 			controller.registerEffect(effect);
 			controller.registerEffect(new EffectExtraTicks(ModBlocks.decay, DecayHandler.BLACK));
 		}

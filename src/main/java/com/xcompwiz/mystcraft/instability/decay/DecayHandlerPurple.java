@@ -17,7 +17,7 @@ public class DecayHandlerPurple extends DecayHandlerSpreading {
 	@Override
 	protected int getConversionDifficulty(World world, int i, int j, int k) {
 		Block block = world.getBlock(i, j, k);
-		if (block == Blocks.air) return 8;
+		if (block == Blocks.AIR) return 8;
 		if (block == ModBlocks.decay) return 5;
 		if (block.getMaterial().isLiquid()) return 3;
 		float resist = block.getExplosionResistance(null, world, i, j, k, i, j, k);

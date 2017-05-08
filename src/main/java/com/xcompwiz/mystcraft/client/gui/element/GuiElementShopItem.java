@@ -45,7 +45,7 @@ public class GuiElementShopItem extends GuiElement implements IGuiOnClickHandler
 		panel.addElement(new GuiElementIcon(new GuiIconItemStack(this, "itemstack"), paddingX, paddingY, (int) itemSizeX, (int) itemSizeX));
 		addElement(new GuiElementLabel(this, "name", 0, ySize - buttonY - labelY - labelY, xSize, labelY, 0x7F000000, 0xFFDDDDDD));
 		addElement(new GuiElementLabel(this, "price", 0, ySize - buttonY - labelY, xSize - labelY, labelY, 0x7F000000, 0xFF88FF88));
-		addElement(new GuiElementIcon(new GuiIconItemStack(new ItemStack(Items.emerald)), xSize - labelY, ySize - buttonY - labelY, labelY, labelY));
+		addElement(new GuiElementIcon(new GuiIconItemStack(new ItemStack(Items.EMERALD)), xSize - labelY, ySize - buttonY - labelY, labelY, labelY));
 		addElement(createButton(this, "Buy", 0, ySize - buttonY, xSize, buttonY));
 	}
 

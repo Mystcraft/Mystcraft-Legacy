@@ -64,7 +64,7 @@ public class GuiElementTextField extends GuiElement {
 	public GuiElementTextField(IGuiTextProvider textprovider, IGuiOnTextChange changehandler, String id, int guiLeft, int guiTop, int xSize, int ySize) {
 		super(guiLeft, guiTop, xSize, ySize);
 		this.id = id;
-		this.fontRenderer = mc.fontRenderer;
+		this.fontRenderer = mc.fontRendererObj;
 		this.textprovider = textprovider;
 		this.textchangehandler = changehandler;
 	}
@@ -156,7 +156,7 @@ public class GuiElementTextField extends GuiElement {
 	public void writeText(String par1Str) {
 		if (this.isReadOnly()) return;
 		String s1 = "";
-		String s2 = ChatAllowedCharacters.filerAllowedCharacters(par1Str);
+		String s2 = ChatAllowedCharacters.filterAllowedCharacters(par1Str);
 		int i = this.cursorPosition < this.selectionEnd ? this.cursorPosition : this.selectionEnd;
 		int j = this.cursorPosition < this.selectionEnd ? this.selectionEnd : this.cursorPosition;
 		int k = this.maxLength - Math.min(this.getText().length(), this.maxLength) - (i - this.selectionEnd);

@@ -18,7 +18,7 @@ public class SymbolRavines extends SymbolBase {
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
-		MapGenAdvanced generator = new MapGenRavineMyst(seed, Blocks.air);
+		MapGenAdvanced generator = new MapGenRavineMyst(seed, Blocks.AIR);
 		controller.registerInterface(new TerrainAlteration(generator));
 	}
 

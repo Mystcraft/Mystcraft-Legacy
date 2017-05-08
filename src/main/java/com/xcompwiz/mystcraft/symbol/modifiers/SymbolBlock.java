@@ -7,8 +7,8 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 public class SymbolBlock extends SymbolBase {
 
@@ -26,7 +26,7 @@ public class SymbolBlock extends SymbolBase {
 	private static String formatted(BlockDescriptor blockDescriptor) {
 		String name = getBlockAsItem(blockDescriptor).getDisplayName();
 		if (name.endsWith("Block")) name = name.substring(0, name.length() - "Block".length()).trim();
-		name = StatCollector.translateToLocalFormatted("myst.symbol.block.wrapper", name);
+		name = I18n.format("myst.symbol.block.wrapper", name);
 		return name;
 	}
 

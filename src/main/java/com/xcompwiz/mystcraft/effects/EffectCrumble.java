@@ -7,95 +7,77 @@ import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 public class EffectCrumble implements IEnvironmentalEffect {
-	public static class BlockSpec {
-		Block	block		= null;
-		int		metadata	= 0;
-
-		public BlockSpec(Block block, int metadata) {
-			this.block = block;
-			this.metadata = metadata;
-		}
-	}
-
 	private int													updateLCG	= (new Random()).nextInt();
-	private static HashMap<Block, HashMap<Integer, BlockSpec>>	map;
+	private static HashMap<IBlockState, IBlockState>	map;
 
 	public static void initMappings() {
 		if (map != null) return;
-		map = new HashMap<Block, HashMap<Integer, BlockSpec>>();
-		registerMapping(Blocks.coal_ore, Blocks.stone);
-		registerMapping(Blocks.iron_ore, Blocks.stone);
-		registerMapping(Blocks.redstone_ore, Blocks.stone);
-		registerMapping(Blocks.lit_redstone_ore, Blocks.stone);
-		registerMapping(Blocks.gold_ore, Blocks.stone);
-		registerMapping(Blocks.diamond_ore, Blocks.coal_ore);
-		registerMapping(Blocks.lapis_ore, Blocks.stone);
+		map = new HashMap<IBlockState, IBlockState>();
+		registerMapping(Blocks.COAL_ORE, Blocks.STONE);
+		registerMapping(Blocks.IRON_ORE, Blocks.STONE);
+		registerMapping(Blocks.REDSTONE_ORE, Blocks.STONE);
+		registerMapping(Blocks.LIT_REDSTONE_ORE, Blocks.STONE);
+		registerMapping(Blocks.GOLD_ORE, Blocks.STONE);
+		registerMapping(Blocks.DIAMOND_ORE, Blocks.COAL_ORE);
+		registerMapping(Blocks.LAPIS_ORE, Blocks.STONE);
 
-		registerMapping(Blocks.ice, Blocks.water);
+		registerMapping(Blocks.ICE, Blocks.WATER);
 
-		registerMapping(Blocks.glowstone, Blocks.glass);
-		registerMapping(ModBlocks.crystal, Blocks.glass);
+		registerMapping(Blocks.GLOWSTONE, Blocks.GLASS);
+		registerMapping(ModBlocks.crystal, Blocks.GLASS);
 
-		registerMapping(Blocks.nether_brick, Blocks.netherrack);
-		registerMapping(Blocks.quartz_ore, Blocks.netherrack);
-		registerMapping(Blocks.netherrack, Blocks.soul_sand);
-		registerMapping(Blocks.soul_sand, Blocks.gravel);
+		registerMapping(Blocks.NETHER_BRICK, Blocks.NETHERRACK);
+		registerMapping(Blocks.QUARTZ_ORE, Blocks.NETHERRACK);
+		registerMapping(Blocks.NETHERRACK, Blocks.SOUL_SAND);
+		registerMapping(Blocks.SOUL_SAND, Blocks.GRAVEL);
 
-		registerMapping(Blocks.stonebrick, Blocks.stone);
-		registerMapping(Blocks.stone, Blocks.gravel);
-		registerMapping(Blocks.cobblestone, Blocks.gravel);
-		registerMapping(Blocks.grass, Blocks.dirt);
-		registerMapping(Blocks.mycelium, Blocks.dirt);
-		registerMapping(Blocks.brown_mushroom_block, Blocks.dirt);
-		registerMapping(Blocks.red_mushroom_block, Blocks.dirt);
-		registerMapping(Blocks.clay, Blocks.dirt);
+		registerMapping(Blocks.STONEBRICK, Blocks.STONE);
+		registerMapping(Blocks.STONE, Blocks.GRAVEL);
+		registerMapping(Blocks.COBBLESTONE, Blocks.GRAVEL);
+		registerMapping(Blocks.GRASS, Blocks.DIRT);
+		registerMapping(Blocks.MYCELIUM, Blocks.DIRT);
+		registerMapping(Blocks.BROWN_MUSHROOM_BLOCK, Blocks.DIRT);
+		registerMapping(Blocks.RED_MUSHROOM_BLOCK, Blocks.DIRT);
+		registerMapping(Blocks.CLAY, Blocks.DIRT);
 
-		registerMapping(Blocks.gravel, Blocks.sand);
-		registerMapping(Blocks.dirt, Blocks.sand);
-		registerMapping(Blocks.glass, Blocks.sand);
-		registerMapping(Blocks.sandstone, Blocks.sand);
+		registerMapping(Blocks.GRAVEL, Blocks.SAND);
+		registerMapping(Blocks.DIRT, Blocks.SAND);
+		registerMapping(Blocks.GLASS, Blocks.SAND);
+		registerMapping(Blocks.SANDSTONE, Blocks.SAND);
 
-		registerMapping(Blocks.log, Blocks.planks);
-		registerMapping(Blocks.log2, Blocks.planks);
-		registerMapping(Blocks.planks, Blocks.dirt);
+		registerMapping(Blocks.LOG, Blocks.PLANKS);
+		registerMapping(Blocks.LOG2, Blocks.PLANKS);
+		registerMapping(Blocks.PLANKS, Blocks.DIRT);
 
-		registerMapping(Blocks.wool, Blocks.wool);
-		registerMapping(Blocks.wool, 0, Blocks.web, 0);
+		registerMapping(Blocks.WOOL, Blocks.WEB);
+		//registerMapping(Blocks.WOOL, Blocks.WOOL);
+		//registerMapping(Blocks.WOOL, 0, Blocks.WEB, 0);
 
-		registerMapping(Blocks.sapling, Blocks.air);
-		registerMapping(Blocks.web, Blocks.air);
-		registerMapping(Blocks.leaves, Blocks.air);
-		registerMapping(Blocks.tallgrass, Blocks.air);
-		registerMapping(Blocks.brown_mushroom, Blocks.air);
-		registerMapping(Blocks.red_mushroom, Blocks.air);
-		registerMapping(Blocks.red_flower, Blocks.air);
-		registerMapping(Blocks.yellow_flower, Blocks.air);
+		registerMapping(Blocks.SAPLING, Blocks.AIR);
+		registerMapping(Blocks.WEB, Blocks.AIR);
+		registerMapping(Blocks.LEAVES, Blocks.AIR);
+		registerMapping(Blocks.TALLGRASS, Blocks.AIR);
+		registerMapping(Blocks.BROWN_MUSHROOM, Blocks.AIR);
+		registerMapping(Blocks.RED_MUSHROOM, Blocks.AIR);
+		registerMapping(Blocks.RED_FLOWER, Blocks.AIR);
+		registerMapping(Blocks.YELLOW_FLOWER, Blocks.AIR);
 	}
 
-	public static void registerMapping(Block block, Block block2) {
-		for (int i = 0; i < 16; ++i)
-			registerMapping(block, i, block2, 0);
+	public static boolean registerMapping(Block block, Block block2) {
+		return registerMapping(block.getBlockState().getBaseState(), block2.getBlockState().getBaseState());
 	}
-
-	public static boolean registerMapping(Block block, int metadata, Block block2, int metadata2) {
+	
+	public static boolean registerMapping(IBlockState block, IBlockState block2) {
 		if (map == null) return false;
-		HashMap<Integer, BlockSpec> metaMap = getBlockMap(block);
-		metaMap.put(metadata, new BlockSpec(block2, metadata2));
+		map.put(block, block2);
 		return true;
-	}
-
-	private static HashMap<Integer, BlockSpec> getBlockMap(Block block) {
-		HashMap<Integer, BlockSpec> map2 = map.get(block);
-		if (map2 == null) {
-			map2 = new HashMap<Integer, BlockSpec>();
-			map.put(block, map2);
-		}
-		return map2;
 	}
 
 	@Override
@@ -112,17 +94,14 @@ public class EffectCrumble implements IEnvironmentalEffect {
 		x = chunkX + (coords & 15);
 		z = chunkZ + (coords >> 8 & 15);
 		y = (coords >> 16 & 255);
-		crumbleBlock(worldObj, x, y, z);
+		crumbleBlock(worldObj, new BlockPos(x, y, z));
 	}
 
-	private static void crumbleBlock(World worldObj, int x, int y, int z) {
-		Block block = worldObj.getBlock(x, y, z);
-		int metadata = worldObj.getBlockMetadata(x, y, z);
-		HashMap<Integer, BlockSpec> map2 = map.get(block);
-		if (map2 == null) return;
-		BlockSpec mapping = map2.get(metadata);
+	private static void crumbleBlock(World worldObj, BlockPos pos) {
+		IBlockState block = worldObj.getBlockState(pos);
+		IBlockState mapping = map.get(block);
 		if (mapping != null) {
-			worldObj.setBlock(x, y, z, mapping.block, mapping.metadata, 2);
+			worldObj.setBlockState(pos, mapping);
 		}
 	}
 }

@@ -10,6 +10,7 @@ import com.xcompwiz.mystcraft.words.DrawableWordManager;
 import com.xcompwiz.util.VectorPool;
 
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RenderAPIDelegate {

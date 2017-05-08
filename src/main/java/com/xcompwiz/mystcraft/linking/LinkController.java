@@ -20,8 +20,8 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -35,7 +35,7 @@ public class LinkController {
 		info = info.clone();
 		Integer dimension = info.getDimensionUID();
 		if (dimension == null) return false;
-		ChunkCoordinates spawn = info.getSpawn();
+		ChunkPos spawn = info.getSpawn();
 		float yaw = info.getSpawnYaw();
 		if (!LinkListenerManager.isLinkPermitted(world, entity, info)) return false;
 		MinecraftServer mcServer = Mystcraft.sidedProxy.getMCServer();
@@ -59,7 +59,7 @@ public class LinkController {
 		return true;
 	}
 
-	private static Entity teleportEntity(World newworld, Entity entity, int dimension, ChunkCoordinates spawn, float yaw, ILinkInfo info) {
+	private static Entity teleportEntity(World newworld, Entity entity, int dimension, ChunkPos spawn, float yaw, ILinkInfo info) {
 		World origin = entity.worldObj;
 		if (!LinkListenerManager.isLinkPermitted(origin, entity, info)) { return null; }
 		Entity mount = entity.ridingEntity;

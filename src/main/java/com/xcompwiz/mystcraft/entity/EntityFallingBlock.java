@@ -59,7 +59,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	public static void cascade(World world, int i, int j, int k) {
-		if (world.getBlock(i, j, k) == Blocks.leaves) {
+		if (world.getBlock(i, j, k) == Blocks.LEAVES) {
 			drop(world, i, j, k);
 		}
 	}
@@ -70,7 +70,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 		Material material = world.getBlock(i, j, k).getMaterial();
 		while (material == Material.lava || material == Material.water) {
 			flag = true;
-			world.setBlock(i, j, k, Blocks.air, 0, 2);
+			world.setBlock(i, j, k, Blocks.AIR, 0, 2);
 			++j;
 			material = world.getBlock(i, j, k).getMaterial();
 			return;
@@ -89,7 +89,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 			data.setTag(NBT_TE, tedata);
 		}
 		EntityFallingBlock entityfalling = new EntityFallingBlock(world, i + 0.5F, j + 0.5F, k + 0.5F, world.getBlock(i, j, k), world.getBlockMetadata(i, j, k), data);
-		world.setBlock(i, j, k, Blocks.air, 0, 2);
+		world.setBlock(i, j, k, Blocks.AIR, 0, 2);
 		world.spawnEntityInWorld(entityfalling);
 	}
 
@@ -292,7 +292,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 						if (k1 >= -30000000 && k1 < 30000000 && l1 >= -30000000 && l1 < 30000000) {
 							block = this.worldObj.getBlock(k1, i2, l1);
 						} else {
-							block = Blocks.stone;
+							block = Blocks.STONE;
 						}
 
 						block.addCollisionBoxesToList(this.worldObj, k1, i2, l1, bounding, collidingBoundingBoxes, this);

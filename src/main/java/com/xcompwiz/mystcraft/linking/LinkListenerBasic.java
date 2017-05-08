@@ -25,7 +25,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -67,7 +67,7 @@ public class LinkListenerBasic {
 		ILinkInfo info = event.info;
 
 		if (info.getFlag(LinkPropertyAPI.FLAG_RELATIVE)) {
-			ChunkCoordinates origin = world.getSpawnPoint();
+			ChunkPos origin = world.getSpawnPoint();
 			float dx = (int) (entity.posX - origin.posX);
 			float dy = (int) (entity.posY - origin.posY);
 			float dz = (int) (entity.posZ - origin.posZ);
@@ -128,9 +128,9 @@ public class LinkListenerBasic {
 		World world = event.destination;
 		ILinkInfo info = event.info;
 
-		ChunkCoordinates spawn = info.getSpawn();
+		ChunkPos spawn = info.getSpawn();
 		if (info.getFlag(LinkPropertyAPI.FLAG_GENERATE_PLATFORM) && world.isAirBlock(spawn.posX, spawn.posY - 1, spawn.posZ) && world.isAirBlock(spawn.posX, spawn.posY - 2, spawn.posZ)) {
-			world.setBlock(spawn.posX, spawn.posY - 1, spawn.posZ, Blocks.stone, 0, 3);
+			world.setBlock(spawn.posX, spawn.posY - 1, spawn.posZ, Blocks.STONE, 0, 3);
 		}
 		if (entity instanceof EntityMinecart) {
 			entity.motionX = 0;

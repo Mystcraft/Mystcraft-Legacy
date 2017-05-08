@@ -14,14 +14,15 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemPage extends Item implements IItemWritable, IItemPageProvider, IItemOnLoadable {
@@ -47,14 +48,14 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 	@Override
 	public String getItemStackDisplayName(ItemStack itemstack) {
 		if (itemstack.stackTagCompound != null) {
-			if (Page.isLinkPanel(itemstack)) return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack) + ".panel.name");
-			if (Page.isBlank(itemstack)) return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack) + ".blank.name");
+			if (Page.isLinkPanel(itemstack)) return I18n.format(this.getUnlocalizedName(itemstack) + ".panel.name");
+			if (Page.isBlank(itemstack)) return I18n.format(this.getUnlocalizedName(itemstack) + ".blank.name");
 			String symbolId = Page.getSymbol(itemstack);
 			IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolId);
-			if (symbol == null) { return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack) + ".symbol.name") + " (Unknown: " + symbolId + ")"; }
-			return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack) + ".symbol.name") + " (" + symbol.displayName() + ")";
+			if (symbol == null) { return I18n.format(this.getUnlocalizedName(itemstack) + ".symbol.name") + " (Unknown: " + symbolId + ")"; }
+			return I18n.format(this.getUnlocalizedName(itemstack) + ".symbol.name") + " (" + symbol.displayName() + ")";
 		}
-		return StatCollector.translateToLocal(this.getUnlocalizedName(itemstack) + ".blank.name");
+		return I18n.format(this.getUnlocalizedName(itemstack) + ".blank.name");
 	}
 
 	@Override

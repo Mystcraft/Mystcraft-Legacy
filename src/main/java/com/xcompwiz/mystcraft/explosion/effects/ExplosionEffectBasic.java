@@ -4,8 +4,8 @@ import java.util.Random;
 
 import com.xcompwiz.mystcraft.explosion.ExplosionAdvanced;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 
 public class ExplosionEffectBasic extends ExplosionEffect {
@@ -15,10 +15,10 @@ public class ExplosionEffectBasic extends ExplosionEffect {
 	private ExplosionEffectBasic() {}
 
 	@Override
-	public void apply(World worldObj, ExplosionAdvanced explosion, ChunkPosition pos, Random rand, boolean isClient) {
-		int x = pos.chunkPosX;
-		int y = pos.chunkPosY;
-		int z = pos.chunkPosZ;
+	public void apply(World worldObj, ExplosionAdvanced explosion, BlockPos pos, Random rand, boolean isClient) {
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
 
 		if (isClient) {
 			double var8 = (x + worldObj.rand.nextFloat());

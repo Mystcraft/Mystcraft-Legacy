@@ -15,9 +15,9 @@ import com.xcompwiz.util.Vector;
 import com.xcompwiz.util.VectorPool;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 
 public class GuiInkMixer extends GuiContainer {
@@ -53,7 +53,7 @@ public class GuiInkMixer extends GuiContainer {
 	@Override
 	protected void keyTyped(char c, int i) {
 		if (i == 1 || (i == mc.gameSettings.keyBindInventory.getKeyCode())) {
-			mc.thePlayer.closeScreen();
+			mc.player.closeScreen();
 		} else {
 			super.keyTyped(c, i);
 		}
@@ -64,13 +64,13 @@ public class GuiInkMixer extends GuiContainer {
 		int x = i - basinX - guiLeft;
 		int y = j - basinY - guiTop;
 		if (x * x + y * y < basinR) {
-			if (mc.thePlayer.inventory.getItemStack() != null) {
+			if (mc.player.inventory.getItemStack() != null) {
 				// NOTE: We're client side, so we need to communicate what we want done to the server
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setBoolean(ContainerInkMixer.Messages.Consume, true);
 				nbttagcompound.setBoolean("Single", (k == 1));
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-				container.processMessage(mc.thePlayer, nbttagcompound);
+				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.player.openContainer.windowId, nbttagcompound));
+				container.processMessage(mc.player, nbttagcompound);
 				return;
 			}
 		}
@@ -88,7 +88,7 @@ public class GuiInkMixer extends GuiContainer {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), guiLeft + 8, guiTop + (ySize - 96) + 2, 0x404040);
+		fontRendererObj.drawString(I18n.format("container.inventory"), guiLeft + 8, guiTop + (ySize - 96) + 2, 0x404040);
 	}
 
 	private void renderTank(int left, int top, int width, int height) {

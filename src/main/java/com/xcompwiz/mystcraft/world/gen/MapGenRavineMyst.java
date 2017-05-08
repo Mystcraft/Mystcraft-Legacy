@@ -113,7 +113,7 @@ public class MapGenRavineMyst extends MapGenAdvanced {
 								int coords = localY << 8 | localZ << 4 | localX;
 
 								if (localY >= 0 && localY < layers) {
-									if (blocks[coords] == Blocks.water || blocks[coords] == Blocks.water) {
+									if (blocks[coords] == Blocks.WATER || blocks[coords] == Blocks.WATER) {
 										foundwater = true;
 									}
 

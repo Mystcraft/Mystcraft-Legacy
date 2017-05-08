@@ -41,7 +41,7 @@ public class RecipeLinkingbook implements IRecipe {
 	}
 
 	private boolean isValidCover(ItemStack itemstack) {
-		return itemstack.getItem() == Items.leather;
+		return itemstack.getItem() == Items.LEATHER;
 	}
 
 	@Override

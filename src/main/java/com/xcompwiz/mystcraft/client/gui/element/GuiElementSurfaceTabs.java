@@ -118,20 +118,20 @@ public class GuiElementSurfaceTabs extends GuiElement {
 			if (pagesource != null) {
 				String name = null;
 				if (pagesource.getItem() instanceof IItemRenameable) {
-					name = ((IItemRenameable) pagesource.getItem()).getDisplayName(mc.thePlayer, pagesource);
+					name = ((IItemRenameable) pagesource.getItem()).getDisplayName(mc.player, pagesource);
 				} else {
 					name = pagesource.getDisplayName();
 				}
 				if (name != null) {
 					GL11.glPushMatrix();
 					float scale = 1;
-					int j = mc.fontRenderer.getStringWidth(name) + 16;
+					int j = mc.fontRendererObj.getStringWidth(name) + 16;
 					if (j > xSizeTab) {
 						scale = (float) xSizeTab / (float) j;
 					}
 					GL11.glTranslatef(guiLeft + 4, tabY + 25, 0);
 					GL11.glScalef(scale, scale, 1);
-					mc.fontRenderer.drawString(name, 0, 0, 0x404040);
+					mc.fontRendererObj.drawString(name, 0, 0, 0x404040);
 					GL11.glPopMatrix();
 				}
 			}

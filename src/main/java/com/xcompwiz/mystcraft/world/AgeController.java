@@ -47,8 +47,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -323,9 +323,9 @@ public class AgeController implements AgeDirector {
 		if (!(world instanceof WorldServer)) return;
 		ChunkProfiler profiler = getChunkProfiler();
 
-		ChunkCoordinates chunkcoordinates = world.getSpawnPoint();
-		chunkcoordinates.posX >>= 4;
-		chunkcoordinates.posZ >>= 4;
+		ChunkPos ChunkPos = world.getSpawnPoint();
+		ChunkPos.posX >>= 4;
+		ChunkPos.posZ >>= 4;
 
 		IChunkProvider chunkgen = ((WorldServer) this.world).theChunkProviderServer;
 		IChunkLoader chunkloader = ((WorldServer) this.world).theChunkProviderServer.currentChunkLoader;
@@ -334,8 +334,8 @@ public class AgeController implements AgeDirector {
 		int chunksneeded = MINCHUNKS - profiler.getCount();
 		while (chunksneeded > 0 && ChunkProfilerManager.getSize() < chunksneeded) {
 			iter.step();
-			int chunkX = chunkcoordinates.posX + iter.x;
-			int chunkZ = chunkcoordinates.posZ + iter.y;
+			int chunkX = ChunkPos.posX + iter.x;
+			int chunkZ = ChunkPos.posZ + iter.y;
 			if (safeLoadChunk(chunkloader, world, chunkX, chunkZ) == null) {
 				chunkgen.loadChunk(chunkX, chunkZ);
 			}

@@ -72,27 +72,27 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
 			this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 10, 0);
 		}
 
-		this.fillWithBlocks(worldObj, boundingbox, 1, 1, 1, 8, 6, 6, Blocks.air, Blocks.air, false); // Inner air
-		this.fillWithBlocks(worldObj, boundingbox, 1, 0, 1, 7, 0, 5, Blocks.planks, Blocks.planks, false); // Floor
-		this.fillWithBlocks(worldObj, boundingbox, 0, 0, 0, 0, 3, 5, Blocks.cobblestone, Blocks.cobblestone, false); // Side
+		this.fillWithBlocks(worldObj, boundingbox, 1, 1, 1, 8, 6, 6, Blocks.AIR, Blocks.AIR, false); // Inner air
+		this.fillWithBlocks(worldObj, boundingbox, 1, 0, 1, 7, 0, 5, Blocks.PLANKS, Blocks.PLANKS, false); // Floor
+		this.fillWithBlocks(worldObj, boundingbox, 0, 0, 0, 0, 3, 5, Blocks.COBBLESTONE, Blocks.COBBLESTONE, false); // Side
 																														// wall
-		this.fillWithBlocks(worldObj, boundingbox, 0, 0, 0, 7, 3, 0, Blocks.cobblestone, Blocks.cobblestone, false); // Front
+		this.fillWithBlocks(worldObj, boundingbox, 0, 0, 0, 7, 3, 0, Blocks.COBBLESTONE, Blocks.COBBLESTONE, false); // Front
 																														// wall
-		this.fillWithBlocks(worldObj, boundingbox, 1, 2, 0, 7, 2, 0, Blocks.planks, Blocks.planks, false); // Block line
+		this.fillWithBlocks(worldObj, boundingbox, 1, 2, 0, 7, 2, 0, Blocks.PLANKS, Blocks.PLANKS, false); // Block line
 
-		this.fillWithBlocks(worldObj, boundingbox, 8, 0, 0, 8, 3, 5, Blocks.cobblestone, Blocks.cobblestone, false); // Windowed
+		this.fillWithBlocks(worldObj, boundingbox, 8, 0, 0, 8, 3, 5, Blocks.COBBLESTONE, Blocks.COBBLESTONE, false); // Windowed
 																														// Wall
-		this.fillWithBlocks(worldObj, boundingbox, 8, 2, 1, 8, 2, 5, Blocks.planks, Blocks.planks, false); // Block line
-		this.fillWithBlocks(worldObj, boundingbox, 8, 3, 2, 8, 3, 4, Blocks.planks, Blocks.planks, false); // Block line
+		this.fillWithBlocks(worldObj, boundingbox, 8, 2, 1, 8, 2, 5, Blocks.PLANKS, Blocks.PLANKS, false); // Block line
+		this.fillWithBlocks(worldObj, boundingbox, 8, 3, 2, 8, 3, 4, Blocks.PLANKS, Blocks.PLANKS, false); // Block line
 
-		this.fillWithBlocks(worldObj, boundingbox, 0, 0, 6, 8, 3, 6, Blocks.cobblestone, Blocks.cobblestone, false); // Back
+		this.fillWithBlocks(worldObj, boundingbox, 0, 0, 6, 8, 3, 6, Blocks.COBBLESTONE, Blocks.COBBLESTONE, false); // Back
 																														// Wall
 
 		// Roof
-		this.fillWithBlocks(worldObj, boundingbox, 0, 6, 3, 8, 6, 3, Blocks.planks, Blocks.planks, false);
-		this.fillWithBlocks(worldObj, boundingbox, 0, 5, 2, 8, 5, 4, Blocks.planks, Blocks.planks, false);
-		this.fillWithBlocks(worldObj, boundingbox, 0, 4, 1, 8, 4, 5, Blocks.planks, Blocks.planks, false);
-		this.fillWithBlocks(worldObj, boundingbox, 2, 4, 2, 6, 4, 4, Blocks.air, Blocks.air, false); // Inner air
+		this.fillWithBlocks(worldObj, boundingbox, 0, 6, 3, 8, 6, 3, Blocks.PLANKS, Blocks.PLANKS, false);
+		this.fillWithBlocks(worldObj, boundingbox, 0, 5, 2, 8, 5, 4, Blocks.PLANKS, Blocks.PLANKS, false);
+		this.fillWithBlocks(worldObj, boundingbox, 0, 4, 1, 8, 4, 5, Blocks.PLANKS, Blocks.PLANKS, false);
+		this.fillWithBlocks(worldObj, boundingbox, 2, 4, 2, 6, 4, 4, Blocks.AIR, Blocks.AIR, false); // Inner air
 		int stairf = this.getMetadataWithOffset(Blocks.oak_stairs, 3);
 		int stairb = this.getMetadataWithOffset(Blocks.oak_stairs, 2);
 		for (int i = -1; i < 3; ++i) {
@@ -103,16 +103,16 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
 		}
 
 		// Windows
-		this.placeBlockAtCurrentPosition(worldObj, Blocks.glass_pane, 0, 2, 2, 0, boundingbox);
-		this.placeBlockAtCurrentPosition(worldObj, Blocks.glass_pane, 0, 3, 2, 0, boundingbox);
-		this.placeBlockAtCurrentPosition(worldObj, Blocks.glass_pane, 0, 8, 2, 2, boundingbox);
-		this.placeBlockAtCurrentPosition(worldObj, Blocks.glass_pane, 0, 8, 2, 3, boundingbox);
-		this.placeBlockAtCurrentPosition(worldObj, Blocks.glass_pane, 0, 8, 2, 4, boundingbox);
+		this.placeBlockAtCurrentPosition(worldObj, Blocks.GLASS_pane, 0, 2, 2, 0, boundingbox);
+		this.placeBlockAtCurrentPosition(worldObj, Blocks.GLASS_pane, 0, 3, 2, 0, boundingbox);
+		this.placeBlockAtCurrentPosition(worldObj, Blocks.GLASS_pane, 0, 8, 2, 2, boundingbox);
+		this.placeBlockAtCurrentPosition(worldObj, Blocks.GLASS_pane, 0, 8, 2, 3, boundingbox);
+		this.placeBlockAtCurrentPosition(worldObj, Blocks.GLASS_pane, 0, 8, 2, 4, boundingbox);
 
 		// Door
 		this.placeDoorAtCurrentPosition(worldObj, boundingbox, rand, 6, 1, 0, this.getMetadataWithOffset(Blocks.wooden_door, 1));
-		if (this.getBlockAtCurrentPosition(worldObj, 6, 0, -1, boundingbox) == Blocks.air && this.getBlockAtCurrentPosition(worldObj, 6, -1, -1, boundingbox) != Blocks.air) {
-			this.placeBlockAtCurrentPosition(worldObj, Blocks.stone_stairs, this.getMetadataWithOffset(Blocks.stone_stairs, 3), 6, 0, -1, boundingbox);
+		if (this.getBlockAtCurrentPosition(worldObj, 6, 0, -1, boundingbox) == Blocks.AIR && this.getBlockAtCurrentPosition(worldObj, 6, -1, -1, boundingbox) != Blocks.AIR) {
+			this.placeBlockAtCurrentPosition(worldObj, Blocks.STONE_stairs, this.getMetadataWithOffset(Blocks.STONE_stairs, 3), 6, 0, -1, boundingbox);
 		}
 
 		// Internal
@@ -126,16 +126,16 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
 		this.placeBlockAtCurrentPosition(worldObj, Blocks.oak_stairs, this.getMetadataWithOffset(Blocks.oak_stairs, 3), 7, 1, 5, boundingbox);
 		this.placeBlockAtCurrentPosition(worldObj, Blocks.oak_stairs, this.getMetadataWithOffset(Blocks.oak_stairs, 0), 7, 1, 4, boundingbox);
 
-		this.placeBlockAtCurrentPosition(worldObj, Blocks.planks, 0, 1, 1, 1, boundingbox);
-		this.placeBlockAtCurrentPosition(worldObj, Blocks.planks, 0, 1, 1, 2, boundingbox);
+		this.placeBlockAtCurrentPosition(worldObj, Blocks.PLANKS, 0, 1, 1, 1, boundingbox);
+		this.placeBlockAtCurrentPosition(worldObj, Blocks.PLANKS, 0, 1, 1, 2, boundingbox);
 
 		this.placeBlockAtCurrentPosition(worldObj, Blocks.bookshelf, 0, 1, 1, 3, boundingbox);
 		this.placeBlockAtCurrentPosition(worldObj, Blocks.bookshelf, 0, 1, 2, 3, boundingbox);
 		this.placeBlockAtCurrentPosition(worldObj, Blocks.bookshelf, 0, 1, 1, 4, boundingbox);
 		this.placeBlockAtCurrentPosition(worldObj, Blocks.bookshelf, 0, 1, 2, 4, boundingbox);
 
-		this.placeBlockAtCurrentPosition(worldObj, Blocks.planks, 0, 1, 1, 5, boundingbox);
-		this.placeBlockAtCurrentPosition(worldObj, Blocks.planks, 0, 1, 2, 5, boundingbox);
+		this.placeBlockAtCurrentPosition(worldObj, Blocks.PLANKS, 0, 1, 1, 5, boundingbox);
+		this.placeBlockAtCurrentPosition(worldObj, Blocks.PLANKS, 0, 1, 2, 5, boundingbox);
 
 		this.placeBlockAtCurrentPosition(worldObj, Blocks.bookshelf, 0, 2, 1, 5, boundingbox);
 		this.placeBlockAtCurrentPosition(worldObj, Blocks.bookshelf, 0, 2, 2, 5, boundingbox);
@@ -150,7 +150,7 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
 		for (int i = 0; i < 7; ++i) {
 			for (int j = 0; j < 9; ++j) {
 				this.clearCurrentPositionBlocksUpwards(worldObj, j, 7, i, boundingbox);
-				this.func_151554_b(worldObj, Blocks.cobblestone, 0, j, -1, i, boundingbox);
+				this.func_151554_b(worldObj, Blocks.COBBLESTONE, 0, j, -1, i, boundingbox);
 			}
 		}
 

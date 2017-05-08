@@ -182,13 +182,13 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 					int coords = y << 8 | z << 4 | x;
 					Block blockId = blocks[coords];
 					if (blockId == null) {
-						if (counter != -1 && (filler == Blocks.sand || filler == Blocks.sandstone)) {
-							blocks[coords] = Blocks.sandstone;
+						if (counter != -1 && (filler == Blocks.SAND || filler == Blocks.SANDSTONE)) {
+							blocks[coords] = Blocks.SANDSTONE;
 						}
 						counter = -1;
 						continue;
 					}
-					if (blockId != Blocks.stone) {
+					if (blockId != Blocks.STONE) {
 						continue;
 					}
 					if (counter == -1) {
@@ -203,9 +203,9 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 					}
 					--counter;
 					blocks[coords] = filler;
-					if (counter == 0 && filler == Blocks.sand) {
+					if (counter == 0 && filler == Blocks.SAND) {
 						counter = rand.nextInt(4);
-						filler = Blocks.sandstone;
+						filler = Blocks.SANDSTONE;
 					}
 				}
 

@@ -6,7 +6,7 @@ import com.xcompwiz.mystcraft.api.event.LinkEvent;
 import com.xcompwiz.mystcraft.api.hook.LinkingAPI;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
 
 /**
  * This is an object describing all the information needed to link an entity using the Mystcraft teleport mechanics. Conversion functions to and from
@@ -48,12 +48,12 @@ public interface ILinkInfo {
 	/**
 	 * Gets the point which the link targets. If null then the link mechanics will use the dimension's spawn point.
 	 */
-	ChunkCoordinates getSpawn();
+	ChunkPos getSpawn();
 
 	/**
 	 * Sets the point which the link targets. If null then the link mechanics will use the dimension's spawn point.
 	 */
-	void setSpawn(ChunkCoordinates spawn);
+	void setSpawn(ChunkPos spawn);
 
 	/**
 	 * Gets the direction the linked entity will face once linked.

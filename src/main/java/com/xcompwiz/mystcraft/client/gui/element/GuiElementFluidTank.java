@@ -11,6 +11,7 @@ import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)

@@ -87,7 +87,7 @@ public abstract class DecayHandler {
 		if (!world.isRemote) {
 			if (world.getBlock(i, j, k) == ModBlocks.decay) {
 				if (!WorldInfoUtils.isMystcraftAge(world)) {
-					world.setBlock(i, j, k, Blocks.air);
+					world.setBlock(i, j, k, Blocks.AIR);
 					return;
 				}
 			}

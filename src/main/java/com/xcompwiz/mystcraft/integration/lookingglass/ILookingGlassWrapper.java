@@ -2,11 +2,11 @@ package com.xcompwiz.mystcraft.integration.lookingglass;
 
 import com.xcompwiz.lookingglass.api.view.IWorldView;
 
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
 
 public interface ILookingGlassWrapper {
 
-	IWorldView createWorldView(Integer dimid, ChunkCoordinates spawn, int i, int j);
+	IWorldView createWorldView(Integer dimid, ChunkPos spawn, int i, int j);
 
 	void release(Object activeview);
 

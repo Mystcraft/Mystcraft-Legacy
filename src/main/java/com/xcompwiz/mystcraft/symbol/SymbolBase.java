@@ -7,7 +7,7 @@ import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 
-import net.minecraft.util.StatCollector;
+import net.minecraft.client.resources.I18n;
 
 public abstract class SymbolBase implements IAgeSymbol {
 
@@ -66,7 +66,7 @@ public abstract class SymbolBase implements IAgeSymbol {
 	 */
 	@Override
 	public String displayName() {
-		return StatCollector.translateToLocal(this.getUnlocalizedName() + ".name");
+		return I18n.format(this.getUnlocalizedName() + ".name");
 	}
 
 	@Override

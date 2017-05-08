@@ -13,6 +13,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
@@ -78,7 +79,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	public boolean _onMouseDown(int mouseX, int mouseY, int button) {
 		if (this.contains(mouseX, mouseY)) {
 			if (pagesProvider == null) return false;
-			if (mc.thePlayer.inventory.getItemStack() != null) {
+			if (mc.player.inventory.getItemStack() != null) {
 				List<PositionableItem> pages = getPages();
 				if (pages == null) return false;
 				int index = pages.size();

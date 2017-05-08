@@ -25,14 +25,14 @@ public class SymbolDenseOres extends SymbolBase {
 	}
 
 	private class Populator implements IPopulate {
-		WorldGenerator	coalGen			= new WorldGenMinable(Blocks.coal_ore, 16);
-		WorldGenerator	ironGen			= new WorldGenMinable(Blocks.iron_ore, 8);
-		WorldGenerator	goldGen			= new WorldGenMinable(Blocks.gold_ore, 8);
-		WorldGenerator	redstoneGen		= new WorldGenMinable(Blocks.redstone_ore, 7);
-		WorldGenerator	diamondGen		= new WorldGenMinable(Blocks.diamond_ore, 7);
-		WorldGenerator	lapisGen		= new WorldGenMinable(Blocks.lapis_ore, 6);
-		WorldGenerator	emeraldGen		= new WorldGenMinable(Blocks.emerald_ore, 1);
-		WorldGenerator	netherQuartzGen	= new WorldGenMinable(Blocks.quartz_ore, 13, Blocks.netherrack);
+		WorldGenerator	coalGen			= new WorldGenMinable(Blocks.COAL_ORE, 16);
+		WorldGenerator	ironGen			= new WorldGenMinable(Blocks.IRON_ORE, 8);
+		WorldGenerator	goldGen			= new WorldGenMinable(Blocks.GOLD_ORE, 8);
+		WorldGenerator	redstoneGen		= new WorldGenMinable(Blocks.REDSTONE_ORE, 7);
+		WorldGenerator	diamondGen		= new WorldGenMinable(Blocks.DIAMOND_ORE, 7);
+		WorldGenerator	lapisGen		= new WorldGenMinable(Blocks.LAPIS_ORE, 6);
+		WorldGenerator	emeraldGen		= new WorldGenMinable(Blocks.EMERALD_ORE, 1);
+		WorldGenerator	netherQuartzGen	= new WorldGenMinable(Blocks.QUARTZ_ORE, 13, Blocks.NETHERRACK);
 
 		public Populator() {}
 

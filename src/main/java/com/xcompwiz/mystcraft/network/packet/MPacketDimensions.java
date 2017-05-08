@@ -24,7 +24,7 @@ public class MPacketDimensions extends PacketBase {
 			int dimId = data.readInt();
 			if (!Mystcraft.registeredDims.contains(dimId)) {
 				Mystcraft.registeredDims.add(dimId);
-				DimensionManager.registerDimension(dimId, Mystcraft.providerId);
+				DimensionManager.registerDimension(dimId, Mystcraft.dimensionType);
 			}
 		}
 	}

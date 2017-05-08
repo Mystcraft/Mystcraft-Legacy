@@ -27,7 +27,7 @@ public class SymbolLakesDeep extends SymbolBase {
 		if (block != null) {
 			generator = new WorldGenLakesAdv(block.block, block.metadata);
 		} else {
-			generator = new WorldGenLakesAdv(Blocks.lava);
+			generator = new WorldGenLakesAdv(Blocks.LAVA);
 		}
 		controller.registerInterface(new Populator(controller, generator));
 	}

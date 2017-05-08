@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
 
 public class LinkOptions implements ILinkInfo {
 
@@ -41,7 +41,7 @@ public class LinkOptions implements ILinkInfo {
 	}
 
 	@Override
-	public ChunkCoordinates getSpawn() {
+	public ChunkPos getSpawn() {
 		return getSpawn(data);
 	}
 
@@ -86,7 +86,7 @@ public class LinkOptions implements ILinkInfo {
 	}
 
 	@Override
-	public void setSpawn(ChunkCoordinates spawn) {
+	public void setSpawn(ChunkPos spawn) {
 		data = setSpawn(data, spawn);
 	}
 
@@ -171,7 +171,7 @@ public class LinkOptions implements ILinkInfo {
 		return null;
 	}
 
-	public static NBTTagCompound setSpawn(NBTTagCompound nbttagcompound, ChunkCoordinates coords) {
+	public static NBTTagCompound setSpawn(NBTTagCompound nbttagcompound, ChunkPos coords) {
 		if (nbttagcompound == null) {
 			nbttagcompound = new NBTTagCompound();
 		}
@@ -183,8 +183,8 @@ public class LinkOptions implements ILinkInfo {
 		return nbttagcompound;
 	}
 
-	public static ChunkCoordinates getSpawn(NBTTagCompound nbttagcompound) {
-		if (nbttagcompound != null && nbttagcompound.hasKey("SpawnX") && nbttagcompound.hasKey("SpawnY") && nbttagcompound.hasKey("SpawnZ")) { return new ChunkCoordinates(nbttagcompound.getInteger("SpawnX"), nbttagcompound.getInteger("SpawnY"), nbttagcompound.getInteger("SpawnZ")); }
+	public static ChunkPos getSpawn(NBTTagCompound nbttagcompound) {
+		if (nbttagcompound != null && nbttagcompound.hasKey("SpawnX") && nbttagcompound.hasKey("SpawnY") && nbttagcompound.hasKey("SpawnZ")) { return new ChunkPos(nbttagcompound.getInteger("SpawnX"), nbttagcompound.getInteger("SpawnY"), nbttagcompound.getInteger("SpawnZ")); }
 		return null;
 	}
 

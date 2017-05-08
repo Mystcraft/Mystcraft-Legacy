@@ -33,9 +33,9 @@ public class SymbolTerrainGenFlat extends SymbolBase {
 
 	private static class TerrainGenerator implements ITerrainGenerator {
 		private AgeDirector	controller;
-		private Block			fillblock	= Blocks.stone;
+		private Block			fillblock	= Blocks.STONE;
 		private byte			fillmeta	= 0;
-		private Block			seablock	= Blocks.water;
+		private Block			seablock	= Blocks.WATER;
 		private byte			seameta		= 0;
 
 		public TerrainGenerator(AgeDirector controller) {
@@ -59,7 +59,7 @@ public class SymbolTerrainGenFlat extends SymbolBase {
 			int layers = blocks.length / 256;
 
 			for (int y = 0; y < layers; ++y) {
-				Block blockId = Blocks.air;
+				Block blockId = Blocks.AIR;
 				byte meta = 0;
 				if (y == 0) {
 					blockId = Blocks.bedrock;

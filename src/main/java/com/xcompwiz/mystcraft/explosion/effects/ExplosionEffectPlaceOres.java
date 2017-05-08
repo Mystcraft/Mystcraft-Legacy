@@ -39,9 +39,9 @@ public class ExplosionEffectPlaceOres extends ExplosionEffect {
 	private static Collection<WeightedBlockSelection>	blocks		= new ArrayList<WeightedBlockSelection>();
 
 	static {
-		registerMeteorPlaceableBlock(Blocks.coal_ore, 0, 0.50F);
-		registerMeteorPlaceableBlock(Blocks.iron_ore, 0, 0.30F);
-		registerMeteorPlaceableBlock(Blocks.gold_ore, 0, 0.20F);
+		registerMeteorPlaceableBlock(Blocks.COAL_ORE, 0, 0.50F);
+		registerMeteorPlaceableBlock(Blocks.IRON_ORE, 0, 0.30F);
+		registerMeteorPlaceableBlock(Blocks.GOLD_ORE, 0, 0.20F);
 	}
 
 	private ExplosionEffectPlaceOres() {}

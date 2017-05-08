@@ -15,9 +15,9 @@ public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 	protected Random			bedrockGen;
 	private double				noise_field[];
 
-	protected Block				seablock		= Blocks.water;
+	protected Block				seablock		= Blocks.WATER;
 	protected byte				seameta			= 0;
-	protected Block				fillblock		= Blocks.stone;
+	protected Block				fillblock		= Blocks.STONE;
 	protected byte				fillmeta		= 0;
 	protected boolean			genBedrock		= true;
 
@@ -95,7 +95,7 @@ public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 							int coords = y << 8 | z << 4 | largeX * xzstep;
 							for (int subX = 0; subX < xzstep; ++subX) {
 
-								Block block = Blocks.air;
+								Block block = Blocks.AIR;
 								byte meta = 0;
 								if (genBedrock && y <= 0 + bedrockGen.nextInt(5)) {
 									block = Blocks.bedrock;

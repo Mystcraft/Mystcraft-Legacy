@@ -45,11 +45,11 @@ public class SymbolSkylands extends SymbolBase {
 						int height = (76) + (int) (skyNoise[z | x << 4]);
 						int coords = y << 8 | z << 4 | x;
 
-						if (blocks[coords] == Blocks.water && !isSupported(x, y, z, height, blocks)) {
-							blocks[coords] = Blocks.air;
+						if (blocks[coords] == Blocks.WATER && !isSupported(x, y, z, height, blocks)) {
+							blocks[coords] = Blocks.AIR;
 						}
 						if (y <= height) {
-							blocks[coords] = Blocks.air;
+							blocks[coords] = Blocks.AIR;
 						}
 					}
 				}
@@ -59,8 +59,8 @@ public class SymbolSkylands extends SymbolBase {
 		private boolean isSupported(int x, int y, int z, int sky, Block[] blocks) {
 			if (y < 1) return false;
 			Block block = blocks[(y - 1) << 8 | z << 4 | x];
-			if (block == Blocks.air) return false;
-			if (block == Blocks.water) return false;
+			if (block == Blocks.AIR) return false;
+			if (block == Blocks.WATER) return false;
 			return false;
 		}
 	}

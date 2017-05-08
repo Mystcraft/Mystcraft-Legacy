@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -27,8 +28,9 @@ public class EffectPotion implements IEnvironmentalEffect {
 
 	@Override
 	public void tick(World worldObj, Chunk chunk) {
-		int i = worldObj.rand.nextInt(chunk.entityLists.length);
-		List<Entity> list = chunk.entityLists[i];
+		ClassInheritanceMultiMap<Entity>[] entityLists = chunk.getEntityLists();
+		int i = worldObj.rand.nextInt(entityLists.length);
+		ClassInheritanceMultiMap<Entity> list = entityLists[i];
 		if (list.size() > 0) {
 			Entity entity = list.get(worldObj.rand.nextInt(list.size()));
 			if (entity instanceof EntityLivingBase) {

@@ -218,7 +218,7 @@ public class ChunkProfiler extends WorldSavedData {
 					Block block = storageArrays[storagei].getBlockByExtId(x, y & 15, z);
 					int metadata = storageArrays[storagei].getExtBlockMetadata(x, y & 15, z);
 
-					int accessibility = (block != Blocks.air ? 2 : 0);
+					int accessibility = (block != Blocks.AIR ? 2 : 0);
 					if (maps != null) {
 						ChunkProfileData map = maps.get(InstabilityBlockManager.getUnlocalizedKey(block, metadata));
 						if (map != null) {

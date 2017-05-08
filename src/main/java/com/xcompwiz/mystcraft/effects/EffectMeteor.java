@@ -28,7 +28,7 @@ public class EffectMeteor implements IEnvironmentalEffect {
 			var10 = var6 + (var8 >> 8 & 15);
 
 			Entity entity = new EntityMeteor(worldObj, 1.0F, 0, var9, 500, var10, worldObj.rand.nextGaussian() * 0.25, worldObj.rand.nextFloat() * -2 - 2, worldObj.rand.nextGaussian() * 0.25);
-			worldObj.spawnEntityInWorld(entity);
+			worldObj.spawnEntity(entity);
 		}
 	}
 

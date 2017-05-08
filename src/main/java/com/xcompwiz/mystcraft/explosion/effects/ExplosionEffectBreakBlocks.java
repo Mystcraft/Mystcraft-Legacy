@@ -31,8 +31,8 @@ public class ExplosionEffectBreakBlocks extends ExplosionEffect {
 			block.dropBlockAsItemWithChance(worldObj, x, y, z, worldObj.getBlockMetadata(x, y, z), 0.3F, 0);
 		}
 
-		if (worldObj.setBlock(x, y, z, Blocks.air, 0, 3)) {
-			worldObj.notifyBlocksOfNeighborChange(x, y, z, Blocks.air);
+		if (worldObj.setBlock(x, y, z, Blocks.AIR, 0, 3)) {
+			worldObj.notifyBlocksOfNeighborChange(x, y, z, Blocks.AIR);
 		}
 
 		block.onBlockDestroyedByExplosion(worldObj, x, y, z, explosion.toExplosion());

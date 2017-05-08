@@ -14,7 +14,7 @@ import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
 
 public class CommandTPX extends CommandBaseAdv {
 
@@ -111,7 +111,7 @@ public class CommandTPX extends CommandBaseAdv {
 				int x = (int) handleRelativeNumber(sender, subject.posX, sX);
 				int y = (int) handleRelativeNumber(sender, subject.posY, sY, 0, 0);
 				int z = (int) handleRelativeNumber(sender, subject.posZ, sZ);
-				link.setSpawn(new ChunkCoordinates(x, y, z));
+				link.setSpawn(new ChunkPos(x, y, z));
 			}
 		}
 		return link;

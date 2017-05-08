@@ -11,7 +11,7 @@ import com.xcompwiz.mystcraft.data.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -40,19 +40,19 @@ public final class PortalUtils {
 	 * @param world The world object
 	 * @param start The coordinates of the portal block from which to start
 	 */
-	public static void validatePortal(World world, ChunkCoordinates start) {
+	public static void validatePortal(World world, ChunkPos start) {
 		if (world.isRemote) return;
-		List<ChunkCoordinates> blocks = new LinkedList<ChunkCoordinates>();
+		List<ChunkPos> blocks = new LinkedList<ChunkPos>();
 		blocks.add(start);
 		while (blocks.size() > 0) {
-			ChunkCoordinates coords = blocks.remove(0);
+			ChunkPos coords = blocks.remove(0);
 			if (world.getBlock(coords.posX, coords.posY, coords.posZ) != getPortalBlock()) continue;
 			validatePortal(world, coords.posX, coords.posY, coords.posZ, blocks);
 		}
 	}
 
 	public static void firePortal(World world, int i, int j, int k) {
-		ChunkCoordinates coord = getReceptacleBase(i, j, k, world.getBlockMetadata(i, j, k));
+		ChunkPos coord = getReceptacleBase(i, j, k, world.getBlockMetadata(i, j, k));
 		onpulse(world, coord.posX, coord.posY, coord.posZ);
 		pathto(world, i, j, k);
 	}
@@ -61,30 +61,30 @@ public final class PortalUtils {
 		unpath(world, i, j, k);
 	}
 
-	public static ChunkCoordinates getReceptacleBase(int i, int j, int k, int blockMetadata) {
+	public static ChunkPos getReceptacleBase(int i, int j, int k, int blockMetadata) {
 		if (blockMetadata == 0) {
-			return new ChunkCoordinates(i, j + 1, k);
+			return new ChunkPos(i, j + 1, k);
 		} else if (blockMetadata == 1) {
-			return new ChunkCoordinates(i, j - 1, k);
+			return new ChunkPos(i, j - 1, k);
 		} else if (blockMetadata == 2) {
-			return new ChunkCoordinates(i, j, k + 1);
+			return new ChunkPos(i, j, k + 1);
 		} else if (blockMetadata == 3) {
-			return new ChunkCoordinates(i, j, k - 1);
+			return new ChunkPos(i, j, k - 1);
 		} else if (blockMetadata == 4) {
-			return new ChunkCoordinates(i + 1, j, k);
-		} else if (blockMetadata == 5) { return new ChunkCoordinates(i - 1, j, k); }
-		return new ChunkCoordinates(i, j, k);
+			return new ChunkPos(i + 1, j, k);
+		} else if (blockMetadata == 5) { return new ChunkPos(i - 1, j, k); }
+		return new ChunkPos(i, j, k);
 	}
 
 	private static void pathto(World world, int i, int j, int k) {
-		List<ChunkCoordinates> blocks = new LinkedList<ChunkCoordinates>();
-		List<ChunkCoordinates> portals = new LinkedList<ChunkCoordinates>();
-		List<ChunkCoordinates> repath = new LinkedList<ChunkCoordinates>();
-		List<ChunkCoordinates> redraw = new LinkedList<ChunkCoordinates>();
-		blocks.add(new ChunkCoordinates(i, j, k));
+		List<ChunkPos> blocks = new LinkedList<ChunkPos>();
+		List<ChunkPos> portals = new LinkedList<ChunkPos>();
+		List<ChunkPos> repath = new LinkedList<ChunkPos>();
+		List<ChunkPos> redraw = new LinkedList<ChunkPos>();
+		blocks.add(new ChunkPos(i, j, k));
 		while (portals.size() > 0 || blocks.size() > 0) {
 			while (blocks.size() > 0) {
-				ChunkCoordinates coords = blocks.remove(0);
+				ChunkPos coords = blocks.remove(0);
 				directPortal(world, coords.posX + 1, coords.posY + 0, coords.posZ + 0, 5, blocks, portals);
 				directPortal(world, coords.posX + 0, coords.posY + 1, coords.posZ + 0, 1, blocks, portals);
 				directPortal(world, coords.posX + 0, coords.posY + 0, coords.posZ + 1, 3, blocks, portals);
@@ -94,7 +94,7 @@ public final class PortalUtils {
 				redraw.add(coords);
 			}
 			if (portals.size() > 0) {
-				ChunkCoordinates coords = portals.remove(0);
+				ChunkPos coords = portals.remove(0);
 				directPortal(world, coords.posX + 1, coords.posY + 0, coords.posZ + 0, 5, blocks, portals);
 				directPortal(world, coords.posX + 0, coords.posY + 1, coords.posZ + 0, 1, blocks, portals);
 				directPortal(world, coords.posX + 0, coords.posY + 0, coords.posZ + 1, 3, blocks, portals);
@@ -107,18 +107,18 @@ public final class PortalUtils {
 			}
 		}
 		while (repath.size() > 0) {
-			ChunkCoordinates coords = repath.remove(0);
+			ChunkPos coords = repath.remove(0);
 			if (world.getBlock(coords.posX, coords.posY, coords.posZ) == getPortalBlock()) {
 				if (!isPortalBlockStable(world, coords.posX, coords.posY, coords.posZ)) {
 					repathNeighbors(world, coords.posX, coords.posY, coords.posZ);
-					world.setBlock(coords.posX, coords.posY, coords.posZ, Blocks.air, 0, 0);
+					world.setBlock(coords.posX, coords.posY, coords.posZ, Blocks.AIR, 0, 0);
 					addSurrounding(repath, coords.posX, coords.posY, coords.posZ);
 				} else {
 					redraw.add(coords);
 				}
 			}
 		}
-		for (ChunkCoordinates coords : redraw) {
+		for (ChunkPos coords : redraw) {
 			if (world.blockExists(coords.posX, coords.posY, coords.posZ)) {
 				world.markBlockForUpdate(coords.posX, coords.posY, coords.posZ);
 				world.notifyBlocksOfNeighborChange(coords.posX, coords.posY, coords.posZ, world.getBlock(coords.posX, coords.posY, coords.posZ));
@@ -128,11 +128,11 @@ public final class PortalUtils {
 
 	private static void repathNeighbors(World world, int i, int j, int k) {
 		TileEntity tileentity = getTileEntity(world, i, j, k);
-		List<ChunkCoordinates> blocks = new LinkedList<ChunkCoordinates>();
-		blocks.add(new ChunkCoordinates(i, j, k));
+		List<ChunkPos> blocks = new LinkedList<ChunkPos>();
+		blocks.add(new ChunkPos(i, j, k));
 		world.setBlockMetadataWithNotify(i, j, k, 8, 2);
 		while (blocks.size() > 0) {
-			ChunkCoordinates coords = blocks.remove(0);
+			ChunkPos coords = blocks.remove(0);
 			redirectPortal(world, tileentity, coords.posX + 1, coords.posY + 0, coords.posZ + 0, 5, blocks);
 			redirectPortal(world, tileentity, coords.posX + 0, coords.posY + 1, coords.posZ + 0, 1, blocks);
 			redirectPortal(world, tileentity, coords.posX + 0, coords.posY + 0, coords.posZ + 1, 3, blocks);
@@ -142,7 +142,7 @@ public final class PortalUtils {
 		}
 	}
 
-	private static void redirectPortal(World world, TileEntity tileentity, int i, int j, int k, int meta, List<ChunkCoordinates> blocks) {
+	private static void redirectPortal(World world, TileEntity tileentity, int i, int j, int k, int meta, List<ChunkPos> blocks) {
 		if (isValidLinkPortalBlock(world.getBlock(i, j, k)) == 0) return;
 		if (world.getBlockMetadata(i, j, k) == meta) {
 			for (int m = 1; m < 7; ++m) {
@@ -156,11 +156,11 @@ public final class PortalUtils {
 	}
 
 	private static void unpath(World world, int i, int j, int k) {
-		List<ChunkCoordinates> blocks = new LinkedList<ChunkCoordinates>();
-		List<ChunkCoordinates> notify = new LinkedList<ChunkCoordinates>();
-		blocks.add(new ChunkCoordinates(i, j, k));
+		List<ChunkPos> blocks = new LinkedList<ChunkPos>();
+		List<ChunkPos> notify = new LinkedList<ChunkPos>();
+		blocks.add(new ChunkPos(i, j, k));
 		while (blocks.size() > 0) {
-			ChunkCoordinates coords = blocks.remove(0);
+			ChunkPos coords = blocks.remove(0);
 			depolarize(world, coords.posX + 1, coords.posY + 0, coords.posZ + 0, blocks);
 			depolarize(world, coords.posX + 0, coords.posY + 1, coords.posZ + 0, blocks);
 			depolarize(world, coords.posX + 0, coords.posY + 0, coords.posZ + 1, blocks);
@@ -169,7 +169,7 @@ public final class PortalUtils {
 			depolarize(world, coords.posX + 0, coords.posY + 0, coords.posZ - 1, blocks);
 			notify.add(coords);
 		}
-		for (ChunkCoordinates coords : notify) {
+		for (ChunkPos coords : notify) {
 			if (world.blockExists(coords.posX, coords.posY, coords.posZ)) {
 				world.markBlockForUpdate(coords.posX, coords.posY, coords.posZ);
 				world.notifyBlocksOfNeighborChange(coords.posX, coords.posY, coords.posZ, world.getBlock(coords.posX, coords.posY, coords.posZ));
@@ -178,20 +178,20 @@ public final class PortalUtils {
 	}
 
 	private static void onpulse(World world, int i, int j, int k) {
-		LinkedList<ChunkCoordinates> set = new LinkedList<ChunkCoordinates>();
-		Stack<ChunkCoordinates> validate = new Stack<ChunkCoordinates>();
+		LinkedList<ChunkPos> set = new LinkedList<ChunkPos>();
+		Stack<ChunkPos> validate = new Stack<ChunkPos>();
 		addSurrounding(set, i, j, k);
 		while (set.size() > 0) {
-			ChunkCoordinates coords = set.remove(0);
+			ChunkPos coords = set.remove(0);
 			expandPortal(world, coords.posX, coords.posY, coords.posZ, set, validate);
 		}
 		while (validate.size() > 0) {
-			ChunkCoordinates coords = validate.pop();
+			ChunkPos coords = validate.pop();
 			i = coords.posX;
 			j = coords.posY;
 			k = coords.posZ;
 			if (!checkPortalTension(world, i, j, k)) {
-				world.setBlock(i, j, k, Blocks.air, 0, 0);
+				world.setBlock(i, j, k, Blocks.AIR, 0, 0);
 			}
 		}
 	}
@@ -218,73 +218,73 @@ public final class PortalUtils {
 		return score > 1; // NOTE: score == 2 yields forcefield walls
 	}
 
-	private static void validatePortal(World world, int i, int j, int k, Collection<ChunkCoordinates> blocks) {
+	private static void validatePortal(World world, int i, int j, int k, Collection<ChunkPos> blocks) {
 		if (!isPortalBlockStable(world, i, j, k)) {
-			world.setBlock(i, j, k, Blocks.air);
+			world.setBlock(i, j, k, Blocks.AIR);
 			addSurrounding(blocks, i, j, k);
 		}
 	}
 
-	private static void addSurrounding(Collection<ChunkCoordinates> set, int i, int j, int k) {
-		set.add(new ChunkCoordinates(i + 1, j + 0, k + 0));
-		set.add(new ChunkCoordinates(i - 1, j + 0, k + 0));
-		set.add(new ChunkCoordinates(i + 0, j + 1, k + 0));
-		set.add(new ChunkCoordinates(i + 0, j - 1, k + 0));
-		set.add(new ChunkCoordinates(i + 0, j + 0, k + 1));
-		set.add(new ChunkCoordinates(i + 0, j + 0, k - 1));
+	private static void addSurrounding(Collection<ChunkPos> set, int i, int j, int k) {
+		set.add(new ChunkPos(i + 1, j + 0, k + 0));
+		set.add(new ChunkPos(i - 1, j + 0, k + 0));
+		set.add(new ChunkPos(i + 0, j + 1, k + 0));
+		set.add(new ChunkPos(i + 0, j - 1, k + 0));
+		set.add(new ChunkPos(i + 0, j + 0, k + 1));
+		set.add(new ChunkPos(i + 0, j + 0, k - 1));
 
-		set.add(new ChunkCoordinates(i + 1, j + 1, k + 0));
-		set.add(new ChunkCoordinates(i - 1, j + 1, k + 0));
-		set.add(new ChunkCoordinates(i + 1, j - 1, k + 0));
-		set.add(new ChunkCoordinates(i - 1, j - 1, k + 0));
-		set.add(new ChunkCoordinates(i + 0, j + 1, k + 1));
-		set.add(new ChunkCoordinates(i + 0, j + 1, k - 1));
-		set.add(new ChunkCoordinates(i + 0, j - 1, k + 1));
-		set.add(new ChunkCoordinates(i + 0, j - 1, k - 1));
-		set.add(new ChunkCoordinates(i + 1, j + 0, k + 1));
-		set.add(new ChunkCoordinates(i - 1, j + 0, k + 1));
-		set.add(new ChunkCoordinates(i + 1, j + 0, k - 1));
-		set.add(new ChunkCoordinates(i - 1, j + 0, k - 1));
+		set.add(new ChunkPos(i + 1, j + 1, k + 0));
+		set.add(new ChunkPos(i - 1, j + 1, k + 0));
+		set.add(new ChunkPos(i + 1, j - 1, k + 0));
+		set.add(new ChunkPos(i - 1, j - 1, k + 0));
+		set.add(new ChunkPos(i + 0, j + 1, k + 1));
+		set.add(new ChunkPos(i + 0, j + 1, k - 1));
+		set.add(new ChunkPos(i + 0, j - 1, k + 1));
+		set.add(new ChunkPos(i + 0, j - 1, k - 1));
+		set.add(new ChunkPos(i + 1, j + 0, k + 1));
+		set.add(new ChunkPos(i - 1, j + 0, k + 1));
+		set.add(new ChunkPos(i + 1, j + 0, k - 1));
+		set.add(new ChunkPos(i - 1, j + 0, k - 1));
 	}
 
-	private static void expandPortal(World world, int i, int j, int k, Collection<ChunkCoordinates> set, Stack<ChunkCoordinates> created) {
+	private static void expandPortal(World world, int i, int j, int k, Collection<ChunkPos> set, Stack<ChunkPos> created) {
 		if (!world.isAirBlock(i, j, k)) return;
 		int score = isValidLinkPortalBlock(world.getBlock(i + 1, j + 0, k + 0)) + isValidLinkPortalBlock(world.getBlock(i - 1, j + 0, k + 0)) + isValidLinkPortalBlock(world.getBlock(i + 0, j + 1, k + 0)) + isValidLinkPortalBlock(world.getBlock(i + 0, j - 1, k + 0)) + isValidLinkPortalBlock(world.getBlock(i + 0, j + 0, k + 1)) + isValidLinkPortalBlock(world.getBlock(i + 0, j + 0, k - 1));
 		if (score > 1) {
 			world.setBlock(i, j, k, getPortalBlock(), 0, 0);
-			created.push(new ChunkCoordinates(i, j, k));
+			created.push(new ChunkPos(i, j, k));
 			addSurrounding(set, i, j, k);
 		}
 	}
 
-	private static void directPortal(World world, int i, int j, int k, int meta, List<ChunkCoordinates> blocks, List<ChunkCoordinates> portals) {
+	private static void directPortal(World world, int i, int j, int k, int meta, List<ChunkPos> blocks, List<ChunkPos> portals) {
 		if (isValidLinkPortalBlock(world.getBlock(i, j, k)) == 0) return;
 		if (world.getBlockMetadata(i, j, k) != 0) return;
 		world.setBlockMetadataWithNotify(i, j, k, meta, 0);
 		if (world.getBlock(i, j, k) == getPortalBlock()) {
-			portals.add(new ChunkCoordinates(i, j, k));
+			portals.add(new ChunkPos(i, j, k));
 		} else {
-			blocks.add(new ChunkCoordinates(i, j, k));
+			blocks.add(new ChunkPos(i, j, k));
 		}
 	}
 
-	private static void depolarize(World world, int i, int j, int k, List<ChunkCoordinates> blocks) {
+	private static void depolarize(World world, int i, int j, int k, List<ChunkPos> blocks) {
 		Block block = world.getBlock(i, j, k);
 		if (isValidLinkPortalBlock(block) == 0) return;
 		if (world.getBlockMetadata(i, j, k) == 0) return;
 		world.setBlockMetadataWithNotify(i, j, k, 0, 0);
 		if (block == getPortalBlock() && !isPortalBlockStable(world, i, j, k)) {
-			world.setBlock(i, j, k, Blocks.air, 0, 2);
+			world.setBlock(i, j, k, Blocks.AIR, 0, 2);
 		}
-		blocks.add(new ChunkCoordinates(i, j, k));
+		blocks.add(new ChunkPos(i, j, k));
 	}
 
 	public static TileEntity getTileEntity(IBlockAccess blockaccess, int i, int j, int k) {
-		HashSet<ChunkCoordinates> visited = new HashSet<ChunkCoordinates>();
+		HashSet<ChunkPos> visited = new HashSet<ChunkPos>();
 		Block block = blockaccess.getBlock(i, j, k);
 		while (block != getReceptacleBlock()) {
 			if (isValidLinkPortalBlock(block) == 0) return null;
-			ChunkCoordinates pos = new ChunkCoordinates(i, j, k);
+			ChunkPos pos = new ChunkPos(i, j, k);
 			if (!visited.add(pos)) { return null; }
 			int meta = blockaccess.getBlockMetadata(i, j, k);
 			if (meta == 0) {

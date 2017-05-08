@@ -21,10 +21,10 @@ import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 
 public class GuiBookBinder extends GuiContainerElements {
 	private static final List<String>	panel_tooltip	= Arrays.asList("Missing Link Panel", "Add a link panel as the first page of the book.");	;
@@ -89,15 +89,15 @@ public class GuiBookBinder extends GuiContainerElements {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setInteger(ContainerBookBinder.Messages.InsertHeldAt, index);
 			nbttagcompound.setBoolean("Single", (mousebutton == 1));
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-			container.processMessage(mc.thePlayer, nbttagcompound);
+			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.player.openContainer.windowId, nbttagcompound));
+			container.processMessage(mc.player, nbttagcompound);
 		}
 
 		@Override
 		public void onItemRemove(GuiElementScrollablePages guiElementScrollablePages, int clickedpage) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setInteger(ContainerBookBinder.Messages.TakeFromSlider, clickedpage);
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
+			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.player.openContainer.windowId, nbttagcompound));
 		}
 	}
 
@@ -112,7 +112,7 @@ public class GuiBookBinder extends GuiContainerElements {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setString(ContainerBookBinder.Messages.SetTitle, text);
 			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
-			container.processMessage(mc.thePlayer, nbttagcompound);
+			container.processMessage(mc.player, nbttagcompound);
 		}
 	}
 
@@ -155,6 +155,6 @@ public class GuiBookBinder extends GuiContainerElements {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(GUIs.binder);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), guiLeft + 8, guiTop + (ySize - 96) + 2, 0x404040);
+		fontRendererObj.drawString(I18n.format("container.inventory"), guiLeft + 8, guiTop + (ySize - 96) + 2, 0x404040);
 	}
 }

@@ -38,7 +38,7 @@ public class EffectDecayBasic implements IEnvironmentalEffect {
 
 	protected void placeBlock(World world, int x, int y, int z, int minY, Integer maxY, int metadata) {
 		if (maxY == null) {
-			maxY = world.getHeightValue(x, z);
+			maxY = world.getHeight(x, z);
 			if (maxY <= minY) maxY = world.provider.getAverageGroundLevel();
 		}
 		if (maxY < minY) return;

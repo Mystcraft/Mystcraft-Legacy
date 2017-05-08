@@ -47,7 +47,7 @@ public class SymbolFloatingIslands extends SymbolBase {
 		private MapGenAdvanced	generator;
 
 		public TerrainAlteration(long seed, BlockDescriptor blockdesc, BiomeGenBase biome, IModifiedHandler callback) {
-			Block block = Blocks.stone;
+			Block block = Blocks.STONE;
 			byte meta = 0;
 			if (blockdesc != null) {
 				block = blockdesc.block;

@@ -4,8 +4,8 @@ import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.client.MystcraftClientProxy;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 public class MPacketProfilingState extends PacketBase {
@@ -14,9 +14,9 @@ public class MPacketProfilingState extends PacketBase {
 	public void handle(ByteBuf data, EntityPlayer player) {
 		boolean running = data.readBoolean();
 		if (running) {
-			((MystcraftClientProxy) Mystcraft.sidedProxy).getNotificationGui().post(StatCollector.translateToLocal("myst.profiling.running.message"), StatCollector.translateToLocal("myst.profiling.running"));
+			((MystcraftClientProxy) Mystcraft.sidedProxy).getNotificationGui().post(I18n.format("myst.profiling.running.message"), I18n.format("myst.profiling.running"));
 		} else {
-			((MystcraftClientProxy) Mystcraft.sidedProxy).getNotificationGui().post(StatCollector.translateToLocal("myst.profiling.complete.message"), StatCollector.translateToLocal("myst.profiling.complete"));
+			((MystcraftClientProxy) Mystcraft.sidedProxy).getNotificationGui().post(I18n.format("myst.profiling.complete.message"), I18n.format("myst.profiling.complete"));
 		}
 	}
 

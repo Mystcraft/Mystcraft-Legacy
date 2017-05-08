@@ -36,8 +36,8 @@ public class GuiLinkModifier extends GuiContainerElements {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setString(ContainerLinkModifier.Messages.SetFlag, id);
 			nbttagcompound.setBoolean("Value", !getState(id));
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-			container.processMessage(mc.thePlayer, nbttagcompound);
+			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.player.openContainer.windowId, nbttagcompound));
+			container.processMessage(mc.player, nbttagcompound);
 		}
 	}
 
@@ -59,13 +59,13 @@ public class GuiLinkModifier extends GuiContainerElements {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setString(ContainerLinkModifier.Messages.SetTitle, text);
 				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
-				container.processMessage(mc.thePlayer, nbttagcompound);
+				container.processMessage(mc.player, nbttagcompound);
 			}
 			if (caller.getId().equals("Seed")) {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setString(ContainerLinkModifier.Messages.SetSeed, text);
 				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
-				container.processMessage(mc.thePlayer, nbttagcompound);
+				container.processMessage(mc.player, nbttagcompound);
 			}
 		}
 	}

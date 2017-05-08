@@ -21,13 +21,13 @@ public class EffectErosion implements IEnvironmentalEffect {
 			int i1 = i + rand.nextInt(16) + 8;
 			int j2 = rand.nextInt(256);
 			int k3 = j + rand.nextInt(16) + 8;
-			(new WorldGenLakes(Blocks.water)).generate(worldObj, rand, i1, j2, k3);
+			(new WorldGenLakes(Blocks.WATER)).generate(worldObj, rand, i1, j2, k3);
 		}
 		if (rand.nextInt(8) == 0) {
 			int j1 = i + rand.nextInt(16) + 8;
 			int k2 = rand.nextInt(rand.nextInt(248) + 8);
 			int l3 = j + rand.nextInt(16) + 8;
-			(new WorldGenLakes(Blocks.lava)).generate(worldObj, rand, j1, k2, l3);
+			(new WorldGenLakes(Blocks.LAVA)).generate(worldObj, rand, j1, k2, l3);
 		}
 	}
 

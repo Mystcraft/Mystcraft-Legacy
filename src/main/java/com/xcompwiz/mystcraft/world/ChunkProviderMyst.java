@@ -40,7 +40,7 @@ public class ChunkProviderMyst implements IChunkProvider {
 	private BiomeGenBase				biomesForGeneration[];
 
 	private MapGenScatteredFeatureMyst	scatteredFeatureGenerator	= new MapGenScatteredFeatureMyst();
-	private WorldGenMinable				worldgenminablequartz		= new WorldGenMinable(Blocks.quartz_ore, 13, Blocks.netherrack);
+	private WorldGenMinable				worldgenminablequartz		= new WorldGenMinable(Blocks.QUARTZ_ORE, 13, Blocks.NETHERRACK);
 
 	public ChunkProviderMyst(AgeController ageController, World world, AgeData age) {
 		controller = ageController;
@@ -117,7 +117,7 @@ public class ChunkProviderMyst implements IChunkProvider {
 					int coords = y << 8 | z << 4 | x;
 					Block block = blocks[coords];
 
-					if (block != null && block != Blocks.air) {
+					if (block != null && block != Blocks.AIR) {
 						if (storageArrays[storagei] == null) {
 							storageArrays[storagei] = new ExtendedBlockStorage(storagei << 4, flag);
 						}
@@ -177,7 +177,7 @@ public class ChunkProviderMyst implements IChunkProvider {
 			for (int j3 = 0; j3 < 16; j3++) {
 				int j4 = worldObj.getPrecipitationHeight(x + i2, z + j3);
 				if (worldObj.isBlockFreezable(i2 + x, j4 - 1, j3 + z)) {
-					worldObj.setBlock(i2 + x, j4 - 1, j3 + z, Blocks.ice, 0, 2);
+					worldObj.setBlock(i2 + x, j4 - 1, j3 + z, Blocks.ICE, 0, 2);
 				}
 				if (worldObj.func_147478_e(i2 + x, j4, j3 + z, false)) {
 					worldObj.setBlock(i2 + x, j4, j3 + z, Blocks.snow_layer, 0, 2);

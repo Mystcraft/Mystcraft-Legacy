@@ -33,17 +33,17 @@ public class DecayHandlerBlack extends DecayHandler {
 		if (!world.isRemote) {
 			if (world.getBlock(i, j, k) == ModBlocks.decay) {
 				if (!WorldInfoUtils.isMystcraftAge(world)) {
-					world.setBlock(i, j, k, Blocks.air);
+					world.setBlock(i, j, k, Blocks.AIR);
 					return;
 				}
 				if (!WorldInfoUtils.isInstabilityEnabled(world)) { return; }
 				if (world.getBlock(i, j - 1, k) == ModBlocks.decay && world.getBlockMetadata(i, j - 1, k) == this.getMetadata()) {
-					world.setBlock(i, j - 1, k, Blocks.air);
+					world.setBlock(i, j - 1, k, Blocks.AIR);
 					EntityFallingBlock.drop(world, i, j, k);
 					return;
 				}
 				if (world.getBlock(i, j + 1, k) == ModBlocks.decay && world.getBlockMetadata(i, j - 1, k) == this.getMetadata()) {
-					world.setBlock(i, j, k, Blocks.air);
+					world.setBlock(i, j, k, Blocks.AIR);
 					EntityFallingBlock.drop(world, i, j + 1, k);
 					return;
 				}
@@ -56,13 +56,13 @@ public class DecayHandlerBlack extends DecayHandler {
 		corrupt(world, i + 1, j, k);
 		corrupt(world, i, j, k - 1);
 		corrupt(world, i, j, k + 1);
-		world.setBlock(i, j - 1, k, Blocks.air);
+		world.setBlock(i, j - 1, k, Blocks.AIR);
 		EntityFallingBlock.drop(world, i, j, k);
 	}
 
 	private void corrupt(World world, int i, int j, int k) {
 		if (world.getBlock(i, j, k).getMaterial().isLiquid()) {
-			world.setBlock(i, j, k, Blocks.air);
+			world.setBlock(i, j, k, Blocks.AIR);
 		}
 		if (!world.isAirBlock(i, j, k)) {
 			world.setBlock(i, j, k, ModBlocks.decay, this.getMetadata(), 3);

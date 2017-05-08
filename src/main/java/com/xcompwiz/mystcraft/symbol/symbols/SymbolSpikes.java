@@ -27,7 +27,7 @@ public class SymbolSpikes extends SymbolBase {
 		if (block != null) {
 			generator = new WorldGenSpikesAdv(block.block, block.metadata);
 		} else {
-			generator = new WorldGenSpikesAdv(Blocks.stone);
+			generator = new WorldGenSpikesAdv(Blocks.STONE);
 		}
 		controller.registerInterface(new Populator(generator));
 	}

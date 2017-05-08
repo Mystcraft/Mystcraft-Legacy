@@ -8,7 +8,7 @@ import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
-import net.minecraft.util.StatCollector;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class SymbolBiome extends SymbolBase {
@@ -30,7 +30,7 @@ public class SymbolBiome extends SymbolBase {
 		String replacement = "$1 ";
 		String name = biome.biomeName.replaceAll(regex, replacement).replaceAll("([A-Z][a-z]+)  ", replacement).trim();
 		if (name.endsWith("Biome")) name = name.substring(0, name.length() - "Biome".length()).trim();
-		name = StatCollector.translateToLocalFormatted("myst.symbol.biome.wrapper", name);
+		name = I18n.format("myst.symbol.biome.wrapper", name);
 		return name;
 	}
 

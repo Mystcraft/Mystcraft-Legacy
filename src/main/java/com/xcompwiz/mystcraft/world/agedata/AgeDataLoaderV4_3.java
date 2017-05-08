@@ -9,7 +9,7 @@ import com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderManager.AgeDataLoader;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.util.Constants;
 
 public class AgeDataLoaderV4_3 extends AgeDataLoader {
@@ -32,7 +32,7 @@ public class AgeDataLoaderV4_3 extends AgeDataLoader {
 		data.datacompound = nbttagcompound.getCompoundTag("DataCompound");
 
 		if (nbttagcompound.hasKey("SpawnX") && nbttagcompound.hasKey("SpawnY") && nbttagcompound.hasKey("SpawnZ")) {
-			data.spawn = new ChunkCoordinates(nbttagcompound.getInteger("SpawnX"), nbttagcompound.getInteger("SpawnY"), nbttagcompound.getInteger("SpawnZ"));
+			data.spawn = new ChunkPos(nbttagcompound.getInteger("SpawnX"), nbttagcompound.getInteger("SpawnY"), nbttagcompound.getInteger("SpawnZ"));
 		}
 
 		NBTTagList list = null;

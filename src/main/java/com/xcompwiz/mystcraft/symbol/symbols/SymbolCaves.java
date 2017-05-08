@@ -18,7 +18,7 @@ public class SymbolCaves extends SymbolBase {
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
-		MapGenAdvanced generator = new MapGenCavesMyst(seed, 15, 40, Blocks.air);
+		MapGenAdvanced generator = new MapGenCavesMyst(seed, 15, 40, Blocks.AIR);
 		controller.registerInterface(new TerrainAlteration(generator));
 	}
 

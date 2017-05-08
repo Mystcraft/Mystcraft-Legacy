@@ -8,10 +8,11 @@ import com.xcompwiz.mystcraft.api.grammar.GrammarData;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.data.ModPageCollections;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CreativeTabMyst extends CreativeTabs {
@@ -78,7 +79,7 @@ public class CreativeTabMyst extends CreativeTabs {
 	}
 
 	private String getCollectionName(String name) {
-		return StatCollector.translateToLocalFormatted("myst.creative.notebook.wrapper", StatCollector.translateToLocal(name));
+		return I18n.format("myst.creative.notebook.wrapper", I18n.format(name));
 	}
 
 	public void registerItemStack(ItemStack itemstack) {

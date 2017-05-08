@@ -11,7 +11,7 @@ import net.minecraftforge.common.ChestGenHooks;
 
 public class TreasureGenWrapper extends WeightedRandomChestContent {
 
-	private static ItemStack	dummy	= new ItemStack(Blocks.stone);
+	private static ItemStack	dummy	= new ItemStack(Blocks.STONE);
 	private String				gen_info;
 
 	public TreasureGenWrapper(String gen_info, int weight) {

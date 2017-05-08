@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
@@ -215,7 +216,7 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 				for (int var12 = var4; var12 <= var7; ++var12) {
 					if (!this.worldObj.isAirBlock(var10, var11, var12)) {
 						brokeblocks = true;
-						this.worldObj.setBlock(var10, var11, var12, Blocks.air, 0, 3);
+						this.worldObj.setBlock(var10, var11, var12, Blocks.AIR, 0, 3);
 					}
 				}
 			}

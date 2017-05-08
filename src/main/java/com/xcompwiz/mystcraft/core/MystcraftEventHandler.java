@@ -24,6 +24,7 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
@@ -42,7 +43,7 @@ public class MystcraftEventHandler {
 		if (event.Name.startsWith("ore") || event.Name.startsWith("gem") || event.Name.startsWith("dust")) {
 			if (event.Ore.getItem() instanceof ItemBlock) {
 				ItemBlock itemblock = ((ItemBlock) event.Ore.getItem());
-				EffectCrumble.registerMapping(itemblock.field_150939_a, Blocks.stone);
+				EffectCrumble.registerMapping(itemblock.field_150939_a, Blocks.STONE);
 			}
 		}
 	}

@@ -21,9 +21,9 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -246,10 +246,10 @@ public class BlockBookReceptacle extends BlockContainer {
 	 */
 	@Override
 	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block block) {
-		ChunkCoordinates coord = PortalUtils.getReceptacleBase(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4));
+		ChunkPos coord = PortalUtils.getReceptacleBase(par2, par3, par4, par1World.getBlockMetadata(par2, par3, par4));
 		if (par1World.getBlock(coord.posX, coord.posY, coord.posZ) != ModBlocks.crystal) {
 			dropBlockAsItem(par1World, par2, par3, par4, 0, 0);
-			par1World.setBlock(par2, par3, par4, Blocks.air);
+			par1World.setBlock(par2, par3, par4, Blocks.AIR);
 		}
 
 		super.onNeighborBlockChange(par1World, par2, par3, par4, block);

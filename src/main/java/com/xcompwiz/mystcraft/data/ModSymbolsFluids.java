@@ -43,8 +43,8 @@ public class ModSymbolsFluids {
 			Fluid fluid = entry.getValue();
 			if (blacklist.contains(fluid)) continue;
 			Block block = fluid.getBlock();
-			if (block == Blocks.water) continue;
-			if (block == Blocks.lava) continue;
+			if (block == Blocks.WATER) continue;
+			if (block == Blocks.LAVA) continue;
 			if (block == null) continue;
 			if (Item.getItemFromBlock(block) == null) continue;
 

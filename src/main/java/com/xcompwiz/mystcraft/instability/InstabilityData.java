@@ -18,6 +18,7 @@ import com.xcompwiz.mystcraft.instability.providers.ProviderMeteor;
 import com.xcompwiz.mystcraft.instability.providers.ProviderScorched;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
 
 public class InstabilityData {
@@ -107,17 +108,17 @@ public class InstabilityData {
 	}
 
 	public static void initialize() {
-		InstabilityBlockManager.setInstabilityFactors(Blocks.coal_ore, 5, 1);
-		InstabilityBlockManager.setInstabilityFactors(Blocks.lapis_ore, 5, 1);
-		InstabilityBlockManager.setInstabilityFactors(Blocks.iron_ore, 60, 1);
-		InstabilityBlockManager.setInstabilityFactors(Blocks.emerald_ore, 200, 2);
-		InstabilityBlockManager.setInstabilityFactors(Blocks.redstone_ore, 250, 2);
-		InstabilityBlockManager.setInstabilityFactors(Blocks.gold_ore, 750, 4);
-		InstabilityBlockManager.setInstabilityFactors(Blocks.diamond_ore, 4000, 20);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.COAL_ORE, 5, 1);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.LAPIS_ORE, 5, 1);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.IRON_ORE, 60, 1);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.EMERALD_ORE, 200, 2);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.REDSTONE_ORE, 250, 2);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.GOLD_ORE, 750, 4);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.DIAMOND_ORE, 4000, 20);
 
 		InstabilityBlockManager.setInstabilityFactors(ModBlocks.crystal, 20, 4);
-		InstabilityBlockManager.setInstabilityFactors(Blocks.glowstone, 50, 4);
-		InstabilityBlockManager.setInstabilityFactors(Blocks.quartz_ore, 20, 4);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.GLOWSTONE, 50, 4);
+		InstabilityBlockManager.setInstabilityFactors(Blocks.QUARTZ_ORE, 20, 4);
 
 		//TODO: (Instability) Implement missing Instability effects
 		InstabilityManager.setDeckCost("basic", deckcost.basic);
@@ -125,24 +126,24 @@ public class InstabilityData {
 		InstabilityManager.setDeckCost("destructive", deckcost.destructive);
 		InstabilityManager.setDeckCost("eating", deckcost.eating);
 		InstabilityManager.setDeckCost("death", deckcost.death);
-		InstabilityProviderContainerObject.create("blindness", new InstabilityProvider(true, EffectPotion.class, false, Potion.blindness.id, 60), stability.blindness).add("eating", 1);
-		InstabilityProviderContainerObject.create("blindness,g", new InstabilityProvider(true, EffectPotion.class, true, Potion.blindness.id, 60), stability.blindness_global).add("death", 1);
-		InstabilityProviderContainerObject.create("enemyregen,g", new InstabilityProvider(true, EffectPotionEnemy.class, true, Potion.regeneration.id, 200), stability.enemyregen_global).add("basic", 5).add("harsh", 2);
-		InstabilityProviderContainerObject.create("enemyresist,g", new InstabilityProvider(true, EffectPotionEnemy.class, true, Potion.resistance.id, 200), stability.enemyresist_global).add("basic", 2).add("harsh", 1);
-		InstabilityProviderContainerObject.create("fatigue", new InstabilityProvider(true, EffectPotion.class, false, Potion.digSlowdown.id, 80), stability.fatigue).add("basic", 5);
-		InstabilityProviderContainerObject.create("fatigue,g", new InstabilityProvider(true, EffectPotion.class, true, Potion.digSlowdown.id, 80), stability.fatigue_global).add("harsh", 5);
-		InstabilityProviderContainerObject.create("hunger", new InstabilityProvider(true, EffectPotion.class, false, Potion.hunger.id, 80), stability.hunger).add("basic", 8).add("harsh", 2);
-		InstabilityProviderContainerObject.create("hunger,g", new InstabilityProvider(true, EffectPotion.class, true, Potion.hunger.id, 80), stability.hunger_global).add("harsh", 5);
-		InstabilityProviderContainerObject.create("nausea", new InstabilityProvider(true, EffectPotion.class, false, Potion.confusion.id, 60), stability.nausea).add("eating", 1);
-		InstabilityProviderContainerObject.create("nausea,g", new InstabilityProvider(true, EffectPotion.class, true, Potion.confusion.id, 60), stability.nausea_global).add("death", 1);
-		InstabilityProviderContainerObject.create("poison", new InstabilityProvider(true, EffectPotion.class, false, Potion.poison.id, 80), stability.poison).add("basic", 9).add("harsh", 3);
-		InstabilityProviderContainerObject.create("poison,g", new InstabilityProvider(true, EffectPotion.class, true, Potion.poison.id, 80), stability.poison_global).add("harsh", 5);
-		InstabilityProviderContainerObject.create("slow", new InstabilityProvider(true, EffectPotion.class, false, Potion.moveSlowdown.id, 80), stability.slow).add("basic", 6).add("harsh", 1);
-		InstabilityProviderContainerObject.create("slow,g", new InstabilityProvider(true, EffectPotion.class, true, Potion.moveSlowdown.id, 80), stability.slow_global).add("harsh", 5);
-		InstabilityProviderContainerObject.create("weakness", new InstabilityProvider(true, EffectPotion.class, false, Potion.weakness.id, 80), stability.weakness).add("basic", 8).add("harsh", 2);
-		InstabilityProviderContainerObject.create("weakness,g", new InstabilityProvider(true, EffectPotion.class, true, Potion.weakness.id, 80), stability.weakness_global).add("harsh", 5);
-		InstabilityProviderContainerObject.create("wither", new InstabilityProvider(true, EffectPotion.class, false, Potion.wither.id, 30), stability.wither).add("harsh", 1).add("destructive", 1).add("eating", 2);
-		InstabilityProviderContainerObject.create("wither,g", new InstabilityProvider(true, EffectPotion.class, true, Potion.wither.id, 30), stability.wither_global).add("destructive", 1).add("eating", 1).add("death", 1);
+		InstabilityProviderContainerObject.create("blindness", new InstabilityProvider(true, EffectPotion.class, false, MobEffects.BLINDNESS, 60), stability.blindness).add("eating", 1);
+		InstabilityProviderContainerObject.create("blindness,g", new InstabilityProvider(true, EffectPotion.class, true, MobEffects.BLINDNESS, 60), stability.blindness_global).add("death", 1);
+		InstabilityProviderContainerObject.create("enemyregen,g", new InstabilityProvider(true, EffectPotionEnemy.class, true, MobEffects.REGENERATION, 200), stability.enemyregen_global).add("basic", 5).add("harsh", 2);
+		InstabilityProviderContainerObject.create("enemyresist,g", new InstabilityProvider(true, EffectPotionEnemy.class, true, MobEffects.RESISTANCE, 200), stability.enemyresist_global).add("basic", 2).add("harsh", 1);
+		InstabilityProviderContainerObject.create("fatigue", new InstabilityProvider(true, EffectPotion.class, false, MobEffects.MINING_FATIGUE, 80), stability.fatigue).add("basic", 5);
+		InstabilityProviderContainerObject.create("fatigue,g", new InstabilityProvider(true, EffectPotion.class, true, MobEffects.MINING_FATIGUE, 80), stability.fatigue_global).add("harsh", 5);
+		InstabilityProviderContainerObject.create("hunger", new InstabilityProvider(true, EffectPotion.class, false, MobEffects.HUNGER, 80), stability.hunger).add("basic", 8).add("harsh", 2);
+		InstabilityProviderContainerObject.create("hunger,g", new InstabilityProvider(true, EffectPotion.class, true, MobEffects.HUNGER, 80), stability.hunger_global).add("harsh", 5);
+		InstabilityProviderContainerObject.create("nausea", new InstabilityProvider(true, EffectPotion.class, false, MobEffects.NAUSEA, 60), stability.nausea).add("eating", 1);
+		InstabilityProviderContainerObject.create("nausea,g", new InstabilityProvider(true, EffectPotion.class, true, MobEffects.NAUSEA, 60), stability.nausea_global).add("death", 1);
+		InstabilityProviderContainerObject.create("poison", new InstabilityProvider(true, EffectPotion.class, false, MobEffects.POISON, 80), stability.poison).add("basic", 9).add("harsh", 3);
+		InstabilityProviderContainerObject.create("poison,g", new InstabilityProvider(true, EffectPotion.class, true, MobEffects.POISON, 80), stability.poison_global).add("harsh", 5);
+		InstabilityProviderContainerObject.create("slow", new InstabilityProvider(true, EffectPotion.class, false, MobEffects.SLOWNESS, 80), stability.slow).add("basic", 6).add("harsh", 1);
+		InstabilityProviderContainerObject.create("slow,g", new InstabilityProvider(true, EffectPotion.class, true, MobEffects.SLOWNESS, 80), stability.slow_global).add("harsh", 5);
+		InstabilityProviderContainerObject.create("weakness", new InstabilityProvider(true, EffectPotion.class, false, MobEffects.WEAKNESS, 80), stability.weakness).add("basic", 8).add("harsh", 2);
+		InstabilityProviderContainerObject.create("weakness,g", new InstabilityProvider(true, EffectPotion.class, true, MobEffects.WEAKNESS, 80), stability.weakness_global).add("harsh", 5);
+		InstabilityProviderContainerObject.create("wither", new InstabilityProvider(true, EffectPotion.class, false, MobEffects.WITHER, 30), stability.wither).add("harsh", 1).add("destructive", 1).add("eating", 2);
+		InstabilityProviderContainerObject.create("wither,g", new InstabilityProvider(true, EffectPotion.class, true, MobEffects.WITHER, 30), stability.wither_global).add("destructive", 1).add("eating", 1).add("death", 1);
 
 		InstabilityProviderContainerObject.create("burning", new ProviderScorched(), stability.burning).add("harsh", 1);
 		//InstabilityProviderContainerObject.create("burning,g", new ProviderScorched(true), stability.burning_global).add("destructive", 1);

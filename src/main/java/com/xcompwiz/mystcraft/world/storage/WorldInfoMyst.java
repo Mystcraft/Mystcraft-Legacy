@@ -6,7 +6,7 @@ import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
@@ -64,7 +64,7 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 */
 	@Override
 	public void setSpawnPosition(int x, int y, int z) {
-		provider.agedata.setSpawn(new ChunkCoordinates(x, y, z));
+		provider.agedata.setSpawn(new ChunkPos(x, y, z));
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 */
 	@Override
 	public int getSpawnX() {
-		ChunkCoordinates spawn = this.provider.agedata.getSpawn();
+		ChunkPos spawn = this.provider.agedata.getSpawn();
 		if (spawn == null) return 0;
 		return spawn.posX;
 	}
@@ -82,7 +82,7 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 */
 	@Override
 	public int getSpawnY() {
-		ChunkCoordinates spawn = this.provider.agedata.getSpawn();
+		ChunkPos spawn = this.provider.agedata.getSpawn();
 		if (spawn == null) return 64;
 		return spawn.posY;
 	}
@@ -92,7 +92,7 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 */
 	@Override
 	public int getSpawnZ() {
-		ChunkCoordinates spawn = this.provider.agedata.getSpawn();
+		ChunkPos spawn = this.provider.agedata.getSpawn();
 		if (spawn == null) return 0;
 		return spawn.posZ;
 	}

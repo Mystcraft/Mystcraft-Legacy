@@ -15,7 +15,7 @@ public class DecayHandlerBlue extends DecayHandlerSpreading {
 	@Override
 	protected int getConversionDifficulty(World world, int i, int j, int k) {
 		Block block = world.getBlock(i, j, k);
-		if (block == Blocks.air) return 20;
+		if (block == Blocks.AIR) return 20;
 		float f = block.getBlockHardness(world, i, j, k);
 		if (f < 0.0F) {
 			f = 1000.0F;

@@ -7,7 +7,7 @@ import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -20,8 +20,8 @@ public class MystWorldGenerator implements IWorldGenerator {
 		if (!(worldObj.provider instanceof WorldProviderMyst)) return;
 		AgeController controller = ((WorldProviderMyst) worldObj.provider).getAgeController();
 
-		ChunkCoordinates spawn = worldObj.getSpawnPoint();
-		if (spawn != null && spawn.posX >> 4 == chunkX && spawn.posZ >> 4 == chunkZ) generatePlatform(worldObj, spawn.posX, spawn.posY - 1, spawn.posZ, Blocks.cobblestone);
+		ChunkPos spawn = worldObj.getSpawnPoint();
+		if (spawn != null && spawn.posX >> 4 == chunkX && spawn.posZ >> 4 == chunkZ) generatePlatform(worldObj, spawn.posX, spawn.posY - 1, spawn.posZ, Blocks.COBBLESTONE);
 
 		ChunkProfiler profiler = controller.getChunkProfiler();
 		profileCompletedChunks(profiler, chunkX, chunkZ, ichunkprovider);
@@ -69,7 +69,7 @@ public class MystWorldGenerator implements IWorldGenerator {
 			for (int z = -size; z <= size; ++z) {
 				worldObj.setBlock(i + x, j, k + z, block, 0, 2);
 				for (int y = j + 1; y < j + 5; ++y)
-					worldObj.setBlock(i + x, y, k + z, Blocks.air, 0, 2);
+					worldObj.setBlock(i + x, y, k + z, Blocks.AIR, 0, 2);
 			}
 		}
 	}

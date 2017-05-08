@@ -26,7 +26,7 @@ public class WorldGenMystStarFissure extends WorldGenerator {
 	private void set(World world, int i, int j, int k) {
 		world.setBlock(i, j++, k, ModBlocks.starfissure);
 		for (; j < world.getHeight(); ++j) {
-			world.setBlock(i, j, k, Blocks.air);
+			world.setBlock(i, j, k, Blocks.AIR);
 		}
 	}
 

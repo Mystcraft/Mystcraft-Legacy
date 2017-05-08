@@ -27,7 +27,7 @@ public class SymbolTerrainGenEnd extends SymbolBase {
 		if (block != null) {
 			gen.setSeaBlock(block.block, block.metadata);
 		} else {
-			gen.setSeaBlock(Blocks.air, (byte) 0);
+			gen.setSeaBlock(Blocks.AIR, (byte) 0);
 		}
 		block = ModifierUtils.popBlockMatching(controller, BlockCategory.TERRAIN);
 		if (block != null) {

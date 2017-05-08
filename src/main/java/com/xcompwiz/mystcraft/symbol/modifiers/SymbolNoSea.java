@@ -14,7 +14,7 @@ public class SymbolNoSea extends SymbolBase {
 
 	public SymbolNoSea(String identifier) {
 		super(identifier);
-		blockDescriptor = new BlockDescriptor(Blocks.air);
+		blockDescriptor = new BlockDescriptor(Blocks.AIR);
 		blockDescriptor.setUsable(BlockCategory.SEA, true);
 	}
 

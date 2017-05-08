@@ -26,7 +26,7 @@ public class SymbolTendrils extends SymbolBase {
 		if (block != null) {
 			generator = new MapGenCavesMyst(seed, 15, 18, block.block, block.metadata);
 		} else {
-			generator = new MapGenCavesMyst(seed, 15, 18, Blocks.log);
+			generator = new MapGenCavesMyst(seed, 15, 18, Blocks.LOG);
 		}
 		controller.registerInterface(new TerrainAlteration(generator));
 	}
