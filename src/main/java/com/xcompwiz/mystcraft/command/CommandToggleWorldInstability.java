@@ -8,16 +8,17 @@ import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
 
 public class CommandToggleWorldInstability extends CommandBaseAdv {
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "myst-toggleworldinstability";
 	}
 
 	@Override
-	public List<String> getCommandAliases() {
+	public List<String> getAliases() {
 		List<String> list = new ArrayList<String>();
 		list.add("myst-twi");
 		return list;
@@ -32,15 +33,15 @@ public class CommandToggleWorldInstability extends CommandBaseAdv {
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender par1ICommandSender) {
+	public String getUsage(ICommandSender par1ICommandSender) {
 		return "commands.myst.twi.usage";
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args) {
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		Integer dimId = null;
 		try {
-			dimId = parseInt(sender, args[0]);
+			dimId = parseInt(args[0]);
 		} catch (Exception e) {
 			dimId = getSenderDimension(sender);
 		}
@@ -55,6 +56,6 @@ public class CommandToggleWorldInstability extends CommandBaseAdv {
 		}
 		data.setInstabilityEnabled(setting);
 
-		sendToAdmins(sender, sender.getCommandSenderName() + " Toggled Instability for Dimension " + dimId + "(" + data.isInstabilityEnabled() + ")", new Object[0]);
+		sendToAdmins(sender, sender.getName() + " Toggled Instability for Dimension " + dimId + "(" + data.isInstabilityEnabled() + ")", new Object[0]);
 	}
 }

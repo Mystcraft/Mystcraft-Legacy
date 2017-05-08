@@ -10,21 +10,22 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 
 public class CommandCreateAgebook extends CommandBaseAdv {
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "myst-agebook";
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender par1ICommandSender) {
+	public String getUsage(ICommandSender par1ICommandSender) {
 		return "commands.myst.agebook.usage";
 	}
 
 	@Override
-	public void processCommand(ICommandSender agent, String[] args) {
+	public void execute(MinecraftServer server, ICommandSender agent, String[] args) throws CommandException {
 		EntityPlayer player = null;
 		try {
 			player = getCommandSenderAsPlayer(agent);
@@ -34,7 +35,7 @@ public class CommandCreateAgebook extends CommandBaseAdv {
 
 		Integer dimId = null;
 		if (args.length != 0) {
-			dimId = parseInt(agent, args[0]);
+			dimId = parseInt(args[0]);
 		} else {
 			dimId = player.dimension;
 		}
@@ -44,7 +45,7 @@ public class CommandCreateAgebook extends CommandBaseAdv {
 		ItemAgebook.initializeCompound(itemstack, dimId, AgeData.getAge(dimId, false));
 		if (player.inventory.addItemStackToInventory(itemstack)) {
 			player.inventory.markDirty();
-			sendToAdmins(agent, agent.getCommandSenderName() + " created Descriptive Book for Dimension " + dimId, new Object[0]);
+			sendToAdmins(agent, agent.getName() + " created Descriptive Book for Dimension " + dimId, new Object[0]);
 		}
 	}
 }

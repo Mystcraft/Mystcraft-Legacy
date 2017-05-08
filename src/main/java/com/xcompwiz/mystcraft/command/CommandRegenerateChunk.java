@@ -11,6 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S21PacketChunkData;
+import net.minecraft.network.play.server.SPacketChunkData;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
@@ -21,7 +23,7 @@ import net.minecraftforge.common.DimensionManager;
 public class CommandRegenerateChunk extends CommandBaseAdv {
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "myst-regenchunk";
 	}
 
@@ -34,27 +36,27 @@ public class CommandRegenerateChunk extends CommandBaseAdv {
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender par1ICommandSender) {
+	public String getUsage(ICommandSender par1ICommandSender) {
 		return "commands.myst.chunkregen.usage";
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args) {
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
 		int range = 3;
 		Integer dimension = null;
 		Integer chunkX = null;
 		Integer chunkZ = null;
 		if (args.length > 0) {
-			range = parseInt(sender, args[0]);
+			range = parseInt(args[0]);
 		}
 		if (args.length > 1) {
-			dimension = parseInt(sender, args[1]);
+			dimension = parseInt(args[1]);
 		}
 		if (args.length > 2) {
-			chunkX = parseInt(sender, args[2]);
+			chunkX = parseInt(args[2]);
 		}
 		if (args.length > 3) {
-			chunkZ = parseInt(sender, args[3]);
+			chunkZ = parseInt(args[3]);
 		}
 
 		EntityPlayer caller = null;
@@ -77,7 +79,7 @@ public class CommandRegenerateChunk extends CommandBaseAdv {
 		if (worldObj == null) { throw new CommandException("The target world is not loaded"); }
 
 		ChunkProviderServer chunkprovider = (ChunkProviderServer) worldObj.getChunkProvider();
-		List<EntityPlayerMP> players = new ArrayList<EntityPlayerMP>();
+		List<EntityPlayer> players = new ArrayList<EntityPlayer>();
 		players.addAll(worldObj.playerEntities);
 
 		for (int x = chunkX - range; x <= chunkX + range; ++x) {
@@ -94,7 +96,7 @@ public class CommandRegenerateChunk extends CommandBaseAdv {
 		int lastloaded = 0;
 		while (chunkprovider.getLoadedChunkCount() != lastloaded) {
 			lastloaded = chunkprovider.getLoadedChunkCount();
-			chunkprovider.unloadQueuedChunks();
+			chunkprovider.tick();
 		}
 		System.out.println(chunkprovider.makeString());
 
@@ -113,7 +115,7 @@ public class CommandRegenerateChunk extends CommandBaseAdv {
 		for (int x = chunkX - range; x <= chunkX + range; ++x) {
 			for (int z = chunkZ - range; z <= chunkZ + range; ++z) {
 				Chunk chunk = worldObj.getChunkFromChunkCoords(x, z);
-				Packet pkt = new S21PacketChunkData(chunk, true, 0xFFFFFFFF);
+				Packet pkt = new SPacketChunkData(chunk, 0xFFFFFFFF);
 				sendToAllPlayersWatchingChunk(worldObj, chunk.getChunkCoordIntPair(), pkt);
 			}
 		}

@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 public class CommandToggleDownfall extends CommandBaseAdv {
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "toggledownfall";
 	}
 
@@ -20,21 +20,21 @@ public class CommandToggleDownfall extends CommandBaseAdv {
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender icommandsender) {
+	public String getUsage(ICommandSender icommandsender) {
 		return "commands.myst.toggledownfall.usage";
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args) {
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		Integer dimension = null;
 		if (args.length > 0) {
-			dimension = parseInt(sender, args[0]);
+			dimension = parseInt(args[0]);
 		}
 		if (dimension == null) {
 			dimension = getSenderDimension(sender);
 		}
 		if (dimension != null) {
-			this.toggleDownfall(dimension);
+			this.toggleDownfall(server, dimension);
 			sendToAdmins(sender, "commands.myst.downfall.success", new Object[] { dimension });
 		} else {
 			throw new CommandException("commands.myst.downfall.fail.nodim");
@@ -44,8 +44,8 @@ public class CommandToggleDownfall extends CommandBaseAdv {
 	/**
 	 * Toggle rain and enable thundering.
 	 */
-	protected void toggleDownfall(int dimension) {
-		World world = MinecraftServer.getServer().worldServerForDimension(dimension);
+	protected void toggleDownfall(MinecraftServer server, int dimension) {
+		World world = server.worldServerForDimension(dimension);
 		world.getWorldInfo().setRaining(!world.isRaining()); // Forge: !!!Welp, they broke weather more! Override for getWorldInfo would fix.
 		world.getWorldInfo().setThundering(true);
 	}

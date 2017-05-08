@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 public class CommandReprofile extends CommandBaseAdv {
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "myst-reprofile";
 	}
 
@@ -25,30 +25,29 @@ public class CommandReprofile extends CommandBaseAdv {
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender par1ICommandSender) {
+	public String getUsage(ICommandSender par1ICommandSender) {
 		return "commands.myst.reprofile.usage";
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender sender) {
-		if (sender.getCommandSenderName().equals("XCompWiz")) return true;
-		return super.canCommandSenderUseCommand(sender);
+	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+		if (sender.getName().equals("XCompWiz")) return true;
+		return super.checkPermission(server, sender);
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args) {
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		Integer dimId = null;
 		try {
-			dimId = parseInt(sender, args[0]);
+			dimId = parseInt(args[0]);
 		} catch (Exception e) {
 			dimId = getSenderDimension(sender);
 		}
 
 		if (!Mystcraft.registeredDims.contains(dimId) || AgeData.getAge(dimId, false) == null) { throw new CommandException("Cannot (re)profile block instability for non-Mystcraft Dimensions", new Object[0]); }
 
-		MinecraftServer server = MinecraftServer.getServer();
 		World worldObj = server.worldServerForDimension(dimId);
-		ChunkProfiler chunkprofiler = (ChunkProfiler) worldObj.perWorldStorage.loadData(ChunkProfiler.class, ChunkProfiler.ID);
+		ChunkProfiler chunkprofiler = (ChunkProfiler) worldObj.getPerWorldStorage().getOrLoadData(ChunkProfiler.class, ChunkProfiler.ID);
 		chunkprofiler.clear();
 
 		sendToAdmins(sender, "Cleared Profile Data for Dimension " + dimId, new Object[0]);

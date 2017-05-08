@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.debug.DebugHierarchy;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugTaskCallback;
@@ -15,13 +17,15 @@ import com.xcompwiz.mystcraft.debug.DebugUtils;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.math.BlockPos;
 
 public class CommandDebug extends CommandBaseAdv {
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "myst-dbg";
 	}
 
@@ -34,21 +38,21 @@ public class CommandDebug extends CommandBaseAdv {
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender par1ICommandSender) {
-		return "/" + this.getCommandName() + " <'read'> <param> OR <'set'> <flag>";
+	public String getUsage(ICommandSender par1ICommandSender) {
+		return "/" + this.getName() + " <'read'> <param> OR <'set'> <flag>";
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender sender) {
-		if (sender.getCommandSenderName().equals("XCompWiz")) return true;
-		return super.canCommandSenderUseCommand(sender);
+	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+		if (sender.getName().equals("XCompWiz")) return true;
+		return super.checkPermission(server, sender);
 	}
 
 	/**
 	 * Adds the strings available in this command to the given list of tab completion options.
 	 */
 	@Override
-	public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] args) {
+	public List<String> getTabCompletions(MinecraftServer server, ICommandSender par1ICommandSender, String[] args, @Nullable BlockPos targetPos) {
 		if (args.length < 2) return getListOfStringsMatchingLastWord(args, new String[] { "read", "set", "run" });
 		if (args.length >= 2 && (args[0].equals("read") || args[0].equals("set") || args[0].equals("run"))) return getListOfStringsMatchingLastWord(args, this.getKeys(args));
 		return null;
@@ -78,7 +82,7 @@ public class CommandDebug extends CommandBaseAdv {
 	}
 
 	@Override
-	public void processCommand(ICommandSender agent, String[] args) {
+	public void execute(MinecraftServer server, ICommandSender agent, String[] args) {
 		String command = null;
 		String address = null;
 		String setval = null;

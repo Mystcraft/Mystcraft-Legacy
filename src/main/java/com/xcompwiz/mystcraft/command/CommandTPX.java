@@ -2,6 +2,8 @@ package com.xcompwiz.mystcraft.command;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
@@ -14,12 +16,12 @@ import net.minecraft.command.PlayerNotFoundException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.BlockPos;
 
 public class CommandTPX extends CommandBaseAdv {
 
 	@Override
-	public String getCommandName() {
+	public String getName() {
 		return "tpx";
 	}
 
@@ -32,7 +34,7 @@ public class CommandTPX extends CommandBaseAdv {
 	}
 
 	@Override
-	public String getCommandUsage(ICommandSender par1ICommandSender) {
+	public String getUsage(ICommandSender par1ICommandSender) {
 		return "commands.myst.tpx.usage";
 	}
 
@@ -40,14 +42,14 @@ public class CommandTPX extends CommandBaseAdv {
 	 * Adds the strings available in this command to the given list of tab completion options.
 	 */
 	@Override
-	public List addTabCompletionOptions(ICommandSender par1ICommandSender, String[] args) {
-		if (args.length == 1) return getListOfStringsMatchingLastWord(args, this.getPlayers());
-		if (args.length == 2) return getListOfStringsMatchingLastWord(args, this.getPlayers());
+	public List<String> getTabCompletions(MinecraftServer server, ICommandSender par1ICommandSender, String[] args, @Nullable BlockPos targetPos) {
+		if (args.length == 1) return getListOfStringsMatchingLastWord(args, this.getPlayers(server));
+		if (args.length == 2) return getListOfStringsMatchingLastWord(args, this.getPlayers(server));
 		return null;
 	}
 
-	protected String[] getPlayers() {
-		return MinecraftServer.getServer().getAllUsernames();
+	protected String[] getPlayers(MinecraftServer server) {
+		return server.getOnlinePlayerNames();
 	}
 
 	/**
@@ -59,7 +61,7 @@ public class CommandTPX extends CommandBaseAdv {
 	}
 
 	@Override
-	public void processCommand(ICommandSender sender, String[] args) {
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		Entity subject = null;
 		ILinkInfo link = null;
 		String sSubject = null;
@@ -84,34 +86,34 @@ public class CommandTPX extends CommandBaseAdv {
 		if (sSubject == null) {
 			subject = getCommandSenderAsPlayer(sender);
 		} else {
-			subject = getTargetPlayer(sender, sSubject);
+			subject = getTargetPlayer(server, sender, sSubject);
 		}
 		if (subject == null) { throw new WrongUsageException("commands.myst.tpx.fail.nosubject"); }
 
-		link = getLinkInfoForTarget(sender, subject, sTarget, sX, sY, sZ);
+		link = getLinkInfoForTarget(server, sender, subject, sTarget, sX, sY, sZ);
 
 		link.setFlag(LinkPropertyAPI.FLAG_INTRA_LINKING, true);
 		makeOpTP(link);
-		LinkController.travelEntity(subject.worldObj, subject, link);
+		LinkController.travelEntity(subject.world, subject, link);
 	}
 
-	public static ILinkInfo getLinkInfoForTarget(ICommandSender sender, Entity subject, String sTarget, String sX, String sY, String sZ) {
+	public static ILinkInfo getLinkInfoForTarget(MinecraftServer server, ICommandSender sender, Entity subject, String sTarget, String sX, String sY, String sZ) throws CommandException {
 		ILinkInfo link = null;
 		try {
-			Entity target = getTargetPlayer(sender, sTarget);
-			link = InternalAPI.linking.createLinkInfoFromPosition(target.worldObj, target);
+			Entity target = getTargetPlayer(server, sender, sTarget);
+			link = InternalAPI.linking.createLinkInfoFromPosition(target.world, target);
 		} catch (PlayerNotFoundException e) {
 		}
 		if (link == null) {
 			link = new LinkOptions(null);
 			int dim = (int) (handleRelativeNumber(sender, subject.dimension, sTarget, 0, 0) - 0.5D);
-			if (MinecraftServer.getServer().worldServerForDimension(dim) == null) { throw new CommandException("commands.myst.tpx.fail.noworld", new Object[] { dim }); }
+			if (server.worldServerForDimension(dim) == null) { throw new CommandException("commands.myst.tpx.fail.noworld", new Object[] { dim }); }
 			link.setDimensionUID(dim);
 			if (sX != null && sY != null && sZ != null) {
 				int x = (int) handleRelativeNumber(sender, subject.posX, sX);
 				int y = (int) handleRelativeNumber(sender, subject.posY, sY, 0, 0);
 				int z = (int) handleRelativeNumber(sender, subject.posZ, sZ);
-				link.setSpawn(new ChunkPos(x, y, z));
+				link.setSpawn(new BlockPos(x, y, z));
 			}
 		}
 		return link;
