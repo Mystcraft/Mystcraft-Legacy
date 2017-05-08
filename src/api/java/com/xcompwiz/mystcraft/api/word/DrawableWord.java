@@ -7,6 +7,7 @@ import java.util.List;
 import com.xcompwiz.mystcraft.api.hook.WordAPI;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**

@@ -3,14 +3,15 @@ package com.xcompwiz.mystcraft.api.event;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * The base event for the meteor. Used as the abstract parent class for all of the meteor events. These events are sent over the Forge event bus and are
  * Server-side only.
  */
 public abstract class MeteorEvent extends Event {
-	public final Entity	meteor;
+	public final Entity meteor;
 
 	private MeteorEvent(Entity meteor) {
 		this.meteor = meteor;
@@ -41,9 +42,9 @@ public abstract class MeteorEvent extends Event {
 	 */
 	public static class MetorExplosion extends MeteorEvent {
 		/** The list of blocks affected by the explosion */
-		public final List<ChunkPosition>	blocks;
+		public final List<BlockPos> blocks;
 
-		public MetorExplosion(Entity meteor, List<ChunkPosition> blocks) {
+		public MetorExplosion(Entity meteor, List<BlockPos> blocks) {
 			super(meteor);
 			this.blocks = blocks;
 		}

@@ -77,6 +77,7 @@ public final class Modifier {
 	 * @param <T> The type of element in the list
 	 * @return Returns the stored object as a list or null
 	 */
+	@SuppressWarnings("unchecked")
 	public <T> List<T> asList() {
 		if (value instanceof List) { return (List<T>) value; }
 		return null;

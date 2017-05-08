@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.api.world.logic;
 
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
@@ -26,8 +27,8 @@ public interface ICelestial {
 	public abstract float getAltitudeAngle(long time, float partialTime);
 
 	/**
-	 * Returns the number of ticks until this solar object is at 0.75 (celestial angle position = dawn). Can return null if the celestial doesn't provide light, never
-	 * rises (this high), or if the rising time is unknown.
+	 * Returns the number of ticks until this solar object is at 0.75 (celestial angle position = dawn). Can return null if the celestial doesn't provide light,
+	 * never rises (this high), or if the rising time is unknown.
 	 * @return The number of ticks from now before the solar object will rise to 0.75 celestial altitude
 	 */
 	public abstract Long getTimeToDawn(long time);

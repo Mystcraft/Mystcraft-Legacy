@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.api.event;
 import java.util.Random;
 
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
  * Listen for this event via Forge in order to do generation during Dense Ores population for every dense ores symbol The provided variables are exactly like
