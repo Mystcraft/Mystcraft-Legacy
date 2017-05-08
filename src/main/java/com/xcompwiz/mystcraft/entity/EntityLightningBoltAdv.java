@@ -8,8 +8,8 @@ import net.minecraft.world.World;
 public class EntityLightningBoltAdv extends EntityLightningBolt {
 	private Color	color;
 
-	public EntityLightningBoltAdv(World par1World, double par2, double par4, double par6) {
-		super(par1World, par2, par4, par6);
+	public EntityLightningBoltAdv(World world, double x, double y, double z, boolean effectOnly) {
+		super(world, x, y, z, effectOnly);
 		this.color = new Color(0.45F, 0.45F, 0.5F);
 	}
 

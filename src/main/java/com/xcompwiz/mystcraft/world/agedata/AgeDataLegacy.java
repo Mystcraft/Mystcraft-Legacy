@@ -1,18 +1,20 @@
 package com.xcompwiz.mystcraft.world.agedata;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 import com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderManager.AgeDataLoader;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.util.Constants;
 
@@ -43,7 +45,7 @@ public class AgeDataLegacy extends AgeDataLoader {
 		}
 
 		if (nbttagcompound.hasKey("SpawnX") && nbttagcompound.hasKey("SpawnY") && nbttagcompound.hasKey("SpawnZ")) {
-			data.spawn = new ChunkPos(nbttagcompound.getInteger("SpawnX"), nbttagcompound.getInteger("SpawnY"), nbttagcompound.getInteger("SpawnZ"));
+			data.spawn = new BlockPos(nbttagcompound.getInteger("SpawnX"), nbttagcompound.getInteger("SpawnY"), nbttagcompound.getInteger("SpawnZ"));
 		} else {
 			data.spawn = null;
 		}
@@ -101,7 +103,7 @@ public class AgeDataLegacy extends AgeDataLoader {
 			int biomecount = nbttagcompound.getInteger("BiomeCount");
 			for (int i = 0; i < biomecount; ++i) {
 				if (nbttagcompound.hasKey("Biome" + i)) {
-					data.pages.add(Page.createSymbolPage(Biome.getBiome(nbttagcompound.getInteger("Biome" + i)).biomeName));
+					data.pages.add(Page.createSymbolPage(SymbolBiome.getBiomeSymbolId(Biome.getBiome(i))));
 				}
 			}
 		}
@@ -122,8 +124,9 @@ public class AgeDataLegacy extends AgeDataLoader {
 
 		// Moves all biome symbols to front in reverse order
 		HashSet<String> biomenames = new HashSet<String>();
-		for (int i = 0; i < Biome.getBiomeGenArray().length; ++i) {
-			if (Biome.getBiome(i) != null) biomenames.add(Biome.getBiome(i).biomeName);
+		Iterator<Biome> iterator = Biome.REGISTRY.iterator();
+		while (iterator.hasNext()) {
+			biomenames.add(iterator.next().getBiomeName());
 		}
 		HashSet<IAgeSymbol> controllers = SymbolManager.findAgeSymbolsImplementing(IBiomeController.class);
 		HashSet<String> controllernames = new HashSet<String>();

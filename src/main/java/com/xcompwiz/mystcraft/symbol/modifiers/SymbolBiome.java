@@ -15,10 +15,14 @@ public class SymbolBiome extends SymbolBase {
 	public static ArrayList<Biome>	selectables	= new ArrayList<Biome>();
 
 	private Biome					biome;
-	private String							displayName;
+	private String					displayName;
+
+	public static String getBiomeSymbolId(Biome biome) {
+		return "Biome" + Biome.getIdForBiome(biome);
+	}
 
 	public SymbolBiome(Biome biome) {
-		super("Biome" + Biome.getIdForBiome(biome));
+		super(getBiomeSymbolId(biome));
 		this.biome = biome;
 		this.displayName = formatted(biome);
 		this.setWords(new String[] { WordData.Nature, WordData.Nurture, WordData.Encourage, biome.getBiomeName() + Biome.getIdForBiome(biome) });
@@ -51,7 +55,7 @@ public class SymbolBiome extends SymbolBase {
 			if (selectables.size() > 0) {
 				biome = selectables.get(rand.nextInt(selectables.size()));
 			} else {
-				biome = Biome.getBiome(rand.nextInt(Biome.getBiomeGenArray().length));
+				biome = Biome.getBiome(rand.nextInt(Biome.REGISTRY.getKeys().size()));
 			}
 		}
 		return biome;

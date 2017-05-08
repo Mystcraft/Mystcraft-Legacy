@@ -4,6 +4,8 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.WeatherControllerToggleable;
 
+import net.minecraft.util.ResourceLocation;
+
 public class SymbolWeatherSnow extends SymbolBase {
 
 	public SymbolWeatherSnow(String identifier) {
@@ -29,7 +31,7 @@ public class SymbolWeatherSnow extends SymbolBase {
 		}
 
 		@Override
-		public float getTemperature(float current, int biomeId) {
+		public float getTemperature(float current, ResourceLocation biomeId) {
 			if (current > 0.10F) return 0.10F;
 			return current;
 		}

@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.data;
 
+import java.util.Iterator;
+
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.grammar.GrammarData;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
@@ -92,8 +94,10 @@ import com.xcompwiz.mystcraft.symbol.symbols.SymbolWeatherSnow;
 import com.xcompwiz.mystcraft.symbol.symbols.SymbolWeatherStorm;
 import com.xcompwiz.util.CollectionUtils;
 
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 
 public class ModSymbols {
@@ -107,28 +111,26 @@ public class ModSymbols {
 
 	public static void generateBiomeSymbols() {
 		// Generates symbols for registered biomes
-		for (int i = 0; i < Biome.getBiomeGenArray().length; ++i) {
-			Biome biome = Biome.getBiome(i);
+		Iterator<Biome> iterator = Biome.REGISTRY.iterator();
+		while (iterator.hasNext()) {
+			Biome biome = iterator.next();
 			if (biome == null) continue;
-			if (biome.biomeName == null) {
-				LoggerUtils.warn("Biome (id " + i + ") has null name, could not build symbol");
-				continue;
-			}
-			if (biome.biomeID != i) {
-				LoggerUtils.warn("Biome (id " + biome.biomeID + ") is in list as element " + i + ".");
+			ResourceLocation biomeID = biome.getRegistryName();
+			if (biome.getBiomeName() == null) {
+				LoggerUtils.warn("Biome (id " + biomeID.toString() + ") has null name, could not build symbol");
 				continue;
 			}
 
 			SymbolBase symbol = (new SymbolBiome(biome));
 			if (InternalAPI.symbol.registerSymbol(symbol, MystObjects.MystcraftModId)) {
 				Integer rank = 1;
-				if (biome == Biome.sky) {
+				if (biome == Biomes.SKY) {
 					rank = null;
 				} else {
 					symbol.setCardRank(2);
 				}
 				GrammarGenerator.registerRule(new Rule(GrammarData.BIOME, CollectionUtils.buildList(symbol.identifier()), rank));
-				InternalAPI.symbolValues.setSymbolTradeItem(symbol, new ItemStack(Items.emerald, 1));
+				InternalAPI.symbolValues.setSymbolTradeItem(symbol, new ItemStack(Items.EMERALD, 1));
 				SymbolBiome.selectables.add(biome);
 			}
 		}

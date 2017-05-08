@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.api.world.logic;
 
 import com.xcompwiz.mystcraft.api.util.Color;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
@@ -19,10 +20,8 @@ public interface IStaticColorProvider {
 	 * null has no effect.
 	 * @param worldObj The world object
 	 * @param biome The current biome. Can be null.
-	 * @param x The x coordinate of the block we are coloring
-	 * @param y The y coordinate of the block we are coloring
-	 * @param z The z coordinate of the block we are coloring
+	 * @param BlockPos The position of the block we are coloring
 	 * @return A Mystcraft Color object or null
 	 */
-	public abstract Color getStaticColor(World worldObj, Biome biome, int x, int y, int z);
+	public abstract Color getStaticColor(World worldObj, Biome biome, BlockPos pos);
 }

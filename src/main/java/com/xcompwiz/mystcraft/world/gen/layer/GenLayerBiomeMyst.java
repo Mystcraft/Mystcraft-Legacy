@@ -26,7 +26,7 @@ public class GenLayerBiomeMyst extends GenLayer {
 			for (int j = 0; j < par3; j++) {
 				initChunkSeed(j + par1, i + par2);
 
-				ai1[j + i * par3] = allowedBiomes[nextInt(allowedBiomes.length)].biomeID;
+				ai1[j + i * par3] = Biome.getIdForBiome(allowedBiomes[nextInt(allowedBiomes.length)]);
 			}
 		}
 

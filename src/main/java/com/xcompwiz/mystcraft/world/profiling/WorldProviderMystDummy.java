@@ -118,7 +118,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 
 	//We build a fake dimension setup using our own controller and a predefined agedata setup
 	@Override
-	protected void registerWorldChunkManager() {
+	protected void init() {
 		chunkX = chunkX_min;
 		chunkZ = chunkZ_min;
 		agedata = new AgeData("CONTROL");
@@ -127,7 +127,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		agedata.setInstabilityEnabled(true);
 
 		for (Biome biome : SymbolBiome.selectables) {
-			agedata.addSymbol("Biome" + biome.biomeID, 0);
+			agedata.addSymbol(SymbolBiome.getBiomeSymbolId(biome), 0);
 		}
 		agedata.addSymbol("BioConGrid", 0);
 		agedata.addSymbol("ModMat_tile.stone", 0);

@@ -44,7 +44,7 @@ public class SymbolFloatingIslands extends SymbolBase {
 	}
 
 	private class TerrainAlteration implements ITerrainAlteration {
-		private MapGenAdvanced	generator;
+		private MapGenAdvanced generator;
 
 		public TerrainAlteration(long seed, BlockDescriptor blockdesc, Biome biome, IModifiedHandler callback) {
 			Block block = Blocks.STONE;
@@ -65,8 +65,8 @@ public class SymbolFloatingIslands extends SymbolBase {
 
 	public class BiomeReplacer implements IModifiedHandler, IChunkProviderFinalization {
 
-		private Biome						biome;
-		private HashMap<List<Integer>, boolean[]>	chunks	= new HashMap<List<Integer>, boolean[]>();
+		private Biome biome;
+		private HashMap<List<Integer>, boolean[]> chunks = new HashMap<List<Integer>, boolean[]>();
 
 		public BiomeReplacer(Biome biome) {
 			this.biome = biome;
@@ -87,11 +87,13 @@ public class SymbolFloatingIslands extends SymbolBase {
 		@Override
 		public void finalizeChunk(Chunk chunk, int chunkX, int chunkZ) {
 			boolean[] modified = chunks.remove(Arrays.asList(chunkX, chunkZ));
-			if (modified == null) { return; }
+			if (modified == null) {
+				return;
+			}
 			byte[] biomes = chunk.getBiomeArray();
 			for (int coords = 0; coords < modified.length; ++coords) {
 				if (modified[coords]) {
-					biomes[coords] = (byte) (biome.biomeID & 255);
+					biomes[coords] = (byte) (Biome.getIdForBiome(biome) & 255);
 				}
 			}
 		}

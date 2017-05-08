@@ -2,15 +2,17 @@ package com.xcompwiz.mystcraft.world;
 
 import java.util.HashMap;
 
+import com.xcompwiz.mystcraft.world.biome.BiomeHelper;
 import com.xcompwiz.mystcraft.world.biome.BiomeWrapperMyst;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 
 public class BiomeWrapperManager {
 
 	private WorldProviderMyst					provider;
-	private HashMap<Integer, BiomeWrapperMyst>	biomes	= new HashMap<Integer, BiomeWrapperMyst>();
+	private HashMap<ResourceLocation, BiomeWrapperMyst>	biomes	= new HashMap<ResourceLocation, BiomeWrapperMyst>();
 
 	public BiomeWrapperManager(WorldProviderMyst provider) {
 		this.provider = provider;
@@ -22,10 +24,11 @@ public class BiomeWrapperManager {
 	}
 
 	private synchronized BiomeWrapperMyst getBiomeWrapperForBiome(Biome biome) {
-		BiomeWrapperMyst wrapper = biomes.get(biome.biomeID);
+		ResourceLocation biomeID = biome.getRegistryName();
+		BiomeWrapperMyst wrapper = biomes.get(biomeID);
 		if (wrapper == null) {
 			wrapper = new BiomeWrapperMyst(provider, biome);
-			biomes.put(biome.biomeID, wrapper);
+			biomes.put(biomeID, wrapper);
 		}
 		return wrapper;
 	}
@@ -33,11 +36,11 @@ public class BiomeWrapperManager {
 	private Biome getBiomeForWorldCoords(int x, int z) {
 		int lx = x & 15;
 		int lz = z & 15;
-		if (provider.worldObj.blockExists(x, 0, z)) {
-			Chunk chunk = provider.worldObj.getChunkFromBlockCoords(x, z);
-			return chunk.getBiomeGenForWorldCoords(lx, lz, provider.worldChunkMgr);
+		if (provider.world.blockExists(x, 0, z)) {
+			Chunk chunk = provider.world.getChunkFromBlockCoords(x, z);
+			return chunk.getBiomeGenForWorldCoords(lx, lz, provider.getBiomeProvider());
 		}
-		return this.provider.worldChunkMgr.getBiomeGenAt(x, z);
+		return this.provider.getBiomeProvider().getBiome(x, z);
 	}
 
 }

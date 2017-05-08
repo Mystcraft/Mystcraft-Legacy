@@ -7,6 +7,8 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.WeatherControllerToggleable;
 
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -42,38 +44,34 @@ public class SymbolWeatherStorm extends SymbolBase {
 
 		@Override
 		public void tick(World worldObj, Chunk chunk) {
-			int var5 = chunk.xPosition * 16;
-			int var6 = chunk.zPosition * 16;
-			int var8;
-			int var9;
-			int var10;
-			int var11;
-
 			if (worldObj.isRaining() && worldObj.isThundering() && worldObj.rand.nextInt(100000) == 0) {
+				int xBase = chunk.xPosition * 16;
+				int zBase = chunk.zPosition * 16;
 				updateLCG = updateLCG * 3 + 1013904223;
-				var8 = updateLCG >> 2;
-				var9 = var5 + (var8 & 15);
-				var10 = var6 + (var8 >> 8 & 15);
-				var11 = worldObj.getPrecipitationHeight(var9, var10);
+				int coords = updateLCG >> 2;
+				int x = xBase + (coords & 15);
+				int z = zBase + (coords >> 8 & 15);
+				BlockPos precip = worldObj.getPrecipitationHeight(new BlockPos(x,0,z));
 
-				if (canLightningStrikeAt(worldObj, var9, var11, var10)) {
-					worldObj.addWeatherEffect(new EntityLightningBolt(worldObj, var9, var11, var10));
+				if (canLightningStrikeAt(worldObj, precip)) {
+					worldObj.addWeatherEffect(new EntityLightningBolt(worldObj, precip.getX(), precip.getY(), precip.getZ(), false));
 				}
 			}
 		}
 
 		@Override
-		public float getTemperature(float current, int biomeId) {
+		public float getTemperature(float current, ResourceLocation biomeId) {
 			if (current < 0.20F) return 0.20F;
 			return current;
 		}
 
-		public boolean canLightningStrikeAt(World worldObj, int par1, int par2, int par3) {
+		public boolean canLightningStrikeAt(World worldObj, BlockPos pos) {
 			if (!worldObj.isRaining()) {
 				return false;
-			} else if (!worldObj.canBlockSeeTheSky(par1, par2, par3)) {
+			} else if (!worldObj.canSeeSky(pos)) {
 				return false;
-			} else if (worldObj.getPrecipitationHeight(par1, par3) > par2) { return false; }
+			} else if (worldObj.getPrecipitationHeight(pos).getY() > pos.getY()) {
+				return false; }
 			return true;
 		}
 	}

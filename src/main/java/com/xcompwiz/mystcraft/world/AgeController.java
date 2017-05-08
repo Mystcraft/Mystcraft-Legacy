@@ -445,13 +445,13 @@ public class AgeController implements AgeDirector {
 		return new Vec3d(color.r, color.g, color.b);
 	}
 
-	public Color getStaticColor(String string, Biome biome, int x, int y, int z) {
+	public Color getStaticColor(String string, Biome biome, BlockPos pos) {
 		validate();
 		List<IStaticColorProvider> list = staticColorLists.get(string);
 		if (list == null || list.size() == 0) { return null; }
 		Color color = null;
 		for (IStaticColorProvider mod : list) {
-			Color op = mod.getStaticColor(this.world, biome, x, y, z);
+			Color op = mod.getStaticColor(this.world, biome, pos);
 			if (op == null) continue;
 			if (color == null) {
 				color = new Color(op.r, op.g, op.b);

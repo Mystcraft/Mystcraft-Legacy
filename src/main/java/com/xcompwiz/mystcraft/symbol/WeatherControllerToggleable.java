@@ -6,6 +6,8 @@ import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
 import com.xcompwiz.mystcraft.api.world.storage.StorageObject;
 
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -51,10 +53,10 @@ public abstract class WeatherControllerToggleable implements IWeatherController 
 			int coords = updateLCG >> 2;
 			int x = xBase + (coords & 15);
 			int z = zBase + (coords >> 8 & 15);
-			int y = worldObj.getPrecipitationHeight(x, z);
+			BlockPos precip = worldObj.getPrecipitationHeight(new BlockPos(x, 0, z));
 
-			if (worldObj.canLightningStrikeAt(x, y, z)) {
-				worldObj.addWeatherEffect(new EntityLightningBolt(worldObj, x, y, z));
+			if (worldObj.isRainingAt(precip)) {
+				worldObj.addWeatherEffect(new EntityLightningBolt(worldObj, precip.getX(), precip.getY(), precip.getZ(), false));
 			}
 		}
 	}
@@ -88,13 +90,13 @@ public abstract class WeatherControllerToggleable implements IWeatherController 
 	}
 
 	@Override
-	public float getTemperature(float current, int biomeId) {
+	public float getTemperature(float current, ResourceLocation biomeId) {
 		if (this.fixedtemp != null) return fixedtemp;
 		return current;
 	}
 
 	@Override
-	public float getRainfall(float current, int biomeId) {
+	public float getRainfall(float current, ResourceLocation biomeId) {
 		return current;
 	}
 
@@ -114,13 +116,13 @@ public abstract class WeatherControllerToggleable implements IWeatherController 
 	}
 
 	@Override
-	public boolean getEnableSnow(boolean current, int biomeId) {
+	public boolean getEnableSnow(boolean current, ResourceLocation biomeId) {
 		if (this.snowEnabled != null) return snowEnabled;
 		return current;
 	}
 
 	@Override
-	public boolean getEnableRain(boolean current, int biomeId) {
+	public boolean getEnableRain(boolean current, ResourceLocation biomeId) {
 		if (this.rainEnabled != null) return rainEnabled;
 		return current;
 	}

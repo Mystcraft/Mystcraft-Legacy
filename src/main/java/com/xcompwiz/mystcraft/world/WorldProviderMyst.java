@@ -18,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -428,8 +429,8 @@ public class WorldProviderMyst extends WorldProvider {
 		return java.awt.Color.getHSBColor(0.62222224F - par1 * 0.05F, 0.5F + par1 * 0.1F, 1.0F).getRGB();
 	}
 
-	public Color getStaticColor(String string, Biome biome, int x, int y, int z) {
-		return getAgeController().getStaticColor(string, biome, x, y, z);
+	public Color getStaticColor(String string, Biome biome, BlockPos pos) {
+		return getAgeController().getStaticColor(string, biome, pos);
 	}
 
 	/**
@@ -557,19 +558,19 @@ public class WorldProviderMyst extends WorldProvider {
 		return getAgeController().isPvPEnabled();
 	}
 
-	public float getTemperature(float temperature, int biomeId) {
+	public float getTemperature(float temperature, ResourceLocation biomeId) {
 		return getAgeController().getWeatherController().getTemperature(temperature, biomeId);
 	}
 
-	public float getRainfall(float rainfall, int biomeId) {
+	public float getRainfall(float rainfall, ResourceLocation biomeId) {
 		return getAgeController().getWeatherController().getRainfall(rainfall, biomeId);
 	}
 
-	public boolean getEnableSnow(boolean enableSnow, int biomeId) {
+	public boolean getEnableSnow(boolean enableSnow, ResourceLocation biomeId) {
 		return getAgeController().getWeatherController().getEnableSnow(enableSnow, biomeId);
 	}
 
-	public boolean getEnableRain(boolean canSpawnLightningBolt, int biomeId) {
+	public boolean getEnableRain(boolean canSpawnLightningBolt, ResourceLocation biomeId) {
 		return getAgeController().getWeatherController().getEnableRain(canSpawnLightningBolt, biomeId);
 	}
 

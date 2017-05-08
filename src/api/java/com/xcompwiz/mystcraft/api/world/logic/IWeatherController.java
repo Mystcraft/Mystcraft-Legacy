@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.api.world.logic;
 import com.google.common.annotations.Beta;
 import com.xcompwiz.mystcraft.api.world.storage.StorageObject;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -24,11 +25,11 @@ public interface IWeatherController {
 
 	public abstract float getStormStrength();
 
-	public abstract float getTemperature(float current, int biomeId);
+	public abstract float getTemperature(float current, ResourceLocation biomeId);
 
-	public abstract float getRainfall(float current, int biomeId); // Only used for grass color!?
+	public abstract float getRainfall(float current, ResourceLocation biomeId);
 
-	public abstract boolean getEnableSnow(boolean current, int biomeId);
+	public abstract boolean getEnableSnow(boolean current, ResourceLocation biomeId);
 
-	public abstract boolean getEnableRain(boolean current, int biomeId);
+	public abstract boolean getEnableRain(boolean current, ResourceLocation biomeId);
 }
