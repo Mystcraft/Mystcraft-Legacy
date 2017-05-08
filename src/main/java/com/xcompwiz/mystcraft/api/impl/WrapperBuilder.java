@@ -5,9 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 
 public class WrapperBuilder {
 
-	private final Constructor	itemCtor;
+	private final Constructor<?> itemCtor;
 
-	public WrapperBuilder(Class clazz) {
+	public WrapperBuilder(Class<?> clazz) {
 		try {
 			itemCtor = clazz.getConstructor(String.class);
 		} catch (Exception e) {
