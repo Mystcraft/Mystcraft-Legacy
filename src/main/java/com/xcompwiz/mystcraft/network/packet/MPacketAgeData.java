@@ -13,7 +13,7 @@ public class MPacketAgeData extends PacketBase {
 
 	@Override
 	public void handle(ByteBuf data, EntityPlayer player) {
-		readDataPacket(player.worldObj, data);
+		readDataPacket(player.world, data);
 	}
 
 	private static void readDataPacket(World worldObj, ByteBuf data) {
@@ -25,8 +25,7 @@ public class MPacketAgeData extends PacketBase {
 	}
 
 	public static FMLProxyPacket getDataPacket(int uid) {
-		NBTTagCompound nbttagcompound = new NBTTagCompound();
-		AgeData.getAge(uid, false).writeToNBT(nbttagcompound);
+		NBTTagCompound nbttagcompound = AgeData.getAge(uid, false).writeToNBT(new NBTTagCompound());
 
 		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
 

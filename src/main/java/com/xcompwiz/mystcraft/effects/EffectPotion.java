@@ -1,7 +1,5 @@
 package com.xcompwiz.mystcraft.effects;
 
-import java.util.List;
-
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
 import net.minecraft.entity.Entity;

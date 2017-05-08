@@ -7,7 +7,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 public class SymbolColorFogNatural extends SymbolBase {
 	
@@ -24,7 +24,7 @@ public class SymbolColorFogNatural extends SymbolBase {
 		public FogColorizer() {}
 
 		@Override
-		public Color getColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle, float partialtick) {
+		public Color getColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick) {
 			float f2 = MathHelper.cos(celestial_angle * 3.141593F * 2.0F) * 2.0F + 0.5F;
 			if (f2 < 0.0F) {
 				f2 = 0.0F;

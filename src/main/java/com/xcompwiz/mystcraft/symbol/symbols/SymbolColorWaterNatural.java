@@ -6,7 +6,7 @@ import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 public class SymbolColorWaterNatural extends SymbolBase {
 
@@ -22,7 +22,7 @@ public class SymbolColorWaterNatural extends SymbolBase {
 	public class StaticColorProvider implements IStaticColorProvider {
 
 		@Override
-		public Color getStaticColor(World worldObj, BiomeGenBase biome, int x, int y, int z) {
+		public Color getStaticColor(World worldObj, Biome biome, int x, int y, int z) {
 			return new Color(biome.waterColorMultiplier);
 		}
 

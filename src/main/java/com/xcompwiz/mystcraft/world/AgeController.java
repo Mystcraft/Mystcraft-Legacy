@@ -48,23 +48,25 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.IChunkLoader;
+import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class AgeController implements AgeDirector {
 	private static final int								MINCHUNKS			= 400;
 
 	private World											world;
-	private WorldChunkManager								chunkManager;
+	private BiomeProvider									chunkManager;
 	private SkyRendererMyst									skyrenderer;
 	private CloudRendererMyst								cloudrenderer;
 	private WeatherRendererMyst								weatherrenderer;
@@ -229,7 +231,7 @@ public class AgeController implements AgeDirector {
 		globalMods.putAll(modifiers);
 		modifiers.clear();
 
-		lightingController.generateLightBrightnessTable(this.world.provider.lightBrightnessTable);
+		lightingController.generateLightBrightnessTable(this.world.provider.getLightBrightnessTable());
 		agedata.markVisited();
 	}
 
@@ -323,21 +325,21 @@ public class AgeController implements AgeDirector {
 		if (!(world instanceof WorldServer)) return;
 		ChunkProfiler profiler = getChunkProfiler();
 
-		ChunkPos ChunkPos = world.getSpawnPoint();
-		ChunkPos.posX >>= 4;
-		ChunkPos.posZ >>= 4;
+		BlockPos blockPos = world.getSpawnPoint();
+		ChunkPos chunkPos = new ChunkPos(blockPos);
 
-		IChunkProvider chunkgen = ((WorldServer) this.world).theChunkProviderServer;
-		IChunkLoader chunkloader = ((WorldServer) this.world).theChunkProviderServer.currentChunkLoader;
+		ChunkProviderServer chunkProvider = ((WorldServer) this.world).getChunkProvider();
+		IChunkProvider chunkgen = chunkProvider;
+		IChunkLoader chunkloader = chunkProvider.chunkLoader;
 		SpiralOutwardIterator iter = new SpiralOutwardIterator();
 
 		int chunksneeded = MINCHUNKS - profiler.getCount();
 		while (chunksneeded > 0 && ChunkProfilerManager.getSize() < chunksneeded) {
 			iter.step();
-			int chunkX = ChunkPos.posX + iter.x;
-			int chunkZ = ChunkPos.posZ + iter.y;
+			int chunkX = chunkPos.chunkXPos + iter.x;
+			int chunkZ = chunkPos.chunkZPos + iter.y;
 			if (safeLoadChunk(chunkloader, world, chunkX, chunkZ) == null) {
-				chunkgen.loadChunk(chunkX, chunkZ);
+				chunkgen.provideChunk(chunkX, chunkZ);
 			}
 			chunksneeded = MINCHUNKS - profiler.getCount();
 		}
@@ -388,7 +390,7 @@ public class AgeController implements AgeDirector {
 		return pvpEnabled != null ? pvpEnabled : true;
 	}
 
-	public Vec3 getFogColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle, float partialtick) {
+	public Vec3 getFogColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick) {
 		validate();
 		if (fogColorProviders == null || fogColorProviders.size() == 0) { return null; }
 		Vec3 color = null;
@@ -406,7 +408,7 @@ public class AgeController implements AgeDirector {
 		return color;
 	}
 
-	public Vec3 getCloudColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle, float partialtick) {
+	public Vec3 getCloudColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick) {
 		validate();
 		if (cloudColorProviders == null || cloudColorProviders.size() == 0) { return null; }
 		Vec3 color = null;
@@ -431,7 +433,7 @@ public class AgeController implements AgeDirector {
 		return sunset.asGradient();
 	}
 
-	public Vec3 getSkyColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle, float partialtick) {
+	public Vec3 getSkyColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick) {
 		validate();
 		if (skyColorProviders == null || skyColorProviders.size() == 0) { return null; }
 		Vec3 color = null;
@@ -449,7 +451,7 @@ public class AgeController implements AgeDirector {
 		return color;
 	}
 
-	public Color getStaticColor(String string, BiomeGenBase biome, int x, int y, int z) {
+	public Color getStaticColor(String string, Biome biome, int x, int y, int z) {
 		validate();
 		List<IStaticColorProvider> list = staticColorLists.get(string);
 		if (list == null || list.size() == 0) { return null; }
@@ -501,40 +503,40 @@ public class AgeController implements AgeDirector {
 	}
 
 	public ChunkProfiler getChunkProfiler() {
-		ChunkProfiler chunkprofiler = (ChunkProfiler) this.world.perWorldStorage.loadData(ChunkProfiler.class, ChunkProfiler.ID);
+		ChunkProfiler chunkprofiler = (ChunkProfiler) this.world.getPerWorldStorage().getOrLoadData(ChunkProfiler.class, ChunkProfiler.ID);
 		if (chunkprofiler == null) {
 			chunkprofiler = new ChunkProfiler(ChunkProfiler.ID);
-			this.world.perWorldStorage.setData(ChunkProfiler.ID, chunkprofiler);
+			this.world.getPerWorldStorage().setData(ChunkProfiler.ID, chunkprofiler);
 		}
 		return chunkprofiler;
 	}
 
-	public void modifyBiomeAt(BiomeGenBase biome, int x, int z) {
+	public void modifyBiomeAt(Biome biome, int x, int z) {
 		validate();
 		//TODO: Biome Modifications
 //		if (biomemodifiers != null && biomemodifiers.size() > 0) {
 //			for (IBiomeAlteration mod : biomemodifiers) {
-//				mod.modifyBiomesAt(abiomegenbase, x, z, xSize, zSize, usecache);
+//				mod.modifyBiomesAt(aBiome, x, z, xSize, zSize, usecache);
 //			}
 //		}
 	}
 
-	public void modifyBiomesAt(BiomeGenBase abiomegenbase[], int x, int z, int xSize, int zSize, boolean usecache) {
+	public void modifyBiomesAt(Biome aBiome[], int x, int z, int xSize, int zSize, boolean usecache) {
 		validate();
 		//TODO: Biome Modifications
 //		if (biomemodifiers != null && biomemodifiers.size() > 0) {
 //			for (IBiomeAlteration mod : biomemodifiers) {
-//				mod.modifyBiomesAt(abiomegenbase, x, z, xSize, zSize, usecache);
+//				mod.modifyBiomesAt(aBiome, x, z, xSize, zSize, usecache);
 //			}
 //		}
 	}
 
-	public void modifyGenerationBiomesAt(BiomeGenBase abiomegenbase[], int x, int z, int xSize, int zSize) {
+	public void modifyGenerationBiomesAt(Biome aBiome[], int x, int z, int xSize, int zSize) {
 		validate();
 		//TODO: Biome Modifications
 //		if (biomemodifiers != null && biomemodifiers.size() > 0) {
 //			for (IBiomeAlteration mod : biomemodifiers) {
-//				mod.modifyGenerationBiomesAt(abiomegenbase, x, z, xSize, zSize, usecache);
+//				mod.modifyGenerationBiomesAt(aBiome, x, z, xSize, zSize, usecache);
 //			}
 //		}
 	}
@@ -595,10 +597,10 @@ public class AgeController implements AgeDirector {
 		return list;
 	}
 
-	public ChunkPosition locateTerrainFeature(World world, String s, int i, int j, int k) {
+	public BlockPos locateTerrainFeature(World world, String s, int i, int j, int k) {
 		validate();
 		if (featureLocators == null || featureLocators.size() == 0) { return null; }
-		ChunkPosition found = null;
+		BlockPos found = null;
 		for (ITerrainFeatureLocator mod : featureLocators) {
 			found = mod.locate(world, s, i, j, k);
 			if (found != null) { return found; }
@@ -673,7 +675,7 @@ public class AgeController implements AgeDirector {
 	}
 
 	@Override
-	public WorldChunkManager getWorldChunkManager() {
+	public BiomeProvider getWorldChunkManager() {
 		return this.chunkManager;
 	}
 

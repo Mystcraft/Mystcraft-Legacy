@@ -18,9 +18,10 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.SpawnerAnimals;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
@@ -30,14 +31,14 @@ import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-public class ChunkProviderMyst implements IChunkProvider {
+public class ChunkProviderMyst implements IChunkGenerator {
 	private AgeController				controller;
 	private Random						rand;
 	private NoiseGeneratorPerlin		stoneNoiseGen;
 	private World						worldObj;
 	private AgeData						agedata;
 	private double						stoneNoise[];
-	private BiomeGenBase				biomesForGeneration[];
+	private Biome				biomesForGeneration[];
 
 	private MapGenScatteredFeatureMyst	scatteredFeatureGenerator	= new MapGenScatteredFeatureMyst();
 	private WorldGenMinable				worldgenminablequartz		= new WorldGenMinable(Blocks.QUARTZ_ORE, 13, Blocks.NETHERRACK);
@@ -54,12 +55,12 @@ public class ChunkProviderMyst implements IChunkProvider {
 	private Block[]	vblocks;
 	private byte[]	vmetadata;
 
-	private void replaceBlocksForBiome(int chunkX, int chunkZ, Block[] blocks, byte[] metadata, BiomeGenBase[] abiomegenbase) {
+	private void replaceBlocksForBiome(int chunkX, int chunkZ, Block[] blocks, byte[] metadata, Biome[] aBiome) {
 		if (vblocks == null || vblocks.length != blocks.length) vblocks = new Block[blocks.length];
 		if (vmetadata == null || vmetadata.length != metadata.length) vmetadata = new byte[metadata.length];
 		ArrayMappingUtils.mapLocalToVanilla(blocks, vblocks);
 		ArrayMappingUtils.mapLocalToVanilla(metadata, vmetadata);
-		ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(this, chunkX, chunkZ, vblocks, vmetadata, abiomegenbase, this.worldObj);
+		ChunkProviderEvent.ReplaceBiomeBlocks event = new ChunkProviderEvent.ReplaceBiomeBlocks(this, chunkX, chunkZ, vblocks, vmetadata, aBiome, this.worldObj);
 		MinecraftForge.EVENT_BUS.post(event);
 		if (event.getResult() != Result.DENY) {
 			//TODO: Vanilla is now using a different noise generation system for stone noise
@@ -68,8 +69,8 @@ public class ChunkProviderMyst implements IChunkProvider {
 	
 			for (int xoff = 0; xoff < 16; ++xoff) {
 				for (int zoff = 0; zoff < 16; ++zoff) {
-					BiomeGenBase biomegenbase = abiomegenbase[zoff + xoff * 16];
-					biomegenbase.genTerrainBlocks(this.worldObj, this.rand, vblocks, vmetadata, chunkX * 16 + xoff, chunkZ * 16 + zoff, this.stoneNoise[zoff + xoff * 16]);
+					Biome Biome = aBiome[zoff + xoff * 16];
+					Biome.genTerrainBlocks(this.worldObj, this.rand, vblocks, vmetadata, chunkX * 16 + xoff, chunkZ * 16 + zoff, this.stoneNoise[zoff + xoff * 16]);
 				}
 			}
 		}
@@ -149,7 +150,7 @@ public class ChunkProviderMyst implements IChunkProvider {
 		BlockFalling.fallInstantly = true;
 		int x = chunkX * 16;
 		int z = chunkZ * 16;
-		BiomeGenBase biomegenbase = worldObj.getWorldChunkManager().getBiomeGenAt(x + 16, z + 16); //TODO: (BiomeDecoration) Wrap these biomes?
+		Biome Biome = worldObj.getWorldChunkManager().getBiomeGenAt(x + 16, z + 16); //TODO: (BiomeDecoration) Wrap these biomes?
 		rand.setSeed(agedata.getSeed());
 		long l1 = (rand.nextLong() / 2L) * 2L + 1L;
 		long l2 = (rand.nextLong() / 2L) * 2L + 1L;
@@ -158,12 +159,12 @@ public class ChunkProviderMyst implements IChunkProvider {
 		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(ichunkprovider, worldObj, rand, chunkX, chunkZ, false));
 
 		try {
-			biomegenbase.decorate(worldObj, rand, x, z);
+			Biome.decorate(worldObj, rand, x, z);
 		} catch (Exception e) {
-			throw new RuntimeException(String.format("Biome [%s] threw an error while populating chunk.", biomegenbase.biomeName), e);
+			throw new RuntimeException(String.format("Biome [%s] threw an error while populating chunk.", Biome.biomeName), e);
 		}
 		this.scatteredFeatureGenerator.generateStructuresInChunk(this.worldObj, this.rand, chunkX, chunkZ);
-		SpawnerAnimals.performWorldGenSpawning(worldObj, biomegenbase, x + 8, z + 8, 16, 16, rand); // TODO: (Spawning) Rewrite to use getPossibleCreatures
+		SpawnerAnimals.performWorldGenSpawning(worldObj, Biome, x + 8, z + 8, 16, 16, rand); // TODO: (Spawning) Rewrite to use getPossibleCreatures
 		controller.populate(worldObj, rand, x, z);
 
 		boolean doGen = TerrainGen.generateOre(worldObj, this.rand, worldgenminablequartz, x, z, QUARTZ);
@@ -218,9 +219,9 @@ public class ChunkProviderMyst implements IChunkProvider {
 	@Override
 	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k) {
 		List<SpawnListEntry> list = null;
-		BiomeGenBase biomegenbase = worldObj.getBiomeGenForCoords(i, k);
-		if (biomegenbase != null) {
-			list = biomegenbase.getSpawnableList(enumcreaturetype);
+		Biome Biome = worldObj.getBiomeGenForCoords(i, k);
+		if (Biome != null) {
+			list = Biome.getSpawnableList(enumcreaturetype);
 		}
 		return controller.affectCreatureList(enumcreaturetype, list, i, j, k);
 	}

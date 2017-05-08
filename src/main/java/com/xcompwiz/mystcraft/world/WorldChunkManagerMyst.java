@@ -3,57 +3,68 @@ package com.xcompwiz.mystcraft.world;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.world.ChunkPosition;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.WorldChunkManager;
+import javax.annotation.Nullable;
+
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.IntCache;
 
-public class WorldChunkManagerMyst extends WorldChunkManager {
+public class WorldChunkManagerMyst extends BiomeProvider {
 
-	AgeController	controller;
+	AgeController controller;
 
 	public WorldChunkManagerMyst(AgeController c) {
 		controller = c;
 	}
 
 	@Override
-	public List<BiomeGenBase> getBiomesToSpawnIn() {
-		List<BiomeGenBase> list = controller.getBiomeController().getValidSpawnBiomes();
+	public List<Biome> getBiomesToSpawnIn() {
+		List<Biome> list = controller.getBiomeController().getValidSpawnBiomes();
 		return list;
 	}
 
 	@Override
-	public BiomeGenBase getBiomeGenAt(int x, int z) {
-		BiomeGenBase biome = controller.getBiomeController().getBiomeAtCoords(x, z);
-		controller.modifyBiomeAt(biome, x, z);
+	public Biome getBiome(BlockPos pos) {
+		Biome biome = controller.getBiomeController().getBiomeAtCoords(pos.getX(), pos.getZ());
+		controller.modifyBiomeAt(biome, pos.getX(), pos.getZ());
 		return biome;
 	}
 
-	@Override
-	public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase abiomegenbase[], int x, int z, int xSize, int zSize) {
-		IntCache.resetIntCache();
-		if (abiomegenbase == null || abiomegenbase.length < xSize * zSize) {
-			abiomegenbase = new BiomeGenBase[xSize * zSize];
-		}
-		abiomegenbase = controller.getBiomeController().getBiomesForGeneration(abiomegenbase, x, z, xSize, zSize);
-		controller.modifyGenerationBiomesAt(abiomegenbase, x, z, xSize, zSize);
-		return abiomegenbase;
+	public Biome getBiome(BlockPos pos, Biome defaultBiome) {
+		return getBiome(pos);
 	}
 
 	@Override
-	public BiomeGenBase[] loadBlockGeneratorData(BiomeGenBase abiomegenbase[], int i, int j, int k, int l) {
-		return getBiomeGenAt(abiomegenbase, i, j, k, l, true);
+	public Biome[] getBiomesForGeneration(Biome aBiome[], int x, int z, int xSize, int zSize) {
+		IntCache.resetIntCache();
+		if (aBiome == null || aBiome.length < xSize * zSize) {
+			aBiome = new Biome[xSize * zSize];
+		}
+		aBiome = controller.getBiomeController().getBiomesForGeneration(aBiome, x, z, xSize, zSize);
+		controller.modifyGenerationBiomesAt(aBiome, x, z, xSize, zSize);
+		return aBiome;
 	}
 
-	@Override
-	public BiomeGenBase[] getBiomeGenAt(BiomeGenBase abiomegenbase[], int x, int z, int xSize, int zSize, boolean usecache) {
+	/**
+	 * Gets biomes to use for the blocks and loads the other data like
+	 * temperature and humidity onto the WorldChunkManager.
+	 */
+	public Biome[] getBiomes(@Nullable Biome[] oldBiomeList, int x, int z, int width, int depth) {
+		return this.getBiomes(oldBiomeList, x, z, width, depth, true);
+	}
+
+	/**
+	 * Gets a list of biomes for the specified blocks.
+	 */
+	public Biome[] getBiomes(@Nullable Biome[] listToReuse, int x, int z, int width, int length, boolean cacheFlag) {
 		IntCache.resetIntCache();
-		if (abiomegenbase == null || abiomegenbase.length < xSize * zSize) {
-			abiomegenbase = new BiomeGenBase[xSize * zSize];
+		if (listToReuse == null || listToReuse.length < width * length) {
+			listToReuse = new Biome[width * length];
 		}
-		abiomegenbase = controller.getBiomeController().getBiomesAtCoords(abiomegenbase, x, z, xSize, zSize, usecache);
-		controller.modifyBiomesAt(abiomegenbase, x, z, xSize, zSize, usecache);
-		return abiomegenbase;
+		listToReuse = controller.getBiomeController().getBiomesAtCoords(listToReuse, x, z, width, length, cacheFlag);
+		controller.modifyBiomesAt(listToReuse, x, z, width, length, cacheFlag);
+		return listToReuse;
 	}
 
 	@Override
@@ -62,54 +73,44 @@ public class WorldChunkManagerMyst extends WorldChunkManager {
 	}
 
 	@Override
-	public boolean areBiomesViable(int i, int j, int k, List list) {
+	public boolean areBiomesViable(int i, int j, int k, List<Biome> list) {
 		int l = i - k >> 2;
 		int i1 = j - k >> 2;
 		int j1 = i + k >> 2;
 		int k1 = j + k >> 2;
 		int l1 = (j1 - l) + 1;
 		int i2 = (k1 - i1) + 1;
-		BiomeGenBase biomes[] = getBiomesForGeneration(null, l, i1, l1, i2);
+		Biome biomes[] = getBiomesForGeneration(null, l, i1, l1, i2);
 		for (int j2 = 0; j2 < l1 * i2; j2++) {
-			if (!list.contains(biomes[j2])) { return false; }
+			if (!list.contains(biomes[j2])) {
+				return false;
+			}
 		}
 
 		return true;
 	}
 
 	@Override
-	public ChunkPosition findBiomePosition(int i, int j, int k, List list, Random random) {
+	public BlockPos findBiomePosition(int i, int j, int k, List<Biome> list, Random random) {
 		int l = i - k >> 2;
 		int i1 = j - k >> 2;
 		int j1 = i + k >> 2;
 		int k1 = j + k >> 2;
 		int l1 = (j1 - l) + 1;
 		int i2 = (k1 - i1) + 1;
-		BiomeGenBase biomes[] = getBiomesForGeneration(null, l, i1, l1, i2);
-		ChunkPosition chunkposition = null;
+		Biome biomes[] = getBiomesForGeneration(null, l, i1, l1, i2);
+		BlockPos blockpos = null;
 		int j2 = 0;
 		for (int k2 = 0; k2 < 16 * 16; k2++) {
 			int l2 = l + k2 % l1 << 2;
 			int i3 = i1 + k2 / l1 << 2;
-			if (list.contains(biomes[k2]) && (chunkposition == null || random.nextInt(j2 + 1) == 0)) {
-				chunkposition = new ChunkPosition(l2, 0, i3);
+			if (list.contains(biomes[k2]) && (blockpos == null || random.nextInt(j2 + 1) == 0)) {
+				blockpos = new BlockPos(l2, 0, i3);
 				j2++;
 			}
 		}
 
-		return chunkposition;
-	}
-
-	/**
-	 * I'm not really sure why this function exists. The only use for it is to build an array in the BiomeCache that nothing ever reads from.
-	 */
-	@Override
-	public float[] getRainfall(float af[], int i, int j, int k, int l) {
-		IntCache.resetIntCache();
-		if (af == null || af.length < k * l) {
-			af = new float[k * l];
-		}
-		return controller.getBiomeController().getRainfallField(af, i, j, k, l);
+		return blockpos;
 	}
 
 	@Override

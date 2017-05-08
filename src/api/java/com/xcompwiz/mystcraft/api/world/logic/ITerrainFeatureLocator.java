@@ -1,6 +1,6 @@
 package com.xcompwiz.mystcraft.api.world.logic;
 
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -19,5 +19,5 @@ public interface ITerrainFeatureLocator {
 	 * @param z Block coordinates
 	 * @return
 	 */
-	public abstract ChunkPosition locate(World world, String identifier, int x, int y, int z);
+	public abstract BlockPos locate(World world, String identifier, int x, int y, int z);
 }

@@ -7,7 +7,7 @@ import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.world.WorldType;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.WorldChunkManager;
 
 public class SymbolBiomeControllerNative extends SymbolBase {
@@ -32,15 +32,15 @@ public class SymbolBiomeControllerNative extends SymbolBase {
 		 * Gets the list of valid biomes for the player to spawn in.
 		 */
 		@Override
-		public List<BiomeGenBase> getValidSpawnBiomes() {
+		public List<Biome> getValidSpawnBiomes() {
 			return manager.getBiomesToSpawnIn();
 		}
 
 		/**
-		 * Returns the BiomeGenBase related to the x, z position on the world.
+		 * Returns the Biome related to the x, z position on the world.
 		 */
 		@Override
-		public BiomeGenBase getBiomeAtCoords(int par1, int par2) {
+		public Biome getBiomeAtCoords(int par1, int par2) {
 			return manager.getBiomeGenAt(par1, par2);
 		}
 
@@ -56,8 +56,8 @@ public class SymbolBiomeControllerNative extends SymbolBase {
 		 * Returns an array of biomes for the location input.
 		 */
 		@Override
-		public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase par1ArrayOfBiomeGenBase[], int par2, int par3, int par4, int par5) {
-			return manager.getBiomesForGeneration(par1ArrayOfBiomeGenBase, par2, par3, par4, par5);
+		public Biome[] getBiomesForGeneration(Biome par1ArrayOfBiome[], int par2, int par3, int par4, int par5) {
+			return manager.getBiomesForGeneration(par1ArrayOfBiome, par2, par3, par4, par5);
 		}
 
 		/**
@@ -65,8 +65,8 @@ public class SymbolBiomeControllerNative extends SymbolBase {
 		 * infinite loop in BiomeCacheBlock)
 		 */
 		@Override
-		public BiomeGenBase[] getBiomesAtCoords(BiomeGenBase par1ArrayOfBiomeGenBase[], int par2, int par3, int par4, int par5, boolean par6) {
-			return manager.getBiomeGenAt(par1ArrayOfBiomeGenBase, par2, par3, par4, par5, par6);
+		public Biome[] getBiomesAtCoords(Biome par1ArrayOfBiome[], int par2, int par3, int par4, int par5, boolean par6) {
+			return manager.getBiomeGenAt(par1ArrayOfBiome, par2, par3, par4, par5, par6);
 		}
 
 		/**

@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.util.Constants;
 
 public class AgeDataLegacy extends AgeDataLoader {
@@ -101,7 +101,7 @@ public class AgeDataLegacy extends AgeDataLoader {
 			int biomecount = nbttagcompound.getInteger("BiomeCount");
 			for (int i = 0; i < biomecount; ++i) {
 				if (nbttagcompound.hasKey("Biome" + i)) {
-					data.pages.add(Page.createSymbolPage(BiomeGenBase.getBiome(nbttagcompound.getInteger("Biome" + i)).biomeName));
+					data.pages.add(Page.createSymbolPage(Biome.getBiome(nbttagcompound.getInteger("Biome" + i)).biomeName));
 				}
 			}
 		}
@@ -122,8 +122,8 @@ public class AgeDataLegacy extends AgeDataLoader {
 
 		// Moves all biome symbols to front in reverse order
 		HashSet<String> biomenames = new HashSet<String>();
-		for (int i = 0; i < BiomeGenBase.getBiomeGenArray().length; ++i) {
-			if (BiomeGenBase.getBiome(i) != null) biomenames.add(BiomeGenBase.getBiome(i).biomeName);
+		for (int i = 0; i < Biome.getBiomeGenArray().length; ++i) {
+			if (Biome.getBiome(i) != null) biomenames.add(Biome.getBiome(i).biomeName);
 		}
 		HashSet<IAgeSymbol> controllers = SymbolManager.findAgeSymbolsImplementing(IBiomeController.class);
 		HashSet<String> controllernames = new HashSet<String>();

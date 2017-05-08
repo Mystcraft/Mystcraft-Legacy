@@ -7,7 +7,7 @@ import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 public class SymbolColorFoliage extends SymbolBase {
 
@@ -30,7 +30,7 @@ public class SymbolColorFoliage extends SymbolBase {
 		}
 
 		@Override
-		public Color getStaticColor(World worldObj, BiomeGenBase biome, int x, int y, int z) {
+		public Color getStaticColor(World worldObj, Biome biome, int x, int y, int z) {
 			return this.color;
 		}
 

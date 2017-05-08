@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.api.world.logic;
 import com.xcompwiz.mystcraft.api.util.Color;
 
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 /**
  * Used to produce a color once. This color cannot change over time.
@@ -24,5 +24,5 @@ public interface IStaticColorProvider {
 	 * @param z The z coordinate of the block we are coloring
 	 * @return A Mystcraft Color object or null
 	 */
-	public abstract Color getStaticColor(World worldObj, BiomeGenBase biome, int x, int y, int z);
+	public abstract Color getStaticColor(World worldObj, Biome biome, int x, int y, int z);
 }

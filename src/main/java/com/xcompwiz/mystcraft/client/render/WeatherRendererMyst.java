@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -90,9 +90,9 @@ public class WeatherRendererMyst extends IRenderHandler {
 					int coords = (zPos - entityZ + 16) * 32 + xPos - entityX + 16;
 					float rainX = this.rainXCoords[coords] * 0.5F;
 					float rainZ = this.rainYCoords[coords] * 0.5F;
-					BiomeGenBase biomegenbase = worldclient.getBiomeGenForCoords(xPos, zPos);
+					Biome Biome = worldclient.getBiomeGenForCoords(xPos, zPos);
 
-					if (biomegenbase.canSpawnLightningBolt() || biomegenbase.getEnableSnow()) {
+					if (Biome.canSpawnLightningBolt() || Biome.getEnableSnow()) {
 						int height = worldclient.getPrecipitationHeight(xPos, zPos);
 						int lowY = entityY - iteration_count;
 						int higY = entityY + iteration_count;
@@ -114,7 +114,7 @@ public class WeatherRendererMyst extends IRenderHandler {
 
 						if (lowY != higY) {
 							this.random.setSeed((xPos * xPos * 3121 + xPos * 45238971 ^ zPos * zPos * 418711 + zPos * 13761));
-							float temperature = biomegenbase.getFloatTemperature(xPos, lowY, zPos);
+							float temperature = Biome.getFloatTemperature(xPos, lowY, zPos);
 
 							if (worldclient.getWorldChunkManager().getTemperatureAtHeight(temperature, height) >= 0.15F) {
 								if (pass_param != 0) {

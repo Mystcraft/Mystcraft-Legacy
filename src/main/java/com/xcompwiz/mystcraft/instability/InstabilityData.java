@@ -19,7 +19,6 @@ import com.xcompwiz.mystcraft.instability.providers.ProviderScorched;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.MobEffects;
-import net.minecraft.potion.Potion;
 
 public class InstabilityData {
 	private static class deckcost {

@@ -8,7 +8,7 @@ import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 /**
  * A collection of helper functions for dealing with more complex modifier types, such as blocks and biomes. Also includes a number of averaging functions to
@@ -171,11 +171,11 @@ public final class ModifierUtils {
 		controller.setModifier("blocklist", modifier);
 	}
 
-	public static void pushBiome(AgeDirector controller, BiomeGenBase biome) {
+	public static void pushBiome(AgeDirector controller, Biome biome) {
 		Modifier modifier = controller.popModifier("biomelist");
-		List<BiomeGenBase> list = modifier.asList();
+		List<Biome> list = modifier.asList();
 		if (list == null) {
-			list = new ArrayList<BiomeGenBase>();
+			list = new ArrayList<Biome>();
 			modifier = new Modifier(list, 0);
 		}
 		list.add(biome);
@@ -183,12 +183,12 @@ public final class ModifierUtils {
 		controller.setModifier("biomelist", modifier);
 	}
 
-	public static BiomeGenBase popBiome(AgeDirector controller) {
+	public static Biome popBiome(AgeDirector controller) {
 		Modifier modifier = controller.popModifier("biomelist");
-		List<BiomeGenBase> list = modifier.asList();
+		List<Biome> list = modifier.asList();
 		if (list == null || list.size() == 0) return null;
 		controller.setModifier("biomelist", modifier);
-		BiomeGenBase biome = list.remove(list.size() - 1);
+		Biome biome = list.remove(list.size() - 1);
 		modifier.dangling -= dangling_biome;
 		return biome;
 	}

@@ -10,7 +10,7 @@ import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 public class SymbolBiomeControllerGrid extends SymbolBase {
 
@@ -20,8 +20,8 @@ public class SymbolBiomeControllerGrid extends SymbolBase {
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
-		List<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
-		BiomeGenBase biome;
+		List<Biome> biomes = new ArrayList<Biome>();
+		Biome biome;
 		biome = ModifierUtils.popBiome(controller);
 		while (biome != null) {
 			biomes.add(biome);
@@ -36,14 +36,14 @@ public class SymbolBiomeControllerGrid extends SymbolBase {
 	}
 
 	private class BiomeController implements IBiomeController {
-		private List<BiomeGenBase>	biomes;
+		private List<Biome>	biomes;
 
-		public BiomeController(List<BiomeGenBase> biomes) {
+		public BiomeController(List<Biome> biomes) {
 			this.biomes = biomes;
 		}
 
 		@Override
-		public List<BiomeGenBase> getValidSpawnBiomes() {
+		public List<Biome> getValidSpawnBiomes() {
 			return biomes;
 		}
 
@@ -64,7 +64,7 @@ public class SymbolBiomeControllerGrid extends SymbolBase {
 		}
 
 		@Override
-		public BiomeGenBase getBiomeAtCoords(int i, int j) {
+		public Biome getBiomeAtCoords(int i, int j) {
 			int index = ((i >> 4) + (j >> 4));
 			index = index % biomes.size();
 			if (index < 0) {
@@ -74,39 +74,39 @@ public class SymbolBiomeControllerGrid extends SymbolBase {
 		}
 
 		@Override
-		public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] abiomegenbase, int i, int j, int k, int l) {
-			if (abiomegenbase == null || abiomegenbase.length < k * l) {
-				abiomegenbase = new BiomeGenBase[k * l];
+		public Biome[] getBiomesForGeneration(Biome[] aBiome, int i, int j, int k, int l) {
+			if (aBiome == null || aBiome.length < k * l) {
+				aBiome = new Biome[k * l];
 			}
 
 			for (int var7 = 0; var7 < k * l; ++var7) {
-				abiomegenbase[var7] = getBiomeAtCoords((i + var7 % k) * 4, (j + var7 / k) * 4);
+				aBiome[var7] = getBiomeAtCoords((i + var7 % k) * 4, (j + var7 / k) * 4);
 			}
 
-			return abiomegenbase;
+			return aBiome;
 		}
 
 		@Override
-		public BiomeGenBase[] getBiomesAtCoords(BiomeGenBase[] abiomegenbase, int i, int j, int k, int l, boolean flag) {
-			if (abiomegenbase == null || abiomegenbase.length < k * l) {
-				abiomegenbase = new BiomeGenBase[k * l];
+		public Biome[] getBiomesAtCoords(Biome[] aBiome, int i, int j, int k, int l, boolean flag) {
+			if (aBiome == null || aBiome.length < k * l) {
+				aBiome = new Biome[k * l];
 			}
-			if (flag && k == 16 && l == 16 && (i & 0xf) == 0 && (j & 0xf) == 0) { return createBiomeArray(abiomegenbase, i, j, k, l); }
+			if (flag && k == 16 && l == 16 && (i & 0xf) == 0 && (j & 0xf) == 0) { return createBiomeArray(aBiome, i, j, k, l); }
 			for (int i1 = 0; i1 < k * l; i1++) {
-				abiomegenbase[i1] = getBiomeAtCoords(i + i1 % k, j + i1 / k);
+				aBiome[i1] = getBiomeAtCoords(i + i1 % k, j + i1 / k);
 			}
 
-			return abiomegenbase;
+			return aBiome;
 		}
 
-		private BiomeGenBase[] createBiomeArray(BiomeGenBase abiomegenbase[], int i, int j, int k, int l) {
-			if (abiomegenbase == null || abiomegenbase.length < k * l) {
-				abiomegenbase = new BiomeGenBase[k * l];
+		private Biome[] createBiomeArray(Biome aBiome[], int i, int j, int k, int l) {
+			if (aBiome == null || aBiome.length < k * l) {
+				aBiome = new Biome[k * l];
 			}
 			for (int i1 = 0; i1 < k * l; i1++) {
-				abiomegenbase[i1] = getBiomeAtCoords(i + i1 % k, j + i1 / k);
+				aBiome[i1] = getBiomeAtCoords(i + i1 % k, j + i1 / k);
 			}
-			return abiomegenbase;
+			return aBiome;
 		}
 
 		@Override

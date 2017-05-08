@@ -20,7 +20,7 @@ import com.xcompwiz.mystcraft.world.gen.MapGenFloatingIslands.IModifiedHandler;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 
 public class SymbolFloatingIslands extends SymbolBase {
@@ -31,7 +31,7 @@ public class SymbolFloatingIslands extends SymbolBase {
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
-		BiomeGenBase biome = ModifierUtils.popBiome(controller);
+		Biome biome = ModifierUtils.popBiome(controller);
 		BlockDescriptor blockdesc = ModifierUtils.popBlockMatching(controller, BlockCategory.STRUCTURE);
 
 		Random rand = new Random(seed);
@@ -46,7 +46,7 @@ public class SymbolFloatingIslands extends SymbolBase {
 	private class TerrainAlteration implements ITerrainAlteration {
 		private MapGenAdvanced	generator;
 
-		public TerrainAlteration(long seed, BlockDescriptor blockdesc, BiomeGenBase biome, IModifiedHandler callback) {
+		public TerrainAlteration(long seed, BlockDescriptor blockdesc, Biome biome, IModifiedHandler callback) {
 			Block block = Blocks.STONE;
 			byte meta = 0;
 			if (blockdesc != null) {
@@ -65,15 +65,15 @@ public class SymbolFloatingIslands extends SymbolBase {
 
 	public class BiomeReplacer implements IModifiedHandler, IChunkProviderFinalization {
 
-		private BiomeGenBase						biome;
+		private Biome						biome;
 		private HashMap<List<Integer>, boolean[]>	chunks	= new HashMap<List<Integer>, boolean[]>();
 
-		public BiomeReplacer(BiomeGenBase biome) {
+		public BiomeReplacer(Biome biome) {
 			this.biome = biome;
 		}
 
 		@Override
-		public void passModified(int chunkX, int chunkZ, boolean[] modified, BiomeGenBase biome) {
+		public void passModified(int chunkX, int chunkZ, boolean[] modified, Biome biome) {
 			List<Integer> key = Arrays.asList(chunkX, chunkZ);
 			boolean[] prev = chunks.get(key);
 			if (prev != null) {

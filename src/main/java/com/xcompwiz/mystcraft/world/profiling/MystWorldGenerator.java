@@ -7,21 +7,25 @@ import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class MystWorldGenerator implements IWorldGenerator {
 
 	@Override
-	public void generate(Random random, int chunkX, int chunkZ, World worldObj, IChunkProvider chunkGenerator, IChunkProvider ichunkprovider) {
+	public void generate(Random random, int chunkX, int chunkZ, World worldObj, IChunkGenerator chunkGenerator, IChunkProvider ichunkprovider) {
 		if (!(worldObj.provider instanceof WorldProviderMyst)) return;
 		AgeController controller = ((WorldProviderMyst) worldObj.provider).getAgeController();
 
-		ChunkPos spawn = worldObj.getSpawnPoint();
-		if (spawn != null && spawn.posX >> 4 == chunkX && spawn.posZ >> 4 == chunkZ) generatePlatform(worldObj, spawn.posX, spawn.posY - 1, spawn.posZ, Blocks.COBBLESTONE);
+		BlockPos spawn = worldObj.getSpawnPoint();
+		ChunkPos spawnChunk = null;
+		if (spawn != null) spawnChunk = new ChunkPos(spawn);
+		if (spawnChunk != null && spawnChunk.chunkXPos == chunkX && spawnChunk.chunkZPos == chunkZ) generatePlatform(worldObj, spawn.getX(), spawn.getY() - 1, spawn.getZ(), Blocks.COBBLESTONE);
 
 		ChunkProfiler profiler = controller.getChunkProfiler();
 		profileCompletedChunks(profiler, chunkX, chunkZ, ichunkprovider);
@@ -32,8 +36,8 @@ public class MystWorldGenerator implements IWorldGenerator {
 		//Check nearby chunks if we've completed them without generating any other chunks. 
 		for (int i = chunkX - 1; i <= chunkX + 1; ++i) {
 			for (int k = chunkZ - 1; k <= chunkZ + 1; ++k) {
-				if (!ichunkprovider.chunkExists(i, k)) continue;
-				Chunk chunk = ichunkprovider.loadChunk(i, k);
+				if (!ichunkprovider.isChunkGeneratedAt(i, k)) continue;
+				Chunk chunk = ichunkprovider.provideChunk(i, k);
 				if (checkForCompletion(ichunkprovider, chunk, i, k)) {
 					ChunkProfilerManager.addChunk(profiler, chunk);
 				}
@@ -42,24 +46,24 @@ public class MystWorldGenerator implements IWorldGenerator {
 	}
 
 	private boolean checkForCompletion(IChunkProvider ichunkprovider, Chunk chunk, int chunkX, int chunkZ) {
-		if (!chunk.isTerrainPopulated) return false;
-		if (!ichunkprovider.chunkExists(chunkX - 1, chunkZ - 1)) return false;
-		if (!ichunkprovider.chunkExists(chunkX, chunkZ - 1)) return false;
-		if (!ichunkprovider.chunkExists(chunkX + 1, chunkZ - 1)) return false;
-		if (!ichunkprovider.chunkExists(chunkX - 1, chunkZ)) return false;
-		if (!ichunkprovider.chunkExists(chunkX + 1, chunkZ)) return false;
-		if (!ichunkprovider.chunkExists(chunkX - 1, chunkZ + 1)) return false;
-		if (!ichunkprovider.chunkExists(chunkX, chunkZ + 1)) return false;
-		if (!ichunkprovider.chunkExists(chunkX + 1, chunkZ + 1)) return false;
+		if (!chunk.isTerrainPopulated()) return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX - 1, chunkZ - 1)) return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX, chunkZ - 1)) return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX + 1, chunkZ - 1)) return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX - 1, chunkZ)) return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX + 1, chunkZ)) return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX - 1, chunkZ + 1)) return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX, chunkZ + 1)) return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX + 1, chunkZ + 1)) return false;
 
-		if (!ichunkprovider.provideChunk(chunkX - 1, chunkZ - 1).isTerrainPopulated) return false;
-		if (!ichunkprovider.provideChunk(chunkX, chunkZ - 1).isTerrainPopulated) return false;
-		if (!ichunkprovider.provideChunk(chunkX + 1, chunkZ - 1).isTerrainPopulated) return false;
-		if (!ichunkprovider.provideChunk(chunkX - 1, chunkZ).isTerrainPopulated) return false;
-		if (!ichunkprovider.provideChunk(chunkX + 1, chunkZ).isTerrainPopulated) return false;
-		if (!ichunkprovider.provideChunk(chunkX - 1, chunkZ + 1).isTerrainPopulated) return false;
-		if (!ichunkprovider.provideChunk(chunkX, chunkZ + 1).isTerrainPopulated) return false;
-		if (!ichunkprovider.provideChunk(chunkX + 1, chunkZ + 1).isTerrainPopulated) return false;
+		if (!ichunkprovider.provideChunk(chunkX - 1, chunkZ - 1).isTerrainPopulated()) return false;
+		if (!ichunkprovider.provideChunk(chunkX, chunkZ - 1).isTerrainPopulated()) return false;
+		if (!ichunkprovider.provideChunk(chunkX + 1, chunkZ - 1).isTerrainPopulated()) return false;
+		if (!ichunkprovider.provideChunk(chunkX - 1, chunkZ).isTerrainPopulated()) return false;
+		if (!ichunkprovider.provideChunk(chunkX + 1, chunkZ).isTerrainPopulated()) return false;
+		if (!ichunkprovider.provideChunk(chunkX - 1, chunkZ + 1).isTerrainPopulated()) return false;
+		if (!ichunkprovider.provideChunk(chunkX, chunkZ + 1).isTerrainPopulated()) return false;
+		if (!ichunkprovider.provideChunk(chunkX + 1, chunkZ + 1).isTerrainPopulated()) return false;
 		return true;
 	}
 
@@ -67,9 +71,9 @@ public class MystWorldGenerator implements IWorldGenerator {
 		int size = 2;
 		for (int x = -size; x <= size; ++x) {
 			for (int z = -size; z <= size; ++z) {
-				worldObj.setBlock(i + x, j, k + z, block, 0, 2);
+				worldObj.setBlockState(new BlockPos(i + x, j, k + z), block.getDefaultState(), 2); // Updateless set to block
 				for (int y = j + 1; y < j + 5; ++y)
-					worldObj.setBlock(i + x, y, k + z, Blocks.AIR, 0, 2);
+					worldObj.setBlockState(new BlockPos(i + x, j, k + z), Blocks.AIR.getDefaultState(), 2); // Updateless set air
 			}
 		}
 	}

@@ -7,7 +7,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 public class SymbolColorSkyNatural extends SymbolBase {
 
@@ -24,7 +24,7 @@ public class SymbolColorSkyNatural extends SymbolBase {
 		public Colorizer() {}
 
 		@Override
-		public Color getColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle, float partialtick) {
+		public Color getColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick) {
 			float alpha = MathHelper.cos(celestial_angle * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
 
 			if (alpha < 0.0F) alpha = 0.0F;

@@ -9,26 +9,26 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.client.resources.I18n;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 public class SymbolBiome extends SymbolBase {
-	public static ArrayList<BiomeGenBase>	selectables	= new ArrayList<BiomeGenBase>();
+	public static ArrayList<Biome>	selectables	= new ArrayList<Biome>();
 
-	private BiomeGenBase					biome;
+	private Biome					biome;
 	private String							displayName;
 
-	public SymbolBiome(BiomeGenBase biome) {
-		super("Biome" + biome.biomeID);
+	public SymbolBiome(Biome biome) {
+		super("Biome" + Biome.getIdForBiome(biome));
 		this.biome = biome;
 		this.displayName = formatted(biome);
-		this.setWords(new String[] { WordData.Nature, WordData.Nurture, WordData.Encourage, biome.biomeName + biome.biomeID });
+		this.setWords(new String[] { WordData.Nature, WordData.Nurture, WordData.Encourage, biome.getBiomeName() + Biome.getIdForBiome(biome) });
 	}
 
 	//TODO: Make into a helper somewhere
-	private static String formatted(BiomeGenBase biome) {
+	private static String formatted(Biome biome) {
 		String regex = "([A-Z][a-z]+)";
 		String replacement = "$1 ";
-		String name = biome.biomeName.replaceAll(regex, replacement).replaceAll("([A-Z][a-z]+)  ", replacement).trim();
+		String name = biome.getBiomeName().replaceAll(regex, replacement).replaceAll("([A-Z][a-z]+)  ", replacement).trim();
 		if (name.endsWith("Biome")) name = name.substring(0, name.length() - "Biome".length()).trim();
 		name = I18n.format("myst.symbol.biome.wrapper", name);
 		return name;
@@ -36,7 +36,7 @@ public class SymbolBiome extends SymbolBase {
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
-		controller.setAverageGroundLevel((int) ((biome.rootHeight) * 64 + 64));
+		controller.setAverageGroundLevel((int) ((biome.getBaseHeight()) * 64 + 64));
 		ModifierUtils.pushBiome(controller, biome);
 	}
 
@@ -45,13 +45,13 @@ public class SymbolBiome extends SymbolBase {
 		return displayName;
 	}
 
-	public static BiomeGenBase getRandomBiome(Random rand) {
-		BiomeGenBase biome = null;
+	public static Biome getRandomBiome(Random rand) {
+		Biome biome = null;
 		while (biome == null) {
 			if (selectables.size() > 0) {
 				biome = selectables.get(rand.nextInt(selectables.size()));
 			} else {
-				biome = BiomeGenBase.getBiome(rand.nextInt(BiomeGenBase.getBiomeGenArray().length));
+				biome = Biome.getBiome(rand.nextInt(Biome.getBiomeGenArray().length));
 			}
 		}
 		return biome;

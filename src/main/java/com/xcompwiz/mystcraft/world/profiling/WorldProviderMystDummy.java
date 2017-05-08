@@ -13,7 +13,7 @@ import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -126,7 +126,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		agedata.setSpawn(null);
 		agedata.setInstabilityEnabled(true);
 
-		for (BiomeGenBase biome : SymbolBiome.selectables) {
+		for (Biome biome : SymbolBiome.selectables) {
 			agedata.addSymbol("Biome" + biome.biomeID, 0);
 		}
 		agedata.addSymbol("BioConGrid", 0);
@@ -179,7 +179,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 
 	//We implement this to bypass the special biome wrappers (since we didn't instantiate them)
 	@Override
-	public BiomeGenBase getBiomeGenForCoords(int x, int z) {
+	public Biome getBiomeGenForCoords(int x, int z) {
 		return this.worldChunkMgr.getBiomeGenAt(x, z);
 	}
 

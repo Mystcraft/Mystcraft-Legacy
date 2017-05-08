@@ -6,12 +6,12 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 
 public class MapGenFloatingIslands extends MapGenAdvanced {
 	public interface IModifiedHandler {
-		void passModified(int chunkX, int chunkZ, boolean[] modified, BiomeGenBase biome);
+		void passModified(int chunkX, int chunkZ, boolean[] modified, Biome biome);
 	}
 
 	private int						rate	= 192;
@@ -19,11 +19,11 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 	private NoiseGeneratorOctaves	noiseGen4;
 	private double					stoneNoise[];
 
-	private BiomeGenBase			biome;
+	private Biome			biome;
 
 	private IModifiedHandler		callback;
 
-	public MapGenFloatingIslands(long seed, BiomeGenBase biome, IModifiedHandler callback, Block block, byte meta) {
+	public MapGenFloatingIslands(long seed, Biome biome, IModifiedHandler callback, Block block, byte meta) {
 		super(seed, block, meta);
 		this.range = 5;
 		noiseGen4 = new NoiseGeneratorOctaves(rand, 4);
@@ -165,7 +165,7 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 		}
 	}
 
-	private void replaceBlocksForBiome(int chunkX, int chunkZ, Block blocks[], byte[] metadata, boolean[] modified, BiomeGenBase biome) {
+	private void replaceBlocksForBiome(int chunkX, int chunkZ, Block blocks[], byte[] metadata, boolean[] modified, Biome biome) {
 		int layers = blocks.length / 256;
 		double noisefactor = 0.03125D;
 		stoneNoise = noiseGen4.generateNoiseOctaves(stoneNoise, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, noisefactor * 2D, noisefactor * 2D, noisefactor * 2D);

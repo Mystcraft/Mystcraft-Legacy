@@ -7,7 +7,7 @@ import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 public class SymbolBiomeControllerHuge extends SymbolBase {
 
@@ -17,8 +17,8 @@ public class SymbolBiomeControllerHuge extends SymbolBase {
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
-		List<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
-		BiomeGenBase biome;
+		List<Biome> biomes = new ArrayList<Biome>();
+		Biome biome;
 		biome = ModifierUtils.popBiome(controller);
 		while (biome != null) {
 			biomes.add(biome);

@@ -94,7 +94,7 @@ import com.xcompwiz.util.CollectionUtils;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 public class ModSymbols {
 
@@ -107,8 +107,8 @@ public class ModSymbols {
 
 	public static void generateBiomeSymbols() {
 		// Generates symbols for registered biomes
-		for (int i = 0; i < BiomeGenBase.getBiomeGenArray().length; ++i) {
-			BiomeGenBase biome = BiomeGenBase.getBiome(i);
+		for (int i = 0; i < Biome.getBiomeGenArray().length; ++i) {
+			Biome biome = Biome.getBiome(i);
 			if (biome == null) continue;
 			if (biome.biomeName == null) {
 				LoggerUtils.warn("Biome (id " + i + ") has null name, could not build symbol");
@@ -122,7 +122,7 @@ public class ModSymbols {
 			SymbolBase symbol = (new SymbolBiome(biome));
 			if (InternalAPI.symbol.registerSymbol(symbol, MystObjects.MystcraftModId)) {
 				Integer rank = 1;
-				if (biome == BiomeGenBase.sky) {
+				if (biome == Biome.sky) {
 					rank = null;
 				} else {
 					symbol.setCardRank(2);

@@ -10,7 +10,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.TerrainGeneratorBase;
 
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 
 public class SymbolTerrainGenNormal extends SymbolBase {
@@ -50,7 +50,7 @@ public class SymbolTerrainGenNormal extends SymbolBase {
 		private double					noiseData4[];
 		private double					noiseData5[];
 		private float					parabolicField[];
-		protected BiomeGenBase			biomesForGeneration[];
+		protected Biome			biomesForGeneration[];
 
 		public TerrainGeneratorNormal(AgeDirector controller, boolean amplified) {
 			super(controller);
@@ -93,10 +93,10 @@ public class SymbolTerrainGenNormal extends SymbolBase {
 					float avgMinHeight = 0.0F;
 					float sumTotalWeight = 0.0F;
 					byte sizec = 2;
-					BiomeGenBase biome = biomesForGeneration[x + 2 + (z + 2) * (sizeX + 5)];
+					Biome biome = biomesForGeneration[x + 2 + (z + 2) * (sizeX + 5)];
 					for (int xOffset = -sizec; xOffset <= sizec; ++xOffset) {
 						for (int zOffset = -sizec; zOffset <= sizec; ++zOffset) {
-							BiomeGenBase secondary_biome = biomesForGeneration[x + xOffset + 2 + (z + zOffset + 2) * (sizeX + 5)];
+							Biome secondary_biome = biomesForGeneration[x + xOffset + 2 + (z + zOffset + 2) * (sizeX + 5)];
 
 							float height = secondary_biome.rootHeight;
 							float variation = secondary_biome.heightVariation;

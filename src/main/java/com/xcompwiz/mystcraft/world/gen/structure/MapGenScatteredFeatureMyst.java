@@ -73,11 +73,11 @@ public class MapGenScatteredFeatureMyst extends MapGenStructure {
 		var6 += var7.nextInt(this.maxDistanceBetweenScatteredFeatures - this.minDistanceBetweenScatteredFeatures);
 
 		if (var3 == var5 && var4 == var6) {
-//			BiomeGenBase var8 = this.worldObj.getWorldChunkManager().getBiomeGenAt(var3 * 16 + 8, var4 * 16 + 8);
+//			Biome var8 = this.worldObj.getWorldChunkManager().getBiomeGenAt(var3 * 16 + 8, var4 * 16 + 8);
 //			Iterator var9 = biomelist.iterator();
 //
 //			while (var9.hasNext()) {
-//				BiomeGenBase var10 = (BiomeGenBase) var9.next();
+//				Biome var10 = (Biome) var9.next();
 //
 //				if (var8 == var10) { return true; }
 //			}

@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.api.world.logic;
 import com.xcompwiz.mystcraft.api.util.Color;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 public interface IDynamicColorProvider {
 	public final static String	CLOUD	= "cloud";
@@ -20,5 +20,5 @@ public interface IDynamicColorProvider {
 	 * @param partialtick Partial Render tick
 	 * @return A color object which will be averaged together with all applied SkyColorProviders
 	 */
-	public abstract Color getColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle, float partialtick);
+	public abstract Color getColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick);
 }

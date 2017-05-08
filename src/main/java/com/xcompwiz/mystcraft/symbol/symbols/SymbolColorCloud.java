@@ -8,7 +8,7 @@ import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 public class SymbolColorCloud extends SymbolBase {
 
@@ -32,7 +32,7 @@ public class SymbolColorCloud extends SymbolBase {
 		}
 
 		@Override
-		public Color getColor(Entity entity, BiomeGenBase biome, float time, float celestial_angle, float partialtick) {
+		public Color getColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick) {
 			return gradient.getColor(controller.getTime() / 12000F);
 		}
 	}

@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import com.xcompwiz.mystcraft.world.biome.BiomeWrapperMyst;
 
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 
 public class BiomeWrapperManager {
@@ -16,12 +16,12 @@ public class BiomeWrapperManager {
 		this.provider = provider;
 	}
 
-	public BiomeGenBase getWrapper(int x, int z) {
-		BiomeGenBase biome = getBiomeForWorldCoords(x, z); // Biome Id at Chunk Coords
+	public Biome getWrapper(int x, int z) {
+		Biome biome = getBiomeForWorldCoords(x, z); // Biome Id at Chunk Coords
 		return getBiomeWrapperForBiome(biome);
 	}
 
-	private synchronized BiomeWrapperMyst getBiomeWrapperForBiome(BiomeGenBase biome) {
+	private synchronized BiomeWrapperMyst getBiomeWrapperForBiome(Biome biome) {
 		BiomeWrapperMyst wrapper = biomes.get(biome.biomeID);
 		if (wrapper == null) {
 			wrapper = new BiomeWrapperMyst(provider, biome);
@@ -30,7 +30,7 @@ public class BiomeWrapperManager {
 		return wrapper;
 	}
 
-	private BiomeGenBase getBiomeForWorldCoords(int x, int z) {
+	private Biome getBiomeForWorldCoords(int x, int z) {
 		int lx = x & 15;
 		int lz = z & 15;
 		if (provider.worldObj.blockExists(x, 0, z)) {

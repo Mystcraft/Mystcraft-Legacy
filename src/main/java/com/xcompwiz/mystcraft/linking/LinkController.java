@@ -154,7 +154,7 @@ public class LinkController {
 			world.updateAllPlayersSleepingFlag();
 			int i = entity.chunkCoordX;
 			int j = entity.chunkCoordZ;
-			if (entity.addedToChunk && world.getChunkProvider().chunkExists(i, j)) {
+			if (entity.addedToChunk && world.getChunkProvider().isChunkGeneratedAt(i, j)) {
 				world.getChunkFromChunkCoords(i, j).removeEntity(entity);
 				world.getChunkFromChunkCoords(i, j).isModified = true;
 			}

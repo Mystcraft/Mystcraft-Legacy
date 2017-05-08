@@ -1,14 +1,14 @@
 package com.xcompwiz.mystcraft.world.gen.layer;
 
 import net.minecraft.world.WorldType;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
 public class GenLayerBiomeMyst extends GenLayer {
-	private BiomeGenBase	allowedBiomes[];
+	private Biome	allowedBiomes[];
 
-	public GenLayerBiomeMyst(long par1, GenLayer par3GenLayer, WorldType par4WorldType, BiomeGenBase allowedBiomes[]) {
+	public GenLayerBiomeMyst(long par1, GenLayer par3GenLayer, WorldType par4WorldType, Biome allowedBiomes[]) {
 		super(par1);
 		parent = par3GenLayer;
 		this.allowedBiomes = allowedBiomes;

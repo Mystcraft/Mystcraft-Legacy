@@ -11,27 +11,28 @@ import com.xcompwiz.mystcraft.network.NetworkUtils;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.mystcraft.world.storage.WorldInfoMyst;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.Vec3;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.WorldType;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldProviderMyst extends WorldProvider {
@@ -57,20 +58,19 @@ public class WorldProviderMyst extends WorldProvider {
 	@Override
 	public void setDimension(int dim) {
 		ageUID = dim;
-		dimensionId = dim;
 		super.setDimension(dim);
 	}
 
 	@Override
-	protected void registerWorldChunkManager() {
-		terrainType = WorldType.DEFAULT;
-		agedata = AgeData.getAge(ageUID, worldObj.isRemote);
+	protected void init() {
+		//XXX: terrainType = WorldType.DEFAULT;
+		agedata = AgeData.getAge(ageUID, world.isRemote);
 		biomeManager = new BiomeWrapperManager(this);
-		controller = new AgeController(worldObj, agedata);
+		controller = new AgeController(world, agedata);
 		skyrenderer = controller.getSkyRenderer();
 		weatherrenderer = controller.getWeatherRenderer();
 		cloudrenderer = controller.getCloudRenderer();
-		worldChunkMgr = controller.getWorldChunkManager();
+		biomeProvider = controller.getWorldChunkManager();
 		setWorldInfo();
 	}
 
@@ -79,8 +79,8 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	public void setWorldInfo() {
-		if (worldObj.getWorldInfo() instanceof WorldInfoMyst) return;
-		ObfuscationReflectionHelper.setPrivateValue(World.class, worldObj, new WorldInfoMyst(this, worldObj.getWorldInfo()), "worldInfo", "field" + "_72986_A");
+		if (world.getWorldInfo() instanceof WorldInfoMyst) return;
+		ObfuscationReflectionHelper.setPrivateValue(World.class, world, new WorldInfoMyst(this, world.getWorldInfo()), "worldInfo", "field" + "_72986_A");
 	}
 
 	@Override
@@ -102,8 +102,8 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	@Override
-	public IChunkProvider createChunkGenerator() {
-		return new ChunkProviderMyst(getAgeController(), worldObj, agedata);
+	public IChunkGenerator createChunkGenerator() {
+		return new ChunkProviderMyst(getAgeController(), world, agedata);
 	}
 
 	@Override
@@ -124,18 +124,13 @@ public class WorldProviderMyst extends WorldProvider {
 		return getAgeController().calculateCelestialAngle(time, partialtick);
 	}
 
-	@Override
-	public double getVoidFogYFactor() {
-		return 1.0;
-	}
-
     @SideOnly(Side.CLIENT)
 	@Override
 	public Vec3 getFogColor(float celestial_angle, float partialtick) {
 		//XXX: Is this safe enough?  Should I do something more robust?
 		EntityLivingBase entity = Minecraft.getMinecraft().renderViewEntity;
-		BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posZ));
-		Vec3 fog = getAgeController().getFogColor(entity, biome, worldObj.getWorldTime(), celestial_angle, partialtick);
+		Biome biome = this.world.getBiomeGenForCoords(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posZ));
+		Vec3 fog = getAgeController().getFogColor(entity, biome, world.getWorldTime(), celestial_angle, partialtick);
 		if (fog == null) {
 			float f2 = MathHelper.cos(celestial_angle * 3.141593F * 2.0F) * 2.0F + 0.5F;
 			if (f2 < 0.0F) {
@@ -158,7 +153,7 @@ public class WorldProviderMyst extends WorldProvider {
     @SideOnly(Side.CLIENT)
 	@Override
 	public Vec3 drawClouds(float partialtick) {
-		float celestial_angle = worldObj.getCelestialAngle(partialtick);
+		float celestial_angle = world.getCelestialAngle(partialtick);
 		float var3 = MathHelper.cos(celestial_angle * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
 
 		if (var3 < 0.0F) {
@@ -171,8 +166,8 @@ public class WorldProviderMyst extends WorldProvider {
 
 		//XXX: Is this safe enough?  Should I do something more robust?
 		EntityLivingBase entity = Minecraft.getMinecraft().renderViewEntity;
-		BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posZ));
-		Vec3 temp = getAgeController().getCloudColor(entity, biome, worldObj.getWorldTime(), celestial_angle, partialtick);
+		Biome biome = this.world.getBiomeGenForCoords(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posZ));
+		Vec3 temp = getAgeController().getCloudColor(entity, biome, world.getWorldTime(), celestial_angle, partialtick);
 		float var4;
 		float var5;
 		float var6;
@@ -185,7 +180,7 @@ public class WorldProviderMyst extends WorldProvider {
 			var5 = 1.0F;
 			var6 = 1.0F;
 		}
-		float var7 = worldObj.getRainStrength(partialtick);
+		float var7 = world.getRainStrength(partialtick);
 		float var8;
 		float var9;
 
@@ -200,7 +195,7 @@ public class WorldProviderMyst extends WorldProvider {
 		var4 *= var3 * 0.9F + 0.1F;
 		var5 *= var3 * 0.9F + 0.1F;
 		var6 *= var3 * 0.85F + 0.15F;
-		var8 = worldObj.getWeightedThunderStrength(partialtick);
+		var8 = world.getThunderStrength(partialtick);
 
 		if (var8 > 0.0F) {
 			var9 = (var4 * 0.3F + var5 * 0.59F + var6 * 0.11F) * 0.2F;
@@ -215,12 +210,8 @@ public class WorldProviderMyst extends WorldProvider {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	/**
-	 * returns true if this dimension is supposed to display void particles and pull in the far plane based on the
-	 * user's Y offset.
-	 */
-	public boolean getWorldHasVoidParticles() {
-		return false;
+	public double getVoidFogYFactor() {
+		return 0;
 	}
 
 	@Override
@@ -244,37 +235,38 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	@Override
-	public boolean canBlockFreeze(int x, int y, int z, boolean reqLand) {
-		BiomeGenBase biome = this.getBiomeGenForCoords(x, z);
-		float temp = biome.getFloatTemperature(x, y, z);
+	public boolean canBlockFreeze(BlockPos pos, boolean reqLand) {
+		Biome biome = this.getBiomeForCoords(pos);
+		float temp = biome.getFloatTemperature(pos);
+		int y = pos.getY();
 		temp = this.getAgeController().getTemperatureAtHeight(temp, y);
 
 		if (temp > 0.15F) { return false; }
-		if (y >= 0 && y < 256 && worldObj.getSavedLightValue(EnumSkyBlock.Block, x, y, z) < 10) {
-			Block block = worldObj.getBlock(x, y, z);
+		if (y >= 0 && y < 256 && world.getLightFor(EnumSkyBlock.BLOCK, pos) < 10) {
+			IBlockState blockstate = world.getBlockState(pos);
 
-			if ((block == Blocks.WATER || block == Blocks.flowing_water) && worldObj.getBlockMetadata(x, y, z) == 0) {
+			if ((blockstate.getBlock() == Blocks.WATER || blockstate.getBlock() == Blocks.FLOWING_WATER) && ((Integer)blockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0) {
 				if (!reqLand) { return true; }
 
-				boolean var8 = true;
+				boolean canFreeze = true;
 
-				if (var8 && worldObj.getBlock(x - 1, y, z).getMaterial() != Material.water) {
-					var8 = false;
+				if (canFreeze && world.getBlockState(pos.west()).getMaterial() != Material.WATER) {
+					canFreeze = false;
 				}
 
-				if (var8 && worldObj.getBlock(x + 1, y, z).getMaterial() != Material.water) {
-					var8 = false;
+				if (canFreeze && world.getBlockState(pos.east()).getMaterial() != Material.WATER) {
+					canFreeze = false;
 				}
 
-				if (var8 && worldObj.getBlock(x, y, z - 1).getMaterial() != Material.water) {
-					var8 = false;
+				if (canFreeze && world.getBlockState(pos.south()).getMaterial() != Material.WATER) {
+					canFreeze = false;
 				}
 
-				if (var8 && worldObj.getBlock(x, y, z + 1).getMaterial() != Material.water) {
-					var8 = false;
+				if (canFreeze && world.getBlockState(pos.north()).getMaterial() != Material.WATER) {
+					canFreeze = false;
 				}
 
-				if (!var8) { return true; }
+				return canFreeze;
 			}
 		}
 
@@ -282,17 +274,18 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	@Override
-	public boolean canSnowAt(int x, int y, int z, boolean checkLight) {
-		BiomeGenBase biome = this.getBiomeGenForCoords(x, z);
-		float temp = biome.getFloatTemperature(x, y, z);
+	public boolean canSnowAt(BlockPos pos, boolean checkLight) {
+		Biome biome = this.getBiomeForCoords(pos);
+		float temp = biome.getFloatTemperature(pos);
+		int y = pos.getY();
 		temp = this.getAgeController().getTemperatureAtHeight(temp, y);
 
 		if (temp > 0.15F) { return false; }
 
-		if (y >= 0 && y < 256 && worldObj.getSavedLightValue(EnumSkyBlock.Block, x, y, z) < 10) {
-			Block var7 = worldObj.getBlock(x, y, z);
+		if (y >= 0 && y < 256 && world.getLightFor(EnumSkyBlock.BLOCK, pos) < 10) {
+			IBlockState blockstate = world.getBlockState(pos);
 
-			if ((var7 == null || var7.isAir(worldObj, x, y, z)) && Blocks.snow_layer.canPlaceBlockAt(worldObj, x, y, z)) { return true; }
+			if ((blockstate == null || blockstate.getBlock().isAir(blockstate, world, pos)) && Blocks.SNOW_LAYER.canPlaceBlockAt(world, pos)) { return true; }
 		}
 		return false;
 	}
@@ -321,15 +314,15 @@ public class WorldProviderMyst extends WorldProvider {
 		weatherrenderer.updateClouds();
 		cloudrenderer.updateClouds();
 
-		this.worldObj.prevRainingStrength = this.worldObj.rainingStrength;
-		this.worldObj.rainingStrength = this.getAgeController().getWeatherController().getRainingStrength();
-		this.worldObj.prevThunderingStrength = this.worldObj.thunderingStrength;
-		this.worldObj.thunderingStrength = this.getAgeController().getWeatherController().getStormStrength();
+		this.world.prevRainingStrength = this.world.rainingStrength;
+		this.world.rainingStrength = this.getAgeController().getWeatherController().getRainingStrength();
+		this.world.prevThunderingStrength = this.world.thunderingStrength;
+		this.world.thunderingStrength = this.getAgeController().getWeatherController().getStormStrength();
 
-		if (worldObj.isRemote || !(worldObj instanceof WorldServer)) return;
-		WorldServer world = (WorldServer) this.worldObj;
-		if (this.worldObj.playerEntities.isEmpty()) {
-			if (emptyTicks == 10) world.theChunkProviderServer.unloadAllChunks();
+		if (world.isRemote || !(world instanceof WorldServer)) return;
+		WorldServer world = (WorldServer) this.world;
+		if (this.world.playerEntities.isEmpty()) {
+			if (emptyTicks == 10) world.getChunkProvider().unloadAllChunks();
 			++emptyTicks;
 		} else {
 			emptyTicks = 0;
@@ -340,8 +333,8 @@ public class WorldProviderMyst extends WorldProvider {
 		this.setWorldTime(this.getWorldTime() + 1L);
 		if (this.agedata.needsResend() == true && world.getTotalWorldTime() % 200 == 0) {
 			this.agedata.resent();
-			for (Object player : this.worldObj.playerEntities) {
-				NetworkUtils.sendAgeData((EntityPlayer) player, this.dimensionId);
+			for (Object player : this.world.playerEntities) {
+				NetworkUtils.sendAgeData((EntityPlayer) player, this.getDimension());
 			}
 		}
 	}
@@ -362,40 +355,32 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	@Override
-	public ChunkPos getSpawnPoint() {
+	public BlockPos getSpawnPoint() {
 		verifySpawn();
-		return new ChunkPos(agedata.getSpawn());
+		return agedata.getSpawn();
 	}
 
 	@Override
-	public ChunkPos getRandomizedSpawnPoint() {
+	public BlockPos getRandomizedSpawnPoint() {
 		return getSpawnPoint();
-	}
-
-	@Override
-	public ChunkPos getEntrancePortalLocation() {
-		verifySpawn();
-		return new ChunkPos(agedata.getSpawn());
 	}
 
 	private void verifySpawn() {
 		if (agedata.getSpawn() != null) return;
-		if (worldObj.isRemote) {
-			agedata.setSpawn(new ChunkPos(0, 0, 0));
+		if (world.isRemote) {
+			agedata.setSpawn(new BlockPos(0, 0, 0));
 			return;
 		}
-		worldObj.findingSpawnPoint = true;
+		//XXX: world.findingSpawnPoint = true;
 		Random random = new Random(agedata.getSeed());
-		ChunkPosition chunkposition = worldChunkMgr.findBiomePosition(0, 0, 256, worldChunkMgr.getBiomesToSpawnIn(), random);
+		BiomeProvider biomeprovider = this.getBiomeProvider();
+		BlockPos spawnpos = biomeprovider.findBiomePosition(0, 0, 256, biomeprovider.getBiomesToSpawnIn(), random);
+		if (spawnpos == null) {
+			System.out.println("Searching for viable spawn point.");
+		}
 		int x = 0;
 		int y = getAgeController().getSeaLevel();
 		int z = 0;
-		if (chunkposition != null) {
-			x = chunkposition.chunkPosX;
-			z = chunkposition.chunkPosZ;
-		} else {
-			System.out.println("Still searching for a spawn point.");
-		}
 		for (int l = 0; l < 1000; ++l) {
 			if (canCoordinateBeSpawn(x, z) || agedata.getSpawn() != null) {
 				break;
@@ -404,27 +389,29 @@ public class WorldProviderMyst extends WorldProvider {
 			z = random.nextInt(64) - random.nextInt(64);
 		}
 		if (agedata.getSpawn() == null) {
-			worldObj.getChunkFromBlockCoords(x, z);
-			while (!worldObj.isAirBlock(x, y, z)) {
-				++y;
+			spawnpos = new BlockPos(x, y, z);
+			world.getChunkFromBlockCoords(spawnpos);
+			while (!world.isAirBlock(spawnpos)) {
+				spawnpos = spawnpos.up();
 			}
-			agedata.setSpawn(new ChunkPos(x, y, z));
+			agedata.setSpawn(spawnpos);
 		}
-		worldObj.findingSpawnPoint = false;
+		//XXX: world.findingSpawnPoint = false;
 	}
 
 	@Override
 	public boolean canCoordinateBeSpawn(int x, int z) {
-		int y = worldObj.getTopSolidOrLiquidBlock(x, z);
-		Block block = worldObj.getBlock(x, y, z);
-		if (block == Blocks.bedrock) { return false; }
-		if (worldObj.isAirBlock(x, y, z)) { return false; }
+		BlockPos blockpos = new BlockPos(x, 0, z);
+		blockpos = world.getTopSolidOrLiquidBlock(blockpos);
+		IBlockState block = world.getBlockState(blockpos);
+		if (block.getBlock() == Blocks.BEDROCK) { return false; }
+		if (world.isAirBlock(blockpos)) { return false; }
 		return block.getMaterial().blocksMovement();
 	}
 
 	@Override
-	public BiomeGenBase getBiomeGenForCoords(int x, int z) {
-		return biomeManager.getWrapper(x, z);
+	public Biome getBiomeForCoords(BlockPos pos) {
+		return biomeManager.getWrapper(pos.getX(), pos.getZ());
 	}
 
 	private int getSkyColorByTemp(float par1) {
@@ -441,7 +428,7 @@ public class WorldProviderMyst extends WorldProvider {
 		return java.awt.Color.getHSBColor(0.62222224F - par1 * 0.05F, 0.5F + par1 * 0.1F, 1.0F).getRGB();
 	}
 
-	public Color getStaticColor(String string, BiomeGenBase biome, int x, int y, int z) {
+	public Color getStaticColor(String string, Biome biome, int x, int y, int z) {
 		return getAgeController().getStaticColor(string, biome, x, y, z);
 	}
 
@@ -450,12 +437,13 @@ public class WorldProviderMyst extends WorldProvider {
 	 */
 	@Override
 	public Vec3 getSkyColor(Entity entity, float partialtick) {
-		float celestial_angle = this.worldObj.getCelestialAngle(partialtick);
+		float celestial_angle = this.world.getCelestialAngle(partialtick);
 		float red = 0;
 		float green = 0;
 		float blue = 0;
-		BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posZ));
-		Vec3 out = getAgeController().getSkyColor(entity, biome, worldObj.getWorldTime(), celestial_angle, partialtick);
+		BlockPos blockPos = new BlockPos(entity);
+		Biome biome = this.world.getBiome(blockPos);
+		Vec3 out = getAgeController().getSkyColor(entity, biome, world.getWorldTime(), celestial_angle, partialtick);
 		if (out == null) {
 			float var4 = MathHelper.cos(celestial_angle * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
 
@@ -467,7 +455,7 @@ public class WorldProviderMyst extends WorldProvider {
 				var4 = 1.0F;
 			}
 
-			float var8 = biome.getFloatTemperature(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ));
+			float var8 = biome.getFloatTemperature(blockPos);
 			int var9 = getSkyColorByTemp(var8);
 			red = (var9 >> 16 & 255) / 255.0F;
 			green = (var9 >> 8 & 255) / 255.0F;
@@ -480,7 +468,7 @@ public class WorldProviderMyst extends WorldProvider {
 			green = (float) out.yCoord;
 			blue = (float) out.zCoord;
 		}
-		float rainstrength = this.worldObj.getRainStrength(partialtick);
+		float rainstrength = this.world.getRainStrength(partialtick);
 		float var14;
 		float var15;
 
@@ -492,7 +480,7 @@ public class WorldProviderMyst extends WorldProvider {
 			blue = blue * var15 + var14 * (1.0F - var15);
 		}
 
-		var14 = this.worldObj.getWeightedThunderStrength(partialtick);
+		var14 = this.world.getThunderStrength(partialtick);
 
 		if (var14 > 0.0F) {
 			var15 = (red * 0.3F + green * 0.59F + blue * 0.11F) * 0.2F;
@@ -502,8 +490,8 @@ public class WorldProviderMyst extends WorldProvider {
 			blue = blue * var16 + var15 * (1.0F - var16);
 		}
 
-		if (this.worldObj.lastLightningBolt > 0) {
-			var15 = this.worldObj.lastLightningBolt - partialtick;
+		if (this.world.getLastLightningBolt() > 0) {
+			var15 = this.world.getLastLightningBolt() - partialtick;
 
 			if (var15 > 1.0F) {
 				var15 = 1.0F;
@@ -537,13 +525,12 @@ public class WorldProviderMyst extends WorldProvider {
 		return "Traveling from " + getDimensionName();
 	}
 
-	@Override
 	public String getDimensionName() {
 		if (agedata == null) {
-			if (worldObj != null) {
-				agedata = AgeData.getAge(ageUID, worldObj.isRemote);
+			if (world != null) {
+				agedata = AgeData.getAge(ageUID, world.isRemote);
 			} else {
-				LoggerUtils.warn("Someone is trying to get the age name from an improperly constructed world provider with dim id " + ageUID);
+				LoggerUtils.warn("Someone is trying to get the age name from an improperly constructed world provider with dim id " + getDimension());
 				agedata = AgeData.getAge(ageUID, false);
 			}
 		}

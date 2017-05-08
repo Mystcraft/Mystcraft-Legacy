@@ -25,7 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
@@ -42,7 +42,7 @@ public class AgeData extends WorldSavedData {
 		public UUID					uuid;
 		public short				instability;
 		public boolean				instabilityEnabled;
-		public ChunkPos		spawn;
+		public BlockPos				spawn;
 		public List<ItemStack>		pages	= new ArrayList<ItemStack>();
 		public List<String>			symbols	= new ArrayList<String>();
 		public boolean				visited;
@@ -60,7 +60,7 @@ public class AgeData extends WorldSavedData {
 	private short				instability;
 	private boolean				instabilityEnabled;
 	private long				worldtime;
-	private ChunkPos	spawn;
+	private BlockPos			spawn;
 	private List<ItemStack>		pages			= new ArrayList<ItemStack>();
 	private List<String>		symbols			= new ArrayList<String>();
 	private boolean				visited;
@@ -171,11 +171,11 @@ public class AgeData extends WorldSavedData {
 		return uuid;
 	}
 
-	public ChunkPos getSpawn() {
+	public BlockPos getSpawn() {
 		return spawn;
 	}
 
-	public void setSpawn(ChunkPos spawn) {
+	public void setSpawn(BlockPos spawn) {
 		this.spawn = spawn;
 	}
 
@@ -279,7 +279,7 @@ public class AgeData extends WorldSavedData {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound) {
 		nbttagcompound.setString("Version", "4.3"); //XXX: Current agedata version stored in multiple locations
 
 		nbttagcompound.setString("AgeName", agename);
@@ -293,14 +293,14 @@ public class AgeData extends WorldSavedData {
 		nbttagcompound.setLong("WorldTime", worldtime);
 
 		if (spawn != null) {
-			nbttagcompound.setInteger("SpawnX", spawn.posX);
-			nbttagcompound.setInteger("SpawnY", spawn.posY);
-			nbttagcompound.setInteger("SpawnZ", spawn.posZ);
+			nbttagcompound.setInteger("SpawnX", spawn.getX());
+			nbttagcompound.setInteger("SpawnY", spawn.getY());
+			nbttagcompound.setInteger("SpawnZ", spawn.getZ());
 		}
 
 		NBTTagList list = new NBTTagList();
 		for (ItemStack page : pages) {
-			list.appendTag(page.stackTagCompound);
+			list.appendTag(page.getTagCompound());
 		}
 		nbttagcompound.setTag("Pages", list);
 
@@ -314,6 +314,7 @@ public class AgeData extends WorldSavedData {
 			}
 			nbttagcompound.setTag("Cruft", cruftnbt);
 		}
+		return nbttagcompound;
 	}
 
 	public static AgeData getMPAgeData(int uid) {

@@ -13,8 +13,8 @@ import com.xcompwiz.mystcraft.world.gen.layer.GenLayerBiomeMyst;
 import com.xcompwiz.mystcraft.world.gen.layer.GenLayerZoomMyst;
 
 import net.minecraft.world.WorldType;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeCache;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.GenLayerFuzzyZoom;
 import net.minecraft.world.gen.layer.GenLayerIsland;
@@ -30,8 +30,8 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
-		List<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
-		BiomeGenBase biome;
+		List<Biome> biomes = new ArrayList<Biome>();
+		Biome biome;
 		biome = ModifierUtils.popBiome(controller);
 		while (biome != null) {
 			biomes.add(biome);
@@ -42,36 +42,36 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 	}
 
 	static class BiomeController implements IBiomeController {
-		private BiomeGenBase		allowedBiomes[];
+		private Biome		allowedBiomes[];
 		/** A list of biomes that the player can spawn in. */
-		private List<BiomeGenBase>	biomesToSpawnIn;
+		private List<Biome>	biomesToSpawnIn;
 
 		private GenLayer			genBiomes;
-		/** A GenLayer containing the indices into BiomeGenBase.biomeList[] */
+		/** A GenLayer containing the indices into Biome.biomeList[] */
 		private GenLayer			biomeIndexLayer;
 		/** The BiomeCache object for this world. */
 		private BiomeCache			biomeCache;
 
 		private int					zoomscale;
 
-		protected BiomeController(AgeDirector controller, int zoom, List<BiomeGenBase> biomes) {
+		protected BiomeController(AgeDirector controller, int zoom, List<Biome> biomes) {
 			this.zoomscale = zoom;
 			biomeCache = new BiomeCache(controller.getWorldChunkManager());
-			biomesToSpawnIn = new ArrayList<BiomeGenBase>();
-			biomesToSpawnIn.add(BiomeGenBase.forest);
-			biomesToSpawnIn.add(BiomeGenBase.plains);
-			biomesToSpawnIn.add(BiomeGenBase.taiga);
-			biomesToSpawnIn.add(BiomeGenBase.taigaHills);
-			biomesToSpawnIn.add(BiomeGenBase.forestHills);
-			biomesToSpawnIn.add(BiomeGenBase.jungle);
-			biomesToSpawnIn.add(BiomeGenBase.jungleHills);
+			biomesToSpawnIn = new ArrayList<Biome>();
+			biomesToSpawnIn.add(Biome.forest);
+			biomesToSpawnIn.add(Biome.plains);
+			biomesToSpawnIn.add(Biome.taiga);
+			biomesToSpawnIn.add(Biome.taigaHills);
+			biomesToSpawnIn.add(Biome.forestHills);
+			biomesToSpawnIn.add(Biome.jungle);
+			biomesToSpawnIn.add(Biome.jungleHills);
 
 			Random rand = new Random(controller.getSeed());
 			while (biomes.size() < 3) {
 				biomes.add(SymbolBiome.getRandomBiome(rand));
 			}
 
-			allowedBiomes = new BiomeGenBase[biomes.size()];
+			allowedBiomes = new Biome[biomes.size()];
 			allowedBiomes = biomes.toArray(allowedBiomes);
 			GenLayer agenlayer[] = computeGenLayers(controller.getSeed(), WorldType.DEFAULT);
 			genBiomes = agenlayer[0];
@@ -82,15 +82,15 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 		 * Gets the list of valid biomes for the player to spawn in.
 		 */
 		@Override
-		public List<BiomeGenBase> getValidSpawnBiomes() {
+		public List<Biome> getValidSpawnBiomes() {
 			return biomesToSpawnIn;
 		}
 
 		/**
-		 * Returns the BiomeGenBase related to the x, z position on the world.
+		 * Returns the Biome related to the x, z position on the world.
 		 */
 		@Override
-		public BiomeGenBase getBiomeAtCoords(int par1, int par2) {
+		public Biome getBiomeAtCoords(int par1, int par2) {
 			return biomeCache.getBiomeGenAt(par1, par2);
 		}
 
@@ -108,7 +108,7 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 			int ai[] = biomeIndexLayer.getInts(par2, par3, par4, par5);
 
 			for (int i = 0; i < par4 * par5; i++) {
-				float f = BiomeGenBase.getBiome(ai[i]).getIntRainfall() / 65536F;
+				float f = Biome.getBiome(ai[i]).getIntRainfall() / 65536F;
 
 				if (f > 1.0F) {
 					f = 1.0F;
@@ -124,20 +124,20 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 		 * Returns an array of biomes for the location input.
 		 */
 		@Override
-		public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase par1ArrayOfBiomeGenBase[], int par2, int par3, int par4, int par5) {
+		public Biome[] getBiomesForGeneration(Biome par1ArrayOfBiome[], int par2, int par3, int par4, int par5) {
 			IntCache.resetIntCache();
 
-			if (par1ArrayOfBiomeGenBase == null || par1ArrayOfBiomeGenBase.length < par4 * par5) {
-				par1ArrayOfBiomeGenBase = new BiomeGenBase[par4 * par5];
+			if (par1ArrayOfBiome == null || par1ArrayOfBiome.length < par4 * par5) {
+				par1ArrayOfBiome = new Biome[par4 * par5];
 			}
 
 			int ai[] = genBiomes.getInts(par2, par3, par4, par5);
 
 			for (int i = 0; i < par4 * par5; i++) {
-				par1ArrayOfBiomeGenBase[i] = BiomeGenBase.getBiome(ai[i]);
+				par1ArrayOfBiome[i] = Biome.getBiome(ai[i]);
 			}
 
-			return par1ArrayOfBiomeGenBase;
+			return par1ArrayOfBiome;
 		}
 
 		/**
@@ -145,26 +145,26 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 		 * infinite loop in BiomeCacheBlock)
 		 */
 		@Override
-		public BiomeGenBase[] getBiomesAtCoords(BiomeGenBase par1ArrayOfBiomeGenBase[], int par2, int par3, int par4, int par5, boolean par6) {
+		public Biome[] getBiomesAtCoords(Biome par1ArrayOfBiome[], int par2, int par3, int par4, int par5, boolean par6) {
 			IntCache.resetIntCache();
 
-			if (par1ArrayOfBiomeGenBase == null || par1ArrayOfBiomeGenBase.length < par4 * par5) {
-				par1ArrayOfBiomeGenBase = new BiomeGenBase[par4 * par5];
+			if (par1ArrayOfBiome == null || par1ArrayOfBiome.length < par4 * par5) {
+				par1ArrayOfBiome = new Biome[par4 * par5];
 			}
 
 			if (par6 && par4 == 16 && par5 == 16 && (par2 & 0xf) == 0 && (par3 & 0xf) == 0) {
-				BiomeGenBase abiomegenbase[] = biomeCache.getCachedBiomes(par2, par3);
-				System.arraycopy(abiomegenbase, 0, par1ArrayOfBiomeGenBase, 0, par4 * par5);
-				return par1ArrayOfBiomeGenBase;
+				Biome aBiome[] = biomeCache.getCachedBiomes(par2, par3);
+				System.arraycopy(aBiome, 0, par1ArrayOfBiome, 0, par4 * par5);
+				return par1ArrayOfBiome;
 			}
 
 			int ai[] = biomeIndexLayer.getInts(par2, par3, par4, par5);
 
 			for (int i = 0; i < par4 * par5; i++) {
-				par1ArrayOfBiomeGenBase[i] = BiomeGenBase.getBiome(ai[i]);
+				par1ArrayOfBiome[i] = Biome.getBiome(ai[i]);
 			}
 
-			return par1ArrayOfBiomeGenBase;
+			return par1ArrayOfBiome;
 		}
 
 		/**

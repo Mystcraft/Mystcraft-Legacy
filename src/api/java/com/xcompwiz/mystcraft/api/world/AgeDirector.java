@@ -16,7 +16,7 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 import com.xcompwiz.mystcraft.api.world.logic.IWeatherController;
 import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 
-import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.biome.BiomeProvider;
 
 /**
  * Interface to the controller system initialized along with an age that controls what symbol mechanics are added to the age. Getting values from here is
@@ -84,7 +84,7 @@ public interface AgeDirector {
 	public long getSeed();
 
 	/** returns the world's chunk manager */
-	public WorldChunkManager getWorldChunkManager();
+	public BiomeProvider getWorldChunkManager();
 
 	/**
 	 * returns the default sunset color

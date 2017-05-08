@@ -10,20 +10,20 @@ import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BiomeWrapperMyst extends BiomeGenBase {
+public class BiomeWrapperMyst extends Biome {
 
 	private final WorldProviderMyst	provider;
-	private final BiomeGenBase		baseBiome;
+	private final Biome		baseBiome;
 
-	public BiomeWrapperMyst(WorldProviderMyst provider, BiomeGenBase baseBiome) {
+	public BiomeWrapperMyst(WorldProviderMyst provider, Biome baseBiome) {
 		super(baseBiome.biomeID, false);
 
 		this.provider = provider;
@@ -193,12 +193,12 @@ public class BiomeWrapperMyst extends BiomeGenBase {
 	}
 
 	@Override
-	public boolean isEqualTo(BiomeGenBase p_150569_1_) {
+	public boolean isEqualTo(Biome p_150569_1_) {
 		return baseBiome.isEqualTo(p_150569_1_);
 	}
 
 	@Override
-	public BiomeGenBase.TempCategory getTempCategory() {
+	public Biome.TempCategory getTempCategory() {
 		return baseBiome.getTempCategory();
 	}
 }
