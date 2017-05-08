@@ -7,7 +7,6 @@ import com.xcompwiz.mystcraft.api.MystObjects.Fluids;
 import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.fluids.FluidColorable;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;

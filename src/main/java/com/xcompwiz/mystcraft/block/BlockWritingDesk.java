@@ -1,6 +1,7 @@
 package com.xcompwiz.mystcraft.block;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.data.ModGUIs;
@@ -10,219 +11,181 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 public class BlockWritingDesk extends Block {
 
-	private static final int	headFootMap[][]	= { { 0, 1 }, { -1, 0 }, { 0, -1 }, { 1, 0 } };
+	public static final PropertyEnum<EnumFacing> ROTATION = PropertyEnum.create("facing", EnumFacing.class, EnumFacing.HORIZONTALS);
+	public static final PropertyBool IS_TOP = PropertyBool.create("istop");
+	public static final PropertyBool IS_FOOT = PropertyBool.create("isfoot");
+
+	private static final int headFootMap[][] = { { 0, 1 }, { -1, 0 }, { 0, -1 }, { 1, 0 } };
 
 	public BlockWritingDesk() {
 		super(Material.WOOD);
 		setHardness(2.5F);
 		setSoundType(SoundType.WOOD);
 		setUnlocalizedName("myst.writing_desk");
+		setDefaultState(this.blockState.getBaseState().withProperty(ROTATION, EnumFacing.NORTH).withProperty(IS_TOP, false).withProperty(IS_FOOT, false));
 	}
 
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k) {
+	public int getMetaFromState(IBlockState state) {
+		int t = isBlockTop(state) ? 1 : 0;
+		int f = isBlockFoot(state) ? 1 : 0;
+		int horizontal = getDirectionFromMetadata(state).getHorizontalIndex();
+		return (t << 4) | (f << 3) | (horizontal & 3);
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		boolean t = ((meta >> 4) & 1) != 0;
+		boolean f = ((meta >> 3) & 1) != 0;
+		int horizontalIndex = meta & 3;
+		return getDefaultState().withProperty(IS_TOP, t).withProperty(IS_FOOT, f).withProperty(ROTATION, EnumFacing.HORIZONTALS[horizontalIndex]);
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, ROTATION, IS_TOP, IS_FOOT);
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		float xmin = 0.0F;
 		float xmax = 1.0F;
 		float ymin = 0.0F;
 		float ymax = 1.0F;
 		float zmin = 0.0F;
 		float zmax = 1.0F;
-		int meta = iblockaccess.getBlockMetadata(i, j, k);
-		if (isBlockTop(meta)) {
+		AxisAlignedBB box = new AxisAlignedBB(0, 0, 0, 1, 1, 1);
+		if(isBlockTop(state)) {
 			ymax = 0.75F;
-			int dir = getDirectionFromMetadata(meta);
-			if (dir == 0) {
+			int dirInt = getDirectionFromMetadata(state).getHorizontalIndex();
+			if (dirInt == 0) {
 				xmin = 0.5F;
 			}
-			if (dir == 1) {
+			if (dirInt == 1) {
 				zmin = 0.5F;
 			}
-			if (dir == 2) {
+			if (dirInt == 2) {
 				xmax = 0.5F;
 			}
-			if (dir == 3) {
+			if (dirInt == 3) {
 				zmax = 0.5F;
 			}
 		}
-		setBlockBounds(xmin, ymin, zmin, xmax, ymax, zmax);
+		return new AxisAlignedBB(xmin, ymin, zmin, xmax, ymax, zmax);
 	}
 
-	/**
-	 * Returns the bounding box of the wired rectangular prism to render.
-	 */
 	@Override
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
-		setBlockBoundsBasedOnState(par1World, par2, par3, par4);
-		return AxisAlignedBB.getBoundingBox(par2 + this.minX, par3 + this.minY, par4 + this.minZ, par2 + this.maxX, par3 + this.maxY, par4 + this.maxZ);
-	}
-
-	/**
-	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been cleared to be reused)
-	 */
-	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
-		setBlockBoundsBasedOnState(par1World, par2, par3, par4);
-		return AxisAlignedBB.getBoundingBox(par2 + this.minX, par3 + this.minY, par4 + this.minZ, par2 + this.maxX, par3 + this.maxY, par4 + this.maxZ);
-	}
-
-	//@SideOnly(Side.CLIENT)
-	//@Override
-	//public IIcon getIcon(int i, int j) {
-	//	if (i <= 1) { return Blocks.crafting_table.getBlockTextureFromSide(i); }
-	//	return Blocks.bookshelf.getBlockTextureFromSide(i);
-	//}
-//
-	//@SideOnly(Side.CLIENT)
-	//@Override
-	//public void registerBlockIcons(IIconRegister par1IconRegister) {}
-
-	@Override
-	public boolean isOpaqueCube() {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-	//@Override
-	//public boolean renderAsNormalBlock() {
-	//	return false;
-	//}
-//
-	//@Override
-	//public int getRenderType() {
-	//	return -1;
-	//}
-
 	@Override
-	public void onNeighborBlockChange(World worldObj, int i, int j, int k, Block block) {
-		int meta = worldObj.getBlockMetadata(i, j, k);
-		if (isBlockTop(meta) && !isBlockFoot(meta)) {
-			if (worldObj.getBlock(i, j - 1, k) != this) {
-				if (!worldObj.isRemote) {
-					dropBlockAsItem(worldObj, i, j, k, meta, 0);
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		if(isBlockTop(state) && !isBlockFoot(state)) {
+			if(!worldIn.getBlockState(pos.down()).getBlock().equals(this)) {
+				if(!worldIn.isRemote) {
+					dropBlockAsItem(worldIn, pos, state, 0);
 				}
-				worldObj.setBlock(i, j, k, Blocks.AIR);
+				worldIn.setBlockToAir(pos);
 			}
 		}
-		int direction = getDirectionFromMetadata(meta);
-		if (isBlockFoot(meta)) {
-			if (worldObj.getBlock(i - headFootMap[direction][0], j, k - headFootMap[direction][1]) != this) {
-				worldObj.setBlock(i, j, k, Blocks.AIR);
+		EnumFacing face = getDirectionFromMetadata(state);
+		int dirInt = face.getHorizontalIndex();
+		if (isBlockFoot(state)) {
+			if(!worldIn.getBlockState(pos.add(-headFootMap[dirInt][0], 0, -headFootMap[dirInt][1])).getBlock().equals(this)) {
+				worldIn.setBlockToAir(pos);
 			}
-		} else if (worldObj.getBlock(i + headFootMap[direction][0], j, k + headFootMap[direction][1]) != this) {
-			worldObj.setBlock(i, j, k, Blocks.AIR);
+		} else if(!worldIn.getBlockState(pos.add(headFootMap[dirInt][0], 0, headFootMap[dirInt][1])).getBlock().equals(this)) {
+			worldIn.setBlockToAir(pos);
 		}
 	}
 
-	/**
-	 * Called when the block is attempted to be harvested
-	 */
 	@Override
-	public void onBlockHarvested(World worldObj, int x, int y, int z, int meta, EntityPlayer player) {
-		if (player.capabilities.isCreativeMode && (!isBlockTop(meta)) && worldObj.getBlock(x, y + 1, z) == this && isBlockTop(worldObj.getBlockMetadata(x, y + 1, z))) {
-			worldObj.setBlockToAir(x, y + 1, z);
-			int direction = getDirectionFromMetadata(meta);
-			if (isBlockFoot(meta)) {
-				worldObj.setBlock(x - headFootMap[direction][0], y + 1, z - headFootMap[direction][1], Blocks.AIR);
+	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+		if (player.capabilities.isCreativeMode && (!isBlockTop(state)) && world.getBlockState(pos.up()).getBlock().equals(this) && isBlockTop(world.getBlockState(pos.up()))) {
+			world.setBlockToAir(pos.up());
+			EnumFacing direction = getDirectionFromMetadata(state);
+			int dirInt = direction.getHorizontalIndex();
+			if (isBlockFoot(state)) {
+				BlockPos offset = pos.add(-headFootMap[dirInt][0], 1, -headFootMap[dirInt][1]);
+				world.setBlockToAir(offset);
 			} else {
-				worldObj.setBlock(z + headFootMap[direction][0], y + 1, z + headFootMap[direction][1], Blocks.AIR);
+				BlockPos offset = pos.add(headFootMap[dirInt][0], 1, headFootMap[dirInt][1]);
+				world.setBlockToAir(offset);
 			}
 		}
 	}
 
 	@Override
-	// world, x, y, z, player, side, origin?
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityplayer, int side, float posX, float pozY, float posZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (world.isRemote) return true;
-		entityplayer.openGui(Mystcraft.instance, ModGUIs.WRITING_DESK.ordinal(), world, x, y, z);
+		playerIn.openGui(Mystcraft.instance, ModGUIs.WRITING_DESK.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
 
 	@Override
-	public void breakBlock(World world, int i, int j, int k, Block block, int meta) {
-		IInventory tileentity = (IInventory) world.getTileEntity(i, j, k);
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		IInventory tileentity = (IInventory) world.getTileEntity(pos);
 		if (tileentity != null) {
 			for (int l = 0; l < tileentity.getSizeInventory(); l++) {
 				ItemStack itemstack = tileentity.getStackInSlot(l);
-				if (itemstack == null) {
+				if (itemstack.isEmpty()) {
 					continue;
 				}
-				tileentity.setInventorySlotContents(l, null);
+				tileentity.setInventorySlotContents(l, ItemStack.EMPTY);
 				float f = world.rand.nextFloat() * 0.8F + 0.1F;
 				float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
 				float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
-				EntityItem entityitem = new EntityItem(world, i + f, j + f1, k + f2, itemstack);
+				EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, itemstack);
 				float f3 = 0.05F;
 				entityitem.motionX = (float) world.rand.nextGaussian() * f3;
 				entityitem.motionY = (float) world.rand.nextGaussian() * f3 + 0.2F;
 				entityitem.motionZ = (float) world.rand.nextGaussian() * f3;
-				world.spawnEntityInWorld(entityitem);
+				world.spawnEntity(entityitem);
 			}
 		}
-		super.breakBlock(world, i, j, k, block, meta);
+		super.breakBlock(world, pos, state);
 	}
 
-	/**
-	 * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage and is ignored for blocks which do not
-	 * support subtypes. Blocks which cannot be harvested should return null.
-	 */
 	@Override
-	protected ItemStack createStackedBlock(int par1) {
-		return null;
-	}
-
-	/**
-	 * This returns a complete list of items dropped from this block.
-	 * @param world The current world
-	 * @param x X Position
-	 * @param y Y Position
-	 * @param z Z Position
-	 * @param metadata Current metadata
-	 * @param fortune Breakers fortune level
-	 * @return A ArrayList containing all items this block drops
-	 */
-	@Override
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-		if (isBlockTop(metadata)) {
+		if (isBlockTop(state)) {
 			ret.add(new ItemStack(ModItems.desk, 1, 1));
 		} else {
-			ret.add(new ItemStack(ModItems.desk, 1, 0));
+			ret.add(new ItemStack(ModItems.desk));
 		}
 		return ret;
 	}
 
-	/**
-	 * Called when a user uses the creative pick block button on this block
-	 * @param target The full target the player is looking at
-	 * @return A ItemStack to add to the player's inventory, Null if nothing should be added.
-	 */
-	@SuppressWarnings("deprecation")
 	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-		if (isBlockTop(world.getBlockMetadata(x, y, z))) { return new ItemStack(ModItems.desk, 1, 1); }
-		return new ItemStack(ModItems.desk, 1, 0);
-	}
-
-	@Override
-	public int getMobilityFlag() {
-		return 1;
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		if(isBlockTop(state)) {
+			return new ItemStack(ModItems.desk, 1, 1);
+		}
+		return new ItemStack(ModItems.desk);
 	}
 
 	public static int getMetadataFromDirection(int i, int j) {
@@ -236,53 +199,55 @@ public class BlockWritingDesk extends Block {
 		return 0;
 	}
 
-	public static int getDirectionFromMetadata(int i) {
-		return i & 3;
+	public static EnumFacing getDirectionFromMetadata(IBlockState state) {
+		return state.getValue(ROTATION);
 	}
 
-	public static boolean isBlockFoot(int i) {
-		return (i & 8) != 0;
+	public static boolean isBlockFoot(IBlockState state) {
+		return state.getValue(IS_FOOT);
 	}
 
-	public static boolean isBlockTop(int i) {
-		return (i & 4) != 0;
+	public static boolean isBlockTop(IBlockState state) {
+		return state.getValue(IS_TOP);
 	}
 
-	public static TileEntityDesk getTileEntity(World world, int i, int j, int k) {
-		int meta = world.getBlockMetadata(i, j, k);
-		if (isBlockTop(meta)) { return getTileEntity(world, i, j - 1, k); }
-		if (isBlockFoot(meta)) {
-			int direction = getDirectionFromMetadata(meta);
-			return (TileEntityDesk) world.getTileEntity(i - headFootMap[direction][0], j, k - headFootMap[direction][1]);
+	public static TileEntityDesk getTileEntity(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		if (isBlockTop(state)) { return getTileEntity(world, pos.down()); }
+		if (isBlockFoot(state)) {
+			EnumFacing direction = getDirectionFromMetadata(state);
+			int dirInt = direction.getHorizontalIndex();
+			BlockPos at = pos.add(-headFootMap[dirInt][0], 0, -headFootMap[dirInt][1]);
+			return (TileEntityDesk) world.getTileEntity(at);
 		}
-		return (TileEntityDesk) world.getTileEntity(i, j, k);
+		return (TileEntityDesk) world.getTileEntity(pos);
 	}
 
 	@Override
-	public boolean hasTileEntity(int metadata) {
-		return !isBlockFoot(metadata) && !isBlockTop(metadata);
+	public boolean hasTileEntity(IBlockState state) {
+		return !isBlockFoot(state) && !isBlockTop(state);
 	}
 
+	@Nullable
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileEntityDesk();
 	}
 
-	/**
-	 * Called whenever the block is added into the world. Args: world, x, y, z
-	 */
 	@Override
-	public void onBlockAdded(World worldObj, int i, int j, int k) {
-		super.onBlockAdded(worldObj, i, j, k);
-		if (hasTileEntity(worldObj.getBlockMetadata(i, j, k))) {
-			worldObj.setTileEntity(i, j, k, this.createTileEntity(worldObj, worldObj.getBlockMetadata(i, j, k)));
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+		super.onBlockAdded(worldIn, pos, state);
+		if(hasTileEntity(state)) {
+			worldIn.setTileEntity(pos, createTileEntity(worldIn, state));
 		}
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase entityliving, ItemStack itemstack) {
-		if (world.getBlock(i, j, k) != this) return;
-		int facing = (MathHelper.floor_double(((entityliving.rotationYaw * 4F) / 360F) + 0.5D) + 1) & 3;
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		if(!worldIn.getBlockState(pos).getBlock().equals(this)) return;
+		EnumFacing face = placer.getHorizontalFacing(); //TODO Hellfire> Test if this actually still behaves the way it did.
+		int facing = face.getHorizontalIndex();
+
 		int xOffset = 0;
 		int zOffset = 0;
 		if (facing == 0) {
@@ -297,27 +262,21 @@ public class BlockWritingDesk extends Block {
 		if (facing == 3) {
 			xOffset = 1;
 		}
-		if (world.getBlock(i + xOffset, j, k + zOffset) == Blocks.AIR) {
-			world.setBlockMetadataWithNotify(i, j, k, facing, 3);
-			world.setBlock(i + xOffset, j, k + zOffset, this, facing + 8, 3);
+		BlockPos offset = pos.add(xOffset, 0, zOffset);
+		if(worldIn.isAirBlock(offset)) {
+			worldIn.setBlockState(offset, getDefaultState().withProperty(ROTATION, face).withProperty(IS_FOOT, true));
 		} else {
-			world.setBlock(i, j, k, Blocks.AIR, 0, 3);
+			worldIn.setBlockToAir(pos);
 		}
 	}
 
-	/**
-	 * Called when the block receives a BlockEvent - see World.addBlockEvent. By default, passes it on to the tile entity at this location. Args: world, x, y,
-	 * z, blockID, EventID, event parameter
-	 * @return
-	 */
 	@Override
-	public boolean onBlockEventReceived(World par1World, int par2, int par3, int par4, int par5, int par6) {
-		super.onBlockEventReceived(par1World, par2, par3, par4, par5, par6);
-		TileEntity var7 = par1World.getTileEntity(par2, par3, par4);
-
-		if (var7 != null) {
-			var7.receiveClientEvent(par5, par6);
+	public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param) {
+		TileEntity te = worldIn.getTileEntity(pos);
+		if(te != null) {
+			te.receiveClientEvent(id, param);
 		}
 		return false;
 	}
+
 }

@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.api.item;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,11 +19,9 @@ public interface IItemPortalActivator {
 	 * @param itemstack The itemstack in the portal receptacle
 	 * @param worldObj The world the portal is in
 	 * @param entity The entity colliding with the portal
-	 * @param x The x coordinate of the block collided with
-	 * @param y The y coordinate of the block collided with
-	 * @param z The z coordinate of the block collided with
+	 * @param pos The coordinate of the block collided with
 	 */
-	public void onPortalCollision(ItemStack itemstack, World worldObj, Entity entity, int x, int y, int z);
+	public void onPortalCollision(ItemStack itemstack, World worldObj, Entity entity, BlockPos pos);
 
 	/**
 	 * This allows you to provide your own color for the portal. It is only called when the terrain is being built, so use a fixed color (per itemstack).

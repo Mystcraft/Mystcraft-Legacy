@@ -31,6 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModBlocks {
+
 	public static Block	inkmixer;
 	public static Block	bookbinder;
 	public static Block	receptacle;
@@ -97,7 +98,7 @@ public class ModBlocks {
 		GameRegistry.register(starfissure);
 		GameRegistry.register(new ItemBlock(starfissure));
 		GameRegistry.register(black_ink);
-		GameRegistry.register(new ItemBlockFluid(black_ink));
+		//GameRegistry.register(new ItemBlockFluid(black_ink)); Hellfire> it's not necessary to add a fluid itemblock.. I'd suggest we don't atm.
 
 		// Set mining difficulties/tools
 		decay.setHarvestLevel("pickaxe",   0, decay.getStateFromMeta(DecayHandler.BLUE));

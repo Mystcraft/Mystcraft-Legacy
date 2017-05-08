@@ -16,20 +16,20 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
 public class BlockStarFissure extends BlockContainer {
 
-	private static LinkOptions	defaultstarfissure	= new LinkOptions(null);
+	private static LinkOptions defaultstarfissure = new LinkOptions(null);
+
 	static {
 		defaultstarfissure.setDimensionUID(Mystcraft.homeDimension);
 		defaultstarfissure.setFlag(LinkPropertyAPI.FLAG_NATURAL, true);
@@ -62,17 +62,18 @@ public class BlockStarFissure extends BlockContainer {
 		return new TileEntityStarFissure();
 	}
 
-	//@SideOnly(Side.CLIENT)
-	//@Override
-	//public void registerBlockIcons(IIconRegister par1IconRegister) {}
-
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess iblockaccess, int i, int j, int k) {
-		setBlockBounds(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 	}
 
 	@Override
-	public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List list, Entity entity) {}
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {}
+
+	@Override
+	public boolean causesSuffocation(IBlockState state) {
+		return false;
+	}
 
 	@Override
 	public boolean isCollidable() {
@@ -80,39 +81,30 @@ public class BlockStarFissure extends BlockContainer {
 	}
 
 	@Override
-	public boolean isOpaqueCube() {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
-
-	//@Override
-	//public boolean renderAsNormalBlock() {
-	//	return false;
-	//}
 
 	@Override
 	public int quantityDropped(Random random) {
 		return 0;
 	}
 
-	@Override
-	public void onEntityCollidedWithBlock(World worldObj, int i, int j, int k, Entity entity) {
-		ILinkInfo info = defaultstarfissure.clone();
-		info.setSpawnYaw(entity.rotationYaw);
-		MinecraftForge.EVENT_BUS.post(new StarFissureLinkEvent(worldObj, entity, info));
-		LinkController.travelEntity(worldObj, entity, info);
-	}
-
-	//@Override
-	//public int getRenderType() {
-	//	return -1;
-	//}
+    @Override
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+        ILinkInfo info = defaultstarfissure.clone();
+        info.setSpawnYaw(entity.rotationYaw);
+        MinecraftForge.EVENT_BUS.post(new StarFissureLinkEvent(world, entity, info));
+        LinkController.travelEntity(world, entity, info);
+    }
 
 	@Override
-	public void onBlockAdded(World world, int i, int j, int k) {}
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {}
 
 	@Override
-	public void updateTick(World world, int i, int j, int k, Random random) {}
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {}
 
 	@Override
-	public void onNeighborBlockChange(World world, int i, int j, int k, Block block) {}
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {}
+
 }

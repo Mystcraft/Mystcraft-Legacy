@@ -6,13 +6,20 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCrystal extends Block {
+
+	public static final PropertyEnum<EnumFacing> SOURCE_DIRECTION = PropertyEnum.create("source", EnumFacing.class);
+	public static final PropertyBool IS_PART_OF_PORTAL = PropertyBool.create("active");
 
 	public BlockCrystal() {
 		super(Material.GLASS);
@@ -23,65 +30,49 @@ public class BlockCrystal extends Block {
 		setLightLevel(0.5F);
 		setUnlocalizedName("myst.crystal");
 		setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+		setDefaultState(this.blockState.getBaseState().withProperty(IS_PART_OF_PORTAL, false).withProperty(SOURCE_DIRECTION, EnumFacing.DOWN));
 	}
 
-	//@SideOnly(Side.CLIENT)
-	//@Override
-	//public void registerBlockIcons(IIconRegister par1IconRegister) {
-	//	this.blockIcon = par1IconRegister.registerIcon("mystcraft:crystal");
-	//}
-
-	// /**
-	// * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-	// * when first determining what to render.
-	// */
-	// @SideOnly(Side.CLIENT)
-	// @Override
-	// public int colorMultiplier(IBlockAccess blockAccess, int i, int j, int k)
-	// {
-	// int metadata = blockAccess.getBlockMetadata(i, j, k);
-	// if (metadata == 0) return 0x000000;
-	// if (metadata == 1) return 0x0000FF;
-	// if (metadata == 2) return 0xFF00FF;
-	// if (metadata == 3) return 0x00FF00;
-	// if (metadata == 4) return 0xFFFF00;
-	// if (metadata == 5) return 0x00FFFF;
-	// if (metadata == 6) return 0xFF0000;
-	// return getBlockColor();
-	// }
-
-	/**
-	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are their own) Args: x, y, z, neighbor
-	 * blockID
-	 */
 	@Override
-	public void onNeighborBlockChange(World world, int i, int j, int k, Block block) {
-		if (world.isRemote) return;
-		if (world.getBlockMetadata(i, j, k) == 0) return;
-		TileEntity tileentity = PortalUtils.getTileEntity(world, i, j, k);
-		if (tileentity == null || !(tileentity instanceof TileEntityBookReceptacle) || ((TileEntityBookReceptacle) tileentity).getBook() == null) {
-			world.setBlockMetadataWithNotify(i, j, k, 0, 2);
-			PortalUtils.shutdownPortal(world, i, j, k);
-			return;
+	public IBlockState getStateFromMeta(int meta) {
+		if(meta == 0) {
+			return getDefaultState();
+		} else {
+			int sh = meta >> 1;
+			return getDefaultState().withProperty(IS_PART_OF_PORTAL, true).withProperty(SOURCE_DIRECTION, EnumFacing.values()[sh]);
 		}
 	}
 
-	/**
-	 * If this returns true, then comparators facing away from this block will use the value from getComparatorInputOverride instead of the actual redstone
-	 * signal strength.
-	 */
 	@Override
-	public boolean hasComparatorInputOverride() {
+	public int getMetaFromState(IBlockState state) {
+		int side = state.getValue(SOURCE_DIRECTION).ordinal();
+		return state.getValue(IS_PART_OF_PORTAL) ? side << 1 : 0;
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, SOURCE_DIRECTION, IS_PART_OF_PORTAL);
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		if(worldIn.isRemote) return;
+		if(state.getBlock().getMetaFromState(state) == 0) return;
+		TileEntity tileEntity = PortalUtils.getTileEntity(worldIn, pos);
+		if(tileEntity == null || !(tileEntity instanceof TileEntityBookReceptacle) || ((TileEntityBookReceptacle) tileEntity).getBook() == null) {
+			worldIn.setBlockState(pos, getDefaultState(), 2);
+			PortalUtils.shutdownPortal(worldIn, pos);
+		}
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride(IBlockState state) {
 		return true;
 	}
 
-	/**
-	 * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal strength when this block inputs to a
-	 * comparator.
-	 */
 	@Override
-	public int getComparatorInputOverride(World world, int i, int j, int k, int par5) {
-		if (world.getBlockMetadata(i, j, k) != 0) return 15;
-		return 0;
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return blockState.getValue(IS_PART_OF_PORTAL) ? 15 : 0
 	}
+
 }

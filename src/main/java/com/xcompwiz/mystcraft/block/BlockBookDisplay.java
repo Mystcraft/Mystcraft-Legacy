@@ -8,11 +8,15 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityBookRotateable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public abstract class BlockBookDisplay extends BlockContainer {
@@ -22,72 +26,65 @@ public abstract class BlockBookDisplay extends BlockContainer {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityplayer, int side, float posX, float pozY, float posZ) {
-		if (world.isRemote) return true;
-		TileEntityBookRotateable tileentity = (TileEntityBookRotateable) world.getTileEntity(x, y, z);
-		if (tileentity == null) { return true; }
-		if (tileentity.getBook() == null) {
-			ItemStack itemstack = entityplayer.inventory.getCurrentItem();
-			if (itemstack != null && tileentity.isItemValidForSlot(0, itemstack)) {
-				ItemStack copy = itemstack.copy();
-				copy.stackSize = 1;
-				itemstack.stackSize -= 1;
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if(worldIn.isRemote) return true;
+		TileEntityBookRotateable tileentity = (TileEntityBookRotateable) worldIn.getTileEntity(pos);
+		if (tileentity == null) {
+			return true;
+		}
+		if(tileentity.getBook().isEmpty()) {
+			ItemStack stack = playerIn.getHeldItem(hand);
+			if(!stack.isEmpty() && tileentity.isItemValidForSlot(0, stack)) {
+				ItemStack copy = stack.copy();
+				copy.setCount(1);
+				stack.setCount(1);
 				tileentity.setBook(copy);
-				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, itemstack);
+				playerIn.setHeldItem(hand, stack);
 			} else {
-				entityplayer.openGui(Mystcraft.instance, ModGUIs.BOOK_DISPLAY.ordinal(), world, x, y, z);
+				playerIn.openGui(Mystcraft.instance, ModGUIs.BOOK_DISPLAY.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
 				return true;
 			}
 		} else {
-			if (entityplayer.isSneaking() && entityplayer.inventory.getCurrentItem() == null) {
-				entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, tileentity.getBook());
-				entityplayer.inventory.markDirty();
-				tileentity.setBook(null);
+			if(playerIn.isSneaking() && playerIn.getHeldItem(hand).isEmpty()) {
+				playerIn.setHeldItem(hand, tileentity.getBook());
+				tileentity.setBook(ItemStack.EMPTY);
 				return true;
 			}
-			entityplayer.openGui(Mystcraft.instance, ModGUIs.BOOK_DISPLAY.ordinal(), world, x, y, z);
+			playerIn.openGui(Mystcraft.instance, ModGUIs.BOOK_DISPLAY.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
+
 		return true;
 	}
 
 	@Override
-	public void breakBlock(World world, int i, int j, int k, Block block, int meta) {
-		if (!world.isRemote) {
-			TileEntityBookRotateable book = (TileEntityBookRotateable) world.getTileEntity(i, j, k);
-			if (book == null) {
-				// System.out.println("No tile entity?");
-				return;
-			}
-			ItemStack itemstack = book.getBook();
-			book.setBook(null);
-			if (itemstack != null) {
-				EntityItem entity = new EntityItem(world, i, j, k, itemstack);
-				world.spawnEntityInWorld(entity);
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		if(!worldIn.isRemote) {
+			TileEntityBookRotateable book = (TileEntityBookRotateable) worldIn.getTileEntity(pos);
+			if(book != null) {
+				ItemStack item = book.getBook();
+				book.setBook(ItemStack.EMPTY);
+				if(!item.isEmpty()) {
+					EntityItem drop = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), item);
+					worldIn.spawnEntity(drop);
+				}
 			}
 		}
-		super.breakBlock(world, i, j, k, block, meta);
+
+		super.breakBlock(worldIn, pos, state);
 	}
 
-	/**
-	 * If this returns true, then comparators facing away from this block will use the value from getComparatorInputOverride instead of the actual redstone
-	 * signal strength.
-	 */
 	@Override
-	public boolean hasComparatorInputOverride() {
+	public boolean hasComparatorInputOverride(IBlockState state) {
 		return true;
 	}
 
-	/**
-	 * If hasComparatorInputOverride returns true, the return value from this is used instead of the redstone signal strength when this block inputs to a
-	 * comparator.
-	 */
 	@Override
-	public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5) {
-		return Container.calcRedstoneFromInventory(this.getInventory(par1World, par2, par3, par4));
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return Container.calcRedstoneFromInventory(getInventory(worldIn, pos));
 	}
 
-	private IInventory getInventory(World worldObj, int i, int j, int k) {
-		return (TileEntityBook) worldObj.getTileEntity(i, j, k);
+	private IInventory getInventory(World worldObj, BlockPos pos) {
+		return (TileEntityBook) worldObj.getTileEntity(pos);
 	}
 }

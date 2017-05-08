@@ -18,9 +18,10 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 
-public class TileEntityBookBinder extends TileEntityRotatable implements IItemBuilder, ISidedInventory {
+public class TileEntityBookBinder extends TileEntity implements IItemBuilder, ISidedInventory {
 
 	private ItemStack		itemstacks[];
 	private List<ItemStack>	pages;
@@ -31,17 +32,6 @@ public class TileEntityBookBinder extends TileEntityRotatable implements IItemBu
 	public TileEntityBookBinder() {
 		itemstacks = new ItemStack[2];
 		pages = new ArrayList<ItemStack>();
-	}
-
-	@Override
-	public void setYaw(int rotation) {
-		rotation = rotation - (rotation % 90);
-		super.setYaw(rotation);
-	}
-
-	@Override
-	public boolean canUpdate() {
-		return false;
 	}
 
 	@Override

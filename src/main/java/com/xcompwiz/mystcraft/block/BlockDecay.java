@@ -1,148 +1,104 @@
 package com.xcompwiz.mystcraft.block;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.Lists;
 import com.xcompwiz.mystcraft.instability.decay.DecayHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockDecay extends Block {
 
+	public static final PropertyInteger DECAY_META = PropertyInteger.create("decay", 0, DecayHandler.size() - 1); //-1 because it's inclusive, not exclusive...
+
 	public BlockDecay() {
-		super(Material.sand);
+		super(Material.SAND);
 		setTickRandomly(false);
 		setSoundType(SoundType.SAND);
 		setUnlocalizedName("myst.unstable");
 	}
 
-	/**
-	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-	 */
 	@Override
-	public IIcon getIcon(int side, int meta) {
-		return getDecayHandler(meta).getBlockTextureFromSide(side);
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerBlockIcons(IIconRegister par1IconRegister) {
-		DecayHandler.registerIcons(par1IconRegister);
-	}
-
-	/**
-	 * Called right before the block is destroyed by a player. Args: world, x, y, z, metaData
-	 */
-	@Override
-	public void onBlockDestroyedByPlayer(World world, int i, int j, int k, int meta) {
-		super.onBlockDestroyedByPlayer(world, i, j, k, meta);
-		getDecayHandler(meta).onBlockDestroyedByPlayer(world, i, j, k);
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(DECAY_META, meta);
 	}
 
 	@Override
-	public void updateTick(World world, int i, int j, int k, Random random) {
-		if (!world.isRemote) {
-			getDecayHandler(world.getBlockMetadata(i, j, k)).updateTick(world, i, j, k, random);
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(DECAY_META);
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, DECAY_META);
+	}
+
+	@Override
+	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+		super.onBlockDestroyedByPlayer(worldIn, pos, state);
+		getDecayHandler(state.getValue(DECAY_META)).onBlockDestroyedByPlayer(worldIn, pos);
+	}
+
+	@Override
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+		if(!worldIn.isRemote) {
+			getDecayHandler(state.getValue(DECAY_META)).updateTick(worldIn, pos, rand);
 		}
 	}
 
 	@Override
-	public void onBlockAdded(World world, int i, int j, int k) {
-		super.onBlockAdded(world, i, j, k);
-		getDecayHandler(world.getBlockMetadata(i, j, k)).onBlockAdded(world, i, j, k);
-	}
-
-	/**
-	 * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage and is ignored for blocks which do not
-	 * support subtypes. Blocks which cannot be harvested should return null.
-	 */
-	@Override
-	protected ItemStack createStackedBlock(int par1) {
-		return null;
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+		super.onBlockAdded(worldIn, pos, state);
+		getDecayHandler(state.getValue(DECAY_META)).onBlockAdded(worldIn, pos);
 	}
 
 	@Override
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-		return new ArrayList<ItemStack>();
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		return Lists.newArrayList();
 	}
 
-	/**
-	 * Called when a user uses the creative pick block button on this block
-	 * @param target The full target the player is looking at
-	 * @return A ItemStack to add to the player's inventory, Null if nothing should be added.
-	 */
-	@SuppressWarnings("deprecation")
 	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-		return new ItemStack(this, 1, world.getBlockMetadata(x, y, z));
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		return new ItemStack(this, 1, getMetaFromState(state));
 	}
 
-	/**
-	 * Location sensitive version of getExplosionRestance
-	 * @param entity The entity that caused the explosion
-	 * @param worldObj The current world
-	 * @param x X Position
-	 * @param y Y Position
-	 * @param z Z Position
-	 * @param explosionX Explosion source X Position
-	 * @param explosionY Explosion source X Position
-	 * @param explosionZ Explosion source X Position
-	 * @return The amount of the explosion absorbed.
-	 */
 	@Override
-	public float getExplosionResistance(Entity entity, World worldObj, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
-		return getDecayHandler(worldObj.getBlockMetadata(x, y, z)).getExplosionResistance(entity, worldObj, x, y, z, explosionX, explosionY, explosionZ);
+	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+		return getDecayHandler(world.getBlockState(pos).getValue(DECAY_META)).getExplosionResistance(exploder, world, pos, explosion);
 	}
 
-	/**
-	 * Returns the block hardness at a location.
-	 * @param worldObj The current world
-	 * @param x X Position
-	 * @param y Y Position
-	 * @param z Z Position
-	 */
 	@Override
-	public float getBlockHardness(World worldObj, int x, int y, int z) {
-		return getDecayHandler(worldObj.getBlockMetadata(x, y, z)).getBlockHardness(worldObj, x, y, z);
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+		return getDecayHandler(blockState.getValue(DECAY_META)).getBlockHardness(worldIn, pos);
 	}
 
-	/**
-	 * Get a light value for this block, normal ranges are between 0 and 15
-	 * @param worldObj The current world
-	 * @param x X Position
-	 * @param y Y position
-	 * @param z Z position
-	 * @return The light value
-	 */
 	@Override
-	public int getLightValue(IBlockAccess worldObj, int x, int y, int z) {
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return lightValue;
 	}
 
-	/**
-	 * Called whenever an entity is walking on top of this block. Args: world, x, y, z, entity
-	 */
 	@Override
-	public void onEntityWalking(World worldObj, int x, int y, int z, Entity entity) {
-		getDecayHandler(worldObj.getBlockMetadata(x, y, z)).onEntityContact(worldObj, x, y, z, entity);
+	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
+		getDecayHandler(worldIn.getBlockState(pos).getValue(DECAY_META)).onEntityContact(worldIn, pos, entityIn);
 	}
 
-	/**
-	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-	 */
 	@Override
-	public void onEntityCollidedWithBlock(World worldObj, int x, int y, int z, Entity entity) {
-		getDecayHandler(worldObj.getBlockMetadata(x, y, z)).onEntityContact(worldObj, x, y, z, entity);
+	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+		getDecayHandler(state.getValue(DECAY_META)).onEntityContact(worldIn, pos, entityIn);
 	}
 
 	private DecayHandler getDecayHandler(int meta) {

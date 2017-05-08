@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -35,12 +36,6 @@ public class BlockLinkPortal extends BlockBreakable {
 		setLightLevel(0.75F);
 		setUnlocalizedName("myst.linkportal");
 	}
-
-	//@SideOnly(Side.CLIENT)
-	//@Override
-	//public void registerBlockIcons(IIconRegister par1IconRegister) {
-	//	this.blockIcon = par1IconRegister.registerIcon("mystcraft:portal");
-	//}
 
 	/**
 	 * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been cleared to be reused)
@@ -82,12 +77,8 @@ public class BlockLinkPortal extends BlockBreakable {
 		setBlockBounds(xmin, ymin, zmin, xmax, ymax, zmax);
 	}
 
-	/**
-	 * Is this block (a) opaque and (b) a full 1m cube? This determines whether or not to render the shared face of two adjacent blocks and also whether the
-	 * player can attach torches, redstone wire, etc to this block.
-	 */
 	@Override
-	public boolean isOpaqueCube() {
+	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
@@ -126,19 +117,12 @@ public class BlockLinkPortal extends BlockBreakable {
 		return getBlockColor();
 	}
 
-	/**
-	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are their own) Args: x, y, z, neighbor
-	 * blockID
-	 */
 	@Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5) {
-		if (par1World.isRemote) return;
-		PortalUtils.validatePortal(par1World, new ChunkPos(par2, par3, par4));
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		if (worldIn.isRemote) return;
+		PortalUtils.validatePortal(worldIn, pos);
 	}
 
-	/**
-	 * Returns the quantity of items to drop on block destruction.
-	 */
 	@Override
 	public int quantityDropped(Random par1Random) {
 		return 0;
@@ -149,39 +133,36 @@ public class BlockLinkPortal extends BlockBreakable {
 		return layer == BlockRenderLayer.TRANSLUCENT;
 	}
 
-	/**
-	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-	 */
 	@Override
-	public void onEntityCollidedWithBlock(World worldObj, int par2, int par3, int par4, Entity entity) {
-		if (worldObj.isRemote) return;
-		TileEntity tileentity = PortalUtils.getTileEntity(worldObj, par2, par3, par4);
-		if (tileentity == null || !(tileentity instanceof TileEntityBookReceptacle)) {
-			worldObj.setBlock(par2, par3, par4, Blocks.AIR);
+	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+		if(worldIn.isRemote) return;
+		TileEntity te = PortalUtils.getTileEntity(worldIn, pos);
+		if(te == null || !(te instanceof TileEntityBookReceptacle)) {
+			worldIn.setBlockToAir(pos);
 			return;
 		}
-		TileEntityBookReceptacle container = (TileEntityBookReceptacle) tileentity;
-		if (container.getBook() == null) {
-			worldObj.setBlock(par2, par3, par4, Blocks.AIR);
+		TileEntityBookReceptacle container = (TileEntityBookReceptacle) te;
+		if(container.getBook().isEmpty()) {
+			worldIn.setBlockToAir(pos);
 			return;
 		}
 		ItemStack book = container.getBook();
-		Item itemdata = book.getItem();
-		if (itemdata instanceof IItemPortalActivator) {
-			((IItemPortalActivator)itemdata).onPortalCollision(book, worldObj, entity, par2, par3, par4);
+		if(book.getItem() instanceof IItemPortalActivator) {
+			((IItemPortalActivator) book.getItem()).onPortalCollision(book, worldIn, entityIn, pos);
 		}
 	}
 
 	@Override
-	public void updateTick(World world, int i, int j, int k, Random rand) {
-		if (world.isRemote) return;
-		this.onNeighborBlockChange(world, i, j, k, this);
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+		if (worldIn.isRemote) return;
+		PortalUtils.validatePortal(worldIn, pos);
 	}
 
 	@Override
-	public void onBlockAdded(World world, int i, int j, int k) {
-		super.onBlockAdded(world, i, j, k);
-		if (world.isRemote) return;
+	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+		super.onBlockAdded(worldIn, pos, state);
+		if(worldIn.isRemote) return;
+		//Hellfire> wtf are we doing here.
 	}
 
 	@Override
