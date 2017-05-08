@@ -27,7 +27,7 @@ public class ExplosionEffectBasic extends ExplosionEffect {
 			double var14 = var8 - explosion.explosionX;
 			double var16 = var10 - explosion.explosionY;
 			double var18 = var12 - explosion.explosionZ;
-			double var20 = MathHelper.sqrt_double(var14 * var14 + var16 * var16 + var18 * var18);
+			double var20 = MathHelper.sqrt(var14 * var14 + var16 * var16 + var18 * var18);
 			var14 /= var20;
 			var16 /= var20;
 			var18 /= var20;

@@ -56,9 +56,9 @@ public class WeatherRendererMyst extends IRenderHandler {
 			GL11.glRotatef(0, 1, 0, 0);
 			EntityLivingBase entitylivingbase = mc.renderViewEntity;
 			WorldClient worldclient = worldObj;
-			int entityX = MathHelper.floor_double(entitylivingbase.posX);
-			int entityY = MathHelper.floor_double(entitylivingbase.posY);
-			int entityZ = MathHelper.floor_double(entitylivingbase.posZ);
+			int entityX = MathHelper.floor(entitylivingbase.posX);
+			int entityY = MathHelper.floor(entitylivingbase.posY);
+			int entityZ = MathHelper.floor(entitylivingbase.posZ);
 			Tessellator tessellator = Tessellator.instance;
 			GL11.glDisable(GL11.GL_CULL_FACE);
 			GL11.glNormal3f(0.0F, 1.0F, 0.0F);
@@ -69,7 +69,7 @@ public class WeatherRendererMyst extends IRenderHandler {
 			double smoothedX = entitylivingbase.lastTickPosX + (entitylivingbase.posX - entitylivingbase.lastTickPosX) * partialTicks;
 			double smoothedY = entitylivingbase.lastTickPosY + (entitylivingbase.posY - entitylivingbase.lastTickPosY) * partialTicks;
 			double smoothedZ = entitylivingbase.lastTickPosZ + (entitylivingbase.posZ - entitylivingbase.lastTickPosZ) * partialTicks;
-			int ismoothedY = MathHelper.floor_double(smoothedY);
+			int ismoothedY = MathHelper.floor(smoothedY);
 			byte iteration_count = 5;
 
 			if (mc.gameSettings.fancyGraphics) {

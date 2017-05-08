@@ -35,21 +35,21 @@ public class RenderFallingBlock extends Render {
 			this.renderBlocks.blockAccess = entityfalling.getWorld();
 			tessellator = Tessellator.instance;
 			tessellator.startDrawingQuads();
-			tessellator.setTranslation(((-MathHelper.floor_double(entityfalling.posX)) - 0.5F), ((-MathHelper.floor_double(entityfalling.posY)) - 0.5F), ((-MathHelper.floor_double(entityfalling.posZ)) - 0.5F));
-			this.renderBlocks.renderBlockAnvilMetadata((BlockAnvil) block, MathHelper.floor_double(entityfalling.posX), MathHelper.floor_double(entityfalling.posY), MathHelper.floor_double(entityfalling.posZ), entityfalling.metadata);
+			tessellator.setTranslation(((-MathHelper.floor(entityfalling.posX)) - 0.5F), ((-MathHelper.floor(entityfalling.posY)) - 0.5F), ((-MathHelper.floor(entityfalling.posZ)) - 0.5F));
+			this.renderBlocks.renderBlockAnvilMetadata((BlockAnvil) block, MathHelper.floor(entityfalling.posX), MathHelper.floor(entityfalling.posY), MathHelper.floor(entityfalling.posZ), entityfalling.metadata);
 			tessellator.setTranslation(0.0D, 0.0D, 0.0D);
 			tessellator.draw();
 		} else if (block != null && block.getRenderType() == 27) {
 			this.renderBlocks.blockAccess = entityfalling.getWorld();
 			tessellator = Tessellator.instance;
 			tessellator.startDrawingQuads();
-			tessellator.setTranslation(((-MathHelper.floor_double(entityfalling.posX)) - 0.5F), ((-MathHelper.floor_double(entityfalling.posY)) - 0.5F), ((-MathHelper.floor_double(entityfalling.posZ)) - 0.5F));
-			this.renderBlocks.renderBlockDragonEgg((BlockDragonEgg) block, MathHelper.floor_double(entityfalling.posX), MathHelper.floor_double(entityfalling.posY), MathHelper.floor_double(entityfalling.posZ));
+			tessellator.setTranslation(((-MathHelper.floor(entityfalling.posX)) - 0.5F), ((-MathHelper.floor(entityfalling.posY)) - 0.5F), ((-MathHelper.floor(entityfalling.posZ)) - 0.5F));
+			this.renderBlocks.renderBlockDragonEgg((BlockDragonEgg) block, MathHelper.floor(entityfalling.posX), MathHelper.floor(entityfalling.posY), MathHelper.floor(entityfalling.posZ));
 			tessellator.setTranslation(0.0D, 0.0D, 0.0D);
 			tessellator.draw();
 		} else if (block != null) {
 			this.renderBlocks.setRenderBoundsFromBlock(block);
-			this.renderBlocks.renderBlockSandFalling(block, entityfalling.getWorld(), MathHelper.floor_double(entityfalling.posX), MathHelper.floor_double(entityfalling.posY), MathHelper.floor_double(entityfalling.posZ), entityfalling.metadata);
+			this.renderBlocks.renderBlockSandFalling(block, entityfalling.getWorld(), MathHelper.floor(entityfalling.posX), MathHelper.floor(entityfalling.posY), MathHelper.floor(entityfalling.posZ), entityfalling.metadata);
 		}
 
 		GL11.glEnable(GL11.GL_LIGHTING);

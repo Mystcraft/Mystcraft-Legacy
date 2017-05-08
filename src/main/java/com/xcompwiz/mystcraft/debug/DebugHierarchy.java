@@ -3,6 +3,9 @@ package com.xcompwiz.mystcraft.debug;
 import java.util.Collection;
 import java.util.HashMap;
 
+import com.xcompwiz.mystcraft.debug.DefaultValueCallback.CallbackReadNotSupported;
+import com.xcompwiz.mystcraft.debug.DefaultValueCallback.CallbackSetNotSupported;
+
 import net.minecraft.command.ICommandSender;
 
 public abstract class DebugHierarchy {
@@ -68,9 +71,9 @@ public abstract class DebugHierarchy {
 	}
 
 	public interface DebugValueCallback extends IDebugElement {
-		String get(ICommandSender agent);
+		String get(ICommandSender agent) throws CallbackReadNotSupported;
 
-		void set(ICommandSender agent, String state);
+		void set(ICommandSender agent, String state) throws CallbackSetNotSupported;
 	}
 
 	public interface DebugTaskCallback extends IDebugElement {

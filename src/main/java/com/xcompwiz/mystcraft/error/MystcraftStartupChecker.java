@@ -22,7 +22,7 @@ import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiSelectWorld;
+import net.minecraft.client.gui.GuiWorldSelection;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
@@ -120,12 +120,12 @@ public class MystcraftStartupChecker {
 
 	@SubscribeEvent
 	public void onClientTick(ClientTickEvent event) {
-		if (MystcraftFirstRun.isStopped() && Minecraft.getMinecraft().func_147104_D() == null) MystcraftFirstRun.start();
+		if (MystcraftFirstRun.isStopped() && MystcraftFirstRun.shouldRun()) MystcraftFirstRun.start();
 	}
 
 	@SubscribeEvent
 	public void onClientInitGUI(InitGuiEvent.Post event) {
-		if (event.gui instanceof GuiMainMenu) {
+		if (event.getGui() instanceof GuiMainMenu) {
 			if (checkForErrors() && !InstabilityDataCalculator.isPerSave() && !InstabilityDataCalculator.isDisabled()) MystcraftFirstRun.enable();
 		}
 	}
@@ -136,36 +136,33 @@ public class MystcraftStartupChecker {
 		if (InstabilityDataCalculator.isDisabled()) return;
 		if (MystcraftFirstRun.isReady()) return;
 		if (!MystcraftFirstRun.isEnabled()) return;
-		if (event.gui instanceof GuiMystcraftProfiling) return;
-		if (MystcraftFirstRun.isStopped() && Minecraft.getMinecraft().func_147104_D() == null) MystcraftFirstRun.start();
-		if (event.gui instanceof GuiSelectWorld) {
+		if (event.getGui() instanceof GuiMystcraftProfiling) return;
+		if (MystcraftFirstRun.isStopped() && MystcraftFirstRun.shouldRun()) MystcraftFirstRun.start();
+		if (event.getGui() instanceof GuiWorldSelection) {
 			if (MystcraftFirstRun.isStopped()) {
 				ArrayList<String> messages = new ArrayList<String>();
 				messages.add("Mystcraft hasn't finished it's profiling yet.");
 				messages.add("Unfortunately, this does not seem to be running. Try restarting your client.");
-				messages.add("");
-				messages.add("Mystcraft requires some information about the generation provided by the mods in your game.");
-				messages.add("In order to do this, it does a first-time profiling. This must finish before you start a Single Player game.");
-				event.gui = new GuiNonCriticalError(messages);
+				event.setGui(new GuiNonCriticalError(messages));
 			} else {
 				MystcraftFirstRun.showProfilingGui();
 				event.setCanceled(true);
 			}
 		}
 		if (MystcraftFirstRun.isStopped()) return;
-		if (event.gui == null) {
+		if (event.getGui() == null) {
 			MystcraftFirstRun.showProfilingGui();
 			event.setCanceled(true);
 		}
-		if (event.gui instanceof GuiDownloadTerrain) {
+		if (event.getGui() instanceof GuiDownloadTerrain) {
 			MystcraftFirstRun.showProfilingGui();
 			event.setCanceled(true);
 		}
-		if (event.gui instanceof GuiIngameMenu) {
+		if (event.getGui() instanceof GuiIngameMenu) {
 			MystcraftFirstRun.showProfilingGui();
 			event.setCanceled(true);
 		}
-		if (event.gui instanceof GuiConnecting) {
+		if (event.getGui() instanceof GuiConnecting) {
 			MystcraftFirstRun.stop();
 		}
 	}

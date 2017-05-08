@@ -56,8 +56,8 @@ public class CloudRendererMyst extends IRenderHandler {
 			double d0 = (this.rendererUpdateCount + partialTicks);
 			double d1 = mc.renderViewEntity.prevPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.prevPosX) * partialTicks + d0 * 0.029999999329447746D;
 			double d2 = mc.renderViewEntity.prevPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.prevPosZ) * partialTicks;
-			int j = MathHelper.floor_double(d1 / 2048.0D);
-			int k = MathHelper.floor_double(d2 / 2048.0D);
+			int j = MathHelper.floor(d1 / 2048.0D);
+			int k = MathHelper.floor(d2 / 2048.0D);
 			d1 -= (j * 2048);
 			d2 -= (k * 2048);
 			float f8 = worldObj.provider.getCloudHeight() - f1 + 0.33F;
@@ -94,8 +94,8 @@ public class CloudRendererMyst extends IRenderHandler {
 		double d1 = (mc.renderViewEntity.prevPosX + (mc.renderViewEntity.posX - mc.renderViewEntity.prevPosX) * partialTicks + d0 * 0.029999999329447746D) / f2;
 		double d2 = (mc.renderViewEntity.prevPosZ + (mc.renderViewEntity.posZ - mc.renderViewEntity.prevPosZ) * partialTicks) / f2 + 0.33000001311302185D;
 		float f4 = worldObj.provider.getCloudHeight() - f1 + 0.33F;
-		int i = MathHelper.floor_double(d1 / 2048.0D);
-		int j = MathHelper.floor_double(d2 / 2048.0D);
+		int i = MathHelper.floor(d1 / 2048.0D);
+		int j = MathHelper.floor(d2 / 2048.0D);
 		d1 -= (i * 2048);
 		d2 -= (j * 2048);
 		mc.renderEngine.bindTexture(locationCloudsPng);
@@ -121,10 +121,10 @@ public class CloudRendererMyst extends IRenderHandler {
 		f8 = (float) (d1 * 0.0D);
 		f10 = (float) (d2 * 0.0D);
 		f9 = 0.00390625F;
-		f8 = MathHelper.floor_double(d1) * f9;
-		f10 = MathHelper.floor_double(d2) * f9;
-		float f11 = (float) (d1 - MathHelper.floor_double(d1));
-		float f12 = (float) (d2 - MathHelper.floor_double(d2));
+		f8 = MathHelper.floor(d1) * f9;
+		f10 = MathHelper.floor(d2) * f9;
+		float f11 = (float) (d1 - MathHelper.floor(d1));
+		float f12 = (float) (d2 - MathHelper.floor(d2));
 		byte b0 = 8;
 		byte b1 = 4;
 		float f13 = 9.765625E-4F;

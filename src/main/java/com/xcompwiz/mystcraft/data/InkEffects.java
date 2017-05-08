@@ -31,8 +31,8 @@ public class InkEffects {
 			if (paramT1.getItemDamage() > paramT2.getItemDamage()) return 1;
 			if (paramT1.getCount() < paramT2.getCount()) return -1;
 			if (paramT1.getCount() > paramT2.getCount()) return 1;
-			if (paramT1.stackTagCompound == null) return -1;
-			if (paramT2.stackTagCompound == null) return 1;
+			if (!paramT1.hasTagCompound()) return -1;
+			if (!paramT2.hasTagCompound()) return 1;
 			return paramT1.toString().compareTo(paramT2.toString());
 		}
 	}
@@ -64,7 +64,7 @@ public class InkEffects {
 
 	public static Map<String, Float> getItemEffects(ItemStack itemstack) {
 		ItemStack clone = itemstack.copy();
-		clone.stackSize = 1;
+		clone.setCount(1);
 		Map<String, Float> map = itemstack_bindings.get(clone);
 		int[] ids = OreDictionary.getOreIDs(itemstack);
 		for (int id : ids) {
@@ -90,7 +90,7 @@ public class InkEffects {
 
 	public static void addPropertyToItem(ItemStack itemstack, String property, float probability) {
 		itemstack = itemstack.copy();
-		itemstack.stackSize = 1;
+		itemstack.setCount(1);
 		Map<String, Float> itemmap = itemstack_bindings.get(itemstack);
 		if (itemmap == null) {
 			itemmap = new HashMap<String, Float>();
@@ -124,24 +124,24 @@ public class InkEffects {
 		registerProperty(LinkPropertyAPI.FLAG_DISARM, new Color(1, 0, 0));
 		registerProperty(LinkPropertyAPI.FLAG_RELATIVE, new Color(0.6F, 0, 0.6F));
 
-		addPropertyToItem(new ItemStack(Items.gunpowder), LinkPropertyAPI.FLAG_DISARM, 0.2F);
+		addPropertyToItem(new ItemStack(Items.GUNPOWDER), LinkPropertyAPI.FLAG_DISARM, 0.2F);
 
-		addPropertyToItem(new ItemStack(Items.mushroom_stew), LinkPropertyAPI.FLAG_DISARM, 0.05F);
+		addPropertyToItem(new ItemStack(Items.MUSHROOM_STEW), LinkPropertyAPI.FLAG_DISARM, 0.05F);
 
-		addPropertyToItem(new ItemStack(Items.clay_ball), LinkPropertyAPI.FLAG_GENERATE_PLATFORM, 0.25F);
+		addPropertyToItem(new ItemStack(Items.CLAY_BALL), LinkPropertyAPI.FLAG_GENERATE_PLATFORM, 0.25F);
 
-		addPropertyToItem(new ItemStack(Items.experience_bottle), LinkPropertyAPI.FLAG_INTRA_LINKING, 0.15F);
+		addPropertyToItem(new ItemStack(Items.EXPERIENCE_BOTTLE), LinkPropertyAPI.FLAG_INTRA_LINKING, 0.15F);
 
 		addPropertyToItem("dyeBlack", "", 0.5F); // Black Dye
 
-		addPropertyToItem(new ItemStack(Items.ender_pearl), LinkPropertyAPI.FLAG_INTRA_LINKING, 0.15F);
-		addPropertyToItem(new ItemStack(Items.ender_pearl), LinkPropertyAPI.FLAG_DISARM, 0.15F);
+		addPropertyToItem(new ItemStack(Items.ENDER_PEARL), LinkPropertyAPI.FLAG_INTRA_LINKING, 0.15F);
+		addPropertyToItem(new ItemStack(Items.ENDER_PEARL), LinkPropertyAPI.FLAG_DISARM, 0.15F);
 
-		addPropertyToItem(new ItemStack(Items.feather), LinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM, 0.15F);
+		addPropertyToItem(new ItemStack(Items.FEATHER), LinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM, 0.15F);
 
 		// addPropertyToItem(Items.ghastTear, LinkOptions.FLAG_RELATIVE, 0.15F);
 
-		addPropertyToItem(Items.fire_charge, LinkPropertyAPI.FLAG_DISARM, 0.25F);
+		addPropertyToItem(Items.FIRE_CHARGE, LinkPropertyAPI.FLAG_DISARM, 0.25F);
 
 		// addPropertyToItem(Items.redstone), "Self-Powered", 1.0F);
 		// addPropertyToItem(Items.dyePowder, 4, "", 0.0F); //Lapis Lazuli

@@ -9,8 +9,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class IMCBlockInstability implements IMCProcessor {
 
@@ -24,13 +24,13 @@ public class IMCBlockInstability implements IMCProcessor {
 		if (nbt.hasKey("ItemStack")) {
 			ItemStack itemstack = new ItemStack(nbt.getCompoundTag("ItemStack"));
 			if (!(itemstack.getItem() instanceof ItemBlock)) throw new RuntimeException("Itemstacks references used for setting instability factors must extend ItemBlock");
-			block = ((ItemBlock)itemstack.getItem()).field_150939_a;
+			block = ((ItemBlock)itemstack.getItem()).block;
 			metadata = itemstack.getItemDamage();
 		}
 
 		if (nbt.hasKey("BlockName")) {
 			String blockname = nbt.getString("BlockName");
-			block = GameRegistry.findBlock(message.getSender(), blockname);
+			block = Block.REGISTRY.getObject(new ResourceLocation(message.getSender(), blockname)); //XXX: Verify
 			if (block == null) {
 				LoggerUtils.error("Could not find block by name %s belonging to mod [%s] when setting instability factors via IMC message.", blockname, message.getSender());
 				return;

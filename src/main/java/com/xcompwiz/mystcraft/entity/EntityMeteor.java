@@ -203,12 +203,12 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 	 * Breaks all blocks inside the given bounding box.
 	 */
 	private boolean breakBlocksInAABB(AxisAlignedBB par1AxisAlignedBB) {
-		int var2 = MathHelper.floor_double(par1AxisAlignedBB.minX + motionX);
-		int var3 = MathHelper.floor_double(par1AxisAlignedBB.minY + motionY);
-		int var4 = MathHelper.floor_double(par1AxisAlignedBB.minZ + motionZ);
-		int var5 = MathHelper.floor_double(par1AxisAlignedBB.maxX + motionX);
-		int var6 = MathHelper.floor_double(par1AxisAlignedBB.maxY + 5 + motionY);
-		int var7 = MathHelper.floor_double(par1AxisAlignedBB.maxZ + motionZ);
+		int var2 = MathHelper.floor(par1AxisAlignedBB.minX + motionX);
+		int var3 = MathHelper.floor(par1AxisAlignedBB.minY + motionY);
+		int var4 = MathHelper.floor(par1AxisAlignedBB.minZ + motionZ);
+		int var5 = MathHelper.floor(par1AxisAlignedBB.maxX + motionX);
+		int var6 = MathHelper.floor(par1AxisAlignedBB.maxY + 5 + motionY);
+		int var7 = MathHelper.floor(par1AxisAlignedBB.maxZ + motionZ);
 		boolean brokeblocks = false;
 
 		for (int var10 = var2; var10 <= var5; ++var10) {

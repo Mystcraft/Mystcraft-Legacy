@@ -75,12 +75,12 @@ public class MapGenRavineMyst extends MapGenAdvanced {
 				if (var34 * var34 + var36 * var36 - var38 * var38 > var40 * var40) { return; }
 
 				if (baseX >= chunkXmid - 16.0D - var53 * 2.0D && baseZ >= chunkZmid - 16.0D - var53 * 2.0D && baseX <= chunkXmid + 16.0D + var53 * 2.0D && baseZ <= chunkZmid + 16.0D + var53 * 2.0D) {
-					int minX = MathHelper.floor_double(baseX - var53) - chunkX * 16 - 1;
-					int maxX = MathHelper.floor_double(baseX + var53) - chunkX * 16 + 1;
-					int minY = MathHelper.floor_double(baseY - var30) - 1;
-					int maxY = MathHelper.floor_double(baseY + var30) + 1;
-					int minZ = MathHelper.floor_double(baseZ - var53) - chunkZ * 16 - 1;
-					int maxZ = MathHelper.floor_double(baseZ + var53) - chunkZ * 16 + 1;
+					int minX = MathHelper.floor(baseX - var53) - chunkX * 16 - 1;
+					int maxX = MathHelper.floor(baseX + var53) - chunkX * 16 + 1;
+					int minY = MathHelper.floor(baseY - var30) - 1;
+					int maxY = MathHelper.floor(baseY + var30) + 1;
+					int minZ = MathHelper.floor(baseZ - var53) - chunkZ * 16 - 1;
+					int maxZ = MathHelper.floor(baseZ + var53) - chunkZ * 16 + 1;
 
 					if (minX < 0) {
 						minX = 0;

@@ -10,6 +10,7 @@ import com.xcompwiz.mystcraft.world.storage.ExternalSaveHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.GameType;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.storage.ISaveFormat;
@@ -17,6 +18,7 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MystcraftFirstRun {
@@ -55,8 +57,8 @@ public class MystcraftFirstRun {
 		mc.displayGuiScreen(guiscreen);
 
 		// Spin up a server instance
-		WorldSettings worldsettings = new WorldSettings(0, WorldSettings.GameType.CREATIVE, true, false, WorldType.DEFAULT); // TODO: Configurable world seed?
-		worldsettings.func_82750_a(SAVE_NAME);
+		WorldSettings worldsettings = new WorldSettings(0, GameType.CREATIVE, true, false, WorldType.DEFAULT); // TODO: Configurable world seed?
+		//XXX: worldsettings.func_82750_a(SAVE_NAME);
 		worldsettings.enableCommands();
 		mc.launchIntegratedServer(SAVE_NAME, SAVE_NAME, worldsettings);
 		MinecraftServer mcserver = mc.getIntegratedServer();
@@ -79,14 +81,18 @@ public class MystcraftFirstRun {
 		// Spin down the server instance
 		// Minecraft.getMinecraft().getIntegratedServer().initiateShutdown();
 		Minecraft mc = Minecraft.getMinecraft();
-		if (mc.theWorld != null) {
-			mc.theWorld.sendQuittingDisconnectingPacket();
+		if (mc.world != null) {
+			mc.world.sendQuittingDisconnectingPacket();
 			mc.loadWorld((WorldClient) null);
 		}
 	}
 
 	public static boolean isStopped() {
 		return storage == null && guiscreen != null;
+	}
+
+	public static boolean shouldRun() {
+		return instabilitycalculator == null && Minecraft.getMinecraft().world == null && !Minecraft.getMinecraft().isIntegratedServerRunning();
 	}
 
 	@SideOnly(Side.CLIENT)

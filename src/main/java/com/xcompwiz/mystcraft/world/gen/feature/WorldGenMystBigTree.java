@@ -70,8 +70,8 @@ public class WorldGenMystBigTree extends WorldGenerator {
 				for (int j1 = 0; j1 < i; ++j1) {
 					double d1 = scaleWidth * (f * (rand.nextFloat() + 3.0D)); // Limb length (position of node)
 					double d2 = rand.nextFloat() * 2D * 3.1415899999999999D; // direction
-					int k1 = MathHelper.floor_double(d1 * Math.sin(d2) + basePos[0] + d);
-					int l1 = MathHelper.floor_double(d1 * Math.cos(d2) + basePos[2] + d);
+					int k1 = MathHelper.floor(d1 * Math.sin(d2) + basePos[0] + d);
+					int l1 = MathHelper.floor(d1 * Math.cos(d2) + basePos[2] + d);
 					ai1[0] = k1;
 					ai1[1] = j;
 					ai1[2] = l1;
@@ -188,9 +188,9 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		int ai3[] = { 0, 0, 0 };
 		int k = 0;
 		for (int l = ai2[j] + byte3; k != l; k += byte3) {
-			ai3[j] = MathHelper.floor_double((ai[j] + k) + 0.5D);
-			ai3[byte1] = MathHelper.floor_double(ai[byte1] + k * d + 0.5D);
-			ai3[byte2] = MathHelper.floor_double(ai[byte2] + k * d1 + 0.5D);
+			ai3[j] = MathHelper.floor((ai[j] + k) + 0.5D);
+			ai3[byte1] = MathHelper.floor(ai[byte1] + k * d + 0.5D);
+			ai3[byte2] = MathHelper.floor(ai[byte2] + k * d1 + 0.5D);
 			func_150515_a(worldObj, ai3[0], ai3[1], ai3[2], i);
 		}
 	}
@@ -302,8 +302,8 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		// break;
 		// }
 		// ai3[i] = ai[i] + j;
-		// ai3[byte1] = MathHelper.floor_double((double)ai[byte1] + (double)j * d);
-		// ai3[byte2] = MathHelper.floor_double((double)ai[byte2] + (double)j * d1);
+		// ai3[byte1] = MathHelper.floor((double)ai[byte1] + (double)j * d);
+		// ai3[byte2] = MathHelper.floor((double)ai[byte2] + (double)j * d1);
 		// int l = getBlockId(ai3[0], ai3[1], ai3[2]);
 		// if (l != 0 && l != 18) {
 		// break;

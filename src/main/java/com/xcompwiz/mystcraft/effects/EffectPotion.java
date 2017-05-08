@@ -40,7 +40,7 @@ public class EffectPotion implements IEnvironmentalEffect {
 	}
 
 	protected boolean isTargetValid(World worldObj, Entity entity) {
-		return this.isGlobal || (worldObj.canBlockSeeTheSky(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ)));
+		return this.isGlobal || (worldObj.canBlockSeeTheSky(MathHelper.floor(entity.posX), MathHelper.floor(entity.posY), MathHelper.floor(entity.posZ)));
 	}
 
 	protected PotionEffect getEffect() {

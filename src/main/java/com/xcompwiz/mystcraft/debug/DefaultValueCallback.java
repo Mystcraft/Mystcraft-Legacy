@@ -24,12 +24,12 @@ public abstract class DefaultValueCallback implements DebugValueCallback {
 	}
 
 	@Override
-	public String get(ICommandSender agent) {
+	public String get(ICommandSender agent) throws CallbackReadNotSupported {
 		throw new CallbackReadNotSupported();
 	}
 
 	@Override
-	public void set(ICommandSender agent, String state) {
+	public void set(ICommandSender agent, String state) throws CallbackSetNotSupported {
 		throw new CallbackSetNotSupported();
 	}
 

@@ -96,12 +96,12 @@ public class MapGenCavesMyst extends MapGenAdvanced {
 				continue;
 			}
 
-			int minX = MathHelper.floor_double(baseX - d2) - chunkX * 16 - 1;
-			int maxX = (MathHelper.floor_double(baseX + d2) - chunkX * 16) + 1;
-			int minY = MathHelper.floor_double(baseY - d3) - 1;
-			int maxY = MathHelper.floor_double(baseY + d3) + 1;
-			int minZ = MathHelper.floor_double(baseZ - d2) - chunkZ * 16 - 1;
-			int maxZ = (MathHelper.floor_double(baseZ + d2) - chunkZ * 16) + 1;
+			int minX = MathHelper.floor(baseX - d2) - chunkX * 16 - 1;
+			int maxX = (MathHelper.floor(baseX + d2) - chunkX * 16) + 1;
+			int minY = MathHelper.floor(baseY - d3) - 1;
+			int maxY = MathHelper.floor(baseY + d3) + 1;
+			int minZ = MathHelper.floor(baseZ - d2) - chunkZ * 16 - 1;
+			int maxZ = (MathHelper.floor(baseZ + d2) - chunkZ * 16) + 1;
 
 			if (minX < 0) {
 				minX = 0;

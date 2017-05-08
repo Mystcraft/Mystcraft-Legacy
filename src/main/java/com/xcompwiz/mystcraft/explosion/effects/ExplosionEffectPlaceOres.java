@@ -8,22 +8,20 @@ import com.xcompwiz.mystcraft.explosion.ExplosionAdvanced;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector.IWeightedItem;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ExplosionEffectPlaceOres extends ExplosionEffect {
 
 	public static class WeightedBlockSelection implements IWeightedItem {
 
-		public final Block	block;
-		public final int	metadata;
-		public final float	weight;
+		public final IBlockState blockstate;
+		public final float weight;
 
-		public WeightedBlockSelection(Block block, int metadata, float weight) {
-			this.block = block;
-			this.metadata = metadata;
+		public WeightedBlockSelection(IBlockState blockstate, float weight) {
+			this.blockstate = blockstate;
 			this.weight = weight;
 		}
 
@@ -34,35 +32,31 @@ public class ExplosionEffectPlaceOres extends ExplosionEffect {
 
 	}
 
-	public static ExplosionEffect						instance	= new ExplosionEffectPlaceOres();
+	public static ExplosionEffect instance = new ExplosionEffectPlaceOres();
 
-	private static Collection<WeightedBlockSelection>	blocks		= new ArrayList<WeightedBlockSelection>();
+	private static Collection<WeightedBlockSelection> blocks = new ArrayList<WeightedBlockSelection>();
 
 	static {
-		registerMeteorPlaceableBlock(Blocks.COAL_ORE, 0, 0.50F);
-		registerMeteorPlaceableBlock(Blocks.IRON_ORE, 0, 0.30F);
-		registerMeteorPlaceableBlock(Blocks.GOLD_ORE, 0, 0.20F);
+		registerMeteorPlaceableBlock(Blocks.COAL_ORE.getDefaultState(), 0.50F);
+		registerMeteorPlaceableBlock(Blocks.IRON_ORE.getDefaultState(), 0.30F);
+		registerMeteorPlaceableBlock(Blocks.GOLD_ORE.getDefaultState(), 0.20F);
 	}
 
 	private ExplosionEffectPlaceOres() {}
 
-	public static void registerMeteorPlaceableBlock(Block block, int meta, float weight) {
-		blocks.add(new WeightedBlockSelection(block, meta, weight));
+	public static void registerMeteorPlaceableBlock(IBlockState blockstate, float weight) {
+		blocks.add(new WeightedBlockSelection(blockstate, weight));
 	}
 
 	@Override
-	public void apply(World worldObj, ExplosionAdvanced explosion, ChunkPosition pos, Random rand, boolean isClient) {
+	public void apply(World worldObj, ExplosionAdvanced explosion, BlockPos pos, Random rand, boolean isClient) {
 		if (isClient) return;
-		int x, y, z;
-		x = pos.chunkPosX;
-		y = pos.chunkPosY;
-		z = pos.chunkPosZ;
-		Block supporting = worldObj.getBlock(x, y - 1, z);
+		IBlockState supporting = worldObj.getBlockState(pos.down());
 
-		if (rand.nextInt(20) == 0 && worldObj.isAirBlock(x, y, z) && supporting.isOpaqueCube()) {
+		if (rand.nextInt(20) == 0 && worldObj.isAirBlock(pos) && supporting.isOpaqueCube()) {
 			WeightedBlockSelection desc = getRandomBlock(rand);
 			if (desc != null) {
-				worldObj.setBlock(x, y, z, desc.block, desc.metadata, 3);
+				worldObj.setBlockState(pos, desc.blockstate, 3);
 			}
 		}
 	}

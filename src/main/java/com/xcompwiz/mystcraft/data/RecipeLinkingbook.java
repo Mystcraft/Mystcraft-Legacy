@@ -7,7 +7,9 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 
 public class RecipeLinkingbook implements IRecipe {
 
@@ -21,7 +23,7 @@ public class RecipeLinkingbook implements IRecipe {
 		for (int i = 0; i < inventorycrafting.getSizeInventory(); ++i) {
 			ItemStack itemstack = inventorycrafting.getStackInSlot(i);
 			if (itemstack != null) {
-				if (itemstack.stackTagCompound != null && Page.isLinkPanel(itemstack)) {
+				if (itemstack.hasTagCompound() && Page.isLinkPanel(itemstack)) {
 					if (linkpanel != null) return false;
 					linkpanel = itemstack;
 					continue;
@@ -57,6 +59,11 @@ public class RecipeLinkingbook implements IRecipe {
 	@Override
 	public ItemStack getRecipeOutput() {
 		return this.product;
+	}
+
+	@Override
+	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+		return ForgeHooks.defaultRecipeGetRemainingItems(inv);
 	}
 
 }

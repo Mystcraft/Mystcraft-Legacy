@@ -4,27 +4,24 @@ import java.util.Random;
 
 import com.xcompwiz.mystcraft.explosion.ExplosionAdvanced;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ExplosionEffectFire extends ExplosionEffect {
 
-	public static ExplosionEffect	instance	= new ExplosionEffectFire();
+	public static ExplosionEffect instance = new ExplosionEffectFire();
 
 	private ExplosionEffectFire() {}
 
 	@Override
-	public void apply(World worldObj, ExplosionAdvanced explosion, ChunkPosition pos, Random rand, boolean isClient) {
+	public void apply(World worldObj, ExplosionAdvanced explosion, BlockPos pos, Random rand, boolean isClient) {
 		if (worldObj.isRemote) return;
-		int x = pos.chunkPosX;
-		int y = pos.chunkPosY;
-		int z = pos.chunkPosZ;
 
-		Block block = worldObj.getBlock(x, y - 1, z);
-		if (block.isOpaqueCube() && rand.nextInt(3) == 0) {
-			worldObj.setBlock(x, y, z, Blocks.fire, 0, 3);
+		IBlockState blockstate = worldObj.getBlockState(pos.down());
+		if (blockstate.isOpaqueCube() && rand.nextInt(3) == 0) {
+			worldObj.setBlockState(pos, Blocks.FIRE.getDefaultState(), 3);
 		}
 	}
 

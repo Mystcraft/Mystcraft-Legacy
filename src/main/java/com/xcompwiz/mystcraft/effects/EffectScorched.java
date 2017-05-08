@@ -23,7 +23,7 @@ public class EffectScorched implements IEnvironmentalEffect {
 		ClassInheritanceMultiMap<Entity> list = entityLists[i];
 		if (list.size() > 0) {
 			Entity entity = list.get(worldObj.rand.nextInt(list.size()));
-			if (worldObj.canBlockSeeTheSky(MathHelper.floor_double(entity.posX), MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ))) {
+			if (worldObj.canBlockSeeTheSky(MathHelper.floor(entity.posX), MathHelper.floor(entity.posY), MathHelper.floor(entity.posZ))) {
 				entity.setFire(4 * level);
 			}
 		}

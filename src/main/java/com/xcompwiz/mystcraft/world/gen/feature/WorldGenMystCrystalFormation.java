@@ -56,9 +56,9 @@ public class WorldGenMystCrystalFormation extends WorldGeneratorAdv {
 		int ai3[] = { 0, 0, 0 };
 		int k = 0;
 		for (int l = ai2[j] + byte3; k != l; k += byte3) {
-			ai3[j] = MathHelper.floor_double((ai[j] + k) + 0.5D);
-			ai3[byte1] = MathHelper.floor_double(ai[byte1] + k * d + 0.5D);
-			ai3[byte2] = MathHelper.floor_double(ai[byte2] + k * d1 + 0.5D);
+			ai3[j] = MathHelper.floor((ai[j] + k) + 0.5D);
+			ai3[byte1] = MathHelper.floor(ai[byte1] + k * d + 0.5D);
+			ai3[byte2] = MathHelper.floor(ai[byte2] + k * d1 + 0.5D);
 			drawSphere(ai3[0], ai3[1], ai3[2], block, metadata);// setBlockAndMetadata(worldObj, ai3[0], ai3[1], ai3[2], i, 0);
 		}
 	}

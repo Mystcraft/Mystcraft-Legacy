@@ -125,9 +125,9 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 		motionX *= 0.98000001907348633D;
 		motionY *= 0.98000001907348633D;
 		motionZ *= 0.98000001907348633D;
-		int x = MathHelper.floor_double(posX);
-		int y = MathHelper.floor_double(posY);
-		int z = MathHelper.floor_double(posZ);
+		int x = MathHelper.floor(posX);
+		int y = MathHelper.floor(posY);
+		int z = MathHelper.floor(posZ);
 		if (onGround) {
 			if (worldObj.isRemote) return;
 			setDead();
@@ -275,12 +275,12 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 
 	public ArrayList getCollidingBoundingBoxes(AxisAlignedBB bounding, ArrayList collidingBoundingBoxes) {
 		collidingBoundingBoxes.clear();
-		int i = MathHelper.floor_double(bounding.minX);
-		int j = MathHelper.floor_double(bounding.maxX + 1.0D);
-		int k = MathHelper.floor_double(bounding.minY);
-		int l = MathHelper.floor_double(bounding.maxY + 1.0D);
-		int i1 = MathHelper.floor_double(bounding.minZ);
-		int j1 = MathHelper.floor_double(bounding.maxZ + 1.0D);
+		int i = MathHelper.floor(bounding.minX);
+		int j = MathHelper.floor(bounding.maxX + 1.0D);
+		int k = MathHelper.floor(bounding.minY);
+		int l = MathHelper.floor(bounding.maxY + 1.0D);
+		int i1 = MathHelper.floor(bounding.minZ);
+		int j1 = MathHelper.floor(bounding.maxZ + 1.0D);
 
 		for (int k1 = i; k1 < j; ++k1) {
 			for (int l1 = i1; l1 < j1; ++l1) {

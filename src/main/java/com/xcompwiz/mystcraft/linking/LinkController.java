@@ -165,12 +165,12 @@ public class LinkController {
 
 	private static List<AxisAlignedBB> getCollidingWorldGeometry(World world, AxisAlignedBB axisalignedbb, Entity entity) {
 		ArrayList<AxisAlignedBB> collidingBoundingBoxes = new ArrayList<AxisAlignedBB>();
-		int i = MathHelper.floor_double(axisalignedbb.minX);
-		int j = MathHelper.floor_double(axisalignedbb.maxX + 1.0D);
-		int k = MathHelper.floor_double(axisalignedbb.minY);
-		int l = MathHelper.floor_double(axisalignedbb.maxY + 1.0D);
-		int i1 = MathHelper.floor_double(axisalignedbb.minZ);
-		int j1 = MathHelper.floor_double(axisalignedbb.maxZ + 1.0D);
+		int i = MathHelper.floor(axisalignedbb.minX);
+		int j = MathHelper.floor(axisalignedbb.maxX + 1.0D);
+		int k = MathHelper.floor(axisalignedbb.minY);
+		int l = MathHelper.floor(axisalignedbb.maxY + 1.0D);
+		int i1 = MathHelper.floor(axisalignedbb.minZ);
+		int j1 = MathHelper.floor(axisalignedbb.maxZ + 1.0D);
 		for (int k1 = i; k1 < j; k1++) {
 			for (int l1 = i1; l1 < j1; l1++) {
 				if (!world.blockExists(k1, 128 / 2, l1)) {
