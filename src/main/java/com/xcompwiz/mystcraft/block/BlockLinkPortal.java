@@ -10,6 +10,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -27,6 +29,8 @@ import javax.annotation.Nullable;
 
 public class BlockLinkPortal extends BlockBreakable {
 
+    public static final PropertyEnum<EnumFacing> SOURCE_DIRECTION = PropertyEnum.create("source", EnumFacing.class);
+
 	public BlockLinkPortal() {
 		super(Material.PORTAL, false);
 		setTickRandomly(true);
@@ -34,7 +38,23 @@ public class BlockLinkPortal extends BlockBreakable {
 		setSoundType(SoundType.GLASS);
 		setLightLevel(0.75F);
 		setUnlocalizedName("myst.linkportal");
+		setDefaultState(this.blockState.getBaseState().withProperty(SOURCE_DIRECTION, EnumFacing.UP));
 	}
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(SOURCE_DIRECTION, EnumFacing.values()[meta]);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(SOURCE_DIRECTION).ordinal();
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, SOURCE_DIRECTION);
+    }
 
     @Nullable
     @Override

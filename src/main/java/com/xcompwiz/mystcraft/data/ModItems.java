@@ -79,7 +79,7 @@ public class ModItems {
 	public static void registerModels() {
 		ItemModelMesher imm = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 
-		imm.register(page, (stack -> {
+		imm.register(page, (stack) -> {
 			String symbolUniqueId = Page.getSymbol(stack);
 			if(symbolUniqueId == null) {
 				return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "page_no_symbol"), "inventory");
@@ -91,7 +91,7 @@ public class ModItems {
 					return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "page_no_symbol"), "inventory");
 				}
 			}
-		}));
+		});
 
 		imm.register(agebook, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "agebook"), "inventory"));
 		imm.register(linkbook, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "linkbook"), "inventory"));
