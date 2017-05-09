@@ -17,6 +17,8 @@ import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
+import javax.annotation.Nullable;
+
 public class DimensionUtils {
 	private static final String	PLAYER_DIM_UUID_TAG	= "myst.dimUUID";
 
@@ -74,7 +76,7 @@ public class DimensionUtils {
 		return worldProvider.getDimensionName();
 	}
 
-	public static boolean isDimensionVisited(Integer dimId) {
+	public static boolean isDimensionVisited(@Nullable Integer dimId) {
 		if (dimId == null) return false;
 		if (!DimensionManager.isDimensionRegistered(dimId)) return false;
 		return true;

@@ -239,7 +239,6 @@ public class Mystcraft {
 		dimensionType = DimensionType.register("Mystcraft", "_myst", Mystcraft.providerId, WorldProviderMyst.class, false);
 		GameRegistry.registerWorldGenerator(new MystWorldGenerator(), Integer.MAX_VALUE);
 
-		sidedProxy.preinit();
 
 		// Link Listeners
 		MinecraftForge.EVENT_BUS.register(new LinkListenerBasic());
@@ -258,6 +257,8 @@ public class Mystcraft {
 
 		// Init Achievements
 		ModAchievements.init();
+
+		sidedProxy.preinit();
 	}
 
 	@EventHandler

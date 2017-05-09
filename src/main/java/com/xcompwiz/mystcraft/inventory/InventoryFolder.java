@@ -12,60 +12,77 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class InventoryFolder {
-//TODO: Refactor me! I'm a mess!
-	public static boolean isItemValid(ItemStack itemstack) {
-		if (itemstack == null) return true;
+
+    //TODO: Refactor me! I'm a mess! - Hellfire> don't mind me, just updating, not refactoring :^)
+
+	public static boolean isItemValid(@Nonnull ItemStack itemstack) {
+		if (itemstack.isEmpty()) return true;
 		if (itemstack.getCount() != 1) return false;
 		if (itemstack.getItem() == ModItems.page) return true;
-		if (itemstack.getItem() == Items.paper) return true;
+		if (itemstack.getItem() == Items.PAPER) return true;
 		return false;
 	}
 
-	private static void initFolder(ItemStack folder) {
-		if (folder.stackTagCompound == null) folder.stackTagCompound = new NBTTagCompound();
+	private static void initFolder(@Nonnull ItemStack folder) {
+		if (folder.getTagCompound() == null) {
+			folder.setTagCompound(new NBTTagCompound());
+		}
 	}
 
-	public static void setName(ItemStack folder, String bookname) {
-		if (folder == null) return;
-		if (folder.getItem() != ModItems.folder) return;
-		if (folder.stackTagCompound == null) initFolder(folder);
+	public static void setName(@Nonnull ItemStack folder, String bookname) {
+		if (folder.isEmpty()) return;
+		if (!folder.getItem().equals(ModItems.folder)) return;
+		if (folder.getTagCompound() == null) {
+			initFolder(folder);
+		}
 		if (bookname == null || bookname.equals("")) {
-			folder.stackTagCompound.removeTag("Name");
+			folder.getTagCompound().removeTag("Name");
 		} else {
-			folder.stackTagCompound.setString("Name", bookname);
+			folder.getTagCompound().setString("Name", bookname);
 		}
 	}
 
-	public static String getName(ItemStack folder) {
-		if (folder == null) return null;
-		if (folder.getItem() != ModItems.folder) return null;
-		if (folder.stackTagCompound == null) initFolder(folder);
-		if (!folder.stackTagCompound.hasKey("Name")) return null;
-		return folder.stackTagCompound.getString("Name");
-	}
+	@Nullable
+	public static String getName(@Nonnull ItemStack folder) {
+		if (folder.isEmpty()) return null;
+		if (!folder.getItem().equals(ModItems.folder)) return null;
 
-	private static NBTTagCompound getInventoryCompound(ItemStack folder) {
-		if (folder == null) return null;
-		if (folder.getItem() != ModItems.folder) return null;
-		if (folder.stackTagCompound == null) initFolder(folder);
-		if (!folder.stackTagCompound.hasKey("Pages")) {
-			folder.stackTagCompound.setTag("Pages", new NBTTagCompound());
+		if (folder.getTagCompound() == null) {
+			initFolder(folder);
 		}
-		return folder.stackTagCompound.getCompoundTag("Pages");
+		if (!folder.getTagCompound().hasKey("Name")) {
+			return null;
+		}
+		return folder.getTagCompound().getString("Name");
 	}
 
-	public static int getItemCount(ItemStack folder) {
+	@Nullable
+	private static NBTTagCompound getInventoryCompound(@Nonnull ItemStack folder) {
+		if (folder.isEmpty()) return null;
+		if (!folder.getItem().equals(ModItems.folder)) return null;
+		if (folder.getTagCompound() == null) {
+			initFolder(folder);
+		}
+		if (!folder.getTagCompound().hasKey("Pages")) {
+			folder.getTagCompound().setTag("Pages", new NBTTagCompound());
+		}
+		return folder.getTagCompound().getCompoundTag("Pages");
+	}
+
+	public static int getItemCount(@Nonnull ItemStack folder) {
 		if (getInventoryCompound(folder) == null) return 0;
-		return getInventoryCompound(folder).func_150296_c().size();
+		return getInventoryCompound(folder).getKeySet().size();
 	}
 
-	public static int getLargestSlotId(ItemStack folder) {
+	public static int getLargestSlotId(@Nonnull ItemStack folder) {
 		int largest = -1;
 		NBTTagCompound compound = getInventoryCompound(folder);
 		if (compound == null) return 0;
-		Collection<String> tagnames = compound.func_150296_c();
-		for (String tagname : tagnames) {
+		for (String tagname : compound.getKeySet()) {
 			int slot = Integer.parseInt(tagname);
 			if (largest < slot) {
 				largest = slot;
@@ -74,66 +91,83 @@ public class InventoryFolder {
 		return largest;
 	}
 
-	public static ItemStack getItem(ItemStack folder, int slot) {
+	@Nonnull
+	public static ItemStack getItem(@Nonnull ItemStack folder, int slot) {
 		NBTTagCompound data = getInventoryCompound(folder);
-		if (data != null && data.hasKey("" + slot)) { return new ItemStack(data.getCompoundTag("" + slot)); }
-		return null;
+		if (data != null && data.hasKey(String.valueOf(slot))) {
+			return new ItemStack(data.getCompoundTag(String.valueOf(slot)));
+		}
+		return ItemStack.EMPTY;
 	}
 
-	public static ItemStack setItem(ItemStack folder, int slot, ItemStack page) {
+	@Nonnull
+	public static ItemStack setItem(@Nonnull ItemStack folder, int slot, @Nonnull ItemStack page) {
 		if (!isItemValid(page)) return page;
 		NBTTagCompound data = getInventoryCompound(folder);
-		if (data == null) return page;
-		ItemStack previous = null;
-		previous = removeItem(folder, slot);
-		if (page != null && page.getCount() > 0) {
-			data.setTag("" + slot, page.writeToNBT(new NBTTagCompound()));
+		if (data == null) {
+			return page;
+		}
+		ItemStack previous = removeItem(folder, slot);
+		if (!page.isEmpty() && page.getCount() > 0) {
+			data.setTag(String.valueOf(slot), page.writeToNBT(new NBTTagCompound()));
 		} else {
-			data.removeTag("" + slot);
+			data.removeTag(String.valueOf(slot));
 		}
 		return previous;
 	}
 
-	public static ItemStack removeItem(ItemStack folder, int slot) {
+	@Nonnull
+	public static ItemStack removeItem(@Nonnull ItemStack folder, int slot) {
 		NBTTagCompound data = getInventoryCompound(folder);
-		ItemStack itemstack = null;
+		ItemStack itemstack = ItemStack.EMPTY;
+		String strSlot = String.valueOf(slot);
 		if (data != null) {
-			if (data.hasKey("" + slot)) {
-				itemstack = new ItemStack(data.getCompoundTag("" + slot));
+			if (data.hasKey(strSlot)) {
+				itemstack = new ItemStack(data.getCompoundTag(strSlot));
 			}
-			data.removeTag("" + slot);
+			data.removeTag(strSlot);
 		}
 		return itemstack;
 	}
 
-	public static ItemStack addItem(ItemStack folder, ItemStack page) {
-		if (!isItemValid(page)) return page;
+	@Nonnull
+	public static ItemStack addItem(@Nonnull ItemStack folder, @Nonnull ItemStack page) {
+		if (!isItemValid(page)) {
+			return page;
+		}
 		NBTTagCompound data = getInventoryCompound(folder);
-		if (data == null) { return page; }
+		if (data == null) {
+			return page;
+		}
 		int slot = 0;
-		while (page != null) {
-			if (!data.hasKey("" + slot)) {
+		while (!page.isEmpty()) {
+			if (!data.hasKey(String.valueOf(slot))) {
 				ItemStack clone = page.copy();
-				clone.stackSize = 1;
-				data.setTag("" + slot, clone.writeToNBT(new NBTTagCompound()));
-				--page.stackSize;
-				if (page.getCount() == 0) page = null;
+				clone.setCount(1);
+				data.setTag(String.valueOf(slot), clone.writeToNBT(new NBTTagCompound()));
+				page.shrink(1);
+				if (page.getCount() <= 0) {
+					page = ItemStack.EMPTY;
+				}
 			}
 			++slot;
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
-	public static List<ItemStack> getItems(ItemStack folder) {
-		List<ItemStack> pages = new ArrayList<ItemStack>();
+	public static List<ItemStack> getItems(@Nonnull ItemStack folder) {
+		List<ItemStack> pages = new ArrayList<>();
 		NBTTagCompound compound = getInventoryCompound(folder);
-		if (compound == null) return pages;
-		Collection<String> tagnames = compound.func_150296_c();
-		for (String tagname : tagnames) {
+		if (compound == null) {
+			return pages;
+		}
+
+		for (String tagname : compound.getKeySet()) {
 			NBTTagCompound pagedata = compound.getCompoundTag(tagname);
 			int slot = Integer.parseInt(tagname);
-			while (pages.size() <= slot)
-				pages.add(null);
+			while (pages.size() <= slot) {
+				pages.add(ItemStack.EMPTY);
+			}
 			pages.set(slot, new ItemStack(pagedata));
 		}
 		return pages;
@@ -142,12 +176,13 @@ public class InventoryFolder {
 	/**
 	 * Performs some basic housekeeping. Handles symbol remappings
 	 */
-	public static void updatePages(ItemStack folder) {
+	public static void updatePages(@Nonnull ItemStack folder) {
 		NBTTagCompound compound = getInventoryCompound(folder);
-		if (compound == null) return;
-		Collection<String> tagnames = new ArrayList<String>();
-		tagnames.addAll(compound.func_150296_c());
-		for (String tagname : tagnames) {
+		if (compound == null) {
+			return;
+		}
+
+		for (String tagname : compound.getKeySet()) {
 			NBTTagCompound pagedata = compound.getCompoundTag(tagname);
 			ItemStack page = new ItemStack(pagedata);
 			List<ItemStack> results = SymbolRemappings.remap(page);
@@ -174,7 +209,7 @@ public class InventoryFolder {
 	 * @param symbol Symbol to write
 	 * @return
 	 */
-	public static boolean writeSymbol(ItemStack folder, String symbol) {
+	public static boolean writeSymbol(@Nonnull ItemStack folder, String symbol) {
 		List<ItemStack> pages = getItems(folder);
 		for (ItemStack page : pages) {
 			if (page == null) continue;

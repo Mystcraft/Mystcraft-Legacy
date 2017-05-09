@@ -2,6 +2,10 @@ package com.xcompwiz.mystcraft.item;
 
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public interface IItemOnLoadable {
-	ItemStack onLoad(ItemStack itemstack);
+
+    @Nonnull ItemStack onLoad(@Nonnull ItemStack itemstack);
+
 }

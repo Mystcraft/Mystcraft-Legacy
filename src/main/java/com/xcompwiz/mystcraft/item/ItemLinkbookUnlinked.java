@@ -5,14 +5,19 @@ import java.util.List;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.page.Page;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 public class ItemLinkbookUnlinked extends Item {
 
@@ -22,41 +27,37 @@ public class ItemLinkbookUnlinked extends Item {
 		setCreativeTab(CreativeTabs.TRANSPORTATION);
 	}
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerIcons(IIconRegister register) {
-		this.itemIcon = register.registerIcon("mystcraft:unlinked");
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(@Nonnull ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+	    if(stack.getTagCompound() != null) {
+	        Page.getTooltip(stack, tooltip);
+        }
+    }
 
-	/**
-	 * If this function returns true (or the item is damageable), the ItemStack's NBT tag will be sent to the client.
-	 */
-	@Override
-	public boolean getShareTag() {
-		return true;
-	}
-
-	@Override
-	public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean advancedTooltip) {
-		if (itemstack.stackTagCompound != null) {
-			Page.getTooltip(itemstack, list);
-		}
-	}
-
-	public static ItemStack createItem(ItemStack linkpanel, ItemStack covermat) {
+	public static ItemStack createItem(@Nonnull ItemStack linkpanel, @Nonnull ItemStack covermat) {
 		ItemStack linkbook = new ItemStack(ModItems.unlinked);
-		linkbook.stackTagCompound = (NBTTagCompound) linkpanel.stackTagCompound.copy();
+		NBTTagCompound prev = linkpanel.getTagCompound();
+		if(prev == null) {
+		    prev = new NBTTagCompound();
+        }
+        linkbook.setTagCompound(prev.copy());
 		return linkbook;
 	}
 
-	@Override
-	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-		if (world.isRemote || itemstack.getCount() > 1) return itemstack;
-		ItemStack linkbook = new ItemStack(ModItems.linkbook);
-		((ItemLinkbook) ModItems.linkbook).initialize(world, linkbook, entityplayer);
-		Page.applyLinkPanel(itemstack, linkbook);
-		entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, linkbook);
-		itemstack.stackSize = 0;
-		return linkbook;
-	}
+    @Override
+    @Nonnull
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn) {
+	    ItemStack inHand = playerIn.getHeldItem(handIn);
+	    if(worldIn.isRemote || inHand.getCount() > 1) {
+	        return ActionResult.newResult(EnumActionResult.PASS, inHand);
+        }
+        ItemStack linkBook = new ItemStack(ModItems.linkbook);
+        ((ItemLinkbook) ModItems.linkbook).initialize(worldIn, linkBook, playerIn);
+        Page.applyLinkPanel(inHand, linkBook);
+        playerIn.setHeldItem(handIn, linkBook);
+        inHand.setCount(0);
+        return ActionResult.newResult(EnumActionResult.PASS, linkBook);
+    }
+
 }

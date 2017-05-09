@@ -1,6 +1,7 @@
 package com.xcompwiz.mystcraft.data;
 
 import com.xcompwiz.mystcraft.api.MystObjects;
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemBoosterPack;
@@ -13,6 +14,11 @@ import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.item.ItemPortfolio;
 import com.xcompwiz.mystcraft.item.ItemWritingDesk;
 
+import com.xcompwiz.mystcraft.page.Page;
+import com.xcompwiz.mystcraft.symbol.SymbolManager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemModelMesher;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -71,7 +77,34 @@ public class ModItems {
 
 	@SideOnly(Side.CLIENT)
 	public static void registerModels() {
+		ItemModelMesher imm = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 
+		imm.register(page, (stack -> {
+			String symbolUniqueId = Page.getSymbol(stack);
+			if(symbolUniqueId == null) {
+				return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "page_no_symbol"), "inventory");
+			} else {
+				IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolUniqueId);
+				if(symbol != null) {
+					return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "page_" + symbol.identifier()), "inventory");
+				} else {
+					return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "page_no_symbol"), "inventory");
+				}
+			}
+		}));
+
+		imm.register(agebook, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "agebook"), "inventory"));
+		imm.register(linkbook, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "linkbook"), "inventory"));
+		imm.register(unlinked, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "unlinked"), "inventory"));
+		imm.register(booster, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "booster"), "inventory"));
+		imm.register(folder, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "folder"), "inventory"));
+		imm.register(portfolio, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "portfolio"), "inventory"));
+
+		imm.register(desk, 0, new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "desk_bottom"), "inventory"));
+		imm.register(desk, 1, new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "desk_top"), "inventory"));
+
+		imm.register(inkvial, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "ink_vial"), "inventory"));
+		imm.register(glasses, (stack -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "glasses"), "inventory")));
 	}
 
 }

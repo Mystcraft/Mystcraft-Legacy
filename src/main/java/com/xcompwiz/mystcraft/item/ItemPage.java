@@ -1,6 +1,6 @@
 package com.xcompwiz.mystcraft.item;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
@@ -13,7 +13,6 @@ import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +24,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public class ItemPage extends Item implements IItemWritable, IItemPageProvider, IItemOnLoadable {
 
 	public ItemPage() {
@@ -35,8 +36,9 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack itemstack) {
-		if (itemstack.stackTagCompound != null) {
+	@Nonnull
+	public String getItemStackDisplayName(@Nonnull ItemStack itemstack) {
+		if (itemstack.getTagCompound() != null) {
 			if (Page.isLinkPanel(itemstack)) return I18n.format(this.getUnlocalizedName(itemstack) + ".panel.name");
 			if (Page.isBlank(itemstack)) return I18n.format(this.getUnlocalizedName(itemstack) + ".blank.name");
 			String symbolId = Page.getSymbol(itemstack);
@@ -48,78 +50,86 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 	}
 
 	@Override
-	public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean advancedTooltip) {
-		if (itemstack.stackTagCompound != null) {
-			Page.getTooltip(itemstack, list);
+	@SideOnly(Side.CLIENT)
+	public void addInformation(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, List<String> tooltip, boolean advancedTooltip) {
+		if (itemstack.getTagCompound() != null) {
+			Page.getTooltip(itemstack, tooltip);
 		}
 	}
 
 	@Override
-	public void onUpdate(ItemStack itemstack, World world, Entity entity, int i, boolean flag) {
-		if (world.isRemote) { return; }
-		if (Page.isBlank(itemstack)) {
-			itemstack.stackTagCompound = null;
+	public void onUpdate(@Nonnull ItemStack itemstack, World world, Entity entity, int itemSlot, boolean flag) {
+		if (world.isRemote) {
+			return;
 		}
-		if (itemstack.stackTagCompound == null) {
-			itemstack = new ItemStack(Items.paper);
+		if (Page.isBlank(itemstack)) {
+			itemstack.setTagCompound(null); //Hellfire> we're actively erasing potentially a lot of data?...
+		}
+		if (itemstack.getTagCompound() == null) {
+			//itemstack = new ItemStack(Items.PAPER); Hellfire> unnecessary stack change.
 			return;
 		}
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = ((EntityPlayer) entity);
 			player.addStat(ModAchievements.symbol, 1);
-			remapItemstack(player, itemstack);
+			remapItemstack(player, itemstack, itemSlot);
 		}
 	}
 
-	public static void remapItemstack(EntityPlayer player, ItemStack itemstack) {
+	private static void remapItemstack(@Nonnull ItemStack stack) {
+		remapItemstack(null, stack, -1);
+	}
+
+	//Hellfire> pass on to here to properly change the itemstack in the player's inv
+	public static void remapItemstack(EntityPlayer player, @Nonnull ItemStack itemstack, int itemSlot) {
 		List<ItemStack> mapping = SymbolRemappings.remap(itemstack);
 		if (mapping.size() == 0) {
-			itemstack.stackSize = 0;
+			itemstack.setCount(0);
 		}
 		if (mapping.size() != 1 && player != null) {
 			ItemStack folder = new ItemStack(ModItems.folder);
 			IItemOrderablePageProvider item = (IItemOrderablePageProvider) folder.getItem();
-			folder.stackTagCompound = new NBTTagCompound();
+			folder.setTagCompound(new NBTTagCompound());
 			for (ItemStack mappeditemstack : mapping) {
 				item.addPage(player, folder, mappeditemstack);
 			}
-			itemstack = folder;
-			itemstack.stackSize = folder.getCount();
-			itemstack.stackTagCompound = folder.stackTagCompound;
+			player.inventory.setInventorySlotContents(itemSlot, folder); //Hellfire> Update stack
 		}
 	}
 
-	public static ItemStack createItemstack(ItemStack prototype) {
-		if (prototype.getItem() == Items.paper) {
-			--prototype.stackSize;
+	@Nonnull
+	public static ItemStack createItemstack(@Nonnull ItemStack prototype) {
+		if (prototype.getItem() == Items.PAPER) {
+			prototype.setCount(prototype.getCount() - 1);
 			return Page.createPage();
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public String getDisplayName(EntityPlayer player, ItemStack itemstack) {
+	public String getDisplayName(EntityPlayer player, @Nonnull ItemStack itemstack) {
 		return this.getItemStackDisplayName(itemstack);
 	}
 
 	@Override
-	public void setDisplayName(EntityPlayer player, ItemStack itemstack, String name) {}
+	public void setDisplayName(EntityPlayer player, @Nonnull ItemStack itemstack, String name) {}
 
 	@Override
-	public boolean writeSymbol(EntityPlayer player, ItemStack itemstack, String symbol) {
+	public boolean writeSymbol(EntityPlayer player, @Nonnull ItemStack itemstack, String symbol) {
 		if (!Page.isBlank(itemstack)) return false;
 		Page.setSymbol(itemstack, symbol);
 		return true;
 	}
 
 	@Override
-	public List<ItemStack> getPageList(EntityPlayer player, ItemStack itemstack) {
-		return Arrays.asList(itemstack);
+	public List<ItemStack> getPageList(EntityPlayer player, @Nonnull ItemStack itemstack) {
+		return Collections.singletonList(itemstack);
 	}
 
 	@Override
-	public ItemStack onLoad(ItemStack itemstack) {
-		remapItemstack(null, itemstack);
+	@Nonnull
+	public ItemStack onLoad(@Nonnull ItemStack itemstack) {
+		remapItemstack(itemstack);
 		return itemstack;
 	}
 }

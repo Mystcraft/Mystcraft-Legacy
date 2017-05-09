@@ -5,6 +5,9 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public interface IItemPageProvider extends IItemRenameable {
 
 	/**
@@ -13,6 +16,6 @@ public interface IItemPageProvider extends IItemRenameable {
 	 * @param itemstack The itemstack instance of this item
 	 * @return A list of pages in the item
 	 */
-	List<ItemStack> getPageList(EntityPlayer player, ItemStack itemstack);
+	List<ItemStack> getPageList(@Nullable EntityPlayer player, @Nonnull ItemStack itemstack);
 
 }

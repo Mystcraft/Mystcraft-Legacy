@@ -4,14 +4,24 @@ import com.xcompwiz.mystcraft.block.BlockWritingDesk;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 public class ItemWritingDesk extends Item {
 
@@ -21,118 +31,125 @@ public class ItemWritingDesk extends Item {
 		setCreativeTab(CreativeTabs.DECORATIONS);
 	}
 
-	//@SideOnly(Side.CLIENT)
-	//@Override
-	//public void registerIcons(IIconRegister register) {
-	//	this.itemIcon = register.registerIcon("mystcraft:writingdesk");
-	//	icontop = register.registerIcon("mystcraft:deskext");
-	//}
-
-	//@Override
-	//public IIcon getIconFromDamage(int meta) {
-	//	if (meta == 1) { return icontop; }
-	//	return this.itemIcon;
-	//}
-
-
 	@Override
-	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
-		super.getSubItems(itemIn, tab, subItems);
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(@Nonnull Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+		subItems.add(new ItemStack(itemIn, 1, 0));
 		subItems.add(new ItemStack(itemIn, 1, 1));
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack itemstack) {
+	@Nonnull
+	public String getUnlocalizedName(@Nonnull ItemStack itemstack) {
 		int meta = itemstack.getItemDamage();
-		if (meta == 1) return super.getUnlocalizedName() + ".top";
+		if (meta == 1) {
+			return super.getUnlocalizedName() + ".top";
+		}
 		return super.getUnlocalizedName();
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int face, float par8, float par9, float par10) {
-		if (entityplayer.worldObj.isRemote) return false;
-		if (itemstack.getItemDamage() == 0) { return placeDesk(itemstack, entityplayer, world, i, j, k, face); }
-		if (itemstack.getItemDamage() == 1) { return extendDesk(itemstack, entityplayer, world, i, j, k, face); }
-		return false;
+	@Nonnull
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if(worldIn.isRemote) {
+			return EnumActionResult.PASS;
+		}
+		ItemStack held = player.getHeldItem(hand);
+		int dmg = held.getItemDamage();
+		if(dmg == 0) {
+			return placeDesk(held, player, worldIn, pos, facing);
+		} else if(dmg == 1) {
+			return extendDesk(held, player, worldIn, pos, facing);
+		}
+		return EnumActionResult.PASS;
 	}
 
-	private boolean extendDesk(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int face) {
-		Block block = ModBlocks.writingdesk;
-		if (world.getBlock(i, j, k) != block) return false;
-		int meta = world.getBlockMetadata(i, j, k);
-		if (BlockWritingDesk.isBlockTop(meta)) return false;
+	@Nonnull
+	private EnumActionResult extendDesk(@Nonnull ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing face) {
+		IBlockState at = world.getBlockState(pos);
+		if(!at.getBlock().equals(ModBlocks.writingdesk)) {
+			return EnumActionResult.PASS;
+		}
+		if(BlockWritingDesk.isBlockTop(at)) {
+			return EnumActionResult.PASS;
+		}
+		EnumFacing currentFacing = BlockWritingDesk.getDirectionFromMetadata(at);
 		int xOffset = 0;
 		int zOffset = 0;
-		if ((meta & 3) == 0) {
+		if (currentFacing.getHorizontalIndex() == 0) {
 			zOffset = 1;
 		}
-		if ((meta & 3) == 1) {
+		if (currentFacing.getHorizontalIndex() == 1) {
 			xOffset = -1;
 		}
-		if ((meta & 3) == 2) {
+		if (currentFacing.getHorizontalIndex() == 2) {
 			zOffset = -1;
 		}
-		if ((meta & 3) == 3) {
+		if (currentFacing.getHorizontalIndex() == 3) {
 			xOffset = 1;
 		}
-		if (BlockWritingDesk.isBlockFoot(meta)) {
-			meta = meta & 3;
-			i -= xOffset;
-			k -= zOffset;
+		if(BlockWritingDesk.isBlockFoot(at)) {
+			pos = pos.add(-xOffset, 0, -zOffset);
 		}
-		++j;
-		if (!entityplayer.canPlayerEdit(i, j, k, face, itemstack) || !entityplayer.canPlayerEdit(i + xOffset, j, k + zOffset, face, itemstack)) { return false; }
-		if (isBlockReplaceable(world, i, j, k) && isBlockReplaceable(world, i + xOffset, j, k + zOffset)) {
-			world.setBlock(i, j, k, block, meta + 4, 3);
-			if (world.getBlock(i, j, k) == block) {
-				world.setBlock(i + xOffset, j, k + zOffset, block, meta + 8 + 4, 3);
+
+		BlockPos up = pos.up();
+		if(!player.canPlayerEdit(up, face, stack) || !player.canPlayerEdit(up.add(xOffset, 0, zOffset), face, stack)) {
+			return EnumActionResult.PASS;
+		}
+		if(isBlockReplaceable(world, up, face) && isBlockReplaceable(world, up.add(xOffset, 0, zOffset), face)) {
+			IBlockState def = ModBlocks.writingdesk.getDefaultState().withProperty(BlockWritingDesk.ROTATION, currentFacing);
+			world.setBlockState(up, def.withProperty(BlockWritingDesk.IS_TOP, true));
+			if(world.getBlockState(up).getBlock().equals(ModBlocks.writingdesk)) {
+				world.setBlockState(up.add(xOffset, 0, zOffset), def.withProperty(BlockWritingDesk.IS_TOP, true).withProperty(BlockWritingDesk.IS_FOOT, true));
 			}
-			itemstack.stackSize--;
-			return true;
+			stack.shrink(1);
+			return EnumActionResult.SUCCESS;
 		}
-		return false;
+		return EnumActionResult.PASS;
 	}
 
-	private boolean placeDesk(ItemStack itemstack, EntityPlayer entityplayer, World world, int i, int j, int k, int face) {
-		if (isBlockReplaceable(world, i, j, k)) {
-			--j;
-			face = 1;
+	@Nonnull
+	private EnumActionResult placeDesk(@Nonnull ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing face) {
+		if(isBlockReplaceable(world, pos, face)) {
+			pos = pos.down();
+			face = EnumFacing.UP;
 		}
-		if (face != 1) { return false; }
-		Block block = ModBlocks.writingdesk;
-		int facing = (MathHelper.floor_double(((entityplayer.rotationYaw * 4F) / 360F) + 0.5D) + 1) & 3;
+		if(face != EnumFacing.UP) {
+			return EnumActionResult.PASS;
+		}
+		EnumFacing facing = player.getHorizontalFacing();
 		int xOffset = 0;
 		int zOffset = 0;
-		if (facing == 0) {
+		if (facing.getHorizontalIndex() == 0) {
 			zOffset = 1;
 		}
-		if (facing == 1) {
+		if (facing.getHorizontalIndex() == 1) {
 			xOffset = -1;
 		}
-		if (facing == 2) {
+		if (facing.getHorizontalIndex() == 2) {
 			zOffset = -1;
 		}
-		if (facing == 3) {
+		if (facing.getHorizontalIndex() == 3) {
 			xOffset = 1;
 		}
-		++j;
-		if (!entityplayer.canPlayerEdit(i, j, k, face, itemstack) || !entityplayer.canPlayerEdit(i + xOffset, j, k + zOffset, face, itemstack)) { return false; }
-		if (isBlockReplaceable(world, i, j, k) && isBlockReplaceable(world, i + xOffset, j, k + zOffset)) {
-			world.setBlock(i, j, k, block, facing, 3);
-			if (world.getBlock(i, j, k) == block) {
-				world.setBlock(i + xOffset, j, k + zOffset, block, facing + 8, 3);
-			}
-			itemstack.stackSize--;
-			return true;
+		pos = pos.up();
+		if(!player.canPlayerEdit(pos, face, stack) || !player.canPlayerEdit(pos.add(xOffset, 0, zOffset), face, stack)) {
+			return EnumActionResult.PASS;
 		}
-		return false;
+		if(isBlockReplaceable(world, pos, face) && isBlockReplaceable(world, pos.add(xOffset, 0, zOffset), face)) {
+			IBlockState def = ModBlocks.writingdesk.getDefaultState().withProperty(BlockWritingDesk.ROTATION, facing);
+			world.setBlockState(pos, def);
+			if(world.getBlockState(pos).getBlock().equals(ModBlocks.writingdesk)) {
+				world.setBlockState(pos.add(xOffset, 0, zOffset), def.withProperty(BlockWritingDesk.IS_FOOT, true));
+			}
+			stack.shrink(1);
+			return EnumActionResult.SUCCESS;
+		}
+		return EnumActionResult.PASS;
 	}
 
-	private boolean isBlockReplaceable(World world, int x, int y, int z) {
-		Block block = world.getBlock(x, y, z);
-		if (world.isAirBlock(x, y, z)) return true;
-		if (block.isReplaceable(world, x, y, z)) return true;
-		if (block == Blocks.snow || block == Blocks.vine || block == Blocks.TALLGRASS || block == Blocks.deadbush) return true;
-		return false;
+	private boolean isBlockReplaceable(World world, BlockPos pos, EnumFacing facing) {
+		return world.mayPlace(ModBlocks.writingdesk, pos, true, facing, null);
 	}
+
 }

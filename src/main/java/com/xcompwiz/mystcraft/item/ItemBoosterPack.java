@@ -12,13 +12,18 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.treasure.WeightProviderSymbolItem;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 public class ItemBoosterPack extends Item {
 
@@ -27,39 +32,43 @@ public class ItemBoosterPack extends Item {
 		setCreativeTab(CreativeTabs.MISC);
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
-	public void registerIcons(IIconRegister register) {
-		this.itemIcon = register.registerIcon("mystcraft:booster");
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if(worldIn.isRemote) {
+			return EnumActionResult.PASS;
+		}
+		return EnumActionResult.SUCCESS;
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World worldObj, int x, int y, int z, int face, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
-		if (worldObj.isRemote) return false;
-		return true;
-	}
-
-	@Override
-	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-		if (world.isRemote) return itemstack;
-		ItemStack newitemstack = generateBooster(null, entityplayer.getRNG(), 7, 4, 4, 1);
-		if (newitemstack == null) return itemstack;
-		itemstack.stackSize--;
-		if (itemstack.getCount() <= 0) {
-			entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
-			itemstack = newitemstack;
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		ItemStack held = playerIn.getHeldItem(handIn);
+		if(worldIn.isRemote) {
+			return ActionResult.newResult(EnumActionResult.PASS, held);
+		}
+		ItemStack newBooster = generateBooster(ItemStack.EMPTY, playerIn.getRNG(), 7, 4, 4, 1);
+		if(newBooster.isEmpty()) {
+			return ActionResult.newResult(EnumActionResult.PASS, held);
+		}
+		held.shrink(1);
+		if(held.isEmpty()) {
+			playerIn.setHeldItem(handIn, ItemStack.EMPTY);
+			held = newBooster;
 		} else {
-			if (!entityplayer.inventory.addItemStackToInventory(newitemstack)) {
-				++itemstack.stackSize;
-				return itemstack;
+			if(!playerIn.inventory.addItemStackToInventory(newBooster)) {
+				held.grow(1);
+				return ActionResult.newResult(EnumActionResult.PASS, held);
 			}
 		}
-		return itemstack;
+		return ActionResult.newResult(EnumActionResult.PASS, held);
 	}
 
 	//XXX: Generalize to allow for alternate rank sets (any rank, >=2, etc)
-	public static ItemStack generateBooster(ItemStack itemstack, Random rand, int verycommon, int common, int uncommon, int rare) {
-		if (itemstack == null) itemstack = new ItemStack(ModItems.folder, 1, 0);
+	@Nonnull
+	public static ItemStack generateBooster(@Nonnull ItemStack itemstack, Random rand, int verycommon, int common, int uncommon, int rare) {
+		if (itemstack.isEmpty()) {
+			itemstack = new ItemStack(ModItems.folder, 1, 0);
+		}
 		IItemPageAcceptor item = (IItemPageAcceptor) itemstack.getItem();
 
 		Collection<IAgeSymbol> symbols_vc = SymbolManager.getSymbolsByRank(0);
@@ -74,15 +83,15 @@ public class ItemBoosterPack extends Item {
 		return itemstack;
 	}
 
-	private static void addRandomPages(Random rand, IItemPageAcceptor item, ItemStack itemstack, int count, Collection<IAgeSymbol> collection) {
+	private static void addRandomPages(Random rand, IItemPageAcceptor item, @Nonnull ItemStack itemstack, int count, Collection<IAgeSymbol> collection) {
 		for (int i = 0; i < count; ++i) {
 			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, collection, WeightProviderSymbolItem.instance);
-			if (checkerr(symbol, collection)) continue;
+			if (checker(symbol, collection)) continue;
 			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
 		}
 	}
 
-	private static boolean checkerr(IAgeSymbol symbol, Collection<IAgeSymbol> collection) {
+	private static boolean checker(IAgeSymbol symbol, Collection<IAgeSymbol> collection) {
 		if (symbol == null) {
 			LoggerUtils.error("Symbol from random selection null (%s)", collection.toString());
 			return true;

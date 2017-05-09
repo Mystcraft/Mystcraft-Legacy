@@ -398,8 +398,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	@Override
 	public boolean isTargetWorldVisited() {
 		Integer dim = LinkItemUtils.getTargetDimension(getBook());
-		if (dim == null) return false;
-		return DimensionUtils.isDimensionVisited(dim);
+		return dim != null && DimensionUtils.isDimensionVisited(dim);
 	}
 
 	@Override

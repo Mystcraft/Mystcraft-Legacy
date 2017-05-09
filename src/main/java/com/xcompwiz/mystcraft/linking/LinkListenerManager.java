@@ -10,12 +10,13 @@ import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 public class LinkListenerManager {
+
 	public static boolean isLinkPermitted(World world, Entity entity, ILinkInfo info) {
 		Event event = new LinkEventAllow(world, entity, info.clone());
-		if (MinecraftForge.EVENT_BUS.post(event)) { return false; }
-		return true;
+		return !MinecraftForge.EVENT_BUS.post(event);
 	}
 
 	public static void onLinkStart(World world, Entity entity, ILinkInfo info) {
@@ -37,4 +38,5 @@ public class LinkListenerManager {
 		Event event = new LinkEventEnd(origin, destination, entity, info.clone());
 		MinecraftForge.EVENT_BUS.post(event);
 	}
+
 }

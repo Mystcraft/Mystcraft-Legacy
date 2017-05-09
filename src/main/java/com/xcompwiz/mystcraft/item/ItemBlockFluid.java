@@ -10,6 +10,7 @@ import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+//TODO Hellfire> Obsolete. Subject to be removed during today or tomorrow.
 public class ItemBlockFluid extends ItemBlock {
 
 	private final BlockFluidBase	theBlock;

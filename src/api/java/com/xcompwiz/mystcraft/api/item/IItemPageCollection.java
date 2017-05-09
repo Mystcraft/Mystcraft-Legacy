@@ -5,6 +5,9 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * This interface allows you to create your own items which the Mystcraft writing desk can use as page sources (the tabs on the left). Have your items implement
  * it to allow the desk to get pages from them for writing.
@@ -19,12 +22,14 @@ public interface IItemPageCollection extends IItemRenameable, IItemPageAcceptor 
 	 * @param page The (page) itemstack to attempt to remove
 	 * @return The page retrieved as an itemstack
 	 */
-	ItemStack remove(EntityPlayer player, ItemStack itemstack, ItemStack page);
+	@Nonnull
+	ItemStack remove(EntityPlayer player, @Nonnull ItemStack itemstack, @Nonnull ItemStack page);
 
 	/**
 	 * Returns the collection of pages in this collection
 	 * @param itemstack The itemstack instance of this item
 	 * @return The collection of pages in the item
 	 */
-	List<ItemStack> getItems(EntityPlayer player, ItemStack itemstack);
+	@Nullable
+	List<ItemStack> getItems(EntityPlayer player, @Nonnull ItemStack itemstack);
 }

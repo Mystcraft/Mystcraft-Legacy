@@ -4,11 +4,19 @@ import com.xcompwiz.mystcraft.linking.LinkOptions;
 
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class LinkItemUtils {
-	public static Integer getTargetDimension(ItemStack book) {
-		if (book == null) return null;
-		if (book.stackTagCompound == null) return null;
-		if (book.getItem() instanceof ItemLinking) { return LinkOptions.getDimensionUID(book.stackTagCompound); }
+
+	@Nullable
+	public static Integer getTargetDimension(@Nonnull ItemStack book) {
+		if (book.isEmpty()) return null;
+		if (book.getTagCompound() == null) return null;
+		if (book.getItem() instanceof ItemLinking) {
+			return LinkOptions.getDimensionUID(book.getTagCompound());
+		}
 		return null;
 	}
+
 }

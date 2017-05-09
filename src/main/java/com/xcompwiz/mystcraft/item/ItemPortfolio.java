@@ -13,7 +13,6 @@ import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,10 +21,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ItemPortfolio extends Item implements IItemPageCollection, IItemRenameable {
 
@@ -35,105 +41,105 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 		setCreativeTab(CreativeTabs.MISC);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerIcons(IIconRegister register) {
-		this.itemIcon = register.registerIcon("mystcraft:portfolio");
-	}
-
-	/**
-	 * If this function returns true (or the item is damageable), the ItemStack's NBT tag will be sent to the client.
-	 */
-	@Override
-	public boolean getShareTag() {
-		return true;
-	}
-
-	@Override
-	public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean advancedTooltip) {
+	public void addInformation(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, List<String> tooltip, boolean advancedTooltip) {
 		String name = this.getDisplayName(entityplayer, itemstack);
 		if (name != null) {
-			list.add(name);
+			tooltip.add(name);
 		}
 	}
 
 	@Override
-	public void onUpdate(ItemStack itemstack, World world, Entity entity, int i, boolean flag) {
-		if (world.isRemote) { return; }
+	@Nonnull
+	public EnumRarity getRarity(@Nonnull ItemStack itemstack) {
+		return EnumRarity.UNCOMMON;
 	}
 
 	@Override
-	public void onCreated(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-		if (world.isRemote) { return; }
+	@Nonnull
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn) {
+		ItemStack held = playerIn.getHeldItem(handIn);
+		if(worldIn.isRemote) {
+			return ActionResult.newResult(EnumActionResult.PASS, held);
+		}
+		playerIn.openGui(Mystcraft.instance, ModGUIs.PORTFOLIO.ordinal(), worldIn, MathHelper.floor(playerIn.posX + 0.5D), MathHelper.floor(playerIn.posY + 0.5D), MathHelper.floor(playerIn.posZ + 0.5D));
+		return ActionResult.newResult(EnumActionResult.PASS, held);
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack itemstack) {
-		return EnumRarity.uncommon;
+	@Nullable
+	public String getDisplayName(EntityPlayer player, @Nonnull ItemStack stack) {
+		if (stack.isEmpty()) return null;
+		if (stack.getTagCompound() == null) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		if(!stack.getTagCompound().hasKey("Name")) {
+			return null;
+		}
+		return stack.getTagCompound().getString("Name");
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-		if (world.isRemote) return itemstack;
-		entityplayer.openGui(Mystcraft.instance, ModGUIs.PORTFOLIO.ordinal(), world, MathHelper.floor_double(entityplayer.posX + 0.5D), MathHelper.floor_double(entityplayer.posY + 0.5D), MathHelper.floor_double(entityplayer.posZ + 0.5D));
-		return itemstack;
-	}
-
-	@Override
-	public String getDisplayName(EntityPlayer player, ItemStack itemstack) {
-		if (itemstack == null) return null;
-		if (itemstack.stackTagCompound == null) itemstack.stackTagCompound = new NBTTagCompound();
-		if (!itemstack.stackTagCompound.hasKey("Name")) return null;
-		return itemstack.stackTagCompound.getString("Name");
-	}
-
-	@Override
-	public void setDisplayName(EntityPlayer player, ItemStack itemstack, String name) {
-		if (itemstack == null) return;
-		if (itemstack.stackTagCompound == null) itemstack.stackTagCompound = new NBTTagCompound();
+	public void setDisplayName(EntityPlayer player, @Nonnull ItemStack stack, String name) {
+		if (stack.isEmpty()) return;
+		if (stack.getTagCompound() == null) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
 		if (name == null || name.equals("")) {
-			itemstack.stackTagCompound.removeTag("Name");
+			stack.getTagCompound().removeTag("Name");
 		} else {
-			itemstack.stackTagCompound.setString("Name", name);
+			stack.getTagCompound().setString("Name", name);
 		}
 	}
 
-	public static boolean isItemValid(ItemStack itemstack) {
-		if (itemstack == null) return false;
-		if (itemstack.getItem() == ModItems.page) return true;
-		return false;
+	public static boolean isItemValid(@Nonnull ItemStack itemstack) {
+		return !itemstack.isEmpty() && itemstack.getItem().equals(ModItems.page);
 	}
 
 	@Override
-	public ItemStack remove(EntityPlayer player, ItemStack itemstack, ItemStack page) {
-		if (itemstack == null) return null;
-		if (page == null) return null;
-		if (itemstack.stackTagCompound == null) itemstack.stackTagCompound = new NBTTagCompound();
-		Collection<NBTTagCompound> compounds = NBTUtils.readTagCompoundCollection(itemstack.stackTagCompound.getTagList("Collection", Constants.NBT.TAG_COMPOUND), new LinkedList<NBTTagCompound>());
+	@Nonnull
+	public ItemStack remove(EntityPlayer player, @Nonnull ItemStack itemstack, @Nonnull ItemStack page) {
+		if(itemstack.isEmpty() || page.isEmpty()) {
+			return ItemStack.EMPTY;
+		}
+		if(itemstack.getTagCompound() == null) {
+			itemstack.setTagCompound(new NBTTagCompound());
+		}
+		Collection<NBTTagCompound> compounds = NBTUtils.readTagCompoundCollection(itemstack.getTagCompound().getTagList("Collection", Constants.NBT.TAG_COMPOUND), new LinkedList<>());
 		NBTTagCompound nbt = new NBTTagCompound();
 		int count = page.getCount();
-		page.stackSize = 1;
+		page.setCount(1);
 		page.writeToNBT(nbt);
-		page.stackSize = 0;
-		while (page.getCount() < count && compounds.remove(nbt)) {
-			++page.stackSize;
+
+		int removed = 0;
+		//page.stackSize = 0;
+		// Hellfire> This is critical and shouldn't be done anymore. the stack looses all data 'potentially' upon setting 0 due to read/write actions. i don't wanna risk that.
+		while (removed < count && compounds.remove(nbt)) {
+			removed++;
 		}
-		if (page.getCount() == 0) return null;
-		itemstack.stackTagCompound.setTag("Collection", NBTUtils.writeTagCompoundCollection(new NBTTagList(), compounds));
+		if (removed == 0) {
+			return ItemStack.EMPTY;
+		}
+		itemstack.getTagCompound().setTag("Collection", NBTUtils.writeTagCompoundCollection(new NBTTagList(), compounds));
 		return page;
 	}
 
 	@Override
-	public ItemStack addPage(EntityPlayer player, ItemStack itemstack, ItemStack page) {
-		if (itemstack == null) return page;
-		if (page == null) return page;
+	@Nonnull
+	public ItemStack addPage(EntityPlayer player, @Nonnull ItemStack itemstack, @Nonnull ItemStack page) {
+		if(itemstack.isEmpty() || page.isEmpty()) {
+			return page;
+		}
 		if (page.getItem() instanceof IItemPageCollection) {
 			if (page.getCount() != 1) return page;
 			IItemPageCollection otheritem = (IItemPageCollection) page.getItem();
 			List<ItemStack> pages = otheritem.getItems(player, page);
 			for (ItemStack p : pages) {
 				ItemStack out = this.addPage(player, itemstack, otheritem.remove(player, page, p));
-				if (out != null) otheritem.addPage(player, page, out);
+				if(!out.isEmpty()) {
+					otheritem.addPage(player, page, out);
+				}
 			}
 			return page;
 		}
@@ -143,30 +149,38 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 			List<ItemStack> pages = otheritem.getPageList(player, page);
 			for (int i = 0; i < pages.size(); ++i) {
 				ItemStack out = this.addPage(player, itemstack, otheritem.removePage(player, page, i));
-				if (out != null) otheritem.addPage(player, page, out);
+				if(!out.isEmpty()) {
+					otheritem.addPage(player, page, out);
+				}
 			}
 			return page;
 		}
-		if (!isItemValid(page)) return page;
-		if (itemstack.stackTagCompound == null) itemstack.stackTagCompound = new NBTTagCompound();
-		Collection<NBTTagCompound> compounds = NBTUtils.readTagCompoundCollection(itemstack.stackTagCompound.getTagList("Collection", Constants.NBT.TAG_COMPOUND), new LinkedList<NBTTagCompound>());
+		if(!isItemValid(page)) return page;
+		if(itemstack.getTagCompound() == null) {
+			itemstack.setTagCompound(new NBTTagCompound());
+		}
+		Collection<NBTTagCompound> compounds = NBTUtils.readTagCompoundCollection(itemstack.getTagCompound().getTagList("Collection", Constants.NBT.TAG_COMPOUND), new LinkedList<>());
 		NBTTagCompound nbt = new NBTTagCompound();
 		int count = page.getCount();
-		page.stackSize = 1;
+		page.setCount(1);
+
 		for (int i = 0; i < count; ++i) {
 			page.writeToNBT(nbt);
 			compounds.add(nbt);
 		}
-		itemstack.stackTagCompound.setTag("Collection", NBTUtils.writeTagCompoundCollection(new NBTTagList(), compounds));
-		return null;
+		itemstack.getTagCompound().setTag("Collection", NBTUtils.writeTagCompoundCollection(new NBTTagList(), compounds));
+		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public List<ItemStack> getItems(EntityPlayer player, ItemStack itemstack) {
-		if (itemstack == null) return null;
-		if (itemstack.stackTagCompound == null) itemstack.stackTagCompound = new NBTTagCompound();
-		Collection<NBTTagCompound> compounds = NBTUtils.readTagCompoundCollection(itemstack.stackTagCompound.getTagList("Collection", Constants.NBT.TAG_COMPOUND), new LinkedList<NBTTagCompound>());
-		List<ItemStack> items = new ArrayList<ItemStack>();
+	@Nullable
+	public List<ItemStack> getItems(EntityPlayer player, @Nonnull ItemStack itemstack) {
+		if(itemstack.isEmpty()) return null;
+		if(itemstack.getTagCompound() == null) {
+			itemstack.setTagCompound(new NBTTagCompound());
+		}
+		Collection<NBTTagCompound> compounds = NBTUtils.readTagCompoundCollection(itemstack.getTagCompound().getTagList("Collection", Constants.NBT.TAG_COMPOUND), new LinkedList<>());
+		List<ItemStack> items = new ArrayList<>();
 		for (NBTTagCompound nbt : compounds) {
 			ItemStack page = new ItemStack(nbt);
 			items.add(page);

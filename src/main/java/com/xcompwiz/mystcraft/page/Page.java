@@ -15,13 +15,16 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public abstract class Page {
 
-	public static void setQuality(ItemStack page, String trait, int quality) {
+	public static void setQuality(@Nonnull ItemStack page, String trait, int quality) {
 		getQualityStruct(page).setInteger(trait, quality);
 	}
 
-	public static int getTotalQuality(ItemStack page) {
+	public static int getTotalQuality(@Nonnull ItemStack page) {
 		NBTTagCompound compound = getQualityStruct(page);
 		int sum = 0;
 		for (String tagname : compound.getKeySet()) {
@@ -30,54 +33,61 @@ public abstract class Page {
 		return sum;
 	}
 
-	public static Integer getQuality(ItemStack page, String trait) {
+	@Nullable
+	public static Integer getQuality(@Nonnull ItemStack page, String trait) {
 		NBTTagCompound data = getQualityStruct(page);
 		if (data.hasKey(trait)) return data.getInteger(trait);
 		return null;
 	}
 
-	private static NBTTagCompound getData(ItemStack item) {
-		if (item == null) return null;
-		return item.getTagCompound();
+	//Hellfire> NEEDS to be never null. otherwise we'd sometimes get an invalid model location from the page and we crash
+	@Nonnull
+	private static NBTTagCompound getData(@Nonnull ItemStack item) {
+		if (item.isEmpty()) return new NBTTagCompound();
+		NBTTagCompound tag = item.getTagCompound();
+		if(tag == null) {
+			tag = new NBTTagCompound();
+			item.setTagCompound(tag);
+		}
+		return tag;
 	}
 
-	private static NBTTagCompound getQualityStruct(ItemStack page) {
+	@Nonnull
+	private static NBTTagCompound getQualityStruct(@Nonnull ItemStack page) {
 		NBTTagCompound data = getData(page);
-		if (data == null) return null;
 		if (!data.hasKey("Quality")) {
 			data.setTag("Quality", new NBTTagCompound());
 		}
 		return data.getCompoundTag("Quality");
 	}
 
-	public static boolean isBlank(ItemStack page) {
+	public static boolean isBlank(@Nonnull ItemStack page) {
 		return !isLinkPanel(page) && getSymbol(page) == null;
 	}
 
-	public static boolean isLinkPanel(ItemStack page) {
-		NBTTagCompound data = getData(page);
-		if (data == null) return false;
-		return data.hasKey("linkpanel");
+	public static boolean isLinkPanel(@Nonnull ItemStack page) {
+		return getData(page).hasKey("linkpanel");
 	}
 
-	public static void makeLinkPanel(ItemStack page) {
-		NBTTagCompound data = getData(page);
-		if (data == null) {
+	public static void makeLinkPanel(@Nonnull ItemStack page) {
+		if(page.isEmpty()) return;
+
+		if (page.getTagCompound() == null) {
 			page.setTagCompound(createDefault());
-			data = getData(page);
 		}
+		NBTTagCompound data = getData(page);
 		if (!data.hasKey("linkpanel")) {
 			data.setTag("linkpanel", new NBTTagCompound());
 		}
 	}
 
-	public static void addLinkProperty(ItemStack page, String linkproperty) {
-		if (page == null) return;
-		NBTTagCompound data = getData(page);
-		if (data == null) {
+	public static void addLinkProperty(@Nonnull ItemStack page, String linkproperty) {
+		if(page.isEmpty()) return;
+
+		if (page.getTagCompound() == null) {
 			page.setTagCompound(createDefault());
-			data = getData(page);
 		}
+		NBTTagCompound data = getData(page);
 		if (!data.hasKey("linkpanel")) {
 			data.setTag("linkpanel", new NBTTagCompound());
 		}
@@ -87,17 +97,21 @@ public abstract class Page {
 		linkpanel.setTag("properties", list);
 	}
 
-	public static Collection<String> getLinkProperties(ItemStack page) {
+	@Nullable
+	public static Collection<String> getLinkProperties(@Nonnull ItemStack page) {
+		if(page.isEmpty() || page.getTagCompound() == null) {
+			return null;
+		}
 		NBTTagCompound data = getData(page);
-		if (data == null) return null;
-		if (!data.hasKey("linkpanel")) return null;
+		if (!data.hasKey("linkpanel")) {
+			return null;
+		}
 		NBTTagCompound linkpanel = data.getCompoundTag("linkpanel");
-		ArrayList<String> properties = NBTUtils.readStringCollection(linkpanel.getTagList("properties", Constants.NBT.TAG_STRING), new ArrayList<String>());
-		return properties;
+		return NBTUtils.readStringCollection(linkpanel.getTagList("properties", Constants.NBT.TAG_STRING), new ArrayList<String>());
 	}
 
 	//XXX: This is a weird way to do this now
-	public static void applyLinkPanel(ItemStack linkpanel, ItemStack linkingitem) {
+	public static void applyLinkPanel(@Nonnull ItemStack linkpanel, @Nonnull ItemStack linkingitem) {
 		Collection<String> properties = getLinkProperties(linkpanel);
 		if (properties == null) return;
 		for (String property : properties) {
@@ -105,9 +119,11 @@ public abstract class Page {
 		}
 	}
 
-	public static void setSymbol(ItemStack page, String symbol) {
+	public static void setSymbol(@Nonnull ItemStack page, String symbol) {
+		if(page.isEmpty() || page.getTagCompound() == null) {
+			return;
+		}
 		NBTTagCompound data = getData(page);
-		if (data == null) return;
 		if (symbol == null) {
 			data.removeTag("symbol");
 		} else {
@@ -115,11 +131,14 @@ public abstract class Page {
 		}
 	}
 
-	public static String getSymbol(ItemStack page) {
+	@Nullable
+	public static String getSymbol(@Nonnull ItemStack page) {
+		if(page.isEmpty() || page.getTagCompound() == null) {
+			return null;
+		}
 		NBTTagCompound data = getData(page);
-		if (data == null) return null;
 		String symbol = data.getString("symbol");
-		if (symbol.equals("")) symbol = null;
+		if (symbol.isEmpty()) symbol = null;
 		return symbol;
 	}
 
@@ -136,34 +155,34 @@ public abstract class Page {
 
 	public static NBTTagCompound createDefault() {
 		return new NBTTagCompound();
-	};
+	}
 
 	public static ItemStack createPage() {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.setTagCompound(createDefault());
 		return page;
-	};
+	}
 
 	public static ItemStack createLinkPage() {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.setTagCompound(createDefault());
 		makeLinkPanel(page);
 		return page;
-	};
+	}
 
 	public static ItemStack createLinkPage(String property) {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.setTagCompound(createDefault());
 		addLinkProperty(page, property);
 		return page;
-	};
+	}
 
 	public static ItemStack createSymbolPage(String symbol) {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.setTagCompound(createDefault());
 		setSymbol(page, symbol);
 		return page;
-	};
+	}
 
 	public static ItemStack createPage(NBTTagCompound pagedata) {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);

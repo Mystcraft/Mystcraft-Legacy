@@ -5,17 +5,29 @@ import java.util.UUID;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class LinkOptions implements ILinkInfo {
 
-	private NBTTagCompound	data;
+	private NBTTagCompound data;
 
-	public LinkOptions(NBTTagCompound data) {
-		if (data != null) this.data = (NBTTagCompound) data.copy();
+	public LinkOptions(@Nullable NBTTagCompound data) {
+		if (data != null) {
+			this.data = data.copy();
+		} else {
+			//FIXME Hellfire> previously it was only setting the field 'data' to a not-null value if the parameter also wasn't null.
+			//That seemed dangerous? Implementations on other ends suggest that data never got set on that end and no data was ever stored
+			//but data was tried to be set. So... idk what you did here. This seems safer and more stable.
+			this.data = new NBTTagCompound();
+		}
 	}
 
 	@Override
+	@Nonnull
 	public NBTTagCompound getTagCompound() {
 		return data;
 	}
@@ -26,22 +38,26 @@ public class LinkOptions implements ILinkInfo {
 	}
 
 	@Override
+	@Nonnull
 	public String getDisplayName() {
 		return getDisplayName(data);
 	}
 
 	@Override
+	@Nullable
 	public Integer getDimensionUID() {
 		return getDimensionUID(data);
 	}
 
 	@Override
+	@Nullable
 	public UUID getTargetUUID() {
 		return getUUID(data);
 	}
 
 	@Override
-	public ChunkPos getSpawn() {
+	@Nullable
+	public BlockPos getSpawn() {
 		return getSpawn(data);
 	}
 
@@ -71,7 +87,7 @@ public class LinkOptions implements ILinkInfo {
 	}
 
 	@Override
-	public void setDisplayName(String displayname) {
+	public void setDisplayName(@Nonnull String displayname) {
 		data = setDisplayName(data, displayname);
 	}
 
@@ -81,12 +97,12 @@ public class LinkOptions implements ILinkInfo {
 	}
 
 	@Override
-	public void setTargetUUID(UUID uuid) {
+	public void setTargetUUID(@Nullable UUID uuid) {
 		data = setUUID(data, uuid);
 	}
 
 	@Override
-	public void setSpawn(ChunkPos spawn) {
+	public void setSpawn(@Nullable BlockPos spawn) {
 		data = setSpawn(data, spawn);
 	}
 
@@ -95,7 +111,7 @@ public class LinkOptions implements ILinkInfo {
 		data = setSpawnYaw(data, spawnyaw);
 	}
 
-	public static NBTTagCompound setDisplayName(NBTTagCompound nbttagcompound, String name) {
+	public static NBTTagCompound setDisplayName(@Nullable NBTTagCompound nbttagcompound, @Nonnull String name) {
 		if (nbttagcompound == null) {
 			nbttagcompound = new NBTTagCompound();
 		}
@@ -103,9 +119,14 @@ public class LinkOptions implements ILinkInfo {
 		return nbttagcompound;
 	}
 
-	public static String getDisplayName(NBTTagCompound nbttagcompound) {
-		if (nbttagcompound != null && nbttagcompound.hasKey("DisplayName")) { return nbttagcompound.getString("DisplayName"); }
-		if (nbttagcompound != null && nbttagcompound.hasKey("agename")) { return nbttagcompound.getString("agename"); }
+	@Nonnull
+	public static String getDisplayName(@Nullable NBTTagCompound nbttagcompound) {
+		if (nbttagcompound != null && nbttagcompound.hasKey("DisplayName")) {
+			return nbttagcompound.getString("DisplayName");
+		}
+		if (nbttagcompound != null && nbttagcompound.hasKey("agename")) {
+			return nbttagcompound.getString("agename");
+		}
 		return "???";
 	}
 
@@ -118,7 +139,9 @@ public class LinkOptions implements ILinkInfo {
 	}
 
 	public static boolean getFlag(NBTTagCompound nbttagcompound, String flag) {
-		if (nbttagcompound != null && getFlagCompound(nbttagcompound).hasKey(flag)) { return getFlagCompound(nbttagcompound).getBoolean(flag); }
+		if (nbttagcompound != null && getFlagCompound(nbttagcompound).hasKey(flag)) {
+			return getFlagCompound(nbttagcompound).getBoolean(flag);
+		}
 		return false;
 	}
 
@@ -135,8 +158,11 @@ public class LinkOptions implements ILinkInfo {
 		return nbttagcompound;
 	}
 
+	@Nullable
 	public static String getProperty(NBTTagCompound nbttagcompound, String flag) {
-		if (nbttagcompound != null && getPropertyCompound(nbttagcompound).hasKey(flag)) { return getPropertyCompound(nbttagcompound).getString(flag); }
+		if (nbttagcompound != null && getPropertyCompound(nbttagcompound).hasKey(flag)) {
+			return getPropertyCompound(nbttagcompound).getString(flag);
+		}
 		return null;
 	}
 
@@ -148,13 +174,18 @@ public class LinkOptions implements ILinkInfo {
 		return nbttagcompound;
 	}
 
+	@Nullable
 	public static Integer getDimensionUID(NBTTagCompound nbttagcompound) {
-		if (nbttagcompound != null && nbttagcompound.hasKey("Dimension")) { return nbttagcompound.getInteger("Dimension"); }
-		if (nbttagcompound != null && nbttagcompound.hasKey("AgeUID")) { return nbttagcompound.getInteger("AgeUID"); }
+		if (nbttagcompound != null && nbttagcompound.hasKey("Dimension")) {
+			return nbttagcompound.getInteger("Dimension");
+		}
+		if (nbttagcompound != null && nbttagcompound.hasKey("AgeUID")) {
+			return nbttagcompound.getInteger("AgeUID");
+		}
 		return null;
 	}
 
-	public static NBTTagCompound setUUID(NBTTagCompound nbttagcompound, UUID uuid) {
+	public static NBTTagCompound setUUID(NBTTagCompound nbttagcompound, @Nullable UUID uuid) {
 		if (nbttagcompound == null) {
 			nbttagcompound = new NBTTagCompound();
 		}
@@ -166,25 +197,31 @@ public class LinkOptions implements ILinkInfo {
 		return nbttagcompound;
 	}
 
+	@Nullable
 	public static UUID getUUID(NBTTagCompound nbttagcompound) {
-		if (nbttagcompound != null && nbttagcompound.hasKey("TargetUUID")) { return UUID.fromString(nbttagcompound.getString("TargetUUID")); }
+		if (nbttagcompound != null && nbttagcompound.hasKey("TargetUUID")) {
+			return UUID.fromString(nbttagcompound.getString("TargetUUID"));
+		}
 		return null;
 	}
 
-	public static NBTTagCompound setSpawn(NBTTagCompound nbttagcompound, ChunkPos coords) {
+	public static NBTTagCompound setSpawn(NBTTagCompound nbttagcompound, @Nullable BlockPos coords) {
 		if (nbttagcompound == null) {
 			nbttagcompound = new NBTTagCompound();
 		}
 		if (coords != null) {
-			nbttagcompound.setInteger("SpawnX", coords.posX);
-			nbttagcompound.setInteger("SpawnY", coords.posY);
-			nbttagcompound.setInteger("SpawnZ", coords.posZ);
+			nbttagcompound.setInteger("SpawnX", coords.getX());
+			nbttagcompound.setInteger("SpawnY", coords.getY());
+			nbttagcompound.setInteger("SpawnZ", coords.getZ());
 		}
 		return nbttagcompound;
 	}
 
-	public static ChunkPos getSpawn(NBTTagCompound nbttagcompound) {
-		if (nbttagcompound != null && nbttagcompound.hasKey("SpawnX") && nbttagcompound.hasKey("SpawnY") && nbttagcompound.hasKey("SpawnZ")) { return new ChunkPos(nbttagcompound.getInteger("SpawnX"), nbttagcompound.getInteger("SpawnY"), nbttagcompound.getInteger("SpawnZ")); }
+	@Nullable
+	public static BlockPos getSpawn(NBTTagCompound nbttagcompound) {
+		if (nbttagcompound != null && nbttagcompound.hasKey("SpawnX") && nbttagcompound.hasKey("SpawnY") && nbttagcompound.hasKey("SpawnZ")) {
+			return new BlockPos(nbttagcompound.getInteger("SpawnX"), nbttagcompound.getInteger("SpawnY"), nbttagcompound.getInteger("SpawnZ"));
+		}
 		return null;
 	}
 
@@ -197,10 +234,13 @@ public class LinkOptions implements ILinkInfo {
 	}
 
 	public static float getSpawnYaw(NBTTagCompound nbttagcompound) {
-		if (nbttagcompound != null && nbttagcompound.hasKey("SpawnYaw")) { return nbttagcompound.getFloat("SpawnYaw"); }
+		if (nbttagcompound != null && nbttagcompound.hasKey("SpawnYaw")) {
+			return nbttagcompound.getFloat("SpawnYaw");
+		}
 		return 180;
 	}
 
+	@Nonnull
 	private static NBTTagCompound getFlagCompound(NBTTagCompound nbttagcompound) {
 		if (!nbttagcompound.hasKey("Flags")) {
 			nbttagcompound.setTag("Flags", new NBTTagCompound());
@@ -208,6 +248,7 @@ public class LinkOptions implements ILinkInfo {
 		return nbttagcompound.getCompoundTag("Flags");
 	}
 
+	@Nonnull
 	private static NBTTagCompound getPropertyCompound(NBTTagCompound nbttagcompound) {
 		if (!nbttagcompound.hasKey("Props")) {
 			nbttagcompound.setTag("Props", new NBTTagCompound());
