@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
@@ -200,15 +201,16 @@ public class BlockWritingDesk extends Block {
 	}
 
 	public static EnumFacing getDirectionFromMetadata(IBlockState state) {
+		if(!state.getBlock().equals(ModBlocks.writingdesk)) return EnumFacing.NORTH; //Uh.....
 		return state.getValue(ROTATION);
 	}
 
 	public static boolean isBlockFoot(IBlockState state) {
-		return state.getValue(IS_FOOT);
+		return state.getBlock().equals(ModBlocks.writingdesk) && state.getValue(IS_FOOT);
 	}
 
 	public static boolean isBlockTop(IBlockState state) {
-		return state.getValue(IS_TOP);
+		return state.getBlock().equals(ModBlocks.writingdesk) && state.getValue(IS_TOP);
 	}
 
 	public static TileEntityDesk getTileEntity(World world, BlockPos pos) {

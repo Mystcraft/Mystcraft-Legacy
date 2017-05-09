@@ -17,30 +17,22 @@ import com.xcompwiz.mystcraft.fluids.FluidUtils;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
-import com.xcompwiz.mystcraft.network.IMessageReceiver;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -48,10 +40,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntityDesk extends TileEntityBase implements InventoryUpdateListener, InventoryFilter, ITickable {
-
-	private ItemStack			itemstacks[];
-	private ItemStack			tabitems[];
+public class TileEntityDesk extends TileEntityBase implements InventoryFilter, ITickable {
 
 	private IOInventory inventoryStacks;
 	private IOInventory inventoryTabItems;
@@ -63,203 +52,131 @@ public class TileEntityDesk extends TileEntityBase implements InventoryUpdateLis
 	private static final int	slot_ctn	= 2;
 	private static final int	slot_out	= 3;
 
-	private static final int[]	isidedslots	= { slot_pap };
-
 	public TileEntityDesk() {
-		itemstacks = new ItemStack[4];
-		tabitems = new ItemStack[25];
 		inkwell = new FluidTankFiltered(Fluid.BUCKET_VOLUME);
 		inkwell.setPermittedFluids(Mystcraft.validInks);
+
+		this.inventoryStacks = buildWorkInventory();
+		this.inventoryTabItems = buildTabInventory();
 	}
 
 	protected IOInventory buildWorkInventory() {
 		return new IOInventory(this, new int[] { slot_pap }, new int[] {}, EnumFacing.VALUES)
-				.setMiscSlots(new int[] { slot_wrt, slot_ctn, slot_out })
-				.setListener(this)
+				.setMiscSlots(slot_wrt, slot_ctn, slot_out)
+				.setListener(() -> onChange(true))
 				.applyFilter(this, slot_pap); //Doesn't matter for any other slots anyway
 	}
 
 	protected IOInventory buildTabInventory() {
-
-	}
+        IOInventory inv = new IOInventory(this, new int[0], new int[0], EnumFacing.VALUES)
+                .setListener(() -> onChange(false));
+        for (int i = 0; i < 25; i++) {
+            inv.setMiscSlots(i);
+        }
+        return inv;
+    }
 
 	public int getMainInventorySize() {
-		return itemstacks.length;
+		return inventoryStacks.getSlots();
 	}
 
 	public int getMaxSurfaceTabCount() {
-		return tabitems.length;
+		return inventoryTabItems.getSlots();
 	}
 
 	public int getPaperCount() {
-		ItemStack itemstack = this.getStackInSlot(slot_pap);
-		if (itemstack != null) { return itemstack.getCount(); }
+		ItemStack itemstack = this.inventoryStacks.getStackInSlot(slot_pap);
+		if (!itemstack.isEmpty()) {
+		    return itemstack.getCount();
+		}
 		return 0;
 	}
 
+	@Nonnull
 	public ItemStack getDisplayItem() {
-		return this.getStackInSlot(slot_wrt);
+	    return this.inventoryStacks.getStackInSlot(slot_wrt);
 	}
 
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound nbttagcompound = new NBTTagCompound();
-		ItemStack itemstack = null;
-		itemstack = this.getStackInSlot(slot_wrt);
-		if (itemstack != null) {
-			nbttagcompound.setTag("DisItem", itemstack.writeToNBT(new NBTTagCompound()));
-		}
-		itemstack = this.getStackInSlot(slot_pap);
-		if (itemstack != null) {
-			nbttagcompound.setTag("PaperItem", itemstack.writeToNBT(new NBTTagCompound()));
-		}
-		return new SPacketUpdateTileEntity(this.pos, 0, nbttagcompound);
-	}
-
-	@Override
-	public void processMessageData(NBTTagCompound nbttagcompound) {
-		if (nbttagcompound.hasKey("DisItem")) {
-			this.setInventorySlotContents(slot_wrt, new ItemStack(nbttagcompound.getCompoundTag("DisItem")));
-		} else {
-			this.setInventorySlotContents(slot_wrt, null);
-		}
-		if (nbttagcompound.hasKey("PaperItem")) {
-			this.setInventorySlotContents(slot_pap, new ItemStack(nbttagcompound.getCompoundTag("PaperItem")));
-		} else {
-			this.setInventorySlotContents(slot_pap, null);
-		}
-		markDirty();
-	}
-
+	@Nonnull
 	public ItemStack getTabItem(byte activeslot) {
-		if (activeslot < 0 || activeslot >= tabitems.length) return null;
-		ItemStack itemstack = tabitems[activeslot];
-		if (itemstack == null) return null;
+		if (activeslot < 0 || activeslot >= inventoryTabItems.getSlots()) return ItemStack.EMPTY;
+		ItemStack itemstack = this.inventoryTabItems.getStackInSlot(activeslot);
+		if (itemstack.isEmpty()) return ItemStack.EMPTY;
 		if (itemstack.getItem() instanceof IItemPageCollection) return itemstack;
 		if (itemstack.getItem() instanceof IItemWritable) return itemstack;
-		return null;
+		return ItemStack.EMPTY;
 	}
 
-	@Override
-	public boolean isItemValidForSlot(int slotIndex, ItemStack itemstack) {
-		if (itemstack == null || itemstack.getItem() == null) return false;
-		if (slotIndex == slot_wrt && itemstack.getItem() instanceof IItemWritable) return true;
-		if (slotIndex == slot_wrt && itemstack.getItem() instanceof IItemRenameable) return true;
-		if (slotIndex == slot_pap && itemstack.getItem() == Items.paper) return true;
-		if (slotIndex == slot_ctn && FluidContainerRegistry.isContainer(itemstack)) return true;
-//		if (slotIndex == slot_ctn && itemstack.getItem() instanceof IFluidContainerItem) { //TODO: (Fluids) Handle IFluidContainerItem
-//			if (((IFluidContainerItem)itemstack.getItem()).getFluid(itemstack) == null) return true;
-//			return inkwell.isFluidPermitted(((IFluidContainerItem)itemstack.getItem()).getFluid(itemstack).getFluid());
-//		}
-		slotIndex -= itemstacks.length;
-		if (slotIndex < 0) return false;
-		if (slotIndex >= tabitems.length) return false;
-		if (itemstack.getItem() instanceof IItemPageCollection) return true;
-		if (itemstack.getItem() instanceof IItemWritable) return true;
-		return false;
-	}
+    public void onChange(boolean isWorkInv) {
+	    if(isWorkInv) {
+            for (int i = 0; i < inventoryStacks.getSlots(); i++) {
+                handleItemChange(inventoryStacks.getStackInSlot(i));
+            }
+        } else {
+            for (int i = 0; i < inventoryTabItems.getSlots(); i++) {
+                handleItemChange(inventoryTabItems.getStackInSlot(i));
+            }
+        }
+    }
 
-	@Override
-	public int getSizeInventory() {
-		return itemstacks.length + tabitems.length;
-	}
+    @Override
+    public boolean canAcceptItem(int slot, @Nonnull ItemStack stack) {
+	    if(stack.isEmpty()) return false;
+        if (slot == slot_wrt && stack.getItem() instanceof IItemWritable) return true;
+        if (slot == slot_wrt && stack.getItem() instanceof IItemRenameable) return true;
+        if (slot == slot_pap && stack.getItem().equals(Items.PAPER)) return true;
+        if (slot == slot_ctn) {
+            FluidStack fluidStack = FluidUtil.getFluidContained(stack);
+            if(fluidStack != null) {
+                return inkwell.isFluidPermitted(fluidStack.getFluid());
+            }
+        }
 
-	@Override
-	public ItemStack getStackInSlot(int index) {
-		ItemStack[] inv = itemstacks;
-		if (index >= inv.length) {
-			index -= inv.length;
-			inv = tabitems;
-		}
-		if (index > inv.length) return null;
-		return inv[index];
-	}
-
-	@Override
-	public ItemStack decrStackSize(int index, int amount) {
-		ItemStack[] inv = itemstacks;
-		if (index >= inv.length) {
-			index -= inv.length;
-			inv = tabitems;
-		}
-		if (inv[index] != null) {
-			if (inv[index].stackSize <= amount) {
-				ItemStack itemstack = inv[index];
-				inv[index] = null;
-				handleItemChange(inv[index]);
-				return itemstack;
-			}
-			ItemStack itemstack1 = inv[index].splitStack(amount);
-			if (inv[index].stackSize == 0) {
-				inv[index] = null;
-			}
-			handleItemChange(inv[index]);
-			return itemstack1;
-		}
-		return null;
-	}
-
-	@Override
-	public void setInventorySlotContents(int index, ItemStack itemstack) {
-		ItemStack[] inv = itemstacks;
-		if (index >= inv.length) {
-			index -= inv.length;
-			inv = tabitems;
-		}
-		inv[index] = itemstack;
-		if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
-			itemstack.stackSize = getInventoryStackLimit();
-		}
-		handleItemChange(inv[index]);
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) { return false; }
-		return entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
-	}
+        slot -= inventoryStacks.getSlots();
+        if (slot < 0) return false;
+        if (slot >= inventoryTabItems.getSlots()) return false;
+        if (stack.getItem() instanceof IItemPageCollection) return true;
+        if (stack.getItem() instanceof IItemWritable) return true;
+        return false;
+    }
 
 	public boolean hasTop() {
-		if (this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord) != ModBlocks.writingdesk) return false;
-		if (!BlockWritingDesk.isBlockTop(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord))) return false;
+	    if(!world.getBlockState(pos.up()).getBlock().equals(ModBlocks.writingdesk)) return false;
+	    if(!BlockWritingDesk.isBlockTop(world.getBlockState(pos.up()))) return false;
 		return true;
 	}
 
 	public boolean isLeftCovered() {
-		Block block = this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord);
-		if (!worldObj.isAirBlock(this.xCoord, this.yCoord + 1, this.zCoord) && block != ModBlocks.writingdesk) return true;
-		if (!BlockWritingDesk.isBlockTop(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord))) return true;
+        IBlockState state = world.getBlockState(pos.up());
+        if(!world.isAirBlock(pos.up()) && !state.getBlock().equals(ModBlocks.writingdesk)) return true;
+        if(!BlockWritingDesk.isBlockTop(state)) return true;
 		return false;
 	}
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		if (nbttagcompound.hasKey("Fluid")) {
-			inkwell.fill(FluidStack.loadFluidStackFromNBT(nbttagcompound.getCompoundTag("Fluid")), true);
-		}
-		itemstacks = new ItemStack[4];
-		tabitems = new ItemStack[25];
-		NBTUtils.readInventoryArray(nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND), itemstacks);
-		NBTUtils.readInventoryArray(nbttagcompound.getTagList("Notebooks", Constants.NBT.TAG_COMPOUND), tabitems);
-	}
+    @Override
+    public void readCustomNBT(NBTTagCompound compound) {
+        super.readCustomNBT(compound);
+        this.inkwell.readFromNBT(compound.getCompoundTag("fluid"));
+        this.inventoryStacks = IOInventory.deserialize(this, compound.getCompoundTag("items"));
+        this.inventoryTabItems = IOInventory.deserialize(this, compound.getCompoundTag("notebooks"));
+    }
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
-		FluidStack fluid = inkwell.getFluid();
-		if (fluid != null) {
-			nbttagcompound.setTag("Fluid", fluid.writeToNBT(new NBTTagCompound()));
-		}
-		nbttagcompound.setTag("Items", NBTUtils.writeInventoryArray(new NBTTagList(), itemstacks));
-		nbttagcompound.setTag("Notebooks", NBTUtils.writeInventoryArray(new NBTTagList(), tabitems));
-	}
+    @Override
+    public void writeCustomNBT(NBTTagCompound compound) {
+        super.writeCustomNBT(compound);
+        NBTTagCompound tag = new NBTTagCompound();
+        this.inkwell.writeToNBT(tag);
+        compound.setTag("fluid", tag);
+        compound.setTag("items", this.inventoryStacks.writeNBT());
+        compound.setTag("notebooks", this.inventoryTabItems.writeNBT());
+    }
 
-	public void handleItemChange(ItemStack itemstack) {}
+	public void handleItemChange(@Nonnull ItemStack itemstack) {}
 
+	@Nonnull
 	public String getTargetString(EntityPlayer player) {
-		ItemStack itemstack = itemstacks[slot_wrt];
-		if (itemstack == null) return "";
+		ItemStack itemstack = this.inventoryStacks.getStackInSlot(slot_wrt);
+		if (itemstack.isEmpty()) return "";
 		if (!(itemstack.getItem() instanceof IItemRenameable)) return "";
 		String name = ((IItemRenameable) itemstack.getItem()).getDisplayName(player, itemstack);
 		if (name == null) return "";
@@ -267,91 +184,99 @@ public class TileEntityDesk extends TileEntityBase implements InventoryUpdateLis
 	}
 
 	public void setBookTitle(EntityPlayer player, String bookname) {
-		ItemStack itemstack = itemstacks[slot_wrt];
-		if (itemstack == null) return;
+		ItemStack itemstack = this.inventoryStacks.getStackInSlot(slot_wrt);
+		if (itemstack.isEmpty()) return;
 		if (!(itemstack.getItem() instanceof IItemRenameable)) return;
 		((IItemRenameable) itemstack.getItem()).setDisplayName(player, itemstack, bookname);
 	}
 
+	@Nullable
 	public List<ItemStack> getBookPageList(EntityPlayer player) {
-		ItemStack itemstack = itemstacks[slot_wrt];
-		if (itemstack == null) return null;
+		ItemStack itemstack = this.inventoryStacks.getStackInSlot(slot_wrt);
+		if (itemstack.isEmpty()) return null;
 		if (!(itemstack.getItem() instanceof IItemPageProvider)) return null;
 		return ((IItemPageProvider) itemstack.getItem()).getPageList(player, itemstack);
 	}
 
 	public void writeSymbol(EntityPlayer player, String symbol) {
-		if (worldObj.isRemote) return;
+		if (world.isRemote) return;
 		if (!hasEnoughInk()) return;
 
 		// If nothing in slot, check fill slot
-		if (itemstacks[slot_wrt] == null && itemstacks[slot_pap] != null) {
-			itemstacks[slot_wrt] = ItemPage.createItemstack(itemstacks[slot_pap]);
-			if (itemstacks[slot_pap].stackSize <= 0) itemstacks[slot_pap] = null;
+		if (this.inventoryStacks.getStackInSlot(slot_wrt).isEmpty() && !this.inventoryStacks.getStackInSlot(slot_pap).isEmpty()) {
+		    this.inventoryStacks.setStackInSlot(slot_wrt, ItemPage.createItemstack(this.inventoryStacks.getStackInSlot(slot_pap)));
+		    if(this.inventoryStacks.getStackInSlot(slot_pap).getCount() <= 0) {
+		        this.inventoryStacks.setStackInSlot(slot_pap, ItemStack.EMPTY);
+            }
 		}
 
 		// If nothing in slot, we're done
-		if (itemstacks[slot_wrt] == null) return;
+		if (this.inventoryStacks.getStackInSlot(slot_wrt).isEmpty()) return;
 
 		// Do writing
-		ItemStack target = itemstacks[slot_wrt];
-		if (target == null) return;
+		ItemStack target = this.inventoryStacks.getStackInSlot(slot_wrt);
+		if (target.isEmpty()) return;
 		if (target.getItem() instanceof IItemWritable && ((IItemWritable) target.getItem()).writeSymbol(player, target, symbol)) {
 			useink();
 			player.addStat(ModAchievements.write, 1);
 			return;
 		}
-		ItemStack paperstack = itemstacks[slot_pap];
-		if (paperstack != null && (target.getItem() instanceof IItemPageAcceptor)) {
+		ItemStack paperstack = this.inventoryStacks.getStackInSlot(slot_pap);
+		if (!paperstack.isEmpty() && (target.getItem() instanceof IItemPageAcceptor)) {
 			ItemStack page = paperstack.copy();
-			page.stackSize = 1;
+			page.setCount(1);
 			page = ItemPage.createItemstack(page);
-			if (page != null) {
+			if (!page.isEmpty()) {
 				InternalAPI.page.setPageSymbol(page, symbol);
-				if (((IItemPageAcceptor) target.getItem()).addPage(player, target, page) == null) {
+				if (((IItemPageAcceptor) target.getItem()).addPage(player, target, page).isEmpty()) {
 					useink();
-					--paperstack.stackSize;
+					paperstack.shrink(1);
 				}
 			}
-			if (itemstacks[slot_pap].stackSize <= 0) itemstacks[slot_pap] = null;
-			return;
+			if(this.inventoryStacks.getStackInSlot(slot_pap).getCount() <= 0) {
+                this.inventoryStacks.setStackInSlot(slot_pap, ItemStack.EMPTY);
+            }
 		}
 	}
 
-	public ItemStack removePageFromSurface(EntityPlayer player, ItemStack itemstack, int index) {
-		if (itemstack == null) return null;
-		ItemStack result = null;
+	@Nonnull
+	public ItemStack removePageFromSurface(EntityPlayer player, @Nonnull ItemStack itemstack, int index) {
+		if (itemstack.isEmpty()) return ItemStack.EMPTY;
+		ItemStack result = ItemStack.EMPTY;
 		if (itemstack.getItem() instanceof IItemOrderablePageProvider) result = ((IItemOrderablePageProvider) itemstack.getItem()).removePage(player, itemstack, index);
-		if (result == null) return result;
-		this.markDirty();
+		if (result.isEmpty()) return result;
+		this.markForUpdate();
 		return result;
 	}
 
-	public ItemStack removePageFromSurface(EntityPlayer player, ItemStack itemstack, ItemStack page) {
-		if (itemstack == null) return null;
-		ItemStack result = null;
+    @Nonnull
+    public ItemStack removePageFromSurface(EntityPlayer player, @Nonnull ItemStack itemstack, @Nonnull ItemStack page) {
+        if (itemstack.isEmpty()) return ItemStack.EMPTY;
+		ItemStack result = ItemStack.EMPTY;
 		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).remove(player, itemstack, page);
-		if (result == null) return result;
-		this.markDirty();
+		if (result.isEmpty()) return result;
+        this.markForUpdate();
 		return result;
 	}
 
-	public ItemStack addPageToTab(EntityPlayer player, ItemStack itemstack, ItemStack page) {
-		if (itemstack == null) return page;
-		ItemStack result = page;
-		if (itemstack.getItem() instanceof IItemPageAcceptor) result = ((IItemPageAcceptor) itemstack.getItem()).addPage(player, itemstack, page);
-		if (result == page) return result;
-		this.markDirty();
-		return result;
-	}
+    @Nonnull
+    public ItemStack addPageToTab(EntityPlayer player, @Nonnull ItemStack itemstack, @Nonnull ItemStack page) {
+        if (itemstack.isEmpty()) return page;
+        ItemStack result = page;
+        if (itemstack.getItem() instanceof IItemPageAcceptor) result = ((IItemPageAcceptor) itemstack.getItem()).addPage(player, itemstack, page);
+        if (result == page) return result;
+        this.markForUpdate();
+        return result;
+    }
 
-	public ItemStack placePageOnSurface(EntityPlayer player, ItemStack itemstack, ItemStack page, int index) {
-		if (itemstack == null) return page;
+    @Nonnull
+    public ItemStack placePageOnSurface(EntityPlayer player, @Nonnull ItemStack itemstack, @Nonnull ItemStack page, int index) {
+        if (itemstack.isEmpty()) return page;
 		ItemStack result = page;
 		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).addPage(player, itemstack, page);
 		if (itemstack.getItem() instanceof IItemOrderablePageProvider) result = ((IItemOrderablePageProvider) itemstack.getItem()).setPage(player, itemstack, page, index);
 		if (result == page) return result;
-		this.markDirty();
+        this.markForUpdate();
 		return result;
 	}
 
@@ -401,42 +326,17 @@ public class TileEntityDesk extends TileEntityBase implements InventoryUpdateLis
             ItemStack container = this.inventoryStacks.getStackInSlot(slot_ctn);
             FluidActionResult far = FluidUtil.tryFillContainer(container, inkwell, Fluid.BUCKET_VOLUME, null, false);
             if(far.isSuccess()) {
+                //TODO Hellfire> test fluid stuff tank -> item and vice versa
                 if(mergeItemStacksLeft(this.inventoryStacks.getStackInSlot(slot_out), far.getResult()) != this.inventoryStacks.getStackInSlot(slot_out)) {
                     this.inventoryStacks.setStackInSlot(slot_out,
                             mergeItemStacksLeft(this.inventoryStacks.getStackInSlot(slot_out), FluidUtil.tryFillContainer(container, inkwell, Fluid.BUCKET_VOLUME, null, true).getResult()));
-
+                    if(container.getCount() <= 0) {
+                        this.inventoryStacks.setStackInSlot(slot_ctn, ItemStack.EMPTY);
+                    }
                 }
             }
         }
     }
-
-    @Override
-	public void updateEntity() {
-		if (worldObj.isRemote) return;
-		if (BlockWritingDesk.isBlockFoot(worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord))) this.tileEntityInvalid = true;
-		// If we can pull from the in container and the out slot is either empty or contains the empty form of the container
-		// XXX: (Fluids) Clean this up and move into external helpers
-		if (itemstacks[slot_ctn] != null) {
-			ItemStack container = itemstacks[slot_ctn];
-			ItemStack emptycontainer = container.getItem().getContainerItem(container);
-			if (emptycontainer == null || mergeItemStacksLeft(itemstacks[slot_out], emptycontainer) != itemstacks[slot_out]) {
-				ItemStack result = FluidUtils.fillTankWithContainer(inkwell, container);
-				if (result != null) {
-					itemstacks[slot_out] = mergeItemStacksLeft(itemstacks[slot_out], result);
-					if (container.stackSize == 0) itemstacks[slot_ctn] = null;
-				}
-			}
-		}
-		if (itemstacks[slot_ctn] != null) {
-			ItemStack container = itemstacks[slot_ctn];
-			FluidStack tankFluid = inkwell.getFluid();
-			ItemStack result = FluidContainerRegistry.fillFluidContainer(tankFluid, container);
-			if (mergeItemStacksLeft(itemstacks[slot_out], result) != itemstacks[slot_out]) {
-				itemstacks[slot_out] = mergeItemStacksLeft(itemstacks[slot_out], FluidUtils.drainTankIntoContainer(inkwell, container));
-				if (container.stackSize == 0) itemstacks[slot_ctn] = null;
-			}
-		}
-	}
 
 	//XXX: (Fluids) Improve how I handle fluid containers and items
     // Hellfire> +1 that ^ - will do. eventually. TODO use forge's FluidUtil to do fluids 'better'

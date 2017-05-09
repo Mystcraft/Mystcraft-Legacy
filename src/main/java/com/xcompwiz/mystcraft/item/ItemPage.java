@@ -100,7 +100,7 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 	@Nonnull
 	public static ItemStack createItemstack(@Nonnull ItemStack prototype) {
 		if (prototype.getItem() == Items.PAPER) {
-			prototype.setCount(prototype.getCount() - 1);
+			prototype.shrink(1);
 			return Page.createPage();
 		}
 		return ItemStack.EMPTY;

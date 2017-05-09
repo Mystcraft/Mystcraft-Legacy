@@ -46,7 +46,7 @@ public class IOInventory implements IItemHandlerModifiable {
         this.accessibleSides = Arrays.asList(accessibleFrom);
     }
 
-    public IOInventory setMiscSlots(int[] miscSlots) {
+    public IOInventory setMiscSlots(int... miscSlots) {
         this.miscSlots = miscSlots;
         for (Integer slot : miscSlots) {
             this.inventory.put(slot, new SlotStackHolder(slot));
