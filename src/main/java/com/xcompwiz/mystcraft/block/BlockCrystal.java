@@ -72,7 +72,7 @@ public class BlockCrystal extends Block {
 
 	@Override
 	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
-		return blockState.getValue(IS_PART_OF_PORTAL) ? 15 : 0
+		return blockState.getValue(IS_PART_OF_PORTAL) ? 15 : 0;
 	}
 
 }

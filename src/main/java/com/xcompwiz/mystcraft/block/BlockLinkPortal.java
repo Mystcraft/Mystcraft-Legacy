@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -30,6 +31,7 @@ import javax.annotation.Nullable;
 public class BlockLinkPortal extends BlockBreakable {
 
     public static final PropertyEnum<EnumFacing> SOURCE_DIRECTION = PropertyEnum.create("source", EnumFacing.class);
+	public static final PropertyBool IS_PART_OF_PORTAL = PropertyBool.create("active");
 
 	public BlockLinkPortal() {
 		super(Material.PORTAL, false);
@@ -38,22 +40,28 @@ public class BlockLinkPortal extends BlockBreakable {
 		setSoundType(SoundType.GLASS);
 		setLightLevel(0.75F);
 		setUnlocalizedName("myst.linkportal");
-		setDefaultState(this.blockState.getBaseState().withProperty(SOURCE_DIRECTION, EnumFacing.UP));
+		setDefaultState(this.blockState.getBaseState().withProperty(IS_PART_OF_PORTAL, false).withProperty(SOURCE_DIRECTION, EnumFacing.DOWN));
 	}
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(SOURCE_DIRECTION, EnumFacing.values()[meta]);
+		if(meta == 0) {
+			return getDefaultState();
+		} else {
+			int sh = meta >> 1;
+			return getDefaultState().withProperty(IS_PART_OF_PORTAL, true).withProperty(SOURCE_DIRECTION, EnumFacing.values()[sh]);
+		}
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(SOURCE_DIRECTION).ordinal();
+		int side = state.getValue(SOURCE_DIRECTION).ordinal();
+		return state.getValue(IS_PART_OF_PORTAL) ? side << 1 : 0;
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, SOURCE_DIRECTION);
+		return new BlockStateContainer(this, SOURCE_DIRECTION, IS_PART_OF_PORTAL);
     }
 
     @Nullable
