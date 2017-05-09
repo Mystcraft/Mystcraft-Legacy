@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
+import com.google.common.io.ByteStreams;
 import com.xcompwiz.mystcraft.item.ItemStackUtils;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
@@ -21,21 +24,45 @@ import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public final class NBTUtils {
-	public static Number readNumber(NBTBase tag) {
-		if (tag == null) { return 0; }
-		if (tag instanceof NBTTagByte) { return ((NBTTagByte) tag).func_150290_f(); }
-		if (tag instanceof NBTTagShort) { return ((NBTTagShort) tag).func_150289_e(); }
-		if (tag instanceof NBTTagInt) { return ((NBTTagInt) tag).func_150287_d(); }
-		if (tag instanceof NBTTagLong) { return ((NBTTagLong) tag).func_150291_c(); }
-		if (tag instanceof NBTTagFloat) { return ((NBTTagFloat) tag).func_150288_h(); }
-		if (tag instanceof NBTTagDouble) { return ((NBTTagDouble) tag).func_150286_g(); }
+
+	@Nonnull
+	public static Number readNumber(@Nullable NBTBase tag) {
+		if (tag == null) {
+			return 0;
+		}
+		if (tag instanceof NBTTagByte) {
+			return ((NBTTagByte) tag).getByte();
+		}
+		if (tag instanceof NBTTagShort) {
+			return ((NBTTagShort) tag).getShort();
+		}
+		if (tag instanceof NBTTagInt) {
+			return ((NBTTagInt) tag).getInt();
+		}
+		if (tag instanceof NBTTagLong) {
+			return ((NBTTagLong) tag).getLong();
+		}
+		if (tag instanceof NBTTagFloat) {
+			return ((NBTTagFloat) tag).getFloat();
+		}
+		if (tag instanceof NBTTagDouble) {
+			return ((NBTTagDouble) tag).getDouble();
+		}
 		return 0;
 	}
 
-	public static String readString(NBTBase tag) {
-		if (tag == null) { return ""; }
-		if (tag instanceof NBTTagString) { return ((NBTTagString) tag).func_150285_a_(); }
+	@Nonnull
+	public static String readString(@Nullable NBTBase tag) {
+		if (tag == null) {
+			return "";
+		}
+		if (tag instanceof NBTTagString) {
+			return ((NBTTagString) tag).getString();
+		}
 		return tag.toString();
 	}
 
@@ -51,7 +78,7 @@ public final class NBTUtils {
 
 	public static NBTTagList writeInventoryArray(NBTTagList nbttaglist, ItemStack[] inventory) {
 		for (int i = 0; i < inventory.length; i++) {
-			if (inventory[i] != null) {
+			if (!inventory[i].isEmpty()) {
 				NBTTagCompound slot = new NBTTagCompound();
 				slot.setByte("Slot", (byte) i);
 				inventory[i].writeToNBT(slot);
@@ -62,9 +89,7 @@ public final class NBTUtils {
 	}
 
 	public static <T extends Map<String, Byte>> T readByteMap(NBTTagCompound tagcompound, T map) {
-		Collection<String> tagnames = tagcompound.func_150296_c();
-
-		for (String tagname : tagnames) {
+		for (String tagname : tagcompound.getKeySet()) {
 			map.put(tagname, readNumber(tagcompound.getTag(tagname)).byteValue());
 		}
 		return map;
@@ -78,9 +103,7 @@ public final class NBTUtils {
 	}
 
 	public static <T extends Map<String, Integer>> T readIntMap(NBTTagCompound tagcompound, T map) {
-		Collection<String> tagnames = tagcompound.func_150296_c();
-
-		for (String tagname : tagnames) {
+		for (String tagname : tagcompound.getKeySet()) {
 			map.put(tagname, readNumber(tagcompound.getTag(tagname)).intValue());
 		}
 		return map;
@@ -94,9 +117,7 @@ public final class NBTUtils {
 	}
 
 	public static <T extends Map<String, Float>> T readFloatMap(NBTTagCompound tagcompound, T map) {
-		Collection<String> tagnames = tagcompound.func_150296_c();
-
-		for (String tagname : tagnames) {
+		for (String tagname : tagcompound.getKeySet()) {
 			map.put(tagname, readNumber(tagcompound.getTag(tagname)).floatValue());
 		}
 		return map;
@@ -110,9 +131,7 @@ public final class NBTUtils {
 	}
 
 	public static <T extends Map<String, String>> T readStringMap(NBTTagCompound tagcompound, T map) {
-		Collection<String> tagnames = tagcompound.func_150296_c();
-
-		for (String tagname : tagnames) {
+		for (String tagname : tagcompound.getKeySet()) {
 			map.put(tagname, tagcompound.getString(tagname));
 		}
 		return map;
@@ -173,32 +192,30 @@ public final class NBTUtils {
 	/**
 	 * Reads a compressed NBTTagCompound from the InputStream
 	 */
+	@Nullable
 	public static NBTTagCompound readNBTTagCompound(ByteBuf data) throws IOException {
-		short length = data.readShort();
-
-		if (length < 0) { return null; }
-		byte[] abyte = new byte[length];
-		data.readBytes(abyte);
-		return CompressedStreamTools.func_152457_a(abyte, new NBTSizeTracker(2097152L));
+		boolean present = data.readBoolean();
+		if(!present) {
+			return null;
+		}
+		return CompressedStreamTools.read(new ByteBufInputStream(data), NBTSizeTracker.INFINITE);
 	}
 
 	/**
 	 * Writes a compressed NBTTagCompound to the OutputStream
 	 * @throws IOException
 	 */
-	public static int writeNBTTagCompound(NBTTagCompound nbttagcompound, ByteBuf data) throws IOException {
+	public static void writeNBTTagCompound(@Nullable NBTTagCompound nbttagcompound, ByteBuf data) throws IOException {
 		if (nbttagcompound == null) {
-			data.writeShort(-1);
+			data.writeBoolean(false);
 		} else {
-			byte[] abyte = CompressedStreamTools.compress(nbttagcompound);
-			data.writeShort((short) abyte.length);
-			data.writeBytes(abyte);
-			return abyte.length;
+			data.writeBoolean(true);
+			CompressedStreamTools.write(nbttagcompound, new ByteBufOutputStream(data)); //Doesn't need to be closed since it doesn't buffer.
 		}
-		return 0;
 	}
 
-	public static NBTTagCompound forceGetCompound(NBTTagCompound nbt, String key) {
+	@Nonnull
+	public static NBTTagCompound forceGetCompound(@Nonnull NBTTagCompound nbt, String key) {
 		NBTTagCompound tagcompound = nbt.getCompoundTag(key);
 		nbt.setTag(key, tagcompound);
 		return tagcompound;

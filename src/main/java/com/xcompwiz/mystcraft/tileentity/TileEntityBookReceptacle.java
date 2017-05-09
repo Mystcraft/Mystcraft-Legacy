@@ -7,44 +7,33 @@ import com.xcompwiz.mystcraft.portal.PortalUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class TileEntityBookReceptacle extends TileEntityBookRotateable implements IMessageReceiver {
+import javax.annotation.Nonnull;
 
-	public TileEntityBookReceptacle() {
-		tileEntityInvalid = false;
-	}
-
-	@Override
-	public String getInventoryName() {
-		return "Book Receptacle";
-	}
+public class TileEntityBookReceptacle extends TileEntityBookRotateable {
 
 	public int getPortalColor() {
 		ItemStack itemstack = getBook();
-		if (itemstack == null) return 0xFFFFFF;
+		if (itemstack.isEmpty()) return 0xFFFFFF;
 		Item itemdata = itemstack.getItem();
 		if (itemdata instanceof IItemPortalActivator) {
-			return ((IItemPortalActivator)itemdata).getPortalColor(itemstack, worldObj);
+			return ((IItemPortalActivator)itemdata).getPortalColor(itemstack, world);
 		}
 		return 0xFFFFFF;
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		if (itemstack == null) return false;
-		return itemstack.getItem() instanceof IItemPortalActivator;
+	public boolean canAcceptItem(int slot, @Nonnull ItemStack stack) {
+		return !stack.isEmpty() && stack.getItem() instanceof IItemPortalActivator;
 	}
 
 	@Override
 	public void handleItemChange(int slot) {
 		super.handleItemChange(slot);
-		if (worldObj == null) return;
-		if (this.worldObj.isRemote) return;
-		PortalUtils.shutdownPortal(worldObj, xCoord, yCoord, zCoord);
+		if (world == null || world.isRemote) return;
+		PortalUtils.shutdownPortal(world, pos);
 		ItemStack book = getBook();
-		if (book == null) {
-			return;
-		} else if (book.getItem() instanceof IItemPortalActivator) {
-			PortalUtils.firePortal(worldObj, xCoord, yCoord, zCoord);
-		}
-	}
+        if (!book.isEmpty() && book.getItem() instanceof IItemPortalActivator) {
+            PortalUtils.firePortal(world, pos);
+        }
+    }
 }

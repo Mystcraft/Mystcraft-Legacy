@@ -17,21 +17,20 @@ import com.xcompwiz.mystcraft.page.Page;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraftforge.fluids.*;
 
-public class TileEntityInkMixer extends TileEntity implements IItemBuilder, ISidedInventory {
+import javax.annotation.Nonnull;
 
-	private ItemStack				itemstacks[];
+public class TileEntityInkMixer extends TileEntityBase implements IItemBuilder, InventoryFilter, InventoryUpdateListener, ITickable {
+
+	private IOInventory inventory;
 
 	private boolean					hasInk				= false;
-	private HashMap<String, Float>	ink_probabilities	= new HashMap<String, Float>();
+	private HashMap<String, Float>	ink_probabilities	= new HashMap<>();
 
 	private long					next_seed;
 
@@ -39,106 +38,55 @@ public class TileEntityInkMixer extends TileEntity implements IItemBuilder, ISid
 	private static final int		ink_out				= 2;
 	private static final int		paper				= 1;
 
-	private static int[]			isidedslots			= { paper, ink_in };
-
 	public TileEntityInkMixer() {
 		next_seed = new Random().nextLong();
-		itemstacks = new ItemStack[3];
+		inventory = buildInventory();
 	}
 
-	@Override
-	public boolean isItemValidForSlot(int slotIndex, ItemStack itemstack) {
-		if (itemstack == null) return false;
-		if (slotIndex == ink_in && FluidContainerRegistry.isContainer(itemstack)) return true;
-		if (slotIndex == paper && itemstack.getItem() == Items.paper) return true;
-		return false;
-	}
+	protected IOInventory buildInventory() {
+	    return new IOInventory(this, new int[] { ink_in, paper }, new int[0], EnumFacing.VALUES)
+                .setMiscSlots(new int[] { ink_out }) //Not input, can't output from this, so.... misc i guess.
+                .setListener(this)
+                .applyFilter(this, ink_in, paper);
+    }
+
+    @Override
+    public void onChange() {
+        markForUpdate();
+    }
+
+    @Override
+    public boolean canAcceptItem(int slot, @Nonnull ItemStack stack) {
+	    if(stack.isEmpty()) return false;
+	    if(slot == ink_in) {
+	        FluidStack fluidStack = FluidUtil.getFluidContained(stack);
+	        if(fluidStack != null) {
+	            return Mystcraft.validInks.contains(fluidStack.getFluid().getName());
+            }
+        }
+	    if(slot == paper && stack.getItem().equals(Items.PAPER)) return true;
+        return false;
+    }
+
+    @Override
+    public void readCustomNBT(NBTTagCompound compound) {
+        super.readCustomNBT(compound);
+
+        this.inventory = IOInventory.deserialize(this, compound.getCompoundTag("inventory"));
+        this.hasInk = compound.getBoolean("ink");
+        this.ink_probabilities = NBTUtils.readFloatMap(compound.getCompoundTag("probabilities"), new HashMap<>());
+    }
+
+    @Override
+    public void writeCustomNBT(NBTTagCompound compound) {
+        super.writeCustomNBT(compound);
+        compound.setTag("inventory", this.inventory.writeNBT());
+        compound.setBoolean("ink", this.hasInk);
+        compound.setTag("probabilities", NBTUtils.writeFloatMap(new NBTTagCompound(), this.ink_probabilities));
+    }
 
 	@Override
-	public int getSizeInventory() {
-		return itemstacks.length;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int i) {
-		if (i >= itemstacks.length) { return null; }
-		return itemstacks[i];
-	}
-
-	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		if (itemstacks[i] != null) {
-			if (itemstacks[i].getCount() <= j) {
-				ItemStack itemstack = itemstacks[i];
-				itemstacks[i] = null;
-				return itemstack;
-			}
-			ItemStack itemstack1 = itemstacks[i].splitStack(j);
-			if (itemstacks[i].getCount() == 0) {
-				itemstacks[i] = null;
-			}
-			return itemstack1;
-		}
-		return null;
-	}
-
-	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		itemstacks[i] = itemstack;
-		if (itemstack != null && itemstack.getCount() > getInventoryStackLimit()) {
-			itemstack.stackSize = getInventoryStackLimit();
-		}
-	}
-
-	@Override
-	public String getInventoryName() {
-		return "Ink Mixer";
-	}
-
-	@Override
-	public boolean hasCustomInventoryName() {
-		return false;
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) { return false; }
-		return entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
-	}
-
-	@Override
-	public void openInventory() {}
-
-	@Override
-	public void closeInventory() {}
-
-	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		NBTUtils.readInventoryArray(nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND), itemstacks);
-
-		hasInk = nbttagcompound.getBoolean("Ink");
-
-		ink_probabilities = NBTUtils.readFloatMap(nbttagcompound.getCompoundTag("Probabilities"), new HashMap<String, Float>());
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setTag("Items", NBTUtils.writeInventoryArray(new NBTTagList(), itemstacks));
-
-		nbttagcompound.setBoolean("Ink", hasInk);
-
-		nbttagcompound.setTag("Probabilities", NBTUtils.writeFloatMap(new NBTTagCompound(), ink_probabilities));
-	}
-
-	@Override
-	public void buildItem(ItemStack itemstack, EntityPlayer player) {
+	public void buildItem(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer player) {
 		if (!canBuildItem()) return;
 		if (itemstack.getItem() instanceof ItemPage) {
 			Random rand = new Random(next_seed);
@@ -152,21 +100,20 @@ public class TileEntityInkMixer extends TileEntity implements IItemBuilder, ISid
 			next_seed = rand.nextLong();
 			hasInk = false;
 			ink_probabilities.clear();
-			--(itemstacks[paper].stackSize);
-			if (itemstacks[paper].getCount() <= 0) itemstacks[paper] = null;
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			this.markDirty();
+			this.inventory.getStackInSlot(paper).shrink(1);
+			markForUpdate();
 		} else {
-			itemstack.stackSize = 0;
+			itemstack.setCount(0);
 		}
 	}
 
 	private boolean canBuildItem() {
-		return itemstacks[paper] != null && itemstacks[paper].getItem() == Items.paper && hasInk;
+	    return !this.inventory.getStackInSlot(paper).isEmpty() && this.inventory.getStackInSlot(paper).getItem().equals(Items.PAPER) && hasInk;
 	}
 
-	public ItemStack getCraftedItem() {
-		if (!canBuildItem()) return null;
+    @Nonnull
+    public ItemStack getCraftedItem() {
+		if (!canBuildItem()) return ItemStack.EMPTY;
 		return Page.createLinkPage();
 	}
 
@@ -186,77 +133,50 @@ public class TileEntityInkMixer extends TileEntity implements IItemBuilder, ISid
 		this.next_seed = seed;
 	}
 
-	@Override
-	public ItemStack getStackInSlotOnClosing(int par1) {
-		if (itemstacks[par1] != null) {
-			ItemStack itemstack = itemstacks[par1];
-			itemstacks[par1] = null;
-			return itemstack;
-		}
-		return null;
-	}
+    @Override
+    public void update() {
+        if(world.isRemote) return;
 
-	/**
-	 * Get the size of the side inventory.
-	 */
-	@Override
-	public int[] getAccessibleSlotsFromSide(int par1) {
-		return isidedslots;
-	}
-
-	@Override
-	public boolean canInsertItem(int slot, ItemStack itemstack, int par3) {
-		return this.isItemValidForSlot(slot, itemstack);
-	}
-
-	@Override
-	public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3) {
-		return false;
-	}
-
-	@Override
-	public boolean canUpdate() {
-		return true;
-	}
-
-	@Override
-	public void updateEntity() {
-		if (worldObj.isRemote) return;
-		// If we can pull from the in container and the out slot is either empty or contains the empty form of the container
-		if (itemstacks[ink_in] != null && hasInk == false) {
-			ItemStack container = itemstacks[ink_in];
-			ItemStack emptycontainer = container.getItem().getContainerItem(container);
-			if (emptycontainer == null || mergeItemStacksLeft(itemstacks[ink_out], emptycontainer) != itemstacks[ink_out]) {
-				ItemStack result = fillBasinWithContainer(container);
-				if (result != null) {
-					itemstacks[ink_out] = mergeItemStacksLeft(itemstacks[ink_out], result);
-					if (container.getCount() == 0) itemstacks[ink_in] = null;
-				}
-			}
-		}
-	}
-
+        if(!this.inventory.getStackInSlot(ink_in).isEmpty() && !hasInk) {
+            ItemStack fluidContainer = this.inventory.getStackInSlot(ink_in);
+            ItemStack emptyContainer = fluidContainer.getItem().getContainerItem(fluidContainer);
+            if(emptyContainer.isEmpty() || mergeItemStacksLeft(this.inventory.getStackInSlot(ink_out), emptyContainer) != this.inventory.getStackInSlot(ink_out)) {
+                ItemStack result = fillBasinWithContainer(fluidContainer);
+                if(!result.isEmpty()) {
+                    this.inventory.setStackInSlot(ink_out, mergeItemStacksLeft(this.inventory.getStackInSlot(ink_out), result));
+                    if(fluidContainer.getCount() <= 0) {
+                        this.inventory.setStackInSlot(ink_in, ItemStack.EMPTY);
+                    }
+                }
+            }
+        }
+    }
 	// XXX: (Fluids) Handle fluids better
-	private ItemStack fillBasinWithContainer(ItemStack containerStack) {
+    // Hellfire> +1 that ^ - will do. eventually. TODO use forge's FluidUtil to do fluids 'better'
+    @Nonnull
+    private ItemStack fillBasinWithContainer(@Nonnull ItemStack containerStack) {
 		ItemStack container = containerStack.copy();
-		container.stackSize = 1;
-		FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(container);
-		if (fluid != null) {
-			if (!Mystcraft.validInks.contains(fluid.getFluid().getName())) return null;
-			int used = 1000;
-			if (used == fluid.amount) {
-				--containerStack.stackSize;
+		container.setCount(1);
+		FluidStack contained = FluidUtil.getFluidContained(container);
+		if (contained != null) {
+			if (!Mystcraft.validInks.contains(contained.getFluid().getName())) {
+			    return ItemStack.EMPTY;
+            }
+			int used = Fluid.BUCKET_VOLUME;
+			if (used == contained.amount) {
+			    containerStack.shrink(1);
 				hasInk = true;
 				container = FluidUtils.emptyContainer(container);
 				return container;
 			}
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
-	private ItemStack mergeItemStacksLeft(ItemStack left, ItemStack right) {
-		if (right == null) return left;
-		if (left == null) return right;
+    @Nonnull
+    private ItemStack mergeItemStacksLeft(@Nonnull ItemStack left, @Nonnull ItemStack right) {
+		if (right.isEmpty()) return left;
+		if (left.isEmpty()) return right;
 		if (left.getItem() != right.getItem()) {
 			return left;
 		} else if (left.hasTagCompound() != right.hasTagCompound()) {
@@ -265,10 +185,12 @@ public class TileEntityInkMixer extends TileEntity implements IItemBuilder, ISid
 			return left;
 		} else if (left.getItem().getHasSubtypes() && left.getItemDamage() != right.getItemDamage()) {
 			return left;
-		} else if (left.getCount() + right.getCount() > left.getMaxStackSize()) { return left; }
+		} else if (left.getCount() + right.getCount() > left.getMaxStackSize()) {
+		    return left;
+		}
 		left = left.copy();
-		left.stackSize += right.getCount();
-		right.stackSize = 0;
+		left.grow(right.getCount());
+		right.setCount(0);
 		return left;
 	}
 
@@ -276,10 +198,9 @@ public class TileEntityInkMixer extends TileEntity implements IItemBuilder, ISid
 		return Collections.unmodifiableMap(ink_probabilities);
 	}
 
-	public ItemStack addItems(ItemStack itemstack, int amount) {
-		Map<String, Float> itemprobs = null;
-
-		itemprobs = InkEffects.getItemEffects(itemstack);
+	@Nonnull
+	public ItemStack addItems(@Nonnull ItemStack itemstack, int amount) {
+        Map<String, Float> itemprobs = InkEffects.getItemEffects(itemstack);
 
 		if (itemprobs == null) return itemstack;
 
@@ -291,9 +212,11 @@ public class TileEntityInkMixer extends TileEntity implements IItemBuilder, ISid
 		}
 		float inverse = 1 - total;
 
-		if (amount > itemstack.getCount()) amount = itemstack.getCount();
+		if (amount > itemstack.getCount()) {
+		    amount = itemstack.getCount();
+        }
 		for (int i = 0; i < amount; ++i) {
-			--itemstack.stackSize;
+		    itemstack.shrink(1);
 			for (Entry<String, Float> entry : ink_probabilities.entrySet()) {
 				entry.setValue(entry.getValue() * inverse);
 			}
@@ -307,7 +230,7 @@ public class TileEntityInkMixer extends TileEntity implements IItemBuilder, ISid
 			}
 		}
 		if (itemstack.getCount() <= 0) {
-			itemstack = null;
+			itemstack = ItemStack.EMPTY;
 		}
 		return itemstack;
 	}
@@ -316,15 +239,18 @@ public class TileEntityInkMixer extends TileEntity implements IItemBuilder, ISid
 		return ModLinkEffects.isPropertyAllowed(property);
 	}
 
-	@SuppressWarnings("unused")
 	private void addTraitWithProbability(String trait, float prob) {
 		float inverse = 1 - prob;
 		for (Entry<String, Float> entry : ink_probabilities.entrySet()) {
 			entry.setValue(entry.getValue() * inverse);
 		}
-		if (trait.equals("")) return;
+		if (trait.equals("")) {
+		    return;
+        }
 		Float f = ink_probabilities.get(trait);
-		if (f != null) prob += f;
+		if (f != null) {
+		    prob += f;
+        }
 		ink_probabilities.put(trait, prob);
 	}
 }

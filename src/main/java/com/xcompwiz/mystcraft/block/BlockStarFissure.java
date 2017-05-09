@@ -37,8 +37,8 @@ public class BlockStarFissure extends BlockContainer {
 		defaultstarfissure.setProperty(LinkPropertyAPI.PROP_SOUND, Sounds.FISSURELINK);
 	}
 
-	public BlockStarFissure(Material material) {
-		super(material);
+	public BlockStarFissure() {
+		super(Material.PORTAL);
 		setLightLevel(0.4F);
 		setTickRandomly(false);
 		setBlockUnbreakable();

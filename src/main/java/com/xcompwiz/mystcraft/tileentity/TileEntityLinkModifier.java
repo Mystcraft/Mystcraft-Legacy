@@ -8,6 +8,9 @@ import com.xcompwiz.mystcraft.linking.LinkOptions;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class TileEntityLinkModifier extends TileEntityBookRotateable {
 
 	@Override
@@ -16,24 +19,20 @@ public class TileEntityLinkModifier extends TileEntityBookRotateable {
 		super.setYaw(rotation);
 	}
 
-	@Override
-	public boolean canUpdate() {
-		return false;
-	}
-
 	public void setBookTitle(EntityPlayer player, String text) {
 		ItemStack itemstack = getBook();
-		if (itemstack != null && (itemstack.getItem() instanceof IItemRenameable)) {
+		if (!itemstack.isEmpty() && (itemstack.getItem() instanceof IItemRenameable)) {
 			((IItemRenameable) itemstack.getItem()).setDisplayName(player, itemstack, text);
 		}
 	}
 
+	@Nonnull
 	public String getLinkDimensionUID() {
 		ItemStack itemstack = getBook();
-		if (itemstack != null) {
+		if (!itemstack.isEmpty()) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-				((ItemLinking)itemstack.getItem()).validate(worldObj, itemstack, new EntityDummy(worldObj, this.xCoord, this.yCoord, this.zCoord, 0, 0));
-				return "" + String.valueOf(LinkOptions.getDimensionUID(itemstack.stackTagCompound));
+				((ItemLinking)itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
+				return "" + String.valueOf(LinkOptions.getDimensionUID(itemstack.getTagCompound()));
 			}
 		}
 		return "";
@@ -41,10 +40,10 @@ public class TileEntityLinkModifier extends TileEntityBookRotateable {
 
 	public boolean getLinkOption(String name) {
 		ItemStack itemstack = getBook();
-		if (itemstack != null) {
+		if (!itemstack.isEmpty()) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-				((ItemLinking)itemstack.getItem()).validate(worldObj, itemstack, new EntityDummy(worldObj, this.xCoord, this.yCoord, this.zCoord, 0, 0));
-				return LinkOptions.getFlag(itemstack.stackTagCompound, name);
+				((ItemLinking)itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
+				return LinkOptions.getFlag(itemstack.getTagCompound(), name);
 			}
 		}
 		return false;
@@ -52,20 +51,21 @@ public class TileEntityLinkModifier extends TileEntityBookRotateable {
 
 	public void setLinkOption(String name, boolean value) {
 		ItemStack itemstack = getBook();
-		if (itemstack != null) {
+		if (!itemstack.isEmpty()) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-				((ItemLinking)itemstack.getItem()).validate(worldObj, itemstack, new EntityDummy(worldObj, this.xCoord, this.yCoord, this.zCoord, 0, 0));
-				LinkOptions.setFlag(itemstack.stackTagCompound, name, value);
+				((ItemLinking)itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
+				LinkOptions.setFlag(itemstack.getTagCompound(), name, value);
 			}
 		}
 	}
 
+	@Nullable
 	public String getLinkProperty(String name) {
 		ItemStack itemstack = getBook();
-		if (itemstack != null) {
+		if (!itemstack.isEmpty()) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-				((ItemLinking)itemstack.getItem()).validate(worldObj, itemstack, new EntityDummy(worldObj, this.xCoord, this.yCoord, this.zCoord, 0, 0));
-				return LinkOptions.getProperty(itemstack.stackTagCompound, name);
+				((ItemLinking)itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
+				return LinkOptions.getProperty(itemstack.getTagCompound(), name);
 			}
 		}
 		return null;
@@ -73,10 +73,10 @@ public class TileEntityLinkModifier extends TileEntityBookRotateable {
 
 	public void setLinkProperty(String name, String value) {
 		ItemStack itemstack = getBook();
-		if (itemstack != null) {
+		if (!itemstack.isEmpty()) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-				((ItemLinking)itemstack.getItem()).validate(worldObj, itemstack, new EntityDummy(worldObj, this.xCoord, this.yCoord, this.zCoord, 0, 0));
-				LinkOptions.setProperty(itemstack.stackTagCompound, name, value);
+				((ItemLinking)itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
+				LinkOptions.setProperty(itemstack.getTagCompound(), name, value);
 			}
 		}
 	}

@@ -63,6 +63,7 @@ import com.xcompwiz.mystcraft.network.packet.MPacketSpawnLightningBolt;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
+import com.xcompwiz.mystcraft.tileentity.*;
 import com.xcompwiz.mystcraft.treasure.TreasureGenWrapper;
 import com.xcompwiz.mystcraft.villager.MerchantRecipeProviderItem;
 import com.xcompwiz.mystcraft.villager.VillageCreationHandlerArchivistHouse;
@@ -270,14 +271,14 @@ public class Mystcraft {
 		ModRecipes.addRecipes(CraftingManager.getInstance());
 
 		// Init TileEntities
-		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityLectern.class, "LinkbookLectern");
-		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityBookstand.class, "LinkbookStand");
-		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityStarFissure.class, "StarFissure");
-		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityDesk.class, "WritingDesk");
-		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle.class, "CrystalBlock");
-		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier.class, "LinkModifier");
-		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder.class, "myst.BookBinder");
-		TileEntity.addMapping(com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer.class, "myst.InkMixer");
+		GameRegistry.registerTileEntity(TileEntityLectern.class, MystObjects.MystcraftModId + ":linkbook_lectern");
+		GameRegistry.registerTileEntity(TileEntityBookstand.class, MystObjects.MystcraftModId + ":linkbook_stand");
+		GameRegistry.registerTileEntity(TileEntityStarFissure.class, MystObjects.MystcraftModId + ":starfissure");
+		GameRegistry.registerTileEntity(TileEntityDesk.class, MystObjects.MystcraftModId + ":writingdesk");
+		GameRegistry.registerTileEntity(TileEntityBookReceptacle.class, MystObjects.MystcraftModId + ":crystal_receptacle");
+		GameRegistry.registerTileEntity(TileEntityLinkModifier.class, MystObjects.MystcraftModId + ":linkmodifier");
+		GameRegistry.registerTileEntity(TileEntityBookBinder.class, MystObjects.MystcraftModId + ":bookbinder");
+		GameRegistry.registerTileEntity(TileEntityInkMixer.class, MystObjects.MystcraftModId + ":inkmixer");
 
 		// Init Entities
 		EntityRegistry.registerModEntity(com.xcompwiz.mystcraft.entity.EntityLinkbook.class, "myst.book", 219, this, 64, 10, true);
@@ -294,8 +295,7 @@ public class Mystcraft {
 		// Init Archivist
 		if (archivistEnabled()) {
 			archivist = new VillagerArchivist();
-			VillagerRegistry.instance().registerVillagerId(archivistId);
-			VillagerRegistry.instance().registerVillageTradeHandler(archivistId, archivist);
+			VillagerRegistry.instance().getRegistry().register(archivist);
 		}
 		VillagerRegistry.instance().registerVillageCreationHandler(new VillageCreationHandlerArchivistHouse());
 

@@ -1,190 +1,125 @@
 package com.xcompwiz.mystcraft.tileentity;
 
-import java.util.Arrays;
-
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
-import com.xcompwiz.mystcraft.nbt.NBTUtils;
 
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
 
-public class TileEntityBook extends TileEntity implements ISidedInventory {
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-	private ItemStack		itemstacks[];
+public class TileEntityBook extends TileEntityBase implements InventoryUpdateListener, InventoryFilter {
 
-	private static int[]	isidedslots	= { 0 };
+	private IOInventory inventory;
 
 	public TileEntityBook() {
-		itemstacks = new ItemStack[1];
-		tileEntityInvalid = false;
+		this.inventory = buildInventory();
 	}
 
-	public void setBook(ItemStack itemstack) {
-		if (itemstack != null) ejectItem(itemstacks[0]);
-		itemstacks[0] = itemstack;
+	protected IOInventory buildInventory() {
+		return new IOInventory(this, new int[] { 0 }, new int[] { 0 }, EnumFacing.VALUES)
+				.setListener(this)
+				.applyFilter(this, 0)
+				.setStackLimit(1, 0);
+	}
+
+	public void setBook(@Nonnull ItemStack itemstack) {
+		if (!itemstack.isEmpty()) {
+			ejectItem(this.inventory.getStackInSlot(0));
+		}
+		this.inventory.setStackInSlot(0, itemstack);
 		markDirty();
 		handleItemChange(0);
 	}
 
+	@Override
+	public boolean canAcceptItem(int slot, @Nonnull ItemStack stack) {
+		return !stack.isEmpty() && stack.getItem() instanceof ItemLinking;
+	}
+
+	@Override
+	public void onChange() {
+		markForUpdate();
+		for (int i = 0; i < this.inventory.getSlots(); i++) {
+			handleItemChange(i);
+		}
+	}
+
+	@Nonnull
 	public ItemStack getBook() {
-		return itemstacks[0];
+		return this.inventory.getStackInSlot(0);
 	}
 
 	public String getBookTitle() {
 		String title = null;
-		if (getBook() != null && getBook().getItem() instanceof ItemLinking) {
-			title = LinkOptions.getDisplayName(getBook().stackTagCompound);
+		if (!getBook().isEmpty() && getBook().getItem() instanceof ItemLinking) {
+			title = LinkOptions.getDisplayName(getBook().getTagCompound());
 		}
 		return title;
 	}
 
+	@Nonnull
 	public ItemStack getDisplayItem() {
-		return itemstacks[0];
+		return this.inventory.getStackInSlot(0);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		NBTUtils.readInventoryArray(nbttagcompound.getTagList("Items", Constants.NBT.TAG_COMPOUND), itemstacks);
-		for (int i = 0; i < itemstacks.length; ++i) {
+	public void readCustomNBT(NBTTagCompound compound) {
+		super.readCustomNBT(compound);
+		this.inventory = IOInventory.deserialize(this, compound.getCompoundTag("inventory"));
+		for (int i = 0; i < inventory.getSlots(); i++) {
 			handleItemChange(i);
 		}
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setTag("Items", NBTUtils.writeInventoryArray(new NBTTagList(), itemstacks));
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return itemstacks.length;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int i) {
-		return itemstacks[i];
-	}
-
-	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		if (itemstacks[i] != null) {
-			if (itemstacks[i].getCount() <= j) {
-				ItemStack itemstack = itemstacks[i];
-				itemstacks[i] = null;
-				handleItemChange(i);
-				return itemstack;
-			}
-			ItemStack itemstack1 = itemstacks[i].splitStack(j);
-			if (itemstacks[i].getCount() == 0) {
-				itemstacks[i] = null;
-			}
-			handleItemChange(i);
-			return itemstack1;
-		}
-		return null;
-	}
-
-	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		itemstacks[i] = itemstack;
-		if (itemstack != null && itemstack.getCount() > getInventoryStackLimit()) {
-			itemstack.stackSize = getInventoryStackLimit();
-		}
-		handleItemChange(i);
-	}
-
-	@Override
-	public String getInventoryName() {
-		return "Book Holder";
-	}
-
-	@Override
-	public boolean hasCustomInventoryName() {
-		return false;
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 1;
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		if (itemstack == null) return false;
-		return itemstack.getItem() instanceof ItemLinking;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) { return false; }
-		return entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
-	}
-
-	@Override
-	public void openInventory() {}
-
-	@Override
-	public void closeInventory() {}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int par1) {
-		if (itemstacks[par1] != null) {
-			ItemStack itemstack = itemstacks[par1];
-			itemstacks[par1] = null;
-			return itemstack;
-		}
-		return null;
+	public void writeCustomNBT(NBTTagCompound compound) {
+		super.writeCustomNBT(compound);
+		compound.setTag("inventory", this.inventory.writeNBT());
 	}
 
 	public void handleItemChange(int slot) {
-		if (!isItemValidForSlot(slot, itemstacks[slot])) {
-			ejectItem(itemstacks[slot]);
-			itemstacks[slot] = null;
+		if (!canAcceptItem(slot, this.inventory.getStackInSlot(slot))) {
+			ejectItem(this.inventory.getStackInSlot(slot));
+			this.inventory.setStackInSlot(slot, ItemStack.EMPTY);
 		}
-		if (worldObj == null) return;
-		// I think this is what causes the TE to resend its information to the clients
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		if(world != null && !world.isRemote) {
+			markForUpdate();
+		}
 	}
 
-	private void ejectItem(ItemStack itemstack) {
-		if (itemstack == null || worldObj == null || worldObj.isRemote) { return; }
-		float f = worldObj.rand.nextFloat() * 0.8F + 0.1F;
-		float f1 = worldObj.rand.nextFloat() * 0.8F + 0.1F;
-		float f2 = worldObj.rand.nextFloat() * 0.8F + 0.1F;
-		EntityItem entityitem = new EntityItem(worldObj, xCoord + f, yCoord + f1, zCoord + f2, itemstack);
+	private void ejectItem(@Nonnull ItemStack itemstack) {
+		if (itemstack.isEmpty() || world == null || world.isRemote) {
+			return;
+		}
+		float f = world.rand.nextFloat() * 0.8F + 0.1F;
+		float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
+		float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
+		EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, itemstack);
 		float f3 = 0.05F;
-		entityitem.motionX = (float) worldObj.rand.nextGaussian() * f3;
-		entityitem.motionY = (float) worldObj.rand.nextGaussian() * f3 + 0.2F;
-		entityitem.motionZ = (float) worldObj.rand.nextGaussian() * f3;
-		worldObj.spawnEntityInWorld(entityitem);
-	}
-
-	/**
-	 * Get the size of the side inventory.
-	 */
-	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
-		return isidedslots;
+		entityitem.motionX = (float) world.rand.nextGaussian() * f3;
+		entityitem.motionY = (float) world.rand.nextGaussian() * f3 + 0.2F;
+		entityitem.motionZ = (float) world.rand.nextGaussian() * f3;
+		world.spawnEntity(entityitem);
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
-		if (Arrays.binarySearch(getAccessibleSlotsFromSide(side), slot) < 0) return false;
-		return this.isItemValidForSlot(slot, itemstack);
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.inventory.hasCapability(facing);
 	}
 
+	@Nullable
 	@Override
-	public boolean canExtractItem(int slot, ItemStack par2ItemStack, int side) {
-		if (Arrays.binarySearch(getAccessibleSlotsFromSide(side), slot) < 0) return false;
-		return true;
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			return (T) this.inventory.getCapability(facing);
+		}
+		return null;
 	}
+
 }

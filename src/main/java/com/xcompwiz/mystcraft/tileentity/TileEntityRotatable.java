@@ -4,29 +4,20 @@ import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.network.IMessageReceiver;
 import com.xcompwiz.mystcraft.network.packet.MPacketMessage;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityRotatable extends TileEntity implements IMessageReceiver, ITileEntityRotateable {
+public class TileEntityRotatable extends TileEntityBase implements ITileEntityRotateable {
 
-	private short	yaw;
-
-	public TileEntityRotatable() {
-		tileEntityInvalid = false;
-		yaw = 0;
-	}
-
-	@Override
-	public boolean canUpdate() {
-		return false;
-	}
+	private short yaw = 0;
 
 	@Override
 	public void setYaw(int yaw) {
 		this.yaw = (short) (yaw % 360);
-		this.markDirty();
-		if (worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		markForUpdate();
 	}
 
 	@Override
@@ -35,27 +26,15 @@ public class TileEntityRotatable extends TileEntity implements IMessageReceiver,
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		this.setYaw(NBTUtils.readNumber(nbttagcompound.getTag("Yaw")).intValue());
+	public void readCustomNBT(NBTTagCompound compound) {
+		super.readCustomNBT(compound);
+		this.setYaw(NBTUtils.readNumber(compound.getTag("Yaw")).intValue());
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setShort("Yaw", yaw);
+	public void writeCustomNBT(NBTTagCompound compound) {
+		super.writeCustomNBT(compound);
+		compound.setShort("Yaw", yaw);
 	}
 
-	@Override
-	public Packet getUpdatePacket() {
-		NBTTagCompound nbttagcompound = new NBTTagCompound();
-		nbttagcompound.setShort("Yaw", yaw);
-		return MPacketMessage.createPacket(this, nbttagcompound);
-	}
-
-	@Override
-	public void processMessageData(NBTTagCompound nbttagcompound) {
-		yaw = nbttagcompound.getShort("Yaw");
-		markDirty();
-	}
 }

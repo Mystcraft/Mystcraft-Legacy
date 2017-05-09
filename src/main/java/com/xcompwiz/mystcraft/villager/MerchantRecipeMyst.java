@@ -16,7 +16,7 @@ public class MerchantRecipeMyst extends MerchantRecipe {
 	public MerchantRecipeMyst(MerchantRecipe recipe) {
 		super(recipe.getItemToBuy(), recipe.getSecondItemToBuy(), recipe.getItemToSell());
 		int usesDelta = recipe.writeToTags().getInteger("maxUses") - 7;
-		func_82783_a(usesDelta);
+		increaseMaxTradeUses(usesDelta);
 	}
 
 	@Override
@@ -24,11 +24,9 @@ public class MerchantRecipeMyst extends MerchantRecipe {
 		return true;
 	}
 
-	/**
-	 * checks first and second ItemToBuy ID's and count. Calls hasSameIDs
-	 */
 	@Override
 	public boolean hasSameItemsAs(MerchantRecipe other) {
 		return this.hasSameIDsAs(other);
 	}
+
 }

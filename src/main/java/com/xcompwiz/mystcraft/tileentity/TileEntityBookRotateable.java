@@ -10,26 +10,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 
-public class TileEntityBookRotateable extends TileEntityBook implements IMessageReceiver, ITileEntityRotateable {
+public class TileEntityBookRotateable extends TileEntityBook implements ITileEntityRotateable {
 
-	private short	yaw;
-	private short	pitch;
-
-	public TileEntityBookRotateable() {
-		tileEntityInvalid = false;
-		yaw = 0;
-		pitch = 0;
-	}
-
-	@Override
-	public boolean canUpdate() {
-		return false;
-	}
+	private short yaw = 0;
+	private short pitch = 0;
 
 	public void setPitch(int pitch) {
 		this.pitch = (short) (pitch % 360);
-		this.markDirty();
-		if (worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		markForUpdate();
 	}
 
 	public short getPitch() {
@@ -39,8 +27,7 @@ public class TileEntityBookRotateable extends TileEntityBook implements IMessage
 	@Override
 	public void setYaw(int yaw) {
 		this.yaw = (short) (yaw % 360);
-		this.markDirty();
-		if (worldObj != null) worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		markForUpdate();
 	}
 
 	@Override
@@ -49,44 +36,24 @@ public class TileEntityBookRotateable extends TileEntityBook implements IMessage
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		this.setYaw(NBTUtils.readNumber(nbttagcompound.getTag("Yaw")).intValue());
-		this.setPitch(NBTUtils.readNumber(nbttagcompound.getTag("Pitch")).intValue());
+	public void readCustomNBT(NBTTagCompound compound) {
+		super.readCustomNBT(compound);
+		this.setYaw(NBTUtils.readNumber(compound.getCompoundTag("Yaw")).intValue());
+		this.setPitch(NBTUtils.readNumber(compound.getCompoundTag("Pitch")).intValue());
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound) {
-		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setShort("Yaw", yaw);
-		nbttagcompound.setShort("Pitch", pitch);
-	}
-
-	@Override
-	public Packet getUpdatePacket() {
-		NBTTagCompound nbttagcompound = new NBTTagCompound();
-		nbttagcompound.setShort("Yaw", yaw);
-		nbttagcompound.setShort("Pitch", pitch);
-		if (getBook() != null) nbttagcompound.setTag("Item", getBook().writeToNBT(new NBTTagCompound()));
-		return MPacketMessage.createPacket(this, nbttagcompound);
-	}
-
-	@Override
-	public void processMessageData(NBTTagCompound nbttagcompound) {
-		yaw = nbttagcompound.getShort("Yaw");
-		pitch = nbttagcompound.getShort("Pitch");
-		if (nbttagcompound.hasKey("Item")) {
-			setBook(new ItemStack(nbttagcompound.getCompoundTag("Item")));
-		} else {
-			setBook(null);
-		}
-		markDirty();
+	public void writeCustomNBT(NBTTagCompound compound) {
+		super.writeCustomNBT(compound);
+		compound.setShort("Yaw", this.yaw);
+		compound.setShort("Pitch", this.pitch);
 	}
 
 	public void link(Entity player) {
 		ItemStack book = getBook();
-		if (book == null) return;
+		if (book.isEmpty()) return;
 		if (!(book.getItem() instanceof ItemLinking)) return;
-		((ItemLinking) book.getItem()).activate(book, worldObj, player);
+		((ItemLinking) book.getItem()).activate(book, world, player);
 	}
+	
 }

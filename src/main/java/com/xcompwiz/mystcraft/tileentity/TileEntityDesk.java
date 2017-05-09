@@ -30,22 +30,32 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 
-public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedInventory, IMessageReceiver {
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+public class TileEntityDesk extends TileEntityBase implements InventoryUpdateListener, InventoryFilter, ITickable {
 
 	private ItemStack			itemstacks[];
 	private ItemStack			tabitems[];
+
+	private IOInventory inventoryStacks;
+	private IOInventory inventoryTabItems;
+
 	private FluidTankFiltered	inkwell;
 
 	private static final int	slot_wrt	= 0;
@@ -58,8 +68,19 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 	public TileEntityDesk() {
 		itemstacks = new ItemStack[4];
 		tabitems = new ItemStack[25];
-		inkwell = new FluidTankFiltered(FluidContainerRegistry.BUCKET_VOLUME);
+		inkwell = new FluidTankFiltered(Fluid.BUCKET_VOLUME);
 		inkwell.setPermittedFluids(Mystcraft.validInks);
+	}
+
+	protected IOInventory buildWorkInventory() {
+		return new IOInventory(this, new int[] { slot_pap }, new int[] {}, EnumFacing.VALUES)
+				.setMiscSlots(new int[] { slot_wrt, slot_ctn, slot_out })
+				.setListener(this)
+				.applyFilter(this, slot_pap); //Doesn't matter for any other slots anyway
+	}
+
+	protected IOInventory buildTabInventory() {
+
 	}
 
 	public int getMainInventorySize() {
@@ -193,31 +214,10 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 	}
 
 	@Override
-	public String getInventoryName() {
-		return "Writing Desk";
-	}
-
-	@Override
-	public boolean hasCustomInventoryName() {
-		return false;
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 		if (worldObj.getTileEntity(xCoord, yCoord, zCoord) != this) { return false; }
 		return entityplayer.getDistanceSq(xCoord + 0.5D, yCoord + 0.5D, zCoord + 0.5D) <= 64D;
 	}
-
-	@Override
-	public void openInventory() {}
-
-	@Override
-	public void closeInventory() {}
 
 	public boolean hasTop() {
 		if (this.worldObj.getBlock(this.xCoord, this.yCoord + 1, this.zCoord) != ModBlocks.writingdesk) return false;
@@ -355,86 +355,62 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 		return result;
 	}
 
+	@Nonnull
 	public ItemStack getTarget() {
-		return itemstacks[slot_wrt];
+	    return this.inventoryStacks.getStackInSlot(slot_wrt);
 	}
 
-	@Override
-	public ItemStack getStackInSlotOnClosing(int index) {
-		ItemStack[] inv = itemstacks;
-		if (index >= itemstacks.length) {
-			inv = tabitems;
-			index -= itemstacks.length;
-		}
-
-		if (inv[index] != null) {
-			ItemStack itemstack = inv[index];
-			inv[index] = null;
-			return itemstack;
-		}
-		return null;
-	}
-
+	@Nullable
 	public FluidStack getInk() {
 		return inkwell.getFluid();
 	}
 
-	public void setInk(FluidStack fluid) {
+	public void setInk(@Nullable FluidStack fluid) {
 		inkwell.setFluid(fluid);
 	}
 
 	private boolean hasEnoughInk() {
-		FluidStack fluid = inkwell.getFluid();
-		if (fluid == null) return false;
-		if (fluid.amount < Mystcraft.inkcost) return false;
-		return true;
-	}
+        FluidStack fluid = inkwell.getFluid();
+        return fluid != null && fluid.amount >= Mystcraft.inkcost;
+    }
 
 	private void useink() {
 		inkwell.drain(Mystcraft.inkcost, true);
 	}
 
-	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		if (resource == null) return 0;
-		return inkwell.fill(resource, doFill);
-	}
+    @Override
+    public void update() {
+        if(world.isRemote) return;
+        if(BlockWritingDesk.isBlockFoot(world.getBlockState(pos))) {
+            this.tileEntityInvalid = true; //Uh... that doesn't change anything but.. SURE..
+        }
+        if(!this.inventoryStacks.getStackInSlot(slot_ctn).isEmpty()) {
+            ItemStack fluidContainer = this.inventoryStacks.getStackInSlot(slot_ctn);
+            ItemStack emptyContainer = fluidContainer.getItem().getContainerItem(fluidContainer);
+            if(emptyContainer.isEmpty() || mergeItemStacksLeft(this.inventoryStacks.getStackInSlot(slot_out), emptyContainer) != this.inventoryStacks.getStackInSlot(slot_out)) {
+                ItemStack result = FluidUtils.fillTankWithContainer(inkwell, fluidContainer);
+                if(!result.isEmpty()) {
+                    this.inventoryStacks.setStackInSlot(slot_out, mergeItemStacksLeft(this.inventoryStacks.getStackInSlot(slot_out), result));
+                    if(fluidContainer.getCount() <= 0) {
+                        this.inventoryStacks.setStackInSlot(slot_ctn, ItemStack.EMPTY);
+                    }
+                }
+            }
+        }
+        if(!this.inventoryStacks.getStackInSlot(slot_ctn).isEmpty()) {
+            ItemStack container = this.inventoryStacks.getStackInSlot(slot_ctn);
+            FluidActionResult far = FluidUtil.tryFillContainer(container, inkwell, Fluid.BUCKET_VOLUME, null, false);
+            if(far.isSuccess()) {
+                if(mergeItemStacksLeft(this.inventoryStacks.getStackInSlot(slot_out), far.getResult()) != this.inventoryStacks.getStackInSlot(slot_out)) {
+                    this.inventoryStacks.setStackInSlot(slot_out,
+                            mergeItemStacksLeft(this.inventoryStacks.getStackInSlot(slot_out), FluidUtil.tryFillContainer(container, inkwell, Fluid.BUCKET_VOLUME, null, true).getResult()));
 
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		return inkwell.drain(maxDrain, doDrain);
-	}
+                }
+            }
+        }
+    }
 
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-		if (resource == null) return null;
-		if (resource.isFluidEqual(inkwell.getFluid())) return inkwell.drain(resource.amount, doDrain);
-		return null;
-	}
-
-	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		if (fluid == null) return false;
-		return inkwell.isFluidPermitted(fluid);
-	}
-
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-		if (fluid == null) return false;
-		return inkwell.isFluidPermitted(fluid);
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-		return new FluidTankInfo[] { inkwell.getInfo() };
-	}
-
-	@Override
-	public boolean canUpdate() {
-		return true;
-	}
-
-	@Override
+    @Override
 	public void updateEntity() {
 		if (worldObj.isRemote) return;
 		if (BlockWritingDesk.isBlockFoot(worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord))) this.tileEntityInvalid = true;
@@ -463,9 +439,12 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 	}
 
 	//XXX: (Fluids) Improve how I handle fluid containers and items
-	private static ItemStack mergeItemStacksLeft(ItemStack left, ItemStack right) {
-		if (right == null) return left;
-		if (left == null) return right;
+    // Hellfire> +1 that ^ - will do. eventually. TODO use forge's FluidUtil to do fluids 'better'
+    //Lol... duplicate code from inkMixer.
+    @Nonnull
+	private static ItemStack mergeItemStacksLeft(@Nonnull ItemStack left, @Nonnull ItemStack right) {
+		if (right.isEmpty()) return left;
+		if (left.isEmpty()) return right;
 		if (left.getItem() != right.getItem()) {
 			return left;
 		} else if (left.hasTagCompound() != right.hasTagCompound()) {
@@ -474,46 +453,43 @@ public class TileEntityDesk extends TileEntity implements IFluidHandler, ISidedI
 			return left;
 		} else if (left.getItem().getHasSubtypes() && left.getItemDamage() != right.getItemDamage()) {
 			return left;
-		} else if (left.stackSize + right.stackSize > left.getMaxStackSize()) { return left; }
+		} else if (left.getCount() + right.getCount() > left.getMaxStackSize()) {
+		    return left;
+		}
 		left = left.copy();
-		left.stackSize += right.stackSize;
-		right.stackSize = 0;
+		left.grow(right.getCount());
+		right.setCount(0);
 		return left;
 	}
 
 	public void link(Entity player) {
 		ItemStack book = getTarget();
-		if (book == null) return;
+		if (book.isEmpty()) return;
 		if (!(book.getItem() instanceof ItemLinking)) return;
-		((ItemLinking) book.getItem()).activate(book, worldObj, player);
-	}
-
-	/**
-	 * Get the size of the side inventory.
-	 */
-	@Override
-	public int[] getAccessibleSlotsFromSide(int par1) {
-		return isidedslots;
+		((ItemLinking) book.getItem()).activate(book, world, player);
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack itemstack, int par3) {
-		return this.isItemValidForSlot(slot, itemstack);
-	}
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
+
+    @Nullable
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return (T) this.inventoryStacks.getCapability(facing);
+        }
+        if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            return (T) inkwell;
+        }
+        return null;
+    }
 
 	@Override
-	public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3) {
-		return false;
-	}
-
-	/**
-	 * Return an {@link AxisAlignedBB} that controls the visible scope of a {@link TileEntitySpecialRenderer} associated with this {@link TileEntity} Defaults
-	 * to the collision bounding box {@link Block#getCollisionBoundingBoxFromPool(World, int, int, int)} associated with the block at this location.
-	 * @return an appropriately size {@link AxisAlignedBB} for the {@link TileEntity}
-	 */
-	@Override
+	@Nonnull
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
-		return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 2, zCoord + 2);
+		return new AxisAlignedBB(-1, 0, -1, 2, 2, 2).offset(pos);
 	}
 }

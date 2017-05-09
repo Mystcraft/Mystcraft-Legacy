@@ -1,7 +1,5 @@
 package com.xcompwiz.mystcraft.tileentity;
 
-import java.util.Iterator;
-
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 
@@ -12,15 +10,18 @@ import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.storage.MapData;
 
-public class TileEntityLectern extends TileEntityBookRotateable {
+import javax.annotation.Nonnull;
+
+public class TileEntityLectern extends TileEntityBookRotateable implements ITickable {
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound) {
-		super.readFromNBT(nbttagcompound);
-		if (nbttagcompound.hasKey("Rotation")) {
-			int rot = 360 - nbttagcompound.getInteger("Rotation") + 270;
+	public void readCustomNBT(NBTTagCompound compound) {
+		super.readCustomNBT(compound);
+		if (compound.hasKey("Rotation")) {
+			int rot = 360 - compound.getInteger("Rotation") + 270;
 			this.setYaw(rot);
 		}
 	}
@@ -32,44 +33,30 @@ public class TileEntityLectern extends TileEntityBookRotateable {
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
-		if (itemstack == null) return false;
-		if (itemstack.getItem() instanceof ItemLinking) return true;
-		if (itemstack.getItem() == ModItems.page) return true;
-		if (itemstack.getItem() == Items.filled_map) return true;
-		return false;
+	public boolean canAcceptItem(int slot, @Nonnull ItemStack stack) {
+		if (stack.isEmpty()) return false;
+		return stack.getItem() instanceof ItemLinking || stack.getItem() == ModItems.page || stack.getItem() == Items.FILLED_MAP;
 	}
 
 	@Override
-	public String getInventoryName() {
-		return "Lectern";
-	}
+	public void update() {
+		if(!world.isRemote){
+			ItemStack display = getDisplayItem();
+			if(!display.isEmpty() && display.getItem() instanceof ItemMap) {
+				MapData md = Items.FILLED_MAP.getMapData(display, world);
+				if(md != null) {
+					for (EntityPlayer playerEntity : world.playerEntities) {
+						EntityPlayerMP pl = (EntityPlayerMP) playerEntity;
+						md.getMapInfo(pl);
 
-	@Override
-	public boolean canUpdate() {
-		return true;
-	}
-
-	@Override
-	public void updateEntity() {
-		if (!worldObj.isRemote) {
-			ItemStack displayed = this.getDisplayItem();
-
-			if (displayed != null && displayed.getItem() instanceof ItemMap) {
-				MapData mapdata = Items.filled_map.getMapData(displayed, this.worldObj);
-				Iterator<EntityPlayer> iter = worldObj.playerEntities.iterator();
-
-				while (iter.hasNext()) {
-					EntityPlayer player = iter.next();
-					EntityPlayerMP playerMP = (EntityPlayerMP) player;
-					mapdata.func_82568_a(playerMP);
-
-					Packet packet = Items.filled_map.func_150911_c(displayed, this.worldObj, playerMP);
-					if (packet != null) {
-						playerMP.playerNetServerHandler.sendPacket(packet);
+						Packet<?> update = Items.FILLED_MAP.createMapDataPacket(display, world, pl);
+						if (update != null) {
+							pl.connection.sendPacket(update);
+						}
 					}
 				}
 			}
 		}
 	}
+
 }

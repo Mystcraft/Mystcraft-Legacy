@@ -4,8 +4,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
-public interface IItemBuilder extends IInventory {
+import javax.annotation.Nonnull;
 
-	public abstract void buildItem(ItemStack itemstack, EntityPlayer player);
+public interface IItemBuilder {
+
+	public abstract void buildItem(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer player);
 
 }

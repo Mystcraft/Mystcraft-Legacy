@@ -6,6 +6,10 @@ import net.minecraft.world.World;
 
 public class EntityDummy extends Entity {
 
+	public EntityDummy(World world) {
+		super(world);
+	}
+
 	public EntityDummy(World worldObj, int x, int y, int z, int yaw, int pitch) {
 		super(worldObj);
 		this.posX = x;

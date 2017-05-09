@@ -7,7 +7,6 @@ import com.xcompwiz.mystcraft.block.BlockBookReceptacle;
 import com.xcompwiz.mystcraft.block.BlockBookstand;
 import com.xcompwiz.mystcraft.block.BlockCrystal;
 import com.xcompwiz.mystcraft.block.BlockDecay;
-import com.xcompwiz.mystcraft.block.BlockFluidWrapper;
 import com.xcompwiz.mystcraft.block.BlockInkMixer;
 import com.xcompwiz.mystcraft.block.BlockLectern;
 import com.xcompwiz.mystcraft.block.BlockLinkModifier;
@@ -16,19 +15,21 @@ import com.xcompwiz.mystcraft.block.BlockStarFissure;
 import com.xcompwiz.mystcraft.block.BlockWritingDesk;
 import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.instability.decay.DecayHandler;
-import com.xcompwiz.mystcraft.item.ItemBlockFluid;
 import com.xcompwiz.mystcraft.item.ItemDecayBlock;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.client.renderer.ItemModelMesher;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoader;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -61,8 +62,8 @@ public class ModBlocks {
 		crystal = new BlockCrystal();
 		portal = new BlockLinkPortal();
 		writingdesk = new BlockWritingDesk();
-		starfissure = new BlockStarFissure(Material.PORTAL);
-		black_ink = new BlockFluidWrapper(ModFluids.black_ink, new MaterialLiquid(MapColor.WATER));//).setUnlocalizedName("myst.fluid");
+		starfissure = new BlockStarFissure();
+		black_ink = new BlockFluidClassic(ModFluids.black_ink, new MaterialLiquid(MapColor.WATER));//).setUnlocalizedName("myst.fluid");
 
 		inkmixer.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.inkmixer));
 		bookbinder.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.bookbinder));
@@ -114,7 +115,44 @@ public class ModBlocks {
 
 	@SideOnly(Side.CLIENT)
 	public static void registerModels() {
+		BlockModelShapes bms = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
 
+		ItemModelMesher imm = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+		imm.register(Item.getItemFromBlock(inkmixer), 0, mrlItemBlockModel("inkmixer"));
+		imm.register(Item.getItemFromBlock(bookbinder), 0, mrlItemBlockModel("bookbinder"));
+		imm.register(Item.getItemFromBlock(receptacle), 0, mrlItemBlockModel("receptacle"));
+		imm.register(Item.getItemFromBlock(bookstand), 0, mrlItemBlockModel("bookstand"));
+		imm.register(Item.getItemFromBlock(lectern), 0, mrlItemBlockModel("lectern"));
+		imm.register(Item.getItemFromBlock(linkmodifier), 0, mrlItemBlockModel("linkmodifier"));
+		imm.register(Item.getItemFromBlock(crystal), 0, mrlItemBlockModel("crystal"));
+		imm.register(Item.getItemFromBlock(portal), 0, mrlItemBlockModel("portal"));
+		imm.register(Item.getItemFromBlock(writingdesk), 0, mrlItemBlockModel("writingdesk_base"));
+		imm.register(Item.getItemFromBlock(writingdesk), 1, mrlItemBlockModel("writingdesk_top"));
+		imm.register(Item.getItemFromBlock(starfissure), 0, mrlItemBlockModel("starfissure"));
+
+
+		imm.register(Item.getItemFromBlock(decay), (stack -> {
+			DecayHandler handle = DecayHandler.getHandler(stack.getItemDamage());
+			if(handle == null) {
+				handle = DecayHandler.getHandler(DecayHandler.BLACK);
+			}
+			return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "decay_" + handle.getIdentifier()), "inventory");
+		}));
+
+		BlockColors colors = Minecraft.getMinecraft().getBlockColors();
+		colors.registerBlockColorHandler((state, world, pos, tint) -> {
+			if(world instanceof World) {
+				return ModFluids.black_ink.getColor((World) world, pos);
+			} else {
+				return ModFluids.black_ink.getColor();
+			}
+		}, black_ink);
+		colors.registerBlockColorHandler(((state, worldIn, pos, tint) -> BlockLinkPortal.colorMultiplier(worldIn, pos)), portal);
+	}
+
+	@SideOnly(Side.CLIENT)
+	private static ModelResourceLocation mrlItemBlockModel(String name) {
+		return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, name), "inventory");
 	}
 
 }
