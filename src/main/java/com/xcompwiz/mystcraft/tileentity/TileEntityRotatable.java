@@ -1,14 +1,8 @@
 package com.xcompwiz.mystcraft.tileentity;
 
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
-import com.xcompwiz.mystcraft.network.IMessageReceiver;
-import com.xcompwiz.mystcraft.network.packet.MPacketMessage;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityRotatable extends TileEntityBase implements ITileEntityRotateable {
 

@@ -13,12 +13,14 @@ import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffectBasic;
 import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffectBreakBlocks;
 import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffectFire;
 import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffectPlaceOres;
+import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketExplosion;
 import com.xcompwiz.mystcraft.network.packet.MPacketParticles;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,6 +33,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -173,8 +176,7 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 	}
 
 	private ExplosionAdvanced newExplosion(Entity entity, double posX, double posY, double posZ, float power, boolean isFlaming, boolean addOres) {
-		World worldObj = entity.worldObj;
-		ExplosionAdvanced explosion = new ExplosionAdvanced(worldObj, entity, posX, posY, posZ, power);
+		ExplosionAdvanced explosion = new ExplosionAdvanced(entity.world, entity, posX, posY, posZ, power);
 		explosion.effects.add(ExplosionEffectBasic.instance);
 		explosion.effects.add(ExplosionEffectBreakBlocks.noDrop);
 		if (isFlaming) {
@@ -185,15 +187,7 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 		}
 		explosion.doExplosionA();
 		explosion.doExplosionB(false);
-		Iterator<EntityPlayerMP> var11 = worldObj.playerEntities.iterator();
-
-		while (var11.hasNext()) {
-			EntityPlayerMP player = var11.next();
-
-			if (player.getDistanceSq(posX, posY, posZ) < 4096.0D) {
-				player.playerNetServerHandler.sendPacket(MPacketExplosion.createPacket(player, explosion));
-			}
-		}
+		MystcraftPacketHandler.CHANNEL.sendToAllAround(new MPacketExplosion(explosion), new NetworkRegistry.TargetPoint(entity.world.provider.getDimension(), posX, posY, posZ, 64));
 		MinecraftForge.EVENT_BUS.post(new MetorExplosion(this, explosion.blocks));
 
 		return explosion;
@@ -223,9 +217,7 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 		}
 
 		if (brokeblocks) {
-			Packet pkt = MPacketParticles.createPacket(this, "largeexplode");
-			MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-			if (server != null) server.getPlayerList().sendPacketToAllPlayersInDimension(pkt, this.worldObj.provider.dimensionId);
+			MystcraftPacketHandler.CHANNEL.sendToDimension(new MPacketParticles(posX, posY, posZ, "largeexplode"), world.provider.getDimension());
 		}
 
 		return brokeblocks;

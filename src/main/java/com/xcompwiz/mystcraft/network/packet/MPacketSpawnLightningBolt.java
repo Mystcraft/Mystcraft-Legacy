@@ -4,48 +4,80 @@ import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.entity.EntityLightningBoltAdv;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class MPacketSpawnLightningBolt extends PacketBase {
+public class MPacketSpawnLightningBolt extends PacketBase<MPacketSpawnLightningBolt, MPacketSpawnLightningBolt> {
+
+	private int entityId;
+	private double x, y, z;
+	private boolean colored;
+	private float r, g, b;
+
+	public MPacketSpawnLightningBolt() {}
+
+	public MPacketSpawnLightningBolt(EntityLightningBoltAdv adv) {
+		this.entityId = adv.getEntityId();
+		this.x = adv.posX;
+		this.y = adv.posY;
+		this.z = adv.posZ;
+		Color c = adv.getColor();
+		if(c != null) {
+			colored = true;
+			r = c.r;
+			g = c.g;
+			b = c.b;
+		} else {
+			colored = false;
+		}
+	}
 
 	@Override
-	public void handle(ByteBuf data, EntityPlayer player) {
-		int entityId = data.readInt();
-		double posX = data.readDouble();
-		double posY = data.readDouble();
-		double posZ = data.readDouble();
-		Color color = null;
-		if (data.readBoolean()) {
-			color = new Color(data.readFloat(), data.readFloat(), data.readFloat());
+	public void fromBytes(ByteBuf buf) {
+		this.entityId = buf.readInt();
+		this.x = buf.readDouble();
+		this.y = buf.readDouble();
+		this.z = buf.readDouble();
+		this.colored = buf.readBoolean();
+		if(this.colored) {
+			this.r = buf.readFloat();
+			this.g = buf.readFloat();
+			this.b = buf.readFloat();
 		}
-		EntityLightningBoltAdv entity = new EntityLightningBoltAdv(player.worldObj, posX, posY, posZ);
+	}
+
+	@Override
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(this.entityId);
+		buf.writeDouble(this.x);
+		buf.writeDouble(this.y);
+		buf.writeDouble(this.z);
+		buf.writeBoolean(this.colored);
+		if(this.colored) {
+			buf.writeFloat(this.r);
+			buf.writeFloat(this.g);
+			buf.writeFloat(this.b);
+		}
+	}
+
+	@Override
+	public MPacketSpawnLightningBolt onMessage(MPacketSpawnLightningBolt message, MessageContext ctx) {
+		playLightningBolt(message);
+		return null;
+	}
+
+	@SideOnly(Side.CLIENT)
+	private void playLightningBolt(MPacketSpawnLightningBolt p) {
+		EntityLightningBoltAdv entity = new EntityLightningBoltAdv(Minecraft.getMinecraft().world, p.x, p.y, p.z, false);
 		entity.setEntityId(entityId);
-		if (color != null) entity.setColor(color);
-		player.worldObj.addWeatherEffect(entity);
-	}
-
-	public static FMLProxyPacket createPacket(EntityLightningBoltAdv entity) {
-		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
-
-		try {
-			data.writeInt(entity.getEntityId());
-			data.writeDouble(entity.posX);
-			data.writeDouble(entity.posY);
-			data.writeDouble(entity.posZ);
-			Color color = entity.getColor();
-			if (color == null) {
-				data.writeBoolean(false);
-			} else {
-				data.writeBoolean(true);
-				data.writeFloat(color.r);
-				data.writeFloat(color.g);
-				data.writeFloat(color.b);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (p.colored) {
+			entity.setColor(new Color(p.r, p.g, p.b));
 		}
-
-		return buildPacket(data);
+		Minecraft.getMinecraft().world.addWeatherEffect(entity);
 	}
+
 }

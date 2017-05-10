@@ -7,14 +7,19 @@ import com.xcompwiz.mystcraft.world.WorldInfoUtils;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class MystcraftLookingGlassEventHandler {
 
 	@SubscribeEvent
 	public void onClientViewDimension(ClientWorldInfoEvent event) {
-		World world = MinecraftServer.getServer().worldServerForDimension(event.dim);
-		if (world == null) return;
-		if (WorldInfoUtils.isMystcraftAge(world)) MystcraftPacketHandler.bus.sendTo(MPacketAgeData.getDataPacket(event.dim), event.player);
+		World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(event.dim);
+		if (world == null) { //Can very well be null.
+			return;
+		}
+		if (WorldInfoUtils.isMystcraftAge(world)) {
+			MystcraftPacketHandler.CHANNEL.sendTo(new MPacketAgeData(event.dim), event.player);
+		}
 	}
 }

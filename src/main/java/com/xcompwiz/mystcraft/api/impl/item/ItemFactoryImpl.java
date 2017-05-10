@@ -17,6 +17,8 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class ItemFactoryImpl {
 
 	public ItemStack buildPage() {
@@ -36,6 +38,7 @@ public class ItemFactoryImpl {
 		return page;
 	}
 
+	@Nonnull
 	public ItemStack buildCollectionItem(String name, String... tokens) {
 		// First, grab all the rules
 		HashSet<Rule> rules = new HashSet<Rule>();

@@ -386,6 +386,10 @@ public class TileEntityDesk extends TileEntityBase implements InventoryFilter, I
         return null;
     }
 
+	public FluidTankFiltered getInkwell() {
+		return inkwell;
+	}
+
 	@Override
 	@Nonnull
 	@SideOnly(Side.CLIENT)

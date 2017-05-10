@@ -8,31 +8,38 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class MPacketAgeData extends PacketBase {
+public class MPacketAgeData extends PacketBase<MPacketAgeData, MPacketAgeData> {
+
+	private NBTTagCompound tag;
+	private int id;
+
+	public MPacketAgeData() {}
+
+	public MPacketAgeData(int id) {
+		this.id = id;
+		this.tag = AgeData.getAge(id, false).writeToNBT(new NBTTagCompound());
+	}
 
 	@Override
-	public void handle(ByteBuf data, EntityPlayer player) {
-		readDataPacket(player.world, data);
+	public void fromBytes(ByteBuf buf) {
+		this.id = buf.readInt();
+		this.tag = readTag(buf);
 	}
 
-	private static void readDataPacket(World worldObj, ByteBuf data) {
-		int uId = data.readInt();
-		NBTTagCompound nbt = ByteBufUtils.readTag(data);
-		AgeData agedata = AgeData.getMPAgeData(uId);
-		agedata.readFromNBT(nbt);
-		return;
+	@Override
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(this.id);
+		writeTag(buf, tag);
 	}
 
-	public static FMLProxyPacket getDataPacket(int uid) {
-		NBTTagCompound nbttagcompound = AgeData.getAge(uid, false).writeToNBT(new NBTTagCompound());
-
-		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
-
-		data.writeInt(uid);
-		ByteBufUtils.writeTag(data, nbttagcompound);
-
-		return buildPacket(data);
+	@Override
+	public MPacketAgeData onMessage(MPacketAgeData message, MessageContext ctx) {
+		AgeData agedata = AgeData.getMPAgeData(message.id);
+		agedata.readFromNBT(message.tag);
+		return null;
 	}
 
 }

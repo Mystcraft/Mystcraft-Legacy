@@ -38,6 +38,9 @@ import com.xcompwiz.mystcraft.data.ModSymbols;
 import com.xcompwiz.mystcraft.data.ModSymbolsFluids;
 import com.xcompwiz.mystcraft.data.ModWords;
 import com.xcompwiz.mystcraft.data.SymbolRules;
+import com.xcompwiz.mystcraft.entity.EntityFallingBlock;
+import com.xcompwiz.mystcraft.entity.EntityLinkbook;
+import com.xcompwiz.mystcraft.entity.EntityMeteor;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
 import com.xcompwiz.mystcraft.imc.IMCHandler;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
@@ -50,16 +53,6 @@ import com.xcompwiz.mystcraft.linking.LinkListenerForgeServer;
 import com.xcompwiz.mystcraft.linking.LinkListenerPermissions;
 import com.xcompwiz.mystcraft.network.MystcraftConnectionHandler;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
-import com.xcompwiz.mystcraft.network.packet.MPacketActivateItem;
-import com.xcompwiz.mystcraft.network.packet.MPacketAgeData;
-import com.xcompwiz.mystcraft.network.packet.MPacketConfigs;
-import com.xcompwiz.mystcraft.network.packet.MPacketDimensions;
-import com.xcompwiz.mystcraft.network.packet.MPacketExplosion;
-import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
-import com.xcompwiz.mystcraft.network.packet.MPacketMessage;
-import com.xcompwiz.mystcraft.network.packet.MPacketParticles;
-import com.xcompwiz.mystcraft.network.packet.MPacketProfilingState;
-import com.xcompwiz.mystcraft.network.packet.MPacketSpawnLightningBolt;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
@@ -84,7 +77,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -112,7 +105,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
-@Mod(modid = MystObjects.MystcraftModId, version = "@VERSION@", name = "Mystcraft", useMetadata = true, dependencies = "required-after:Forge@[10.12.1.1083,)")
+@Mod(modid = MystObjects.MystcraftModId, version = "@VERSION@", name = "Mystcraft", useMetadata = true, acceptedMinecraftVersions = "[1.11.2]", dependencies = "required-after:Forge@[10.12.1.1083,)")
 public class Mystcraft {
 
 	@Instance(MystObjects.MystcraftModId)
@@ -158,20 +151,8 @@ public class Mystcraft {
 		InternalAPI.initAPI();
 
 		// Init packet handling
-		MystcraftPacketHandler.registerPacketHandler(new MPacketDimensions(), (byte) 10); // 10
-		MystcraftPacketHandler.registerPacketHandler(new MPacketConfigs(), (byte) 20); // 25
-		MystcraftPacketHandler.registerPacketHandler(new MPacketProfilingState(), (byte) 21); // 25
-		MystcraftPacketHandler.registerPacketHandler(new MPacketParticles(), (byte) 25); // 20
-		MystcraftPacketHandler.registerPacketHandler(new MPacketMessage(), (byte) 132); // 132
-		MystcraftPacketHandler.registerPacketHandler(new MPacketGuiMessage(), (byte) 140); // 140
-		MystcraftPacketHandler.registerPacketHandler(new MPacketActivateItem(), (byte) 137); // 137
-		MystcraftPacketHandler.registerPacketHandler(new MPacketAgeData(), (byte) 135); // 135
-		MystcraftPacketHandler.registerPacketHandler(new MPacketExplosion(), (byte) 100); // 100
-		MystcraftPacketHandler.registerPacketHandler(new MPacketSpawnLightningBolt(), (byte) 101); // 101
-
+		MystcraftPacketHandler.init();
 		MinecraftForge.EVENT_BUS.register(new MystcraftConnectionHandler());
-		MystcraftPacketHandler.bus = NetworkRegistry.INSTANCE.newEventDrivenChannel(MystcraftPacketHandler.CHANNEL);
-		MystcraftPacketHandler.bus.register(new MystcraftPacketHandler());
 
 		// Register Event Handler
 		MinecraftForge.EVENT_BUS.register(new MystcraftEventHandler());
@@ -281,9 +262,9 @@ public class Mystcraft {
 		GameRegistry.registerTileEntity(TileEntityInkMixer.class, MystObjects.MystcraftModId + ":inkmixer");
 
 		// Init Entities
-		EntityRegistry.registerModEntity(com.xcompwiz.mystcraft.entity.EntityLinkbook.class, "myst.book", 219, this, 64, 10, true);
-		EntityRegistry.registerModEntity(com.xcompwiz.mystcraft.entity.EntityFallingBlock.class, "myst.block", 218, this, 16, 60, false);
-		EntityRegistry.registerModEntity(com.xcompwiz.mystcraft.entity.EntityMeteor.class, "myst.meteor", 217, this, 192, 30, false);
+        EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.book"), EntityLinkbook.class, "myst.book", 0, instance, 64, 10, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.block"), EntityFallingBlock.class, "myst.block", 1, instance, 16, 60, false);
+        EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.meteor"), EntityMeteor.class, "myst.meteor", 2, instance, 192, 30, false);
 
 		// Init Symbol System
 		ModSymbols.initialize();
@@ -360,17 +341,19 @@ public class Mystcraft {
 	@EventHandler
 	public void serverStart(FMLServerStartingEvent event) {
 		MinecraftServer mcserver = event.getServer();
-		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandTPX());
-		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandCreateDim());
-		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandCreateAgebook());
-		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandToggleWorldInstability());
-		if (spawnmeteorEnabled) ((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandSpawnMeteor());
-		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandToggleDownfall());
-		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandTime());
-		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandMystPermissions());
-		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandRegenerateChunk());
-		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandReprofile());
-		((ServerCommandManager) mcserver.getCommandManager()).registerCommand(new CommandDebug());
+		event.registerServerCommand(new CommandTPX());
+		event.registerServerCommand(new CommandCreateDim());
+		event.registerServerCommand(new CommandCreateAgebook());
+		event.registerServerCommand(new CommandToggleWorldInstability());
+		if (spawnmeteorEnabled) {
+			event.registerServerCommand(new CommandSpawnMeteor());
+		}
+		event.registerServerCommand(new CommandToggleDownfall());
+		event.registerServerCommand(new CommandTime());
+		event.registerServerCommand(new CommandMystPermissions());
+		event.registerServerCommand(new CommandRegenerateChunk());
+		event.registerServerCommand(new CommandReprofile());
+		event.registerServerCommand(new CommandDebug());
 
 		profilingThread = new ChunkProfilerManager();
 		profilingThread.start();
@@ -423,7 +406,7 @@ public class Mystcraft {
 
 	public static void registerDimensions(ISaveHandler savehandler) {
 		registeredDims = FileUtils.getExistingAgeList(savehandler.getMapFileFromName("dummy").getParentFile());
-		deadDims = new LinkedList<Integer>();
+		deadDims = new LinkedList<>();
 		MapStorage tempstorage = new MapStorage(savehandler);
 		for (Integer dimId : registeredDims) {
 			DimensionManager.registerDimension(dimId, dimensionType);
@@ -432,10 +415,11 @@ public class Mystcraft {
 		}
 	}
 
-	@EventHandler
-	public void handleNameChanges(FMLMissingMappingsEvent event) {
-		for (MissingMapping elem : event.get()) {
-			if (elem.name.equals("Mystcraft:notebook")) elem.remap(ModItems.folder);
-		}
-	}
+	//Hellfire> obsolete
+	//@EventHandler
+	//public void handleNameChanges(FMLMissingMappingsEvent event) {
+	//	for (MissingMapping elem : event.get()) {
+	//		if (elem.name.equals("Mystcraft:notebook")) elem.remap(ModItems.folder);
+	//	}
+	//}
 }

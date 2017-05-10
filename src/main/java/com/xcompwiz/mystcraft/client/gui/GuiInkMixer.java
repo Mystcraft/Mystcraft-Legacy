@@ -69,7 +69,7 @@ public class GuiInkMixer extends GuiContainer {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setBoolean(ContainerInkMixer.Messages.Consume, true);
 				nbttagcompound.setBoolean("Single", (k == 1));
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.player.openContainer.windowId, nbttagcompound));
+				MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
 				container.processMessage(mc.player, nbttagcompound);
 				return;
 			}

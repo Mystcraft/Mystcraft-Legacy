@@ -5,6 +5,7 @@ import java.util.Random;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.entity.EntityLightningBoltAdv;
+import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketSpawnLightningBolt;
 
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -12,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class EffectLightning implements IEnvironmentalEffect {
 
@@ -56,7 +58,8 @@ public class EffectLightning implements IEnvironmentalEffect {
 			if (gradient != null && gradient.getColorCount() > 0) bolt.setColor(gradient.getColor(worldObj.getTotalWorldTime() / 12000F));
 			worldObj.weatherEffects.add(bolt);
 			if (worldObj instanceof WorldServer) {
-				((WorldServer) worldObj).func_73046_m().getPlayerList().sendToAllNear(bolt.posX, bolt.posY, bolt.posZ, 512.0D, worldObj.provider.dimensionId, MPacketSpawnLightningBolt.createPacket(bolt));
+				MystcraftPacketHandler.CHANNEL.sendToAllAround(new MPacketSpawnLightningBolt(bolt),
+						new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(), bolt.posX, bolt.posY, bolt.posZ, 512.0D));
 			}
 		}
 	}

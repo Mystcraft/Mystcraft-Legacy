@@ -27,9 +27,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class GuiBookBinder extends GuiContainerElements {
-	private static final List<String>	panel_tooltip	= Arrays.asList("Missing Link Panel", "Add a link panel as the first page of the book.");	;
+
+	private static final List<String> panel_tooltip = Arrays.asList("Missing Link Panel", "Add a link panel as the first page of the book.");
 
 	private class GuiElementMissingPanel extends GuiElementIcon {
+
 		private boolean	hovered;
 		private float	alpha = 1;
 
@@ -89,7 +91,7 @@ public class GuiBookBinder extends GuiContainerElements {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setInteger(ContainerBookBinder.Messages.InsertHeldAt, index);
 			nbttagcompound.setBoolean("Single", (mousebutton == 1));
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.player.openContainer.windowId, nbttagcompound));
+			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
 			container.processMessage(mc.player, nbttagcompound);
 		}
 
@@ -97,7 +99,7 @@ public class GuiBookBinder extends GuiContainerElements {
 		public void onItemRemove(GuiElementScrollablePages guiElementScrollablePages, int clickedpage) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setInteger(ContainerBookBinder.Messages.TakeFromSlider, clickedpage);
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.player.openContainer.windowId, nbttagcompound));
+			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
 		}
 	}
 
@@ -111,7 +113,7 @@ public class GuiBookBinder extends GuiContainerElements {
 		public void onTextChange(GuiElementTextField caller, String text) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setString(ContainerBookBinder.Messages.SetTitle, text);
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
+			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(container.windowId, nbttagcompound));
 			container.processMessage(mc.player, nbttagcompound);
 		}
 	}
@@ -119,8 +121,8 @@ public class GuiBookBinder extends GuiContainerElements {
 	private ContainerBookBinder	container;
 
 	private GuiElementTextField	txtBookName;
-	private int					errorcolor	= 0xFFFF0000;
-	private int					txtcolor	= 0xFFA0A0A0;
+	private int	errorcolor = 0xFFFF0000;
+	private int	txtcolor = 0xFFA0A0A0;
 
 	public GuiBookBinder(InventoryPlayer inventoryplayer, TileEntityBookBinder tileentity) {
 		super(new ContainerBookBinder(inventoryplayer, tileentity));

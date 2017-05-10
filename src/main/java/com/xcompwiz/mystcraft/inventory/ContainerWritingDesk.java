@@ -15,17 +15,22 @@ import com.xcompwiz.mystcraft.item.LinkItemUtils;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
+import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+
+import javax.annotation.Nonnull;
 
 public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHandler, IBookContainer, IItemProvider {
 	public static class Messages {
@@ -55,12 +60,15 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 
 	private TileEntityDesk		tileentity;
 	private FluidStack			fluid;
-	private ItemStack			currentpage;
+
+	@Nonnull
+	private ItemStack			currentpage = ItemStack.EMPTY;
 	private int					currentpageIndex;
 	private int					pagecount;
 	private ILinkInfo			cached_linkinfo;
-	private Boolean				cached_permitted;
-	private String				cached_title		= "";
+	private boolean				cached_permitted;
+	@Nonnull
+	private String				cached_title = "";
 
 	private EntityPlayer		player;
 	private FluidTankProvider	fluidDataContainer	= new FluidTankProvider();
@@ -73,10 +81,10 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		this.pagecount = 0;
 		this.player = inventoryplayer.player;
 
-		fluidDataContainer.setMax(tileentity.getTankInfo(null)[0].capacity);
+		fluidDataContainer.setMax(tileentity.getInkwell().getCapacity());
 
 		for (int i = 0; i < tabslots; ++i) {
-			SlotFiltered slot = new SlotFiltered(tileentity, i + tileentity.getMainInventorySize(), 37, 14 + i * 37 + yShift);// , ItemFolder.instance.getIconFromDamage(0), ItemFolder.instance.getTextureFile()));
+			SlotFiltered slot = new SlotFiltered(tileentity, i + tileentity.getMainInventorySize(), 37, 14 + i * 37 + yShift);
 			slot.setSlotStackLimit(1);
 			addSlotToContainer(slot);
 		}
@@ -84,9 +92,9 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		SlotFiltered slot = new SlotFiltered(tileentity, 0, 8 + xShift, 60 + yShift);
 		slot.setSlotStackLimit(1);
 		addSlotToContainer(slot);
-		addSlotToContainer(new SlotFiltered(tileentity, 1, 8 + xShift, 8 + yShift));// , Items.paper.getIconFromDamage(0), Items.paper.getTextureFile()));
-		addSlotToContainer(new SlotFiltered(tileentity, 2, 152 + xShift, 8 + yShift));// , Items.dyePowder.getIconFromDamage(0), Items.dyePowder.getTextureFile()));
-		addSlotToContainer(new SlotFiltered(tileentity, 3, 152 + xShift, 60 + yShift));// , Items.glass_bottle.getIconFromDamage(0), Items.glass_bottle.getTextureFile()));
+		addSlotToContainer(new SlotFiltered(tileentity, 1, 8 + xShift, 8 + yShift));
+		addSlotToContainer(new SlotFiltered(tileentity, 2, 152 + xShift, 8 + yShift));
+		addSlotToContainer(new SlotFiltered(tileentity, 3, 152 + xShift, 60 + yShift));
 
 		for (int i = 0; i < 3; i++) {
 			for (int k = 0; k < 9; k++) {
@@ -98,12 +106,9 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			addSlotToContainer(new Slot(inventoryplayer, j, 8 + j * 18 + xShift, 142 + yShift));
 		}
 
-		SlotCollection internal = null;
-		SlotCollection maininv = null;
-		SlotCollection hotbar = null;
-		internal = new SlotCollection(this, 0, tabslots + 4);
-		maininv = new SlotCollection(this, tabslots + 4, tabslots + 4 + 27);
-		hotbar = new SlotCollection(this, tabslots + 4 + 27, tabslots + 4 + 27 + 9);
+        SlotCollection internal = new SlotCollection(this, 0, tabslots + 4);
+        SlotCollection maininv = new SlotCollection(this, tabslots + 4, tabslots + 4 + 27);
+        SlotCollection hotbar = new SlotCollection(this, tabslots + 4 + 27, tabslots + 4 + 27 + 9);
 
 		ITargetInventory pagecollectionreceiver = new PageCollectionPageReceiver(this, player);
 
@@ -134,27 +139,27 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 
 	@Override
 	public void detectAndSendChanges() {
-		List<Packet> packets = new ArrayList<Packet>();
-		ItemStack actual = ((Slot) this.inventorySlots.get(tabslots)).getStack();
-		ItemStack stored = (ItemStack) this.inventoryItemStacks.get(tabslots);
+		List<IMessage> packets = new ArrayList<>();
+		ItemStack actual = this.inventorySlots.get(tabslots).getStack();
+		ItemStack stored = this.inventoryItemStacks.get(tabslots);
 		if (!ItemStack.areItemStacksEqual(actual, stored)) {
 			cached_linkinfo = null;
-			cached_permitted = null;
+			cached_permitted = false;
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setInteger(Messages.SetCurrentPage, currentpageIndex);
-			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
+			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 		}
 		for (int slotId = 0; slotId < this.inventorySlots.size(); ++slotId) {
-			actual = ((Slot) this.inventorySlots.get(slotId)).getStack();
-			stored = (ItemStack) this.inventoryItemStacks.get(slotId);
+			actual = this.inventorySlots.get(slotId).getStack();
+			stored = this.inventoryItemStacks.get(slotId);
 
 			if (!ItemStack.areItemStacksEqual(stored, actual)) {
-				stored = actual == null ? null : actual.copy();
+				stored = actual.isEmpty() ? ItemStack.EMPTY : actual.copy();
 				this.inventoryItemStacks.set(slotId, stored);
 
-				for (int var4 = 0; var4 < this.crafters.size(); ++var4) {
-					((ICrafting) this.crafters.get(var4)).sendSlotContents(this, slotId, stored);
-				}
+				for (IContainerListener listener : this.listeners) {
+				    listener.sendSlotContents(this, slotId, stored);
+                }
 			}
 		}
 		FluidStack temp = tileentity.getInk();
@@ -166,34 +171,32 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			NBTTagCompound fluidnbt = new NBTTagCompound();
 			if (fluid != null) fluid.writeToNBT(fluidnbt);
 			nbttagcompound.setTag(Messages.SetFluid, fluidnbt);
-			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
+			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 		}
-		if (cached_permitted == null) {
+		if (!cached_permitted) {
 			cached_permitted = checkLinkPermitted();
-			if (cached_permitted != null) {
+			if (!cached_permitted) {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setBoolean(Messages.LinkPermitted, cached_permitted);
-				packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
+				packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 			}
 		}
 		String temp_title = tileentity.getTargetString(player);
-		if (this.cached_title != temp_title) {
+		if (!this.cached_title.equals(temp_title)) {
 			cached_title = temp_title;
 
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setString(Messages.SetTitle, cached_title);
-			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
+			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 		}
 		if (packets.size() > 0) {
-			for (int var4 = 0; var4 < this.crafters.size(); ++var4) {
-				ICrafting crafter = ((ICrafting) this.crafters.get(var4));
-				if (crafter instanceof EntityPlayerMP) {
-					EntityPlayerMP player = (EntityPlayerMP) crafter;
-					for (Packet pkt : packets) {
-						player.playerNetServerHandler.sendPacket(pkt);
-					}
-				}
-			}
+		    for (IContainerListener listener : this.listeners) {
+		        if(listener instanceof EntityPlayerMP) {
+		            for (IMessage message : packets) {
+                        MystcraftPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) listener);
+                    }
+                }
+            }
 		}
 	}
 
@@ -206,12 +209,12 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	}
 
 	@Override
-	public void processMessage(EntityPlayer player, NBTTagCompound data) {
+	public void processMessage(@Nonnull EntityPlayer player, @Nonnull NBTTagCompound data) {
 		if (data.hasKey(Messages.LinkPermitted)) {
 			cached_permitted = data.getBoolean(Messages.LinkPermitted);
 		}
 		if (data.hasKey(Messages.SetTitle)) {
-			cached_title = data.getString(Messages.SetTitle);
+			this.cached_title = data.getString(Messages.SetTitle);
 			this.tileentity.setBookTitle(player, cached_title);
 		}
 		if (data.hasKey(Messages.Link)) {
@@ -220,37 +223,39 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			}
 		}
 		if (data.hasKey(Messages.RemoveFromCollection)) {
-			if (player.inventory.getItemStack() != null) return;
+			if (!player.inventory.getItemStack().isEmpty()) return;
 			ItemStack page = new ItemStack(data.getCompoundTag(Messages.RemoveFromCollection));
 			ItemStack itemstack = tileentity.removePageFromSurface(player, this.getTabSlot(this.activeslot), page);
 			player.inventory.setItemStack(itemstack);
 		}
 		if (data.hasKey(Messages.RemoveFromOrderedCollection)) {
-			if (player.inventory.getItemStack() != null) return;
+			if (!player.inventory.getItemStack().isEmpty()) return;
 			int index = data.getInteger(Messages.RemoveFromOrderedCollection);
 			player.inventory.setItemStack(tileentity.removePageFromSurface(player, this.getTabSlot(this.activeslot), index));
 		}
 		if (data.hasKey(Messages.AddToTab)) {
-			if (player.inventory.getItemStack() == null) return;
+			if (player.inventory.getItemStack().isEmpty()) return;
 			byte slot = data.getByte(Messages.AddToTab);
-			if (tileentity.getTabItem(slot) == null) return;
+			if (tileentity.getTabItem(slot).isEmpty()) return;
 			boolean single = data.getBoolean("Single");
 			if (single) {
 				ItemStack stack = player.inventory.getItemStack();
 				ItemStack one = stack.copy();
-				one.stackSize = 1;
+				one.setCount(1);
 				ItemStack ret = tileentity.addPageToTab(player, tileentity.getTabItem(slot), one.copy());
 				if (ItemStack.areItemStackTagsEqual(ret, one) && ItemStack.areItemStacksEqual(ret, one)) return;
-				stack.stackSize -= 1;
-				if (stack.getCount() <= 0) stack = null;
+				stack.shrink(1);
+				if (stack.getCount() <= 0) {
+					stack = ItemStack.EMPTY;
+				}
 				player.inventory.setItemStack(stack);
-				if (ret == null) return;
-				if (stack == null) {
+				if (ret.isEmpty()) return;
+				if (stack .isEmpty()) {
 					player.inventory.setItemStack(ret);
 					return;
 				}
 				if (ItemStack.areItemStackTagsEqual(ret, stack)) {
-					stack.stackSize += ret.getCount();
+					stack.grow(ret.getCount());
 					//TODO: This is technically capable of exceeding max stack size
 					return;
 				}
@@ -260,20 +265,22 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			}
 		}
 		if (data.hasKey(Messages.AddToSurface)) {
-			if (player.inventory.getItemStack() == null) return;
+			if (player.inventory.getItemStack().isEmpty()) return;
 			if (!data.hasKey("Index")) return;
 			byte slot = data.getByte(Messages.AddToSurface);
-			if (tileentity.getTabItem(slot) == null) return;
+			if (tileentity.getTabItem(slot).isEmpty()) return;
 			boolean single = data.getBoolean("Single");
 			int index = data.getInteger("Index");
 			if (single) {
 				ItemStack stack = player.inventory.getItemStack();
 				ItemStack clone = stack.copy();
-				clone.stackSize = 1;
+				clone.setCount(1);
 				ItemStack returned = tileentity.placePageOnSurface(player, tileentity.getTabItem(slot), clone, index);
-				if (returned == null || stack.getCount() == 1) {
-					stack.stackSize -= 1;
-					if (stack.getCount() <= 0) stack = returned;
+				if (returned.isEmpty() || stack.getCount() == 1) {
+					stack.shrink(1);
+					if (stack.getCount() <= 0) {
+						stack = returned;
+					}
 					player.inventory.setItemStack(stack);
 				} else {
 					tileentity.placePageOnSurface(player, tileentity.getTabItem(slot), returned, index);
@@ -296,22 +303,22 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			updateSurfaceTabSlots();
 		}
 		if (data.hasKey(Messages.SetFluid)) {
-			if (this.tileentity.getWorldObj().isRemote) {
+			if (this.tileentity.getWorld().isRemote) {
 				this.tileentity.setInk(FluidStack.loadFluidStackFromNBT(data.getCompoundTag(Messages.SetFluid)));
 				this.fluid = this.tileentity.getInk();
 				fluidDataContainer.setFluid(fluid);
 			}
 		}
 		if (data.hasKey(Messages.SetCurrentPage)) {
-			if (this.tileentity.getWorldObj().isRemote) {
+			if (this.tileentity.getWorld().isRemote) {
 				this.setCurrentPageIndex(data.getInteger(Messages.SetCurrentPage));
 				cached_linkinfo = null;
 			}
 		}
 		if (data.hasKey(Messages.TakeFromSlider)) {
 			ItemStack target = tileentity.getTarget();
-			if (target == null) return;
-			if (player.inventory.getItemStack() != null) return;
+			if (target.isEmpty()) return;
+			if (!player.inventory.getItemStack().isEmpty()) return;
 			if (!(target.getItem() instanceof IItemOrderablePageProvider)) return;
 			IItemOrderablePageProvider itemdat = (IItemOrderablePageProvider) target.getItem();
 			int index = data.getInteger(Messages.TakeFromSlider);
@@ -319,9 +326,9 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		}
 		if (data.hasKey(Messages.InsertHeldAt)) {
 			ItemStack target = tileentity.getTarget();
-			if (target == null) return;
+			if (target.isEmpty()) return;
 			ItemStack stack = player.inventory.getItemStack();
-			if (stack == null) return;
+			if (stack.isEmpty()) return;
 			if (stack.getCount() > 1) return;
 			if (!(target.getItem() instanceof IItemOrderablePageProvider)) return;
 			IItemOrderablePageProvider itemdat = (IItemOrderablePageProvider) target.getItem();
@@ -349,14 +356,16 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 
 	private List<ItemStack> getPageList() {
 		ItemStack book = getBook();
-		if (book == null) return null;
-		if (book.getItem() instanceof IItemPageProvider) { return ((IItemPageProvider) book.getItem()).getPageList(this.player, book); }
+		if (book.isEmpty()) return null;
+		if (book.getItem() instanceof IItemPageProvider) {
+			return ((IItemPageProvider) book.getItem()).getPageList(this.player, book);
+		}
 		return null;
 	}
 
 	@Override
 	public void setCurrentPageIndex(int index) {
-		currentpage = null;
+		currentpage = ItemStack.EMPTY;
 		currentpageIndex = 0;
 		if (index < 0) index = 0;
 		List<ItemStack> pagelist = getPageList();
@@ -375,8 +384,11 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack getCurrentPage() {
-		if (currentpage == null) setCurrentPageIndex(currentpageIndex);
+		if (currentpage.isEmpty()) {
+			setCurrentPageIndex(currentpageIndex);
+		}
 		return currentpage;
 	}
 
@@ -402,17 +414,21 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack getBook() {
 		if (tileentity != null) {
 			ItemStack itemstack = tileentity.getTarget();
-			if (itemstack == null) return null;
-			if (itemstack.getItem() instanceof ItemLinking) { return itemstack; }
+			if (itemstack.isEmpty()) return ItemStack.EMPTY;
+			if (itemstack.getItem() instanceof ItemLinking) {
+				return itemstack;
+			}
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
+	@Nonnull
 	public ItemStack getTarget() {
-		ItemStack itemstack = null;
+		ItemStack itemstack = ItemStack.EMPTY;
 		if (tileentity != null) {
 			itemstack = tileentity.getTarget();
 		}
@@ -422,7 +438,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	@Override
 	public ILinkInfo getLinkInfo() {
 		ItemStack book = getBook();
-		if (book == null || !(book.getItem() instanceof ItemLinking)) return null;
+		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking)) return null;
 		if (cached_linkinfo == null) {
 			cached_linkinfo = ((ItemLinking) book.getItem()).getLinkInfo(book);
 		}
@@ -433,30 +449,33 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	public boolean isLinkPermitted() {
 		ILinkInfo linkinfo = getLinkInfo();
 		if (linkinfo == null) {
-			cached_permitted = null;
+			cached_permitted = false;
 		}
-		if (cached_permitted == null) { return false; }
 		return cached_permitted;
 	}
 
 	private boolean checkLinkPermitted() {
 		ILinkInfo linkinfo = getLinkInfo();
-		if (linkinfo == null) { return false; }
-		if (ItemAgebook.isNewAgebook(getBook())) return true;
-		return LinkListenerManager.isLinkPermitted(tileentity.getWorldObj(), player, linkinfo);
+		if (linkinfo == null) {
+			return false;
+		}
+		if (ItemAgebook.isNewAgebook(getBook())) {
+			return true;
+		}
+		return LinkListenerManager.isLinkPermitted(tileentity.getWorld(), player, linkinfo);
 	}
 
 	@Override
 	public String getBookTitle() {
 		ItemStack book = getBook();
-		if (book == null || !(book.getItem() instanceof ItemLinking)) return "";
+		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking)) return "";
 		return ((ItemLinking) book.getItem()).getTitle(book);
 	}
 
 	@Override
 	public Collection<String> getBookAuthors() {
 		ItemStack book = getBook();
-		if (book == null) return Collections.emptySet();
+		if (book.isEmpty()) return Collections.emptySet();
 		return ((ItemLinking) book.getItem()).getAuthors(book);
 	}
 
@@ -469,7 +488,9 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	}
 
 	public List<ItemStack> getBookPageList() {
-		if (tileentity != null) { return tileentity.getBookPageList(this.player); }
+		if (tileentity != null) {
+			return tileentity.getBookPageList(this.player);
+		}
 		return null;
 	}
 }

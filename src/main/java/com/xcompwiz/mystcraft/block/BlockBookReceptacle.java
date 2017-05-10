@@ -5,6 +5,7 @@ import java.util.Random;
 import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.portal.PortalUtils;
+import com.xcompwiz.mystcraft.tileentity.IOInventory;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBook;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
 
@@ -29,6 +30,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -179,10 +182,14 @@ public class BlockBookReceptacle extends BlockContainer {
 
 	@Override
 	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
-		return Container.calcRedstoneFromInventory(getInventory(worldIn, pos));
+		TileEntity te = worldIn.getTileEntity(pos);
+		if(te != null) {
+			IItemHandler cap = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+			if(cap != null && cap instanceof IOInventory) {
+				return ((IOInventory) cap).calcRedstoneFromInventory();
+			}
+		}
+		return 0;
 	}
 
-	private IInventory getInventory(World worldObj, BlockPos pos) {
-		return (TileEntityBook) worldObj.getTileEntity(pos);
-	}
 }

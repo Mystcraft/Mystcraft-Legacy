@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
+import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketDimensions;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.mystcraft.world.storage.FileUtils;
@@ -58,7 +59,7 @@ public class DimensionUtils {
 		if (server == null) throw new RuntimeException("Cannot create dimension client-side. Misuse of Mystcraft API.");
 		DimensionManager.registerDimension(dimId, Mystcraft.dimensionType);
 		Mystcraft.registeredDims.add(dimId);
-		server.getPlayerList().sendPacketToAllPlayers(MPacketDimensions.createPacket(dimId));
+		MystcraftPacketHandler.CHANNEL.sendToAll(new MPacketDimensions(dimId));
 		AgeData data = AgeData.getAge(dimId, false);
 		return data;
 	}
@@ -141,6 +142,6 @@ public class DimensionUtils {
 		ILinkInfo link = new LinkOptions(null);
 		link.setDimensionUID(Mystcraft.homeDimension);
 		link.setFlag(LinkPropertyAPI.FLAG_TPCOMMAND, true);
-		LinkController.travelEntity(player.worldObj, player, link);
+		LinkController.travelEntity(player.world, player, link);
 	}
 }

@@ -5,29 +5,39 @@ import java.util.List;
 
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
+import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+
+import javax.annotation.Nonnull;
 
 public class ContainerLinkModifier extends ContainerBase implements IGuiMessageHandler {
+
 	public static class Messages {
 
 		public static final String	SetTitle	= "SetTitle";
 		public static final String	SetFlag		= "SetFlag";
 		public static final String	SetSeed 	= "SetSeed";
+
 	}
 
 	private TileEntityLinkModifier	tileentity		= null;
 	private InventoryPlayer			inventoryplayer;
 
+	@Nonnull
 	private String					cached_title	= "";
 
 	public ContainerLinkModifier(InventoryPlayer inventoryplayer, TileEntityLinkModifier tileentity) {
@@ -40,7 +50,7 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 		this.inventorySlots.clear();
 		this.inventoryItemStacks.clear();
 		if (tileentity != null) {
-			addSlotToContainer(new SlotFiltered(tileentity, 0, 80, 35));
+			addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 0, 80, 35));
 			int i;
 			for (i = 0; i < 3; ++i) {
 				for (int j = 0; j < 9; ++j) {
@@ -54,12 +64,9 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 		}
 
 		collections.clear();
-		SlotCollection internal = null;
-		SlotCollection maininv = null;
-		SlotCollection hotbar = null;
-		internal = new SlotCollection(this, 0, 1);
-		maininv = new SlotCollection(this, 1, 1 + 27);
-		hotbar = new SlotCollection(this, 1 + 27, 1 + 27 + 9);
+		SlotCollection internal = new SlotCollection(this, 0, 1);
+		SlotCollection maininv = new SlotCollection(this, 1, 1 + 27);
+		SlotCollection hotbar = new SlotCollection(this, 1 + 27, 1 + 27 + 9);
 
 		internal.pushTargetFront(maininv);
 		internal.pushTargetFront(hotbar);
@@ -76,23 +83,23 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
-		List<Packet> packets = new ArrayList<Packet>();
+		List<IMessage> packets = new ArrayList<>();
 		String temp = tileentity.getBookTitle();
-		if (temp == null) temp = "";
-		if (this.cached_title != temp) {
+		if (temp == null) {
+			temp = "";
+		}
+		if (!this.cached_title.equals(temp)) {
 			cached_title = temp;
 
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setString(Messages.SetTitle, cached_title);
-			packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
+			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 		}
 		if (packets.size() > 0) {
-			for (int var4 = 0; var4 < this.crafters.size(); ++var4) {
-				ICrafting crafter = ((ICrafting) this.crafters.get(var4));
-				if (crafter instanceof EntityPlayerMP) {
-					EntityPlayerMP player = (EntityPlayerMP) crafter;
-					for (Packet pkt : packets) {
-						player.playerNetServerHandler.sendPacket(pkt);
+			for (IContainerListener listener : this.listeners) {
+				if(listener instanceof EntityPlayerMP) {
+					for (IMessage message : packets) {
+						MystcraftPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) listener);
 					}
 				}
 			}
@@ -100,32 +107,30 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer entityplayer) {
-		if (tileentity == null) return true;
-		return tileentity.isUseableByPlayer(entityplayer);
+	public boolean canInteractWith(@Nonnull EntityPlayer entityplayer) {
+		return true;
 	}
 
 	@Override
-	public void processMessage(EntityPlayer player, NBTTagCompound data) {
+	public void processMessage(@Nonnull EntityPlayer player, @Nonnull NBTTagCompound data) {
 		if (data.hasKey(Messages.SetFlag)) {
 			tileentity.setLinkOption(data.getString(Messages.SetFlag), data.getBoolean("Value"));
 		}
 		if (data.hasKey(Messages.SetSeed)) {
 			String seedstr = data.getString(Messages.SetSeed);
 			Long seed = null;
-			if (seedstr == null || seedstr.equals("")) {
+			if (seedstr.isEmpty()) {
 				//XXX: Hardcoded string reference Agebook "Seed"
 				 tileentity.setLinkProperty("Seed", null);
 			} else {
 				try {
 					seed = Long.parseLong(seedstr);
-				} catch (Exception e) {
-				}
+				} catch (Exception ignored) {}
 			}
 			if (seed != null) {
 				//XXX: This isn't particularly generalized, but only this kind of item supports a seed atm.
 				ItemStack book = tileentity.getBook();
-				if (book != null && book.getItem() instanceof ItemAgebook) {
+				if (!book.isEmpty() && book.getItem() instanceof ItemAgebook) {
 					ItemAgebook item = (ItemAgebook) tileentity.getBook().getItem();
 					item.setSeed(player, tileentity.getBook(), seed);
 				}
@@ -157,6 +162,6 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 	public boolean hasItemSeed() {
 		//XXX: This isn't particularly generalized, but only this kind of item supports a seed atm.
 		ItemStack book = tileentity.getBook();
-		return book != null && book.getItem() instanceof ItemAgebook;
+		return !book.isEmpty() && book.getItem() instanceof ItemAgebook;
 	}
 }

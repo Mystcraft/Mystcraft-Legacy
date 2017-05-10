@@ -13,8 +13,11 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class ModPageCollections {
 
+	@Nonnull
 	public static ItemStack createCreativeCollection(String name) {
 		ItemStack collection = new ItemStack(ModItems.portfolio, 1, 0);
 		IItemPageCollection item = (IItemPageCollection) collection.getItem();
@@ -32,6 +35,7 @@ public class ModPageCollections {
 		//TODO: Use collection builder system
 	}
 
+	@Nonnull
 	public static ItemStack buildPageCollection(String name, String... args) {
 		return InternalAPI.itemFact.buildCollectionItem(name, args);
 	}

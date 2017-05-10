@@ -6,13 +6,16 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class SlotCollection implements ITargetInventory {
+
 	private int								begin;
 	private int								end;
 	private boolean							reverse		= false;
 	private Container						container;
 
-	private LinkedList<ITargetInventory>	targetList	= new LinkedList<ITargetInventory>();
+	private LinkedList<ITargetInventory>	targetList	= new LinkedList<>();
 
 	public SlotCollection(Container container, int begin, int end) {
 		this.container = container;
@@ -30,7 +33,7 @@ public class SlotCollection implements ITargetInventory {
 		return true;
 	}
 
-	public boolean onShiftClick(ItemStack original) {
+	public boolean onShiftClick(@Nonnull ItemStack original) {
 		for (ITargetInventory target : targetList) {
 			if (target.merge(original)) return true;
 		}
@@ -38,7 +41,7 @@ public class SlotCollection implements ITargetInventory {
 	}
 
 	@Override
-	public boolean merge(ItemStack itemstack) {
+	public boolean merge(@Nonnull ItemStack itemstack) {
 		boolean success = false;
 		int slotId = begin;
 
@@ -52,22 +55,27 @@ public class SlotCollection implements ITargetInventory {
 		// Try merging stack
 		if (itemstack.isStackable()) {
 			while (itemstack.getCount() > 0 && (!reverse && slotId < end || reverse && slotId >= begin)) {
-				slot = (Slot) container.inventorySlots.get(slotId);
+				slot = container.inventorySlots.get(slotId);
 				destStack = slot.getStack();
 
-				if (destStack != null && destStack == itemstack && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == destStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, destStack)) {
+				if (!destStack.isEmpty() && destStack == itemstack &&
+						(!itemstack.getHasSubtypes() || itemstack.getItemDamage() == destStack.getItemDamage()) &&
+						ItemStack.areItemStackTagsEqual(itemstack, destStack)) {
+
 					int totalSize = destStack.getCount() + itemstack.getCount();
 					int maxdestsize = itemstack.getMaxStackSize();
-					if (slot.getSlotStackLimit() < maxdestsize) maxdestsize = slot.getSlotStackLimit();
+					if (slot.getSlotStackLimit() < maxdestsize) {
+						maxdestsize = slot.getSlotStackLimit();
+					}
 
 					if (totalSize <= maxdestsize) {
-						itemstack.stackSize = 0;
-						destStack.stackSize = totalSize;
+						itemstack.setCount(0);
+						destStack.setCount(totalSize);
 						slot.onSlotChanged();
 						success = true;
 					} else if (destStack.getCount() < maxdestsize) {
-						itemstack.stackSize -= maxdestsize - destStack.getCount();
-						destStack.stackSize = maxdestsize;
+						itemstack.shrink(maxdestsize - destStack.getCount());
+						destStack.setCount(maxdestsize);
 						slot.onSlotChanged();
 						success = true;
 					}
@@ -90,15 +98,17 @@ public class SlotCollection implements ITargetInventory {
 			}
 
 			while ((!reverse && slotId < end || reverse && slotId >= begin) && itemstack.getCount() > 0) {
-				slot = (Slot) container.inventorySlots.get(slotId);
+				slot = container.inventorySlots.get(slotId);
 				destStack = slot.getStack();
 
-				if (destStack == null && slot.isItemValid(itemstack)) {
+				if (destStack.isEmpty() && slot.isItemValid(itemstack)) {
 					ItemStack clone = itemstack.copy();
-					if (clone.getCount() > slot.getSlotStackLimit()) clone.stackSize = slot.getSlotStackLimit();
+					if (clone.getCount() > slot.getSlotStackLimit()) {
+						clone.setCount(slot.getSlotStackLimit());
+					}
 					slot.putStack(clone);
 					slot.onSlotChanged();
-					itemstack.stackSize -= clone.getCount();
+					itemstack.shrink(clone.getCount());
 					success = true;
 				}
 

@@ -2,8 +2,10 @@ package com.xcompwiz.mystcraft.inventory;
 
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public interface ITargetInventory {
 
-	public boolean merge(ItemStack original);
+	boolean merge(@Nonnull ItemStack original);
 
 }

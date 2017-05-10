@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.block;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.data.ModGUIs;
+import com.xcompwiz.mystcraft.tileentity.IOInventory;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBook;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookRotateable;
 
@@ -14,10 +15,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public abstract class BlockBookDisplay extends BlockContainer {
 
@@ -34,7 +39,7 @@ public abstract class BlockBookDisplay extends BlockContainer {
 		}
 		if(tileentity.getBook().isEmpty()) {
 			ItemStack stack = playerIn.getHeldItem(hand);
-			if(!stack.isEmpty() && tileentity.isItemValidForSlot(0, stack)) {
+			if(!stack.isEmpty() && tileentity.canAcceptItem(0, stack)) {
 				ItemStack copy = stack.copy();
 				copy.setCount(1);
 				stack.setCount(1);
@@ -81,10 +86,14 @@ public abstract class BlockBookDisplay extends BlockContainer {
 
 	@Override
 	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
-		return Container.calcRedstoneFromInventory(getInventory(worldIn, pos));
+		TileEntity te = worldIn.getTileEntity(pos);
+		if(te != null) {
+			IItemHandler cap = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+			if(cap != null && cap instanceof IOInventory) {
+				return ((IOInventory) cap).calcRedstoneFromInventory();
+			}
+		}
+		return 0;
 	}
 
-	private IInventory getInventory(World worldObj, BlockPos pos) {
-		return (TileEntityBook) worldObj.getTileEntity(pos);
-	}
 }

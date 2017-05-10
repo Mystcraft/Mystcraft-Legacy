@@ -5,16 +5,18 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.SlotItemHandler;
 
 import javax.annotation.Nonnull;
 
-public class SlotCraftCustom extends Slot {
+public class SlotCraftCustom extends SlotItemHandler {
 
 	private final IItemBuilder builderTile;
 	private EntityPlayer thePlayer;
 	private int	amountCrafted;
 
-	public SlotCraftCustom(EntityPlayer player, IItemBuilder builder, IInventory inventory, int index, int guiPosX, int guiPosY) {
+	public SlotCraftCustom(EntityPlayer player, IItemBuilder builder, IItemHandlerModifiable inventory, int index, int guiPosX, int guiPosY) {
 		super(inventory, index, guiPosX, guiPosY);
 		this.thePlayer = player;
 		this.builderTile = builder;

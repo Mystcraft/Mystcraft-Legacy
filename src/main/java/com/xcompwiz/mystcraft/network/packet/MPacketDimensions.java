@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.network.packet;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.*;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 
@@ -9,40 +8,50 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class MPacketDimensions extends PacketBase {
+public class MPacketDimensions extends PacketBase<MPacketDimensions, MPacketDimensions> {
 
-	@Override
-	public void handle(ByteBuf data, EntityPlayer player) {
-		registerDimensions(data);
-	}
+    private List<Integer> dimIds = new LinkedList<>();
 
-	private static void registerDimensions(ByteBuf data) {
-		if (Mystcraft.registeredDims == null) Mystcraft.registeredDims = new HashSet<Integer>();
-		int length = data.readInt();
-		for (int i = 0; i < length; ++i) {
-			int dimId = data.readInt();
-			if (!Mystcraft.registeredDims.contains(dimId)) {
-				Mystcraft.registeredDims.add(dimId);
-				DimensionManager.registerDimension(dimId, Mystcraft.dimensionType);
-			}
-		}
-	}
+    public MPacketDimensions() {}
 
-	public static FMLProxyPacket createPacket(Integer dim) {
-		HashSet<Integer> set = new HashSet<Integer>();
-		set.add(dim);
-		return createPacket(set);
-	}
+    public MPacketDimensions(Integer... ids) {
+        this.dimIds = Arrays.asList(ids);
+    }
 
-	public static FMLProxyPacket createPacket(Collection<Integer> set) {
-		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
+    public MPacketDimensions(Collection<Integer> ids) {
+        dimIds.addAll(ids);
+    }
 
-		data.writeInt(set.size());
-		for (Integer dimId : set)
-			data.writeInt(dimId);
+    @Override
+    public void fromBytes(ByteBuf buf) {
+        int length = buf.readInt();
+        for (int i = 0; i < length; i++) {
+            this.dimIds.add(buf.readInt());
+        }
+    }
 
-		return buildPacket(data);
-	}
+    @Override
+    public void toBytes(ByteBuf buf) {
+        buf.writeInt(dimIds.size());
+        for (int id : dimIds) {
+            buf.writeInt(id);
+        }
+    }
+
+    @Override
+    public MPacketDimensions onMessage(MPacketDimensions message, MessageContext ctx) {
+        if (Mystcraft.registeredDims == null) {
+            Mystcraft.registeredDims = new HashSet<>();
+        }
+        for (int id : message.dimIds) {
+            if (!Mystcraft.registeredDims.contains(id)) {
+                Mystcraft.registeredDims.add(id);
+                DimensionManager.registerDimension(id, Mystcraft.dimensionType);
+            }
+        }
+        return null;
+    }
 
 }

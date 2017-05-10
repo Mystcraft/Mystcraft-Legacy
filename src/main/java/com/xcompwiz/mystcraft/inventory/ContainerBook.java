@@ -7,49 +7,75 @@ import java.util.List;
 
 import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
+import com.xcompwiz.mystcraft.entity.EntityLinkbook;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.item.LinkItemUtils;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
+import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
+import com.xcompwiz.mystcraft.tileentity.IOInventory;
+import com.xcompwiz.mystcraft.tileentity.InventoryFilter;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookRotateable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ContainerBook extends ContainerBase implements IGuiMessageHandler, IBookContainer {
+    
 	public static class Messages {
+
 		public static final String	LinkPermitted	= "LinkPermitted";
 		public static final String	SetCurrentPage	= "SetCurrentPage";
 		public static final String	Link			= "Link";
+
 	}
 
-	private IInventory		inventory;
-	private InventoryPlayer	inventoryplayer;
+	private EntityLinkbook linkbook;
+	private TileEntityBookRotateable bookTile;
 	private Integer			slot;
 
-	private ItemStack		currentpage			= null;
+    private InventoryPlayer	inventoryplayer;
+
+	@Nonnull
+	private ItemStack		currentpage			= ItemStack.EMPTY;
 	private int				pagecount			= 0;
 	private int				currentpageIndex	= 0;
 
 	private ILinkInfo		cached_linkinfo;
-	private Boolean			cached_permitted;
+	private boolean			cached_permitted;
 
-	public ContainerBook(InventoryPlayer inventoryplayer, IInventory inventory) {
-		this.inventory = inventory;
+	//Container originates from entity
+	public ContainerBook(InventoryPlayer inventoryplayer, EntityLinkbook linkbook) {
+	    this.linkbook = linkbook;
 		this.inventoryplayer = inventoryplayer;
 		updateSlots();
 	}
 
+	//Container originates from Tileentity
+    public ContainerBook(InventoryPlayer inventoryplayer, TileEntityBookRotateable tile) {
+	    this.bookTile = tile;
+        this.inventoryplayer = inventoryplayer;
+        updateSlots();
+    }
+
+	//Container originates from player inventory
 	public ContainerBook(InventoryPlayer inventoryplayer, int slot) {
 		this.slot = slot;
 		this.inventoryplayer = inventoryplayer;
@@ -57,20 +83,30 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack getBook() {
-		if (inventory != null) {
-			ItemStack itemstack = inventory.getStackInSlot(0);
-			if (itemstack != null && itemstack.getItem() instanceof ItemLinking) { return itemstack; }
+		if (linkbook != null) {
+            ItemStack itemstack = linkbook.getBook();
+            if (!itemstack.isEmpty() && itemstack.getItem() instanceof ItemLinking) {
+                return itemstack;
+            }
+        } else if (bookTile != null) {
+		    ItemStack book = bookTile.getBook();
+		    if(!book.isEmpty() && book.getItem() instanceof ItemLinking) {
+		        return book;
+            }
 		} else if (slot != null) {
 			ItemStack itemstack = inventoryplayer.getStackInSlot(slot);
-			if (itemstack != null && itemstack.getItem() instanceof ItemLinking) { return itemstack; }
+			if (!itemstack.isEmpty() && itemstack.getItem() instanceof ItemLinking) {
+				return itemstack;
+			}
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override
 	public void setCurrentPageIndex(int index) {
-		currentpage = null;
+		currentpage = ItemStack.EMPTY;
 		currentpageIndex = 0;
 		if (index < 0) index = 0;
 		List<ItemStack> pagelist = getPageList();
@@ -85,8 +121,11 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack getCurrentPage() {
-		if (currentpage == null) setCurrentPageIndex(currentpageIndex);
+		if (currentpage.isEmpty()) {
+			setCurrentPageIndex(currentpageIndex);
+		}
 		return currentpage;
 	}
 
@@ -95,10 +134,13 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 		return currentpageIndex;
 	}
 
+	@Nullable
 	private List<ItemStack> getPageList() {
 		ItemStack book = getBook();
-		if (book == null) return null;
-		if (book.getItem() instanceof IItemPageProvider) { return ((IItemPageProvider) book.getItem()).getPageList(this.inventoryplayer.player, book); }
+		if (book.isEmpty()) return null;
+		if (book.getItem() instanceof IItemPageProvider) {
+			return ((IItemPageProvider) book.getItem()).getPageList(this.inventoryplayer.player, book);
+		}
 		return null;
 	}
 
@@ -118,32 +160,39 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	}
 
 	public int getInventorySize() {
-		if (inventory == null) return 0;
-		return inventory.getSizeInventory();
+	    if(linkbook != null) {
+	        return 1;
+        } else if(bookTile != null) {
+	        return 1;
+        }
+        return 0;
 	}
 
 	@Override
-	public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer) {
-		if (par1 >= this.inventorySlots.size()) return null;
-		return super.slotClick(par1, par2, par3, par4EntityPlayer);
+	@Nonnull
+	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+		if(slotId >= this.inventorySlots.size()) return ItemStack.EMPTY;
+		return super.slotClick(slotId, dragType, clickTypeIn, player);
 	}
 
 	public void updateSlots() {
-		if (inventory != null) {
+		if (linkbook != null || bookTile != null) {
 			ItemStack book = getBook();
 			if (this.currentpageIndex > 0) {
 				this.inventorySlots.clear();
 				this.inventoryItemStacks.clear();
-			} else if (book != null && this.inventorySlots.size() != 1) {
+			} else if (!book.isEmpty() && this.inventorySlots.size() != 1) {
 				this.inventorySlots.clear();
 				this.inventoryItemStacks.clear();
-				addSlotToContainer(new SlotFiltered(inventory, 0, 41, 21));
-			} else if ((book == null && inventory.getSizeInventory() == 1 && this.inventorySlots.size() != 37)) {
+                IItemHandlerModifiable other = getCurrentOtherInventory();
+				addSlotToContainer(new SlotFiltered(other, other instanceof InventoryFilter ? (InventoryFilter) other : null, 0, 41, 21));
+			} else if ((book.isEmpty() && getCurrentOtherInventorySize() == 1 && this.inventorySlots.size() != 37)) {
 				this.inventorySlots.clear();
 				this.inventoryItemStacks.clear();
 				addInventorySlots();
-				addSlotToContainer(new SlotFiltered(inventory, 0, 80, 35));
-			} else if ((book == null && inventory.getSizeInventory() == 0 && this.inventorySlots.size() != 36)) {
+                IItemHandlerModifiable other = getCurrentOtherInventory();
+				addSlotToContainer(new SlotFiltered(other, other instanceof InventoryFilter ? (InventoryFilter) other : null, 0, 80, 35));
+			} else if ((book.isEmpty() && getCurrentOtherInventorySize() == 0 && this.inventorySlots.size() != 36)) {
 				this.inventorySlots.clear();
 				this.inventoryItemStacks.clear();
 				addInventorySlots();
@@ -166,42 +215,40 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 
 	@Override
 	public void detectAndSendChanges() {
-		List<Packet> packets = new ArrayList<Packet>();
+		List<IMessage> packets = new ArrayList<>();
 		for (int slotId = 0; slotId < this.inventorySlots.size(); ++slotId) {
-			ItemStack actual = ((Slot) this.inventorySlots.get(slotId)).getStack();
-			ItemStack stored = (ItemStack) this.inventoryItemStacks.get(slotId);
+			ItemStack actual = this.inventorySlots.get(slotId).getStack();
+			ItemStack stored = this.inventoryItemStacks.get(slotId);
 
 			if (!ItemStack.areItemStacksEqual(stored, actual)) {
 				if (slotId == 0) {
 					cached_linkinfo = null;
-					cached_permitted = null;
+					cached_permitted = false;
 					NBTTagCompound nbttagcompound = new NBTTagCompound();
 					nbttagcompound.setInteger(Messages.SetCurrentPage, currentpageIndex);
-					packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
+					packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 				}
-				stored = actual == null ? null : actual.copy();
+				stored = actual.isEmpty() ? ItemStack.EMPTY : actual.copy();
 				this.inventoryItemStacks.set(slotId, stored);
 
-				for (int var4 = 0; var4 < this.crafters.size(); ++var4) {
-					((ICrafting) this.crafters.get(var4)).sendSlotContents(this, slotId, stored);
+				for (IContainerListener listener : this.listeners) {
+					listener.sendSlotContents(this, slotId, stored);
 				}
 			}
 		}
-		if (cached_permitted == null) {
+		if (!cached_permitted) {
 			cached_permitted = checkLinkPermitted();
-			if (cached_permitted != null) {
+			if (!cached_permitted) {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setBoolean(Messages.LinkPermitted, cached_permitted);
-				packets.add(MPacketGuiMessage.createPacket(this.windowId, nbttagcompound));
+				packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 			}
 		}
 		if (packets.size() > 0) {
-			for (int var4 = 0; var4 < this.crafters.size(); ++var4) {
-				ICrafting crafter = ((ICrafting) this.crafters.get(var4));
-				if (crafter instanceof EntityPlayerMP) {
-					EntityPlayerMP player = (EntityPlayerMP) crafter;
-					for (Packet pkt : packets) {
-						player.playerNetServerHandler.sendPacket(pkt);
+			for (IContainerListener listener : this.listeners) {
+				if(listener instanceof EntityPlayerMP) {
+					for (IMessage message : packets) {
+						MystcraftPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) listener);
 					}
 				}
 			}
@@ -212,18 +259,20 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	public void updateProgressBar(int i, int j) {}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer entityplayer) {
+	public boolean canInteractWith(@Nonnull EntityPlayer entityplayer) {
 		updateSlots();
-		if (inventory == null) return getBook() != null;
-		return inventory.isUseableByPlayer(entityplayer);
+		if (linkbook == null) {
+			return !getBook().isEmpty();
+		}
+		return true;
 	}
 
 	@Override
-	public Slot getSlotFromInventory(IInventory par1IInventory, int par2) {
-		for (int var3 = 0; var3 < this.inventorySlots.size(); ++var3) {
-			Slot var4 = (Slot) this.inventorySlots.get(var3);
-
-			if (var4.isSlotInInventory(par1IInventory, par2)) { return var4; }
+	public Slot getSlotFromInventory(@Nonnull IInventory par1IInventory, int par2) {
+		for (Slot slot : this.inventorySlots) {
+			if (slot.isHere(par1IInventory, par2)) {
+				return slot;
+			}
 		}
 
 		return new Slot(inventoryplayer, inventoryplayer.currentItem, 0, 0);
@@ -232,12 +281,12 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	@Override
 	public Slot getSlot(int par1) {
 		if (par1 >= this.inventorySlots.size()) par1 = 0;
-		if (par1 < this.inventorySlots.size()) return (Slot) this.inventorySlots.get(par1);
+		if (par1 < this.inventorySlots.size()) return this.inventorySlots.get(par1);
 		return new Slot(inventoryplayer, inventoryplayer.currentItem, 0, 0);
 	}
 
 	@Override
-	public void processMessage(EntityPlayer player, NBTTagCompound data) {
+	public void processMessage(@Nonnull EntityPlayer player, @Nonnull NBTTagCompound data) {
 		if (data.hasKey(Messages.LinkPermitted)) {
 			cached_permitted = data.getBoolean(Messages.LinkPermitted);
 		}
@@ -245,17 +294,14 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 			this.setCurrentPageIndex(data.getInteger(Messages.SetCurrentPage));
 		}
 		if (data.hasKey(Messages.Link)) {
-			if (inventory != null) {
-				if (inventory instanceof TileEntityBookRotateable) {
-					((TileEntityBookRotateable) inventory).link(player);
-				}
-				if (inventory instanceof InventoryBook) {
-					((InventoryBook) inventory).linkEntity(player);
-				}
+		    if(bookTile != null) {
+		        bookTile.link(player);
+            } else if(linkbook != null) {
+		        linkbook.linkEntity(player);
 			} else if (slot != null) {
 				ItemStack itemstack = inventoryplayer.getStackInSlot(slot);
 				if (itemstack.getItem() instanceof ItemLinking) {
-					((ItemLinking) itemstack.getItem()).activate(itemstack, player.worldObj, player);
+					((ItemLinking) itemstack.getItem()).activate(itemstack, player.world, player);
 				}
 			}
 		}
@@ -264,7 +310,7 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	@Override
 	public ILinkInfo getLinkInfo() {
 		ItemStack book = getBook();
-		if (book == null || !(book.getItem() instanceof ItemLinking)) return null;
+		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking)) return null;
 		if (cached_linkinfo == null) {
 			cached_linkinfo = ((ItemLinking) book.getItem()).getLinkInfo(book);
 		}
@@ -275,38 +321,75 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	public boolean isLinkPermitted() {
 		ILinkInfo linkinfo = getLinkInfo();
 		if (linkinfo == null) {
-			cached_permitted = null;
+			cached_permitted = false;
 		}
-		if (cached_permitted == null) { return false; }
 		return cached_permitted;
 	}
 
 	private boolean checkLinkPermitted() {
 		ILinkInfo linkinfo = getLinkInfo();
-		if (linkinfo == null) { return false; }
-		if (ItemAgebook.isNewAgebook(getBook())) return true; //TODO: Generalize this
-		return LinkListenerManager.isLinkPermitted(inventoryplayer.player.worldObj, inventoryplayer.player, linkinfo);
+		if (linkinfo == null) {
+			return false;
+		}
+		if (ItemAgebook.isNewAgebook(getBook())) {
+			return true; //TODO: Generalize this
+		}
+		return LinkListenerManager.isLinkPermitted(inventoryplayer.player.world, inventoryplayer.player, linkinfo);
 	}
 
+	@Nullable
+	private IItemHandlerModifiable getCurrentOtherInventory() {
+	    if(linkbook != null && !linkbook.isDead) {
+	        return linkbook.createBookWrapper();
+        }
+        if(bookTile != null) {
+	        return (IItemHandlerModifiable) bookTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+        }
+        return null;
+    }
+
+	private int getCurrentOtherInventorySize() {
+	    if(linkbook != null && !linkbook.isDead) {
+	        return 1;
+        }
+        if(bookTile != null) {
+            IOInventory inv = (IOInventory) bookTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+            if(inv != null && inv.getSlots() > 0) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+
 	@Override
+	@Nonnull
 	public ItemStack transferStackInSlot(EntityPlayer player, int i) {
-		ItemStack clone = null;
-		Slot slot = (Slot) inventorySlots.get(i);
+		ItemStack clone = ItemStack.EMPTY;
+		Slot slot = inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
 			ItemStack original = slot.getStack();
 			clone = original.copy();
 
-			List<SlotCollection> collections = new ArrayList<SlotCollection>();
+			List<SlotCollection> collections = new ArrayList<>();
 			SlotCollection internal = null;
-			SlotCollection maininv = null;
-			SlotCollection hotbar = null;
+			SlotCollection maininv;
+			SlotCollection hotbar;
 			ItemStack book = getBook();
-			if (book != null || (inventory != null && inventory.getSizeInventory() > 0)) {
-				internal = new SlotCollection(this, inventorySlots.size() - 1, inventorySlots.size());
-				internal.pushTargetFront(new TargetInventory(inventoryplayer));
-				collections.add(internal);
-			}
-			if (book == null) {
+			if(!book.isEmpty()) {
+			    if(linkbook != null && !linkbook.isDead) {
+			        internal = new SlotCollection(this, 0, 1);
+			        internal.pushTargetFront(new TargetInventory(inventoryplayer));
+			        collections.add(internal);
+                } else if(bookTile != null) {
+                    IOInventory inv = (IOInventory) bookTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+                    if(inv != null && inv.getSlots() > 0) {
+                        internal = new SlotCollection(this, inv.getSlots() - 1, inv.getSlots());
+                        internal.pushTargetFront(new TargetInventory(inventoryplayer));
+                        collections.add(internal);
+                    }
+                }
+            }
+			if (book.isEmpty()) {
 				maininv = new SlotCollection(this, 0, 27);
 				hotbar = new SlotCollection(this, 27, 27 + 9);
 				maininv.pushTargetFront(hotbar);
@@ -328,14 +411,14 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 			}
 
 			if (original.getCount() == 0) {
-				slot.putStack(null);
+				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}
 			if (original.getCount() != clone.getCount()) {
-				slot.onPickupFromSlot(player, original);
+				slot.onTake(player, original);
 			} else {
-				return null;
+				return ItemStack.EMPTY;
 			}
 		}
 		return clone;
@@ -344,14 +427,14 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	@Override
 	public String getBookTitle() {
 		ItemStack book = getBook();
-		if (book == null || !(book.getItem() instanceof ItemLinking)) return "";
+		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking)) return "";
 		return ((ItemLinking) book.getItem()).getTitle(book);
 	}
 
 	@Override
 	public Collection<String> getBookAuthors() {
 		ItemStack book = getBook();
-		if (book == null || !(book.getItem() instanceof ItemLinking)) return Collections.emptySet();
+		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking)) return Collections.emptySet();
 		return ((ItemLinking) book.getItem()).getAuthors(book);
 	}
 }

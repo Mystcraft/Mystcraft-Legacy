@@ -8,6 +8,6 @@ import javax.annotation.Nonnull;
 
 public interface IItemBuilder {
 
-	public abstract void buildItem(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer player);
+	void buildItem(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer player);
 
 }

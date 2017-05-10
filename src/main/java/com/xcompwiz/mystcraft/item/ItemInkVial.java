@@ -1,20 +1,10 @@
 package com.xcompwiz.mystcraft.item;
 
-import com.xcompwiz.mystcraft.client.render.IMaskRender;
-
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemInkVial extends Item implements IMaskRender {
+public class ItemInkVial extends Item {
 
 	public ItemInkVial() {
 		setMaxStackSize(16);

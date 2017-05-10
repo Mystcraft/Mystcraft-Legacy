@@ -24,9 +24,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 public class GuiHandler implements IGuiHandler {
 
@@ -50,7 +53,7 @@ public class GuiHandler implements IGuiHandler {
 			return new ContainerLinkModifier(player.inventory, tileentity);
 		}
 		if (id == ModGUIs.WRITING_DESK.ordinal()) {
-			TileEntityDesk tileentity = BlockWritingDesk.getTileEntity(world, x, y, z);
+			TileEntityDesk tileentity = BlockWritingDesk.getTileEntity(world, new BlockPos(x, y, z));
 			return new ContainerWritingDesk(player.inventory, tileentity);
 		}
 
@@ -58,17 +61,17 @@ public class GuiHandler implements IGuiHandler {
 		if (id == ModGUIs.BOOK.ordinal()) {
 			int slot = player.inventory.currentItem;
 			ItemStack current = player.inventory.getCurrentItem();
-			if (current != null && current.getItem() instanceof ItemLinking) { return new ContainerBook(player.inventory, slot); }
+			if (!current.isEmpty() && current.getItem() instanceof ItemLinking) { return new ContainerBook(player.inventory, slot); }
 		}
 		if (id == ModGUIs.FOLDER.ordinal()) {
 			int slot = player.inventory.currentItem;
 			ItemStack current = player.inventory.getCurrentItem();
-			if (current != null && current.getItem() instanceof ItemFolder) { return new ContainerFolder(player.inventory, slot); }
+			if (!current.isEmpty() && current.getItem() instanceof ItemFolder) { return new ContainerFolder(player.inventory, slot); }
 		}
 		if (id == ModGUIs.PORTFOLIO.ordinal()) {
 			int slot = player.inventory.currentItem;
 			ItemStack current = player.inventory.getCurrentItem();
-			if (current != null && current.getItem() instanceof ItemPortfolio) { return new ContainerFolder(player.inventory, slot); }
+			if (!current.isEmpty() && current.getItem() instanceof ItemPortfolio) { return new ContainerFolder(player.inventory, slot); }
 		}
 		
 		// Entities
@@ -78,7 +81,7 @@ public class GuiHandler implements IGuiHandler {
 		}
 		if (id == ModGUIs.VILLAGER.ordinal()) {
 			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.world, x);
-			if (entity != null && entity instanceof EntityVillager) { return new ContainerVillagerShop(player.inventory, (EntityVillager) entity); }
+			if (entity != null && entity instanceof EntityVillager) { return new ContainerVillagerShop(player, (EntityVillager) entity); }
 		}
 		return null;
 	}
@@ -103,7 +106,7 @@ public class GuiHandler implements IGuiHandler {
 			return new GuiLinkModifier(player.inventory, tileentity);
 		}
 		if (id == ModGUIs.WRITING_DESK.ordinal()) {
-			TileEntityDesk tileentity = BlockWritingDesk.getTileEntity(world, x, y, z);
+			TileEntityDesk tileentity = BlockWritingDesk.getTileEntity(world, new BlockPos(x, y, z));
 			return new GuiWritingDesk(player.inventory, tileentity);
 		}
 
@@ -111,17 +114,17 @@ public class GuiHandler implements IGuiHandler {
 		if (id == ModGUIs.BOOK.ordinal()) {
 			int slot = player.inventory.currentItem;
 			ItemStack current = player.inventory.getCurrentItem();
-			if (current != null && current.getItem() instanceof ItemLinking) { return new GuiBook(player.inventory, slot); }
+			if (!current.isEmpty() && current.getItem() instanceof ItemLinking) { return new GuiBook(player.inventory, slot); }
 		}
 		if (id == ModGUIs.FOLDER.ordinal()) {
 			int slot = player.inventory.currentItem;
 			ItemStack current = player.inventory.getCurrentItem();
-			if (current != null && current.getItem() instanceof ItemFolder) { return new GuiInventoryFolder(player.inventory, slot); }
+			if (!current.isEmpty() && current.getItem() instanceof ItemFolder) { return new GuiInventoryFolder(player.inventory, slot); }
 		}
 		if (id == ModGUIs.PORTFOLIO.ordinal()) {
 			int slot = player.inventory.currentItem;
 			ItemStack current = player.inventory.getCurrentItem();
-			if (current != null && current.getItem() instanceof ItemPortfolio) { return new GuiInventoryFolder(player.inventory, slot); }
+			if (!current.isEmpty() && current.getItem() instanceof ItemPortfolio) { return new GuiInventoryFolder(player.inventory, slot); }
 		}
 		
 		// Entities
@@ -131,7 +134,7 @@ public class GuiHandler implements IGuiHandler {
 		}
 		if (id == ModGUIs.VILLAGER.ordinal()) {
 			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.world, x);
-			if (entity != null && entity instanceof EntityVillager) { return new GuiVillagerShop(player.inventory, (EntityVillager) entity); }
+			if (entity != null && entity instanceof EntityVillager) { return new GuiVillagerShop(player, (EntityVillager) entity); }
 		}
 		return null;
 	}

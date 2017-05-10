@@ -4,6 +4,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class TargetInventory implements ITargetInventory {
 
 	private IInventory	inventory;
@@ -14,11 +16,11 @@ public class TargetInventory implements ITargetInventory {
 	public TargetInventory(InventoryPlayer inventory) {
 		this.inventory = inventory;
 		begin = 0;
-		end = inventory.mainInventory.length;
+		end = inventory.mainInventory.size();
 	}
 
 	@Override
-	public boolean merge(ItemStack itemstack) {
+	public boolean merge(@Nonnull ItemStack itemstack) {
 		boolean success = false;
 		int slotId = begin;
 
@@ -33,17 +35,19 @@ public class TargetInventory implements ITargetInventory {
 			while (itemstack.getCount() > 0 && (!reverse && slotId < end || reverse && slotId >= begin)) {
 				destStack = inventory.getStackInSlot(slotId);
 
-				if (destStack != null && destStack == itemstack && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == destStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, destStack)) {
+				if (!destStack.isEmpty() && destStack == itemstack &&
+						(!itemstack.getHasSubtypes() || itemstack.getItemDamage() == destStack.getItemDamage()) &&
+						ItemStack.areItemStackTagsEqual(itemstack, destStack)) {
 					int totalSize = destStack.getCount() + itemstack.getCount();
 
 					if (totalSize <= itemstack.getMaxStackSize()) {
-						itemstack.stackSize = 0;
-						destStack.stackSize = totalSize;
+						itemstack.setCount(0);
+						destStack.setCount(totalSize);
 						inventory.setInventorySlotContents(slotId, destStack);
 						success = true;
 					} else if (destStack.getCount() < itemstack.getMaxStackSize()) {
-						itemstack.stackSize -= itemstack.getMaxStackSize() - destStack.getCount();
-						destStack.stackSize = itemstack.getMaxStackSize();
+						itemstack.shrink(itemstack.getMaxStackSize() - destStack.getCount());
+						destStack.setCount(itemstack.getMaxStackSize());
 						inventory.setInventorySlotContents(slotId, destStack);
 						success = true;
 					}
@@ -68,9 +72,9 @@ public class TargetInventory implements ITargetInventory {
 			while (!reverse && slotId < end || reverse && slotId >= begin) {
 				destStack = inventory.getStackInSlot(slotId);
 
-				if (destStack == null && inventory.isItemValidForSlot(slotId, itemstack)) {
+				if (destStack.isEmpty() && inventory.isItemValidForSlot(slotId, itemstack)) {
 					inventory.setInventorySlotContents(slotId, itemstack.copy());
-					itemstack.stackSize = 0;
+					itemstack.setCount(0);
 					success = true;
 					break;
 				}

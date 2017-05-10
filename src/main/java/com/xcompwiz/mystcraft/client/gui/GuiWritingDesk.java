@@ -58,8 +58,8 @@ public class GuiWritingDesk extends GuiContainerElements {
 			nbttagcompound.setByte(ContainerWritingDesk.Messages.AddToSurface, container.getActiveTabSlot());
 			nbttagcompound.setBoolean("Single", single);
 			nbttagcompound.setInteger("Index", index);
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-			container.processMessage(mc.thePlayer, nbttagcompound);
+			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
+			container.processMessage(mc.player, nbttagcompound);
 		}
 
 		@Override
@@ -71,19 +71,19 @@ public class GuiWritingDesk extends GuiContainerElements {
 				ItemStack page = collectionelement.itemstack;
 				if (GuiWritingDesk.isShiftKeyDown()) {
 					page = page.copy();
-					page.stackSize = 64;
+					page.setCount(64);
 				}
 				page.writeToNBT(itemdata);
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setTag(ContainerWritingDesk.Messages.RemoveFromCollection, itemdata);
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-				container.processMessage(mc.thePlayer, nbttagcompound);
+				MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
+				container.processMessage(mc.player, nbttagcompound);
 			} else {
 				int index = collectionelement.slotId;
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setInteger(ContainerWritingDesk.Messages.RemoveFromOrderedCollection, index);
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-				container.processMessage(mc.thePlayer, nbttagcompound);
+				MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
+				container.processMessage(mc.player, nbttagcompound);
 			}
 		}
 
@@ -94,8 +94,8 @@ public class GuiWritingDesk extends GuiContainerElements {
 			if (collectionelement.count <= 0) return;
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setString(ContainerWritingDesk.Messages.WriteSymbol, symbol);
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-			container.processMessage(mc.thePlayer, nbttagcompound);
+			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
+			container.processMessage(mc.player, nbttagcompound);
 		}
 	}
 
@@ -116,33 +116,33 @@ public class GuiWritingDesk extends GuiContainerElements {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setInteger(ContainerWritingDesk.Messages.InsertHeldAt, index);
 			nbttagcompound.setBoolean("Single", (mousebutton == 1));
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-			container.processMessage(mc.thePlayer, nbttagcompound);
+			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
+			container.processMessage(mc.player, nbttagcompound);
 		}
 
 		@Override
 		public void onItemRemove(GuiElementScrollablePages guiElementScrollablePages, int clickedpage) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setInteger(ContainerWritingDesk.Messages.TakeFromSlider, clickedpage);
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-			container.processMessage(mc.thePlayer, nbttagcompound);
+			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
+			container.processMessage(mc.player, nbttagcompound);
 		}
 	}
 
 	public class SurfaceTabsHandler implements IGuiSurfaceTabsHandler {
 		@Override
 		public void onSurfaceTabClick(int button, byte slot) {
-			if (mc.thePlayer.inventory.getItemStack() != null) {
+			if (!mc.player.inventory.getItemStack().isEmpty()) {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setByte(ContainerWritingDesk.Messages.AddToTab, slot);
 				nbttagcompound.setBoolean("Single", (button == 1));
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(inventorySlots.windowId, nbttagcompound));
-				container.processMessage(mc.thePlayer, nbttagcompound);
+				MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(inventorySlots.windowId, nbttagcompound));
+				container.processMessage(mc.player, nbttagcompound);
 			} else if (getActiveTab() != slot) {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setByte(ContainerWritingDesk.Messages.SetActiveNotebook, slot);
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(inventorySlots.windowId, nbttagcompound));
-				container.processMessage(mc.thePlayer, nbttagcompound);
+				MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(inventorySlots.windowId, nbttagcompound));
+				container.processMessage(mc.player, nbttagcompound);
 			}
 		}
 
@@ -165,8 +165,8 @@ public class GuiWritingDesk extends GuiContainerElements {
 		public void setTopTabSlot(int topslot) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setByte(ContainerWritingDesk.Messages.SetFirstNotebook, (byte) topslot);
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(inventorySlots.windowId, nbttagcompound));
-			container.processMessage(mc.thePlayer, nbttagcompound);
+			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(inventorySlots.windowId, nbttagcompound));
+			container.processMessage(mc.player, nbttagcompound);
 		}
 	}
 
@@ -175,15 +175,16 @@ public class GuiWritingDesk extends GuiContainerElements {
 		public void onLink(GuiElement elem) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setByte(ContainerWritingDesk.Messages.Link, (byte) 0);
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
+			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(container.windowId, nbttagcompound));
 		}
 	}
 
 	public class TextBoxHandlerTargetName implements IGuiTextProvider, IGuiOnTextChange {
+
 		@Override
 		public String getText(GuiElementTextField caller) {
 			ItemStack target = container.getTarget();
-			caller.setReadOnly(target == null || target.getItem() == null || target.getItem() == ModItems.page);
+			caller.setReadOnly(target.isEmpty() || target.getItem() == ModItems.page);
 			caller.setEnabled(!caller.isReadOnly());
 			return container.getTargetName();
 		}
@@ -192,8 +193,8 @@ public class GuiWritingDesk extends GuiContainerElements {
 		public void onTextChange(GuiElementTextField caller, String text) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setString(ContainerWritingDesk.Messages.SetTitle, text);
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
-			container.processMessage(mc.thePlayer, nbttagcompound);
+			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(container.windowId, nbttagcompound));
+			container.processMessage(mc.player, nbttagcompound);
 		}
 	}
 

@@ -2,6 +2,8 @@ package com.xcompwiz.mystcraft.client.gui;
 
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton;
@@ -47,8 +49,8 @@ public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClick
 		public void onPurchase(GuiElementShopItem caller) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setInteger(ContainerVillagerShop.Messages.PurchaseItem, caller.getId());
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-			container.processMessage(mc.thePlayer, nbttagcompound);
+			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
+			container.processMessage(mc.player, nbttagcompound);
 		}
 
 		@Override
@@ -65,8 +67,8 @@ public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClick
 
 	private ContainerVillagerShop	container;
 
-	public GuiVillagerShop(InventoryPlayer playerinv, EntityVillager entity) {
-		super(new ContainerVillagerShop(playerinv, entity));
+	public GuiVillagerShop(EntityPlayer player, EntityVillager entity) {
+		super(new ContainerVillagerShop(player, entity));
 		this.container = (ContainerVillagerShop) this.inventorySlots;
 	}
 
@@ -96,7 +98,7 @@ public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClick
 		addElement(button);
 
 		addElement(new GuiElementLabel(new EmeraldsHandler(), "emeralds", xSize - 4 - labelX, 81, labelX, labelY, 0x44000000, 0xFF88FF88));
-		addElement(new GuiElementIcon(new GuiIconItemStack(new ItemStack(Items.emerald)), xSize - 4 - labelX - labelY, 81, labelY, labelY));
+		addElement(new GuiElementIcon(new GuiIconItemStack(new ItemStack(Items.EMERALD)), xSize - 4 - labelX - labelY, 81, labelY, labelY));
 	}
 
 	@Override
@@ -111,15 +113,15 @@ public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClick
 		if (caller.getId().equals("booster")) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setBoolean(ContainerVillagerShop.Messages.PurchaseBooster, true);
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.thePlayer.openContainer.windowId, nbttagcompound));
-			container.processMessage(mc.thePlayer, nbttagcompound);
+			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
+			container.processMessage(mc.player, nbttagcompound);
 		}
 	}
 
 	@Override
 	public ItemStack getItemStack(GuiIconItemStack caller) {
 		if (caller.getId().equals("booster")) return new ItemStack(ModItems.booster, container.getBoosterCount());
-		if (caller.getId().equals("buybtnb")) return new ItemStack(Items.emerald, container.getBoosterCost());
+		if (caller.getId().equals("buybtnb")) return new ItemStack(Items.EMERALD, container.getBoosterCost());
 		return null;
 	}
 }

@@ -14,14 +14,16 @@ import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
 import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
+import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketProfilingState;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 
+import net.minecraft.command.CommandServerKick;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.DimensionType;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
@@ -230,7 +232,7 @@ public class InstabilityDataCalculator {
 			running = false;
 			DimensionManager.unloadWorld(dimId);
 			world = null;
-			mcserver.getPlayerList().sendPacketToAllPlayers(MPacketProfilingState.createPacket(false));
+			MystcraftPacketHandler.CHANNEL.sendToAll(new MPacketProfilingState(false));
 		}
 	}
 
@@ -247,11 +249,14 @@ public class InstabilityDataCalculator {
 			return;
 		}
 		LoggerUtils.info("Baseline Profiling world unloading.");
-		if (dimId != null) DimensionManager.unregisterDimension(dimId);
+		if (dimId != null) {
+			DimensionManager.unregisterDimension(dimId);
+		}
 		dimId = null;
-		//XXX: No long possible to unregister a provider (Dimension) type
-		//if (providerId != null) DimensionManager.unregisterProviderType(providerId);
-		//providerId = null;
+		if (providerId != null) {
+			DimensionManager.unregisterProviderType(providerId);
+		}
+		providerId = null;
 		File dir = event.getWorld().getSaveHandler().getWorldDirectory();
 		dir = new File(dir, event.getWorld().provider.getSaveFolder());
 		dir.deleteOnExit();
@@ -260,7 +265,7 @@ public class InstabilityDataCalculator {
 
 	@SubscribeEvent
 	public void isLinkPermitted(LinkEventAllow event) {
-		if (dimId != null && event.info.getDimensionUID() == dimId) event.setCanceled(true);
+		if (dimId != null && dimId.equals(event.info.getDimensionUID())) event.setCanceled(true);
 	}
 
 	@SubscribeEvent
@@ -276,14 +281,14 @@ public class InstabilityDataCalculator {
 			if (disconnectclients && mcserver.isDedicatedServer()) {
 				String denymessage = "Mystcraft still needs to finish profiling. Please try again later.";
 				try {
-					((NetHandlerPlayServer) event.getHandler()).disconnect(denymessage);
+                    ((NetHandlerPlayServer) event.getHandler()).disconnect(denymessage);
 					GameProfile gameprofile = ((NetHandlerPlayServer) event.getHandler()).playerEntity.getGameProfile();
 					LoggerUtils.info("Disconnecting " + getIDString(event.getManager(), gameprofile) + ": " + denymessage);
 				} catch (Exception exception) {
 					LoggerUtils.error("Error whilst disconnecting player", exception);
 				}
 			} else {
-				event.getManager().sendPacket(MPacketProfilingState.createPacket(true));
+			    MystcraftPacketHandler.CHANNEL.sendTo(new MPacketProfilingState(true), ((NetHandlerPlayServer) event.getHandler()).playerEntity);
 			}
 		}
 	}

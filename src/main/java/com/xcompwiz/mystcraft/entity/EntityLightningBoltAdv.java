@@ -6,7 +6,8 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.world.World;
 
 public class EntityLightningBoltAdv extends EntityLightningBolt {
-	private Color	color;
+
+	private Color color;
 
 	public EntityLightningBoltAdv(World world, double x, double y, double z, boolean effectOnly) {
 		super(world, x, y, z, effectOnly);

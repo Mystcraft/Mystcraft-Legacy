@@ -1,46 +1,42 @@
 package com.xcompwiz.mystcraft.entity;
 
-import static net.minecraft.entity.Entity.renderDistanceWeight;
-
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.data.ModGUIs;
-import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.inventory.InventoryBook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
-import com.xcompwiz.mystcraft.item.ItemStackUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
-import com.xcompwiz.mystcraft.network.IMessageReceiver;
 
+import com.xcompwiz.mystcraft.tileentity.InventoryFilter;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityMinecartHopper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
-public class EntityLinkbook extends EntityLiving implements IInventory, IMessageReceiver {
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-	private int					decaytimer;
-	public InventoryBook		inventory;
+public class EntityLinkbook extends EntityLiving {
 
-	private static final int	bookitemID	= 4;
-	private static final int	agenameID	= 20;
+	private static final DataParameter<ItemStack> BOOK = EntityDataManager.createKey(EntityLinkbook.class, DataSerializers.OPTIONAL_ITEM_STACK);
+	private static final DataParameter<String> AGE_NAME = EntityDataManager.createKey(EntityLinkbook.class, DataSerializers.STRING);
+
+	private int	decaytimer;
 
 	public EntityLinkbook(World world) {
 		super(world);
 		setSize(0.25F, 0.2F);
-		renderDistanceWeight = 8.0D;
-		dataWatcher.addObject(bookitemID, Integer.valueOf(0)); // Book type
-		dataWatcher.addObject(agenameID, String.valueOf("")); // Age name
-		yOffset = 0.0F;
-		inventory = new InventoryBook(this);
 		newPosRotationIncrements = 0;
 	}
 
@@ -51,9 +47,8 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 
 	public EntityLinkbook(World world, Entity entity, ItemStack item) {
 		this(world);
-		inventory.setBook(item);
-		dataWatcher.updateObject(bookitemID, Item.getIdFromItem(item.getItem()));
-		dataWatcher.updateObject(agenameID, LinkOptions.getDisplayName(inventory.getBook().stackTagCompound));
+		dataManager.set(BOOK, item);
+		dataManager.set(AGE_NAME, LinkOptions.getDisplayName(item.getTagCompound()));
 		setLocationAndAngles(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ, entity.rotationYaw, entity.rotationPitch);
 		this.motionX = entity.motionX;
 		this.motionY = entity.motionY;
@@ -64,33 +59,54 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 		setPosition(posX, posY, posZ);
 	}
 
-	public Item getItem() {
-		return Item.getItemById(dataWatcher.getWatchableObjectInt(bookitemID));
+	@Override
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(BOOK, ItemStack.EMPTY);
+		dataManager.register(AGE_NAME, "");
 	}
 
+	@Nonnull
+	public ItemStack getBook() {
+		return dataManager.get(BOOK);
+	}
+
+	public void setBook(@Nonnull ItemStack stack) {
+		dataManager.set(BOOK, stack);
+	}
+
+	@Nonnull
 	public String getAgeName() {
-		return dataWatcher.getWatchableObjectString(agenameID);
+		return dataManager.get(AGE_NAME);
+	}
+
+	public void linkEntity(Entity entity) {
+		ItemStack book = getBook();
+		if (book.isEmpty()) return;
+		if (!(book.getItem() instanceof ItemLinking)) return;
+		((ItemLinking) book.getItem()).activate(book, world, entity);
 	}
 
 	@Override
-	protected String getHurtSound() {
+	@Nullable
+	protected SoundEvent getHurtSound() {
 		return null;
 	}
 
 	@Override
-	protected String getDeathSound() {
+	@Nullable
+	protected SoundEvent getDeathSound() {
 		return null;
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float i) {
-		if (damagesource == DamageSource.inWall) return false;
+	public boolean attackEntityFrom(@Nonnull DamageSource damagesource, float i) {
+		if (damagesource == DamageSource.IN_WALL) return false;
 		if (damagesource.isFireDamage()) {
 			i *= 2;
 			setFire((int) i);
 		}
-		super.attackEntityFrom(damagesource, i);
-		return true;
+		return super.attackEntityFrom(damagesource, i);
 	}
 
 	@Override
@@ -100,18 +116,12 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 	}
 
 	private void updateBookHealth() {
-		if (inventory == null) return;
-		if (this.inventory.getBook() != null) {
-			ItemLinking.setHealth(this.inventory.getBook(), this.getHealth());
-		}
+		if (getBook().isEmpty()) return;
+		ItemLinking.setHealth(getBook(), this.getHealth());
 	}
 
 	private float getBookHealth() {
-		ItemStack book = null;
-		if (this.inventory != null) {
-			book = this.inventory.getBook();
-		}
-		return ItemLinking.getHealth(book);
+		return ItemLinking.getHealth(getBook());
 	}
 
 	@Override
@@ -121,7 +131,7 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {
 		super.writeEntityToNBT(nbttagcompound);
 		nbttagcompound.setInteger("DecayTimer", decaytimer);
-		nbttagcompound.setTag("Item", this.inventory.getBook().writeToNBT(new NBTTagCompound()));
+		nbttagcompound.setTag("Item", getBook().writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override
@@ -129,42 +139,43 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 		super.readEntityFromNBT(nbttagcompound);
 
 		decaytimer = nbttagcompound.getInteger("DecayTimer");
-		if (nbttagcompound.hasKey("Book Data")) {
-			this.inventory.setBook(new ItemStack(nbttagcompound.getInteger("Book Type") == 0 ? ModItems.agebook : ModItems.linkbook, 1, 0));
-			this.inventory.getBook().stackTagCompound = nbttagcompound.getCompoundTag("Book Data");
-		} else {
-			NBTTagCompound item = nbttagcompound.getCompoundTag("Item");
-			this.inventory.setBook(ItemStackUtils.loadItemStackFromNBT(item));
+		ItemStack book = new ItemStack(nbttagcompound.getCompoundTag("Item"));
+		if(book.isEmpty()) {
+			setDead();
 		}
-		if (this.inventory.getBook() == null) {
-			this.setDead();
-		}
-		dataWatcher.updateObject(bookitemID, Item.getIdFromItem(inventory.getBook().getItem()));
-		dataWatcher.updateObject(agenameID, LinkOptions.getDisplayName(inventory.getBook().stackTagCompound));
+		dataManager.set(BOOK, book);
+		dataManager.set(AGE_NAME, LinkOptions.getDisplayName(book.getTagCompound()));
 	}
 
 	@Override
 	protected void collideWithEntity(Entity entity) {
-		if (entity instanceof EntityMinecartHopper) {
-			if (inventory.getBook() == null) return;
+		if (entity instanceof EntityMinecartHopper && !world.isRemote) {
+			ItemStack book = getBook();
+			if(book.isEmpty()) return;
 			EntityMinecartHopper hoppercart = (EntityMinecartHopper) entity;
-			ItemStack itemstack1 = TileEntityHopper.func_145889_a(hoppercart, inventory.getBook(), -1);
-			inventory.setBook(itemstack1);
+			ItemStack itemstack = book.copy();
+			ItemStack itemstack1 = TileEntityHopper.putStackInInventoryAllSlots(null, hoppercart, itemstack, null);
+
+			if (itemstack1.isEmpty()) {
+				this.setDead();
+			} else {
+				dataManager.set(BOOK, itemstack1);
+			}
 			return;
 		}
 		super.collideWithEntity(entity);
 	}
 
 	@Override
-	public boolean interact(EntityPlayer entityplayer) {
-		if (worldObj.isRemote) return true;
-		if (entityplayer.isSneaking() && entityplayer.inventory.getCurrentItem() == null) {
-			entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, inventory.getBook());
-			entityplayer.inventory.markDirty();
+	protected boolean processInteract(EntityPlayer player, EnumHand hand) {
+		if(world.isRemote) return true;
+		if(player.isSneaking() && player.getHeldItem(hand).isEmpty()) {
+			player.setHeldItem(hand, getBook());
+			player.inventory.markDirty();
 			setDead();
 			return true;
 		}
-		entityplayer.openGui(Mystcraft.instance, ModGUIs.BOOK_ENTITY.ordinal(), worldObj, this.getEntityId(), 0, 0);
+		player.openGui(Mystcraft.instance, ModGUIs.BOOK_ENTITY.ordinal(), world, this.getEntityId(), 0, 0);
 		return true;
 	}
 
@@ -174,17 +185,15 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 
 		super.onUpdate();
 
-		//this.noClip = this.func_145771_j(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
-
-		if (worldObj.isRemote) return;
+		if (world.isRemote) return;
 		++decaytimer;
 		if (decaytimer % 10000 == 0) {
-			attackEntityFrom(DamageSource.starve, 1);
+			attackEntityFrom(DamageSource.STARVE, 1);
 		}
 		if (isWet()) {
-			attackEntityFrom(DamageSource.drown, 1);
+			attackEntityFrom(DamageSource.DROWN, 1);
 		}
-		if (inventory.getBook() == null) {
+		if (getBook().isEmpty()) {
 			setDead();
 		}
 	}
@@ -193,95 +202,8 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 	 * Decrements the entity's air supply when underwater
 	 */
 	@Override
-	protected int decreaseAirSupply(int par1) {
-		return par1 - 2;
-	}
-
-	@Override
-	public void processMessageData(NBTTagCompound nbttagcompound) {
-		readEntityFromNBT(nbttagcompound);
-	}
-
-	public void linkEntity(Entity entity) {
-		inventory.linkEntity(entity);
-	}
-
-	@Override
-	public int getSizeInventory() {
-		if (inventory == null) return 0;
-		return inventory.getSizeInventory();
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int i) {
-		if (inventory == null) return null;
-		return inventory.getStackInSlot(i);
-	}
-
-	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		if (inventory == null) return null;
-		return inventory.decrStackSize(i, j);
-	}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int i) {
-		if (inventory == null) return null;
-		return inventory.getStackInSlotOnClosing(i);
-	}
-
-	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		if (inventory == null) return;
-		inventory.setInventorySlotContents(i, itemstack);
-	}
-
-	@Override
-	public String getInventoryName() {
-		if (inventory == null) return "";
-		return inventory.getInventoryName();
-	}
-
-	@Override
-	public boolean hasCustomInventoryName() {
-		if (inventory == null) return false;
-		return inventory.hasCustomInventoryName();
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		if (inventory == null) return 0;
-		return inventory.getInventoryStackLimit();
-	}
-
-	@Override
-	public void markDirty() {
-		if (inventory == null) return;
-		inventory.markDirty();
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		if (inventory == null) return false;
-		return inventory.isUseableByPlayer(entityplayer);
-	}
-
-	@Override
-	public void openInventory() {
-		if (inventory == null) return;
-		inventory.openInventory();
-	}
-
-	@Override
-	public void closeInventory() {
-		if (inventory == null) return;
-		inventory.closeInventory();
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		if (inventory == null) return false;
-		return inventory.isItemValidForSlot(i, itemstack);
+	protected int decreaseAirSupply(int air) {
+		return air - 2;
 	}
 
 	@Override
@@ -295,12 +217,12 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 	}
 
 	@Override
-	protected boolean isAIEnabled() {
-		return false;
+	public boolean isAIDisabled() {
+		return true;
 	}
 
 	@Override
-	public boolean canAttackClass(Class par1Class) {
+	public boolean canAttackClass(Class cl) {
 		return false;
 	}
 
@@ -315,9 +237,6 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 
 	@Override
 	public void setAIMoveSpeed(float par1) {}
-
-	@Override
-	protected void updateEntityActionState() {}
 
 	@Override
 	public void faceEntity(Entity par1Entity, float par2, float par3) {}
@@ -337,4 +256,66 @@ public class EntityLinkbook extends EntityLiving implements IInventory, IMessage
 
 	@Override
 	public void setLastAttacker(Entity par1) {}
+
+	@Nonnull
+	public EntityLinkbookItemWrapper createBookWrapper() {
+		return new EntityLinkbookItemWrapper(this);
+	}
+
+	private class EntityLinkbookItemWrapper implements IItemHandlerModifiable, InventoryFilter {
+
+		private final EntityLinkbook parent;
+
+		public EntityLinkbookItemWrapper(EntityLinkbook linkbook) {
+			this.parent = linkbook;
+		}
+
+		@Override
+		public boolean canAcceptItem(int slot, @Nonnull ItemStack stack) {
+			return slot == 0 && !stack.isEmpty() && stack.getItem() instanceof ItemLinking;
+		}
+
+		@Override
+		public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+			if(slot == 0) {
+				parent.setBook(stack);
+			}
+		}
+
+		@Override
+		public int getSlots() {
+			return 1;
+		}
+
+		@Nonnull
+		@Override
+		public ItemStack getStackInSlot(int slot) {
+			if(slot == 0) {
+				return parent.getBook();
+			}
+			return ItemStack.EMPTY;
+		}
+
+		@Nonnull
+		@Override
+		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+			if(!canAcceptItem(slot, stack)) {
+				return stack;
+			}
+			setStackInSlot(0, stack);
+			return ItemStack.EMPTY;
+		}
+
+		@Nonnull
+		@Override
+		public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			return ItemStack.EMPTY;
+		}
+
+		@Override
+		public int getSlotLimit(int slot) {
+			return parent.getBook().getMaxStackSize();
+		}
+	}
+
 }

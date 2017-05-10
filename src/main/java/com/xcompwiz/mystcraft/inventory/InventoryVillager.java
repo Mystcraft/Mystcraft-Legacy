@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.inventory;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
@@ -20,8 +21,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.items.IItemHandlerModifiable;
+
+import javax.annotation.Nonnull;
 
 public class InventoryVillager {
+
 	private static final long	step_size	= 12000;
 
 	private boolean			dirty;
@@ -36,6 +41,7 @@ public class InventoryVillager {
 
 	public InventoryVillager(EntityVillager villager) {
 		this.villager = villager;
+		Arrays.fill(pageitems, ItemStack.EMPTY);
 	}
 
 	public Entity getVillager() {
@@ -59,7 +65,7 @@ public class InventoryVillager {
 	}
 
 	private void markUpdated() {
-		lastupdated = villager.worldObj.getTotalWorldTime();
+		lastupdated = villager.world.getTotalWorldTime();
 		markDirty();
 	}
 
@@ -72,7 +78,7 @@ public class InventoryVillager {
 	}
 
 	public void simulate() {
-		long deltatime = villager.worldObj.getTotalWorldTime() - lastrestock;
+		long deltatime = villager.world.getTotalWorldTime() - lastrestock;
 		while (deltatime >= step_size) {
 			deltatime -= step_size;
 			lastrestock += step_size;
@@ -96,21 +102,24 @@ public class InventoryVillager {
 			}
 			return;
 		}
-		if (pageitems[roll] != null && pageitems[roll].getCount() < 5) ++pageitems[roll].stackSize;
+		if (!pageitems[roll].isEmpty() && pageitems[roll].getCount() < 5) {
+			pageitems[roll].grow(1);
+		}
 		markUpdated();
 	}
 
-	public boolean purchaseBooster(InventoryPlayer inventoryplayer) {
+	//Use the handler for querying things, the inventoryPlayer for ease of use for certain methods... *shrugs*
+	public boolean purchaseBooster(IItemHandlerModifiable inventoryHandlerPlayer, InventoryPlayer inventoryHelperPlayer) {
 		if (boostercount <= 0) return false;
-		int playerEmeralds = getPlayerEmeralds(inventoryplayer);
+		int playerEmeralds = getPlayerEmeralds(inventoryHandlerPlayer);
 		int price = getBoosterCost();
 		ItemStack booster = new ItemStack(ModItems.booster);
 		if (playerEmeralds < price) return false;
 		//Add booster to inventory
-		if (!inventoryplayer.addItemStackToInventory(booster)) return false; //If fail, abort
+		if (!inventoryHelperPlayer.addItemStackToInventory(booster)) return false; //If fail, abort
 		//Remove emeralds from user inventory
-		if (!deductPrice(inventoryplayer, price)) {
-			InventoryUtils.removeFromInventory(inventoryplayer, booster, 1);
+		if (!deductPrice(inventoryHandlerPlayer, inventoryHelperPlayer, price)) {
+			InventoryUtils.removeFromInventory(inventoryHandlerPlayer, booster, 1);
 			return false;
 		}
 		//Decrease available boosters
@@ -119,48 +128,49 @@ public class InventoryVillager {
 		return true;
 	}
 
-	public boolean purchaseShopItem(InventoryPlayer inventoryplayer, int index) {
+	public boolean purchaseShopItem(IItemHandlerModifiable inventoryHandlerPlayer, InventoryPlayer inventoryHelperPlayer, int index) {
 		ItemStack original = getShopItem(index);
-		if (original == null) return false;
+		if (original.isEmpty()) return false;
 		ItemStack clone = original.copy();
 		if (clone.getCount() <= 0) return false;
-		clone.stackSize = 1;
+		clone.setCount(1);
 		int price = getShopItemPrice(index);
-		int playerEmeralds = getPlayerEmeralds(inventoryplayer);
+		int playerEmeralds = getPlayerEmeralds(inventoryHandlerPlayer);
 		if (playerEmeralds < price) return false;
 		//Add booster to inventory
-		if (!inventoryplayer.addItemStackToInventory(clone)) return false; //If fail, abort
+		if (!inventoryHelperPlayer.addItemStackToInventory(clone)) return false; //If fail, abort
 		//Remove emeralds from user inventory
-		if (!deductPrice(inventoryplayer, price)) {
-			InventoryUtils.removeFromInventory(inventoryplayer, clone, 1);
+		if (!deductPrice(inventoryHandlerPlayer, inventoryHelperPlayer, price)) {
+			InventoryUtils.removeFromInventory(inventoryHandlerPlayer, clone, 1);
 			return false;
 		}
 		//Decrease available boosters
-		--original.stackSize;
+		original.shrink(1);
 		markUpdated();
 		return true;
 	}
 
-	private boolean deductPrice(InventoryPlayer inventoryplayer, int price) {
-		int playerchange = InventoryUtils.countInInventory(inventoryplayer, new ItemStack(Items.emerald));
+	private boolean deductPrice(IItemHandlerModifiable handlerPlayer, InventoryPlayer inventoryplayer, int price) {
+		int playerchange = InventoryUtils.countInInventory(handlerPlayer, new ItemStack(Items.EMERALD));
 		if (playerchange < price % 9) {
-			if (!inventoryplayer.addItemStackToInventory(new ItemStack(Items.emerald, 9))) return false;
-			InventoryUtils.removeFromInventory(inventoryplayer, new ItemStack(Blocks.emerald_block), 1);
+			if (!inventoryplayer.addItemStackToInventory(new ItemStack(Items.EMERALD, 9))) return false;
+			InventoryUtils.removeFromInventory(handlerPlayer, new ItemStack(Blocks.EMERALD_BLOCK), 1);
 		}
-		price = price % 9 + 9 * InventoryUtils.removeFromInventory(inventoryplayer, new ItemStack(Blocks.emerald_block), price / 9);
-		price = InventoryUtils.removeFromInventory(inventoryplayer, new ItemStack(Items.emerald), price);
+		price = price % 9 + 9 * InventoryUtils.removeFromInventory(handlerPlayer, new ItemStack(Blocks.EMERALD_BLOCK), price / 9);
+		price = InventoryUtils.removeFromInventory(handlerPlayer, new ItemStack(Items.EMERALD), price);
 		return true;
 	}
 
-	public Integer getPlayerEmeralds(InventoryPlayer inventoryplayer) {
-		return InventoryUtils.countInInventory(inventoryplayer, new ItemStack(Items.emerald)) + 9 * InventoryUtils.countInInventory(inventoryplayer, new ItemStack(Blocks.emerald_block));
+	public Integer getPlayerEmeralds(IItemHandlerModifiable inventoryplayer) {
+		return InventoryUtils.countInInventory(inventoryplayer, new ItemStack(Items.EMERALD)) + 9 * InventoryUtils.countInInventory(inventoryplayer, new ItemStack(Blocks.EMERALD_BLOCK));
 	}
 
+	@Nonnull
 	public ItemStack getShopItem(int index) {
-		if (this.pageitems[index] == null && !villager.worldObj.isRemote) {
+		if (this.pageitems[index].isEmpty() && !villager.world.isRemote) {
 			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(new Random(), SymbolManager.getSymbolsByRank(index + 1, null), WeightProviderSymbolItem.instance);
 			this.pageitems[index] = Page.createSymbolPage(symbol.identifier());
-			this.pageitems[index].stackSize = 3;
+			this.pageitems[index].setCount(3);
 		}
 		return this.pageitems[index];
 	}
@@ -182,8 +192,11 @@ public class InventoryVillager {
 		if (data.hasKey("lastrestock")) lastrestock = data.getInteger("lastrestock");
 
 		// Initial generation
-		for (int i = 0; i < pageitems.length; ++i)
+		for (int i = 0; i < pageitems.length; ++i) {
 			getShopItem(i);
-		if (!this.villager.worldObj.isRemote) markUpdated();
+		}
+		if (!this.villager.world.isRemote) {
+			markUpdated();
+		}
 	}
 }

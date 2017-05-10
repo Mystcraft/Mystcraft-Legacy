@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -291,6 +292,21 @@ public class IOInventory implements IItemHandlerModifiable {
             return this;
         }
         return null;
+    }
+
+    public int calcRedstoneFromInventory() {
+        int i = 0;
+        float f = 0.0F;
+        for (int j = 0; j < getSlots(); ++j) {
+            ItemStack itemstack = getStackInSlot(j);
+            if (!itemstack.isEmpty()) {
+                f += (float) itemstack.getCount() / (float) Math.min(getSlotLimit(j), itemstack.getMaxStackSize());
+                ++i;
+            }
+        }
+        f = f / (float) getSlots();
+        return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
+
     }
 
     private static class SlotStackHolder {

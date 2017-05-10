@@ -3,7 +3,11 @@ package com.xcompwiz.mystcraft.network;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
+import javax.annotation.Nonnull;
+
 public interface IGuiMessageHandler {
 
-	public abstract void processMessage(EntityPlayer player, NBTTagCompound nbttagcompound);
+	//Receives its messages from MPacketGuiMessage.onMessage
+	void processMessage(@Nonnull EntityPlayer player, @Nonnull NBTTagCompound nbttagcompound);
+
 }

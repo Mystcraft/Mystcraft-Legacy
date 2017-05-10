@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.client.gui;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
@@ -42,7 +43,7 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 	public void onLink(GuiElement elem) {
 		NBTTagCompound nbttagcompound = new NBTTagCompound();
 		nbttagcompound.setByte(ContainerBook.Messages.Link, (byte) 0);
-		MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(container.windowId, nbttagcompound));
+		MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(container.windowId, nbttagcompound));
 	}
 
 	@Override
@@ -83,7 +84,7 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 	@Override
 	protected void _drawBackgroundLayer(int mouseX, int mouseY, float f) {
 		if (!widget) {
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GlStateManager.color(1F, 1F, 1F, 1F);
 			this.mc.getTextureManager().bindTexture(GUIs.slot);
 			this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 

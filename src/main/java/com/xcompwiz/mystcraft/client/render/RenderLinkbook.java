@@ -24,7 +24,7 @@ public class RenderLinkbook extends Render {
 	@Override
 	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
 		EntityLinkbook linkbook = (EntityLinkbook) entity;
-		if (linkbook.getItem() == ModItems.agebook) {
+		if (linkbook.getBook() == ModItems.agebook) {
 			this.renderManager.renderEngine.bindTexture(Entities.agebook);
 		} else {
 			this.renderManager.renderEngine.bindTexture(Entities.linkbook);

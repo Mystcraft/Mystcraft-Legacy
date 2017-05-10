@@ -6,36 +6,39 @@ import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.data.Sounds;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
+import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketParticles;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.network.Packet;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class LinkListenerEffects {
 
 	private static void spawnParticles(Entity entity) {
-		Packet pkt = MPacketParticles.createPacket(entity, "link");
-		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-		if (server != null) server.getPlayerList().sendPacketToAllPlayersInDimension(pkt, entity.worldObj.provider.dimensionId);
+		MystcraftPacketHandler.CHANNEL.sendToDimension(new MPacketParticles(entity.posX, entity.posY, entity.posZ, "link"), entity.world.provider.getDimension());
 	}
 
 	private static void playSound(Entity entity, ILinkInfo info) {
 		if (entity instanceof EntityItem || entity instanceof EntityLinkbook) {
-			entity.worldObj.playSoundAtEntity(entity, Sounds.POP, 0.8F, entity.worldObj.rand.nextFloat() * 0.2F + 0.9F);
+			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.POP, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
 		} else if (info.getFlag(LinkPropertyAPI.FLAG_DISARM)) {
-			entity.worldObj.playSoundAtEntity(entity, Sounds.DISARM, 0.8F, entity.worldObj.rand.nextFloat() * 0.2F + 0.9F);
+			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.DISARM, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
 		} else if (info.getProperty(LinkPropertyAPI.PROP_SOUND) != null) {
-			entity.worldObj.playSoundAtEntity(entity, info.getProperty(LinkPropertyAPI.PROP_SOUND), 0.8F, entity.worldObj.rand.nextFloat() * 0.2F + 0.9F);
+			SoundEvent ev = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(info.getProperty(LinkPropertyAPI.PROP_SOUND)));
+			if(ev != null) {
+				entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, ev, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
+			}
 		} else if (info.getFlag(LinkPropertyAPI.FLAG_FOLLOWING)) {
-			entity.worldObj.playSoundAtEntity(entity, Sounds.FOLLOWING, 0.8F, entity.worldObj.rand.nextFloat() * 0.2F + 0.9F);
+			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.FOLLOWING, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
 		} else if (info.getFlag(LinkPropertyAPI.FLAG_INTRA_LINKING)) {
-			entity.worldObj.playSoundAtEntity(entity, Sounds.INTRA_AGE, 0.8F, entity.worldObj.rand.nextFloat() * 0.2F + 0.9F);
+			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.INTRA_AGE, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
 		} else {
-			entity.worldObj.playSoundAtEntity(entity, Sounds.LINK, 0.8F, entity.worldObj.rand.nextFloat() * 0.2F + 0.9F);
+			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.LINK, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
 		}
 	}
 
@@ -50,4 +53,5 @@ public class LinkListenerEffects {
 		spawnParticles(event.entity);
 		playSound(event.entity, event.info);
 	}
+
 }

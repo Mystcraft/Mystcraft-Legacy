@@ -8,13 +8,17 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public abstract class ContainerBase extends Container {
-	protected List<SlotCollection>	collections	= new ArrayList<SlotCollection>();
+
+	protected List<SlotCollection>	collections	= new ArrayList<>();
 
 	@Override
+	@Nonnull
 	public ItemStack transferStackInSlot(EntityPlayer player, int i) {
-		ItemStack clone = null;
-		Slot slot = (Slot) inventorySlots.get(i);
+		ItemStack clone = ItemStack.EMPTY;
+		Slot slot = inventorySlots.get(i);
 		if (slot != null && slot.getHasStack()) {
 			ItemStack original = slot.getStack();
 			clone = original.copy();
@@ -26,14 +30,14 @@ public abstract class ContainerBase extends Container {
 			}
 
 			if (original.getCount() == 0) {
-				slot.putStack(null);
+				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}
 			if (original.getCount() != clone.getCount()) {
-				slot.onPickupFromSlot(player, original);
+				slot.onTake(player, original);
 			} else {
-				return null;
+				return ItemStack.EMPTY;
 			}
 		}
 		return clone;
@@ -57,20 +61,20 @@ public abstract class ContainerBase extends Container {
 		// Try merging stack
 		if (itemstack.isStackable()) {
 			while (itemstack.getCount() > 0 && (!reverse && slotId < end || reverse && slotId >= start)) {
-				slot = (Slot) this.inventorySlots.get(slotId);
+				slot = this.inventorySlots.get(slotId);
 				destStack = slot.getStack();
 
-				if (destStack != null && destStack == itemstack && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == destStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, destStack)) {
+				if (!destStack.isEmpty() && destStack == itemstack && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == destStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, destStack)) {
 					int totalSize = destStack.getCount() + itemstack.getCount();
 
 					if (totalSize <= itemstack.getMaxStackSize()) {
-						itemstack.stackSize = 0;
-						destStack.stackSize = totalSize;
+						itemstack.setCount(0);
+						destStack.setCount(totalSize);
 						slot.onSlotChanged();
 						success = true;
 					} else if (destStack.getCount() < itemstack.getMaxStackSize()) {
-						itemstack.stackSize -= itemstack.getMaxStackSize() - destStack.getCount();
-						destStack.stackSize = itemstack.getMaxStackSize();
+						itemstack.shrink(itemstack.getMaxStackSize() - destStack.getCount());
+						destStack.setCount(itemstack.getMaxStackSize());
 						slot.onSlotChanged();
 						success = true;
 					}
@@ -93,13 +97,12 @@ public abstract class ContainerBase extends Container {
 			}
 
 			while (!reverse && slotId < end || reverse && slotId >= start) {
-				slot = (Slot) this.inventorySlots.get(slotId);
+				slot = this.inventorySlots.get(slotId);
 				destStack = slot.getStack();
-
-				if (destStack == null && slot.isItemValid(itemstack)) {
+				if (destStack.isEmpty() && slot.isItemValid(itemstack)) {
 					slot.putStack(itemstack.copy());
 					slot.onSlotChanged();
-					itemstack.stackSize = 0;
+					itemstack.setCount(0);
 					success = true;
 					break;
 				}

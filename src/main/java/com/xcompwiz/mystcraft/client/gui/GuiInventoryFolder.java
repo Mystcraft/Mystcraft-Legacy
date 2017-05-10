@@ -42,7 +42,7 @@ public class GuiInventoryFolder extends GuiContainerElements {
 			nbttagcompound.setByte(ContainerFolder.Messages.AddToSurface, (byte) 0);
 			nbttagcompound.setBoolean("Single", single);
 			nbttagcompound.setInteger("Index", index);
-			MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.player.openContainer.windowId, nbttagcompound));
+			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
 			container.processMessage(mc.player, nbttagcompound);
 		}
 
@@ -60,13 +60,13 @@ public class GuiInventoryFolder extends GuiContainerElements {
 				page.writeToNBT(itemdata);
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setTag(ContainerFolder.Messages.RemoveFromCollection, itemdata);
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.player.openContainer.windowId, nbttagcompound));
+				MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
 				container.processMessage(mc.player, nbttagcompound);
 			} else {
 				int index = collectionelement.slotId;
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setInteger(ContainerFolder.Messages.RemoveFromOrderedCollection, index);
-				MystcraftPacketHandler.bus.sendToServer(MPacketGuiMessage.createPacket(mc.player.openContainer.windowId, nbttagcompound));
+				MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
 				container.processMessage(mc.player, nbttagcompound);
 			}
 		}

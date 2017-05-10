@@ -1,79 +1,29 @@
 package com.xcompwiz.mystcraft.network;
 
-import java.util.HashMap;
+import com.xcompwiz.mystcraft.network.packet.*;
 
-import com.xcompwiz.mystcraft.logging.LoggerUtils;
-import com.xcompwiz.mystcraft.network.packet.PacketBase;
-
-import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.network.NetworkManager;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.FMLEventChannel;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class MystcraftPacketHandler {
 
-	public static final String										CHANNEL			= "mystcraft";
-	public static FMLEventChannel									bus;
+	public static final SimpleNetworkWrapper CHANNEL = NetworkRegistry.INSTANCE.newSimpleChannel("Mystcraft");
 
-	private static HashMap<Byte, PacketBase>						packethandlers	= new HashMap<Byte, PacketBase>();
-	private static HashMap<Class<? extends PacketBase>, Byte>	idmap			= new HashMap<Class<? extends PacketBase>, Byte>();
+	public static void init() {
+		int index = 0;
 
-	public static void registerPacketHandler(PacketBase handler, byte id) {
-		if (packethandlers.get(id) != null) { throw new RuntimeException("Multiple id registrations for packet type on " + CHANNEL + " channel"); }
-		packethandlers.put(id, handler);
-		idmap.put(handler.getClass(), id);
+		//Recipient side last.
+		CHANNEL.registerMessage(MPacketAgeData.class, MPacketAgeData.class, index++, Side.CLIENT);
+		CHANNEL.registerMessage(MPacketConfigs.class, MPacketConfigs.class, index++, Side.CLIENT);
+		CHANNEL.registerMessage(MPacketDimensions.class, MPacketDimensions.class, index++, Side.CLIENT);
+		CHANNEL.registerMessage(MPacketProfilingState.class, MPacketProfilingState.class, index++, Side.CLIENT);
+		CHANNEL.registerMessage(MPacketExplosion.class, MPacketExplosion.class, index++, Side.CLIENT);
+		CHANNEL.registerMessage(MPacketSpawnLightningBolt.class, MPacketSpawnLightningBolt.class, index++, Side.CLIENT);
+		CHANNEL.registerMessage(MPacketParticles.class, MPacketParticles.class, index++, Side.CLIENT);
+		CHANNEL.registerMessage(MPacketGuiMessage.class, MPacketGuiMessage.class, index++, Side.CLIENT);
+
+		CHANNEL.registerMessage(MPacketGuiMessage.class, MPacketGuiMessage.class, index++, Side.SERVER);
 	}
 
-	public static byte getId(PacketBase handler) {
-		return getId(handler.getClass());
-	}
-
-	public static byte getId(Class<? extends PacketBase> handlerclass) {
-		if (!idmap.containsKey(handlerclass)) throw new RuntimeException("Attempted to get id for unregistered network message handler.");
-		return idmap.get(handlerclass);
-	}
-
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public void onPacketData(ClientCustomPacketEvent event) {
-		FMLProxyPacket pkt = event.packet;
-
-		onPacketData(event.manager, pkt, Minecraft.getMinecraft().thePlayer);
-	}
-
-	@SubscribeEvent
-	public void onPacketData(ServerCustomPacketEvent event) {
-		FMLProxyPacket pkt = event.packet;
-
-		onPacketData(event.manager, pkt, ((NetHandlerPlayServer) event.handler).playerEntity);
-	}
-
-	public void onPacketData(NetworkManager manager, FMLProxyPacket packet, EntityPlayer player) {
-		try {
-			if (packet == null || packet.payload() == null) { throw new RuntimeException("Empty packet sent to " + CHANNEL + " channel"); }
-			ByteBuf data = packet.payload();
-			byte type = data.readByte();
-
-			try {
-				PacketBase handler = packethandlers.get(type);
-				if (handler == null) { throw new RuntimeException("Unrecognized packet sent to " + CHANNEL + " channel"); }
-				handler.handle(data, player);
-			} catch (Exception e) {
-				LoggerUtils.warn("PacketHandler: Failed to handle packet type " + type);
-				LoggerUtils.warn(e.toString());
-				e.printStackTrace();
-			}
-		} catch (Exception e) {
-			LoggerUtils.warn("PacketHandler: Failed to read packet");
-			LoggerUtils.warn(e.toString());
-			e.printStackTrace();
-		}
-	}
 }

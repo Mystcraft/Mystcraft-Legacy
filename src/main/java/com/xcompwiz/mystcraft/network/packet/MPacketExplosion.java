@@ -1,73 +1,95 @@
 package com.xcompwiz.mystcraft.network.packet;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.xcompwiz.mystcraft.explosion.ExplosionAdvanced;
 import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffect;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.ChunkPosition;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class MPacketExplosion extends PacketBase {
+public class MPacketExplosion extends PacketBase<MPacketExplosion, MPacketExplosion> {
+
+	private double x, y, z;
+	private float size;
+	private List<Byte> effectIds = new LinkedList<>();
+	private List<BlockPos> positions = new LinkedList<>();
+
+	public MPacketExplosion() {}
+
+	public MPacketExplosion(ExplosionAdvanced exp) {
+		this.x = exp.explosionX;
+		this.y = exp.explosionY;
+		this.z = exp.explosionZ;
+		this.size = exp.explosionSize;
+		for (ExplosionEffect eff : exp.effects) {
+			effectIds.add(ExplosionAdvanced.getEffectId(eff));
+		}
+		BlockPos offset = new BlockPos(x, y, z);
+		for (BlockPos pos : exp.blocks) {
+			positions.add(pos.subtract(offset));
+		}
+	}
 
 	@Override
-	public void handle(ByteBuf data, EntityPlayer player) {
-		int count;
+	public void fromBytes(ByteBuf buf) {
+		this.x = buf.readDouble();
+		this.y = buf.readDouble();
+		this.z = buf.readDouble();
+		this.size = buf.readFloat();
 
-		double posX = data.readDouble();
-		double posY = data.readDouble();
-		double posZ = data.readDouble();
-		float size = data.readFloat();
-		int x = (int) posX;
-		int y = (int) posY;
-		int z = (int) posZ;
-
-		count = data.readInt();
-		List<ExplosionEffect> effects = new ArrayList<ExplosionEffect>();
-		for (int i = 0; i < count; ++i) {
-			ExplosionEffect effect = ExplosionAdvanced.getEffectById(data.readByte());
-			if (effect != null) effects.add(effect);
+		int s = buf.readInt();
+		for (int i = 0; i < s; i++) {
+			effectIds.add(buf.readByte());
 		}
-
-		count = data.readInt();
-		List<ChunkPosition> blocks = new ArrayList<ChunkPosition>();
-		for (int i = 0; i < count; ++i) {
-			blocks.add(new ChunkPosition(data.readByte() + x, data.readByte() + y, data.readByte() + z));
+		s = buf.readInt();
+		for (int i = 0; i < s; i++) {
+			positions.add(readPos(buf));
 		}
-		ExplosionAdvanced explosion = new ExplosionAdvanced(player.worldObj, (Entity) null, posX, posY, posZ, size);
-		explosion.blocks = blocks;
-		explosion.effects = effects;
-		explosion.doExplosionB(true);
 	}
 
-	public static FMLProxyPacket createPacket(EntityPlayer player, ExplosionAdvanced explosion) {
-		ByteBuf data = PacketBase.createDataBuffer((Class<? extends PacketBase>) new Object() {}.getClass().getEnclosingClass());
-
-		data.writeDouble(explosion.explosionX);
-		data.writeDouble(explosion.explosionY);
-		data.writeDouble(explosion.explosionZ);
-		data.writeFloat(explosion.explosionSize);
-		data.writeInt(explosion.effects.size());
-		for (ExplosionEffect effect : explosion.effects) {
-			data.writeByte(ExplosionAdvanced.getEffectId(effect));
+	@Override
+	public void toBytes(ByteBuf buf) {
+		buf.writeDouble(x);
+		buf.writeDouble(y);
+		buf.writeDouble(z);
+		buf.writeFloat(size);
+		buf.writeInt(effectIds.size());
+		for (Byte b : effectIds) {
+			buf.writeByte(b);
 		}
-		int x = (int) explosion.explosionX;
-		int y = (int) explosion.explosionY;
-		int z = (int) explosion.explosionZ;
-		data.writeInt(explosion.blocks.size());
-		for (ChunkPosition coords : explosion.blocks) {
-			int var7 = coords.chunkPosX - x;
-			int var8 = coords.chunkPosY - y;
-			int var9 = coords.chunkPosZ - z;
-			data.writeByte(var7);
-			data.writeByte(var8);
-			data.writeByte(var9);
+		BlockPos offset = new BlockPos(x, y, z);
+		buf.writeInt(positions.size());
+		for (BlockPos pos : positions) {
+			writePos(buf, pos.add(offset));
 		}
-
-		return buildPacket(data);
 	}
+
+	@Override
+	public MPacketExplosion onMessage(MPacketExplosion message, MessageContext ctx) {
+		playExplosion(message);
+		return null;
+	}
+
+	@SideOnly(Side.CLIENT)
+	private void playExplosion(MPacketExplosion message) {
+		List<ExplosionEffect> effects = new ArrayList<>();
+		for (Byte b : message.effectIds) {
+			ExplosionEffect effect = ExplosionAdvanced.getEffectById(b);
+			if (effect != null) {
+				effects.add(effect);
+			}
+		}
+		ExplosionAdvanced adv = new ExplosionAdvanced(Minecraft.getMinecraft().world, null, message.x, message.y, message.z, message.size);
+		adv.blocks = message.positions;
+		adv.effects = effects;
+		adv.doExplosionB(true);
+	}
+
 }
