@@ -4,6 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldSavedData;
 
 public class NBTDataContainer extends WorldSavedData {
+
 	public NBTTagCompound	data	= new NBTTagCompound();
 
 	public NBTDataContainer(String id) {

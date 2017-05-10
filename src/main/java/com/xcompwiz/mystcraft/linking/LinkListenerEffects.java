@@ -25,20 +25,20 @@ public class LinkListenerEffects {
 
 	private static void playSound(Entity entity, ILinkInfo info) {
 		if (entity instanceof EntityItem || entity instanceof EntityLinkbook) {
-			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.POP, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
+			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.SOUND_LINK_POP, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
 		} else if (info.getFlag(LinkPropertyAPI.FLAG_DISARM)) {
-			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.DISARM, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
+			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.SOUND_LINK_DISARM, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
 		} else if (info.getProperty(LinkPropertyAPI.PROP_SOUND) != null) {
 			SoundEvent ev = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(info.getProperty(LinkPropertyAPI.PROP_SOUND)));
 			if(ev != null) {
 				entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, ev, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
 			}
 		} else if (info.getFlag(LinkPropertyAPI.FLAG_FOLLOWING)) {
-			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.FOLLOWING, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
+			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.SOUND_LINK_FOLLOWING, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
 		} else if (info.getFlag(LinkPropertyAPI.FLAG_INTRA_LINKING)) {
-			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.INTRA_AGE, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
+			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.SOUND_LINK_INTRA_LINK, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
 		} else {
-			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.LINK, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
+			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.SOUND_LINK_LINK, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
 		}
 	}
 

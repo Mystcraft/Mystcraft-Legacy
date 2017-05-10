@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class LinkListenerPermissions {
@@ -35,7 +36,7 @@ public class LinkListenerPermissions {
 			EntityPlayer player = (EntityPlayer) event.entity;
 			Integer dimid = event.info.getDimensionUID();
 			if (dimid == null) return;
-			if (!(canPlayerLeaveDimension(player, event.origin.provider.dimensionId) && canPlayerEnterDimension(player, dimid))) {
+			if (!(canPlayerLeaveDimension(player, event.origin.provider.getDimension()) && canPlayerEnterDimension(player, dimid))) {
 				event.setCanceled(true);
 			}
 		}
@@ -49,9 +50,9 @@ public class LinkListenerPermissions {
 		// return false;
 		// }
 		// }
-		Set<Integer> restricted = getRestrictedSet(player.getDisplayName());
+		Set<Integer> restricted = getRestrictedSet(player.getDisplayNameString());
 		if (restricted != null && restricted.contains(dim)) return false;
-		Set<Integer> permitted = getPermittedSet(player.getDisplayName());
+		Set<Integer> permitted = getPermittedSet(player.getDisplayNameString());
 		if (permitted != null && !permitted.contains(dim)) return false;
 
 		return true;
@@ -136,9 +137,9 @@ public class LinkListenerPermissions {
 	}
 
 	public static void loadState() {
-		MinecraftServer mcServer = MinecraftServer.getServer();
+		MinecraftServer mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
 		if (mcServer == null) return;
-		NBTDataContainer data = (NBTDataContainer) Mystcraft.getStorage(true).loadData(NBTDataContainer.class, data_file);
+		NBTDataContainer data = (NBTDataContainer) Mystcraft.getStorage(true).getOrLoadData(NBTDataContainer.class, data_file);
 		if (data == null) {
 			data = new NBTDataContainer("dummy");
 		}
@@ -149,9 +150,9 @@ public class LinkListenerPermissions {
 	}
 
 	private static void saveState() {
-		MinecraftServer mcServer = MinecraftServer.getServer();
+		MinecraftServer mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
 		if (mcServer == null) return;
-		NBTDataContainer data = (NBTDataContainer) Mystcraft.getStorage(true).loadData(NBTDataContainer.class, data_file);
+		NBTDataContainer data = (NBTDataContainer) Mystcraft.getStorage(true).getOrLoadData(NBTDataContainer.class, data_file);
 		if (data == null) {
 			data = new NBTDataContainer(data_file);
 			Mystcraft.getStorage(true).setData(data_file, data);
@@ -182,8 +183,7 @@ public class LinkListenerPermissions {
 	//XXX: Refactor to NBTUtils
 	private static HashMap<String, Set<Integer>> readHashMapFromNBT(NBTTagCompound data) {
 		HashMap<String, Set<Integer>> map = new HashMap<String, Set<Integer>>();
-		Collection<String> tagnames = data.func_150296_c();
-		for (String tagname : tagnames) {
+		for (String tagname : data.getKeySet()) {
 			NBTTagList list = data.getTagList(tagname, Constants.NBT.TAG_INT);
 			map.put(tagname, readSetFromNBT(list));
 		}
@@ -194,7 +194,7 @@ public class LinkListenerPermissions {
 		Set<Integer> set = new HashSet<Integer>();
 		for (int i = 0; i < data.tagCount(); ++i) {
 			NBTTagInt tag = (NBTTagInt) data.removeTag(0);
-			set.add(tag.func_150287_d());
+			set.add(tag.getInt());
 		}
 		return set;
 	}

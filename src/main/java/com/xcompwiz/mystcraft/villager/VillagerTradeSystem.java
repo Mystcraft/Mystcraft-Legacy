@@ -12,20 +12,23 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.event.entity.player.EntityInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public class VillagerTradeSystem {
 
-	private static ConcurrentMap<EntityVillager, InventoryVillager>	villagers			= new MapMaker().weakKeys().weakValues().<EntityVillager, InventoryVillager> makeMap();
+	private static ConcurrentMap<EntityVillager, InventoryVillager>	villagers			= new MapMaker().weakKeys().weakValues().makeMap();
 	private static long												tick_accumulator	= 0;																					;
 
-	public static boolean onVillagerInteraction(EntityInteractEvent event) {
-		if (event.entityPlayer.worldObj.isRemote) return false;
-		if (!(event.target instanceof EntityVillager)) return false;
-		EntityVillager villager = (EntityVillager) event.target;
-		if (villager.getProfession() != Mystcraft.archivistId) return false;
+	public static boolean onVillagerInteraction(PlayerInteractEvent.EntityInteract event) {
+		if (event.getEntityPlayer().world.isRemote) return false;
+		if (!Mystcraft.archivistEnabled()) return false;
+		if (!(event.getTarget() instanceof EntityVillager)) return false;
+		EntityVillager villager = (EntityVillager) event.getTarget();
+		if (!villager.getProfessionForge().equals(Mystcraft.instance.archivist)) {
+			return false;
+		}
 		
-		event.entityPlayer.openGui(Mystcraft.instance, ModGUIs.VILLAGER.ordinal(), event.entityPlayer.worldObj, villager.getEntityId(), 0, 0);
+		event.getEntityPlayer().openGui(Mystcraft.instance, ModGUIs.VILLAGER.ordinal(), event.getEntityPlayer().world, villager.getEntityId(), 0, 0);
 		return true;
 	}
 
@@ -39,7 +42,7 @@ public class VillagerTradeSystem {
 	}
 
 	public static InventoryVillager getVillagerInventory(EntityVillager villager) {
-		if (villager.worldObj.isRemote) return new InventoryVillager(villager);
+		if (villager.world.isRemote) return new InventoryVillager(villager);
 		InventoryVillager villagerinv = villagers.get(villager);
 		if (villagerinv == null) {
 			villagerinv = new InventoryVillager(villager);

@@ -3,7 +3,6 @@ package com.xcompwiz.mystcraft.client;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleProviderLink;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleUtils;
@@ -12,7 +11,6 @@ import com.xcompwiz.mystcraft.client.linkeffects.LinkRendererDisarm;
 import com.xcompwiz.mystcraft.client.model.ModelBookBinder;
 import com.xcompwiz.mystcraft.client.model.ModelInkMixer;
 import com.xcompwiz.mystcraft.client.model.ModelLinkModifier;
-import com.xcompwiz.mystcraft.client.render.ItemRendererMask;
 import com.xcompwiz.mystcraft.client.render.ItemRendererPage;
 import com.xcompwiz.mystcraft.client.render.ItemRendererTileEntity;
 import com.xcompwiz.mystcraft.client.render.RenderBookReceptacle;
@@ -56,8 +54,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

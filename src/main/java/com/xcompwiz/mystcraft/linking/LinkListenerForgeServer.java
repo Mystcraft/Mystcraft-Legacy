@@ -11,7 +11,7 @@ public class LinkListenerForgeServer {
 	@SubscribeEvent
 	public void onLinkEnd(LinkEventEnd event) {
 		if (event.entity instanceof EntityPlayer) {
-			FMLCommonHandler.instance().firePlayerChangedDimensionEvent((EntityPlayer) event.entity, event.origin.provider.dimensionId, event.destination.provider.dimensionId);
+			FMLCommonHandler.instance().firePlayerChangedDimensionEvent((EntityPlayer) event.entity, event.origin.provider.getDimension(), event.destination.provider.getDimension());
 		}
 	}
 

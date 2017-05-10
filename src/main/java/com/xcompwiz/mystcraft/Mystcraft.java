@@ -24,18 +24,7 @@ import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.core.MystcraftEventHandler;
 import com.xcompwiz.mystcraft.core.MystcraftTickHandler;
 import com.xcompwiz.mystcraft.core.TaskQueueManager;
-import com.xcompwiz.mystcraft.data.GrammarRules;
-import com.xcompwiz.mystcraft.data.InkEffects;
-import com.xcompwiz.mystcraft.data.ModAchievements;
-import com.xcompwiz.mystcraft.data.ModBlocks;
-import com.xcompwiz.mystcraft.data.ModFluids;
-import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.data.ModLinkEffects;
-import com.xcompwiz.mystcraft.data.ModRecipes;
-import com.xcompwiz.mystcraft.data.ModSymbols;
-import com.xcompwiz.mystcraft.data.ModSymbolsFluids;
-import com.xcompwiz.mystcraft.data.ModWords;
-import com.xcompwiz.mystcraft.data.SymbolRules;
+import com.xcompwiz.mystcraft.data.*;
 import com.xcompwiz.mystcraft.entity.EntityFallingBlock;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
 import com.xcompwiz.mystcraft.entity.EntityMeteor;
@@ -124,8 +113,8 @@ public class Mystcraft {
 	public static Collection<Integer>	registeredDims;
 	public static LinkedList<Integer>	deadDims;
 
-	public static int					archivistId;
-	private VillagerArchivist			archivist;
+	public static boolean               archivistEnabled;
+    public VillagerArchivist			archivist;
 
 	private ChunkProfilerManager		profilingThread;
 
@@ -188,7 +177,7 @@ public class Mystcraft {
 		requireUUID = config.get(MystConfig.CATEGORY_GENERAL, "teleportation.requireUUIDTest", requireUUID, "If set to true, the dimension matching test will be strict. This will force new players to the \"home\" dimension.").getBoolean(requireUUID);
 		homeDimension = config.get(MystConfig.CATEGORY_GENERAL, "teleportation.homedim", homeDimension).getInt();
 
-		archivistId = config.get(MystConfig.CATEGORY_GENERAL, "ids.villager.archivist", 1210950779).getInt();
+		archivistEnabled = config.get(MystConfig.CATEGORY_GENERAL, "ids.villager.archivist", true).getBoolean();
 		providerId = config.get(MystConfig.CATEGORY_GENERAL, "ids.dim_provider", 1210950779).getInt();
 
 		serverLabels = renderlabels;
@@ -234,6 +223,8 @@ public class Mystcraft {
 
 		// Init Achievements
 		ModAchievements.init();
+
+        ModSounds.init();
 
 		sidedProxy.preinit();
 	}
@@ -282,7 +273,7 @@ public class Mystcraft {
 	}
 
 	public static boolean archivistEnabled() {
-		return archivistId != 0;
+		return archivistEnabled;
 	}
 
 	@EventHandler

@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.client.audio;
 
+import com.xcompwiz.mystcraft.data.Sounds;
 import com.xcompwiz.mystcraft.entity.EntityMeteor;
 
 import net.minecraft.client.audio.ISound;
@@ -10,10 +11,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class MovingSoundMeteor extends MovingSound {
-	private final EntityMeteor	entity;
+
+	private final EntityMeteor entity;
 
 	public MovingSoundMeteor(EntityMeteor entity) {
-		super(ModSoundEvents.ENTITY_METEOR_FALLING, SoundCategory.HOSTILE);
+		super(Sounds.SOUND_METEOR_ROAR, SoundCategory.HOSTILE);
 		this.attenuationType = ISound.AttenuationType.NONE;
 		this.entity = entity;
 		this.repeat = true;

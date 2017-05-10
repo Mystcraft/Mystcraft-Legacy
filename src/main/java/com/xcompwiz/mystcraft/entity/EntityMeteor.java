@@ -1,9 +1,5 @@
 package com.xcompwiz.mystcraft.entity;
 
-import static net.minecraft.entity.Entity.renderDistanceWeight;
-
-import java.util.Iterator;
-
 import com.xcompwiz.mystcraft.api.event.MeteorEvent.MetorExplosion;
 import com.xcompwiz.mystcraft.api.event.MeteorEvent.MetorImpact;
 import com.xcompwiz.mystcraft.api.event.MeteorEvent.MetorSpawn;
@@ -20,19 +16,14 @@ import com.xcompwiz.mystcraft.network.packet.MPacketParticles;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
@@ -48,8 +39,6 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 	public EntityMeteor(World worldObj) {
 		super(worldObj);
 		this.setScale(1.0F, 0);
-		renderDistanceWeight = 80.0D;
-		yOffset = 0.0F;
 	}
 
 	public EntityMeteor(World worldObj, float scale, int penetration, double x, double y, double z, double dx, double dy, double dz) {
@@ -91,15 +80,17 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 		this.setFire(1);
 
 		if (!updated) {
-			this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, "ambient.weather.thunder", 10000.0F, 0.8F + this.rand.nextFloat() * 0.2F);
-			if (this.worldObj.isRemote) spawnMovingSound();
+			getEntityWorld().playSound(posX, posY, posZ, SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundCategory.WEATHER, 10000.0F, 0.8F + this.rand.nextFloat() * 0.2F, true);
+			if (this.getEntityWorld().isRemote) {
+				spawnMovingSound();
+			}
 			updated = true;
 		}
 
-		Vec3 var15 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-		Vec3 var2 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-		MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2);
-		var15 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
+		Vec3d var15 = new Vec3d(this.posX, this.posY, this.posZ);
+		Vec3d var2 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+		RayTraceResult var3 = this.getEntityWorld().rayTraceBlocks(var15, var2);
+		var15 = new Vec3d(this.posX, this.posY, this.posZ);
 
 		if (var3 != null) {
 			++inGroundTime;
@@ -111,7 +102,7 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 		this.posX += this.motionX;
 		this.posY += this.motionY;
 		this.posZ += this.motionZ;
-		float var16 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+		float var16 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 		this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
 		for (this.rotationPitch = (float) (Math.atan2(this.motionY, var16) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
@@ -136,30 +127,29 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 		if (this.isInWater()) {
 			for (int var19 = 0; var19 < 4; ++var19) {
 				float var18 = 0.25F;
-				this.worldObj.spawnParticle("bubble", this.posX - this.motionX * var18, this.posY - this.motionY * var18, this.posZ - this.motionZ * var18, this.motionX, this.motionY, this.motionZ);
+				this.getEntityWorld().spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * var18, this.posY - this.motionY * var18, this.posZ - this.motionZ * var18, this.motionX, this.motionY, this.motionZ);
 			}
 		}
 
-		this.worldObj.spawnParticle("smoke", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
+		this.getEntityWorld().spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
 		this.setPosition(this.posX, this.posY, this.posZ);
 	}
 
 	@SideOnly(Side.CLIENT)
 	private void spawnMovingSound() {
-		if (this.worldObj.isRemote) Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundMeteor(this));
+		if (this.getEntityWorld().isRemote) {
+			Minecraft.getMinecraft().getSoundHandler().playSound(new MovingSoundMeteor(this));
+		}
 	}
 
-	/**
-	 * Called when this EntityFireball hits a block or entity.
-	 */
-	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
-		if (!this.worldObj.isRemote) {
+	protected void onImpact(RayTraceResult rtr) {
+		if (!this.getEntityWorld().isRemote) {
 			this.motionY *= 0.90D;
-			if (par1MovingObjectPosition.entityHit != null) {
+			if (rtr.entityHit != null) {
 				// par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this), 6);
 			}
 
-			this.breakBlocksInAABB(this.boundingBox);
+			this.breakBlocksInAABB(this.getCollisionBoundingBox());
 			if (inGroundTime >= penetration) {
 				newExplosion(this, this.posX, this.posY, this.posZ, 5.0F, false, true);
 				newExplosion(this, this.posX, this.posY - scale / 10, this.posZ, scale, false, true);
@@ -205,16 +195,22 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 		int var7 = MathHelper.floor(par1AxisAlignedBB.maxZ + motionZ);
 		boolean brokeblocks = false;
 
-		for (int var10 = var2; var10 <= var5; ++var10) {
-			for (int var11 = var3; var11 <= var6; ++var11) {
-				for (int var12 = var4; var12 <= var7; ++var12) {
-					if (!this.worldObj.isAirBlock(var10, var11, var12)) {
-						brokeblocks = true;
-						this.worldObj.setBlock(var10, var11, var12, Blocks.AIR, 0, 3);
-					}
-				}
-			}
-		}
+        BlockPos.PooledMutableBlockPos pool = BlockPos.PooledMutableBlockPos.retain();
+        try {
+            for (int xx = var2; xx <= var5; ++xx) {
+                for (int yy = var3; yy <= var6; ++yy) {
+                    for (int zz = var4; zz <= var7; ++zz) {
+                        pool.setPos(xx, yy, zz);
+                        if(!getEntityWorld().isAirBlock(pool)) {
+                            brokeblocks = true;
+                            getEntityWorld().setBlockToAir(pool);
+                        }
+                    }
+                }
+            }
+        } finally {
+            pool.release();
+        }
 
 		if (brokeblocks) {
 			MystcraftPacketHandler.CHANNEL.sendToDimension(new MPacketParticles(posX, posY, posZ, "largeexplode"), world.provider.getDimension());

@@ -5,6 +5,11 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.api.MystObjects;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
@@ -17,7 +22,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SeasonalManager {
-	public static final ResourceLocation	egg_components	= new ResourceLocation("mystcraft:textures/eastercomponents.png");
+
+	public static final ResourceLocation	egg_components	= new ResourceLocation(MystObjects.MystcraftModId,"textures/eastercomponents.png");
 
 	private static boolean					isEaster;
 	private static boolean					isEasterOverride;
@@ -28,9 +34,9 @@ public class SeasonalManager {
 	@SideOnly(Side.CLIENT)
 	public static boolean drawSymbol(TextureManager renderEngine, float zLevel, IAgeSymbol symbol, float scale, float x, float y) {
 		if (!isEaster()) return false;
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GlStateManager.enableAlpha();
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		if (symbol == null) {
 			drawEggColors(renderEngine, zLevel, null, scale, x, y, 0xFF000000, new Random());
 			return true;
@@ -46,7 +52,7 @@ public class SeasonalManager {
 		//if (words.length > 1) drawEggColors(renderEngine, zLevel, words[1], scale, x, y, 0xA0000000);
 		//if (words.length > 2) drawEggColors(renderEngine, zLevel, words[2], scale, x, y, 0xA0000000);
 		//if (words.length > 3) drawEggColors(renderEngine, zLevel, words[3], scale, x, y, 0xA0000000);
-		GL11.glDisable(GL11.GL_BLEND);
+		GlStateManager.disableBlend();
 		return true;
 	}
 
@@ -66,10 +72,10 @@ public class SeasonalManager {
 			colors = word.colors();
 		}
 		renderEngine.bindTexture(imagesource);
-		if (components == null) components = new ArrayList<Integer>();
+		if (components == null) components = new ArrayList<>();
 		// No drawable -> the 0 component
 		if (components.size() == 0) components.add(0);
-		if (colors == null) colors = new ArrayList<Integer>();
+		if (colors == null) colors = new ArrayList<>();
 		for (int c = 0; c < components.size(); ++c) {
 			int color = 0;
 			if (c < colors.size()) {
@@ -93,14 +99,15 @@ public class SeasonalManager {
 		float fRed = (color >> 16 & 0xff) / 255F;
 		float fGreen = (color >> 8 & 0xff) / 255F;
 		float fBlue = (color & 0xff) / 255F;
-		GL11.glColor4f(fRed, fGreen, fBlue, fAlpha);
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(x + 0, y + drawscale, zLevel, (iconX + 0) * transform, (iconY + iconSize) * transform);
-		tessellator.addVertexWithUV(x + drawscale, y + drawscale, zLevel, (iconX + iconSize) * transform, (iconY + iconSize) * transform);
-		tessellator.addVertexWithUV(x + drawscale, y + 0, zLevel, (iconX + iconSize) * transform, (iconY + 0) * transform);
-		tessellator.addVertexWithUV(x + 0, y + 0, zLevel, (iconX + 0) * transform, (iconY + 0) * transform);
-		tessellator.draw();
+		GlStateManager.color(fRed, fGreen, fBlue, fAlpha);
+		Tessellator tes = Tessellator.getInstance();
+		VertexBuffer vb = tes.getBuffer();
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		vb.pos(x + 0,         y + drawscale, zLevel).tex((iconX + 0)        * transform, (iconY + iconSize) * transform).endVertex();
+		vb.pos(x + drawscale, y + drawscale, zLevel).tex((iconX + iconSize) * transform, (iconY + iconSize) * transform).endVertex();
+		vb.pos(x + drawscale, y + 0,         zLevel).tex((iconX + iconSize) * transform, (iconY + 0)        * transform).endVertex();
+		vb.pos(x + 0,         y + 0,         zLevel).tex((iconX + 0)        * transform, (iconY + 0)        * transform).endVertex();
+		tes.draw();
 	}
 
 	private static boolean isEaster() {

@@ -14,15 +14,16 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGlassBottle;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -30,75 +31,65 @@ import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 public class MystcraftEventHandler {
 
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public void textureStitching(TextureStitchEvent.Pre event) {
-		if (event.map.getTextureType() == 0) {
-			ModFluids.initIcons(event.map);
-		}
-	}
-
 	@SubscribeEvent
 	public void registerOre(OreRegisterEvent event) {
-		if (event.Name.startsWith("ore") || event.Name.startsWith("gem") || event.Name.startsWith("dust")) {
-			if (event.Ore.getItem() instanceof ItemBlock) {
-				ItemBlock itemblock = ((ItemBlock) event.Ore.getItem());
-				EffectCrumble.registerMapping(itemblock.field_150939_a, Blocks.STONE);
+		if (event.getName().startsWith("ore") || event.getName().startsWith("gem") || event.getName().startsWith("dust")) {
+			if (event.getOre().getItem() instanceof ItemBlock) {
+				ItemBlock itemblock = ((ItemBlock) event.getOre().getItem());
+				EffectCrumble.registerMapping(itemblock.block, Blocks.STONE);
 			}
 		}
 	}
 
 	@SubscribeEvent
 	public void bucketFix(FillBucketEvent event) {
-		MovingObjectPosition movingobjectposition = event.target;
-		if (movingobjectposition.typeOfHit != MovingObjectType.BLOCK) return;
-		int i = movingobjectposition.blockX;
-		int j = movingobjectposition.blockY;
-		int k = movingobjectposition.blockZ;
-		if (event.world.getBlock(i, j, k) == ModBlocks.black_ink) {
+		RayTraceResult rtr = event.getTarget();
+		if (rtr == null || rtr.typeOfHit != RayTraceResult.Type.BLOCK) return;
+		BlockPos hit = rtr.getBlockPos();
+		if(event.getWorld().getBlockState(hit).getBlock().equals(ModBlocks.black_ink)) {
 			event.setCanceled(true);
 		}
 	}
 
 	@SubscribeEvent
-	public void entityInteract(EntityInteractEvent event) {
+	public void entityInteract(PlayerInteractEvent.EntityInteract event) {
 		if (VillagerTradeSystem.onVillagerInteraction(event)) event.setCanceled(true);
 	}
 
 	@SubscribeEvent
-	public void bottleFix(PlayerInteractEvent event) {
-		if (event.action != Action.RIGHT_CLICK_AIR) return;
-		ItemStack itemstack = event.entityPlayer.inventory.getCurrentItem();
-		if (itemstack == null) return;
+	public void bottleFix(PlayerInteractEvent.RightClickItem event) {
+		ItemStack itemstack = event.getItemStack();
+		if (itemstack.isEmpty()) return;
 		if (!(itemstack.getItem() instanceof ItemGlassBottle)) return;
-		MovingObjectPosition movingobjectposition = EntityUtils.getMovingObjectPositionFromPlayer(event.world, event.entityPlayer, true);
-		if (movingobjectposition == null) return;
-		if (movingobjectposition.typeOfHit != MovingObjectType.BLOCK) return;
-		int i = movingobjectposition.blockX;
-		int j = movingobjectposition.blockY;
-		int k = movingobjectposition.blockZ;
-		if (event.world.getBlock(i, j, k) == ModBlocks.black_ink) {
-			event.useItem = Event.Result.DENY;
+		RayTraceResult rtr = EntityUtils.getMovingObjectPositionFromPlayer(event.getWorld(), event.getEntityPlayer(), true);
+		if (rtr == null || rtr.typeOfHit != RayTraceResult.Type.BLOCK) return;
+		BlockPos hit = rtr.getBlockPos();
+		if (event.getWorld().getBlockState(hit).getBlock().equals(ModBlocks.black_ink)) {
+			event.setResult(Event.Result.DENY);
 			event.setCanceled(true);
+			event.setCancellationResult(EnumActionResult.FAIL);
 		}
 	}
 
 	@SubscribeEvent
 	public void onEntityAttack(LivingAttackEvent event) {
-		WorldProvider provider = event.entity.worldObj.provider;
+		WorldProvider provider = event.getEntity().world.provider;
 		if (provider instanceof WorldProviderMyst) {
-			if (event.source.getSourceOfDamage() instanceof EntityPlayer && event.entityLiving instanceof EntityPlayer) {
-				if (!((WorldProviderMyst) provider).isPvPEnabled()) event.setCanceled(true);
+			if (event.getSource().getSourceOfDamage() instanceof EntityPlayer && event.getEntity() instanceof EntityPlayer) {
+				if (!((WorldProviderMyst) provider).isPvPEnabled()) {
+					event.setCanceled(true);
+				}
 			}
 		}
 	}
 
 	@SubscribeEvent
 	public void handleWorldLoadEvent(WorldEvent.Load event) {
-		WorldProvider provider = event.world.provider;
+		WorldProvider provider = event.getWorld().provider;
 		if (provider instanceof WorldProviderMyst) {
 			((WorldProviderMyst) provider).setWorldInfo();
-			if (event.world.isRemote) return;
+			if (event.getWorld().isRemote) return;
+
 			DebugNode node = DebugUtils.getDebugNodeForAge(((WorldProviderMyst) provider).agedata);
 			((WorldProviderMyst) provider).getAgeController().registerDebugInfo(node);
 		}
@@ -106,9 +97,9 @@ public class MystcraftEventHandler {
 
 	@SubscribeEvent
 	public void handleWorldUnloadEvent(WorldEvent.Unload event) {
-		WorldProvider provider = event.world.provider;
+		WorldProvider provider = event.getWorld().provider;
 		if (provider instanceof WorldProviderMyst) {
-			if (event.world.isRemote) return;
+			if (event.getWorld().isRemote) return;
 			DebugNode node = DebugUtils.getDebugNodeForAge(((WorldProviderMyst) provider).agedata);
 			node.parent.removeChild(node);
 		}

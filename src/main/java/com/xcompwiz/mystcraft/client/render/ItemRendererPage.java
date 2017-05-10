@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
+//Hellfire> only kept for reference atm. will be removed soon-ish
 public class ItemRendererPage implements IItemRenderer {
 	final float	held_width			= 1.0F;
 	final float	held_height			= held_width * 4 / 3;
