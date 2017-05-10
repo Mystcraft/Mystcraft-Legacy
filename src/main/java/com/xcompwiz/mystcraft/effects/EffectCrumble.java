@@ -19,7 +19,7 @@ public class EffectCrumble implements IEnvironmentalEffect {
 
 	public static void initMappings() {
 		if (map != null) return;
-		map = new HashMap<IBlockState, IBlockState>();
+		map = new HashMap<>();
 		registerMapping(Blocks.COAL_ORE, Blocks.STONE);
 		registerMapping(Blocks.IRON_ORE, Blocks.STONE);
 		registerMapping(Blocks.REDSTONE_ORE, Blocks.STONE);

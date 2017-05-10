@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -38,12 +39,12 @@ public class EffectExtraTicks implements IEnvironmentalEffect {
 					int x = bits & 15;
 					int z = bits >> 8 & 15;
 					int y = bits >> 16 & 15;
-					IBlockState blockstate = storage.get(x, y, z);
-					if (blockstate == null) continue;
-					if (this.blockstate != null && this.blockstate != blockstate) continue;
+					IBlockState state = storage.get(x, y, z);
+					if (this.block != null && this.block != state.getBlock()) continue;
+					if (this.metadata != null && this.metadata != state.getBlock().getMetaFromState(state)) continue;
 
-					if (this.blockstate != null || blockstate.getBlock().getTickRandomly()) {
-						blockstate.getBlock().randomTick(worldObj, new BlockPos(x + xPos, y + storage.getYLocation(), z + zPos), blockstate, worldObj.rand);
+					if(state.getBlock().getTickRandomly()) {
+						state.getBlock().updateTick(worldObj, new BlockPos(x, y, z).add(xPos, storage.getYLocation(), zPos), state, worldObj.rand);
 					}
 				}
 			}

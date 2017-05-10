@@ -40,8 +40,13 @@ public class InstabilityBlockManager {
 
 	private static final HashMap<IBlockState, String>	keys	= new HashMap<IBlockState, String>();
 
-	private static String getOrCreateUnlocalizedKey(IBlockState blockstate) {
-		String key = keys.get(blockstate);
+	private static String getOrCreateUnlocalizedKey(Block block, int metadata) {
+		HashMap<Integer, String> metakeys = keys.get(block);
+		if (metakeys == null) {
+			metakeys = new HashMap<>();
+			keys.put(block, metakeys);
+		}
+		String key = metakeys.get(metadata);
 		if (key == null) {
 			ItemStack localizationitemstack = new ItemStack(blockstate);
 			key = localizationitemstack.getUnlocalizedName();

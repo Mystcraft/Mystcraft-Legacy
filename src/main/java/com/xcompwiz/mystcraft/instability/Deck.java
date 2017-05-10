@@ -12,7 +12,7 @@ public class Deck {
 
 	public Deck(String name, Collection<String> cards) {
 		this.name = name;
-		this.cards = new LinkedList<String>(cards);
+		this.cards = new LinkedList<>(cards);
 	}
 
 	public String getName() {

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.xcompwiz.mystcraft.explosion.ExplosionAdvanced;
 
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -36,8 +37,8 @@ public class ExplosionEffectBasic extends ExplosionEffect {
 			var14 *= var22;
 			var16 *= var22;
 			var18 *= var22;
-			worldObj.spawnParticle("explode", (var8 + explosion.explosionX * 1.0D) / 2.0D, (var10 + explosion.explosionY * 1.0D) / 2.0D, (var12 + explosion.explosionZ * 1.0D) / 2.0D, var14, var16, var18);
-			worldObj.spawnParticle("smoke", var8, var10, var12, var14, var16, var18);
+			worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, (var8 + explosion.explosionX * 1.0D) / 2.0D, (var10 + explosion.explosionY * 1.0D) / 2.0D, (var12 + explosion.explosionZ * 1.0D) / 2.0D, var14, var16, var18);
+			worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, var8, var10, var12, var14, var16, var18);
 		}
 	}
 

@@ -6,6 +6,7 @@ import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,7 +32,7 @@ public class IMCMeteorBlock implements IMCProcessor {
 		if (nbt.hasKey("BlockName")) {
 			String blockname = nbt.getString("BlockName");
 			block = Block.REGISTRY.getObject(new ResourceLocation(message.getSender(), blockname)); //XXX: Verify
-			if (block == null) {
+			if (block == null || block == Blocks.AIR) {
 				LoggerUtils.error("Could not find block by name %s belonging to mod [%s] when adding meteor ores via IMC message.", blockname, message.getSender());
 				return;
 			}

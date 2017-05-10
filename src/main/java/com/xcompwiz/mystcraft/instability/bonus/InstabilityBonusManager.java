@@ -15,16 +15,20 @@ public class InstabilityBonusManager {
 
 	//XXX: Move to own (for API)
 	public interface IInstabilityBonus {
+
 		public String getName();
 
 		public int getValue();
 
 		public void tick(World world);
+
 	}
 
 	//XXX: Move to own (for API)
 	public interface IInstabilityBonusProvider {
-		public void register(InstabilityBonusManager bonusmanager, World world);
+
+		public void register(InstabilityBonusManager bonusmanager, Integer dimId);
+
 	}
 
 	public static final InstabilityBonusManager		ZERO			= new InstabilityBonusManager();
@@ -45,7 +49,7 @@ public class InstabilityBonusManager {
 	public InstabilityBonusManager(WorldProviderMyst provider, AgeController agecontroller) {
 		this.controller = agecontroller;
 		for (IInstabilityBonusProvider bprovider : bonusproviders) {
-			bprovider.register(this, provider.worldObj);
+			bprovider.register(this, provider.getDimension());
 		}
 	}
 

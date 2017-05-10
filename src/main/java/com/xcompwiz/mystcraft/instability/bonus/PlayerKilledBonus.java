@@ -7,8 +7,8 @@ import com.xcompwiz.mystcraft.instability.bonus.InstabilityBonusManager.IInstabi
 import com.xcompwiz.mystcraft.network.NetworkUtils;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
@@ -27,14 +27,14 @@ public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOn
 	private String					playername;
 	private int						dimensionid;
 
-	public PlayerKilledBonus(InstabilityBonusManager bonusmanager, World worldObj, String playername, Integer max, Float decayrate) {
+	public PlayerKilledBonus(InstabilityBonusManager bonusmanager, Integer dimensionid, String playername, Integer max, Float decayrate) {
 		this.bonusmanager = bonusmanager;
 		current = 0;
 		this.playername = playername;
 		this.max = max;
 		this.min = 0;
 		this.decayrate = decayrate;
-		this.dimensionid = worldObj.provider.dimensionId;
+		this.dimensionid = dimensionid;
 		this.name = "Player Killed: " + playername;
 
 		EventManager eventmgr = EventManager.get();
@@ -60,10 +60,10 @@ public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOn
 
 	@Override
 	public void onEntityDeath(LivingDeathEvent event) {
-		if (event.entity.dimension == dimensionid && event.entity.getCommandSenderName().equals(playername)) {
-			if (event.source.getEntity() != null && event.source.getEntity() instanceof EntityPlayer) {
+		if (event.getEntity().dimension == dimensionid && event.getEntity().getName().equals(playername)) {
+			if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityPlayer) {
 				current = max;
-				announce("instability.bonus.death", playername, event.source.getEntity().getCommandSenderName());
+				announce("instability.bonus.death", playername, event.getSource().getEntity().getName());
 			} else {
 				current = Math.max(max / 2, current);
 				announce("instability.bonus.death.partial", playername);
@@ -73,21 +73,21 @@ public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOn
 
 	@Override
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
-		if (event.player.dimension == dimensionid && event.player.getCommandSenderName().equals(playername)) {
+		if (event.player.dimension == dimensionid && event.player.getName().equals(playername)) {
 			announce("instability.bonus.death.alert", playername);
 		}
 	}
 
 	@Override
 	public void onPlayerChangedDimension(PlayerChangedDimensionEvent event) {
-		if (event.toDim == dimensionid && event.player.getCommandSenderName().equals(playername)) {
+		if (event.toDim == dimensionid && event.player.getName().equals(playername)) {
 			announce("instability.bonus.death.alert", playername);
 		}
 	}
 
 	private void announce(String string, Object... args) {
 		if (!bonusmanager.isInstabilityEnabled()) return;
-		IChatComponent chatcomponent = new ChatComponentTranslation(string, args);
+		ITextComponent chatcomponent = new TextComponentTranslation(string, args);
 		NetworkUtils.sendMessageToPlayersInWorld(chatcomponent, this.dimensionid);
 	}
 }

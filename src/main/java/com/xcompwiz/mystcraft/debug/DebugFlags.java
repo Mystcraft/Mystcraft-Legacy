@@ -9,7 +9,7 @@ import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugTaskCallback;
 import com.xcompwiz.mystcraft.grammar.GrammarTree;
 
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 
 public final class DebugFlags {
 	public static boolean	instability	= false;
@@ -31,7 +31,7 @@ public final class DebugFlags {
 					System.out.println(" == Produced Tree ==");
 					tree.print();
 				}
-				agent.addChatMessage(new ChatComponentText(symbols.toString()));
+				agent.sendMessage(new TextComponentString(symbols.toString()));
 			}
 		});
 	}

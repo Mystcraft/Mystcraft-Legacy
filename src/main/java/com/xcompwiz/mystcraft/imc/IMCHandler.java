@@ -9,8 +9,11 @@ import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 
 public class IMCHandler {
+
 	public interface IMCProcessor {
+
 		public void process(IMCMessage message);
+
 	}
 
 	private static Map<String, IMCProcessor>	processors	= new HashMap<String, IMCProcessor>();

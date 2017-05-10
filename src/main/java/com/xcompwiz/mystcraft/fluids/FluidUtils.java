@@ -1,8 +1,8 @@
 package com.xcompwiz.mystcraft.fluids;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.IFluidTank;
 
 import javax.annotation.Nonnull;
@@ -22,30 +22,14 @@ public final class FluidUtils {
 	}
 
 	@Nonnull
-	public static ItemStack drainTankIntoContainer(IFluidTank tank, ItemStack containerStack) {
-		FluidStack tankFluid = tank.getFluid();
-		if (tankFluid != null) {
-			ItemStack container = containerStack.copy();
-			container.stackSize = 1;
-			container = FluidContainerRegistry.fillFluidContainer(tankFluid, container);
-			if (container != null) {
-				--containerStack.stackSize;
-				tank.drain(FluidContainerRegistry.getFluidForFilledItem(container).amount, true);
-				return container;
-			}
-		}
-		return null;
-	}
-
-	@Nonnull
 	public static ItemStack fillTankWithContainer(IFluidTank tank, ItemStack containerStack) {
 		ItemStack container = containerStack.copy();
-		container.stackSize = 1;
-		FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(container);
+		container.setCount(1);
+		FluidStack fluid = FluidUtil.getFluidContained(container);
 		if (fluid != null) {
 			int used = tank.fill(fluid, false);
 			if (used == fluid.amount) {
-				--containerStack.stackSize;
+				containerStack.shrink(1);
 				tank.fill(fluid, true);
 				container = emptyContainer(container);
 				return container;

@@ -27,7 +27,7 @@ public class EffectExplosions implements IEnvironmentalEffect {
 			var9 = var5 + (var8 & 15);
 			var10 = var6 + (var8 >> 8 & 15);
 			var11 = (var8 >> 16 & 255);
-			worldObj.newExplosion((Entity) null, var9, var11 + 1, var10, 3.0F, true, true);
+			worldObj.newExplosion(null, var9, var11 + 1, var10, 3.0F, true, true);
 		}
 	}
 

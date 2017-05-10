@@ -36,10 +36,10 @@ public class BonusProvider implements IInstabilityBonusProvider {
 	}
 
 	@Override
-	public void register(InstabilityBonusManager bonusmanager, World world) {
+	public void register(InstabilityBonusManager bonusmanager, Integer dimId) {
 		try {
 			Object[] args = itemCtorArgs;
-			args = ObjectArrays.concat(world, args);
+			args = ObjectArrays.concat(dimId, args);
 			args = ObjectArrays.concat(bonusmanager, args);
 			IInstabilityBonus bonus = itemCtor.newInstance(args);
 			bonusmanager.register(bonus);

@@ -6,9 +6,11 @@ import java.util.Set;
 
 import com.xcompwiz.mystcraft.api.instability.InstabilityDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
+import com.xcompwiz.mystcraft.block.BlockDecay;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -36,24 +38,26 @@ public class EffectDecayBasic implements IEnvironmentalEffect {
 		bannedmats.add(material);
 	}
 
-	protected void placeBlock(World world, int x, int y, int z, int minY, Integer maxY, int metadata) {
+	protected void placeBlock(World world, BlockPos pos, int minY, Integer maxY, int metadata) {
 		if (maxY == null) {
-			maxY = world.getHeight(x, z);
+			maxY = world.getHeight(pos.getX(), pos.getZ());
 			if (maxY <= minY) maxY = world.provider.getAverageGroundLevel();
 		}
 		if (maxY < minY) return;
 		if (maxY == minY) {
-			y = minY;
+			pos = new BlockPos(pos.getX(), minY, pos.getZ());
 		} else {
-			y = (y % (maxY - minY)) + minY;
+			pos = new BlockPos(pos.getX(), (pos.getY() % (maxY - minY)) + minY, pos.getZ());
 		}
-		Material material = world.getBlock(x, y, z).getMaterial();
+		Material material = world.getBlockState(pos).getMaterial();
 		while (bannedmats.contains(material)) {
-			--y;
-			if (y < minY) { return; }
-			material = world.getBlock(x, y, z).getMaterial();
+			pos = pos.down();
+			if (pos.getY() < minY) {
+				return;
+			}
+			material = world.getBlockState(pos).getMaterial();
 		}
-		world.setBlock(x, y, z, ModBlocks.decay, metadata, 2);
+		world.setBlockState(pos, ModBlocks.decay.getStateFromMeta(metadata), 2);
 	}
 
 	@Override
@@ -68,7 +72,7 @@ public class EffectDecayBasic implements IEnvironmentalEffect {
 			int x = chunkX + (coords & 15);
 			int z = chunkZ + (coords >> 8 & 15);
 			int y = (coords >> 16 & 255);
-			placeBlock(worldObj, x, y, z, min, max, metadata);
+			placeBlock(worldObj, new BlockPos(x, y, z), min, max, metadata);
 		}
 	}
 }

@@ -2,10 +2,12 @@ package com.xcompwiz.mystcraft.effects;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.Potion;
 import net.minecraft.world.World;
 
 public class EffectPotionEnemy extends EffectPotion {
-	public EffectPotionEnemy(int level, Boolean global, Integer potion, Integer duration) {
+
+	public EffectPotionEnemy(int level, Boolean global, Potion potion, Integer duration) {
 		super(level, global, potion, duration);
 	}
 

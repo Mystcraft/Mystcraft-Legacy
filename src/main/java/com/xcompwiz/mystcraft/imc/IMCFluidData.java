@@ -18,9 +18,6 @@ public class IMCFluidData implements IMCProcessor {
 		if (data.hasKey("fluidname")) {
 			fluid = FluidRegistry.getFluid(data.getString("fluidname"));
 		}
-		if (data.hasKey("fluidid")) {
-			fluid = FluidRegistry.getFluid(data.getInteger("fluidid"));
-		}
 		if (fluid == null) return;
 		if (data.hasKey("seabanned")) ModSymbolsFluids.setSeaBanned(fluid, data.getBoolean("seabanned"));
 		if (data.hasKey("cardrank")) ModSymbolsFluids.setCardRank(fluid, data.getInteger("cardrank"));

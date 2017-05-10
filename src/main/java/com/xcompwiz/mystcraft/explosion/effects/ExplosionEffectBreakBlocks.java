@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ExplosionEffectBreakBlocks extends ExplosionEffect {
+
 	public static ExplosionEffect	noDrop		= new ExplosionEffectBreakBlocks(false);
 	public static ExplosionEffect	dropItems	= new ExplosionEffectBreakBlocks(true);
 

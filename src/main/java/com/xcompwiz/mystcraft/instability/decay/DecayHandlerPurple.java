@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.instability.decay;
 
 import com.xcompwiz.mystcraft.data.ModBlocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -18,18 +19,18 @@ public class DecayHandlerPurple extends DecayHandlerSpreading {
 
 	@Override
 	protected int getConversionDifficulty(World world, BlockPos pos) {
-		IBlockState blockstate = world.getBlockState(pos);
-		if (blockstate == Blocks.AIR) return 8;
-		if (blockstate == ModBlocks.decay) return 5;
-		if (blockstate.getMaterial().isLiquid()) return 3;
-		float resist = blockstate.getBlock().getExplosionResistance(world, pos, null, null);
+		IBlockState state = world.getBlockState(pos);
+		if (state.getBlock().isAir(state, world, pos)) return 8;
+		if (state.getBlock().equals(ModBlocks.decay)) return 5;
+		if (state.getMaterial().isLiquid()) return 3;
+		float resist = state.getBlock().getExplosionResistance(world, pos, null, null);
 		if (resist < 0.0F) {
 			resist = 1000.0F;
 		}
 		if (resist > 1000.0F) {
 			resist = 1000.0F;
 		}
-		float hardness = blockstate.getBlockHardness(world, pos);
+		float hardness = state.getBlockHardness(world, pos);
 		if (hardness < 0.0F) {
 			hardness = 1000.0F;
 		}

@@ -13,23 +13,24 @@ import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffectBreakBlocks;
 import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffectFire;
 import com.xcompwiz.mystcraft.explosion.effects.ExplosionEffectPlaceOres;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 public class ExplosionAdvanced {
-	private int field_77289_h = 16;
+
+	private int size = 16;
 	private Random explosionRNG = new Random();
 	private World worldObj;
 	public double explosionX;
@@ -37,14 +38,14 @@ public class ExplosionAdvanced {
 	public double explosionZ;
 	public Entity exploder;
 	public float explosionSize;
-	public List<BlockPos> blocks = new ArrayList<BlockPos>();
-	public List<ExplosionEffect> effects = new ArrayList<ExplosionEffect>();
-	private Map<Entity, Vec3d> players = new HashMap<Entity, Vec3d>();
+	public List<BlockPos> blocks = new ArrayList<>();
+	public List<ExplosionEffect> effects = new ArrayList<>();
+	private Map<Entity, Vec3d> players = new HashMap<>();
 
 	private Explosion mcExplosionDummy;
 
-	private static HashMap<Byte, ExplosionEffect> effectmap = new HashMap<Byte, ExplosionEffect>();
-	private static HashMap<ExplosionEffect, Byte> effectid = new HashMap<ExplosionEffect, Byte>();
+	private static HashMap<Byte, ExplosionEffect> effectmap = new HashMap<>();
+	private static HashMap<ExplosionEffect, Byte> effectid = new HashMap<>();
 	private static byte nextId = 0;
 
 	public static void registerEffect(ExplosionEffect effect) {
@@ -83,15 +84,15 @@ public class ExplosionAdvanced {
 	 */
 	public void doExplosionA() {
 		float explosionSize = this.explosionSize;
-		HashSet<BlockPos> blocks = new HashSet<BlockPos>();
+		HashSet<BlockPos> blocks = new HashSet<>();
 
-		for (int x = 0; x < this.field_77289_h; ++x) {
-			for (int y = 0; y < this.field_77289_h; ++y) {
-				for (int z = 0; z < this.field_77289_h; ++z) {
-					if (x == 0 || x == this.field_77289_h - 1 || y == 0 || y == this.field_77289_h - 1 || z == 0 || z == this.field_77289_h - 1) {
-						double dx = (x / (this.field_77289_h - 1.0F) * 2.0F - 1.0F);
-						double dy = (y / (this.field_77289_h - 1.0F) * 2.0F - 1.0F);
-						double dz = (z / (this.field_77289_h - 1.0F) * 2.0F - 1.0F);
+		for (int x = 0; x < this.size; ++x) {
+			for (int y = 0; y < this.size; ++y) {
+				for (int z = 0; z < this.size; ++z) {
+					if (x == 0 || x == this.size - 1 || y == 0 || y == this.size - 1 || z == 0 || z == this.size - 1) {
+						double dx = (x / (this.size - 1.0F) * 2.0F - 1.0F);
+						double dy = (y / (this.size - 1.0F) * 2.0F - 1.0F);
+						double dz = (z / (this.size - 1.0F) * 2.0F - 1.0F);
 						double length = Math.sqrt(dx * dx + dy * dy + dz * dz);
 						dx /= length;
 						dy /= length;
@@ -166,15 +167,15 @@ public class ExplosionAdvanced {
 	}
 
 	public static DamageSource getDamageSource(ExplosionAdvanced explosion) {
-		return explosion != null && explosion.exploder != null ? (new EntityDamageSource("explosion.player", explosion.exploder)).setDifficultyScaled().setExplosion() : DamageSource.setExplosionSource(null);
+		return explosion != null && explosion.exploder != null ? (new EntityDamageSource("explosion.player", explosion.exploder)).setDifficultyScaled().setExplosion() : DamageSource.causeExplosionDamage((Explosion) null);
 	}
 
 	/**
 	 * Does the second part of the explosion (sound, particles, drop spawn)
 	 */
 	public void doExplosionB(boolean isClient) {
-		this.worldObj.playSoundEffect(this.explosionX, this.explosionY, this.explosionZ, "random.explode", 4.0F, (1.0F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
-		this.worldObj.spawnParticle("hugeexplosion", this.explosionX, this.explosionY, this.explosionZ, 0.0D, 0.0D, 0.0D);
+		this.worldObj.playSound(null, this.explosionX, this.explosionY, this.explosionZ, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 4.0F, (1.0F + (this.worldObj.rand.nextFloat() - this.worldObj.rand.nextFloat()) * 0.2F) * 0.7F);
+		this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.explosionX, this.explosionY, this.explosionZ, 0.0D, 0.0D, 0.0D);
 
 		for (BlockPos pos : blocks) {
 			for (ExplosionEffect effect : effects) {
@@ -189,7 +190,7 @@ public class ExplosionAdvanced {
 
 	public Explosion toExplosion() {
 		if (mcExplosionDummy == null)
-			mcExplosionDummy = new Explosion(worldObj, exploder, explosionX, explosionX, explosionX, explosionSize, blocks);
+			mcExplosionDummy = new Explosion(worldObj, exploder, explosionX, explosionY, explosionZ, explosionSize, blocks);
 		return mcExplosionDummy;
 	}
 }

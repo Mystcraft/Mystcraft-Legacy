@@ -13,31 +13,35 @@ import net.minecraftforge.common.ForgeHooks;
 
 public class RecipeLinkingbook implements IRecipe {
 
-	private ItemStack	product;
+	private ItemStack product;
 
 	@Override
 	public boolean matches(InventoryCrafting inventorycrafting, World world) {
-		this.product = null;
-		ItemStack linkpanel = null;
-		ItemStack covermat = null;
+		this.product = ItemStack.EMPTY;
+		ItemStack linkpanel = ItemStack.EMPTY;
+		ItemStack covermat = ItemStack.EMPTY;
 		for (int i = 0; i < inventorycrafting.getSizeInventory(); ++i) {
 			ItemStack itemstack = inventorycrafting.getStackInSlot(i);
-			if (itemstack != null) {
+			if (!itemstack.isEmpty()) {
 				if (itemstack.hasTagCompound() && Page.isLinkPanel(itemstack)) {
-					if (linkpanel != null) return false;
+					if (!linkpanel.isEmpty()) {
+						return false;
+					}
 					linkpanel = itemstack;
 					continue;
 				}
 				if (isValidCover(itemstack)) {
-					if (covermat != null) return false;
+					if (!covermat.isEmpty()) {
+						return false;
+					}
 					covermat = itemstack;
 					continue;
 				}
 				return false;
 			}
 		}
-		if (linkpanel == null) return false;
-		if (covermat == null) return false;
+		if (linkpanel.isEmpty()) return false;
+		if (covermat.isEmpty()) return false;
 		this.product = ItemLinkbookUnlinked.createItem(linkpanel, covermat);
 		return true;
 	}
