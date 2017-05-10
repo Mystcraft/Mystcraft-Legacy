@@ -18,11 +18,12 @@ import com.xcompwiz.mystcraft.debug.DebugUtils;
 import com.xcompwiz.mystcraft.debug.DefaultValueCallback;
 import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
@@ -215,23 +216,23 @@ public class ChunkProfiler extends WorldSavedData {
 				for (int x = 0; x < 16; ++x) {
 					int coords = y << 8 | z << 4 | x;
 
-					Block block = storageArrays[storagei].getBlockByExtId(x, y & 15, z);
-					int metadata = storageArrays[storagei].getExtBlockMetadata(x, y & 15, z);
+					IBlockState blockstate = storageArrays[storagei].get(x, y & 15, z);
 
-					int accessibility = (block != Blocks.AIR ? 2 : 0);
+					int accessibility = (blockstate.getBlock() != Blocks.AIR ? 2 : 0);
 					if (maps != null) {
-						ChunkProfileData map = maps.get(InstabilityBlockManager.getUnlocalizedKey(block, metadata));
+						ChunkProfileData map = maps.get(InstabilityBlockManager.getUnlocalizedKey(blockstate));
 						if (map != null) {
 							++map.data[coords];
 							accessibility = 1;
 						}
 					}
+					BlockPos pos = new BlockPos(chunkX + x, y, chunkZ + z);
 					//Checks if isPassable
-					if (block.getBlocksMovement(chunk.worldObj, chunkX + x, y, chunkZ + z)) {
+					if (blockstate.getBlock().isPassable(chunk.getWorld(), pos)) {
 						accessibility = 1;
 					}
 					//Checks if isAir
-					if (block.isAir(chunk.worldObj, chunkX + x, y, chunkZ + z)) {
+					if (blockstate.getBlock().isAir(blockstate, chunk.getWorld(), pos)) {
 						accessibility = 0;
 					}
 					solidmap[coords] += accessibility;
@@ -248,16 +249,17 @@ public class ChunkProfiler extends WorldSavedData {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		ChunkProfilerManager.ensureSafeSave();
 		nbt.setTag("solid", solidmap.writeToNBT(new NBTTagCompound()));
-		if (blockmaps == null) return;
+		if (blockmaps == null) return nbt;
 		for (Map.Entry<String, ChunkProfileData> entry : blockmaps.entrySet()) {
 			String blockkey = entry.getKey();
 			ChunkProfileData map = entry.getValue();
 			nbt.setTag(blockkey, map.writeToNBT(new NBTTagCompound()));
 		}
 		ChunkProfilerManager.releaseSaveSafe();
+		return nbt;
 	}
 
 	@Override

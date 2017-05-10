@@ -16,9 +16,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SunsetRenderer {
-	private float				colorsSunriseSunset[]	= new float[4];
-	protected AgeDirector	controller;
-	protected ColorGradient		gradient;
+	private float colorsSunriseSunset[] = new float[4];
+	protected AgeDirector controller;
+	protected ColorGradient gradient;
 
 	public SunsetRenderer(AgeDirector controller, ColorGradient gradient) {
 		this.controller = controller;

@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 
 public class InstabilityBlockManager {
@@ -20,11 +21,11 @@ public class InstabilityBlockManager {
 	public static final Map<String, Float>			ro_factor2s		= Collections.unmodifiableMap(factor2s);
 
 	public static void setInstabilityFactors(Block block, float factor1, float factor2) {
-		setInstabilityFactors(block, 0, factor1, factor2);
+		setInstabilityFactors(block.getDefaultState(), factor1, factor2);
 	}
 
-	public static void setInstabilityFactors(Block block, int metadata, float factor1, float factor2) {
-		setInstabilityFactors(getOrCreateUnlocalizedKey(block, metadata), factor1, factor2);
+	public static void setInstabilityFactors(IBlockState blockstate, float factor1, float factor2) {
+		setInstabilityFactors(getOrCreateUnlocalizedKey(blockstate), factor1, factor2);
 	}
 
 	public static void setInstabilityFactors(String unlocalizedkey, float factor1, float factor2) {
@@ -37,27 +38,20 @@ public class InstabilityBlockManager {
 		freevals = newfreevals;
 	}
 
-	private static final Map<Block, HashMap<Integer, String>>	keys	= new HashMap<Block, HashMap<Integer, String>>();
+	private static final HashMap<IBlockState, String>	keys	= new HashMap<IBlockState, String>();
 
-	private static String getOrCreateUnlocalizedKey(Block block, int metadata) {
-		HashMap<Integer, String> metakeys = keys.get(block);
-		if (metakeys == null) {
-			metakeys = new HashMap<Integer, String>();
-			keys.put(block, metakeys);
-		}
-		String key = metakeys.get(metadata);
+	private static String getOrCreateUnlocalizedKey(IBlockState blockstate) {
+		String key = keys.get(blockstate);
 		if (key == null) {
-			ItemStack localizationitemstack = new ItemStack(block, 1, metadata);
+			ItemStack localizationitemstack = new ItemStack(blockstate);
 			key = localizationitemstack.getUnlocalizedName();
-			metakeys.put(metadata, key);
+			keys.put(blockstate, key);
 		}
 		return key;
 	}
 
-	public static String getUnlocalizedKey(Block block, int metadata) {
-		HashMap<Integer, String> metakeys = keys.get(block);
-		if (metakeys == null) return null;
-		return metakeys.get(metadata);
+	public static String getUnlocalizedKey(IBlockState block) {
+		return keys.get(block);
 	}
 
 	public static Collection<String> getWatchedBlocks() {

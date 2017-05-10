@@ -8,12 +8,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.MinecraftException;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.storage.IChunkLoader;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraft.world.storage.IPlayerFileData;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
@@ -22,14 +22,11 @@ public class ExternalSaveHandler implements ISaveHandler {
 	/** The directory in which to save world data. */
 	private final File			mapDataDir;
 	/** The time in milliseconds when this field was initialized. Stored in the session lock file. */
-	private final long			initializationTime	= MinecraftServer.getSystemTimeMillis();
-	/** The directory name of the world */
-	private final String		saveDirectoryName;
+	private final long			initializationTime	= MinecraftServer.getCurrentTimeMillis();
 
 	public ExternalSaveHandler(File directory, String savename) {
 		this.mapDataDir = new File(directory, savename);
 		this.mapDataDir.mkdirs();
-		this.saveDirectoryName = savename;
 		this.setSessionLock();
 	}
 
@@ -123,7 +120,7 @@ public class ExternalSaveHandler implements ISaveHandler {
 	 * returns null if no saveHandler is relevent (eg. SMP)
 	 */
 	@Override
-	public IPlayerFileData getSaveHandler() {
+	public IPlayerFileData getPlayerNBTManager() {
 		return null;
 	}
 
@@ -148,15 +145,8 @@ public class ExternalSaveHandler implements ISaveHandler {
 		return new File(this.mapDataDir, dataname + ".dat");
 	}
 
-	/**
-	 * Returns the name of the directory where world information is saved.
-	 */
 	@Override
-	public String getWorldDirectoryName() {
-		return this.saveDirectoryName;
-	}
-
-	public NBTTagCompound getPlayerNBT(EntityPlayerMP player) {
+	public TemplateManager getStructureTemplateManager() {
 		return null;
 	}
 }

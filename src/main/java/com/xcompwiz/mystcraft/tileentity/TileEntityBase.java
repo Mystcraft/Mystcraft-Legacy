@@ -11,7 +11,8 @@ import javax.annotation.Nonnull;
 
 public abstract class TileEntityBase extends TileEntity {
 
-    public final void readFromNBT(NBTTagCompound compound) {
+    @Override
+	public final void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         readCustomNBT(compound);
     }
@@ -22,7 +23,8 @@ public abstract class TileEntityBase extends TileEntity {
     //Overwrite to read data that was specifically only intended for network sync via writeNetNBT
     public void readNetNBT(NBTTagCompound compound) {}
 
-    public final NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    @Override
+	public final NBTTagCompound writeToNBT(NBTTagCompound compound) {
         compound = super.writeToNBT(compound);
         writeCustomNBT(compound);
         return compound;
@@ -52,7 +54,8 @@ public abstract class TileEntityBase extends TileEntity {
         return compound;
     }
 
-    public final void onDataPacket(NetworkManager manager, SPacketUpdateTileEntity packet) {
+    @Override
+	public final void onDataPacket(NetworkManager manager, SPacketUpdateTileEntity packet) {
         super.onDataPacket(manager, packet);
         readCustomNBT(packet.getNbtCompound());
         readNetNBT(packet.getNbtCompound());

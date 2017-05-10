@@ -16,8 +16,9 @@ public class NBTDataContainer extends WorldSavedData {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbtstore) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbtstore) {
 		nbtstore.setTag("Data", data);
+		return nbtstore;
 	}
 
 }

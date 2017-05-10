@@ -4,22 +4,21 @@ import java.util.Random;
 
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
 public class EffectExtraTicks implements IEnvironmentalEffect {
 
-	private int		updateLCG	= (new Random()).nextInt();
-	private Block	block;
-	private Integer	metadata;
+	private int updateLCG = (new Random()).nextInt();
+	private IBlockState blockstate;
 
 	public EffectExtraTicks() {}
 
-	public EffectExtraTicks(Block block, Integer metadata) {
-		this.block = block;
-		this.metadata = metadata;
+	public EffectExtraTicks(IBlockState blockstate) {
+		this.blockstate = blockstate;
 	}
 
 	@Override
@@ -39,14 +38,12 @@ public class EffectExtraTicks implements IEnvironmentalEffect {
 					int x = bits & 15;
 					int z = bits >> 8 & 15;
 					int y = bits >> 16 & 15;
-					Block block = storage.getBlockByExtId(x, y, z);
-					if (block == null) continue;
-					int metadata = storage.getExtBlockMetadata(x, y, z);
-					if (this.block != null && this.block != block) continue;
-					if (this.metadata != null && this.metadata != metadata) continue;
+					IBlockState blockstate = storage.get(x, y, z);
+					if (blockstate == null) continue;
+					if (this.blockstate != null && this.blockstate != blockstate) continue;
 
-					if (this.block != null || block.getTickRandomly()) {
-						block.updateTick(worldObj, x + xPos, y + storage.getYLocation(), z + zPos, worldObj.rand);
+					if (this.blockstate != null || blockstate.getBlock().getTickRandomly()) {
+						blockstate.getBlock().randomTick(worldObj, new BlockPos(x + xPos, y + storage.getYLocation(), z + zPos), blockstate, worldObj.rand);
 					}
 				}
 			}

@@ -6,7 +6,7 @@ import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
@@ -16,27 +16,23 @@ public class SymbolBlock extends SymbolBase {
 	private String			displayName;
 
 	public SymbolBlock(BlockDescriptor block, String word) {
-		super("ModMat_" + getBlockAsItem(block).getUnlocalizedName());
+		super("ModMat_" + getBlockStateKey(block.blockstate));
 		this.blockDescriptor = block;
-		this.setWords(new String[] { WordData.Modifier, WordData.Constraint, word, getBlockAsItem(block).getUnlocalizedName() });
+		this.setWords(new String[] { WordData.Modifier, WordData.Constraint, word, identifier });
 		this.displayName = formatted(block);
+	}
+
+	private static String getBlockStateKey(IBlockState blockstate) {
+		return blockstate.getBlock().getRegistryName().toString() + "_" + blockstate.getBlock().getMetaFromState(blockstate);
 	}
 
 	//TODO: Make into a helper somewhere
 	private static String formatted(BlockDescriptor blockDescriptor) {
-		String name = getBlockAsItem(blockDescriptor).getDisplayName();
+		IBlockState blockstate = blockDescriptor.blockstate;
+		String name = I18n.format(blockstate);
 		if (name.endsWith("Block")) name = name.substring(0, name.length() - "Block".length()).trim();
 		name = I18n.format("myst.symbol.block.wrapper", name);
 		return name;
-	}
-
-	//TODO: Make into a helper somewhere
-	private static ItemStack getBlockAsItem(BlockDescriptor blockDescriptor) {
-		Block block = blockDescriptor.block;
-		if (block == null) throw new RuntimeException("Block id " + blockDescriptor.block + " is not a valid block!");
-		ItemStack itemstack = new ItemStack(block, 1, blockDescriptor.metadata);
-		if (itemstack.getItem() == null) { throw new RuntimeException("Invalid item form for block " + block.getUnlocalizedName() + "with metadata " + blockDescriptor.metadata); }
-		return itemstack;
 	}
 
 	@Override

@@ -18,7 +18,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class LinkingAPIDelegate {
@@ -35,7 +35,7 @@ public class LinkingAPIDelegate {
 		LinkOptions link = new LinkOptions(null);
 		link.setDimensionUID(world.provider.getDimension());
 		link.setTargetUUID(DimensionUtils.getDimensionUUID(world.provider.getDimension()));
-		link.setSpawn(new ChunkPos((int) Math.floor(location.posX), (int) Math.floor(location.posZ)));
+		link.setSpawn(new BlockPos(location));
 		link.setSpawnYaw(location.rotationYaw);
 		link.setDisplayName(DimensionUtils.getDimensionName(world.provider));
 		return link;

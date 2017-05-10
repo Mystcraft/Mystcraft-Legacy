@@ -21,6 +21,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
@@ -29,36 +30,38 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
 
 public class InstabilityDataCalculator {
 
-	private static final String			StorageID			= "myst_baseline";
+	private static final String StorageID = "myst_baseline";
 
-	private static MystConfig			balanceconfig;
+	private static MystConfig balanceconfig;
 
-	private static boolean				persave				= true;
-	private static boolean				disconnectclients	= false;
-	private static boolean				useconfigs			= false;
-	private static int					tickrate			= 5;
+	private static boolean persave = true;
+	private static boolean disconnectclients = false;
+	private static boolean useconfigs = false;
+	private static int tickrate = 5;
 
-	private static int					minimumchunks;							//TODO: Make this configurable
-	private static float				tolerance;								//TODO: Make this configurable
+	private static int minimumchunks;							//TODO: Make this configurable
+	private static float tolerance;								//TODO: Make this configurable
 
-	private MinecraftServer				mcserver;
-	private MapStorage					storage;
+	private MinecraftServer mcserver;
+	private MapStorage storage;
 
-	private HashMap<String, Number>		freevals;
-	private static Map<String, Number>	defaults;
+	private HashMap<String, Number> freevals;
+	private static Map<String, Number> defaults;
 
-	private Integer						providerId			= null;
-	private Integer						dimId				= null;
-	private World						world				= null;
-	private boolean						running				= false;
-	private int							tickAccumulator;
+	private Integer providerId = null;
+	private DimensionType dimensionType = null;
+	private Integer dimId = null;
+	private World world = null;
+	private boolean running = false;
+	private int tickAccumulator;
 
-	private IMystcraftProfilingCallback	callback;
+	private IMystcraftProfilingCallback callback;
 
 	public static void loadConfigs(Configuration config) {
 		minimumchunks = 0;
@@ -141,8 +144,8 @@ public class InstabilityDataCalculator {
 	private void registerDebugInfo(DebugNode node) {
 		for (final String blockkey : InstabilityBlockManager.getWatchedBlocks()) {
 			node.addChild(blockkey.replaceAll("\\.", "_"), new DefaultValueCallback() {
-				private InstabilityDataCalculator	calculator;
-				private String						blockkey;
+				private InstabilityDataCalculator calculator;
+				private String blockkey;
 
 				@Override
 				public String get(ICommandSender agent) {
@@ -213,7 +216,7 @@ public class InstabilityDataCalculator {
 	}
 
 	public static ChunkProfiler getChunkProfiler(MapStorage storage) {
-		ChunkProfiler chunkprofiler = (ChunkProfiler) storage.loadData(ChunkProfiler.class, StorageID);
+		ChunkProfiler chunkprofiler = (ChunkProfiler) storage.getOrLoadData(ChunkProfiler.class, StorageID);
 		if (chunkprofiler == null) {
 			chunkprofiler = new ChunkProfiler(StorageID);
 			storage.setData(StorageID, chunkprofiler);
@@ -233,8 +236,8 @@ public class InstabilityDataCalculator {
 
 	@SubscribeEvent
 	public void onWorldUnload(WorldEvent.Unload event) {
-		if (dimId == null || event.world.provider.dimensionId != dimId) return;
-		if (event.world != world) {
+		if (dimId == null || event.getWorld().provider.getDimension() != dimId) return;
+		if (event.getWorld() != world) {
 			LoggerUtils.error("World with matching dim id to profiling dim unloaded!");
 			return;
 		}
@@ -246,10 +249,11 @@ public class InstabilityDataCalculator {
 		LoggerUtils.info("Baseline Profiling world unloading.");
 		if (dimId != null) DimensionManager.unregisterDimension(dimId);
 		dimId = null;
-		if (providerId != null) DimensionManager.unregisterProviderType(providerId);
-		providerId = null;
-		File dir = event.world.getSaveHandler().getWorldDirectory();
-		dir = new File(dir, event.world.provider.getSaveFolder());
+		//XXX: No long possible to unregister a provider (Dimension) type
+		//if (providerId != null) DimensionManager.unregisterProviderType(providerId);
+		//providerId = null;
+		File dir = event.getWorld().getSaveHandler().getWorldDirectory();
+		dir = new File(dir, event.getWorld().provider.getSaveFolder());
 		dir.deleteOnExit();
 		//TODO: Request for the profile data to save NOW
 	}
@@ -305,7 +309,7 @@ public class InstabilityDataCalculator {
 			providerId = Integer.MIN_VALUE;
 			while (true) {
 				try {
-					DimensionManager.registerProviderType(providerId, WorldProviderMystDummy.class, true);
+					dimensionType = DimensionType.register("Mystcraft_ProfilerDummy", "_mystprof", providerId, WorldProviderMystDummy.class, false);
 					break;
 				} catch (Exception e) {
 					++providerId;
@@ -318,7 +322,7 @@ public class InstabilityDataCalculator {
 			dimId = Integer.MIN_VALUE;
 			while (true) {
 				try {
-					DimensionManager.registerDimension(dimId, providerId);
+					DimensionManager.registerDimension(dimId, dimensionType);
 					break;
 				} catch (Exception e) {
 					++dimId;

@@ -10,12 +10,14 @@ import com.xcompwiz.mystcraft.world.AgeController;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.EmptyChunk;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraft.world.chunk.storage.IChunkLoader;
@@ -26,7 +28,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 
 	private static class AnvilChunkLoaderDummy extends AnvilChunkLoader {
 		public AnvilChunkLoaderDummy(File p_i2003_1_) {
-			super(p_i2003_1_);
+			super(p_i2003_1_, null);
 		}
 
 		@Override
@@ -45,7 +47,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 
 		private List<Long>	chunkqueue	= new LinkedList<Long>();
 
-		public ChunkProviderServerDummy(WorldServer worldServer, IChunkLoader loader, IChunkProvider provider) {
+		public ChunkProviderServerDummy(WorldServer worldServer, IChunkLoader loader, IChunkGenerator provider) {
 			super(worldServer, loader, provider);
 			this.defaultEmptyChunk = new EmptyChunk(worldServer, 0, 0);
 		}
@@ -56,26 +58,26 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		}
 
 		@Override
-		public Chunk originalLoadChunk(int chunkX, int chunkZ) {
+		public Chunk loadChunk(int chunkX, int chunkZ) {
 			if (outOfBounds(chunkX, chunkZ)) { return defaultEmptyChunk; }
-			Chunk chunk = super.originalLoadChunk(chunkX, chunkZ);
-			this.chunkqueue.add(Long.valueOf(ChunkCoordIntPair.chunkXZ2Int(chunk.xPosition, chunk.zPosition)));
+			Chunk chunk = super.loadChunk(chunkX, chunkZ);
+			this.chunkqueue.add(ChunkPos.asLong(chunkX, chunkZ));
 			return chunk;
 		}
 
 		@Override
-		public boolean unloadQueuedChunks() {
+		public boolean tick() {
 			for (int i = 0; i < 100 && this.chunkqueue.size() > 64; ++i) {
 				Long olong = this.chunkqueue.get(0);
-				Chunk chunk = (Chunk) this.loadedChunkHashMap.getValueByKey(olong.longValue());
+				Chunk chunk = (Chunk) this.id2ChunkMap.get(olong);
 				if (chunk != null) {
                     chunk.onChunkUnload();
-					this.loadedChunks.remove(chunk);
 				}
 				chunkqueue.remove(0);
-				this.loadedChunkHashMap.remove(olong.longValue());
+				this.id2ChunkMap.remove(olong);
 			}
-			return this.currentChunkProvider.unloadQueuedChunks();
+			this.chunkLoader.chunkTick();
+			return false;
 		}
 	}
 
@@ -155,8 +157,8 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		agedata.addSymbol("LightingNormal", 0);
 		agedata.markVisited();
 
-		controller = new AgeControllerDummy(worldObj, agedata);
-		worldChunkMgr = controller.getWorldChunkManager();
+		controller = new AgeControllerDummy(world, agedata);
+		biomeProvider = controller.getWorldChunkManager();
 		setWorldInfo();
 	}
 
@@ -179,8 +181,8 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 
 	//We implement this to bypass the special biome wrappers (since we didn't instantiate them)
 	@Override
-	public Biome getBiomeGenForCoords(int x, int z) {
-		return this.worldChunkMgr.getBiomeGenAt(x, z);
+	public Biome getBiomeForCoords(BlockPos pos) {
+		return this.biomeProvider.getBiome(pos);
 	}
 
 	@Override
@@ -202,18 +204,18 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 	public void replaceChunkProvider() {
 		if (chunkproviderreplaced) return;
 		chunkproviderreplaced = true;
-		WorldServer world = (WorldServer) worldObj;
-		world.theChunkProviderServer = new ChunkProviderServerDummy(world, new AnvilChunkLoaderDummy(((AnvilChunkLoader) world.theChunkProviderServer.currentChunkLoader).chunkSaveLocation), this.createChunkGenerator());
-		ObfuscationReflectionHelper.setPrivateValue(World.class, worldObj, world.theChunkProviderServer, "chunkProvider", "field" + "_73020_y");
+		WorldServer world = (WorldServer) this.world;
+		ChunkProviderServerDummy theChunkProviderServer = new ChunkProviderServerDummy(world, new AnvilChunkLoaderDummy(((AnvilChunkLoader) world.getChunkProvider().chunkLoader).chunkSaveLocation), this.createChunkGenerator());
+		ObfuscationReflectionHelper.setPrivateValue(World.class, world, theChunkProviderServer, "chunkProvider", "field" + "_73020_y");
 	}
 
 	public void generateNextChunk() {
 		//At every call of this function, we want to fully generate a single chunk.
-		IChunkProvider chunkgen = ((WorldServer) this.worldObj).theChunkProviderServer;
-		IChunkLoader chunkloader = ((WorldServer) this.worldObj).theChunkProviderServer.currentChunkLoader;
+		IChunkProvider chunkgen = ((WorldServer) this.world).getChunkProvider();
+		IChunkLoader chunkloader = ((WorldServer) this.world).getChunkProvider().chunkLoader;
 
-		if (safeLoadChunk(chunkloader, this.worldObj, chunkX, chunkZ) == null) {
-			chunkgen.loadChunk(chunkX, chunkZ);
+		if (safeLoadChunk(chunkloader, this.world, chunkX, chunkZ) == null) {
+			chunkgen.provideChunk(chunkX, chunkZ);
 		}
 		++chunkZ;
 		if (chunkZ > chunkZ_max) {

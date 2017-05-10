@@ -49,7 +49,7 @@ public class StorageInstabilityData extends WorldSavedData {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		NBTTagList list = new NBTTagList();
 		for (Entry<String, Collection<String>> entry : decks.entrySet()) {
 			NBTTagCompound decknbt = new NBTTagCompound();
@@ -58,6 +58,7 @@ public class StorageInstabilityData extends WorldSavedData {
 			list.appendTag(decknbt);
 		}
 		nbt.setTag("Decks", list);
+		return nbt;
 	}
 
 	@Override
