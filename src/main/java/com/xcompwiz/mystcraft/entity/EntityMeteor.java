@@ -225,7 +225,7 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 		if (brokeblocks) {
 			Packet pkt = MPacketParticles.createPacket(this, "largeexplode");
 			MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-			if (server != null) server.getConfigurationManager().sendPacketToAllPlayersInDimension(pkt, this.worldObj.provider.dimensionId);
+			if (server != null) server.getPlayerList().sendPacketToAllPlayersInDimension(pkt, this.worldObj.provider.dimensionId);
 		}
 
 		return brokeblocks;

@@ -44,7 +44,7 @@ public class LinkListenerPermissions {
 	private boolean canPlayerEnterDimension(EntityPlayer player, int dim) {
 		// if (this.opEntry.contains(dim)) {
 		// net.minecraft.server.MinecraftServer mcServer = Mystcraft.sidedProxy.getMCServer();
-		// Set ops = mcServer.getConfigurationManager().getOps();
+		// Set ops = mcServer.getPlayerList().getOps();
 		// if (!ops.contains(player.username)) {
 		// return false;
 		// }

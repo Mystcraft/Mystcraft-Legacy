@@ -20,7 +20,7 @@ public class LinkListenerEffects {
 	private static void spawnParticles(Entity entity) {
 		Packet pkt = MPacketParticles.createPacket(entity, "link");
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-		if (server != null) server.getConfigurationManager().sendPacketToAllPlayersInDimension(pkt, entity.worldObj.provider.dimensionId);
+		if (server != null) server.getPlayerList().sendPacketToAllPlayersInDimension(pkt, entity.worldObj.provider.dimensionId);
 	}
 
 	private static void playSound(Entity entity, ILinkInfo info) {

@@ -21,10 +21,10 @@ public final class NetworkUtils {
 	}
 
 	public static void sendMessageToAdmins(IChatComponent chatcomponent) {
-		Iterator iterator = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
+		Iterator iterator = MinecraftServer.getServer().getPlayerList().playerEntityList.iterator();
 		while (iterator.hasNext()) {
 			EntityPlayer entityplayer = (EntityPlayer) iterator.next();
-			if (MinecraftServer.getServer().getConfigurationManager().func_152596_g(entityplayer.getGameProfile())) {
+			if (MinecraftServer.getServer().getPlayerList().func_152596_g(entityplayer.getGameProfile())) {
 				entityplayer.addChatMessage(chatcomponent);
 			}
 		}
@@ -33,7 +33,7 @@ public final class NetworkUtils {
 	}
 
 	public static void sendMessageToPlayersInWorld(IChatComponent chatcomponent, int dimensionid) {
-		Iterator iterator = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
+		Iterator iterator = MinecraftServer.getServer().getPlayerList().playerEntityList.iterator();
 		while (iterator.hasNext()) {
 			EntityPlayer entityplayer = (EntityPlayer) iterator.next();
 			if (entityplayer.dimension == dimensionid) {
@@ -45,7 +45,7 @@ public final class NetworkUtils {
 	}
 
 	public static void sendMessageToPlayers(IChatComponent chatcomponent) {
-		Iterator iterator = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
+		Iterator iterator = MinecraftServer.getServer().getPlayerList().playerEntityList.iterator();
 		while (iterator.hasNext()) {
 			((EntityPlayer) iterator.next()).addChatMessage(chatcomponent);
 		}

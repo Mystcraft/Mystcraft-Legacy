@@ -118,15 +118,15 @@ public class LinkController {
 		entity.setLocationAndAngles(spawn.posX + 0.5, spawn.posY, spawn.posZ + 0.5, yaw, entity.rotationPitch);
 		if (entity instanceof EntityPlayerMP) {
 			EntityPlayerMP player = (EntityPlayerMP) entity;
-			if (changingworlds) player.mcServer.getConfigurationManager().func_72375_a(player, (WorldServer) newworld);
+			if (changingworlds) player.mcServer.getPlayerList().func_72375_a(player, (WorldServer) newworld);
 			player.playerNetServerHandler.setPlayerLocation(spawn.posX + 0.5, spawn.posY, spawn.posZ + 0.5, player.rotationYaw, player.rotationPitch);
 		}
 		newworld.updateEntityWithOptionalForce(entity, false);
 		if (entity instanceof EntityPlayerMP && changingworlds) {
 			EntityPlayerMP player = (EntityPlayerMP) entity;
 			player.theItemInWorldManager.setWorld((WorldServer) newworld);
-			player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) newworld);
-			player.mcServer.getConfigurationManager().syncPlayerInventory(player);
+			player.mcServer.getPlayerList().updateTimeAndWeatherForPlayer(player, (WorldServer) newworld);
+			player.mcServer.getPlayerList().syncPlayerInventory(player);
 			Iterator<PotionEffect> iter = player.getActivePotionEffects().iterator();
 
 			while (iter.hasNext()) {

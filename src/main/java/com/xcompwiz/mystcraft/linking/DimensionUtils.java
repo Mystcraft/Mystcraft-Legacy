@@ -58,7 +58,7 @@ public class DimensionUtils {
 		if (server == null) throw new RuntimeException("Cannot create dimension client-side. Misuse of Mystcraft API.");
 		DimensionManager.registerDimension(dimId, Mystcraft.dimensionType);
 		Mystcraft.registeredDims.add(dimId);
-		server.getConfigurationManager().sendPacketToAllPlayers(MPacketDimensions.createPacket(dimId));
+		server.getPlayerList().sendPacketToAllPlayers(MPacketDimensions.createPacket(dimId));
 		AgeData data = AgeData.getAge(dimId, false);
 		return data;
 	}

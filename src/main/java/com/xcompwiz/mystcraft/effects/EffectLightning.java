@@ -56,7 +56,7 @@ public class EffectLightning implements IEnvironmentalEffect {
 			if (gradient != null && gradient.getColorCount() > 0) bolt.setColor(gradient.getColor(worldObj.getTotalWorldTime() / 12000F));
 			worldObj.weatherEffects.add(bolt);
 			if (worldObj instanceof WorldServer) {
-				((WorldServer) worldObj).func_73046_m().getConfigurationManager().sendToAllNear(bolt.posX, bolt.posY, bolt.posZ, 512.0D, worldObj.provider.dimensionId, MPacketSpawnLightningBolt.createPacket(bolt));
+				((WorldServer) worldObj).func_73046_m().getPlayerList().sendToAllNear(bolt.posX, bolt.posY, bolt.posZ, 512.0D, worldObj.provider.dimensionId, MPacketSpawnLightningBolt.createPacket(bolt));
 			}
 		}
 	}

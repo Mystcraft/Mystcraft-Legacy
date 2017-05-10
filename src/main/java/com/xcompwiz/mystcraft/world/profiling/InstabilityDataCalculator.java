@@ -227,7 +227,7 @@ public class InstabilityDataCalculator {
 			running = false;
 			DimensionManager.unloadWorld(dimId);
 			world = null;
-			mcserver.getConfigurationManager().sendPacketToAllPlayers(MPacketProfilingState.createPacket(false));
+			mcserver.getPlayerList().sendPacketToAllPlayers(MPacketProfilingState.createPacket(false));
 		}
 	}
 
@@ -272,21 +272,21 @@ public class InstabilityDataCalculator {
 			if (disconnectclients && mcserver.isDedicatedServer()) {
 				String denymessage = "Mystcraft still needs to finish profiling. Please try again later.";
 				try {
-					((NetHandlerPlayServer) event.handler).kickPlayerFromServer(denymessage);
-					GameProfile gameprofile = ((NetHandlerPlayServer) event.handler).playerEntity.getGameProfile();
-					LoggerUtils.info("Disconnecting " + getIDString(event.manager, gameprofile) + ": " + denymessage);
+					((NetHandlerPlayServer) event.getHandler()).disconnect(denymessage);
+					GameProfile gameprofile = ((NetHandlerPlayServer) event.getHandler()).playerEntity.getGameProfile();
+					LoggerUtils.info("Disconnecting " + getIDString(event.getManager(), gameprofile) + ": " + denymessage);
 				} catch (Exception exception) {
 					LoggerUtils.error("Error whilst disconnecting player", exception);
 				}
 			} else {
-				event.manager.scheduleOutboundPacket(MPacketProfilingState.createPacket(true));
+				event.getManager().sendPacket(MPacketProfilingState.createPacket(true));
 			}
 		}
 	}
 
 	//XXX: Move to some Utils
 	public String getIDString(NetworkManager networkmanager, GameProfile gameprofile) {
-		return gameprofile != null ? gameprofile.toString() + " (" + networkmanager.getSocketAddress().toString() + ")" : String.valueOf(networkmanager.getSocketAddress());
+		return gameprofile != null ? gameprofile.toString() + " (" + networkmanager.getRemoteAddress().toString() + ")" : String.valueOf(networkmanager.getRemoteAddress());
 	}
 
 	@SubscribeEvent
