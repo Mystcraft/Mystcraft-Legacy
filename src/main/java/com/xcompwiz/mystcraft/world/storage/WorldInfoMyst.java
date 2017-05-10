@@ -6,9 +6,10 @@ import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import net.minecraft.nbt.NBTBase;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.GameRules;
-import net.minecraft.world.WorldSettings;
+import net.minecraft.world.GameType;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.storage.DerivedWorldInfo;
 import net.minecraft.world.storage.WorldInfo;
@@ -28,17 +29,14 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 		}
 	}
 
-	/**
-	 * This would be better named _SET_TotalWorldTime. Actually not meant to increment.
-	 */
 	@Override
-	public void incrementTotalWorldTime(long par1) {
-		if (provider.worldObj.isRemote) tickcounter = par1;
+	public void setWorldTotalTime(long par1) {
+		if (provider.world.isRemote) tickcounter = par1;
 	}
 
 	@Override
 	public long getWorldTotalTime() {
-		if (provider.worldObj.isRemote) return tickcounter;
+		if (provider.world.isRemote) return tickcounter;
 		return super.getWorldTotalTime();
 	}
 
@@ -51,20 +49,11 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	}
 
 	/**
-	 * Returns vanilla MC dimension (-1,0,1). For custom dimension compatibility, always prefer WorldProvider.dimensionID accessed from
-	 * World.provider.dimensionID
-	 */
-	@Override
-	public int getVanillaDimension() {
-		return this.provider.dimensionId;
-	}
-
-	/**
 	 * Sets the spawn zone position. Args: x, y, z
 	 */
 	@Override
-	public void setSpawnPosition(int x, int y, int z) {
-		provider.agedata.setSpawn(new ChunkPos(x, y, z));
+	public void setSpawn(BlockPos pos) {
+		provider.agedata.setSpawn(pos);
 	}
 
 	/**
@@ -72,9 +61,9 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 */
 	@Override
 	public int getSpawnX() {
-		ChunkPos spawn = this.provider.agedata.getSpawn();
+		BlockPos spawn = this.provider.agedata.getSpawn();
 		if (spawn == null) return 0;
-		return spawn.posX;
+		return spawn.getX();
 	}
 
 	/**
@@ -82,9 +71,9 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 */
 	@Override
 	public int getSpawnY() {
-		ChunkPos spawn = this.provider.agedata.getSpawn();
+		BlockPos spawn = this.provider.agedata.getSpawn();
 		if (spawn == null) return 64;
-		return spawn.posY;
+		return spawn.getY();
 	}
 
 	/**
@@ -92,9 +81,9 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 */
 	@Override
 	public int getSpawnZ() {
-		ChunkPos spawn = this.provider.agedata.getSpawn();
+		BlockPos spawn = this.provider.agedata.getSpawn();
 		if (spawn == null) return 0;
-		return spawn.posZ;
+		return spawn.getZ();
 	}
 
 	/**
@@ -103,7 +92,7 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	@Override
 	public long getSeed() {
 		if (this.provider.agedata == null) {
-			LoggerUtils.warn("Attempting to get world seed before world completely initialized in dimension %d", this.provider.dimensionId);
+			LoggerUtils.warn("Attempting to get world seed before world completely initialized in dimension %d", this.provider.getDimension());
 			return super.getSeed();
 		}
 		return this.provider.agedata.getSeed();
@@ -184,8 +173,8 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 * Gets the GameType.
 	 */
 	@Override
-	public WorldSettings.GameType getGameType() {
-		return super.getGameType(); // Check this out for possibilities?
+	public GameType getGameType() {
+		return super.getGameType(); //XXX: Check this out for possibilities?
 	}
 
 	/**
