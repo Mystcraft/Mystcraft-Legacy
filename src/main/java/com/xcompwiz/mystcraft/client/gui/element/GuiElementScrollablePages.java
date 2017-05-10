@@ -93,7 +93,7 @@ public class GuiElementScrollablePages extends GuiElement {
 				cycleRight();
 				return true;
 			}
-			if (mc.thePlayer.inventory.getItemStack() != null) {
+			if (mc.player.inventory.getItemStack() != null) {
 				int index = hoverpage;
 				if (index == -1) index = pageList.size();
 				listener.onItemPlace(this, index, k);

@@ -159,20 +159,20 @@ public class GuiElementBook extends GuiElement {
 				drawTexturedModalRect(40, 20, 156, 0, 18, 18);
 			}
 			Collection<String> authors = bookcontainer.getBookAuthors();
-			mc.fontRenderer.drawString(bookcontainer.getBookTitle(), 40, 40, 0x000000);
+			mc.fontRendererObj.drawString(bookcontainer.getBookTitle(), 40, 40, 0x000000);
 			int y = 50;
 			if (authors != null) for (String author : authors) {
 				GL11.glPushMatrix();
 				GL11.glTranslatef(50, y, 0);
 				GL11.glScalef(0.5F, 0.5F, 1);
-				mc.fontRenderer.drawString(author, 0, 0, 0x000000);
+				mc.fontRendererObj.drawString(author, 0, 0, 0x000000);
 				GL11.glPopMatrix();
 				y += 5;
 			}
 		}
 		String s = "" + (getCurrentPageIndex()) + "/" + (bookcontainer.getPageCount());
-		int j = mc.fontRenderer.getStringWidth(s) / 2;
-		mc.fontRenderer.drawString(s, 165 - j, 0 + 185, 0x000000);
+		int j = mc.fontRendererObj.getStringWidth(s) / 2;
+		mc.fontRendererObj.drawString(s, 165 - j, 0 + 185, 0x000000);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glPopMatrix();
 	}
@@ -230,7 +230,7 @@ public class GuiElementBook extends GuiElement {
 	private boolean isAgebook() {
 		ItemStack book = bookcontainer.getBook();
 		if (book == null) return false;
-		if (book.stackTagCompound == null) return false;
+		if (!book.hasTagCompound()) return false;
 		if (book.getItem() == ModItems.agebook) return true;
 		return false;
 	}
