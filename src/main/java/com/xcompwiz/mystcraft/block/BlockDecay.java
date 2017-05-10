@@ -5,11 +5,12 @@ import java.util.Random;
 
 import com.google.common.collect.Lists;
 import com.xcompwiz.mystcraft.instability.decay.DecayHandler;
+import com.xcompwiz.mystcraft.instability.decay.DecayHandler.DecayType;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -23,7 +24,7 @@ import net.minecraft.world.World;
 
 public class BlockDecay extends Block {
 
-	public static final PropertyInteger DECAY_META = PropertyInteger.create("decay", 0, DecayHandler.size() - 1); //-1 because it's inclusive, not exclusive...
+	public static final PropertyEnum<DecayType> DECAY_META = PropertyEnum.create("decay", DecayType.class);
 
 	public BlockDecay() {
 		super(Material.SAND);
@@ -34,12 +35,12 @@ public class BlockDecay extends Block {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(DECAY_META, meta);
+        return getDefaultState().withProperty(DECAY_META, DecayType.values()[meta]);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(DECAY_META);
+        return state.getValue(DECAY_META).ordinal();
 	}
 
 	@Override
@@ -101,9 +102,9 @@ public class BlockDecay extends Block {
 		getDecayHandler(state.getValue(DECAY_META)).onEntityContact(worldIn, pos, entityIn);
 	}
 
-	private DecayHandler getDecayHandler(int meta) {
-		DecayHandler handler = DecayHandler.getHandler(meta);
-		if (handler == null) handler = DecayHandler.getHandler(0);
+	private DecayHandler getDecayHandler(DecayType decayType) {
+		DecayHandler handler = DecayHandler.getHandler(decayType);
+		if (handler == null) handler = DecayHandler.getHandler(DecayType.BLACK);
 		return handler;
 	}
 }

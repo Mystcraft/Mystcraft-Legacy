@@ -2,10 +2,12 @@ package com.xcompwiz.mystcraft.instability.decay;
 
 import com.xcompwiz.mystcraft.data.ModBlocks;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 public class DecayHandlerWhite extends DecayHandlerSpreading {
@@ -16,26 +18,26 @@ public class DecayHandlerWhite extends DecayHandlerSpreading {
 	}
 
 	@Override
-	public void onEntityContact(World worldObj, int x, int y, int z, Entity entity) {
-		entity.attackEntityFrom(DamageSource.magic, 1);
+	public void onEntityContact(World worldObj, BlockPos pos, Entity entity) {
+		entity.attackEntityFrom(DamageSource.MAGIC, 1);
 	}
 
 	@Override
-	protected int getConversionDifficulty(World world, int i, int j, int k) {
-		Block block = world.getBlock(i, j, k);
-		if (block == Blocks.AIR) return 50;
-		if (block == ModBlocks.decay) return 1;
+	protected int getConversionDifficulty(World world, BlockPos pos) {
+		IBlockState blockstate = world.getBlockState(pos);
+		if (blockstate == Blocks.AIR) return 50;
+		if (blockstate == ModBlocks.decay) return 1;
 		// if (block.blockMaterial.isLiquid()) return 3;
 		return 1;
 	}
 
 	@Override
-	public float getExplosionResistance(Entity entity, World worldObj, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+	public float getExplosionResistance(Entity entity, World worldObj, BlockPos pos, Explosion explosion) {
 		return 100.0F;
 	}
 
 	@Override
-	public float getBlockHardness(World worldObj, int x, int y, int z) {
+	public float getBlockHardness(World worldObj, BlockPos pos) {
 		return 50.0F;
 	}
 }

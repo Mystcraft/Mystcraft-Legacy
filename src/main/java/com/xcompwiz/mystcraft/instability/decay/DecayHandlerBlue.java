@@ -1,8 +1,10 @@
 package com.xcompwiz.mystcraft.instability.decay;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 public class DecayHandlerBlue extends DecayHandlerSpreading {
@@ -13,10 +15,10 @@ public class DecayHandlerBlue extends DecayHandlerSpreading {
 	}
 
 	@Override
-	protected int getConversionDifficulty(World world, int i, int j, int k) {
-		Block block = world.getBlock(i, j, k);
-		if (block == Blocks.AIR) return 20;
-		float f = block.getBlockHardness(world, i, j, k);
+	protected int getConversionDifficulty(World world, BlockPos pos) {
+		IBlockState blockstate = world.getBlockState(pos);
+		if (blockstate.getBlock() == Blocks.AIR) return 20;
+		float f = blockstate.getBlockHardness(world, pos);
 		if (f < 0.0F) {
 			f = 1000.0F;
 		}
@@ -27,12 +29,12 @@ public class DecayHandlerBlue extends DecayHandlerSpreading {
 	}
 
 	@Override
-	public float getExplosionResistance(Entity entity, World worldObj, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+	public float getExplosionResistance(Entity entity, World worldObj, BlockPos pos, Explosion explosion) {
 		return 2.0F;
 	}
 
 	@Override
-	public float getBlockHardness(World worldObj, int x, int y, int z) {
+	public float getBlockHardness(World worldObj, BlockPos pos) {
 		return 5.0F;
 	}
 }

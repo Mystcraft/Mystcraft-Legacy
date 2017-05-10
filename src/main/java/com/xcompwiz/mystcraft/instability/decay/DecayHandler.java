@@ -3,65 +3,79 @@ package com.xcompwiz.mystcraft.instability.decay;
 import java.util.HashMap;
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.block.BlockDecay;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.world.WorldInfoUtils;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class DecayHandler {
-	public static final int							BLACK		= 0;
-	public static final int							RED			= 1;
-	public static final int							GREEN		= 2;
-	public static final int							BLUE		= 3;
-	public static final int							PURPLE		= 4;
-	public static final int							YELLOW		= 5;
-	public static final int							WHITE		= 6;
-	private static HashMap<Integer, DecayHandler>	handlers	= new HashMap<Integer, DecayHandler>();
 
-	@SideOnly(Side.CLIENT)
-	protected IIcon									icon;
-	private int										metadata;
+	public enum DecayType implements IStringSerializable {
+		BLACK(0, "black"),
+		RED(1, "red"),
+		GREEN(2, "green"),
+		BLUE(3, "blue"),
+		PURPLE(4, "purple"),
+		YELLOW(5, "yellow"),
+		WHITE(6, "white");
 
-	static {
-		registerHandler(BLACK, new DecayHandlerBlack());
-		registerHandler(RED, new DecayHandlerRed());
-		// TODO: (Instability) registerHandler(GREEN, new DecayHandlerGreen());
-		registerHandler(BLUE, new DecayHandlerBlue());
-		registerHandler(PURPLE, new DecayHandlerPurple());
-		// TODO: (Instability) registerHandler(YELLOW, new DecayHandlerYellow());
-		registerHandler(WHITE, new DecayHandlerWhite());
-	}
+		private final int index;
+		private final String name;
 
-	public static int size() {
-		return handlers.size();
-	}
+		private DecayType(int indexIn, String nameIn) {
+			this.index = indexIn;
+			this.name = nameIn;
+		}
 
-	public static void registerHandler(int meta, DecayHandler handler) {
-		handler.setMetadata(meta);
-		handlers.put(meta, handler);
-	}
+		public int getIndex() {
+			return this.index;
+		}
 
-	protected void setMetadata(int meta) {
-		this.metadata = meta;
-	}
-
-	protected int getMetadata() {
-		return this.metadata;
-	}
-
-	public static void registerIcons(IIconRegister par1IconRegister) {
-		for (DecayHandler handler : handlers.values()) {
-			handler.registerIcon(par1IconRegister);
+		@Override
+		public String getName() {
+			return name;
 		}
 	}
 
-	public static DecayHandler getHandler(int meta) {
-		return handlers.get(meta);
+	private static HashMap<DecayType, DecayHandler> handlers = new HashMap<DecayType, DecayHandler>();
+
+	private DecayType decayType;
+
+	static {
+		registerHandler(DecayType.BLACK, new DecayHandlerBlack());
+		registerHandler(DecayType.RED, new DecayHandlerRed());
+		// TODO: (Instability) registerHandler(GREEN, new DecayHandlerGreen());
+		registerHandler(DecayType.BLUE, new DecayHandlerBlue());
+		registerHandler(DecayType.PURPLE, new DecayHandlerPurple());
+		// TODO: (Instability) registerHandler(YELLOW, new DecayHandlerYellow());
+		registerHandler(DecayType.WHITE, new DecayHandlerWhite());
+	}
+
+	public static void registerHandler(DecayType type, DecayHandler handler) {
+		handler.setDecayType(type);
+		handlers.put(type, handler);
+	}
+
+	protected void setDecayType(DecayType type) {
+		this.decayType = type;
+	}
+
+	protected DecayType getDecayType() {
+		return this.decayType;
+	}
+	
+	protected IBlockState getBlockState() {
+		return ModBlocks.decay.getDefaultState().withProperty(BlockDecay.DECAY_META, getDecayType());
+	}
+
+	public static DecayHandler getHandler(DecayType decayType) {
+		return handlers.get(decayType);
 	}
 
 	protected void addInstability(World world, int amount) {
@@ -73,42 +87,32 @@ public abstract class DecayHandler {
 
 	public abstract String getIdentifier();
 
-	@SideOnly(Side.CLIENT)
-	public IIcon getBlockTextureFromSide(int side) {
-		return icon;
-	}
-
-	@SideOnly(Side.CLIENT)
-	protected void registerIcon(IIconRegister register) {
-		icon = register.registerIcon("mystcraft:decay_" + getIdentifier());
-	}
-
-	public void onBlockAdded(World world, int i, int j, int k) {
+	public void onBlockAdded(World world, BlockPos pos) {
 		if (!world.isRemote) {
-			if (world.getBlock(i, j, k) == ModBlocks.decay) {
+			if (world.getBlockState(pos).getBlock() == ModBlocks.decay) {
 				if (!WorldInfoUtils.isMystcraftAge(world)) {
-					world.setBlock(i, j, k, Blocks.AIR);
+					world.setBlockToAir(pos);
 					return;
 				}
 			}
 		}
 	}
 
-	public void updateTick(World world, int x, int y, int z, Random random) {
-		this.pulse(world, x, y, z, random);
+	public void updateTick(World world, BlockPos pos, Random random) {
+		this.pulse(world, pos, random);
 	}
 
-	protected abstract void pulse(World world, int i, int j, int k, Random rand);
+	protected abstract void pulse(World world, BlockPos pos, Random rand);
 
-	public void onBlockDestroyedByPlayer(World world, int i, int j, int k) {}
+	public void onBlockDestroyedByPlayer(World world, BlockPos pos) {}
 
-	public float getExplosionResistance(Entity entity, World worldObj, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+	public float getExplosionResistance(Entity entity, World worldObj, BlockPos pos, Explosion explosion) {
 		return 2.5F;
 	}
 
-	public float getBlockHardness(World worldObj, int x, int y, int z) {
+	public float getBlockHardness(World worldObj, BlockPos pos) {
 		return 0.5F;
 	}
 
-	public void onEntityContact(World worldObj, int x, int y, int z, Entity entity) {}
+	public void onEntityContact(World worldObj, BlockPos pos, Entity entity) {}
 }
