@@ -22,7 +22,6 @@ public class Assets {
 		public static final ResourceLocation	lectern			= new ResourceLocation("mystcraft:textures/entity/lectern.png");
 		public static final ResourceLocation	linkbook		= new ResourceLocation("mystcraft:textures/entity/linkbook.png");
 		public static final ResourceLocation	linkmodifier	= new ResourceLocation("mystcraft:textures/entity/linkbookmodifier.png");
-		public static final ResourceLocation	archivist		= new ResourceLocation("mystcraft:textures/villager/archivist.png");
 	}
 
 	public static final class GUIs {

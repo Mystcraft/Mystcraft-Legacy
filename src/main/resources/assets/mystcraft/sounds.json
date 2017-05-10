@@ -2,49 +2,65 @@
 	"linking.pop": {
 		"category": "player",
 		"sounds": [
-			"linking/pop"
+			{
+				"name": "mystcraft:linking/pop"
+			}
 		]
 	},
 	"linking.link": {
 		"category": "player",
 		"sounds": [
-			"linking/link"
+			{
+				"name": "mystcraft:linking/link"
+			}
 		]
 	},
 	"linking.link-disarm": {
 		"category": "player",
 		"sounds": [
-			"linking/link-disarm"
+			{
+				"name": "mystcraft:linking/link-disarm"
+			}
 		]
 	},
 	"linking.link-following": {
 		"category": "player",
 		"sounds": [
-			"linking/link-following"
+			{
+				"name": "mystcraft:linking/link-following"
+			}
 		]
 	},
 	"linking.link-intra": {
 		"category": "player",
 		"sounds": [
-			"linking/link-intra"
+			{
+				"name": "mystcraft:linking/link-intra"
+			}
 		]
 	},
 	"linking.link-fissure": {
 		"category": "player",
 		"sounds": [
-			"linking/link-fissure"
+			{
+				"name": "mystcraft:linking/link-fissure"
+			}
 		]
 	},
 	"linking.link-portal": {
 		"category": "player",
 		"sounds": [
-			"linking/link-portal"
+			{
+				"name": "mystcraft:linking/link-portal"
+			}
 		]
 	},
 	"entity.meteor.roar": {
 		"category": "hostile",
 		"sounds": [
-			"entity/meteor/roar"
+			{
+				"name": "mystcraft:entity/meteor/roar"
+			}
 		]
 	}
 }

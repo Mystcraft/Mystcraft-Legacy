@@ -153,16 +153,19 @@ public abstract class Page {
 		}
 	}
 
+	@Nonnull
 	public static NBTTagCompound createDefault() {
 		return new NBTTagCompound();
 	}
 
+	@Nonnull
 	public static ItemStack createPage() {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.setTagCompound(createDefault());
 		return page;
 	}
 
+	@Nonnull
 	public static ItemStack createLinkPage() {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.setTagCompound(createDefault());
@@ -170,6 +173,7 @@ public abstract class Page {
 		return page;
 	}
 
+	@Nonnull
 	public static ItemStack createLinkPage(String property) {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.setTagCompound(createDefault());
@@ -177,6 +181,7 @@ public abstract class Page {
 		return page;
 	}
 
+	@Nonnull
 	public static ItemStack createSymbolPage(String symbol) {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.setTagCompound(createDefault());
@@ -184,6 +189,7 @@ public abstract class Page {
 		return page;
 	}
 
+	@Nonnull
 	public static ItemStack createPage(NBTTagCompound pagedata) {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.setTagCompound(pagedata);

@@ -102,8 +102,6 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 
 		MinecraftForgeClient.registerItemRenderer(ModItems.page, new ItemRendererPage());
 		MinecraftForgeClient.registerItemRenderer(ModItems.inkvial, new ItemRendererMask());
-
-		if (Mystcraft.archivistEnabled()) VillagerRegistry.instance().registerVillagerSkin(Mystcraft.archivistId, Entities.archivist);
 	}
 
 	private void registerEntityRenderers() {

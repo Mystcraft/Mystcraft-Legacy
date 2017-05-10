@@ -1,40 +1,35 @@
 package com.xcompwiz.mystcraft.treasure;
 
+import java.util.Collection;
 import java.util.Random;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.WeightedRandom;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraftforge.common.ChestGenHooks;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootEntry;
+import net.minecraft.world.storage.loot.conditions.LootCondition;
 
-public class TreasureGenWrapper extends WeightedRandomChestContent {
+public class TreasureGenWrapper extends LootEntry {
 
-	private static ItemStack	dummy	= new ItemStack(Blocks.STONE);
-	private String				gen_info;
-
-	public TreasureGenWrapper(String gen_info, int weight) {
-		super(dummy, 0, 0, weight);
-		this.gen_info = gen_info;
+	//Hellfire> the 'name' can be many things. in vanilla it describes for example the item-registryName of the loot-roll
+	public TreasureGenWrapper(int weight, int quality, String name) {
+		this(weight, quality, name, new LootCondition[0]);
 	}
 
-	/**
-	 * Allows a mod to submit a custom implementation that can delegate item stack generation beyond simple stack lookup
-	 * @param random The current random for generation
-	 * @param newInventory The inventory being generated (do not populate it, but you can refer to it)
-	 * @return An array of {@link ItemStack} to put into the chest
-	 */
+	public TreasureGenWrapper(int weight, int quality, String name, LootCondition[] lootConditions) {
+		super(weight, quality, lootConditions, name);
+	}
+
 	@Override
-	protected ItemStack[] generateChestContent(Random random, IInventory newInventory) {
-		ChestGenHooks info = ChestGenHooks.getInfo(gen_info);
-		return generateChestContents(random, info.getItems(random));
+	//Called whenever this loottable is supposed to roll itemstacks and the given lootconditions apply to the context.
+	//The LootContext holds much information on what this lootroll is about.
+	public void addLoot(Collection<ItemStack> stacks, Random rand, LootContext context) {
+
 	}
 
-	public static ItemStack[] generateChestContents(Random rand, WeightedRandomChestContent[] contentlist) {
-		WeightedRandomChestContent content = (WeightedRandomChestContent) WeightedRandom.getRandomItem(rand, contentlist);
-
-		return ChestGenHooks.generateStacks(rand, content.theItemId, content.theMinimumChanceToGenerateItem, content.theMaximumChanceToGenerateItem);
-	}
+	//Hellfire> We don't *really* need to do this. This is actually never really used from what i gather
+	@Override
+	protected void serialize(JsonObject json, JsonSerializationContext context) {}
 
 }

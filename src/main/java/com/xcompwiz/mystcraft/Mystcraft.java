@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Set;
@@ -9,7 +8,6 @@ import java.util.Set;
 import com.google.common.collect.ImmutableList;
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
-import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.command.CommandCreateAgebook;
 import com.xcompwiz.mystcraft.command.CommandCreateDim;
 import com.xcompwiz.mystcraft.command.CommandDebug;
@@ -53,11 +51,10 @@ import com.xcompwiz.mystcraft.linking.LinkListenerForgeServer;
 import com.xcompwiz.mystcraft.linking.LinkListenerPermissions;
 import com.xcompwiz.mystcraft.network.MystcraftConnectionHandler;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
-import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import com.xcompwiz.mystcraft.tileentity.*;
-import com.xcompwiz.mystcraft.treasure.TreasureGenWrapper;
+import com.xcompwiz.mystcraft.treasure.LootTableHandler;
 import com.xcompwiz.mystcraft.villager.MerchantRecipeProviderItem;
 import com.xcompwiz.mystcraft.villager.VillageCreationHandlerArchivistHouse;
 import com.xcompwiz.mystcraft.villager.VillagerArchivist;
@@ -72,7 +69,6 @@ import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
 import com.xcompwiz.mystcraft.world.profiling.MystWorldGenerator;
 import com.xcompwiz.mystcraft.world.storage.FileUtils;
 
-import net.minecraft.command.ServerCommandManager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -94,8 +90,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
-import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
-import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
@@ -234,7 +228,8 @@ public class Mystcraft {
 		ModBlocks.init();
 		InkEffects.init();
 
-		FluidContainerRegistry.registerFluidContainer(ModFluids.black_ink, new ItemStack(ModItems.inkvial, 1, 0), new ItemStack(Items.GLASS_BOTTLE));
+		//Hellfire> registered by the actual item.
+		//FluidContainerRegistry.registerFluidContainer(ModFluids.black_ink, new ItemStack(ModItems.inkvial, 1, 0), new ItemStack(Items.GLASS_BOTTLE));
 		ModSymbolsFluids.init();
 
 		// Init Achievements
@@ -273,6 +268,8 @@ public class Mystcraft {
 		//register instability data 
 		InstabilityData.initialize();
 
+        LootTableHandler.init();
+
 		// Init Archivist
 		if (archivistEnabled()) {
 			archivist = new VillagerArchivist();
@@ -306,36 +303,12 @@ public class Mystcraft {
 
 		InstabilityDataCalculator.loadBalanceData();
 
-		// Treasure object
-		ChestGenHooks treasureinfo = ChestGenHooks.getInfo(MystObjects.MYST_TREASURE);
-		treasureinfo.setMin(4);
-		treasureinfo.setMax(8);
-		treasureinfo.addItem(new WeightedRandomChestContent(Items.paper, 0, 1, 8, 50));
-		treasureinfo.addItem(new WeightedRandomChestContent(Items.leather, 0, 1, 8, 50));
-		treasureinfo.addItem(new WeightedRandomChestContent(ModItems.inkvial, 0, 1, 2, 50));
-		treasureinfo.addItem(new WeightedRandomChestContent(ModItems.booster, 0, 1, 4, 1000));
-		//treasureinfo.addItem(new TreasureGenBooster(7, 4, 4, 1, 1000));
-		// 11 commons, 3 uncommon, 1 rare, and a basic land
-		//if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderBooster(7, 4, 4, 1));
-		if (archivist != null) archivist.registerRecipe(new MerchantRecipeProviderItem(new ItemStack(Items.emerald, 25), null, new ItemStack(ModItems.booster, 1)));
-
-		TreasureGenWrapper mystTreasureSub = new TreasureGenWrapper(MystObjects.MYST_TREASURE, 10);
-		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(mystTreasureSub);
-		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(mystTreasureSub);
-		ChestGenHooks.getInfo(ChestGenHooks.STRONGHOLD_LIBRARY).addItem(mystTreasureSub);
-		ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(mystTreasureSub);
+		if(archivist != null) {
+		    archivist.registerRecipe(
+		            new MerchantRecipeProviderItem(new ItemStack(Items.EMERALD, 25), ItemStack.EMPTY, new ItemStack(ModItems.booster)));
+        }
 
 		sidedProxy.createCreativeTabs();
-
-		// Create pages for all symbols for symbol tab, treasure gen, and
-		// merchant handler
-		ArrayList<IAgeSymbol> symbols = SymbolManager.getAgeSymbols();
-		for (IAgeSymbol symbol : symbols) {
-			// Create treasure gen entry
-			int maxStack = SymbolManager.getSymbolTreasureMaxStack(symbol);
-			int chance = SymbolManager.getSymbolItemWeight(symbol.identifier());
-			if (chance != 0 && maxStack != 0) treasureinfo.addItem(new WeightedRandomChestContent(Page.createSymbolPage(symbol.identifier()), 1, maxStack, chance));
-		}
 	}
 
 	@EventHandler

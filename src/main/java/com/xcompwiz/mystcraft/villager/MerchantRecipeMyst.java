@@ -3,13 +3,15 @@ package com.xcompwiz.mystcraft.villager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
 
+import javax.annotation.Nonnull;
+
 public class MerchantRecipeMyst extends MerchantRecipe {
 
-	public MerchantRecipeMyst(ItemStack buyItem, ItemStack sellItem) {
+	public MerchantRecipeMyst(@Nonnull ItemStack buyItem, @Nonnull ItemStack sellItem) {
 		super(buyItem, sellItem);
 	}
 
-	public MerchantRecipeMyst(ItemStack buyItem1, ItemStack buyItem2, ItemStack sellItem) {
+	public MerchantRecipeMyst(@Nonnull ItemStack buyItem1, @Nonnull ItemStack buyItem2, @Nonnull ItemStack sellItem) {
 		super(buyItem1, buyItem2, sellItem);
 	}
 
@@ -17,16 +19,6 @@ public class MerchantRecipeMyst extends MerchantRecipe {
 		super(recipe.getItemToBuy(), recipe.getSecondItemToBuy(), recipe.getItemToSell());
 		int usesDelta = recipe.writeToTags().getInteger("maxUses") - 7;
 		increaseMaxTradeUses(usesDelta);
-	}
-
-	@Override
-	public boolean hasSameIDsAs(MerchantRecipe other) {
-		return true;
-	}
-
-	@Override
-	public boolean hasSameItemsAs(MerchantRecipe other) {
-		return this.hasSameIDsAs(other);
 	}
 
 }

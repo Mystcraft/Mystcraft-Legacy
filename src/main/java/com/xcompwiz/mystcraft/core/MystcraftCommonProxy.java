@@ -11,8 +11,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class MystcraftCommonProxy {
+
 	public Entity getEntityByID(World worldObj, int id) {
-		if (worldObj instanceof WorldServer) return ((WorldServer) worldObj).getEntityByID(id);
+		if (worldObj instanceof WorldServer) return worldObj.getEntityByID(id);
 		return null;
 	}
 
@@ -36,7 +37,7 @@ public class MystcraftCommonProxy {
 		return false;
 	}
 
-	private InstabilityDataCalculator	instabilitycalculator;
+	private InstabilityDataCalculator instabilitycalculator;
 
 	/**
 	 * Server-side only logic to start up the instability calculator
@@ -46,7 +47,6 @@ public class MystcraftCommonProxy {
 	public void startBaselineProfiling(MinecraftServer mcserver) {
 		if (InstabilityDataCalculator.isDisabled()) return;
 		instabilitycalculator = new InstabilityDataCalculator(mcserver, mcserver.worldServerForDimension(0).getMapStorage());
-		FMLCommonHandler.instance().bus().register(instabilitycalculator);
 		MinecraftForge.EVENT_BUS.register(instabilitycalculator);
 	}
 
@@ -58,7 +58,6 @@ public class MystcraftCommonProxy {
 		if (instabilitycalculator != null) {
 			instabilitycalculator.shutdown();
 			MinecraftForge.EVENT_BUS.unregister(instabilitycalculator);
-			FMLCommonHandler.instance().bus().unregister(instabilitycalculator);
 			instabilitycalculator = null;
 		}
 	}
