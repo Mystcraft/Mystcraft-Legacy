@@ -1,6 +1,6 @@
 package com.xcompwiz.mystcraft.api.world.logic;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.World;
 
 /**
@@ -15,7 +15,6 @@ public interface ITerrainAlteration {
 	 * @param chunkX The chunk x coordinate in chunk space
 	 * @param chunkZ The chunk z coordinate in chunk space
 	 * @param blocks The block array being manipulated (y << 8 | z << 4 | x)
-	 * @param metadata The metadata values of the blocks in the previous array (y << 8 | z << 4 | x)
 	 */
-	public abstract void alterTerrain(World worldObj, int chunkX, int chunkZ, Block[] blocks, byte[] metadata);
+	public abstract void alterTerrain(World worldObj, int chunkX, int chunkZ, IBlockState[] blocks);
 }

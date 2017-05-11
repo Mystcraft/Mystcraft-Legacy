@@ -19,12 +19,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.ContainerHorseChest;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -42,9 +46,9 @@ public class LinkListenerBasic {
 		Integer dimid = info.getDimensionUID();
 		if (dimid == null) {
 			event.setCanceled(true); //We'll need to override isLinkPermitted handling for unestablished links
-		} else if (entity.isDead || entity.worldObj != world || entity.riddenByEntity != null) {
+		} else if (entity.isDead || entity.world != world || !entity.isBeingRidden()) {
 			event.setCanceled(true);
-		} else if (entity.worldObj.provider.dimensionId == dimid && !info.getFlag(LinkPropertyAPI.FLAG_INTRA_LINKING)) {
+		} else if (entity.world.provider.getDimension() == dimid && !info.getFlag(LinkPropertyAPI.FLAG_INTRA_LINKING)) {
 			event.setCanceled(true);
 		} else if (DimensionUtils.isDimensionDead(dimid)) {
 			event.setCanceled(true);
@@ -67,14 +71,12 @@ public class LinkListenerBasic {
 		ILinkInfo info = event.info;
 
 		if (info.getFlag(LinkPropertyAPI.FLAG_RELATIVE)) {
-			ChunkPos origin = world.getSpawnPoint();
-			float dx = (int) (entity.posX - origin.posX);
-			float dy = (int) (entity.posY - origin.posY);
-			float dz = (int) (entity.posZ - origin.posZ);
+			BlockPos origin = world.getSpawnPoint();
+			float dx = (int) (entity.posX - origin.getX());
+			float dy = (int) (entity.posY - origin.getY());
+			float dz = (int) (entity.posZ - origin.getZ());
 			event.spawn = newworld.getSpawnPoint();
-			event.spawn.posX += dx;
-			event.spawn.posY += dy;
-			event.spawn.posZ += dz;
+			event.spawn = event.spawn.add(dx, dy, dz);
 		}
 	}
 
@@ -85,13 +87,22 @@ public class LinkListenerBasic {
 
 		if (info.getFlag(LinkPropertyAPI.FLAG_DISARM)) {
 			if (entity instanceof EntityPlayer) {
-				ejectInventory(entity.worldObj, ((EntityPlayer) entity).inventory, entity.posX, entity.posY, entity.posZ);
+				ejectInventory(entity.world, ((EntityPlayer) entity).inventory, entity.posX, entity.posY, entity.posZ);
 			}
 			if (entity instanceof IInventory) {
-				ejectInventory(entity.worldObj, (IInventory) entity, entity.posX, entity.posY, entity.posZ);
+				ejectInventory(entity.world, (IInventory) entity, entity.posX, entity.posY, entity.posZ);
 			}
-			if (entity instanceof EntityHorse) {
-				((EntityHorse) entity).dropChestItems();
+			if (entity instanceof AbstractHorse) {
+                ContainerHorseChest chest = ObfuscationReflectionHelper.getPrivateValue(AbstractHorse.class, (AbstractHorse) entity, "horseChest", "field_110296_bG");
+                if(chest != null) {
+                    for (int i = 0; i < chest.getSizeInventory(); ++i) {
+                        ItemStack itemstack = chest.getStackInSlot(i);
+                        if (!itemstack.isEmpty()) {
+                            entity.entityDropItem(itemstack, 0.0F);
+                            chest.setInventorySlotContents(i, ItemStack.EMPTY);
+                        }
+                    }
+                }
 			}
 			if (entity instanceof EntityLiving) {
 				dropEquipment((EntityLiving) entity, new Random());
@@ -116,7 +127,7 @@ public class LinkListenerBasic {
 			EntityPlayer player = (EntityPlayer) entity;
 			for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
 				ItemStack itemstack = player.inventory.getStackInSlot(i);
-				if (itemstack != null && itemstack.getItem() instanceof ItemLinkbook) return;
+				if (!itemstack.isEmpty() && itemstack.getItem() instanceof ItemLinkbook) return;
 			}
 			player.addStat(ModAchievements.quinn, 1);
 		}
@@ -128,9 +139,9 @@ public class LinkListenerBasic {
 		World world = event.destination;
 		ILinkInfo info = event.info;
 
-		ChunkPos spawn = info.getSpawn();
-		if (info.getFlag(LinkPropertyAPI.FLAG_GENERATE_PLATFORM) && world.isAirBlock(spawn.posX, spawn.posY - 1, spawn.posZ) && world.isAirBlock(spawn.posX, spawn.posY - 2, spawn.posZ)) {
-			world.setBlock(spawn.posX, spawn.posY - 1, spawn.posZ, Blocks.STONE, 0, 3);
+		BlockPos spawn = info.getSpawn();
+		if (spawn != null && info.getFlag(LinkPropertyAPI.FLAG_GENERATE_PLATFORM) && world.isAirBlock(spawn.down()) && world.isAirBlock(spawn.down(2))) {
+		    world.setBlockState(spawn.down(), Blocks.STONE.getDefaultState());
 		}
 		if (entity instanceof EntityMinecart) {
 			entity.motionX = 0;
@@ -174,9 +185,9 @@ public class LinkListenerBasic {
 	private static void ejectInventory(World worldObj, IInventory inventory, double par2, double par3, double par4) {
 		for (int i = 0; i < inventory.getSizeInventory(); ++i) {
 			ItemStack itemstack = inventory.getStackInSlot(i);
-			inventory.setInventorySlotContents(i, null);
+			inventory.setInventorySlotContents(i, ItemStack.EMPTY);
 
-			if (itemstack == null) {
+			if (itemstack.isEmpty()) {
 				continue;
 			}
 
@@ -191,18 +202,18 @@ public class LinkListenerBasic {
 					j = itemstack.getCount();
 				}
 
-				itemstack.stackSize -= j;
+				itemstack.shrink(1);
 				EntityItem entityitem = new EntityItem(worldObj, par2 + f, par3 + f1, par4 + f2, new ItemStack(itemstack.getItem(), j, itemstack.getItemDamage()));
 
 				if (itemstack.hasTagCompound()) {
-					entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
+					entityitem.getEntityItem().setTagCompound(itemstack.getTagCompound().copy());
 				}
 
 				float f3 = 0.05F;
 				entityitem.motionX = (float) worldObj.rand.nextGaussian() * f3;
 				entityitem.motionY = (float) worldObj.rand.nextGaussian() * f3 + 0.2F;
 				entityitem.motionZ = (float) worldObj.rand.nextGaussian() * f3;
-				worldObj.spawnEntityInWorld(entityitem);
+				worldObj.spawnEntity(entityitem);
 			}
 		}
 	}
@@ -213,30 +224,34 @@ public class LinkListenerBasic {
 	//XXX: (Helper) Should this be made into a general helper? 
 	private static void dropEquipment(EntityLiving entity, Random rand) {
 		//entity.dropEquipment(false, 0);
-		float[] equipmentDropChances = ObfuscationReflectionHelper.getPrivateValue(EntityLiving.class, entity, "equipmentDropChances", "field" + "_82174_bp");
-		for (int j = 0; j < entity.getLastActiveItems().length; ++j) {
-			ItemStack itemstack = entity.getEquipmentInSlot(j);
-			entity.setCurrentItemOrArmor(j, null);
-			float chance = equipmentDropChances[j];
-			boolean flag1 = chance > 1.0F;
-
-			if (itemstack != null && flag1 && rand.nextFloat() < chance) {
-				if (!flag1 && itemstack.isItemStackDamageable()) {
-					int k = Math.max(itemstack.getMaxDamage() - 25, 1);
-					int l = itemstack.getMaxDamage() - rand.nextInt(rand.nextInt(k) + 1);
-
-					if (l > k) {
-						l = k;
-					}
-					if (l < 1) {
-						l = 1;
-					}
-
-					itemstack.setItemDamage(l);
-				}
-
-				entity.entityDropItem(itemstack, 0.0F);
-			}
-		}
+		//float[] equipmentDropChances = ObfuscationReflectionHelper.getPrivateValue(EntityLiving.class, entity, "equipmentDropChances", "field" + "_82174_bp");
+        float[] handChances = ObfuscationReflectionHelper.getPrivateValue(EntityLiving.class, entity, "inventoryHandsDropChances", "field_82174_bp");
+        float[] armorChances = ObfuscationReflectionHelper.getPrivateValue(EntityLiving.class, entity, "inventoryArmorDropChances", "field_184655_bs");
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+            ItemStack stack = entity.getItemStackFromSlot(slot);
+            entity.setItemStackToSlot(slot, ItemStack.EMPTY);
+            float chance = 0;
+            switch (slot.getSlotType()) {
+                case HAND:
+                    chance = handChances[slot.getIndex()];
+                    break;
+                case ARMOR:
+                    chance = armorChances[slot.getIndex()];
+            }
+            if(!stack.isEmpty() && chance > 1F && rand.nextFloat() < chance) {
+                if(chance <= 1F && stack.isItemStackDamageable()) {
+                    int k = Math.max(stack.getMaxDamage() - 25, 1);
+                    int l = stack.getMaxDamage() - rand.nextInt(rand.nextInt(k) + 1);
+                    if (l > k) {
+                        l = k;
+                    }
+                    if (l < 1) {
+                        l = 1;
+                    }
+                    stack.setItemDamage(l);
+                }
+                entity.entityDropItem(stack, 0.0F);
+            }
+        }
 	}
 }

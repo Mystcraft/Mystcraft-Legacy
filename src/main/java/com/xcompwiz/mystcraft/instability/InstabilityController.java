@@ -31,6 +31,7 @@ public class InstabilityController implements InstabilityDirector {
 	public InstabilityController(WorldProviderMyst provider, AgeController controller, World world) {
 		this.controller = controller;
 		this.enabled = (controller.isInstabilityEnabled());
+		this.world = world;
 		deckdata = getDataStorage(provider);
 		buildDecks();
 		reconstruct();

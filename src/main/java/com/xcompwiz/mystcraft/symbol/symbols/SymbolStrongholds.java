@@ -8,8 +8,9 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainFeatureLocator;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
-import net.minecraft.block.Block;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStronghold;
 
@@ -34,7 +35,8 @@ public class SymbolStrongholds extends SymbolBase {
 	}
 
 	private class Populator implements IPopulate {
-		MapGenStronghold	generator;
+
+		private MapGenStronghold generator;
 
 		public Populator(MapGenStronghold gen) {
 			generator = gen;
@@ -42,34 +44,38 @@ public class SymbolStrongholds extends SymbolBase {
 
 		@Override
 		public boolean populate(World worldObj, Random rand, int i, int j, boolean flag) {
-			generator.generateStructuresInChunk(worldObj, rand, i >> 4, j >> 4);
+			generator.generateStructure(worldObj, rand, new ChunkPos(i >> 4, j >> 4));
 			return false;
 		}
 	}
 
 	private class TerrainAlteration implements ITerrainAlteration {
-		MapGenStronghold	generator;
+
+		private MapGenStronghold generator;
 
 		public TerrainAlteration(MapGenStronghold gen) {
 			generator = gen;
 		}
 
 		@Override
-		public void alterTerrain(World worldObj, int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {
-			generator.func_151539_a(worldObj.getChunkProvider(), worldObj, chunkX, chunkZ, null); // Note: Null block array for structure generation...
+		public void alterTerrain(World worldObj, int chunkX, int chunkZ, IBlockState[] blocks) {
+			generator.generate(worldObj, chunkX, chunkZ, null);
 		}
 	}
 
 	private class FeatureLocator implements ITerrainFeatureLocator {
-		MapGenStronghold	generator;
+
+		private MapGenStronghold generator;
 
 		public FeatureLocator(MapGenStronghold gen) {
 			generator = gen;
 		}
 
 		@Override
-		public ChunkPosition locate(World world, String s, int i, int j, int k) {
-			if ("Stronghold".equals(s) && generator != null) { return generator.func_151545_a(world, i, j, k); }
+		public BlockPos locate(World world, String s, BlockPos pos, boolean genChunks) {
+			if ("Stronghold".equals(s) && generator != null) {
+				return generator.getClosestStrongholdPos(world, pos, genChunks);
+			}
 			return null;
 		}
 	}

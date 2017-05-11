@@ -37,7 +37,7 @@ public class LinkingAPIDelegate {
 		link.setTargetUUID(DimensionUtils.getDimensionUUID(world.provider.getDimension()));
 		link.setSpawn(new BlockPos(location));
 		link.setSpawnYaw(location.rotationYaw);
-		link.setDisplayName(DimensionUtils.getDimensionName(world.provider));
+		link.setDisplayName(world.getWorldInfo().getWorldName());
 		return link;
 	}
 

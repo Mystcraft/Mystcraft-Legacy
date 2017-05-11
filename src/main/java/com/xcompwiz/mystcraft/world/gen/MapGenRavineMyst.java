@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.world.gen;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -11,14 +12,14 @@ public class MapGenRavineMyst extends MapGenAdvanced {
 	private float[]	field_75046_d	= new float[1024];
 
 	public MapGenRavineMyst(long seed, Block block) {
-		this(seed, block, (byte) 0);
+		this(seed, block.getDefaultState());
 	}
 
-	public MapGenRavineMyst(long seed, Block block, byte blockMeta) {
-		super(seed, block, blockMeta);
+	public MapGenRavineMyst(long seed, IBlockState state) {
+		super(seed, state);
 	}
 
-	protected void generateRavine(long seed, int chunkX, int chunkZ, Block[] blocks, byte[] metadata, double baseX, double baseY, double baseZ, float par12, float par13, float par14, int par15, int par16, double par17) {
+	protected void generateRavine(long seed, int chunkX, int chunkZ, IBlockState[] blocks, double baseX, double baseY, double baseZ, float par12, float par13, float par14, int par15, int par16, double par17) {
 		Random rand = new Random(seed);
 		double chunkXmid = (chunkX * 16 + 8);
 		double chunkZmid = (chunkZ * 16 + 8);
@@ -140,7 +141,7 @@ public class MapGenRavineMyst extends MapGenAdvanced {
 
 									if (xfactorSq + zfactorSq < 1.0D) {
 										if ((xfactorSq + zfactorSq) * this.field_75046_d[localY] + yfactorSq / 6.0D < 1.0D) {
-											placeBlock(blocks, metadata, coords);
+											placeBlock(blocks, coords);
 										}
 									}
 								}
@@ -160,7 +161,7 @@ public class MapGenRavineMyst extends MapGenAdvanced {
 	 * Recursively called by generate() (generate) and optionally by itself.
 	 */
 	@Override
-	protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, Block[] blocks, byte[] metadata) {
+	protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, IBlockState[] blocks) {
 		if (this.rand.nextInt(50) == 0) {
 			double x = (par2 * 16 + this.rand.nextInt(16));
 			double y = (this.rand.nextInt(this.rand.nextInt(40) + 8) + 20);
@@ -171,7 +172,7 @@ public class MapGenRavineMyst extends MapGenAdvanced {
 				float var15 = this.rand.nextFloat() * (float) Math.PI * 2.0F;
 				float var16 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
 				float var17 = (this.rand.nextFloat() * 2.0F + this.rand.nextFloat()) * 2.0F;
-				this.generateRavine(this.rand.nextLong(), par4, par5, blocks, metadata, x, y, z, var17, var15, var16, 0, 0, 3.0D);
+				this.generateRavine(this.rand.nextLong(), par4, par5, blocks, x, y, z, var17, var15, var16, 0, 0, 3.0D);
 			}
 		}
 	}

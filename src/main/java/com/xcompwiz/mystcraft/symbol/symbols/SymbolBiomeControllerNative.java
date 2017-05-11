@@ -6,9 +6,13 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameType;
+import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.storage.WorldInfo;
 
 public class SymbolBiomeControllerNative extends SymbolBase {
 
@@ -22,10 +26,12 @@ public class SymbolBiomeControllerNative extends SymbolBase {
 	}
 
 	private class BiomeController implements IBiomeController {
-		private WorldChunkManager	manager;
+
+		private BiomeProvider manager;
 
 		protected BiomeController(AgeDirector controller) {
-			this.manager = new WorldChunkManager(controller.getSeed(), WorldType.DEFAULT);
+			//Seems super roundabout, but most parameters are unnecessary and only there to forward the data to the biomeprovider
+			this.manager = new BiomeProvider(new WorldInfo(new WorldSettings(controller.getSeed(), GameType.SURVIVAL, false, false, WorldType.DEFAULT), ""));
 		}
 
 		/**
@@ -41,15 +47,7 @@ public class SymbolBiomeControllerNative extends SymbolBase {
 		 */
 		@Override
 		public Biome getBiomeAtCoords(int par1, int par2) {
-			return manager.getBiomeGenAt(par1, par2);
-		}
-
-		/**
-		 * Returns a list of rainfall values for the specified blocks. Args: listToReuse, x, z, width, length.
-		 */
-		@Override
-		public float[] getRainfallField(float afloat[], int x, int z, int width, int length) {
-			return manager.getRainfall(afloat, x, z, width, length);
+			return manager.getBiome(new BlockPos(par1, 0, par2));
 		}
 
 		/**
@@ -65,8 +63,8 @@ public class SymbolBiomeControllerNative extends SymbolBase {
 		 * infinite loop in BiomeCacheBlock)
 		 */
 		@Override
-		public Biome[] getBiomesAtCoords(Biome par1ArrayOfBiome[], int par2, int par3, int par4, int par5, boolean par6) {
-			return manager.getBiomeGenAt(par1ArrayOfBiome, par2, par3, par4, par5, par6);
+		public Biome[] getBiomesAtCoords(Biome[] par1ArrayOfBiome, int x, int y, int width, int length, boolean cacheFlag) {
+			return manager.getBiomes(par1ArrayOfBiome, x, y, width, length, cacheFlag);
 		}
 
 		/**

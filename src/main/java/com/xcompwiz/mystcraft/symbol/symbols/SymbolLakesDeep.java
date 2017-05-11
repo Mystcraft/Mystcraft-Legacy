@@ -12,6 +12,7 @@ import com.xcompwiz.mystcraft.world.gen.feature.WorldGenLakesAdv;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SymbolLakesDeep extends SymbolBase {
@@ -23,9 +24,9 @@ public class SymbolLakesDeep extends SymbolBase {
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		BlockDescriptor block = ModifierUtils.popBlockMatching(controller, BlockCategory.FLUID, BlockCategory.GAS);
-		WorldGeneratorAdv generator = null;
+		WorldGeneratorAdv generator;
 		if (block != null) {
-			generator = new WorldGenLakesAdv(block.block, block.metadata);
+			generator = new WorldGenLakesAdv(block.blockstate);
 		} else {
 			generator = new WorldGenLakesAdv(Blocks.LAVA);
 		}
@@ -48,7 +49,7 @@ public class SymbolLakesDeep extends SymbolBase {
 				int k2 = rand.nextInt(rand.nextInt(248) + 8);
 				int l3 = j + rand.nextInt(16) + 8;
 				if (k2 < controller.getSeaLevel() || rand.nextInt(10) == 0) {
-					gen.generate(worldObj, rand, j1, k2, l3);
+					gen.generate(worldObj, rand, new BlockPos(j1, k2, l3));
 				} else {
 					gen.noGen();
 				}

@@ -12,6 +12,7 @@ import com.xcompwiz.mystcraft.world.gen.feature.WorldGenSpikesAdv;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SymbolSpikes extends SymbolBase {
@@ -23,9 +24,9 @@ public class SymbolSpikes extends SymbolBase {
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		BlockDescriptor block = ModifierUtils.popBlockMatching(controller, BlockCategory.STRUCTURE);
-		WorldGeneratorAdv generator = null;
+		WorldGeneratorAdv generator;
 		if (block != null) {
-			generator = new WorldGenSpikesAdv(block.block, block.metadata);
+			generator = new WorldGenSpikesAdv(block.blockstate);
 		} else {
 			generator = new WorldGenSpikesAdv(Blocks.STONE);
 		}
@@ -44,8 +45,8 @@ public class SymbolSpikes extends SymbolBase {
 			if (!flag && rand.nextInt(18) == 0) {
 				int x = k + rand.nextInt(16);
 				int z = l + rand.nextInt(16);
-				int y = worldObj.getHeightValue(x, z);
-				generator.generate(worldObj, rand, x, y, z);
+				int y = worldObj.getHeight(x, z);
+				generator.generate(worldObj, rand, new BlockPos(x, y, z));
 			} else {
 				generator.noGen();
 			}

@@ -19,11 +19,11 @@ public class SymbolTerrainGenAmplified extends SymbolBase {
 		BlockDescriptor block;
 		block = ModifierUtils.popBlockMatching(controller, BlockCategory.SEA);
 		if (block != null) {
-			gen.setSeaBlock(block.block, block.metadata);
+			gen.setSeaBlock(block.blockstate);
 		}
 		block = ModifierUtils.popBlockMatching(controller, BlockCategory.TERRAIN);
 		if (block != null) {
-			gen.setTerrainBlock(block.block, block.metadata);
+			gen.setTerrainBlock(block.blockstate);
 		}
 		controller.registerInterface(gen);
 	}

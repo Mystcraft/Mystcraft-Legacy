@@ -12,6 +12,7 @@ import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 import com.xcompwiz.mystcraft.world.gen.layer.GenLayerBiomeMyst;
 import com.xcompwiz.mystcraft.world.gen.layer.GenLayerZoomMyst;
 
+import net.minecraft.init.Biomes;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeCache;
@@ -42,6 +43,7 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 	}
 
 	static class BiomeController implements IBiomeController {
+
 		private Biome		allowedBiomes[];
 		/** A list of biomes that the player can spawn in. */
 		private List<Biome>	biomesToSpawnIn;
@@ -57,14 +59,14 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 		protected BiomeController(AgeDirector controller, int zoom, List<Biome> biomes) {
 			this.zoomscale = zoom;
 			biomeCache = new BiomeCache(controller.getWorldChunkManager());
-			biomesToSpawnIn = new ArrayList<Biome>();
-			biomesToSpawnIn.add(Biome.forest);
-			biomesToSpawnIn.add(Biome.plains);
-			biomesToSpawnIn.add(Biome.taiga);
-			biomesToSpawnIn.add(Biome.taigaHills);
-			biomesToSpawnIn.add(Biome.forestHills);
-			biomesToSpawnIn.add(Biome.jungle);
-			biomesToSpawnIn.add(Biome.jungleHills);
+			biomesToSpawnIn = new ArrayList<>();
+			biomesToSpawnIn.add(Biomes.FOREST);
+			biomesToSpawnIn.add(Biomes.PLAINS);
+			biomesToSpawnIn.add(Biomes.TAIGA);
+			biomesToSpawnIn.add(Biomes.TAIGA_HILLS);
+			biomesToSpawnIn.add(Biomes.FOREST_HILLS);
+			biomesToSpawnIn.add(Biomes.JUNGLE);
+			biomesToSpawnIn.add(Biomes.JUNGLE_HILLS);
 
 			Random rand = new Random(controller.getSeed());
 			while (biomes.size() < 3) {
@@ -91,33 +93,7 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 		 */
 		@Override
 		public Biome getBiomeAtCoords(int par1, int par2) {
-			return biomeCache.getBiomeGenAt(par1, par2);
-		}
-
-		/**
-		 * Returns a list of rainfall values for the specified blocks. Args: listToReuse, x, z, width, length.
-		 */
-		@Override
-		public float[] getRainfallField(float par1ArrayOfFloat[], int par2, int par3, int par4, int par5) {
-			IntCache.resetIntCache();
-
-			if (par1ArrayOfFloat == null || par1ArrayOfFloat.length < par4 * par5) {
-				par1ArrayOfFloat = new float[par4 * par5];
-			}
-
-			int ai[] = biomeIndexLayer.getInts(par2, par3, par4, par5);
-
-			for (int i = 0; i < par4 * par5; i++) {
-				float f = Biome.getBiome(ai[i]).getIntRainfall() / 65536F;
-
-				if (f > 1.0F) {
-					f = 1.0F;
-				}
-
-				par1ArrayOfFloat[i] = f;
-			}
-
-			return par1ArrayOfFloat;
+			return biomeCache.getBiome(par1, par2, null);
 		}
 
 		/**

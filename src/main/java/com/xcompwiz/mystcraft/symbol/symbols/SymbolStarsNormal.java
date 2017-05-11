@@ -2,6 +2,10 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import java.util.Random;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
@@ -57,25 +61,28 @@ public class SymbolStarsNormal extends SymbolBase {
 		}
 
 		@Override
-		public void render(TextureManager texturemanager, World worldObj, float partial) {
-			if (!initialized) initialize();
+		public void render(TextureManager texturemanager, World world, float partial) {
+			if (!initialized) {
+				initialize();
+			}
 			// Draw Stars
-			float invertRain = 1.0F - worldObj.getRainStrength(partial);
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-			GL11.glPushMatrix();
-			GL11.glRotatef(angle, 0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(getCelestialPeriod(worldObj.getWorldTime(), partial) * 360.0F, 1.0F, 0.0F, 0.0F);
+			float invertRain = 1.0F - world.getRainStrength(partial);
+			GlStateManager.disableTexture2D();
+            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+			GlStateManager.pushMatrix();
+            GlStateManager.rotate(angle, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(getCelestialPeriod(world.getWorldTime(), partial) * 360.0F, 1.0F, 0.0F, 0.0F);
 
-			float starbrightness = worldObj.getStarBrightness(partial) * invertRain;
+			float starbrightness = world.getStarBrightness(partial) * invertRain;
 			if (starbrightness > 0.0F) {
 				Color color = gradient.getColor(controller.getTime() / 12000F);
-				GL11.glColor4f(color.r, color.g, color.b, starbrightness);
-				GL11.glCallList(this.starGLCallList);
+                GlStateManager.color(color.r, color.g, color.b, starbrightness);
+                GlStateManager.callList(this.starGLCallList);
 			}
 
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glPopMatrix();
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
 		}
 
 		public float getCelestialPeriod(long time, float partialTime) {
@@ -95,63 +102,66 @@ public class SymbolStarsNormal extends SymbolBase {
 		@SideOnly(Side.CLIENT)
 		private void initialize() {
 			initialized = true;
-			this.starGLCallList = GLAllocation.generateDisplayLists(1);
-			GL11.glPushMatrix();
-			GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
-			this.renderStars();
-			GL11.glEndList();
-			GL11.glPopMatrix();
+            this.starGLCallList = GLAllocation.generateDisplayLists(1);
+            GlStateManager.pushMatrix();
+            GlStateManager.glNewList(this.starGLCallList, GL11.GL_COMPILE);
+            this.renderStars();
+            GlStateManager.glEndList();
+            GlStateManager.popMatrix();
 		}
 
+        @SideOnly(Side.CLIENT)
 		private void renderStars() {
-			Tessellator tess = Tessellator.instance;
-			tess.startDrawingQuads();
+		    Tessellator tes = Tessellator.getInstance();
+            VertexBuffer vb = tes.getBuffer();
+            Random random = new Random(10842L);
+            vb.begin(7, DefaultVertexFormats.POSITION);
 
-			for (int i = 0; i < 1500; ++i) {
-				double var4 = (rand.nextFloat() * 2.0F - 1.0F);
-				double var6 = (rand.nextFloat() * 2.0F - 1.0F);
-				double var8 = (rand.nextFloat() * 2.0F - 1.0F);
-				double var10 = (0.15F + rand.nextFloat() * 0.1F);
-				double var12 = var4 * var4 + var6 * var6 + var8 * var8;
+            for (int i = 0; i < 1500; ++i) {
+                double d0 = (double)(random.nextFloat() * 2.0F - 1.0F);
+                double d1 = (double)(random.nextFloat() * 2.0F - 1.0F);
+                double d2 = (double)(random.nextFloat() * 2.0F - 1.0F);
+                double d3 = (double)(0.15F + random.nextFloat() * 0.1F);
+                double d4 = d0 * d0 + d1 * d1 + d2 * d2;
 
-				if (var12 < 1.0D && var12 > 0.01D) {
-					var12 = 1.0D / Math.sqrt(var12);
-					var4 *= var12;
-					var6 *= var12;
-					var8 *= var12;
-					double var14 = var4 * 100.0D;
-					double var16 = var6 * 100.0D;
-					double var18 = var8 * 100.0D;
-					double var20 = Math.atan2(var4, var8);
-					double var22 = Math.sin(var20);
-					double var24 = Math.cos(var20);
-					double var26 = Math.atan2(Math.sqrt(var4 * var4 + var8 * var8), var6);
-					double var28 = Math.sin(var26);
-					double var30 = Math.cos(var26);
-					double var32 = rand.nextDouble() * Math.PI * 2.0D;
-					double var34 = Math.sin(var32);
-					double var36 = Math.cos(var32);
+                if (d4 < 1.0D && d4 > 0.01D) {
+                    d4 = 1.0D / Math.sqrt(d4);
+                    d0 = d0 * d4;
+                    d1 = d1 * d4;
+                    d2 = d2 * d4;
+                    double d5 = d0 * 100.0D;
+                    double d6 = d1 * 100.0D;
+                    double d7 = d2 * 100.0D;
+                    double d8 = Math.atan2(d0, d2);
+                    double d9 = Math.sin(d8);
+                    double d10 = Math.cos(d8);
+                    double d11 = Math.atan2(Math.sqrt(d0 * d0 + d2 * d2), d1);
+                    double d12 = Math.sin(d11);
+                    double d13 = Math.cos(d11);
+                    double d14 = random.nextDouble() * Math.PI * 2.0D;
+                    double d15 = Math.sin(d14);
+                    double d16 = Math.cos(d14);
 
-					setStarColor(i, tess);
-					for (int var38 = 0; var38 < 4; ++var38) {
-						double var39 = 0.0D;
-						double var41 = ((var38 & 2) - 1) * var10;
-						double var43 = ((var38 + 1 & 2) - 1) * var10;
-						double var47 = var41 * var36 - var43 * var34;
-						double var49 = var43 * var36 + var41 * var34;
-						double var53 = var47 * var28 + var39 * var30;
-						double var55 = var39 * var28 - var47 * var30;
-						double var57 = var55 * var22 - var49 * var24;
-						double var61 = var49 * var22 + var55 * var24;
-						tess.addVertex(var14 + var57, var16 + var53, var18 + var61);
-					}
-				}
-			}
-
-			tess.draw();
+                    for (int j = 0; j < 4; ++j) {
+                        double d17 = 0.0D;
+                        double d18 = (double) ((j & 2) - 1) * d3;
+                        double d19 = (double) ((j + 1 & 2) - 1) * d3;
+                        double d20 = 0.0D;
+                        double d21 = d18 * d16 - d19 * d15;
+                        double d22 = d19 * d16 + d18 * d15;
+                        double d23 = d21 * d12 + 0.0D * d13;
+                        double d24 = 0.0D * d12 - d21 * d13;
+                        double d25 = d24 * d9 - d22 * d10;
+                        double d26 = d22 * d9 + d24 * d10;
+                        vb.pos(d5 + d25, d6 + d23, d7 + d26).endVertex();
+                    }
+                }
+            }
+            tes.draw();
 		}
 
 		private void setStarColor(int var3, Tessellator var2) {
+		    //Hellfire> apply at renderStars, change vertex format to POSITION_COLOR and supply .color to the vertex after .pos
 			// var2.setColorRGBA_F(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), rand.nextFloat()*0.8F+0.2F);
 		}
 	}

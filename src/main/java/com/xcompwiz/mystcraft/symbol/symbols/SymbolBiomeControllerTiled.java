@@ -48,22 +48,6 @@ public class SymbolBiomeControllerTiled extends SymbolBase {
 		}
 
 		@Override
-		public float[] getRainfallField(float[] af, int x, int z, int k, int l) {
-			if (af == null || af.length < k * l) {
-				af = new float[k * l];
-			}
-			for (int i1 = 0; i1 < k * l; i1++) {
-				float f = getBiomeAtCoords(x + i1 % k, z + i1 / k).rainfall;
-				if (f > 1.0F) {
-					f = 1.0F;
-				}
-				af[i1] = f;
-			}
-
-			return af;
-		}
-
-		@Override
 		public Biome getBiomeAtCoords(int i, int j) {
 			int index = ((i >> 4) + (j >> 4));
 			index = index % biomes.size();

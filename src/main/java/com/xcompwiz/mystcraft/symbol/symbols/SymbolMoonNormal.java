@@ -2,6 +2,12 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.client.render.GLRenderUtils;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
@@ -60,39 +66,43 @@ public class SymbolMoonNormal extends SymbolBase {
 			this.offset = offset.floatValue() - 0.5F;
 		}
 
-		@SideOnly(Side.CLIENT)
 		@Override
+		@SideOnly(Side.CLIENT)
 		public void render(TextureManager eng, World worldObj, float partial) {
 			// Draw Moon
-			Tessellator tessellator = Tessellator.instance;
+			Tessellator tes = Tessellator.getInstance();
+			VertexBuffer vb = tes.getBuffer();
+
 			float invertRain = 1.0F - worldObj.getRainStrength(partial);
 			float celestial_period = getAltitudeAngle(worldObj.getWorldTime(), partial);
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, invertRain);
-			GL11.glPushMatrix();
-			GL11.glRotatef(angle, 0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(celestial_period * 360.0F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.enableTexture2D();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+            GlStateManager.color(1F, 1F, 1F, invertRain);
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate(angle, 0, 1, 0);
+            GlStateManager.rotate(celestial_period * 360F, 1, 0, 0);
 
-			float var12 = 20.0F;
+			float size = 20.0F;
 			int moonphase = getMoonPhase(worldObj.getWorldTime(), partial);
-			int x = moonphase % 4;
-			int y = moonphase / 4 % 2;
-			float x1 = (x + 0) / 4.0F;
-			float y1 = (y + 0) / 2.0F;
-			float x2 = (x + 1) / 4.0F;
-			float y2 = (y + 1) / 2.0F;
+            int k = moonphase % 4;
+            int i1 = moonphase / 4 % 2;
+            float f22 = (float)  (k + 0) / 4.0F;
+            float f23 = (float) (i1 + 0) / 2.0F;
+            float f24 = (float)  (k + 1) / 4.0F;
+            float f14 = (float) (i1 + 1) / 2.0F;
 			eng.bindTexture(Vanilla.normal_moon);
-			tessellator.startDrawingQuads();
-			tessellator.addVertexWithUV((-var12), 100.0D, (-var12), x2, y2);
-			tessellator.addVertexWithUV(var12, 100.0D, (-var12), x1, y2);
-			tessellator.addVertexWithUV(var12, 100.0D, (var12), x1, y1);
-			tessellator.addVertexWithUV((-var12), 100.0D, (var12), x2, y1);
-			tessellator.draw();
+            vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+            vb.pos((double)(-size), -100.0D, (double)  size) .tex((double)f24, (double)f14).endVertex();
+            vb.pos((double)  size,  -100.0D, (double)  size) .tex((double)f22, (double)f14).endVertex();
+            vb.pos((double)  size,  -100.0D, (double)(-size)).tex((double)f22, (double)f23).endVertex();
+            vb.pos((double)(-size), -100.0D, (double)(-size)).tex((double)f24, (double)f23).endVertex();
+            tes.draw();
 
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glPopMatrix();
-			if (this.gradient != null) this.renderHorizon(eng, worldObj, celestial_period, angle, partial, 0.3F);
+            GlStateManager.color(1F, 1F, 1F, 1F);
+            GlStateManager.popMatrix();
+			if (this.gradient != null) {
+			    this.renderHorizon(eng, worldObj, celestial_period, angle, partial, 0.3F);
+            }
 		}
 
 		@Override

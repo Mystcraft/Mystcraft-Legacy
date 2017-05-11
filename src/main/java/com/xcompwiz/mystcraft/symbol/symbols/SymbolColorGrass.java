@@ -6,6 +6,7 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
@@ -30,7 +31,7 @@ public class SymbolColorGrass extends SymbolBase {
 		}
 
 		@Override
-		public Color getStaticColor(World worldObj, Biome biome, int x, int y, int z) {
+		public Color getStaticColor(World worldObj, Biome biome, BlockPos pos) {
 			return this.color;
 		}
 

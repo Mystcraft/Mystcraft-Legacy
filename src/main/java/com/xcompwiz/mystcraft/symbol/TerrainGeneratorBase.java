@@ -6,6 +6,7 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 
 public abstract class TerrainGeneratorBase implements ITerrainGenerator {
@@ -15,10 +16,8 @@ public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 	protected Random bedrockGen;
 	private double noise_field[];
 
-	protected Block seablock = Blocks.WATER;
-	protected byte seameta = 0;
-	protected Block fillblock = Blocks.STONE;
-	protected byte fillmeta = 0;
+	protected IBlockState seablock = Blocks.WATER.getDefaultState();
+	protected IBlockState fillblock = Blocks.STONE.getDefaultState();
 	protected boolean genBedrock = true;
 
 	private boolean profiling = false;
@@ -38,18 +37,16 @@ public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 		this.profiling = profiling;
 	}
 
-	public void setTerrainBlock(Block block, byte metadata) {
-		this.fillblock = block;
-		this.fillmeta = metadata;
+	public void setTerrainBlock(IBlockState state) {
+		this.fillblock = state;
 	}
 
-	public void setSeaBlock(Block block, byte metadata) {
-		this.seablock = block;
-		this.seameta = metadata;
+	public void setSeaBlock(IBlockState state) {
+		this.seablock = state;
 	}
 
 	@Override
-	public void generateTerrain(int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {
+	public void generateTerrain(int chunkX, int chunkZ, IBlockState[] blocks) {
 		int fillcount = 0;
 		int seacount = 0;
 		int xzstep = 4;
@@ -95,22 +92,18 @@ public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 							int coords = y << 8 | z << 4 | largeX * xzstep;
 							for (int subX = 0; subX < xzstep; ++subX) {
 
-								Block block = Blocks.AIR;
-								byte meta = 0;
-								if (genBedrock && y <= 0 + bedrockGen.nextInt(5)) {
-									block = Blocks.BEDROCK;
+								IBlockState block = Blocks.AIR.getDefaultState();
+								if (genBedrock && y <= bedrockGen.nextInt(5)) {
+									block = Blocks.BEDROCK.getDefaultState();
 								} else if (xczcyc > 0.0D) {
 									block = fillblock;
-									meta = fillmeta;
 									++fillcount;
 								} else if (y < sealevel) {
 									block = seablock;
-									meta = seameta;
 									++seacount;
 								}
 
 								blocks[coords] = block;
-								metadata[coords] = meta;
 								xczcyc += xdzcyc;
 								++coords;
 							}

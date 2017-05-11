@@ -20,19 +20,18 @@ public class WorldChunkManagerMyst extends BiomeProvider {
 
 	@Override
 	public List<Biome> getBiomesToSpawnIn() {
-		List<Biome> list = controller.getBiomeController().getValidSpawnBiomes();
-		return list;
+		return controller.getBiomeController().getValidSpawnBiomes();
 	}
 
 	@Override
 	public Biome getBiome(BlockPos pos) {
-		Biome biome = controller.getBiomeController().getBiomeAtCoords(pos.getX(), pos.getZ());
-		controller.modifyBiomeAt(biome, pos.getX(), pos.getZ());
-		return biome;
+		return getBiome(pos, null);
 	}
 
 	public Biome getBiome(BlockPos pos, Biome defaultBiome) {
-		return getBiome(pos);
+		Biome biome = controller.getBiomeController().getBiomeAtCoords(pos.getX(), pos.getZ());
+		controller.modifyBiomeAt(biome, pos.getX(), pos.getZ());
+		return biome;
 	}
 
 	@Override

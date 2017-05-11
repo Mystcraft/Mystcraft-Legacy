@@ -20,7 +20,7 @@ public class SymbolBiomeControllerGrid extends SymbolBase {
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
-		List<Biome> biomes = new ArrayList<Biome>();
+		List<Biome> biomes = new ArrayList<>();
 		Biome biome;
 		biome = ModifierUtils.popBiome(controller);
 		while (biome != null) {
@@ -45,22 +45,6 @@ public class SymbolBiomeControllerGrid extends SymbolBase {
 		@Override
 		public List<Biome> getValidSpawnBiomes() {
 			return biomes;
-		}
-
-		@Override
-		public float[] getRainfallField(float[] af, int x, int z, int k, int l) {
-			if (af == null || af.length < k * l) {
-				af = new float[k * l];
-			}
-			for (int i1 = 0; i1 < k * l; i1++) {
-				float f = getBiomeAtCoords(x + i1 % k, z + i1 / k).rainfall;
-				if (f > 1.0F) {
-					f = 1.0F;
-				}
-				af[i1] = f;
-			}
-
-			return af;
 		}
 
 		@Override

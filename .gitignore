@@ -25,3 +25,9 @@ __*
 /changelog.txt
 passwords.gradle
 post.txt
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/

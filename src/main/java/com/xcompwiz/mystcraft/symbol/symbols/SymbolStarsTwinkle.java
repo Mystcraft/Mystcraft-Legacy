@@ -2,6 +2,10 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import java.util.Random;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
@@ -60,27 +64,30 @@ public class SymbolStarsTwinkle extends SymbolBase {
 		}
 
 		@Override
-		public void render(TextureManager texturemanager, World worldObj, float partial) {
-			if (!initialized) initialize();
-			// Draw Stars
-			float invertRain = 1.0F - worldObj.getRainStrength(partial);
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-			GL11.glPushMatrix();
-			GL11.glRotatef(angle, 0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(getCelestialPeriod(worldObj.getWorldTime(), partial) * 360.0F, 1.0F, 0.0F, 0.0F);
-
-			float starbrightness = worldObj.getStarBrightness(partial) * invertRain;
-			if (starbrightness > 0.0F) {
-				Color color = gradient.getColor(controller.getTime() / 12000F);
-				for (int i = 0; i < this.starGLCallList.length; ++i) {
-					GL11.glColor4f(color.r, color.g, color.b, starbrightness * getLayerBrightness(i, worldObj, partial));
-					GL11.glCallList(this.starGLCallList[i]);
-				}
+		public void render(TextureManager texturemanager, World world, float partial) {
+			if (!initialized) {
+				initialize();
 			}
+            // Draw Stars
+            float invertRain = 1.0F - world.getRainStrength(partial);
+            GlStateManager.disableTexture2D();
+            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate(angle, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(getCelestialPeriod(world.getWorldTime(), partial) * 360.0F, 1.0F, 0.0F, 0.0F);
 
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glPopMatrix();
+            float starbrightness = world.getStarBrightness(partial) * invertRain;
+            if (starbrightness > 0.0F) {
+                Color color = gradient.getColor(controller.getTime() / 12000F);
+                for (int i = 0; i < this.starGLCallList.length; ++i) {
+                    GlStateManager.color(color.r, color.g, color.b, starbrightness * getLayerBrightness(i, world, partial));
+                    GlStateManager.callList(this.starGLCallList[i]);
+                }
+            }
+
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
 		}
 
 		private float getLayerBrightness(int i, World worldObj, float partial) {
@@ -124,17 +131,18 @@ public class SymbolStarsTwinkle extends SymbolBase {
 			this.starGLCallList[0] = GLAllocation.generateDisplayLists(this.starGLCallList.length);
 			for (int i = 0; i < this.starGLCallList.length; ++i) {
 				this.starGLCallList[i] = this.starGLCallList[0] + i;
-				GL11.glPushMatrix();
-				GL11.glNewList(this.starGLCallList[i], GL11.GL_COMPILE);
+				GlStateManager.pushMatrix();
+				GlStateManager.glNewList(this.starGLCallList[i], GL11.GL_COMPILE);
 				this.renderStars();
-				GL11.glEndList();
-				GL11.glPopMatrix();
+				GlStateManager.glEndList();
+				GlStateManager.popMatrix();
 			}
 		}
 
 		private void renderStars() {
-			Tessellator tess = Tessellator.instance;
-			tess.startDrawingQuads();
+			Tessellator tes = Tessellator.getInstance();
+			VertexBuffer vb = tes.getBuffer();
+			vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 
 			for (int i = 0; i < 100; ++i) {
 				double var4 = (rand.nextFloat() * 2.0F - 1.0F);
@@ -161,7 +169,7 @@ public class SymbolStarsTwinkle extends SymbolBase {
 					double var34 = Math.sin(var32);
 					double var36 = Math.cos(var32);
 
-					setStarColor(i, tess);
+					java.awt.Color c = getRandomColor();
 					for (int var38 = 0; var38 < 4; ++var38) {
 						double var39 = 0.0D;
 						double var41 = ((var38 & 2) - 1) * var10;
@@ -172,16 +180,17 @@ public class SymbolStarsTwinkle extends SymbolBase {
 						double var55 = var39 * var28 - var47 * var30;
 						double var57 = var55 * var22 - var49 * var24;
 						double var61 = var49 * var22 + var55 * var24;
-						tess.addVertex(var14 + var57, var16 + var53, var18 + var61);
+						vb.pos(var14 + var57, var16 + var53, var18 + var61).color(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()).endVertex();
 					}
 				}
 			}
 
-			tess.draw();
+			tes.draw();
 		}
 
-		private void setStarColor(int var3, Tessellator var2) {
-			// var2.setColorRGBA_F(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), rand.nextFloat()*0.8F+0.2F);
+		private java.awt.Color getRandomColor() {
+			return new java.awt.Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), rand.nextFloat() * 0.8F + 0.2F);
 		}
+
 	}
 }

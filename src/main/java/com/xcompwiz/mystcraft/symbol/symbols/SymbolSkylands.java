@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
@@ -26,6 +27,7 @@ public class SymbolSkylands extends SymbolBase {
 	}
 
 	private static class TerrainAlteration implements ITerrainAlteration {
+
 		private static final double		factor		= 0.03125D;
 
 		private double					skyNoise[]	= null;
@@ -36,7 +38,7 @@ public class SymbolSkylands extends SymbolBase {
 		}
 
 		@Override
-		public void alterTerrain(World worldObj, int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {
+		public void alterTerrain(World worldObj, int chunkX, int chunkZ, IBlockState[] blocks) {
 			skyNoise = noiseGen.generateNoiseOctaves(skyNoise, chunkX * 16, chunkZ * 16, 16, 16, 16, 1, factor * 64D, factor * 32D, factor * 64D);
 			int layers = blocks.length / 256;
 			for (int y = 0; y < layers; ++y) {
@@ -46,21 +48,21 @@ public class SymbolSkylands extends SymbolBase {
 						int coords = y << 8 | z << 4 | x;
 
 						if (blocks[coords] == Blocks.WATER && !isSupported(x, y, z, height, blocks)) {
-							blocks[coords] = Blocks.AIR;
+							blocks[coords] = Blocks.AIR.getDefaultState();
 						}
 						if (y <= height) {
-							blocks[coords] = Blocks.AIR;
+							blocks[coords] = Blocks.AIR.getDefaultState();
 						}
 					}
 				}
 			}
 		}
 
-		private boolean isSupported(int x, int y, int z, int sky, Block[] blocks) {
+		private boolean isSupported(int x, int y, int z, int sky, IBlockState[] blocks) {
 			if (y < 1) return false;
-			Block block = blocks[(y - 1) << 8 | z << 4 | x];
-			if (block == Blocks.AIR) return false;
-			if (block == Blocks.WATER) return false;
+			IBlockState block = blocks[(y - 1) << 8 | z << 4 | x];
+			if (block.getBlock().equals(Blocks.AIR)) return false;
+			if (block.getBlock().equals(Blocks.WATER)) return false;
 			return false;
 		}
 	}

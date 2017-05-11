@@ -2,6 +2,8 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import java.util.Random;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.Mystcraft;
@@ -17,69 +19,67 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SymbolDoodadRainbow extends SymbolBase {
 
-	public SymbolDoodadRainbow(String identifier) {
-		super(identifier);
-	}
+    public SymbolDoodadRainbow(String identifier) {
+        super(identifier);
+    }
 
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		Number angle = controller.popModifier(ModifierUtils.ANGLE).asNumber();
-		controller.registerInterface(new CelestialObject(controller, seed, angle));
-	}
+    @Override
+    public void registerLogic(AgeDirector controller, long seed) {
+        Number angle = controller.popModifier(ModifierUtils.ANGLE).asNumber();
+        controller.registerInterface(new CelestialObject(controller, seed, angle));
+    }
 
-	private class CelestialObject extends CelestialBase {
-		private Random	rand;
+    private class CelestialObject extends CelestialBase {
 
-		private float	angle;
+        private Random rand;
+        private float angle;
+        private boolean initialized;
+        private Integer rainbowGLCallList = null;
 
-		private boolean	initialized;
-		private Integer	rainbowGLCallList	= null;
+        CelestialObject(AgeDirector controller, long seed, Number angle) {
+            rand = new Random(seed);
+            if (angle == null) {
+                angle = rand.nextDouble() * 360.0F;
+            }
+            this.angle = -angle.floatValue();
+        }
 
-		CelestialObject(AgeDirector controller, long seed, Number angle) {
-			rand = new Random(seed);
-			if (angle == null) {
-				angle = rand.nextDouble() * 360.0F;
-			}
-			this.angle = -angle.floatValue();
-		}
+        @Override
+        @SideOnly(Side.CLIENT)
+        public void render(TextureManager eng, World worldObj, float partial) {
+            if (!initialized) {
+                initialize();
+            }
 
-		@SideOnly(Side.CLIENT)
-		@Override
-		public void render(TextureManager eng, World worldObj, float partial) {
-			if (!initialized) initialize();
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            GlStateManager.pushMatrix();
+            GlStateManager.rotate(angle, 0, 1, 0);
+            GlStateManager.color(1F, 1F, 1F, 1F);
+            GlStateManager.disableLighting();
 
-			GL11.glEnable(GL11.GL_BLEND);
-			// GL11.glEnable(GL11.GL_ALPHA_TEST);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GL11.glPushMatrix();
+            if (rainbowGLCallList == null) {
+                RenderRainbow.renderRainbow(0.0F, 50);
+            } else {
+                GlStateManager.callList(this.rainbowGLCallList);
+            }
+            GlStateManager.enableLighting();
 
-			GL11.glRotatef(angle, 0.0F, 1.0F, 0.0F);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.color(1F, 1F, 1F, 1F);
+            GlStateManager.popMatrix();
+        }
 
-			GL11.glDisable(GL11.GL_LIGHTING);
-			if (rainbowGLCallList == null) {
-				RenderRainbow.renderRainbow(0.0F, 50);
-			} else {
-				GL11.glCallList(this.rainbowGLCallList);
-			}
-			GL11.glEnable(GL11.GL_LIGHTING);
-
-			GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-			GL11.glPopMatrix();
-		}
-
-		@SideOnly(Side.CLIENT)
-		private void initialize() {
-			initialized = true;
-			if (Mystcraft.fastRainbows) {
-				this.rainbowGLCallList = GLAllocation.generateDisplayLists(1);
-				GL11.glNewList(this.rainbowGLCallList, GL11.GL_COMPILE);
-				GL11.glPushMatrix();
-				RenderRainbow.renderRainbow(0.0F, 50);
-				GL11.glPopMatrix();
-				GL11.glEndList();
-			}
-		}
-	}
+        @SideOnly(Side.CLIENT)
+        private void initialize() {
+            initialized = true;
+            if (Mystcraft.fastRainbows) {
+                this.rainbowGLCallList = GLAllocation.generateDisplayLists(1);
+                GlStateManager.glNewList(this.rainbowGLCallList, GL11.GL_COMPILE);
+                GlStateManager.pushMatrix();
+                RenderRainbow.renderRainbow(0.0F, 50);
+                GlStateManager.popMatrix();
+                GlStateManager.glEndList();
+            }
+        }
+    }
 }

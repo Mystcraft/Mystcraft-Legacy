@@ -5,6 +5,7 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 
 public class SymbolTerrainGenVoid extends SymbolBase {
 
@@ -22,9 +23,11 @@ public class SymbolTerrainGenVoid extends SymbolBase {
 	}
 
 	private class TerrainGenerator implements ITerrainGenerator {
+
 		public TerrainGenerator() {}
 
 		@Override
-		public void generateTerrain(int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {}
+		public void generateTerrain(int chunkX, int chunkZ, IBlockState[] blocks) {}
+
 	}
 }

@@ -4,32 +4,35 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class WorldGenLakesAdv extends WorldGeneratorAdv {
-	private Block	block;
-	private short	metadata;
 
-	public WorldGenLakesAdv(Block block, short metadata) {
-		this.block = block;
-		this.metadata = metadata;
+	private IBlockState	state;
+
+	public WorldGenLakesAdv(IBlockState state) {
+		this.state = state;
 	}
 
 	public WorldGenLakesAdv(Block block) {
-		this(block, (short) 0);
+		this(block.getDefaultState());
 	}
 
 	@Override
-	public boolean doGeneration(World worldObj, Random rand, int x, int y, int z) {
-		x -= 8;
+	public boolean doGeneration(World worldObj, Random rand, BlockPos pos) {
+		pos = pos.down(8);
 
-		for (z -= 8; y > 5 && worldObj.isAirBlock(x, y, z); --y) {
+		for (pos = pos.add(0, 0, -8); pos.getY() > 5 && worldObj.isAirBlock(pos); pos = pos.down()) {
 			;
 		}
 
-		if (y <= 4) { return false; }
-		y -= 4;
+		if (pos.getY() <= 4) {
+			return false;
+		}
+		pos = pos.down(4);
 		boolean[] aboolean = new boolean[2048];
 		int l = rand.nextInt(4) + 4;
 		int i1;
@@ -68,11 +71,14 @@ public class WorldGenLakesAdv extends WorldGeneratorAdv {
 					flag = !aboolean[(i1 * 16 + j2) * 8 + i2] && (i1 < 15 && aboolean[((i1 + 1) * 16 + j2) * 8 + i2] || i1 > 0 && aboolean[((i1 - 1) * 16 + j2) * 8 + i2] || j2 < 15 && aboolean[(i1 * 16 + j2 + 1) * 8 + i2] || j2 > 0 && aboolean[(i1 * 16 + (j2 - 1)) * 8 + i2] || i2 < 7 && aboolean[(i1 * 16 + j2) * 8 + i2 + 1] || i2 > 0 && aboolean[(i1 * 16 + j2) * 8 + (i2 - 1)]);
 
 					if (flag) {
-						Material material = worldObj.getBlock(x + i1, y + i2, z + j2).getMaterial();
+						BlockPos posAt = pos.add(i1, i2, j2);
+						Material material = worldObj.getBlockState(posAt).getMaterial();
 
 						if (i2 >= 4 && material.isLiquid()) { return false; }
 
-						if (i2 < 4 && !material.isSolid() && worldObj.getBlock(x + i1, y + i2, z + j2) != this.block) { return false; }
+						if (i2 < 4 && !material.isSolid() && !worldObj.getBlockState(posAt).getBlock().equals(state.getBlock())) {
+							return false;
+						}
 					}
 				}
 			}
@@ -82,7 +88,7 @@ public class WorldGenLakesAdv extends WorldGeneratorAdv {
 			for (j2 = 0; j2 < 16; ++j2) {
 				for (i2 = 0; i2 < 8; ++i2) {
 					if (aboolean[(i1 * 16 + j2) * 8 + i2]) {
-						placeBlock(worldObj, x + i1, y + i2, z + j2, i2 >= 4 ? Blocks.AIR : this.block, this.metadata, 2);
+						placeBlock(worldObj, pos.add(i1, i2, j2), i2 >= 4 ? Blocks.AIR.getDefaultState() : this.state, 2);
 					}
 				}
 			}

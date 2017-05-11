@@ -11,7 +11,9 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SymbolObelisks extends SymbolBase {
@@ -27,16 +29,13 @@ public class SymbolObelisks extends SymbolBase {
 	}
 
 	private class Populator implements IPopulate {
-		private Block	block;
-		private byte	metadata;
+		private IBlockState state;
 
 		public Populator(BlockDescriptor descriptor) {
 			if (descriptor == null) {
-				this.block = Blocks.obsidian;
-				this.metadata = 0;
+				this.state = Blocks.OBSIDIAN.getDefaultState();
 			} else {
-				this.block = descriptor.block;
-				this.metadata = descriptor.metadata;
+				this.state = descriptor.blockstate;
 			}
 		}
 
@@ -45,26 +44,31 @@ public class SymbolObelisks extends SymbolBase {
 			if (rand.nextInt(128) == 0) {
 				int j6 = i + rand.nextInt(16);
 				int k10 = j + rand.nextInt(16);
-				generate(worldObj, rand, j6, worldObj.getHeightValue(j6, k10), k10);
+				generate(worldObj, rand, new BlockPos(j6, worldObj.getHeight(j6, k10), k10));
 			}
 			return false;
 		}
 
-		private void generate(World worldObj, Random random, int baseX, int baseY, int baseZ) {
-			if (baseY == 0) return;
+		private void generate(World worldObj, Random random, BlockPos base) {
+			if (base.getY() == 0) {
+				return;
+			}
 			int height = 12;
 			int width = 4;
 			int maxDeep = 5;
 
-			++baseY;
+			base = base.up();
 			boolean foundBase = false;
-			for (int y = baseY; y > baseY - maxDeep && !foundBase; --y) {
+			for (int y = base.getY(); y > base.getY() - maxDeep && !foundBase; --y) {
 				foundBase = true;
 				for (int z = 0; z < width; ++z) {
 					for (int x = 0; x < width; ++x) {
-						worldObj.setBlock(baseX + x, y, baseZ + z, block, metadata, 2);
-						Material material = worldObj.getBlock(baseX + x, y - 1, baseZ + z).getMaterial();
-						if (worldObj.isAirBlock(baseX + x, y - 1, baseZ + z) || worldObj.getBlock(baseX + x, y - 1, baseZ + z) == Blocks.snow || material == Material.water || material == Material.lava) {
+					    BlockPos posAt = new BlockPos(base.getX() + x, y, base.getZ() + z);
+					    worldObj.setBlockState(posAt, state, 2);
+						Material material = worldObj.getBlockState(posAt.down()).getMaterial();
+						if (worldObj.isAirBlock(posAt.down()) ||
+                                worldObj.getBlockState(posAt.down()).getBlock().equals(Blocks.SNOW) ||
+								material == Material.WATER || material == Material.LAVA) {
 							foundBase = false;
 						}
 					}
@@ -72,13 +76,12 @@ public class SymbolObelisks extends SymbolBase {
 			}
 
 			// Second layer
-			++baseX;
-			++baseZ;
+            base = base.add(1, 0, 1);
 			width = 2;
 			for (int y = 0; y < height; ++y) {
 				for (int z = 0; z < width; ++z) {
 					for (int x = 0; x < width; ++x) {
-						worldObj.setBlock(baseX + x, baseY + y, baseZ + z, block, metadata, 2);
+					    worldObj.setBlockState(base.add(x, y, z), state, 2);
 					}
 				}
 			}

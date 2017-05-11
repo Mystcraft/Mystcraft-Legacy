@@ -7,7 +7,9 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
+import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -25,16 +27,15 @@ public class SymbolDenseOres extends SymbolBase {
 	}
 
 	private class Populator implements IPopulate {
-		WorldGenerator	coalGen			= new WorldGenMinable(Blocks.COAL_ORE, 16);
-		WorldGenerator	ironGen			= new WorldGenMinable(Blocks.IRON_ORE, 8);
-		WorldGenerator	goldGen			= new WorldGenMinable(Blocks.GOLD_ORE, 8);
-		WorldGenerator	redstoneGen		= new WorldGenMinable(Blocks.REDSTONE_ORE, 7);
-		WorldGenerator	diamondGen		= new WorldGenMinable(Blocks.DIAMOND_ORE, 7);
-		WorldGenerator	lapisGen		= new WorldGenMinable(Blocks.LAPIS_ORE, 6);
-		WorldGenerator	emeraldGen		= new WorldGenMinable(Blocks.EMERALD_ORE, 1);
-		WorldGenerator	netherQuartzGen	= new WorldGenMinable(Blocks.QUARTZ_ORE, 13, Blocks.NETHERRACK);
 
-		public Populator() {}
+		WorldGenerator	coalGen			= new WorldGenMinable(Blocks.COAL_ORE.getDefaultState(),     16);
+		WorldGenerator	ironGen			= new WorldGenMinable(Blocks.IRON_ORE.getDefaultState(),     8);
+		WorldGenerator	goldGen			= new WorldGenMinable(Blocks.GOLD_ORE.getDefaultState(),     8);
+		WorldGenerator	redstoneGen		= new WorldGenMinable(Blocks.REDSTONE_ORE.getDefaultState(), 7);
+		WorldGenerator	diamondGen		= new WorldGenMinable(Blocks.DIAMOND_ORE.getDefaultState(),  7);
+		WorldGenerator	lapisGen		= new WorldGenMinable(Blocks.LAPIS_ORE.getDefaultState(),    6);
+		WorldGenerator	emeraldGen		= new WorldGenMinable(Blocks.EMERALD_ORE.getDefaultState(),  1);
+		WorldGenerator	netherQuartzGen	= new WorldGenMinable(Blocks.QUARTZ_ORE.getDefaultState(),   13, BlockMatcher.forBlock(Blocks.NETHERRACK));
 
 		@Override
 		public boolean populate(World worldObj, Random rand, int xPos, int zPos, boolean flag) {
@@ -55,8 +56,9 @@ public class SymbolDenseOres extends SymbolBase {
 				int i1 = x + rand.nextInt(16);
 				int j1 = rand.nextInt(maxY - minY) + minY;
 				int k1 = z + rand.nextInt(16);
-				worldgenerator.generate(worldObj, rand, i1, j1, k1);
+				worldgenerator.generate(worldObj, rand, new BlockPos(i1, j1, k1));
 			}
 		}
+
 	}
 }

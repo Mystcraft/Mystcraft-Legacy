@@ -41,15 +41,15 @@ import com.xcompwiz.mystcraft.world.profiling.ChunkProfiler;
 import com.xcompwiz.mystcraft.world.profiling.ChunkProfilerManager;
 import com.xcompwiz.util.SpiralOutwardIterator;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
@@ -254,11 +254,11 @@ public class AgeController implements AgeDirector {
 		node.getOrCreateNode("experimental").addChild("mark_dead", new DebugTaskCallback() {
 			@Override
 			public void run(ICommandSender agent, Object... args) {
-				int dimid = world.provider.dimensionId;
+				int dimid = world.provider.getDimension();
 				if (DimensionUtils.markDimensionDead(dimid)) {
-					agent.addChatMessage(new ChatComponentText("Dimension " + dimid + " marked as dead."));
+					agent.sendMessage(new TextComponentString("Dimension " + dimid + " marked as dead."));
 				} else {
-					agent.addChatMessage(new ChatComponentText("ERROR: Could not mark dimension " + dimid + " as dead."));
+					agent.sendMessage(new TextComponentString("ERROR: Could not mark dimension " + dimid + " as dead."));
 				}
 			}
 		});
@@ -464,7 +464,7 @@ public class AgeController implements AgeDirector {
 
 	private InstabilityController getInstabilityController() {
 		if (instabilityController == null) {
-			instabilityController = new InstabilityController((WorldProviderMyst) world.provider, this);
+			instabilityController = new InstabilityController((WorldProviderMyst) world.provider, this, world);
 		}
 		return instabilityController;
 	}
@@ -535,16 +535,16 @@ public class AgeController implements AgeDirector {
 //		}
 	}
 
-	public void generateTerrain(int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {
+	public void generateTerrain(int chunkX, int chunkZ, IBlockState[] blocks) {
 		validate();
-		getTerrainGenerator().generateTerrain(chunkX, chunkZ, blocks, metadata);
+		getTerrainGenerator().generateTerrain(chunkX, chunkZ, blocks);
 	}
 
-	public void modifyTerrain(int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {
+	public void modifyTerrain(int chunkX, int chunkZ, IBlockState[] blocks) {
 		validate();
 		if (terrainalterations != null && terrainalterations.size() > 0) {
 			for (ITerrainAlteration mod : terrainalterations) {
-				mod.alterTerrain(world, chunkX, chunkZ, blocks, metadata);
+				mod.alterTerrain(world, chunkX, chunkZ, blocks);
 			}
 		}
 	}
@@ -583,21 +583,25 @@ public class AgeController implements AgeDirector {
 		getInstabilityBonusManager().tick(world);
 	}
 
-	public List<SpawnListEntry> affectCreatureList(EnumCreatureType enumcreaturetype, List<SpawnListEntry> list, int i, int j, int k) {
+	public List<SpawnListEntry> affectCreatureList(EnumCreatureType enumcreaturetype, List<SpawnListEntry> list, BlockPos pos) {
 		validate();
 		if (list == null) {
-			list = new ArrayList<SpawnListEntry>();
+			list = new ArrayList<>();
 		}
 		return list;
 	}
 
-	public BlockPos locateTerrainFeature(World world, String s, int i, int j, int k) {
+	public BlockPos locateTerrainFeature(World world, String s, BlockPos pos, boolean genChunks) {
 		validate();
-		if (featureLocators == null || featureLocators.size() == 0) { return null; }
+		if (featureLocators == null || featureLocators.size() == 0) {
+			return null;
+		}
 		BlockPos found = null;
 		for (ITerrainFeatureLocator mod : featureLocators) {
-			found = mod.locate(world, s, i, j, k);
-			if (found != null) { return found; }
+			found = mod.locate(world, s, pos, genChunks);
+			if (found != null) {
+				return found;
+			}
 		}
 		return found;
 	}

@@ -18,6 +18,7 @@ import com.xcompwiz.mystcraft.world.gen.MapGenFloatingIslands;
 import com.xcompwiz.mystcraft.world.gen.MapGenFloatingIslands.IModifiedHandler;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -44,21 +45,20 @@ public class SymbolFloatingIslands extends SymbolBase {
 	}
 
 	private class TerrainAlteration implements ITerrainAlteration {
+
 		private MapGenAdvanced generator;
 
 		public TerrainAlteration(long seed, BlockDescriptor blockdesc, Biome biome, IModifiedHandler callback) {
-			Block block = Blocks.STONE;
-			byte meta = 0;
+			IBlockState state = Blocks.STONE.getDefaultState();
 			if (blockdesc != null) {
-				block = blockdesc.block;
-				meta = blockdesc.metadata;
+				state = blockdesc.blockstate;
 			}
-			generator = new MapGenFloatingIslands(seed, biome, callback, block, meta);
+			generator = new MapGenFloatingIslands(seed, biome, callback, state);
 		}
 
 		@Override
-		public void alterTerrain(World worldObj, int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {
-			generator.generate(worldObj.getChunkProvider(), worldObj, chunkX, chunkZ, blocks, metadata);
+		public void alterTerrain(World worldObj, int chunkX, int chunkZ, IBlockState[] blocks) {
+			generator.generate(worldObj.getChunkProvider(), worldObj, chunkX, chunkZ, blocks);
 		}
 
 	}
@@ -66,7 +66,7 @@ public class SymbolFloatingIslands extends SymbolBase {
 	public class BiomeReplacer implements IModifiedHandler, IChunkProviderFinalization {
 
 		private Biome biome;
-		private HashMap<List<Integer>, boolean[]> chunks = new HashMap<List<Integer>, boolean[]>();
+		private HashMap<List<Integer>, boolean[]> chunks = new HashMap<>();
 
 		public BiomeReplacer(Biome biome) {
 			this.biome = biome;

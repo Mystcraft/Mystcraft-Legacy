@@ -2,6 +2,10 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import java.util.Random;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
@@ -33,6 +37,7 @@ public class SymbolSunNormal extends SymbolBase {
 	}
 
 	private static class CelestialObject extends SunsetRenderer implements ICelestial {
+
 		private Random	rand;
 
 		private long	period;
@@ -65,32 +70,30 @@ public class SymbolSunNormal extends SymbolBase {
 			return true;
 		}
 
-		@SideOnly(Side.CLIENT)
 		@Override
-		public void render(TextureManager eng, World worldObj, float partial) {
-			// Draw Sun
-			Tessellator tessellator = Tessellator.instance;
-			float invertRain = 1.0F - worldObj.getRainStrength(partial);
-			float celestial_period = this.getAltitudeAngle(worldObj.getWorldTime(), partial);
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, invertRain);
-			GL11.glPushMatrix();
-			GL11.glRotatef(angle, 0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(celestial_period * 360.0F, 1.0F, 0.0F, 0.0F);
+        @SideOnly(Side.CLIENT)
+		public void render(TextureManager eng, World world, float partial) {
+		    Tessellator tes = Tessellator.getInstance();
+            VertexBuffer vb = tes.getBuffer();
 
-			float size = 30.0F;
-			eng.bindTexture(Vanilla.normal_sun);
-			tessellator.startDrawingQuads();
-			tessellator.addVertexWithUV((-size), 100.0D, (-size), 0.0D, 0.0D);
-			tessellator.addVertexWithUV(size, 100.0D, (-size), 1.0D, 0.0D);
-			tessellator.addVertexWithUV(size, 100.0D, size, 1.0D, 1.0D);
-			tessellator.addVertexWithUV((-size), 100.0D, size, 0.0D, 1.0D);
-			tessellator.draw();
+            float celestial_period = this.getAltitudeAngle(world.getWorldTime(), partial);
+            GlStateManager.enableTexture2D();
+            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+            GlStateManager.pushMatrix();
+            float f16 = 1.0F - world.getRainStrength(partial);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, f16);
+            GlStateManager.rotate(-90.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(world.getCelestialAngle(partial) * 360.0F, 1.0F, 0.0F, 0.0F);
+            float f17 = 30.0F;
+            eng.bindTexture(Vanilla.normal_sun);
+            vb.begin(7, DefaultVertexFormats.POSITION_TEX);
+            vb.pos((double)(-f17), 100.0D, (double)(-f17)).tex(0.0D, 0.0D).endVertex();
+            vb.pos((double)  f17,  100.0D, (double)(-f17)).tex(1.0D, 0.0D).endVertex();
+            vb.pos((double)  f17,  100.0D, (double)  f17) .tex(1.0D, 1.0D).endVertex();
+            vb.pos((double)(-f17), 100.0D, (double)  f17) .tex(0.0D, 1.0D).endVertex();
+            tes.draw();
 
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GL11.glPopMatrix();
-			this.renderHorizon(eng, worldObj, celestial_period, angle, partial, 1.0F);
+			this.renderHorizon(eng, world, celestial_period, angle, partial, 1.0F);
 		}
 
 		@Override

@@ -25,13 +25,13 @@ public class SymbolTerrainGenEnd extends SymbolBase {
 		BlockDescriptor block;
 		block = ModifierUtils.popBlockMatching(controller, BlockCategory.SEA);
 		if (block != null) {
-			gen.setSeaBlock(block.block, block.metadata);
+			gen.setSeaBlock(block.blockstate);
 		} else {
-			gen.setSeaBlock(Blocks.AIR, (byte) 0);
+			gen.setSeaBlock(Blocks.AIR.getDefaultState());
 		}
 		block = ModifierUtils.popBlockMatching(controller, BlockCategory.TERRAIN);
 		if (block != null) {
-			gen.setTerrainBlock(block.block, block.metadata);
+			gen.setTerrainBlock(block.blockstate);
 		}
 		controller.registerInterface(gen);
 		controller.setHorizon(0);
@@ -104,7 +104,7 @@ public class SymbolTerrainGenEnd extends SymbolBase {
 					noise5 = noise5 * 3.0D - 2.0D;
 					float xCoord = (x + subchunkX - 0) / 1.0F;
 					float yCoord = (z + subchunkZ - 0) / 1.0F;
-					float distFactor = 100.0F - MathHelper.sqrt_float(xCoord * xCoord + yCoord * yCoord) * 8.0F; // Play with THIS
+					float distFactor = 100.0F - MathHelper.sqrt(xCoord * xCoord + yCoord * yCoord) * 8.0F; // Play with THIS
 
 					if (distFactor > 80.0F) {
 						distFactor = 80.0F;

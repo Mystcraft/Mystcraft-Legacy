@@ -11,6 +11,7 @@ import net.minecraft.world.biome.Biome;
  * @author xcompwiz
  */
 public interface IStaticColorProvider {
+
 	public final static String	FOLIAGE	= "foliage";
 	public final static String	GRASS	= "grass";
 	public final static String	WATER	= "water";
@@ -20,7 +21,7 @@ public interface IStaticColorProvider {
 	 * null has no effect.
 	 * @param worldObj The world object
 	 * @param biome The current biome. Can be null.
-	 * @param BlockPos The position of the block we are coloring
+	 * @param pos The position of the block we are coloring
 	 * @return A Mystcraft Color object or null
 	 */
 	public abstract Color getStaticColor(World worldObj, Biome biome, BlockPos pos);

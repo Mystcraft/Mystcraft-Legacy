@@ -14,6 +14,7 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.SpawnerAnimals;
@@ -31,7 +32,10 @@ import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
+import javax.annotation.Nullable;
+
 public class ChunkProviderMyst implements IChunkGenerator {
+
 	private AgeController				controller;
 	private Random						rand;
 	private NoiseGeneratorPerlin		stoneNoiseGen;
@@ -133,6 +137,11 @@ public class ChunkProviderMyst implements IChunkGenerator {
 	}
 
 	@Override
+	public void populate(int x, int z) {
+
+	}
+
+	@Override
 	public boolean chunkExists(int i, int j) {
 		try {
 			throw new RuntimeException("Something has called chunkExists on the lower-level generation logic. This is a logic error.  Please report this if you see it.");
@@ -194,55 +203,27 @@ public class ChunkProviderMyst implements IChunkGenerator {
 	}
 
 	@Override
-	public boolean saveChunks(boolean flag, IProgressUpdate iprogressupdate) {
-		return true;
+	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
+		List<SpawnListEntry> list = null;
+		Biome b = worldObj.getBiome(pos);
+		list = b.getSpawnableList(creatureType);
+		return controller.affectCreatureList(creatureType, list, pos);
 	}
 
-	/**
-	 * Unloads chunks that are marked to be unloaded. This is not guaranteed to unload every such chunk.
-	 */
+	@Nullable
 	@Override
-	public boolean unloadQueuedChunks() {
+	public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position, boolean p_180513_4_) {
+		return controller.locateTerrainFeature(worldIn, structureName, position, p_180513_4_);
+	}
+
+	@Override
+	public boolean generateStructures(Chunk chunkIn, int x, int z) {
 		return false;
 	}
 
 	@Override
-	public boolean canSave() {
-		return true;
+	public void recreateStructures(Chunk chunkIn, int x, int z) {
+		this.scatteredFeatureGenerator.generate(worldObj, x, z, null);
 	}
 
-	@Override
-	public String makeString() {
-		return "RandomLevelSource";
-	}
-
-	@Override
-	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType enumcreaturetype, int i, int j, int k) {
-		List<SpawnListEntry> list = null;
-		Biome Biome = worldObj.getBiomeGenForCoords(i, k);
-		if (Biome != null) {
-			list = Biome.getSpawnableList(enumcreaturetype);
-		}
-		return controller.affectCreatureList(enumcreaturetype, list, i, j, k);
-	}
-
-	@Override
-	public ChunkPosition func_147416_a(World world, String s, int i, int j, int k) {
-		return controller.locateTerrainFeature(world, s, i, j, k);
-	}
-
-	@Override
-	public int getLoadedChunkCount() {
-		return 0;
-	}
-
-	@Override
-	public void recreateStructures(int var1, int var2) {
-		this.scatteredFeatureGenerator.func_151539_a(this, this.worldObj, var1, var2, (Block[]) null);
-	}
-
-	// Something for the chunk manager system to handle saving loaded chunk data with current chunk loader
-	// Unused for generation chunk providers
-	@Override
-	public void saveExtraData() {}
 }

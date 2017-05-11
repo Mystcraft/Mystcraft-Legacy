@@ -3,35 +3,44 @@ package com.xcompwiz.mystcraft.world.gen.feature;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class WorldGenMystCrystalFormation extends WorldGeneratorAdv {
+
 	static final byte	otherCoordPairs[]	= { 2, 0, 0, 1, 2, 1 };
 	private World		worldObj;
-	private Block		block;
-	private byte		metadata;
-	int					crystalbase[];
-	int					baserange			= 2;
+	private IBlockState block;
+	private BlockPos crystalPos;
 
 	public WorldGenMystCrystalFormation(Block block) {
-		this(block, (byte) 0);
+		this(block.getDefaultState());
 	}
 
-	public WorldGenMystCrystalFormation(Block block, byte metadata) {
-		this.block = block;
-		this.metadata = metadata;
+	public WorldGenMystCrystalFormation(IBlockState state) {
+		this.block = state;
 	}
 
-	void generateLine(Random rand) {
+	private void generateLine(Random rand) {
 		float angle1 = (rand.nextFloat() * 140.0F + 15.0F);
 		int length = rand.nextInt(7) + 6;
-		int endpoint[] = { crystalbase[0] + (int) (length * Math.cos(angle1 * Math.PI / 180)), crystalbase[1] + (int) (length * Math.sin(angle1 * Math.PI / 180)), crystalbase[2] + rand.nextInt(7) - 3, };
-		placeBlockLine(crystalbase, endpoint, block, metadata);
+		int[] end = new int[] {
+                crystalPos.getX() + (int) (length * Math.cos(angle1 * Math.PI / 180)),
+                crystalPos.getY() + (int) (length * Math.cos(angle1 * Math.PI / 180)),
+                crystalPos.getZ() + rand.nextInt(7) - 3
+        };
+		int[] start = new int[] {
+		        crystalPos.getX(),
+		        crystalPos.getY(),
+                crystalPos.getZ()
+        };
+		placeBlockLine(start, end, block);
 	}
-
-	void placeBlockLine(int ai[], int ai1[], Block block, byte metadata) {
+	private void placeBlockLine(int ai[], int ai1[], IBlockState state) {
 		int ai2[] = { 0, 0, 0 };
 		byte byte0 = 0;
 		int j = 0;
@@ -59,33 +68,27 @@ public class WorldGenMystCrystalFormation extends WorldGeneratorAdv {
 			ai3[j] = MathHelper.floor((ai[j] + k) + 0.5D);
 			ai3[byte1] = MathHelper.floor(ai[byte1] + k * d + 0.5D);
 			ai3[byte2] = MathHelper.floor(ai[byte2] + k * d1 + 0.5D);
-			drawSphere(ai3[0], ai3[1], ai3[2], block, metadata);// setBlockAndMetadata(worldObj, ai3[0], ai3[1], ai3[2], i, 0);
+			drawSphere(new BlockPos(ai3[0], ai3[1], ai3[2]), state);// setBlockAndMetadata(worldObj, ai3[0], ai3[1], ai3[2], i, 0);
 		}
 	}
 
-	void drawSphere(int i, int j, int k, Block block, byte metadata) {
-		setBlock(i, j, k, block, metadata, 3);
-		setBlock(i + 1, j, k, block, metadata, 3);
-		setBlock(i - 1, j, k, block, metadata, 3);
-		setBlock(i, j + 1, k, block, metadata, 3);
-		setBlock(i, j - 1, k, block, metadata, 3);
-		setBlock(i, j, k + 1, block, metadata, 3);
-		setBlock(i, j, k - 1, block, metadata, 3);
+	private void drawSphere(BlockPos pos, IBlockState state) {
+		setBlock(pos, state);
+		for (EnumFacing face : EnumFacing.VALUES) {
+			setBlock(pos.offset(face), state);
+		}
 	}
 
-	private void setBlock(int i, int j, int k, Block block, byte metadata, int mask) {
-		if (worldObj.getBlock(i, j, k) != Blocks.bedrock) {
-			placeBlock(worldObj, i, j, k, block, metadata, mask);
+	private void setBlock(BlockPos pos, IBlockState state) {
+		if(worldObj.getBlockState(pos).getBlock().equals(Blocks.BEDROCK)) {
+			placeBlock(worldObj, pos, state, 3);
 		}
 	}
 
 	@Override
-	public boolean doGeneration(World world, Random rand, int i, int j, int k) {
+	public boolean doGeneration(World world, Random rand, BlockPos pos) {
 		worldObj = world;
-		crystalbase = new int[3];
-		crystalbase[0] = i;
-		crystalbase[1] = 0;
-		crystalbase[2] = k;
+		crystalPos = new BlockPos(pos.getX(), 0, pos.getZ());
 
 		if (!validLocation()) return false;
 		int count = rand.nextInt(3) + 1;
@@ -97,17 +100,19 @@ public class WorldGenMystCrystalFormation extends WorldGeneratorAdv {
 	}
 
 	private boolean validLocation() {
-		Block i = worldObj.getBlock(crystalbase[0], crystalbase[1], crystalbase[2]);
-		while (i == Blocks.AIR) {
-			++crystalbase[1];
-			if (crystalbase[1] > worldObj.getHeight()) return false;
-			i = worldObj.getBlock(crystalbase[0], crystalbase[1], crystalbase[2]);
+		IBlockState state = worldObj.getBlockState(crystalPos);
+		if(state.getBlock().equals(Blocks.AIR)) {
+			crystalPos = crystalPos.up();
+			if(crystalPos.getY() > worldObj.getHeight()) {
+				return false;
+			}
+			state = worldObj.getBlockState(crystalPos);
 		}
-		while (i != Blocks.WATER && i != Blocks.WATER && i != Blocks.AIR) {
-			++crystalbase[1];
-			i = worldObj.getBlock(crystalbase[0], crystalbase[1], crystalbase[2]);
+		if (!state.getBlock().equals(Blocks.WATER) && !state.getBlock().equals(Blocks.AIR)) {
+			crystalPos = crystalPos.up();
+			state = worldObj.getBlockState(crystalPos);
 		}
-		crystalbase[1] -= 2;
-		return worldObj.getBlock(crystalbase[0], crystalbase[1], crystalbase[2]) != Blocks.AIR;
+		crystalPos = crystalPos.down(2);
+		return !worldObj.getBlockState(crystalPos).getBlock().equals(Blocks.AIR);
 	}
 }

@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.tileentity;
 
 import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
-import com.xcompwiz.mystcraft.network.IMessageReceiver;
 import com.xcompwiz.mystcraft.portal.PortalUtils;
 
 import net.minecraft.item.Item;

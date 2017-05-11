@@ -12,6 +12,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGenMystCrystalFormation;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SymbolCrystalFormation extends SymbolBase {
@@ -25,7 +26,7 @@ public class SymbolCrystalFormation extends SymbolBase {
 		WorldGenMystCrystalFormation generator;
 		BlockDescriptor block = ModifierUtils.popBlockMatching(controller, BlockCategory.CRYSTAL);
 		if (block != null) {
-			generator = new WorldGenMystCrystalFormation(block.block, block.metadata);
+			generator = new WorldGenMystCrystalFormation(block.blockstate);
 		} else {
 			generator = new WorldGenMystCrystalFormation(ModBlocks.crystal);
 		}
@@ -33,8 +34,9 @@ public class SymbolCrystalFormation extends SymbolBase {
 	}
 
 	private static class Populator implements IPopulate {
-		WorldGeneratorAdv	gen;
-		private int			rate;
+
+		private WorldGeneratorAdv	gen;
+		private int					rate;
 
 		Populator(WorldGeneratorAdv gen) {
 			this.gen = gen;
@@ -46,7 +48,7 @@ public class SymbolCrystalFormation extends SymbolBase {
 			if (!flag && rand.nextInt(rate) == 0) {
 				i += rand.nextInt(16) + 8;
 				j += rand.nextInt(16) + 8;
-				gen.generate(worldObj, rand, i, 0, j);
+				gen.generate(worldObj, rand, new BlockPos(i, 0, j));
 			} else {
 				gen.noGen();
 			}

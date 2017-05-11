@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.symbol.symbols;
 
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
@@ -9,8 +11,6 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.data.Assets.Vanilla;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.world.World;
 
@@ -41,57 +41,55 @@ public class SymbolStarsEndSky extends SymbolBase {
 
 		@Override
 		public void render(TextureManager textureManager, World worldObj, float partial) {
-			Tessellator var21 = Tessellator.instance;
-			int iColor = 0;
+			Tessellator tes = Tessellator.getInstance();
+			VertexBuffer vb = tes.getBuffer();
+
 			Color color = gradient.getColor(controller.getTime() / 12000F);
-			iColor = color.asInt();
+            java.awt.Color awt = color.toAWT();
 
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			GL11.glDisable(GL11.GL_FOG);
-			GL11.glDisable(GL11.GL_ALPHA_TEST);
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			RenderHelper.disableStandardItemLighting();
-			GL11.glDepthMask(false);
+            GlStateManager.disableFog();
+            GlStateManager.disableAlpha();
+            GlStateManager.enableBlend();
+            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+            RenderHelper.disableStandardItemLighting();
+            GlStateManager.depthMask(false);
+            textureManager.bindTexture(Vanilla.end_sky);
 
-			textureManager.bindTexture(Vanilla.end_sky);
+            for (int i = 0; i < 6; ++i) {
+                GlStateManager.pushMatrix();
 
-			for (int i = 0; i < 6; ++i) {
-				GL11.glPushMatrix();
+                if (i == 1) {
+                    GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
+                }
 
-				if (i == 1) {
-					GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-				}
+                if (i == 2) {
+                    GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+                }
 
-				if (i == 2) {
-					GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
-				}
+                if (i == 3) {
+                    GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
+                }
 
-				if (i == 3) {
-					GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
-				}
+                if (i == 4) {
+                    GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+                }
 
-				if (i == 4) {
-					GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
-				}
+                if (i == 5) {
+                    GlStateManager.rotate(-90.0F, 0.0F, 0.0F, 1.0F);
+                }
 
-				if (i == 5) {
-					GL11.glRotatef(-90.0F, 0.0F, 0.0F, 1.0F);
-				}
+                vb.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+                vb.pos(-100.0D, -100.0D, -100.0D).tex(0.0D, 0.0D).color(awt.getRed(), awt.getGreen(), awt.getBlue(), 255).endVertex();
+                vb.pos(-100.0D, -100.0D, 100.0D).tex(0.0D, 16.0D).color(awt.getRed(), awt.getGreen(), awt.getBlue(), 255).endVertex();
+                vb.pos(100.0D, -100.0D, 100.0D).tex(16.0D, 16.0D).color(awt.getRed(), awt.getGreen(), awt.getBlue(), 255).endVertex();
+                vb.pos(100.0D, -100.0D, -100.0D).tex(16.0D, 0.0D).color(awt.getRed(), awt.getGreen(), awt.getBlue(), 255).endVertex();
+                tes.draw();
+                GlStateManager.popMatrix();
+            }
 
-				var21.startDrawingQuads();
-				var21.setColorOpaque_I(iColor);
-				var21.addVertexWithUV(-100.0D, -100.0D, -100.0D, 0.0D, 0.0D);
-				var21.addVertexWithUV(-100.0D, -100.0D, 100.0D, 0.0D, 16.0D);
-				var21.addVertexWithUV(100.0D, -100.0D, 100.0D, 16.0D, 16.0D);
-				var21.addVertexWithUV(100.0D, -100.0D, -100.0D, 16.0D, 0.0D);
-				var21.draw();
-				GL11.glPopMatrix();
-			}
-
-			// GL11.glDepthMask(true);
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			GL11.glEnable(GL11.GL_ALPHA_TEST);
+            GlStateManager.depthMask(true);
+            GlStateManager.enableTexture2D();
+            GlStateManager.enableAlpha();
 		}
 	}
 }

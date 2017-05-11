@@ -30,7 +30,7 @@ public class SymbolColorSkyNatural extends SymbolBase {
 			if (alpha < 0.0F) alpha = 0.0F;
 			if (alpha > 1.0F) alpha = 1.0F;
 
-			float var8 = biome.getFloatTemperature(MathHelper.floor(entity.posX), MathHelper.floor(entity.posY), MathHelper.floor(entity.posZ));
+			float var8 = biome.getFloatTemperature(entity.getPosition());
 			int var9 = getSkyColorByTemp(var8);
 			float red = (var9 >> 16 & 255) / 255.0F;
 			float green = (var9 >> 8 & 255) / 255.0F;

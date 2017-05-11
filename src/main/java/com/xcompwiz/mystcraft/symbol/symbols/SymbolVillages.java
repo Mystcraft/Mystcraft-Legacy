@@ -8,6 +8,8 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenVillage;
 
@@ -31,7 +33,8 @@ public class SymbolVillages extends SymbolBase {
 	}
 
 	private class Populator implements IPopulate {
-		MapGenVillage	generator;
+
+		private MapGenVillage generator;
 
 		public Populator(MapGenVillage gen) {
 			generator = gen;
@@ -39,20 +42,22 @@ public class SymbolVillages extends SymbolBase {
 
 		@Override
 		public boolean populate(World worldObj, Random rand, int i, int j, boolean flag) {
-			return generator.generateStructuresInChunk(worldObj, rand, i >> 4, j >> 4);
+			return generator.generateStructure(worldObj, rand, new ChunkPos(i >> 4, j >> 4));
 		}
 	}
 
 	private class TerrainAlteration implements ITerrainAlteration {
-		MapGenVillage	generator;
+
+		private MapGenVillage generator;
 
 		public TerrainAlteration(MapGenVillage gen) {
 			generator = gen;
 		}
 
 		@Override
-		public void alterTerrain(World worldObj, int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {
-			generator.func_151539_a(worldObj.getChunkProvider(), worldObj, chunkX, chunkZ, null); // Note: Null block array for structure generation...
+		public void alterTerrain(World worldObj, int chunkX, int chunkZ, IBlockState[] blocks) {
+			generator.generate(worldObj, chunkX, chunkZ, null);
 		}
+
 	}
 }

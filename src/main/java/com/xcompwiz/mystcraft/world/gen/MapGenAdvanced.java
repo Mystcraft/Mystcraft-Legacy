@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.world.gen;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -16,8 +17,7 @@ public class MapGenAdvanced {
 
 	private long		seed;
 
-	private Block		block;
-	private byte		blockMeta;
+	private IBlockState	state;
 
 	private boolean		profiling		= false;
 	private int			blockcount;
@@ -25,13 +25,12 @@ public class MapGenAdvanced {
 	private int			callcount		= 0;
 	private int			fillcount		= 0;
 
-	public MapGenAdvanced(long seed, Block block, byte blockMeta) {
+	public MapGenAdvanced(long seed, IBlockState state) {
 		this.seed = seed;
-		this.block = block;
-		this.blockMeta = blockMeta;
+		this.state = state;
 	}
 
-	public void generate(IChunkProvider chunkprovider, World worldObj, int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {
+	public void generate(IChunkProvider chunkprovider, World worldObj, int chunkX, int chunkZ, IBlockState[] blocks) {
 		int range = this.range;
 		this.rand.setSeed(seed);
 		long xseed = this.rand.nextLong();
@@ -45,7 +44,7 @@ public class MapGenAdvanced {
 				long xseed2 = x * xseed;
 				long zseed2 = z * zseed;
 				this.rand.setSeed(xseed2 ^ zseed2 ^ seed);
-				this.recursiveGenerate(worldObj, x, z, chunkX, chunkZ, blocks, metadata);
+				this.recursiveGenerate(worldObj, x, z, chunkX, chunkZ, blocks);
 			}
 		}
 		if (profiling) {
@@ -57,18 +56,21 @@ public class MapGenAdvanced {
 	/**
 	 * Recursively called by generate() (generate) and optionally by itself.
 	 */
-	protected void recursiveGenerate(World worldObj, int x, int z, int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {}
+	protected void recursiveGenerate(World worldObj, int x, int z, int chunkX, int chunkZ, IBlockState[] blocks) {}
 
-	protected boolean placeBlock(Block[] blocks, byte[] metadata, int coords) {
-		Block block = blocks[coords];
+	protected boolean placeBlock(IBlockState[] blocks, int coords) {
+		IBlockState state = blocks[coords];
 
-		if (this.block == null || (block != null && block.getMaterial().isLiquid())) return false;
-		if (block == Blocks.bedrock) return false;
+		if (this.state == null || (state != null && state.getMaterial().isLiquid())) {
+			return false;
+		}
+		if (state != null && state.getBlock().equals(Blocks.BEDROCK)) {
+			return false;
+		}
 		++blockcounttotal;
 		++blockcount;
 
-		blocks[coords] = this.block;
-		metadata[coords] = this.blockMeta;
+		blocks[coords] = this.state;
 		return true;
 	}
 

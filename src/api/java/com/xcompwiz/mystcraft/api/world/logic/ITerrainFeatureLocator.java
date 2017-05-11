@@ -19,5 +19,5 @@ public interface ITerrainFeatureLocator {
 	 * @param z Block coordinates
 	 * @return
 	 */
-	public abstract BlockPos locate(World world, String identifier, int x, int y, int z);
+	public abstract BlockPos locate(World world, String identifier, BlockPos pos, boolean genChunks);
 }

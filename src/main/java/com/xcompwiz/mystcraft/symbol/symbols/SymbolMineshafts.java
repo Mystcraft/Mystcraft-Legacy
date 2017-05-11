@@ -8,7 +8,11 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.structure.MapGenMineshaft;
 
 public class SymbolMineshafts extends SymbolBase {
@@ -39,25 +43,22 @@ public class SymbolMineshafts extends SymbolBase {
 
 		@Override
 		public boolean populate(World worldObj, Random rand, int i, int j, boolean flag) {
-			mineshaftGenerator.generateStructuresInChunk(worldObj, rand, i >> 4, j >> 4);
+			mineshaftGenerator.generateStructure(worldObj, rand, new ChunkPos(i >> 4, j >> 4));
 			return false;
 		}
 	}
 
 	private class TerrainAlteration implements ITerrainAlteration {
-		MapGenMineshaft	mineshaftGenerator;
+
+		private MapGenMineshaft	mineshaftGenerator;
 
 		public TerrainAlteration(MapGenMineshaft gen) {
 			mineshaftGenerator = gen;
 		}
 
 		@Override
-		public void alterTerrain(World worldObj, int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {
-			mineshaftGenerator.func_151539_a(worldObj.getChunkProvider(), worldObj, chunkX, chunkZ, null); // Note: Null
-																											// block
-																											// array for
-																											// structure
-																											// generation...
+		public void alterTerrain(World worldObj, int chunkX, int chunkZ, IBlockState[] blocks) {
+			mineshaftGenerator.generate(worldObj, chunkX, chunkZ, null); //Primer actually never used here.
 		}
 	}
 }

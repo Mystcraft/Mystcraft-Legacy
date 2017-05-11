@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.world.gen;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -23,8 +24,8 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 
 	private IModifiedHandler		callback;
 
-	public MapGenFloatingIslands(long seed, Biome biome, IModifiedHandler callback, Block block, byte meta) {
-		super(seed, block, meta);
+	public MapGenFloatingIslands(long seed, Biome biome, IModifiedHandler callback, IBlockState state) {
+		super(seed, state);
 		this.range = 5;
 		noiseGen4 = new NoiseGeneratorOctaves(rand, 4);
 
@@ -36,7 +37,7 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 	 * Generates a node in the current cave system recursion tree.
 	 * @param modified
 	 */
-	protected void generateCaveNode(long seed, int chunkX, int chunkZ, Block[] blocks, byte[] metadata, boolean[] modified, double baseX, double baseY, double baseZ, float scalar, float angleB, float angleC, int loopc, int maxLoops, double squash) {
+	protected void generateCaveNode(long seed, int chunkX, int chunkZ, IBlockState[] blocks, boolean[] modified, double baseX, double baseY, double baseZ, float scalar, float angleB, float angleC, int loopc, int maxLoops, double squash) {
 		double chunkXmid = chunkX * 16 + 8;
 		double chunkZmid = chunkZ * 16 + 8;
 		int layers = blocks.length / 256;
@@ -82,8 +83,8 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 			f += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 4F;
 
 			if (!flag && loopc == j && scalar > 1.0F && maxLoops > 0) {
-				generateCaveNode(random.nextLong(), chunkX, chunkZ, blocks, metadata, modified, baseX, baseY, baseZ, random.nextFloat() * 0.5F + 0.5F, angleB - ((float) Math.PI / 2F), angleC / 3F, loopc, maxLoops, squash);
-				generateCaveNode(random.nextLong(), chunkX, chunkZ, blocks, metadata, modified, baseX, baseY, baseZ, random.nextFloat() * 0.5F + 0.5F, angleB + ((float) Math.PI / 2F), angleC / 3F, loopc, maxLoops, squash);
+				generateCaveNode(random.nextLong(), chunkX, chunkZ, blocks, modified, baseX, baseY, baseZ, random.nextFloat() * 0.5F + 0.5F, angleB - ((float) Math.PI / 2F), angleC / 3F, loopc, maxLoops, squash);
+				generateCaveNode(random.nextLong(), chunkX, chunkZ, blocks, modified, baseX, baseY, baseZ, random.nextFloat() * 0.5F + 0.5F, angleB + ((float) Math.PI / 2F), angleC / 3F, loopc, maxLoops, squash);
 				return;
 			}
 
@@ -147,7 +148,7 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 
 						double total = xfactorSq + yfactorSq + zfactorSq;
 						if (total < 1.0D) {
-							placeBlock(blocks, metadata, modified, coords);
+							placeBlock(blocks, modified, coords);
 						}
 					}
 				}
@@ -159,13 +160,13 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 		}
 	}
 
-	protected void placeBlock(Block[] blocks, byte[] metadata, boolean[] modified, int coords) {
-		if (super.placeBlock(blocks, metadata, coords)) {
+	protected void placeBlock(IBlockState[] blocks, boolean[] modified, int coords) {
+		if (super.placeBlock(blocks, coords)) {
 			modified[coords & 255] = true;
 		}
 	}
 
-	private void replaceBlocksForBiome(int chunkX, int chunkZ, Block blocks[], byte[] metadata, boolean[] modified, Biome biome) {
+	private void replaceBlocksForBiome(int chunkX, int chunkZ, IBlockState blocks[], boolean[] modified, Biome biome) {
 		int layers = blocks.length / 256;
 		double noisefactor = 0.03125D;
 		stoneNoise = noiseGen4.generateNoiseOctaves(stoneNoise, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, noisefactor * 2D, noisefactor * 2D, noisefactor * 2D);
@@ -176,14 +177,13 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 
 				int stone_noise_val = (int) (stoneNoise[z + x * 16] / 3D + 3D + rand.nextDouble() * 0.25D);
 				int counter = -1;
-				Block surface = biome.topBlock;
-				Block filler = biome.fillerBlock;
+				IBlockState filler = biome.fillerBlock;
 				for (int y = layers - 1; y >= 0; --y) {
 					int coords = y << 8 | z << 4 | x;
-					Block blockId = blocks[coords];
+					IBlockState blockId = blocks[coords];
 					if (blockId == null) {
-						if (counter != -1 && (filler == Blocks.SAND || filler == Blocks.SANDSTONE)) {
-							blocks[coords] = Blocks.SANDSTONE;
+						if (counter != -1 && (filler.getBlock().equals(Blocks.SAND) || filler.getBlock().equals(Blocks.SANDSTONE))) {
+							blocks[coords] = Blocks.SANDSTONE.getDefaultState();
 						}
 						counter = -1;
 						continue;
@@ -192,7 +192,7 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 						continue;
 					}
 					if (counter == -1) {
-						surface = biome.topBlock;
+						IBlockState surface = biome.topBlock;
 						filler = biome.fillerBlock;
 						counter = stone_noise_val;
 						blocks[coords] = surface;
@@ -205,7 +205,7 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 					blocks[coords] = filler;
 					if (counter == 0 && filler == Blocks.SAND) {
 						counter = rand.nextInt(4);
-						filler = Blocks.SANDSTONE;
+						filler = Blocks.SANDSTONE.getDefaultState();
 					}
 				}
 
@@ -219,7 +219,7 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 	 * Recursively called by generate() (generate) and optionally by itself.
 	 */
 	@Override
-	protected void recursiveGenerate(World worldObj, int x, int z, int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {
+	protected void recursiveGenerate(World worldObj, int x, int z, int chunkX, int chunkZ, IBlockState[] blocks) {
 		if (rand.nextInt(rate) != 0) { return; }
 		boolean[] modified = new boolean[256];
 
@@ -227,16 +227,16 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 		double dy = rand.nextInt(rand.nextInt(50) + 50) + 150;
 		double dz = z * 16 + rand.nextInt(16);
 		// generateLargeCaveNode(rand.nextLong(), chunkX, chunkZ, blocks, metadata, dx, dy, dz);
-		generateCaveNode(rand.nextLong(), chunkX, chunkZ, blocks, metadata, modified, dx, dy, dz, 12F, 0.0F, 0.0F, -1, -1, 0.2D);
+		generateCaveNode(rand.nextLong(), chunkX, chunkZ, blocks, modified, dx, dy, dz, 12F, 0.0F, 0.0F, -1, -1, 0.2D);
 		int subelements = rand.nextInt(12) + 40;
 		for (int i = 0; i < subelements; ++i) {
 			double subx = dx + (rand.nextDouble() - rand.nextDouble()) * 20.0D;
 			double suby = dy + (rand.nextDouble() - rand.nextDouble()) * 10.0D;
 			double subz = dz + (rand.nextDouble() - rand.nextDouble()) * 20.0D;
 			float scale = rand.nextFloat() * 3F + 1F;
-			generateCaveNode(rand.nextLong(), chunkX, chunkZ, blocks, metadata, modified, subx, suby, subz, scale, 0.0F, 0.0F, -1, -1, 0.4D);
+			generateCaveNode(rand.nextLong(), chunkX, chunkZ, blocks, modified, subx, suby, subz, scale, 0.0F, 0.0F, -1, -1, 0.4D);
 		}
-		replaceBlocksForBiome(chunkX, chunkZ, blocks, metadata, modified, biome);
+		replaceBlocksForBiome(chunkX, chunkZ, blocks, modified, biome);
 		callback.passModified(chunkX, chunkZ, modified, biome);
 	}
 }

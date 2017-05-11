@@ -25,16 +25,17 @@ public class SymbolTerrainGenNormal extends SymbolBase {
 		BlockDescriptor block;
 		block = ModifierUtils.popBlockMatching(controller, BlockCategory.SEA);
 		if (block != null) {
-			gen.setSeaBlock(block.block, block.metadata);
+			gen.setSeaBlock(block.blockstate);
 		}
 		block = ModifierUtils.popBlockMatching(controller, BlockCategory.TERRAIN);
 		if (block != null) {
-			gen.setTerrainBlock(block.block, block.metadata);
+			gen.setTerrainBlock(block.blockstate);
 		}
 		controller.registerInterface(gen);
 	}
 
 	public static class TerrainGeneratorNormal extends TerrainGeneratorBase {
+
 		private final boolean			amplified;
 
 		private Random					rand;
@@ -74,7 +75,7 @@ public class SymbolTerrainGenNormal extends SymbolBase {
 				parabolicField = new float[25];
 				for (int x = -2; x <= 2; x++) {
 					for (int z = -2; z <= 2; z++) {
-						parabolicField[(z + 2) * 5 + x + 2] = 10F / MathHelper.sqrt_float((x * x + z * z) + 0.2F);
+						parabolicField[(z + 2) * 5 + x + 2] = 10F / MathHelper.sqrt((x * x + z * z) + 0.2F);
 					}
 				}
 			}
@@ -98,8 +99,8 @@ public class SymbolTerrainGenNormal extends SymbolBase {
 						for (int zOffset = -sizec; zOffset <= sizec; ++zOffset) {
 							Biome secondary_biome = biomesForGeneration[x + xOffset + 2 + (z + zOffset + 2) * (sizeX + 5)];
 
-							float height = secondary_biome.rootHeight;
-							float variation = secondary_biome.heightVariation;
+							float height = secondary_biome.getBaseHeight();
+							float variation = secondary_biome.getHeightVariation();
 
 							if (amplified && height > 0.0F) {
 								height = 1.0F + height * 2.0F;
@@ -107,7 +108,7 @@ public class SymbolTerrainGenNormal extends SymbolBase {
 							}
 
 							float weight = this.parabolicField[xOffset + 2 + (zOffset + 2) * 5] / (height + 2.0F);
-							if (height > biome.rootHeight) {
+							if (height > biome.getBaseHeight()) {
 								weight /= 2.0F;
 							}
 

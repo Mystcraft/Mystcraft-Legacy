@@ -6,6 +6,7 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 
@@ -29,7 +30,7 @@ public class SymbolDungeons extends SymbolBase {
 				int i3 = i + rand.nextInt(16) + 8;
 				int i4 = rand.nextInt(256);
 				int k4 = j + rand.nextInt(16) + 8;
-				(new WorldGenDungeons()).generate(worldObj, rand, i3, i4, k4);
+				(new WorldGenDungeons()).generate(worldObj, rand, new BlockPos(i3, i4, k4));
 			}
 			return false;
 		}

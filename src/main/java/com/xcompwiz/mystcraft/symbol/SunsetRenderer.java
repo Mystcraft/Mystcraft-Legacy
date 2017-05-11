@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.symbol;
 
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.util.Color;
@@ -7,8 +9,6 @@ import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -16,6 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SunsetRenderer {
+
 	private float colorsSunriseSunset[] = new float[4];
 	protected AgeDirector controller;
 	protected ColorGradient gradient;
@@ -60,7 +61,8 @@ public class SunsetRenderer {
 	@SideOnly(Side.CLIENT)
 	protected void renderHorizon(TextureManager eng, World worldObj, float celestial_period, float angle, float partial, float alpha) {
 		float celestial_radians = celestial_period * (float) Math.PI * 2.0F;
-		Tessellator tessellator = Tessellator.instance;
+		Tessellator tes = Tessellator.getInstance();
+		VertexBuffer vb = tes.getBuffer();
 		RenderHelper.disableStandardItemLighting();
 		float[] horizoncolors = getSunriseSunsetColors(celestial_period, partial);
 		if (horizoncolors != null) {
@@ -78,27 +80,26 @@ public class SunsetRenderer {
 				horizonBlue = blue;
 			}
 
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			GL11.glShadeModel(GL11.GL_SMOOTH);
-			GL11.glPushMatrix();
-			GL11.glRotatef(90, 1.0F, 0.0F, 0.0F);
-			GL11.glRotatef(MathHelper.sin(celestial_radians) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
-			GL11.glRotatef(-angle, 0.0F, 0.0F, 1.0F);
-			tessellator.startDrawing(6);
-			tessellator.setColorRGBA_F(horizonRed, horizonGreen, horizonBlue, horizoncolors[3]);
-			tessellator.addVertex(0.0D, 100.0D, 0.0D);
-			tessellator.setColorRGBA_F(horizoncolors[0], horizoncolors[1], horizoncolors[2], 0.0F);
+			GlStateManager.disableTexture2D();
+			GlStateManager.shadeModel(GL11.GL_SMOOTH);
+			GlStateManager.pushMatrix();
+			GlStateManager.rotate(90, 1, 0, 0);
+			GlStateManager.rotate(MathHelper.sin(celestial_radians) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
+			GlStateManager.rotate(-angle, 0, 0, 1);
 
-			byte var26 = 16;
-			for (int var27 = 0; var27 <= var26; ++var27) {
-				float var13 = var27 * (float) Math.PI * 2.0F / var26;
-				float var14 = MathHelper.sin(var13);
-				float var15 = MathHelper.cos(var13);
-				tessellator.addVertex((var14 * 120.0F), (var15 * 120.0F), (-var15 * 40.0F * horizoncolors[3]));
+			vb.begin(6, DefaultVertexFormats.POSITION_COLOR);
+			vb.pos(0.0D, 100.0D, 0.0D).color(horizonRed, horizonGreen, horizonBlue, horizoncolors[3]).endVertex();
+
+			for (int l = 0; l <= 16; ++l) {
+				float f21 = (float)l * ((float)Math.PI * 2F) / 16.0F;
+				float f12 = MathHelper.sin(f21);
+				float f13 = MathHelper.cos(f21);
+				vb.pos((double)(f12 * 120.0F), (double)(f13 * 120.0F), (double)(-f13 * 40.0F * horizoncolors[3])).color(horizonRed, horizonGreen, horizonBlue, 0.0F).endVertex();
 			}
-			tessellator.draw();
-			GL11.glPopMatrix();
-			GL11.glShadeModel(GL11.GL_FLAT);
+
+			tes.draw();
+			GlStateManager.popMatrix();
+			GlStateManager.shadeModel(GL11.GL_FLAT);
 		}
 	}
 }

@@ -8,12 +8,8 @@ import net.minecraft.world.biome.Biome;
 
 @Beta
 public interface IBiomeController {
-	public abstract List<Biome> getValidSpawnBiomes();
 
-	/**
-	 * In practice, this function is useless.  Minecraft has it and it is called, but the results are never used.
-	 */
-	public abstract float[] getRainfallField(float rainfall[], int x, int z, int xSize, int zSize);
+	public abstract List<Biome> getValidSpawnBiomes();
 
 	public abstract Biome getBiomeAtCoords(int x, int z);
 

@@ -18,9 +18,9 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 
 public class CommandDebug extends CommandBaseAdv {
 
@@ -82,7 +82,7 @@ public class CommandDebug extends CommandBaseAdv {
 	}
 
 	@Override
-	public void execute(MinecraftServer server, ICommandSender agent, String[] args) {
+	public void execute(MinecraftServer server, ICommandSender agent, String[] args) throws CommandException {
 		String command = null;
 		String address = null;
 		String setval = null;
@@ -101,10 +101,10 @@ public class CommandDebug extends CommandBaseAdv {
 		if (command.equals("read")) {
 			if (elem instanceof DebugValueCallback) {
 				String value = ((DebugValueCallback) elem).get(agent);
-				agent.addChatMessage(new ChatComponentText(value));
+				agent.sendMessage(new TextComponentString(value));
 			} else if (elem instanceof DebugNode) {
 				Collection<String> children = ((DebugNode) elem).getChildren();
-				agent.addChatMessage(new ChatComponentTranslation("%s", children.toString()));
+				agent.sendMessage(new TextComponentTranslation("%s", children.toString()));
 			} else {
 				throw new CommandException("myst.debug.address.invalid");
 			}

@@ -28,7 +28,7 @@ public class SymbolHugeTrees extends SymbolBase {
 			WorldGenMystBigTree genBigTree = new WorldGenMystBigTree(false);
 			int j6 = i + rand.nextInt(16) + 8;
 			int k10 = j + rand.nextInt(16) + 8;
-			genBigTree.generate(worldObj, rand, j6, worldObj.getHeightValue(j6, k10), k10);
+			genBigTree.generate(worldObj, rand, j6, worldObj.getHeight(j6, k10), k10);
 			return false;
 		}
 	}

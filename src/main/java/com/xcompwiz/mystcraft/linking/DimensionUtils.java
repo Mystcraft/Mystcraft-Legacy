@@ -24,8 +24,7 @@ public class DimensionUtils {
 	private static final String	PLAYER_DIM_UUID_TAG	= "myst.dimUUID";
 
 	public static int getNewDimensionUID() {
-		int dimUId = DimensionManager.getNextFreeDimId();
-		return dimUId;
+		return DimensionManager.getNextFreeDimId();
 	}
 
 	public static Integer createAge() {
@@ -73,10 +72,6 @@ public class DimensionUtils {
 		return true;
 	}
 
-	public static String getDimensionName(WorldProvider worldProvider) {
-		return worldProvider.getDimensionName();
-	}
-
 	public static boolean isDimensionVisited(@Nullable Integer dimId) {
 		if (dimId == null) return false;
 		if (!DimensionManager.isDimensionRegistered(dimId)) return false;
@@ -116,9 +111,7 @@ public class DimensionUtils {
 	//TODO: Move this to a player helper class?
 	public static UUID getPlayerDimensionUUID(EntityPlayer player) {
 		NBTTagCompound nbt = player.getEntityData();
-		if (nbt == null) return null;
 		nbt = nbt.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
-		if (nbt == null) return null;
 		if (nbt.hasKey(PLAYER_DIM_UUID_TAG)) return UUID.fromString(nbt.getString(PLAYER_DIM_UUID_TAG));
 		return null;
 	}

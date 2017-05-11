@@ -10,6 +10,7 @@ import com.xcompwiz.mystcraft.world.gen.MapGenAdvanced;
 import com.xcompwiz.mystcraft.world.gen.MapGenSpheresMyst;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
@@ -24,7 +25,7 @@ public class SymbolSpheres extends SymbolBase {
 		MapGenAdvanced generator;
 		BlockDescriptor block = ModifierUtils.popBlockMatching(controller, BlockCategory.STRUCTURE);
 		if (block != null) {
-			generator = new MapGenSpheresMyst(seed, block.block, block.metadata);
+			generator = new MapGenSpheresMyst(seed, block.blockstate);
 		} else {
 			generator = new MapGenSpheresMyst(seed, Blocks.COBBLESTONE);
 		}
@@ -32,15 +33,16 @@ public class SymbolSpheres extends SymbolBase {
 	}
 
 	private class TerrainAlteration implements ITerrainAlteration {
-		MapGenAdvanced	generator;
+
+		private MapGenAdvanced	generator;
 
 		public TerrainAlteration(MapGenAdvanced gen) {
 			generator = gen;
 		}
 
 		@Override
-		public void alterTerrain(World worldObj, int chunkX, int chunkZ, Block[] blocks, byte[] metadata) {
-			generator.generate(worldObj.getChunkProvider(), worldObj, chunkX, chunkZ, blocks, metadata);
+		public void alterTerrain(World worldObj, int chunkX, int chunkZ, IBlockState[] blocks) {
+			generator.generate(worldObj.getChunkProvider(), worldObj, chunkX, chunkZ, blocks);
 		}
 	}
 }
