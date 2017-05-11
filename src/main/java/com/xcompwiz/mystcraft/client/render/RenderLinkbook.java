@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.client.render;
 
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.Mystcraft;
@@ -14,10 +16,12 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderLinkbook extends Render {
+public class RenderLinkbook extends Render<EntityLinkbook> {
+
 	private ModelBook	bookmodel;
 
-	public RenderLinkbook() {
+	public RenderLinkbook(RenderManager rm) {
+		super(rm);
 		bookmodel = new ModelBook();
 	}
 
@@ -94,7 +98,18 @@ public class RenderLinkbook extends Render {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) {
+	protected ResourceLocation getEntityTexture(EntityLinkbook entity) {
 		return Entities.linkbook;
 	}
+
+
+	public static class Factory implements IRenderFactory<EntityLinkbook> {
+
+		@Override
+		public Render<EntityLinkbook> createRenderFor(RenderManager manager) {
+			return new RenderLinkbook(manager);
+		}
+
+	}
+
 }

@@ -1,5 +1,8 @@
 package com.xcompwiz.mystcraft.client.render;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.entity.EntityFallingBlock;
@@ -15,15 +18,21 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
-public class RenderFallingBlock extends Render {
+public class RenderFallingBlock extends Render<EntityFallingBlock> {
+
 	private RenderBlocks	renderBlocks;
 
-	public RenderFallingBlock() {
-		renderBlocks = new RenderBlocks();
+	public RenderFallingBlock(RenderManager renderManager) {
+		super(renderManager);
 		shadowSize = 0.5F;
 	}
 
-	public void doRenderFallingBlock(EntityFallingBlock entityfalling, double d, double d1, double d2, float f, float f1) {
+	@Override
+	public void doRender(EntityFallingBlock entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		doRenderFallingBlock(entity, x, y, z, entityYaw, partialTicks);
+	}
+
+	public void doRenderFallingBlock(EntityFallingBlock entityfalling, double x, double y, double z, float entityYaw, float partialTicks) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) d, (float) d1, (float) d2);
 		this.getEntityTexture(entityfalling);
@@ -57,12 +66,17 @@ public class RenderFallingBlock extends Render {
 	}
 
 	@Override
-	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
-		doRenderFallingBlock((EntityFallingBlock) entity, d, d1, d2, f, f1);
+	protected ResourceLocation getEntityTexture(EntityFallingBlock entity) {
+		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 
-	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) {
-		return TextureMap.locationBlocksTexture;
+	public static class Factory implements IRenderFactory<EntityFallingBlock> {
+
+		@Override
+		public Render<EntityFallingBlock> createRenderFor(RenderManager manager) {
+			return new RenderFallingBlock(manager);
+		}
+
 	}
+
 }

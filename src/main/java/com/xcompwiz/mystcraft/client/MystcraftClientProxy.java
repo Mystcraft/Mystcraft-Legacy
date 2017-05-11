@@ -11,7 +11,6 @@ import com.xcompwiz.mystcraft.client.linkeffects.LinkRendererDisarm;
 import com.xcompwiz.mystcraft.client.model.ModelBookBinder;
 import com.xcompwiz.mystcraft.client.model.ModelInkMixer;
 import com.xcompwiz.mystcraft.client.model.ModelLinkModifier;
-import com.xcompwiz.mystcraft.client.render.ItemRendererPage;
 import com.xcompwiz.mystcraft.client.render.ItemRendererTileEntity;
 import com.xcompwiz.mystcraft.client.render.RenderBookReceptacle;
 import com.xcompwiz.mystcraft.client.render.RenderBookstand;
@@ -43,8 +42,6 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
 import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
 
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -95,29 +92,14 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 		InternalAPI.render.registerRenderEffect(new LinkRendererDisarm());
 
 		ParticleUtils.registerParticle("link", new ParticleProviderLink());
-
-		MinecraftForgeClient.registerItemRenderer(ModItems.page, new ItemRendererPage());
-		MinecraftForgeClient.registerItemRenderer(ModItems.inkvial, new ItemRendererMask());
 	}
 
 	private void registerEntityRenderers() {
 		LoggerUtils.info("Adding Entity Renderers");
-		Render render;
-		render = new RenderFallingBlock();
-		render.setRenderManager(RenderManager.instance);
-		RenderingRegistry.registerEntityRenderingHandler(EntityFallingBlock.class, render);
-
-		render = new RenderLinkbook();
-		render.setRenderManager(RenderManager.instance);
-		RenderingRegistry.registerEntityRenderingHandler(EntityLinkbook.class, render);
-
-		render = new RenderLightningBoltAdv();
-		render.setRenderManager(RenderManager.instance);
-		RenderingRegistry.registerEntityRenderingHandler(EntityLightningBoltAdv.class, render);
-
-		render = new RenderMeteor();
-		render.setRenderManager(RenderManager.instance);
-		RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, render);
+		RenderingRegistry.registerEntityRenderingHandler(EntityFallingBlock.class, new RenderFallingBlock.Factory());
+		RenderingRegistry.registerEntityRenderingHandler(EntityLightningBoltAdv.class, new RenderLightningBoltAdv.Factory());
+		RenderingRegistry.registerEntityRenderingHandler(EntityLinkbook.class, new RenderLinkbook.Factory());
+		RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, new RenderMeteor.Factory());
 	}
 
 	private void registerTileEntityRenderers() {
@@ -189,7 +171,7 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 		CreativeTabMyst pageTab = new CreativeTabMyst("mystcraft.pages");
 		pageTab.setHasSearchBar(true);
 		pageTab.registerItemStack(Page.createLinkPage());
-		ArrayList<String> linkproperties = new ArrayList<String>();
+		ArrayList<String> linkproperties = new ArrayList<>();
 		linkproperties.addAll(InkEffects.getProperties());
 		Collections.sort(linkproperties);
 		for (String property : linkproperties) {

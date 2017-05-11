@@ -8,8 +8,6 @@ import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import com.xcompwiz.mystcraft.integration.lookingglass.DynamicLinkPanelRenderer;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.ResourceLocation;
@@ -83,35 +81,34 @@ public class ShaderUtils {
 
 	public static void registerShaders() {
 		if (OpenGlHelper.shadersSupported) {
-			ResourceLocation linkingpanel = (new ResourceLocation("mystcraft", "shaders/linkingpanel.frag"));
-			ResourceLocation vlinkingpanel = (new ResourceLocation("mystcraft", "shaders/linkingpanel.vert"));
-
-			try {
-				DynamicLinkPanelRenderer.vertexARB = createShader(vlinkingpanel, GL20.GL_VERTEX_SHADER);
-				DynamicLinkPanelRenderer.fragmentARB = createShader(linkingpanel, GL20.GL_FRAGMENT_SHADER);
-			} catch (Exception e) {
-			}
-
-			DynamicLinkPanelRenderer.shaderARB = ARBShaderObjects.glCreateProgramObjectARB();
-
-			if (DynamicLinkPanelRenderer.shaderARB == 0 || DynamicLinkPanelRenderer.fragmentARB == 0) return;
-
-			ARBShaderObjects.glAttachObjectARB(DynamicLinkPanelRenderer.shaderARB, DynamicLinkPanelRenderer.vertexARB);
-			ARBShaderObjects.glAttachObjectARB(DynamicLinkPanelRenderer.shaderARB, DynamicLinkPanelRenderer.fragmentARB);
-
-			ARBShaderObjects.glLinkProgramARB(DynamicLinkPanelRenderer.shaderARB);
-			if (ARBShaderObjects.glGetObjectParameteriARB(DynamicLinkPanelRenderer.shaderARB, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) { return; }
-
-			ARBShaderObjects.glValidateProgramARB(DynamicLinkPanelRenderer.shaderARB);
-			if (ARBShaderObjects.glGetObjectParameteriARB(DynamicLinkPanelRenderer.shaderARB, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) { return; }
-
-			DynamicLinkPanelRenderer.textureLoc = ARBShaderObjects.glGetUniformLocationARB(DynamicLinkPanelRenderer.shaderARB, "u_texture");
-			DynamicLinkPanelRenderer.damageLoc = ARBShaderObjects.glGetUniformLocationARB(DynamicLinkPanelRenderer.shaderARB, "damage");
-			DynamicLinkPanelRenderer.resLoc = ARBShaderObjects.glGetUniformLocationARB(DynamicLinkPanelRenderer.shaderARB, "iResolution");
-			DynamicLinkPanelRenderer.timeLoc = ARBShaderObjects.glGetUniformLocationARB(DynamicLinkPanelRenderer.shaderARB, "iGlobalTime");
-			DynamicLinkPanelRenderer.waveScaleLoc = ARBShaderObjects.glGetUniformLocationARB(DynamicLinkPanelRenderer.shaderARB, "dWave");
-			DynamicLinkPanelRenderer.colorScaleLoc = ARBShaderObjects.glGetUniformLocationARB(DynamicLinkPanelRenderer.shaderARB, "dColor");
-			DynamicLinkPanelRenderer.linkColorLoc = ARBShaderObjects.glGetUniformLocationARB(DynamicLinkPanelRenderer.shaderARB, "linkColor");
+			//ResourceLocation linkingpanel = (new ResourceLocation("mystcraft", "shaders/linkingpanel.frag"));
+			//ResourceLocation vlinkingpanel = (new ResourceLocation("mystcraft", "shaders/linkingpanel.vert"));
+//
+			//try {
+			//	DynamicLinkPanelRenderer.vertexARB = createShader(vlinkingpanel, GL20.GL_VERTEX_SHADER);
+			//	DynamicLinkPanelRenderer.fragmentARB = createShader(linkingpanel, GL20.GL_FRAGMENT_SHADER);
+			//} catch (Exception e) {}
+//
+			//DynamicLinkPanelRenderer.shaderARB = ARBShaderObjects.glCreateProgramObjectARB();
+//
+			//if (DynamicLinkPanelRenderer.shaderARB == 0 || DynamicLinkPanelRenderer.fragmentARB == 0) return;
+//
+			//ARBShaderObjects.glAttachObjectARB(DynamicLinkPanelRenderer.shaderARB, DynamicLinkPanelRenderer.vertexARB);
+			//ARBShaderObjects.glAttachObjectARB(DynamicLinkPanelRenderer.shaderARB, DynamicLinkPanelRenderer.fragmentARB);
+//
+			//ARBShaderObjects.glLinkProgramARB(DynamicLinkPanelRenderer.shaderARB);
+			//if (ARBShaderObjects.glGetObjectParameteriARB(DynamicLinkPanelRenderer.shaderARB, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) { return; }
+//
+			//ARBShaderObjects.glValidateProgramARB(DynamicLinkPanelRenderer.shaderARB);
+			//if (ARBShaderObjects.glGetObjectParameteriARB(DynamicLinkPanelRenderer.shaderARB, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) { return; }
+//
+			//DynamicLinkPanelRenderer.textureLoc = ARBShaderObjects.glGetUniformLocationARB(DynamicLinkPanelRenderer.shaderARB, "u_texture");
+			//DynamicLinkPanelRenderer.damageLoc = ARBShaderObjects.glGetUniformLocationARB(DynamicLinkPanelRenderer.shaderARB, "damage");
+			//DynamicLinkPanelRenderer.resLoc = ARBShaderObjects.glGetUniformLocationARB(DynamicLinkPanelRenderer.shaderARB, "iResolution");
+			//DynamicLinkPanelRenderer.timeLoc = ARBShaderObjects.glGetUniformLocationARB(DynamicLinkPanelRenderer.shaderARB, "iGlobalTime");
+			//DynamicLinkPanelRenderer.waveScaleLoc = ARBShaderObjects.glGetUniformLocationARB(DynamicLinkPanelRenderer.shaderARB, "dWave");
+			//DynamicLinkPanelRenderer.colorScaleLoc = ARBShaderObjects.glGetUniformLocationARB(DynamicLinkPanelRenderer.shaderARB, "dColor");
+			//DynamicLinkPanelRenderer.linkColorLoc = ARBShaderObjects.glGetUniformLocationARB(DynamicLinkPanelRenderer.shaderARB, "linkColor");
 		}
 	}
 }

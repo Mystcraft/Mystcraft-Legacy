@@ -2,6 +2,9 @@ package com.xcompwiz.mystcraft.client.render;
 
 import java.util.Random;
 
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.util.Color;
@@ -14,11 +17,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderLightningBoltAdv extends Render {
-	/**
-	 * Actually renders the lightning bolt. This method is called through the doRender method.
-	 */
-	public void doRenderLightningBolt(EntityLightningBoltAdv par1EntityLightningBolt, double par2, double par4, double par6, float par8, float par9) {
+public class RenderLightningBoltAdv extends Render<EntityLightningBoltAdv> {
+
+	public RenderLightningBoltAdv(RenderManager renderManager) {
+		super(renderManager);
+	}
+
+	@Override
+	public void doRender(EntityLightningBoltAdv entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		Tessellator var10 = Tessellator.instance;
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -119,18 +125,18 @@ public class RenderLightningBoltAdv extends Render {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
-	/**
-	 * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then handing it off to a worker function
-	 * which does the actual work. In all probabilty, the class Render is generic (Render<T extends Entity) and this method has signature public void doRender(T
-	 * entity, double d, double d1, double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
-	 */
 	@Override
-	public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9) {
-		this.doRenderLightningBolt((EntityLightningBoltAdv) par1Entity, par2, par4, par6, par8, par9);
-	}
-
-	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) {
+	protected ResourceLocation getEntityTexture(EntityLightningBoltAdv entity) {
 		return null;
 	}
+
+	public static class Factory implements IRenderFactory<EntityLightningBoltAdv> {
+
+		@Override
+		public Render<EntityLightningBoltAdv> createRenderFor(RenderManager manager) {
+			return new RenderLightningBoltAdv(manager);
+		}
+
+	}
+
 }

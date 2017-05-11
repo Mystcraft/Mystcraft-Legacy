@@ -63,6 +63,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class AgeController implements AgeDirector {
+
 	private static final int								MINCHUNKS			= 400;
 
 	private World											world;
