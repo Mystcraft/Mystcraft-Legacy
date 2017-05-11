@@ -121,7 +121,7 @@ public class AgeController implements AgeDirector {
 	public AgeController(World worldObj, AgeData age) {
 		world = worldObj;
 		agedata = age;
-		chunkManager = new WorldChunkManagerMyst(this);
+		chunkManager = new BiomeProviderMyst(this);
 		skyrenderer = new SkyRendererMyst((WorldProviderMyst) world.provider, this);
 		cloudrenderer = new CloudRendererMyst((WorldProviderMyst) world.provider, this);
 		weatherrenderer = new WeatherRendererMyst((WorldProviderMyst) world.provider, this);

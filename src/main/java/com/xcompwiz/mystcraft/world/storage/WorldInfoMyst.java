@@ -31,12 +31,12 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 
 	@Override
 	public void setWorldTotalTime(long par1) {
-		if (provider.world.isRemote) tickcounter = par1;
+		if (provider.getWorld().isRemote) tickcounter = par1;
 	}
 
 	@Override
 	public long getWorldTotalTime() {
-		if (provider.world.isRemote) return tickcounter;
+		if (provider.getWorld().isRemote) return tickcounter;
 		return super.getWorldTotalTime();
 	}
 
@@ -112,7 +112,7 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 */
 	@Override
 	public boolean isThundering() {
-		return this.provider.worldObj.isThundering();
+		return this.provider.getWorld().isThundering();
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	 */
 	@Override
 	public boolean isRaining() {
-		return this.provider.worldObj.isRaining();
+		return this.provider.getWorld().isRaining();
 	}
 
 	/**

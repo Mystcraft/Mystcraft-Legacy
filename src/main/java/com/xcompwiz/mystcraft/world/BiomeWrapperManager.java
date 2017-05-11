@@ -2,10 +2,10 @@ package com.xcompwiz.mystcraft.world;
 
 import java.util.HashMap;
 
-import com.xcompwiz.mystcraft.world.biome.BiomeHelper;
 import com.xcompwiz.mystcraft.world.biome.BiomeWrapperMyst;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 
@@ -36,11 +36,11 @@ public class BiomeWrapperManager {
 	private Biome getBiomeForWorldCoords(int x, int z) {
 		int lx = x & 15;
 		int lz = z & 15;
-		if (provider.world.blockExists(x, 0, z)) {
-			Chunk chunk = provider.world.getChunkFromBlockCoords(x, z);
-			return chunk.getBiomeGenForWorldCoords(lx, lz, provider.getBiomeProvider());
+		if (provider.getWorld().isBlockLoaded(new BlockPos(x, 0, z))) {
+			Chunk chunk = provider.getWorld().getChunkFromBlockCoords(new BlockPos(x, 0, z));
+			return chunk.getBiome(new BlockPos(lx, 0, lz), provider.getBiomeProvider());
 		}
-		return this.provider.getBiomeProvider().getBiome(x, z);
+		return this.provider.getBiomeProvider().getBiome(new BlockPos(x, 0, z));
 	}
 
 }

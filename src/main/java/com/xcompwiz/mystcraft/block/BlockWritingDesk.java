@@ -189,7 +189,11 @@ public class BlockWritingDesk extends Block {
 		return new ItemStack(ModItems.desk);
 	}
 
-	public static int getMetadataFromDirection(int i, int j) {
+	public static EnumFacing getMetadataFromDirection(int i, int j) {
+		return EnumFacing.getHorizontal(getMetadataFromDirectionInternal(i, j));
+	}
+
+	private static int getMetadataFromDirectionInternal(int i, int j) {
 		if (j == 1) {
 			return 0;
 		} else if (i == -1) {

@@ -345,7 +345,7 @@ public class ChunkProfiler extends WorldSavedData {
 			semaphore.acquire();
 			count = 0;
 			solidmap = new ChunkProfileData();
-			blockmaps = new HashMap<String, ChunkProfileData>();
+			blockmaps = new HashMap<>();
 			for (String blockkey : InstabilityBlockManager.getWatchedBlocks()) {
 				blockmaps.put(blockkey, new ChunkProfileData());
 			}

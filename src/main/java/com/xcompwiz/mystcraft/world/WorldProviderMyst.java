@@ -75,6 +75,10 @@ public class WorldProviderMyst extends WorldProvider {
 		setWorldInfo();
 	}
 
+	public World getWorld() {
+		return world;
+	}
+
 	public AgeController getAgeController() {
 		return this.controller;
 	}

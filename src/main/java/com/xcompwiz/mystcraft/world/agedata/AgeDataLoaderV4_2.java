@@ -8,6 +8,7 @@ import com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderManager.AgeDataLoader;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.util.Constants;
 
@@ -29,7 +30,7 @@ public class AgeDataLoaderV4_2 extends AgeDataLoader {
 		data.datacompound = nbttagcompound.getCompoundTag("DataCompound");
 
 		if (nbttagcompound.hasKey("SpawnX") && nbttagcompound.hasKey("SpawnY") && nbttagcompound.hasKey("SpawnZ")) {
-			data.spawn = new ChunkPos(nbttagcompound.getInteger("SpawnX"), nbttagcompound.getInteger("SpawnY"), nbttagcompound.getInteger("SpawnZ"));
+			data.spawn = new BlockPos(nbttagcompound.getInteger("SpawnX"), nbttagcompound.getInteger("SpawnY"), nbttagcompound.getInteger("SpawnZ"));
 		}
 
 		NBTTagList list = null;
@@ -42,7 +43,7 @@ public class AgeDataLoaderV4_2 extends AgeDataLoader {
 		NBTUtils.readStringCollection(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), data.authors);
 
 		NBTTagCompound cruftnbt = nbttagcompound.getCompoundTag("Cruft");
-		for (String key : (Set<String>) cruftnbt.func_150296_c()) {
+		for (String key : cruftnbt.getKeySet()) {
 			data.cruft.put(key, cruftnbt.getTag(key));
 		}
 		return data;

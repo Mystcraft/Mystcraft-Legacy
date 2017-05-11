@@ -8,13 +8,18 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import net.minecraft.entity.monster.EntityWitch;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.StructureStart;
 
+import javax.annotation.Nullable;
+
 // TODO: (Structures) Revise structure gen
 public class MapGenScatteredFeatureMyst extends MapGenStructure {
+
 	/** contains possible spawns for scattered features */
 	private List<SpawnListEntry>	scatteredFeatureSpawnList;
 
@@ -41,17 +46,24 @@ public class MapGenScatteredFeatureMyst extends MapGenStructure {
 			Entry<String, String> var3 = var2.next();
 
 			if (var3.getKey().equals("distance")) {
-				this.maxDistanceBetweenScatteredFeatures = MathHelper.parseIntWithDefaultAndMax(var3.getValue(), this.maxDistanceBetweenScatteredFeatures, this.minDistanceBetweenScatteredFeatures + 1);
+				this.maxDistanceBetweenScatteredFeatures = MathHelper.getInt(var3.getValue(), this.maxDistanceBetweenScatteredFeatures, this.minDistanceBetweenScatteredFeatures + 1);
 			}
 		}
 	}
 
 	@Override
-	public String func_143025_a() {
+	public String getStructureName() {
 		return stringId;
 	}
 
-	@Override
+	//TODO implement if this causes issues?...
+    @Nullable
+    @Override
+    public BlockPos getClosestStrongholdPos(World worldIn, BlockPos pos, boolean generateChunks) {
+        return null;
+    }
+
+    @Override
 	protected boolean canSpawnStructureAtCoords(int par1, int par2) {
 		int var3 = par1;
 		int var4 = par2;
@@ -66,7 +78,7 @@ public class MapGenScatteredFeatureMyst extends MapGenStructure {
 
 		int var5 = par1 / this.maxDistanceBetweenScatteredFeatures;
 		int var6 = par2 / this.maxDistanceBetweenScatteredFeatures;
-		Random var7 = this.worldObj.setRandomSeed(var5, var6, 14357617);
+		Random var7 = this.world.setRandomSeed(var5, var6, 14357617);
 		var5 *= this.maxDistanceBetweenScatteredFeatures;
 		var6 *= this.maxDistanceBetweenScatteredFeatures;
 		var5 += var7.nextInt(this.maxDistanceBetweenScatteredFeatures - this.minDistanceBetweenScatteredFeatures);
@@ -89,7 +101,7 @@ public class MapGenScatteredFeatureMyst extends MapGenStructure {
 
 	@Override
 	protected StructureStart getStructureStart(int par1, int par2) {
-		return new StructureScatteredFeatureStartMyst(this.worldObj, this.rand, par1, par2);
+		return new StructureScatteredFeatureStartMyst(this.world, this.rand, par1, par2);
 	}
 
 	/**

@@ -1,17 +1,19 @@
 package com.xcompwiz.mystcraft.world;
 
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.Vec3d;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SkyRendererMyst extends IRenderHandler {
+
 	private AgeController	controller;
 
 	private int				glSkyList;
@@ -26,45 +28,45 @@ public class SkyRendererMyst extends IRenderHandler {
 
 	@SideOnly(Side.CLIENT)
 	private void init() {
-		if (this.initialized) return;
+		if (this.initialized) {
+			return;
+		}
 		this.initialized = true;
-		Tessellator var5 = Tessellator.instance;
+
+		Tessellator tes = Tessellator.getInstance();
+		VertexBuffer vb = tes.getBuffer();
+
 		this.glSkyList = GLAllocation.generateDisplayLists(2);
-		GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
-		byte var7 = 64;
-		int var8 = 256 / var7 + 2;
-		float var6 = 16.0F;
-		int var9;
-		int var10;
-
-		for (var9 = -var7 * var8; var9 <= var7 * var8; var9 += var7) {
-			for (var10 = -var7 * var8; var10 <= var7 * var8; var10 += var7) {
-				var5.startDrawingQuads();
-				var5.addVertex((var9 + 0), var6, (var10 + 0));
-				var5.addVertex((var9 + var7), var6, (var10 + 0));
-				var5.addVertex((var9 + var7), var6, (var10 + var7));
-				var5.addVertex((var9 + 0), var6, (var10 + var7));
-				var5.draw();
+		GlStateManager.glNewList(this.glSkyList, GL11.GL_COMPILE);
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+		for (int k = -384; k <= 384; k += 64) {
+			for (int l = -384; l <= 384; l += 64) {
+				float f =  (float)  k;
+				float f1 = (float) (k + 64);
+				vb.pos((double)  f, 16D, (double) l)      .endVertex();
+				vb.pos((double) f1, 16D, (double) l)      .endVertex();
+				vb.pos((double) f1, 16D, (double)(l + 64)).endVertex();
+				vb.pos((double)  f, 16D, (double)(l + 64)).endVertex();
 			}
 		}
+		tes.draw();
+		GlStateManager.glEndList();
 
-		GL11.glEndList();
-		this.glSkyList2 = this.glSkyList + 1;
-		GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
-		var6 = -16.0F;
-		var5.startDrawingQuads();
-
-		for (var9 = -var7 * var8; var9 <= var7 * var8; var9 += var7) {
-			for (var10 = -var7 * var8; var10 <= var7 * var8; var10 += var7) {
-				var5.addVertex((var9 + var7), var6, (var10 + 0));
-				var5.addVertex((var9 + 0), var6, (var10 + 0));
-				var5.addVertex((var9 + 0), var6, (var10 + var7));
-				var5.addVertex((var9 + var7), var6, (var10 + var7));
-			}
-		}
-
-		var5.draw();
-		GL11.glEndList();
+		glSkyList2 = this.glSkyList + 1;
+        GlStateManager.glNewList(this.glSkyList2, GL11.GL_COMPILE);
+        vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        for (int k = -384; k <= 384; k += 64) {
+            for (int l = -384; l <= 384; l += 64) {
+                float f =  (float) (k + 64);
+                float f1 = (float)  k;
+                vb.pos((double)  f, -16D, (double) l)      .endVertex();
+                vb.pos((double) f1, -16D, (double) l)      .endVertex();
+                vb.pos((double) f1, -16D, (double)(l + 64)).endVertex();
+                vb.pos((double)  f, -16D, (double)(l + 64)).endVertex();
+            }
+        }
+        tes.draw();
+        GlStateManager.glEndList();
 	}
 
 	@Override
@@ -73,88 +75,87 @@ public class SkyRendererMyst extends IRenderHandler {
 		init();
 		TextureManager renderEngine = mc.getTextureManager();
 
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		Vec3d var2 = world.getSkyColor(mc.renderViewEntity, partialTicks);
-		float skyRed = (float) var2.xCoord;
-		float skyGreen = (float) var2.yCoord;
-		float skyBlue = (float) var2.zCoord;
+        GlStateManager.disableTexture2D();
+        Vec3d vec3d = world.getSkyColor(mc.getRenderViewEntity() == null ? mc.player : mc.getRenderViewEntity(), partialTicks);
+        float f = (float)vec3d.xCoord;
+        float f1 = (float)vec3d.yCoord;
+        float f2 = (float)vec3d.zCoord;
 
-		if (mc.gameSettings.anaglyph) {
-			float red = (skyRed * 30.0F + skyGreen * 59.0F + skyBlue * 11.0F) / 100.0F;
-			float green = (skyRed * 30.0F + skyGreen * 70.0F) / 100.0F;
-			float blue = (skyRed * 30.0F + skyBlue * 70.0F) / 100.0F;
-			skyRed = red;
-			skyGreen = green;
-			skyBlue = blue;
-		}
+        if (mc.gameSettings.anaglyph) {
+            float f3 = (f * 30.0F + f1 * 59.0F + f2 * 11.0F) / 100.0F;
+            float f4 = (f * 30.0F + f1 * 70.0F) / 100.0F;
+            float f5 = (f * 30.0F + f2 * 70.0F) / 100.0F;
+            f = f3;
+            f1 = f4;
+            f2 = f5;
+        }
 
-		// Sky color base
-		GL11.glColor3f(skyRed, skyGreen, skyBlue);
-		Tessellator tessellator = Tessellator.instance;
-		GL11.glDepthMask(false);
-		GL11.glEnable(GL11.GL_FOG);
-		GL11.glColor3f(skyRed, skyGreen, skyBlue);
-		GL11.glCallList(this.glSkyList);
-		GL11.glDisable(GL11.GL_FOG);
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.color(f, f1, f2);
+        Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        GlStateManager.depthMask(false);
+        GlStateManager.enableFog();
+        GlStateManager.color(f, f1, f2);
+        GlStateManager.callList(this.glSkyList);
+        GlStateManager.disableFog();
+        GlStateManager.disableAlpha();
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        RenderHelper.disableStandardItemLighting();
 
-		controller.renderCelestials(renderEngine, world, partialTicks);
+        controller.renderCelestials(renderEngine, world, partialTicks);
 
-		// Draw horizon cutoff
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
-		GL11.glEnable(GL11.GL_FOG);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glColor3f(0.0F, 0.0F, 0.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableFog();
+        GlStateManager.popMatrix();
+        GlStateManager.disableTexture2D();
+        GlStateManager.color(0.0F, 0.0F, 0.0F);
+        double horizonDst = mc.player.getPositionEyes(partialTicks).yCoord - world.getHorizon();
+        boolean renderHorizon = controller.shouldRenderHorizon();
+        boolean renderVoid = controller.shouldRenderVoid();
 
-		double horizonDist = mc.thePlayer.getPosition(partialTicks).yCoord - world.getHorizon();
-		boolean renderHorizon = controller.shouldRenderHorizon();
-		boolean renderVoid = controller.shouldRenderVoid();
-
-		if (renderVoid) {
-			if (horizonDist < 0.0D) {
-				GL11.glPushMatrix();
-				GL11.glTranslatef(0.0F, 12.0F, 0.0F);
-				GL11.glCallList(this.glSkyList2);
-				GL11.glPopMatrix();
-				float var10 = 1.0F;
-				float var11 = -((float) (horizonDist + 65.0D));
-				float var12 = -var10;
-				tessellator.startDrawingQuads();
-				tessellator.setColorRGBA_I(0, 255);
-				tessellator.addVertex((-var10), var11, var10);
-				tessellator.addVertex(var10, var11, var10);
-				tessellator.addVertex(var10, var12, var10);
-				tessellator.addVertex((-var10), var12, var10);
-				tessellator.addVertex((-var10), var12, (-var10));
-				tessellator.addVertex(var10, var12, (-var10));
-				tessellator.addVertex(var10, var11, (-var10));
-				tessellator.addVertex((-var10), var11, (-var10));
-				tessellator.addVertex(var10, var12, (-var10));
-				tessellator.addVertex(var10, var12, var10);
-				tessellator.addVertex(var10, var11, var10);
-				tessellator.addVertex(var10, var11, (-var10));
-				tessellator.addVertex((-var10), var11, (-var10));
-				tessellator.addVertex((-var10), var11, var10);
-				tessellator.addVertex((-var10), var12, var10);
-				tessellator.addVertex((-var10), var12, (-var10));
-				tessellator.addVertex((-var10), var12, (-var10));
-				tessellator.addVertex((-var10), var12, var10);
-				tessellator.addVertex(var10, var12, var10);
-				tessellator.addVertex(var10, var12, (-var10));
-				tessellator.draw();
-			}
-		}
-		if (renderHorizon) {
-			GL11.glColor3f(skyRed, skyGreen, skyBlue);
-			GL11.glPushMatrix();
-			GL11.glTranslatef(0.0F, -((float) (horizonDist + 16.0D)), 0.0F);
-			GL11.glCallList(this.glSkyList2);
-			GL11.glPopMatrix();
-		}
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glDepthMask(true);
+        if(renderVoid) {
+            if (horizonDst < 0.0D) {
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(0.0F, 12.0F, 0.0F);
+                GlStateManager.callList(this.glSkyList2);
+                GlStateManager.popMatrix();
+                float f19 = -((float)(horizonDst + 65.0D));
+                vertexbuffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                vertexbuffer.pos(-1.0D, (double)f19, 1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(1.0D, (double)f19, 1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(1.0D, (double)f19, -1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(-1.0D, (double)f19, -1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(1.0D, (double)f19, 1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(1.0D, (double)f19, -1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(-1.0D, (double)f19, -1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(-1.0D, (double)f19, 1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+                vertexbuffer.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+                tessellator.draw();
+            }
+        }
+        if(renderHorizon) {
+            GlStateManager.pushMatrix();
+            GlStateManager.color(f, f1, f2);
+            GlStateManager.translate(0.0F, -((float)(horizonDst - 16.0D)), 0.0F);
+            GlStateManager.callList(this.glSkyList2);
+            GlStateManager.color(1F, 1F, 1F, 1F);
+            GlStateManager.popMatrix();
+        }
+        GlStateManager.enableTexture2D();
+        GlStateManager.depthMask(true);
 	}
 }

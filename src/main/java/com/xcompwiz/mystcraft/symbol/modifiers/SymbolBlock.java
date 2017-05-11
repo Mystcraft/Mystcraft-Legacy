@@ -30,7 +30,9 @@ public class SymbolBlock extends SymbolBase {
 	private static String formatted(BlockDescriptor blockDescriptor) {
 		IBlockState blockstate = blockDescriptor.blockstate;
 		String name = I18n.format(blockstate);
-		if (name.endsWith("Block")) name = name.substring(0, name.length() - "Block".length()).trim();
+		if (name.endsWith("Block")) {
+			name = name.substring(0, name.length() - "Block".length()).trim();
+		}
 		name = I18n.format("myst.symbol.block.wrapper", name);
 		return name;
 	}

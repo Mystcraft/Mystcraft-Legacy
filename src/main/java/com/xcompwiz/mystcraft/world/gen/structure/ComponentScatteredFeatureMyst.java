@@ -3,54 +3,58 @@ package com.xcompwiz.mystcraft.world.gen.structure;
 import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 abstract class ComponentScatteredFeatureMyst extends StructureComponent {
+
 	/** The size of the bounding box for this feature in the X axis */
 	protected int	scatteredFeatureSizeX;
-
 	/** The size of the bounding box for this feature in the Y axis */
 	protected int	scatteredFeatureSizeY;
-
 	/** The size of the bounding box for this feature in the Z axis */
 	protected int	scatteredFeatureSizeZ;
+
 	protected int	field_74936_d	= -1;
 
 	public ComponentScatteredFeatureMyst() {}
 
-	protected ComponentScatteredFeatureMyst(Random par1Random, int par2, int par3, int par4, int par5, int par6, int par7) {
+	protected ComponentScatteredFeatureMyst(Random par1Random, int x, int y, int z, int sizeX, int sizeY, int sizeZ) {
 		super(0);
-		this.scatteredFeatureSizeX = par5;
-		this.scatteredFeatureSizeY = par6;
-		this.scatteredFeatureSizeZ = par7;
-		this.coordBaseMode = par1Random.nextInt(4);
+		this.scatteredFeatureSizeX = x;
+		this.scatteredFeatureSizeY = y;
+		this.scatteredFeatureSizeZ = z;
+		setCoordBaseMode(EnumFacing.HORIZONTALS[par1Random.nextInt(EnumFacing.HORIZONTALS.length)]);
 
-		switch (this.coordBaseMode) {
-		case 0:
-		case 2:
-			this.boundingBox = new StructureBoundingBox(par2, par3, par4, par2 + par5 - 1, par3 + par6 - 1, par4 + par7 - 1);
-			break;
-		default:
-			this.boundingBox = new StructureBoundingBox(par2, par3, par4, par2 + par7 - 1, par3 + par6 - 1, par4 + par5 - 1);
+		switch (getCoordBaseMode()) {
+            case NORTH:
+            case SOUTH:
+			    this.boundingBox = new StructureBoundingBox(x, y, z, x + sizeX - 1, y + sizeY - 1, z + sizeZ - 1);
+			    break;
+		    default:
+			    this.boundingBox = new StructureBoundingBox(x, y, z, x + sizeZ - 1, y + sizeY - 1, z + sizeX - 1);
 		}
 	}
 
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		par1NBTTagCompound.setInteger("Width", this.scatteredFeatureSizeX);
-		par1NBTTagCompound.setInteger("Height", this.scatteredFeatureSizeY);
-		par1NBTTagCompound.setInteger("Depth", this.scatteredFeatureSizeZ);
-		par1NBTTagCompound.setInteger("HPos", this.field_74936_d);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		tagCompound.setInteger("Width", this.scatteredFeatureSizeX);
+		tagCompound.setInteger("Height", this.scatteredFeatureSizeY);
+		tagCompound.setInteger("Depth", this.scatteredFeatureSizeZ);
+		tagCompound.setInteger("HPos", this.field_74936_d);
 	}
 
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		this.scatteredFeatureSizeX = par1NBTTagCompound.getInteger("Width");
-		this.scatteredFeatureSizeY = par1NBTTagCompound.getInteger("Height");
-		this.scatteredFeatureSizeZ = par1NBTTagCompound.getInteger("Depth");
-		this.field_74936_d = par1NBTTagCompound.getInteger("HPos");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager p_143011_2_) {
+		this.scatteredFeatureSizeX = tagCompound.getInteger("Width");
+		this.scatteredFeatureSizeY = tagCompound.getInteger("Height");
+		this.scatteredFeatureSizeZ = tagCompound.getInteger("Depth");
+		this.field_74936_d = tagCompound.getInteger("HPos");
 	}
 
 	/**
@@ -62,8 +66,8 @@ abstract class ComponentScatteredFeatureMyst extends StructureComponent {
 
 		for (int k = this.boundingBox.minZ; k <= this.boundingBox.maxZ; ++k) {
 			for (int l = this.boundingBox.minX; l <= this.boundingBox.maxX; ++l) {
-				if (boundingbox.isVecInside(l, 64, k)) {
-					i += Math.max(worldObj.getTopSolidOrLiquidBlock(l, k), worldObj.provider.getAverageGroundLevel());
+				if (boundingbox.isVecInside(new Vec3i(l, 64, k))) {
+					i += Math.max(worldObj.getTopSolidOrLiquidBlock(new BlockPos(l, 0, k)).getY(), worldObj.provider.getAverageGroundLevel());
 					++j;
 				}
 			}
@@ -80,8 +84,8 @@ abstract class ComponentScatteredFeatureMyst extends StructureComponent {
 
 		for (int var6 = this.boundingBox.minZ; var6 <= this.boundingBox.maxZ; ++var6) {
 			for (int var7 = this.boundingBox.minX; var7 <= this.boundingBox.maxX; ++var7) {
-				if (par2StructureBoundingBox.isVecInside(var7, 64, var6)) {
-					var4 += Math.max(par1World.getTopSolidOrLiquidBlock(var7, var6), par1World.provider.getAverageGroundLevel());
+				if (par2StructureBoundingBox.isVecInside(new Vec3i(var7, 64, var6))) {
+					var4 += Math.max(par1World.getTopSolidOrLiquidBlock(new BlockPos(var7, 0, var6)).getY(), par1World.provider.getAverageGroundLevel());
 					++var5;
 				}
 			}

@@ -1,12 +1,14 @@
 package com.xcompwiz.mystcraft.world;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 public class ArrayMappingUtils {
 
 	//On local indexing, we are incrementing x, then z, then y
-	public static final void mapLocalToVanilla(Block[] arr1, Block[] arr2) {
+	public static void mapLocalToVanilla(IBlockState[] arr1, IBlockState[] arr2) {
 		int len = arr1.length;
 		if (len != arr2.length) throw new RuntimeException("Cannot map data indicies: Arrays of different lengths");
 		int maxy = len / 256;
@@ -22,7 +24,7 @@ public class ArrayMappingUtils {
 	}
 
 	//On vanilla indexing, we increment y, then z, then x
-	public static final void mapVanillaToLocal(Block[] arr1, Block[] arr2) {
+	public static void mapVanillaToLocal(IBlockState[] arr1, IBlockState[] arr2) {
 		int len = arr1.length;
 		if (len != arr2.length) throw new RuntimeException("Cannot map data indicies: Arrays of different lengths");
 		int maxy = len / 256;
@@ -38,36 +40,19 @@ public class ArrayMappingUtils {
 		}
 	}
 
-	//On local indexing, we are incrementing x, then z, then y
-	public static final void mapLocalToVanilla(byte[] arr1, byte[] arr2) {
-		int len = arr1.length;
-		if (len != arr2.length) throw new RuntimeException("Cannot map data indicies: Arrays of different lengths");
-		int maxy = len / 256;
-		for (int y = 0; y < maxy; ++y) {
-			for (int z = 0; z < 16; ++z) {
-				for (int x = 0; x < 16; ++x) {
-					int lcoords = y << 8 | z << 4 | x;
-					int vcoords = ((x << 4 | z) * maxy) | y;
-					arr2[vcoords] = arr1[lcoords];
-				}
-			}
+	public static void fillPrimerVanillaIndexing(ChunkPrimer cp, IBlockState[] blocks) {
+		for (int i = 0; i < blocks.length; i++) {
+			IBlockState state = blocks[i];
+			if(state == null) continue;
+			BlockPos vanillaIndex = getVanillaPos(i);
+			cp.setBlockState(vanillaIndex.getX(), vanillaIndex.getY(), vanillaIndex.getZ(), state);
 		}
 	}
 
-	//On vanilla indexing, we increment y, then z, then x
-	public static final void mapVanillaToLocal(byte[] arr1, byte[] arr2) {
-		int len = arr1.length;
-		if (len != arr2.length) throw new RuntimeException("Cannot map data indicies: Arrays of different lengths");
-		int maxy = len / 256;
-		for (int z = 0; z < 16; ++z) {
-			for (int x = 0; x < 16; ++x) {
-				for (int y = 0; y < maxy; ++y) {
-					int lcoords = y << 8 | z << 4 | x;
-					int vcoords = ((x << 4 | z) * maxy) | y;
-					arr2[lcoords] = arr1[vcoords];
-				}
-			}
-		}
+	private static BlockPos getVanillaPos(int index) {
+		int x = (index >> 12) & 15;
+		int z = (index >>  8) & 15;
+		int y = index & 255;
+		return new BlockPos(x, y, z);
 	}
-
 }

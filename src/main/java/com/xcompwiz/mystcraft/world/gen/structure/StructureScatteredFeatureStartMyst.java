@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureStart;
 
 public class StructureScatteredFeatureStartMyst extends StructureStart {
+
 	public StructureScatteredFeatureStartMyst() {}
 
 	public StructureScatteredFeatureStartMyst(World worldObj, Random random, int chunkX, int chunkZ) {

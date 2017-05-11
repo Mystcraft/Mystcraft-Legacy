@@ -18,15 +18,6 @@ import javax.annotation.Nonnull;
 public class TileEntityLectern extends TileEntityBookRotateable implements ITickable {
 
 	@Override
-	public void readCustomNBT(NBTTagCompound compound) {
-		super.readCustomNBT(compound);
-		if (compound.hasKey("Rotation")) {
-			int rot = 360 - compound.getInteger("Rotation") + 270;
-			this.setYaw(rot);
-		}
-	}
-
-	@Override
 	public void setYaw(int rotation) {
 		rotation = rotation - (rotation % 90);
 		super.setYaw(rotation);

@@ -5,28 +5,30 @@ import java.util.Random;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class WorldGenMystStarFissure extends WorldGenerator {
 
 	@Override
-	public boolean generate(World world, Random random, int i, int j, int k) {
+	public boolean generate(World world, Random random, BlockPos pos) {
 		int[][] noise = generateNoise(random);
 		for (int row = 0; row < noise.length; ++row) {
 			int x = noise[row][0];
 			for (; x <= noise[row][1]; ++x) {
-				set(world, i + x, j, k + row * 2);
-				set(world, i + x, j, k + row * 2 + 1);
+				set(world, pos.add(x, 0, row * 2 + 1));
 			}
 		}
 		return true;
 	}
 
-	private void set(World world, int i, int j, int k) {
-		world.setBlock(i, j++, k, ModBlocks.starfissure);
-		for (; j < world.getHeight(); ++j) {
-			world.setBlock(i, j, k, Blocks.AIR);
+	private void set(World world, BlockPos pos) {
+		world.setBlockState(pos.up(), ModBlocks.starfissure.getDefaultState());
+		pos = pos.up();
+		for (; pos.getY() < world.getHeight();) {
+			pos = pos.up();
+			world.setBlockToAir(pos);
 		}
 	}
 

@@ -70,9 +70,9 @@ public class AgeData extends WorldSavedData {
 	public Map<String, NBTBase>	cruft			= new HashMap<String, NBTBase>();
 
 	private boolean				updated;
-	private Boolean				sharedDirty		= new Boolean(false);
+	private Boolean				sharedDirty		= Boolean.FALSE;
 	private boolean				needsResend;
-	private Boolean				sharedResend	= new Boolean(false);
+	private Boolean				sharedResend	= Boolean.FALSE;
 
 	public AgeData(String s) {
 		super(s);
@@ -91,7 +91,7 @@ public class AgeData extends WorldSavedData {
 	@Override
 	public void setDirty(boolean par1) {
 		super.setDirty(par1);
-		if (par1 == false) {
+		if (!par1) {
 			sharedDirty = false;
 		}
 	}
@@ -119,7 +119,7 @@ public class AgeData extends WorldSavedData {
 	}
 
 	public void markVisited() {
-		if (visited != true) this.markDirty();
+		if (!visited) this.markDirty();
 		visited = true;
 		updated = false;
 	}
@@ -221,7 +221,7 @@ public class AgeData extends WorldSavedData {
 
 	// Called by AgeController when building the age logic
 	public List<String> getSymbols(boolean isRemote) {
-		if (visited == false && !isRemote) { // On first link, build the symbol list
+		if (!visited && !isRemote) { // On first link, build the symbol list
 			symbols.clear();
 			for (int i = 0; i < pages.size(); ++i) {
 				String symbol = Page.getSymbol(pages.get(i));
