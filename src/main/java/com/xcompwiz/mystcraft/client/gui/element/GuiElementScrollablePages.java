@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.client.gui.element;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -29,7 +30,9 @@ public class GuiElementScrollablePages extends GuiElement {
 	}
 
 	public interface IGuiPageListProvider {
+
 		List<ItemStack> getPageList();
+
 	}
 
 	private IGuiPageListProvider		pagesprovider;
@@ -64,7 +67,9 @@ public class GuiElementScrollablePages extends GuiElement {
 	 */
 	@Override
 	public void _handleMouseInput() {
-		if (this.isEnabled() == false) { return; }
+		if (!this.isEnabled()) {
+			return;
+		}
 		if (!mouseOver) return;
 		int input = Mouse.getEventDWheel();
 
@@ -79,7 +84,9 @@ public class GuiElementScrollablePages extends GuiElement {
 
 	@Override
 	public boolean _onMouseDown(int i, int j, int k) {
-		if (this.isEnabled() == false) { return false; }
+		if (!this.isEnabled()) {
+			return false;
+		}
 		List<ItemStack> pageList = getPageList();
 		if (pageList == null) return false;
 		int guiLeft = getLeft();
@@ -93,7 +100,7 @@ public class GuiElementScrollablePages extends GuiElement {
 				cycleRight();
 				return true;
 			}
-			if (mc.player.inventory.getItemStack() != null) {
+			if (!mc.player.inventory.getItemStack().isEmpty()) {
 				int index = hoverpage;
 				if (index == -1) index = pageList.size();
 				listener.onItemPlace(this, index, k);
@@ -144,8 +151,8 @@ public class GuiElementScrollablePages extends GuiElement {
 		int guiTop = getTop();
 		mouseOver = this.contains(mouseX, mouseY);
 		hovertext.clear();
-		GL11.glPushMatrix();
-		GL11.glTranslatef(guiLeft, guiTop, 0);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(guiLeft, guiTop, 0);
 		mouseX -= guiLeft;
 		mouseY -= guiTop;
 
@@ -153,7 +160,7 @@ public class GuiElementScrollablePages extends GuiElement {
 		drawRect(0, 0, xSize, ySize, color); // Back
 
 		// Render pages
-		GL11.glPushMatrix();
+		GlStateManager.pushMatrix();
 		GuiUtils.startGlScissor(guiLeft + 1, guiTop, xSize - 2, ySize);
 		hoverpage = -1;
 		List<ItemStack> pageList = getPageList();
@@ -178,7 +185,7 @@ public class GuiElementScrollablePages extends GuiElement {
 			}
 		}
 		GuiUtils.endGlScissor();
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
 		if (firstElement == 0) {
 			color = 0x33000000;
 		}
@@ -189,12 +196,14 @@ public class GuiElementScrollablePages extends GuiElement {
 			color = 0xAA000000;
 		}
 		GuiUtils.drawGradientRect(xSize - arrowWidth, 0, xSize, ySize, color, color, getZLevel()); // Right arrow
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
 	}
 
 	@Override
 	public boolean _onKeyPress(char c, int i) {
-		if (this.isEnabled() == false) { return false; }
+		if (!this.isEnabled()) {
+			return false;
+		}
 		if (i == Keyboard.KEY_LEFT || i == mc.gameSettings.keyBindLeft.getKeyCode()) {
 			cycleLeft();
 			return true;

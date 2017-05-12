@@ -1,5 +1,10 @@
 package com.xcompwiz.mystcraft.client.render;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.Mystcraft;
@@ -14,7 +19,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 
-public class RenderBookstand extends TileEntitySpecialRenderer {
+public class RenderBookstand extends TileEntitySpecialRenderer<TileEntityBookstand> {
 
 	private ModelBook		book;
 	private ModelBookstand	stand;
@@ -24,77 +29,85 @@ public class RenderBookstand extends TileEntitySpecialRenderer {
 		book = new ModelBook();
 	}
 
-	public void render(TileEntityBookstand tileentity, double d, double d1, double d2, float f) {
-		d += 0.5;
-		d2 += 0.5;
-		bindTexture(Entities.bookstand);
-		GL11.glPushMatrix();
-		GL11.glTranslatef((float) d, (float) d1 + 0.5F, (float) d2);
-		GL11.glRotatef(180, 0, 0, 1);
-		GL11.glRotatef(180 + tileentity.getYaw(), 0, 1, 0);
-		stand.render(null, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0625F);
-		GL11.glPopMatrix();
-		if (tileentity.getDisplayItem() == null) return;
-		if (tileentity.getDisplayItem().getItem() == ModItems.agebook) {
-			bindTexture(Entities.agebook);
-		} else if (tileentity.getDisplayItem().getItem() == ModItems.linkbook) {
-			bindTexture(Entities.linkbook);
-		} else {
-			return;
-		}
-		GL11.glPushMatrix();
-		GL11.glTranslatef((float) d, (float) d1 + 0.55F, (float) d2);
-		GL11.glRotatef(270 + tileentity.getYaw(), 0, -1, 0);
-		GL11.glRotatef(120F, 0, 0, 1);
-		GL11.glScalef(0.8F, 0.8F, 0.8F);
-		book.render(null, 0.0f, 0.0f, 0.0f, 1.05f /* Open */, 0.0f, 0.0625F);
-		GL11.glPopMatrix();
-
-		if (Mystcraft.renderlabels && Mystcraft.serverLabels) renderLabel(tileentity, tileentity.getBookTitle(), d, d1 + 1.25F, d2, 25);
-	}
-
-	protected void renderLabel(TileEntity entity, String s, double d, double d1, double d2, int i) {
-		if (s == null) return;
-		double f = entity.getDistanceFrom(field_147501_a.field_147560_j, field_147501_a.field_147561_k, field_147501_a.field_147558_l);
-		if (f > i) { return; }
-		FontRenderer fontrenderer = field_147501_a.getFontRenderer();
-		float f1 = 1.6F;
-		float f2 = 0.01666667F * f1;
-		GL11.glPushMatrix();
-		GL11.glTranslatef((float) d, (float) d1, (float) d2);
-		GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-		GL11.glRotatef(-field_147501_a.field_147562_h, 0.0F, 1.0F, 0.0F);
-		GL11.glRotatef(field_147501_a.field_147563_i, 1.0F, 0.0F, 0.0F);
-		GL11.glScalef(-f2, -f2, f2);
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glDepthMask(false);
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(770, 771);
-		Tessellator tessellator = Tessellator.instance;
-		byte byte0 = 0;
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		tessellator.startDrawingQuads();
-		int j = fontrenderer.getStringWidth(s) / 2;
-		tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-		tessellator.addVertex(-j - 1, -1 + byte0, 0.0D);
-		tessellator.addVertex(-j - 1, 8 + byte0, 0.0D);
-		tessellator.addVertex(j + 1, 8 + byte0, 0.0D);
-		tessellator.addVertex(j + 1, -1 + byte0, 0.0D);
-		tessellator.draw();
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0x20ffffff);
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glDepthMask(true);
-		fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, -1);
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glPopMatrix();
-	}
-
 	@Override
-	public void renderTileEntityAt(TileEntity tileentity, double d, double d1, double d2, float f) {
-		render((TileEntityBookstand) tileentity, d, d1, d2, f);
+	public void renderTileEntityAt(TileEntityBookstand te, double x, double y, double z, float partialTicks, int destroyStage) {
+		x += 0.5;
+		z += 0.5;
+		bindTexture(Entities.bookstand);
+		GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y + 0.5, z);
+        GlStateManager.rotate(180, 0, 0, 1);
+        GlStateManager.rotate(180 + te.getYaw(), 0, 1, 0);
+        stand.render(null, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0625F);
+        GlStateManager.popMatrix();
+        ItemStack display = te.getDisplayItem();
+        if (display.isEmpty()) {
+            return;
+        }
+        if (display.getItem() == ModItems.agebook) {
+            bindTexture(Entities.agebook);
+        } else if (display.getItem() == ModItems.linkbook) {
+            bindTexture(Entities.linkbook);
+        } else {
+            return;
+        }
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y + 0.55F, z);
+        GlStateManager.rotate(270 + te.getYaw(), 0, -1, 0);
+        GlStateManager.rotate(120F, 0, 0, 1);
+        GlStateManager.scale(0.8, 0.8, 0.8);
+        book.render(null, 0.0f, 0.0f, 0.0f, 1.05f /* Open */, 0.0f, 0.0625F);
+        GlStateManager.popMatrix();
+
+        if (Mystcraft.renderlabels && Mystcraft.serverLabels) {
+            renderLabel(te, te.getBookTitle(), x, y + 1.25F, z, 25);
+        }
 	}
+
+	private void renderLabel(TileEntity entity, String s, double x, double y, double z, int maxDst) {
+        if (s == null || s.isEmpty()) {
+            return;
+        }
+        double f = entity.getDistanceSq(rendererDispatcher.entityX, rendererDispatcher.entityY, rendererDispatcher.entityZ);
+        f = MathHelper.sqrt(f); //Because squaredDst
+        if (f > maxDst) {
+            return;
+        }
+        FontRenderer fontrenderer = getFontRenderer();
+        float f1 = 1.6F;
+        float f2 = 0.01666667F * f1;
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, z);
+        GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-rendererDispatcher.entityYaw, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(rendererDispatcher.entityPitch, 1.0F, 0.0F, 0.0F);
+        GlStateManager.scale(-f2, -f2, f2);
+        GlStateManager.disableLighting();
+        GlStateManager.depthMask(false);
+        GlStateManager.disableDepth();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.disableTexture2D();
+        Tessellator tes = Tessellator.getInstance();
+        VertexBuffer vb = tes.getBuffer();
+        byte byte0 = 0;
+        int j = fontrenderer.getStringWidth(s) / 2;
+        vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        vb.pos(-j - 1, -1 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+        vb.pos(-j - 1,  8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+        vb.pos( j + 1,  8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+        vb.pos( j + 1, -1 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+        tes.draw();
+        GlStateManager.enableTexture2D();
+        fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0x20ffffff);
+        GlStateManager.enableDepth();
+        GlStateManager.depthMask(true);
+        fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, -1);
+        GlStateManager.enableLighting();
+        GlStateManager.disableBlend();
+        GlStateManager.color(1F, 1F, 1F, 1F);
+        GlStateManager.popMatrix();
+	}
+
 }

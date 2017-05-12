@@ -1,5 +1,8 @@
 package com.xcompwiz.mystcraft.client.gui.element;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
@@ -10,12 +13,17 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ChatAllowedCharacters;
 
 public class GuiElementTextField extends GuiElement {
+
 	public interface IGuiOnTextChange {
+
 		void onTextChange(GuiElementTextField caller, String text);
+
 	}
 
 	public interface IGuiTextProvider {
+
 		String getText(GuiElementTextField caller);
+
 	}
 
 	/**
@@ -507,19 +515,20 @@ public class GuiElementTextField extends GuiElement {
 			par4 = i1;
 		}
 
-		Tessellator tessellator = Tessellator.instance;
-		GL11.glColor4f(0.0F, 0.0F, 255.0F, 255.0F);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_COLOR_LOGIC_OP);
-		GL11.glLogicOp(GL11.GL_OR_REVERSE);
-		tessellator.startDrawingQuads();
-		tessellator.addVertex(par1, par4, 0.0D);
-		tessellator.addVertex(par3, par4, 0.0D);
-		tessellator.addVertex(par3, par2, 0.0D);
-		tessellator.addVertex(par1, par2, 0.0D);
-		tessellator.draw();
-		GL11.glDisable(GL11.GL_COLOR_LOGIC_OP);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		Tessellator tes = Tessellator.getInstance();
+        VertexBuffer vb = tes.getBuffer();
+        GlStateManager.color(0, 0, 1, 1);
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableColorLogic();
+        GlStateManager.colorLogicOp(GlStateManager.LogicOp.OR_REVERSE);
+        vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        vb.pos(par1, par4, 0.0D).endVertex();
+        vb.pos(par3, par4, 0.0D).endVertex();
+        vb.pos(par3, par2, 0.0D).endVertex();
+        vb.pos(par1, par2, 0.0D).endVertex();
+        tes.draw();
+        GlStateManager.disableColorLogic();
+        GlStateManager.enableTexture2D();
 	}
 
 	/**

@@ -9,6 +9,7 @@ import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.block.BlockDecay;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 
+import com.xcompwiz.mystcraft.instability.decay.DecayHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -20,16 +21,16 @@ public class EffectDecayBasic implements IEnvironmentalEffect {
 	private int						updateLCG;
 
 	private int						maxscore	= 1000000;
-	private int						metadata;
+	private DecayHandler.DecayType decayType;
 	private int						min;
 	private Integer					max;
 	private Set<Material>			bannedmats	= new HashSet<Material>();
 
-	public EffectDecayBasic(InstabilityDirector controller, int metadata, int min, Integer max) {
+	public EffectDecayBasic(InstabilityDirector controller, DecayHandler.DecayType type, int min, Integer max) {
 		this.controller = controller;
 		this.updateLCG = (new Random()).nextInt();
 
-		this.metadata = metadata;
+		this.decayType = type;
 		this.min = min;
 		this.max = max;
 	}
@@ -38,7 +39,7 @@ public class EffectDecayBasic implements IEnvironmentalEffect {
 		bannedmats.add(material);
 	}
 
-	protected void placeBlock(World world, BlockPos pos, int minY, Integer maxY, int metadata) {
+	protected void placeBlock(World world, BlockPos pos, int minY, Integer maxY, DecayHandler.DecayType type) {
 		if (maxY == null) {
 			maxY = world.getHeight(pos.getX(), pos.getZ());
 			if (maxY <= minY) maxY = world.provider.getAverageGroundLevel();
@@ -57,7 +58,7 @@ public class EffectDecayBasic implements IEnvironmentalEffect {
 			}
 			material = world.getBlockState(pos).getMaterial();
 		}
-		world.setBlockState(pos, ModBlocks.decay.getStateFromMeta(metadata), 2);
+		world.setBlockState(pos, ModBlocks.decay.getDefaultState().withProperty(BlockDecay.DECAY_META, type), 2);
 	}
 
 	@Override
@@ -72,7 +73,7 @@ public class EffectDecayBasic implements IEnvironmentalEffect {
 			int x = chunkX + (coords & 15);
 			int z = chunkZ + (coords >> 8 & 15);
 			int y = (coords >> 16 & 255);
-			placeBlock(worldObj, new BlockPos(x, y, z), min, max, metadata);
+			placeBlock(worldObj, new BlockPos(x, y, z), min, max, decayType);
 		}
 	}
 }

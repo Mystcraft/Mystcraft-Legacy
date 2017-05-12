@@ -1,11 +1,16 @@
 package com.xcompwiz.mystcraft.client.render;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.renderer.Tessellator;
+import org.lwjgl.opengl.GLSync;
 
 // A huge thank you to Briman0094 for writing this code!
 // Minor edits by XCompWiz
+// Moar edits by HellFirePvP
 
 public class RenderRainbow {
 	/**
@@ -77,17 +82,17 @@ public class RenderRainbow {
 	}
 
 	public static void renderRainbow(float skyAngle, float width) {
-		GL11.glPushMatrix();
-		GL11.glRotatef(skyAngle, 0, 1, 0);
-		GL11.glRotatef(45, 1, 0, 0);
-		GL11.glPushMatrix();
+		GlStateManager.pushMatrix();
+		GlStateManager.rotate(skyAngle, 0, 1, 0);
+		GlStateManager.rotate(45, 1, 0, 0);
+		GlStateManager.pushMatrix();
 		doRenderRainbow(width);
-		GL11.glPopMatrix();
-		GL11.glPushMatrix();
-		GL11.glRotatef(180, 1, 0, 0);
+		GlStateManager.popMatrix();
+		GlStateManager.pushMatrix();
+		GlStateManager.rotate(180, 1, 0, 0);
 		doRenderRainbow(width);
-		GL11.glPopMatrix();
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
+		GlStateManager.popMatrix();
 	}
 
 	public static void doRenderRainbow(float width) {
@@ -96,36 +101,33 @@ public class RenderRainbow {
 		 * ((angleDegrees - 270f) / 90f); } else if (angleDegrees >= 0 && angleDegrees <= 90) { brightness = 1f - (angleDegrees / 90f); } else { brightness =
 		 * 0f; }
 		 */
-		// System.out.println("angle: " + angleDegrees + ", brightness: " + brightness);
-		Tessellator t = Tessellator.instance;
+		Tessellator tes = Tessellator.getInstance();
+		VertexBuffer vb = tes.getBuffer();
 		float numStrips = 50;
 		float stripWidth = width / numStrips;
 
-		GL11.glPushMatrix();
+		GlStateManager.enableColorMaterial();
+		GlStateManager.pushMatrix();
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 		for (float line = 0; line < numStrips; ++line) {
 			float hueProg = (line / numStrips);
 			float hue = (hueProg * 240f);
 			int color[] = hsvToRGB(hue, 255, 200);
-			GL11.glColor4f(color[0] / 255f, color[1] / 255f, color[2] / 255f, 0.2f);
 			float resolution = 100f;
 			float patchHeight = 0.5F;
 			float rainbowWidth = stripWidth * numStrips;
 			float yHeight;
 			float yHeight2;
-			// float yPos = 2;
 			for (float zPos = -resolution; zPos <= resolution; zPos += patchHeight) {
 				yHeight = quadratic(zPos / resolution) * resolution;
 				yHeight2 = quadratic((zPos - patchHeight) / resolution) * resolution;
-				// yHeight = 100f - yHeight;
-				// yHeight2 = 100f - yHeight2;
-				t.startDrawingQuads();
-				t.addVertex((line * stripWidth) - stripWidth - (rainbowWidth / 2f), yHeight2, zPos);
-				t.addVertex((line * stripWidth) + stripWidth - (rainbowWidth / 2f), yHeight2, zPos);
-				t.addVertex((line * stripWidth) + stripWidth - (rainbowWidth / 2f), yHeight, zPos + patchHeight);
-				t.addVertex((line * stripWidth) - stripWidth - (rainbowWidth / 2f), yHeight, zPos + patchHeight);
-				t.draw();
+				vb.pos((line * stripWidth) - stripWidth - (rainbowWidth / 2f), yHeight2,    zPos)              .color(color[0] / 255f, color[1] / 255f, color[2] / 255f, 0.2f).endVertex();
+				vb.pos((line * stripWidth) + stripWidth - (rainbowWidth / 2f), yHeight2,    zPos)              .color(color[0] / 255f, color[1] / 255f, color[2] / 255f, 0.2f).endVertex();
+				vb.pos((line * stripWidth) + stripWidth - (rainbowWidth / 2f),  yHeight, zPos + patchHeight).color(color[0] / 255f, color[1] / 255f, color[2] / 255f, 0.2f).endVertex();
+				vb.pos((line * stripWidth) - stripWidth - (rainbowWidth / 2f),  yHeight, zPos + patchHeight).color(color[0] / 255f, color[1] / 255f, color[2] / 255f, 0.2f).endVertex();
 			}
 		}
-		GL11.glPopMatrix();
+		GlStateManager.disableColorMaterial();
+		GlStateManager.popMatrix();
 	}
 }

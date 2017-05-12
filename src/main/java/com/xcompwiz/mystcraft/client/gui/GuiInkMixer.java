@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.client.gui;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.util.Color;
@@ -19,6 +20,8 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
+
+import java.io.IOException;
 
 public class GuiInkMixer extends GuiContainer {
 
@@ -51,7 +54,7 @@ public class GuiInkMixer extends GuiContainer {
 	}
 
 	@Override
-	protected void keyTyped(char c, int i) {
+	protected void keyTyped(char c, int i) throws IOException {
 		if (i == 1 || (i == mc.gameSettings.keyBindInventory.getKeyCode())) {
 			mc.player.closeScreen();
 		} else {
@@ -60,11 +63,11 @@ public class GuiInkMixer extends GuiContainer {
 	}
 
 	@Override
-	protected void mouseClicked(int i, int j, int k) {
+	protected void mouseClicked(int i, int j, int k) throws IOException {
 		int x = i - basinX - guiLeft;
 		int y = j - basinY - guiTop;
 		if (x * x + y * y < basinR) {
-			if (mc.player.inventory.getItemStack() != null) {
+			if (!mc.player.inventory.getItemStack().isEmpty()) {
 				// NOTE: We're client side, so we need to communicate what we want done to the server
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setBoolean(ContainerInkMixer.Messages.Consume, true);
@@ -80,12 +83,12 @@ public class GuiInkMixer extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
 		mc.renderEngine.bindTexture(GUIs.mixer);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1F, 1F, 1F, 1F);
 		drawTexturedModalRect(guiLeft + 54, guiTop + 16, 179, 16, 66, 65);
 		if (container.hasInk()) renderTank(guiLeft + 54, guiTop + 16, 66, 65);
 
 		mc.renderEngine.bindTexture(GUIs.mixer);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1F, 1F, 1F, 1F);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
 		fontRendererObj.drawString(I18n.format("container.inventory"), guiLeft + 8, guiTop + (ySize - 96) + 2, 0x404040);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -24,8 +25,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiElementBook extends GuiElement {
+
 	public interface IGuiOnLinkHandler {
+
 		public void onLink(GuiElement elem);
+
 	}
 
 	private IBookContainer		bookcontainer;
@@ -59,7 +63,9 @@ public class GuiElementBook extends GuiElement {
 
 	@Override
 	public boolean _onMouseDown(int i, int j, int k) {
-		if (this.isEnabled() == false) { return false; }
+		if (!this.isEnabled()) {
+			return false;
+		}
 		if (k == 0) {
 			int guiLeft = getLeft();
 			int guiTop = getTop();
@@ -79,7 +85,9 @@ public class GuiElementBook extends GuiElement {
 
 	@Override
 	public boolean _onKeyPress(char c, int i) {
-		if (this.isEnabled() == false) { return false; }
+		if (!this.isEnabled()) {
+			return false;
+		}
 		if (i == Keyboard.KEY_LEFT || i == mc.gameSettings.keyBindLeft.getKeyCode()) {
 			pageLeft();
 			return true;
@@ -99,16 +107,18 @@ public class GuiElementBook extends GuiElement {
 
 	@Override
 	public void _renderBackground(float f, int mouseX, int mouseY) {
-		if (this.isVisible() == false) { return; }
+		if (!this.isVisible()) {
+			return;
+		}
 		int guiLeft = getLeft();
 		int guiTop = getTop();
-		GL11.glPushMatrix();
-		GL11.glTranslatef(guiLeft, guiTop, 0);
-		GL11.glScalef(xScale, yScale, 1);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(guiLeft, guiTop, 0);
+		GlStateManager.scale(xScale, yScale, 1);
 		hovertext.clear();
 		//TODO: (PageRender) When redoing book/link item renders, might want to consider restructuring the texture sheets used for drawing here
 		mc.renderEngine.bindTexture(GUIs.book_cover); // book backing
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1F, 1F, 1F, 1F);
 		drawTexturedModalRect(0, 7, 152, 0, 34, 192); // Left border
 		drawTexturedModalRect(34, 7, 49, 0, 103, 192); // Left panel
 		drawTexturedModalRect(137, 7, 45, 0, 4, 192); // Left panel
@@ -124,21 +134,21 @@ public class GuiElementBook extends GuiElement {
 
 		//XXX: (PageRender) Revise how pages are rendered to improve plugability and clean this up
 		ItemStack page = bookcontainer.getCurrentPage();
-		if (page != null && Page.isLinkPanel(page)) { // Render link panel
+		if (!page.isEmpty() && Page.isLinkPanel(page)) { // Render link panel
 			// Render Panel
-			GL11.glPushMatrix(); // Panel matrix
-			GL11.glTranslatef(173, 20, 0);
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(173, 20, 0);
 
 			drawLinkPanel(0, 0, 132, 83);
 			drawLinkPanelOverlays(132, 83);
 
-			GL11.glPopMatrix(); // Panel matrix
+			GlStateManager.popMatrix();
+			GlStateManager.color(1F, 1F, 1F, 1F);
 
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			mc.renderEngine.bindTexture(GUIs.book_page_right); // Right Page w/ panel
 			drawTexturedModalRect(163, 0, 0, 0, 156, 195);
-		} else if (page != null) {
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		} else if (!page.isEmpty()) {
+			GlStateManager.color(1F, 1F, 1F, 1F);
 			mc.renderEngine.bindTexture(GUIs.book_page_right_solid); // Full Right Page
 			drawTexturedModalRect(163, 0, 0, 0, 156, 195);
 
@@ -153,7 +163,7 @@ public class GuiElementBook extends GuiElement {
 				}
 			}
 		}
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		GlStateManager.disableDepth();
 		if (getCurrentPageIndex() == 0) {
 			if (isSlotVisible()) { // Draw slot
 				drawTexturedModalRect(40, 20, 156, 0, 18, 18);
@@ -162,19 +172,19 @@ public class GuiElementBook extends GuiElement {
 			mc.fontRendererObj.drawString(bookcontainer.getBookTitle(), 40, 40, 0x000000);
 			int y = 50;
 			if (authors != null) for (String author : authors) {
-				GL11.glPushMatrix();
-				GL11.glTranslatef(50, y, 0);
-				GL11.glScalef(0.5F, 0.5F, 1);
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(50, y, 0);
+				GlStateManager.scale(0.5, 0.5, 1);
 				mc.fontRendererObj.drawString(author, 0, 0, 0x000000);
-				GL11.glPopMatrix();
+				GlStateManager.popMatrix();
 				y += 5;
 			}
 		}
 		String s = "" + (getCurrentPageIndex()) + "/" + (bookcontainer.getPageCount());
 		int j = mc.fontRendererObj.getStringWidth(s) / 2;
-		mc.fontRendererObj.drawString(s, 165 - j, 0 + 185, 0x000000);
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glPopMatrix();
+		mc.fontRendererObj.drawString(s, 165 - j, 185, 0x000000);
+		GlStateManager.enableDepth();
+		GlStateManager.popMatrix();
 	}
 
 	// XXX: (PageRender) Make link panel its own element?
@@ -189,7 +199,7 @@ public class GuiElementBook extends GuiElement {
 	private void drawLinkPanelOverlays(int width, int height) {
 		ILinkInfo linkinfo = bookcontainer.getLinkInfo();
 		ItemStack bookclone = bookcontainer.getBook();
-		if (bookclone != null) bookclone = bookclone.copy();
+		bookclone = bookclone.copy();
 
 		if (linkinfo != null) {
 			Collection<ILinkPanelEffect> effects = LinkPanelEffectManager.getEffects();
@@ -224,12 +234,12 @@ public class GuiElementBook extends GuiElement {
 	}
 
 	private boolean isBook() {
-		return bookcontainer.getBook() != null;
+		return !bookcontainer.getBook().isEmpty();
 	}
 
 	private boolean isAgebook() {
 		ItemStack book = bookcontainer.getBook();
-		if (book == null) return false;
+		if (book.isEmpty()) return false;
 		if (!book.hasTagCompound()) return false;
 		if (book.getItem() == ModItems.agebook) return true;
 		return false;

@@ -144,6 +144,7 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 		VillagerTradeSystem.release(villagerinv);
 	}
 
+	@Nonnull
 	public ItemStack getShopItem(int index) {
 		return villagerinv.getShopItem(index);
 	}

@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.client.gui.element;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
@@ -73,10 +74,10 @@ public abstract class GuiElementButtonBase extends GuiElement {
 		int fontcolor;
 		if (!isEnabled()) {
 			fontcolor = 0xFF333333;
-			GL11.glColor4f(0.5F, 0.5F, 0.5F, 1.0F);
+			GlStateManager.color(0.5F, 0.5F, 0.5F, 1F);
 		} else {
 			fontcolor = 0xFF000000;
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GlStateManager.color(1, 1, 1, 1);
 		}
 		// Render button
 		if (xSize != ySize) {
@@ -107,9 +108,9 @@ public abstract class GuiElementButtonBase extends GuiElement {
 			icon.render(this.mc, guiLeft, guiTop, xSize, ySize, getZLevel());
 		}
 		if (text != null) {
-			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GlStateManager.disableDepth();
 			GuiUtils.drawScaledText(text, guiLeft + 2, guiTop + 2, this.xSize - 4, this.ySize - 4, fontcolor);
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			GlStateManager.enableDepth();
 		}
 	}
 }

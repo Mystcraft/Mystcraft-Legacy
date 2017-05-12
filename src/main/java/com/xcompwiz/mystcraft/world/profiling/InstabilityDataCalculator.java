@@ -137,7 +137,11 @@ public class InstabilityDataCalculator {
 
 		DebugNode node = getDebugNode();
 		//@formatter:off
-		node.addChild("profiled_chunks", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + profiler.getCount(); }});
+		node.addChild("profiled_chunks", new DefaultValueCallback() {
+			@Override public String get(ICommandSender agent) {
+				return "" + profiler.getCount();
+			}
+		});
 		this.registerDebugInfo(node.getOrCreateNode("freevals"));
 		profiler.registerDebugInfo(node.getOrCreateNode("profiled"));
 		//@formatter:on

@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 /**
  * This interface allows for you to add render layers to the link panel in a book. Register it through the {@link RenderAPI}.
  * @author xcompwiz
@@ -23,7 +25,7 @@ public interface ILinkPanelEffect {
 	 * @param linkInfo The info of the link for the panel being rendered
 	 * @param bookclone A clone instance of the book itemstack
 	 */
-	public void render(int left, int top, int width, int height, ILinkInfo linkInfo, ItemStack bookclone);
+	public void render(int left, int top, int width, int height, ILinkInfo linkInfo, @Nonnull ItemStack bookclone);
 
 	/** Called when the book gui element first opens */
 	public void onOpen();

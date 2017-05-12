@@ -171,7 +171,7 @@ public class MystcraftStartupChecker {
 	public void onClientRenderTick(RenderTickEvent event) {
 		if (event.phase == Phase.END) {
 			if (updateNotification != null) {
-				updateNotification.render();
+				updateNotification.update();
 			}
 		}
 	}
@@ -199,7 +199,7 @@ public class MystcraftStartupChecker {
 	}
 
 	public GuiNotification getNotificationGui() {
-		if (updateNotification == null) updateNotification = new GuiNotification(Minecraft.getMinecraft());
+		if (updateNotification == null) updateNotification = new GuiNotification();
 		return updateNotification;
 	}
 }

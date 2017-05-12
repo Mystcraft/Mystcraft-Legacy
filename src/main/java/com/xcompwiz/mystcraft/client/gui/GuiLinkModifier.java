@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.client.gui;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
@@ -42,6 +43,7 @@ public class GuiLinkModifier extends GuiContainerElements {
 	}
 
 	public class TextBoxHandler implements IGuiTextProvider, IGuiOnTextChange {
+
 		@Override
 		public String getText(GuiElementTextField caller) {
 			if (caller.getId().equals("ItemName")) {
@@ -119,7 +121,7 @@ public class GuiLinkModifier extends GuiContainerElements {
 	@Override
 	protected void _drawBackgroundLayer(int mouseX, int mouseY, float f) {
 		this.mc.renderEngine.bindTexture(GUIs.single_slot);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1F, 1F, 1F, 1F);
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 		this.fontRendererObj.drawStringWithShadow(container.getLinkDimensionUID(), guiLeft + 100, guiTop + 40, 0xFFFFFF);
 	}

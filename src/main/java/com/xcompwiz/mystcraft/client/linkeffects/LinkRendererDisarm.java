@@ -3,6 +3,9 @@ package com.xcompwiz.mystcraft.client.linkeffects;
 import java.util.ArrayList;
 import java.util.Random;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
@@ -14,8 +17,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 @SideOnly(Side.CLIENT)
 public class LinkRendererDisarm implements ILinkPanelEffect {
+
 	private Random	rand	= new Random();
 	private long	lasttime;
 	private Point	effect;
@@ -26,7 +32,7 @@ public class LinkRendererDisarm implements ILinkPanelEffect {
 	}
 
 	@Override
-	public void render(int i, int j, int k, int l, ILinkInfo linkInfo, ItemStack bookclone) {
+	public void render(int i, int j, int k, int l, ILinkInfo linkInfo, @Nonnull ItemStack bookclone) {
 		if (linkInfo.getFlag(LinkPropertyAPI.FLAG_DISARM)) {
 			long now = System.currentTimeMillis();
 			long delta = now - lasttime;
@@ -69,6 +75,7 @@ public class LinkRendererDisarm implements ILinkPanelEffect {
 	}
 
 	public class Point {
+
 		private int					x;
 		private int					y;
 		private ArrayList<Point>	children;
@@ -80,7 +87,7 @@ public class LinkRendererDisarm implements ILinkPanelEffect {
 
 		public void addChild(Point child) {
 			if (children == null) {
-				children = new ArrayList<Point>();
+				children = new ArrayList<>();
 			}
 			children.add(child);
 		}
@@ -102,50 +109,56 @@ public class LinkRendererDisarm implements ILinkPanelEffect {
 		private void drawLine(double par1, double par2, double par3, double par4) {
 			int color = 0xFFFF3333;
 			int points = rand.nextInt(50);
-			float var10 = (color >> 24 & 255) / 255.0F;
-			float var6 = (color >> 16 & 255) / 255.0F;
-			float var7 = (color >> 8 & 255) / 255.0F;
-			float var8 = (color & 255) / 255.0F;
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			// GL11.glEnable(GL11.GL_BLEND);
-			GL11.glDisable(GL11.GL_ALPHA_TEST);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GL11.glShadeModel(GL11.GL_SMOOTH);
-			Tessellator var9 = Tessellator.instance;
+			float alpha = (color >> 24 & 255) / 255.0F;
+			float red   = (color >> 16 & 255) / 255.0F;
+			float green = (color >> 8  & 255) / 255.0F;
+			float blue  = (color       & 255) / 255.0F;
+
+            GlStateManager.disableTexture2D();
+            GlStateManager.disableAlpha();
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+
+            Tessellator tes = Tessellator.getInstance();
+            VertexBuffer vb = tes.getBuffer();
 
 			long seed = rand.nextLong();
 			Random lrand = new Random();
 			double factor;
 			// Draw base lines
 			lrand.setSeed(seed);
-			GL11.glColor4f(var6, var7, var8, var10);
-			GL11.glLineWidth(8.0f);
-			var9.startDrawing(GL11.GL_LINE_STRIP);
-			var9.addVertex(par1, par2, 0.0D);
-			for (int i = 1; i < points; ++i) {
-				factor = 2 * (1 - i / points);
-				var9.addVertex(interpolate(par1, par3, ((float) i / points)) + lrand.nextGaussian() * factor, interpolate(par2, par4, ((float) i / points)) + lrand.nextGaussian() * factor, 0.0D);
-			}
-			var9.addVertex(par3, par4, 0.0D);
-			var9.draw();
+			GlStateManager.color(red, green, blue, alpha);
+			GlStateManager.glLineWidth(8F);
+			vb.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION);
+			vb.pos(par1, par2, 0).endVertex();
+            for (int i = 1; i < points; ++i) {
+                factor = 2 * (1 - i / points);
+                vb.pos(interpolate(par1, par3, ((float) i / points)) + lrand.nextGaussian() * factor,
+                        interpolate(par2, par4, ((float) i / points)) + lrand.nextGaussian() * factor, 0).endVertex();
+            }
+            vb.pos(par3, par4, 0);
+            tes.draw();
+
 			// Draw top lines
 			lrand.setSeed(seed);
-			GL11.glColor4f(1, 1, 1, 1);
-			GL11.glLineWidth(2.0f);
-			var9.startDrawing(GL11.GL_LINE_STRIP);
-			var9.addVertex(par1, par2, 0.0D);
-			for (int i = 1; i < points; ++i) {
-				factor = 2 * (1 - i / points);
-				var9.addVertex(interpolate(par1, par3, ((float) i / points)) + lrand.nextGaussian() * factor, interpolate(par2, par4, ((float) i / points)) + lrand.nextGaussian() * factor, 0.0D);
-			}
-			var9.addVertex(par3, par4, 0.0D);
-			var9.draw();
+			GlStateManager.color(1F, 1F, 1F, 1F);
+			GlStateManager.glLineWidth(2F);
+            vb.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION);
+            vb.pos(par1, par2, 0).endVertex();
+            for (int i = 1; i < points; ++i) {
+                factor = 2 * (1 - i / points);
+                vb.pos(interpolate(par1, par3, ((float) i / points)) + lrand.nextGaussian() * factor,
+                        interpolate(par2, par4, ((float) i / points)) + lrand.nextGaussian() * factor, 0.0D).endVertex();
+            }
+            vb.pos(par3, par4, 0).endVertex();
+            tes.draw();
 
 			// Clean up
-			GL11.glShadeModel(GL11.GL_FLAT);
-			GL11.glDisable(GL11.GL_BLEND);
-			GL11.glEnable(GL11.GL_ALPHA_TEST);
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GlStateManager.shadeModel(GL11.GL_FLAT);
+            GlStateManager.disableBlend();
+            GlStateManager.enableAlpha();
+            GlStateManager.enableTexture2D();
 		}
 	}
 }

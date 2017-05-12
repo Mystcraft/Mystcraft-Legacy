@@ -2,11 +2,12 @@ package com.xcompwiz.mystcraft.client.entityfx;
 
 import java.util.Random;
 
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
-public class EntityFXLink extends EntityFX {
+public class EntityFXLink extends Particle {
 
 	Random			rand;
 	private float	tempParticleScale;
@@ -29,13 +30,12 @@ public class EntityFXLink extends EntityFX {
 		this.tempParticleScale = this.particleScale;
 		this.particleMaxAge = (int) (8.0D / (Math.random() * 0.8D + 0.2D));
 		this.particleMaxAge = (int) (this.particleMaxAge * par14);
-		this.noClip = false;
 		rand = new Random();
 	}
 
 	@Override
-	public void renderParticle(Tessellator par1Tessellator, float par2, float par3, float par4, float par5, float par6, float par7) {
-		float var8 = (this.particleAge + par2) / this.particleMaxAge * 32.0F;
+	public void renderParticle(VertexBuffer buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+		float var8 = (this.particleAge + partialTicks) / this.particleMaxAge * 32.0F;
 
 		if (var8 < 0.0F) {
 			var8 = 0.0F;
@@ -46,7 +46,7 @@ public class EntityFXLink extends EntityFX {
 		}
 
 		this.particleScale = this.tempParticleScale * var8;
-		super.renderParticle(par1Tessellator, par2, par3, par4, par5, par6, par7);
+		super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
 	}
 
 	/**
@@ -59,14 +59,14 @@ public class EntityFXLink extends EntityFX {
 		this.prevPosZ = this.posZ;
 
 		if (this.particleAge++ >= this.particleMaxAge) {
-			this.setDead();
+		    setExpired();
 		}
 
 		this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);
 		this.motionX += 0.005D * rand.nextGaussian();
 		this.motionY += 0.001D;
 		this.motionZ += 0.005D * rand.nextGaussian();
-		this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		this.move(this.motionX, this.motionY, this.motionZ);
 
 		if (this.posY == this.prevPosY) {
 			this.motionX *= 1.1D;

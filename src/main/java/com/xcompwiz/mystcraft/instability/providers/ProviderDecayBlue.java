@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.instability.providers;
 
 import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 import com.xcompwiz.mystcraft.api.instability.InstabilityDirector;
+import com.xcompwiz.mystcraft.block.BlockDecay;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.effects.EffectDecayBasic;
 import com.xcompwiz.mystcraft.effects.EffectExtraTicks;
@@ -12,8 +13,8 @@ public class ProviderDecayBlue implements IInstabilityProvider {
 	@Override
 	public void addEffects(InstabilityDirector controller, Integer level) {
 		for (int i = 0; i < level; ++i) {
-			controller.registerEffect(new EffectDecayBasic(controller, DecayHandler.BLUE, 25, null));
-			controller.registerEffect(new EffectExtraTicks(ModBlocks.decay, DecayHandler.BLUE));
+			controller.registerEffect(new EffectDecayBasic(controller, DecayHandler.DecayType.BLUE, 25, null));
+			controller.registerEffect(new EffectExtraTicks(ModBlocks.decay.getDefaultState().withProperty(BlockDecay.DECAY_META, DecayHandler.DecayType.BLUE)));
 		}
 	}
 }

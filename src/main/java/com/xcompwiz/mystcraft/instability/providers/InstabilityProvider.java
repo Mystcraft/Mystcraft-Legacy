@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 import com.xcompwiz.mystcraft.api.instability.InstabilityDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
+import net.minecraft.potion.Potion;
 
 public class InstabilityProvider implements IInstabilityProvider {
 
@@ -22,12 +23,25 @@ public class InstabilityProvider implements IInstabilityProvider {
 		this.uselevel = uselevel;
 
 		Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + (this.uselevel ? 1 : 0)];
-		if (this.uselevel) ctorArgClasses[0] = int.class;
+		if (this.uselevel) {
+			ctorArgClasses[0] = int.class;
+		}
 		for (int idx = 0; idx < itemCtorArgs.length; ++idx) {
 			ctorArgClasses[idx + (this.uselevel ? 1 : 0)] = itemCtorArgs[idx].getClass();
 		}
+
+		//Hellfire> PotionType hotfix
+		//Constructor search uses exact classes. subclasses cause it to fail..
+		for (int i = 0; i < ctorArgClasses.length; i++) {
+			Class<?> ctorArgs = ctorArgClasses[i];
+			if(Potion.class.isAssignableFrom(ctorArgs)) {
+				ctorArgClasses[i] = Potion.class;
+			}
+		}
+
 		try {
-			itemCtor = effectclass.getConstructor(ctorArgClasses);
+			itemCtor = effectclass.getDeclaredConstructor(ctorArgClasses);
+			itemCtor.setAccessible(true);
 		} catch (Exception e) {
 			LoggerUtils.error("Caught an exception during instability registration");
 			LoggerUtils.error(e.toString());
@@ -39,7 +53,7 @@ public class InstabilityProvider implements IInstabilityProvider {
 	public void addEffects(InstabilityDirector controller, Integer level) {
 		try {
 			Object[] args = itemCtorArgs;
-			if (uselevel) args = ObjectArrays.concat(level.intValue(), itemCtorArgs);
+			if (uselevel) args = ObjectArrays.concat(level, itemCtorArgs);
 			for (int i = 0; i < (uselevel ? 1 : level); ++i) {
 				IEnvironmentalEffect effect = itemCtor.newInstance(args);
 				controller.registerEffect(effect);

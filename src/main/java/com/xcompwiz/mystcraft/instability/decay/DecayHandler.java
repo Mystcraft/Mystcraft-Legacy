@@ -22,7 +22,37 @@ public abstract class DecayHandler {
 	public static final int							WHITE		= 6;
 	private static HashMap<Integer, DecayHandler>	handlers	= new HashMap<Integer, DecayHandler>();
 
-	private int										metadata;
+	public enum DecayType implements IStringSerializable {
+
+		BLACK(0, "black"),
+		RED(1, "red"),
+		GREEN(2, "green"),
+		BLUE(3, "blue"),
+		PURPLE(4, "purple"),
+		YELLOW(5, "yellow"),
+		WHITE(6, "white");
+
+		private final int index;
+		private final String name;
+
+		private DecayType(int indexIn, String nameIn) {
+			this.index = indexIn;
+			this.name = nameIn;
+		}
+
+		public int getIndex() {
+			return this.index;
+		}
+
+		@Override
+		public String getName() {
+			return name;
+		}
+	}
+
+	private static HashMap<DecayType, DecayHandler> handlers = new HashMap<DecayType, DecayHandler>();
+
+	private DecayType decayType;
 
 	static {
 		registerHandler(DecayType.BLACK, new DecayHandlerBlack());

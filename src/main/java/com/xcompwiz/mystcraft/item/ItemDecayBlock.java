@@ -25,7 +25,7 @@ public class ItemDecayBlock extends ItemBlock {
 	@Nonnull
 	public String getUnlocalizedName(@Nonnull ItemStack stack) {
 		int meta = stack.getItemDamage();
-		DecayHandler handler = DecayHandler.getHandler(meta);
+		DecayHandler handler = DecayHandler.getHandler(DecayHandler.DecayType.values()[meta]);
 		if (handler == null) {
 			return super.getUnlocalizedName() + "." + "unknown";
 		}

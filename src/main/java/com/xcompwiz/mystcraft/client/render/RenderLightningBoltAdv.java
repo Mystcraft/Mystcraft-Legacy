@@ -2,7 +2,10 @@ package com.xcompwiz.mystcraft.client.render;
 
 import java.util.Random;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
@@ -19,124 +22,128 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderLightningBoltAdv extends Render<EntityLightningBoltAdv> {
 
-	public RenderLightningBoltAdv(RenderManager renderManager) {
-		super(renderManager);
-	}
+    public RenderLightningBoltAdv(RenderManager renderManager) {
+        super(renderManager);
+    }
 
-	@Override
-	public void doRender(EntityLightningBoltAdv entity, double x, double y, double z, float entityYaw, float partialTicks) {
-		Tessellator var10 = Tessellator.instance;
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-		double[] var11 = new double[8];
-		double[] var12 = new double[8];
-		double var13 = 0.0D;
-		double var15 = 0.0D;
-		Random var17 = new Random(par1EntityLightningBolt.boltVertex);
-		Color color = par1EntityLightningBolt.getColor();
+    @Override
+    public void doRender(EntityLightningBoltAdv entity, double x, double y, double z, float entityYaw, float partialTicks) {
+        Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer vertexbuffer = tessellator.getBuffer();
 
-		for (int var18 = 7; var18 >= 0; --var18) {
-			var11[var18] = var13;
-			var12[var18] = var15;
-			var13 += (var17.nextInt(11) - 5);
-			var15 += (var17.nextInt(11) - 5);
-		}
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableLighting();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+        double[] adouble = new double[8];
+        double[] adouble1 = new double[8];
+        double d0 = 0.0D;
+        double d1 = 0.0D;
+        Random random = new Random(entity.boltVertex);
+        Color c = entity.getColor();
 
-		for (int var45 = 0; var45 < 4; ++var45) {
-			Random var46 = new Random(par1EntityLightningBolt.boltVertex);
+        for (int i = 7; i >= 0; --i) {
+            adouble[i] = d0;
+            adouble1[i] = d1;
+            d0 += (double) (random.nextInt(11) - 5);
+            d1 += (double) (random.nextInt(11) - 5);
+        }
 
-			for (int var19 = 0; var19 < 3; ++var19) {
-				int var20 = 7;
-				int var21 = 0;
+        for (int k1 = 0; k1 < 4; ++k1) {
+            Random random1 = new Random(entity.boltVertex);
 
-				if (var19 > 0) {
-					var20 = 7 - var19;
-				}
+            for (int j = 0; j < 3; ++j) {
+                int k = 7;
+                int l = 0;
 
-				if (var19 > 0) {
-					var21 = var20 - 2;
-				}
+                if (j > 0) {
+                    k = 7 - j;
+                }
 
-				double var22 = var11[var20] - var13;
-				double var24 = var12[var20] - var15;
+                if (j > 0) {
+                    l = k - 2;
+                }
 
-				for (int var26 = var20; var26 >= var21; --var26) {
-					double var27 = var22;
-					double var29 = var24;
+                double d2 = adouble[k] - d0;
+                double d3 = adouble1[k] - d1;
 
-					if (var19 == 0) {
-						var22 += (var46.nextInt(11) - 5);
-						var24 += (var46.nextInt(11) - 5);
-					} else {
-						var22 += (var46.nextInt(31) - 15);
-						var24 += (var46.nextInt(31) - 15);
-					}
+                for (int i1 = k; i1 >= l; --i1) {
+                    double d4 = d2;
+                    double d5 = d3;
 
-					var10.startDrawing(5);
-					var10.setColorRGBA_F(color.r, color.g, color.b, 0.51F);
-					double var32 = 0.1D + var45 * 0.2D;
+                    if (j == 0) {
+                        d2 += (double) (random1.nextInt(11) - 5);
+                        d3 += (double) (random1.nextInt(11) - 5);
+                    } else {
+                        d2 += (double) (random1.nextInt(31) - 15);
+                        d3 += (double) (random1.nextInt(31) - 15);
+                    }
 
-					if (var19 == 0) {
-						var32 *= var26 * 0.1D + 1.0D;
-					}
+                    vertexbuffer.begin(5, DefaultVertexFormats.POSITION_COLOR);
+                    float f = 0.5F;
+                    float f1 = 0.45F;
+                    float f2 = 0.45F;
+                    float f3 = 0.5F;
+                    double d6 = 0.1D + (double) k1 * 0.2D;
 
-					double var34 = 0.1D + var45 * 0.2D;
+                    if (j == 0) {
+                        d6 *= (double) i1 * 0.1D + 1.0D;
+                    }
 
-					if (var19 == 0) {
-						var34 *= (var26 - 1) * 0.1D + 1.0D;
-					}
+                    double d7 = 0.1D + (double) k1 * 0.2D;
 
-					for (int var36 = 0; var36 < 5; ++var36) {
-						double var37 = par2 + 0.5D - var32;
-						double var39 = par6 + 0.5D - var32;
+                    if (j == 0) {
+                        d7 *= (double) (i1 - 1) * 0.1D + 1.0D;
+                    }
 
-						if (var36 == 1 || var36 == 2) {
-							var37 += var32 * 2.0D;
-						}
+                    for (int j1 = 0; j1 < 5; ++j1) {
+                        double d8 = x + 0.5D - d6;
+                        double d9 = z + 0.5D - d6;
 
-						if (var36 == 2 || var36 == 3) {
-							var39 += var32 * 2.0D;
-						}
+                        if (j1 == 1 || j1 == 2) {
+                            d8 += d6 * 2.0D;
+                        }
 
-						double var41 = par2 + 0.5D - var34;
-						double var43 = par6 + 0.5D - var34;
+                        if (j1 == 2 || j1 == 3) {
+                            d9 += d6 * 2.0D;
+                        }
 
-						if (var36 == 1 || var36 == 2) {
-							var41 += var34 * 2.0D;
-						}
+                        double d10 = x + 0.5D - d7;
+                        double d11 = z + 0.5D - d7;
 
-						if (var36 == 2 || var36 == 3) {
-							var43 += var34 * 2.0D;
-						}
+                        if (j1 == 1 || j1 == 2) {
+                            d10 += d7 * 2.0D;
+                        }
 
-						var10.addVertex(var41 + var22, par4 + (var26 * 16), var43 + var24);
-						var10.addVertex(var37 + var27, par4 + ((var26 + 1) * 16), var39 + var29);
-					}
+                        if (j1 == 2 || j1 == 3) {
+                            d11 += d7 * 2.0D;
+                        }
+                        vertexbuffer.pos(d10 + d2, y + (double) (i1 * 16),      d11 + d3).color(c.r, c.g, c.b, 0.51F).endVertex();
+                        vertexbuffer.pos(d8 + d4,  y + (double) ((i1 + 1) * 16), d9 + d5).color(c.r, c.g, c.b, 0.51F).endVertex();
+                    }
 
-					var10.draw();
-				}
-			}
-		}
+                    tessellator.draw();
+                }
+            }
+        }
 
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-	}
+        GlStateManager.disableBlend();
+        GlStateManager.enableLighting();
+        GlStateManager.enableTexture2D();
+    }
 
-	@Override
-	protected ResourceLocation getEntityTexture(EntityLightningBoltAdv entity) {
-		return null;
-	}
+    @Override
+    protected ResourceLocation getEntityTexture(EntityLightningBoltAdv entity) {
+        return null;
+    }
 
-	public static class Factory implements IRenderFactory<EntityLightningBoltAdv> {
+    public static class Factory implements IRenderFactory<EntityLightningBoltAdv> {
 
-		@Override
-		public Render<EntityLightningBoltAdv> createRenderFor(RenderManager manager) {
-			return new RenderLightningBoltAdv(manager);
-		}
+        @Override
+        public Render<EntityLightningBoltAdv> createRenderFor(RenderManager manager) {
+            return new RenderLightningBoltAdv(manager);
+        }
 
-	}
+    }
 
 }

@@ -1,6 +1,11 @@
 package com.xcompwiz.mystcraft.client.render;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import org.lwjgl.opengl.GL11;
 
@@ -26,75 +31,81 @@ public class RenderLinkbook extends Render<EntityLinkbook> {
 	}
 
 	@Override
-	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
-		EntityLinkbook linkbook = (EntityLinkbook) entity;
-		if (linkbook.getBook() == ModItems.agebook) {
+	public void doRender(EntityLinkbook entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		ItemStack book = entity.getBook();
+		if(book.getItem() == ModItems.agebook) {
 			this.renderManager.renderEngine.bindTexture(Entities.agebook);
 		} else {
 			this.renderManager.renderEngine.bindTexture(Entities.linkbook);
 		}
-		GL11.glPushMatrix();
-		GL11.glTranslatef((float) d, (float) d1 + 0.0625F, (float) d2);
-		GL11.glRotatef(f + 90, 0, -1, 0);
-		GL11.glRotatef(90, 0, 0, 1);
-		GL11.glScalef(0.8F, 0.8F, 0.8F);
-		if (linkbook.hurtTime > 0) {
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-			GL11.glDisable(GL11.GL_ALPHA_TEST);
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GL11.glDepthFunc(GL11.GL_EQUAL);
-			GL11.glColor4f(0.7f, 0.0F, 0.0F, 0.4F);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x, y + 0.0625, z);
+		GlStateManager.rotate(entityYaw + 90, 0, -1, 0);
+		GlStateManager.rotate(90, 0, 0, 1);
+		GlStateManager.scale(0.8, 0.8, 0.8);
+		if(entity.hurtTime > 0) {
+			GlStateManager.disableTexture2D();
+			GlStateManager.disableAlpha();
+			GlStateManager.enableBlend();
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+			GlStateManager.depthFunc(GL11.GL_LEQUAL);
+			GlStateManager.color(0.7F, 0, 0, 0.4F);
 
 			bookmodel.render(null, 0.0f, 0.0f, 0.0f, 1.2f /* Open */, 0.0f, 0.0625F);
 
-			GL11.glDepthFunc(GL11.GL_LEQUAL);
-			GL11.glDisable(GL11.GL_BLEND);
-			GL11.glEnable(GL11.GL_ALPHA_TEST);
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			GlStateManager.depthFunc(GL11.GL_LEQUAL);
+			GlStateManager.disableBlend();
+			GlStateManager.enableAlpha();
+			GlStateManager.enableTexture2D();
 		}
 		bookmodel.render(null, 0.0f, 0.0f, 0.0f, 1.2f /* Open */, 0.0f, 0.0625F);
-		GL11.glPopMatrix();
-		if (Mystcraft.renderlabels && Mystcraft.serverLabels) renderLabel(entity, "" + linkbook.getAgeName(), d, d1, d2, 25);
+		GlStateManager.popMatrix();
+		if (Mystcraft.renderlabels && Mystcraft.serverLabels) {
+			renderLabel(entity, "" + entity.getAgeName(), x, y, z, 25);
+		}
 	}
 
-	protected void renderLabel(Entity entity, String s, double d, double d1, double d2, int i) {
-		double f = entity.getDistanceSq(renderManager.livingPlayer.posX, renderManager.livingPlayer.posY, renderManager.livingPlayer.posZ);
-		if (f > i) { return; }
+	private void renderLabel(Entity entity, String s, double x, double y, double z, int i) {
+		double f = entity.getDistanceSq(renderManager.renderViewEntity.posX, renderManager.renderViewEntity.posY, renderManager.renderViewEntity.posZ);
+		f = MathHelper.sqrt(f);
+		if (f > i) {
+			return;
+		}
 		FontRenderer fontrenderer = getFontRendererFromRenderManager();
 		float f1 = 1.6F;
 		float f2 = 0.01666667F * f1;
-		GL11.glPushMatrix();
-		GL11.glTranslatef((float) d, (float) d1 + 0.3F, (float) d2);
-		GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-		GL11.glRotatef(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-		GL11.glRotatef(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-		GL11.glScalef(-f2, -f2, f2);
-		GL11.glDisable(2896 /* GL_LIGHTING */);
-		GL11.glDepthMask(false);
-		GL11.glDisable(2929 /* GL_DEPTH_TEST */);
-		GL11.glEnable(3042 /* GL_BLEND */);
-		GL11.glBlendFunc(770, 771);
-		Tessellator tessellator = Tessellator.instance;
+
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x, y, z);
+		GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
+		GlStateManager.rotate(-renderManager.playerViewX, 0.0F, 1.0F, 0.0F);
+		GlStateManager.rotate(renderManager.playerViewY, 1.0F, 0.0F, 0.0F);
+		GlStateManager.scale(-f2, -f2, f2);
+		GlStateManager.disableLighting();
+		GlStateManager.depthMask(false);
+		GlStateManager.disableDepth();
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		GlStateManager.disableTexture2D();
+		Tessellator tes = Tessellator.getInstance();
+		VertexBuffer vb = tes.getBuffer();
 		byte byte0 = 0;
-		GL11.glDisable(3553 /* GL_TEXTURE_2D */);
-		tessellator.startDrawingQuads();
 		int j = fontrenderer.getStringWidth(s) / 2;
-		tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-		tessellator.addVertex(-j - 1, -1 + byte0, 0.0D);
-		tessellator.addVertex(-j - 1, 8 + byte0, 0.0D);
-		tessellator.addVertex(j + 1, 8 + byte0, 0.0D);
-		tessellator.addVertex(j + 1, -1 + byte0, 0.0D);
-		tessellator.draw();
-		GL11.glEnable(3553 /* GL_TEXTURE_2D */);
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+		vb.pos(-j - 1, -1 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+		vb.pos(-j - 1,  8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+		vb.pos( j + 1,  8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+		vb.pos( j + 1, -1 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+		tes.draw();
+		GlStateManager.enableTexture2D();
 		fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0x20ffffff);
-		GL11.glEnable(2929 /* GL_DEPTH_TEST */);
-		GL11.glDepthMask(true);
+		GlStateManager.enableDepth();
+		GlStateManager.depthMask(true);
 		fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, -1);
-		GL11.glEnable(2896 /* GL_LIGHTING */);
-		GL11.glDisable(3042 /* GL_BLEND */);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glPopMatrix();
+		GlStateManager.enableLighting();
+		GlStateManager.disableBlend();
+		GlStateManager.color(1F, 1F, 1F, 1F);
+		GlStateManager.popMatrix();
 	}
 
 	@Override

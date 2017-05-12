@@ -36,7 +36,7 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 	}
 
 	public GuiBook(InventoryPlayer inventoryplayer, EntityLinkbook entity) {
-		this(new ContainerBook(inventoryplayer, entity.inventory));
+		this(new ContainerBook(inventoryplayer, entity));
 	}
 
 	@Override

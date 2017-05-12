@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGenMystBigTree;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SymbolHugeTrees extends SymbolBase {
@@ -21,6 +22,7 @@ public class SymbolHugeTrees extends SymbolBase {
 	}
 
 	private class Populator implements IPopulate {
+
 		public Populator() {}
 
 		@Override
@@ -28,7 +30,7 @@ public class SymbolHugeTrees extends SymbolBase {
 			WorldGenMystBigTree genBigTree = new WorldGenMystBigTree(false);
 			int j6 = i + rand.nextInt(16) + 8;
 			int k10 = j + rand.nextInt(16) + 8;
-			genBigTree.generate(worldObj, rand, j6, worldObj.getHeight(j6, k10), k10);
+			genBigTree.generate(worldObj, rand, new BlockPos(j6, worldObj.getHeight(j6, k10), k10));
 			return false;
 		}
 	}

@@ -13,7 +13,9 @@ public class GuiElementIcon extends GuiElement {
 
 	@Override
 	protected void _renderBackground(float f, int mouseX, int mouseY) {
-		if (this.icon == null) return;
+		if (this.icon == null) {
+			return;
+		}
 		this.icon.render(mc, getLeft(), getTop(), xSize, ySize, getZLevel());
 	}
 }

@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.client.gui.element;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
@@ -16,7 +17,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiElementFluidTank extends GuiElement {
-	private List<String>		hovertext	= new ArrayList<String>();
+
+	private List<String>		hovertext	= new ArrayList<>();
 	private boolean				mouseOver;
 
 	private IFluidTankProvider	fluidprovider;
@@ -29,7 +31,9 @@ public class GuiElementFluidTank extends GuiElement {
 
 	@Override
 	public List<String> _getTooltipInfo() {
-		if (hovertext != null && hovertext.size() > 0) { return hovertext; }
+		if (hovertext != null && hovertext.size() > 0) {
+			return hovertext;
+		}
 		return super._getTooltipInfo();
 	}
 
@@ -42,8 +46,8 @@ public class GuiElementFluidTank extends GuiElement {
 
 		int guiLeft = getLeft();
 		int guiTop = getTop();
-		GL11.glPushMatrix();
-		GL11.glTranslatef(guiLeft, guiTop, 0);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(guiLeft, guiTop, 0);
 		mouseX -= guiLeft;
 		mouseY -= guiTop;
 
@@ -54,7 +58,7 @@ public class GuiElementFluidTank extends GuiElement {
 			hovertext.add((fluidstack.getFluid().getLocalizedName(fluidstack) + ": " + fluidstack.amount + "/" + tankmax));
 		}
 
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
 	}
 
 	private void renderTank(FluidStack fluidstack, int left, int top, int width, int height) {

@@ -1,5 +1,8 @@
 package com.xcompwiz.mystcraft.client.render;
 
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.model.ModelWritingDesk;
@@ -11,8 +14,6 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBook;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
@@ -21,7 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.storage.MapData;
 
-public class RenderWritingDesk extends TileEntitySpecialRenderer {
+public class RenderWritingDesk extends TileEntitySpecialRenderer<TileEntityDesk> {
 
 	private ModelBook			bookmodel;
 	private ModelWritingDesk	deskmodel;
@@ -31,27 +32,28 @@ public class RenderWritingDesk extends TileEntitySpecialRenderer {
 		bookmodel = new ModelBook();
 	}
 
-	public void render(TileEntityDesk desk, double d, double d1, double d2, float f) {
-		int meta = desk.getBlockMetadata() & 3;
-		d += 0.5;
-		d2 += 0.5;
-		this.bindTexture(Entities.desk);
-		GL11.glPushMatrix();
-		GL11.glTranslatef((float) d, (float) d1 + 1.5F, (float) d2);
-		GL11.glRotatef(90, 1, 0, 0);
-		GL11.glRotatef(90, 0, 1, 0);
-		GL11.glRotatef(90, 0, 0, 1);
-		GL11.glRotatef(90 * meta, 0, 1, 0);
-		int tabitemcount = 0;
-		int papercount = desk.getPaperCount();
-		deskmodel.render(null, 0.0625F, desk.hasTop(), tabitemcount, papercount);
-		GL11.glPopMatrix();
+	@Override
+	public void renderTileEntityAt(TileEntityDesk te, double x, double y, double z, float partialTicks, int destroyStage) {
+		int horizontalFacingIndex = te.getBlockMetadata() & 3;
+		x += 0.5;
+		z += 0.5;
+		bindTexture(Entities.desk);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x, y + 1.5, z);
+		GlStateManager.rotate(90, 1, 0, 0);
+		GlStateManager.rotate(90, 0, 1, 0);
+		GlStateManager.rotate(90, 0, 0, 1);
+		GlStateManager.rotate(90 * horizontalFacingIndex, 0, 1, 0);
+		int tableItemCount = 0;
+		int paperCount = te.getPaperCount();
+		deskmodel.render(null, 0.0625F, te.hasTop(), tableItemCount, paperCount);
+		GlStateManager.popMatrix();
 
-		GL11.glPushMatrix();
-		GL11.glTranslatef((float) d, (float) d1, (float) d2);
-		GL11.glRotatef(-90 * meta, 0, 1, 0);
-		renderItems(desk);
-		GL11.glPopMatrix();
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x, y, z);
+		GlStateManager.rotate(-90 * horizontalFacingIndex, 0, 1, 0);
+		renderItems(te);
+		GlStateManager.popMatrix();
 	}
 
 	private void renderItems(TileEntityDesk desk) {
@@ -62,64 +64,60 @@ public class RenderWritingDesk extends TileEntitySpecialRenderer {
 		 * GL11.glRotatef(90.0F, 1, 0, 0); } this.bindTexture(Assets.linkbook_tex); GL11.glScalef(0.8F, 0.8F, 0.8F); bookmodel.render(null, 0.0f, 0.0f, 0.0f,
 		 * 0.005f Open , 0.0f, 0.0625F); GL11.glPopMatrix(); } }
 		 */
-		ItemStack itemstack = desk.getDisplayItem(); // desk.getDisplayItem();
-		if (itemstack != null) {
+		ItemStack itemstack = desk.getDisplayItem();
+		if (!itemstack.isEmpty()) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-				GL11.glPushMatrix();
-				GL11.glTranslatef(-0.15F, 1, 1);
-				GL11.glRotatef(90.0F, 0, 0, 1);
+			    GlStateManager.pushMatrix();
+			    GlStateManager.translate(-0.15F, 1, 1);
+			    GlStateManager.rotate(90, 0, 0, 1);
 				if (itemstack.getItem() == ModItems.agebook) {
 					this.bindTexture(Entities.agebook);
 				} else if (itemstack.getItem() == ModItems.linkbook) {
 					this.bindTexture(Entities.linkbook);
 				}
-				GL11.glScalef(0.8F, 0.8F, 0.8F);
+				GlStateManager.scale(0.8, 0.8, 0.8);
 				bookmodel.render(null, 0.0f, 0.0f, 0.0f, 1.22f /* Open */, 0.0f, 0.0625F);
-				GL11.glPopMatrix();
+                GlStateManager.popMatrix();
 				return;
 			}
 
-			GL11.glPushMatrix();
-			GL11.glTranslatef(-0.35F, 1.001F, 1F);
-			GL11.glScalef(0.7F, 0.7F, 0.7F);
-			GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-			GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
-			EntityItem entity = new EntityItem(desk.getWorldObj(), 0.0D, 0.0D, 0.0D, itemstack);
-			entity.getEntityItem().stackSize = 1;
-			entity.hoverStart = 0.0F;
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(-0.35F, 1.001F, 1F);
+			GlStateManager.scale(0.7F, 0.7F, 0.7F);
+			GlStateManager.rotate(-90.0F, 0.0F, 1.0F, 0.0F);
+			GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
 
-			if (entity.getEntityItem().getItem() == Items.filled_map) {
+			if (itemstack.getItem() == Items.FILLED_MAP) {
 				this.bindTexture(Vanilla.map_background);
-				Tessellator var4 = Tessellator.instance;
-				GL11.glRotatef(180.0F, 0.0F, 1.0F, 0.0F);
-				GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-				GL11.glScalef(0.006F, 0.006F, 0.006F);
-				GL11.glTranslatef(-65.0F, -107.0F, -3.0F);
-				GL11.glNormal3f(0.0F, 0.0F, -1.0F);
-				var4.startDrawingQuads();
-				byte var5 = 7;
-				var4.addVertexWithUV((0 - var5), (128 + var5), 0.0D, 0.0D, 1.0D);
-				var4.addVertexWithUV((128 + var5), (128 + var5), 0.0D, 1.0D, 1.0D);
-				var4.addVertexWithUV((128 + var5), (0 - var5), 0.0D, 1.0D, 0.0D);
-				var4.addVertexWithUV((0 - var5), (0 - var5), 0.0D, 0.0D, 0.0D);
-				var4.draw();
-				MapData mapdata = Items.filled_map.getMapData(entity.getEntityItem(), desk.getWorldObj());
+				Tessellator tes = Tessellator.getInstance();
+                VertexBuffer vb = tes.getBuffer();
+				GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+				GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
+				GlStateManager.scale(0.006F, 0.006F, 0.006F);
+				GlStateManager.translate(-65.0F, -107.0F, -3.0F);
+				GlStateManager.glNormal3f(0.0F, 0.0F, -1.0F);
+				vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+                byte var5 = 7;
+                vb.pos((0 - var5),   (128 + var5), 0.0D).tex(0.0D, 1.0D).endVertex();
+                vb.pos((128 + var5), (128 + var5), 0.0D).tex(1.0D, 1.0D).endVertex();
+                vb.pos((128 + var5), (0 - var5),   0.0D).tex(1.0D, 0.0D).endVertex();
+                vb.pos((0 - var5),   (0 - var5),   0.0D).tex(0.0D, 0.0D).endVertex();
+                tes.draw();
+				MapData mapdata = Items.FILLED_MAP.getMapData(itemstack, desk.getWorld());
 
 				if (mapdata != null) {
-					Minecraft.getMinecraft().entityRenderer.getMapItemRenderer().func_148250_a(mapdata, true);
+					Minecraft.getMinecraft().entityRenderer.getMapItemRenderer().renderMap(mapdata, true);
 				}
 			} else {
-				RenderItem.renderInFrame = true;
-				RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
-				RenderItem.renderInFrame = false;
+                GlStateManager.pushAttrib();
+                RenderHelper.enableStandardItemLighting();
+                Minecraft.getMinecraft().getRenderItem().renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED);
+                RenderHelper.disableStandardItemLighting();
+                GlStateManager.popAttrib();
 			}
 
-			GL11.glPopMatrix();
+			GlStateManager.popMatrix();
 		}
 	}
 
-	@Override
-	public void renderTileEntityAt(TileEntity tileentity, double d, double d1, double d2, float f) {
-		render((TileEntityDesk) tileentity, d, d1, d2, f);
-	}
 }

@@ -213,7 +213,7 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
         }
 
 		if (brokeblocks) {
-			MystcraftPacketHandler.CHANNEL.sendToDimension(new MPacketParticles(posX, posY, posZ, "largeexplode"), world.provider.getDimension());
+        	world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, posX, posY, posZ, 0, 0, 0);
 		}
 
 		return brokeblocks;

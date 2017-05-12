@@ -1,5 +1,8 @@
 package com.xcompwiz.mystcraft.client.gui.element;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
@@ -29,23 +32,23 @@ public class GuiElementPanel extends GuiElement {
 	public void _renderBackground(float f, int mouseX, int mouseY) {
 		int guiLeft = this.getLeft();
 		int guiTop = this.getTop();
-		GL11.glPushMatrix();
+		GlStateManager.pushMatrix();
 		GuiUtils.startGlScissor(guiLeft, guiTop, this.xSize, ySize);
 		if ((bgcolor1 | bgcolor2) == 0) return;
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glShadeModel(GL11.GL_SMOOTH);
-		this.drawGradientRect(guiLeft, guiTop, guiLeft + this.xSize, guiTop + ySize, bgcolor1, bgcolor2, this.getZLevel());
-		GL11.glShadeModel(GL11.GL_FLAT);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
+		GlStateManager.enableBlend();
+		GlStateManager.disableAlpha();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		GlStateManager.shadeModel(GL11.GL_SMOOTH);
+		drawGradientRect(guiLeft, guiTop, guiLeft + this.xSize, guiTop + ySize, bgcolor1, bgcolor2, this.getZLevel());
+		GlStateManager.shadeModel(GL11.GL_FLAT);
+		GlStateManager.disableBlend();
+		GlStateManager.enableAlpha();
 	}
 
 	@Override
 	protected void _renderBackgroundPost(float f, int mouseX, int mouseY) {
 		GuiUtils.endGlScissor();
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
 	}
 
 	/**
@@ -61,16 +64,15 @@ public class GuiElementPanel extends GuiElement {
 		float r2 = (color2 >> 16 & 255) / 255.0F;
 		float g2 = (color2 >> 8 & 255) / 255.0F;
 		float b2 = (color2 & 255) / 255.0F;
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		Tessellator var15 = Tessellator.instance;
-		var15.startDrawingQuads();
-		var15.setColorRGBA_F(r1, g1, b1, a1);
-		var15.addVertex(x2, y1, zLevel);
-		var15.addVertex(x1, y1, zLevel);
-		var15.setColorRGBA_F(r2, g2, b2, a2);
-		var15.addVertex(x1, y2, zLevel);
-		var15.addVertex(x2, y2, zLevel);
-		var15.draw();
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GlStateManager.disableTexture2D();
+		Tessellator tes = Tessellator.getInstance();
+		VertexBuffer vb = tes.getBuffer();
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+		vb.pos(x2, y1, zLevel).color(r1, g1, b1, a1).endVertex();
+		vb.pos(x1, y1, zLevel).color(r1, g1, b1, a1).endVertex();
+		vb.pos(x1, y2, zLevel).color(r2, g2, b2, a2).endVertex();
+		vb.pos(x2, y2, zLevel).color(r2, g2, b2, a2).endVertex();
+		tes.draw();
+		GlStateManager.enableTexture2D();
 	}
 }

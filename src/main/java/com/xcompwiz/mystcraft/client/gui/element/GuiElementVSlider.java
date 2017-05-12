@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.client.gui.element;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -104,25 +105,25 @@ public class GuiElementVSlider extends GuiElement {
 		//Draw the scrollbar
 		//XXX: zLevels on Slider
 		mc.renderEngine.bindTexture(Assets.GUIs.scrollbar);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glPushMatrix();
-		GL11.glTranslatef(guiLeft, guiTop, 0);
-		GL11.glScalef(xScale, 1.0F, 1.0F);
-		Gui.func_146110_a(0, 0, 0, 0, 20, 4, 32, 32);
+		GlStateManager.color(1F, 1F, 1F, 1F);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(guiLeft, guiTop, 0);
+		GlStateManager.scale(xScale, 1F, 1F);
+		Gui.drawModalRectWithCustomSizedTexture(0, 0, 0, 0, 20, 4, 32, 32);
 		for (int y = 4; y < ySize - 4; y += 22) {
 			int ys = 22;
 			if (ys > ySize - y - 4) {
 				ys = ySize - y - 4;
 			}
-			Gui.func_146110_a(0, 0 + y, 0, 4, 20, ys, 32, 32);
+			Gui.drawModalRectWithCustomSizedTexture(0, 0 + y, 0, 4, 20, ys, 32, 32);
 		}
 		//Gui.func_146110_a
-		Gui.func_146110_a(0, 0 + ySize - 4, 0, 26, 20, 4, 32, 32);
+		Gui.drawModalRectWithCustomSizedTexture(0, 0 + ySize - 4, 0, 26, 20, 4, 32, 32);
 		if (isScrolling) {
-			Gui.func_146110_a(4, 4 + (int) ((sliderbottom - slidertop) * sliderpos), 20, 15, 12, 15, 32, 32);
+			Gui.drawModalRectWithCustomSizedTexture(4, 4 + (int) ((sliderbottom - slidertop) * sliderpos), 20, 15, 12, 15, 32, 32);
 		} else {
-			Gui.func_146110_a(4, 4 + (int) ((sliderbottom - slidertop) * sliderpos), 20, 0, 12, 15, 32, 32);
+			Gui.drawModalRectWithCustomSizedTexture(4, 4 + (int) ((sliderbottom - slidertop) * sliderpos), 20, 0, 12, 15, 32, 32);
 		}
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
 	}
 }

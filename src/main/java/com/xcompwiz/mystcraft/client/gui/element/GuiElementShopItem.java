@@ -14,14 +14,19 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class GuiElementShopItem extends GuiElement implements IGuiOnClickHandler, IGuiLabelDataProvider, IItemStackProvider {
 
 	public interface IGuiShopHandler {
+
 		public void onPurchase(GuiElementShopItem caller);
 
 		public String getPriceText(GuiElementShopItem caller);
 
+		@Nonnull
 		public ItemStack getItemstack(GuiElementShopItem caller);
+
 	}
 
 	private IGuiShopHandler	shop;
@@ -72,7 +77,7 @@ public class GuiElementShopItem extends GuiElement implements IGuiOnClickHandler
 			return shop.getPriceText(this);
 		} else if (caller.getId().equals("name")) {
 			ItemStack itemstack = shop.getItemstack(this);
-			if (itemstack == null) return "";
+			if (itemstack.isEmpty()) return "";
 			if (itemstack.getItem() instanceof ItemPage) {
 				String symbolId = Page.getSymbol(itemstack);
 				IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolId);
@@ -90,6 +95,7 @@ public class GuiElementShopItem extends GuiElement implements IGuiOnClickHandler
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack getItemStack(GuiIconItemStack caller) {
 		return shop.getItemstack(this);
 	}

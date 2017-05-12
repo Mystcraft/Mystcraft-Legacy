@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.client.gui;
 
 import java.util.Arrays;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
@@ -22,6 +23,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 @SideOnly(Side.CLIENT)
 public class GuiInventoryFolder extends GuiContainerElements {
 
@@ -32,6 +35,7 @@ public class GuiInventoryFolder extends GuiContainerElements {
 		}
 
 		@Override
+		@Nonnull
 		public ItemStack getItemStack() {
 			return container.getInventoryItem();
 		}
@@ -48,7 +52,9 @@ public class GuiInventoryFolder extends GuiContainerElements {
 
 		@Override
 		public void pickup(PositionableItem collectionelement) {
-			if (collectionelement.count <= 0) return;
+			if (collectionelement.count <= 0) {
+				return;
+			}
 			boolean iscollection = getItemStack().getItem() instanceof IItemPageCollection;
 			if (iscollection) {
 				NBTTagCompound itemdata = new NBTTagCompound();
@@ -122,7 +128,7 @@ public class GuiInventoryFolder extends GuiContainerElements {
 
 	@Override
 	protected void _drawBackgroundLayer(int mouseX, int mouseY, float f) {
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1F, 1F, 1F, 1F);
 		//XXX: Better texture to use here?
 		mc.renderEngine.bindTexture(GUIs.desk);
 		drawTexturedModalRect(guiLeft, mainTop, 0, 82, invsizeX, invsizeY);

@@ -14,7 +14,7 @@ public interface RenderAPI {
 
 	/**
 	 * Use this to register your own rendering effects on the linkpanel
-	 * @param The renderer to register
+	 * @param renderer The renderer to register
 	 */
 	@SideOnly(Side.CLIENT)
 	void registerRenderEffect(ILinkPanelEffect renderer);

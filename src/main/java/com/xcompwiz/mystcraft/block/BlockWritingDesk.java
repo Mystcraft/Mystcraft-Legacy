@@ -53,13 +53,13 @@ public class BlockWritingDesk extends Block {
 		int t = isBlockTop(state) ? 1 : 0;
 		int f = isBlockFoot(state) ? 1 : 0;
 		int horizontal = getDirectionFromMetadata(state).getHorizontalIndex();
-		return (t << 4) | (f << 3) | (horizontal & 3);
+		return (t << 3) | (f << 2) | (horizontal & 3);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		boolean t = ((meta >> 4) & 1) != 0;
-		boolean f = ((meta >> 3) & 1) != 0;
+		boolean t = ((meta >> 3) & 1) != 0;
+		boolean f = ((meta >> 2) & 1) != 0;
 		int horizontalIndex = meta & 3;
 		return getDefaultState().withProperty(IS_TOP, t).withProperty(IS_FOOT, f).withProperty(ROTATION, EnumFacing.HORIZONTALS[horizontalIndex]);
 	}

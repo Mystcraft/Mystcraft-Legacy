@@ -1,26 +1,33 @@
 package com.xcompwiz.mystcraft.client.gui.element.data;
 
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.text.TextFormatting;
 
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+
+import javax.annotation.Nonnull;
 
 public class GuiIconItemStack implements IGuiIcon {
+
 	public interface IItemStackProvider {
+
+		@Nonnull
 		public ItemStack getItemStack(GuiIconItemStack caller);
+
 	}
 
-	private static RenderItem	itemrenderer	= new RenderItem();
 
 	private IItemStackProvider	provider;
 	private String				id;
-	private ItemStack			itemstack;
+	@Nonnull
+	private ItemStack			itemstack = ItemStack.EMPTY;
 
-	public GuiIconItemStack(ItemStack itemstack) {
+	public GuiIconItemStack(@Nonnull ItemStack itemstack) {
 		this.itemstack = itemstack;
 	}
 
@@ -33,35 +40,46 @@ public class GuiIconItemStack implements IGuiIcon {
 		return id;
 	}
 
+	@Nonnull
 	private ItemStack getItemStack() {
-		if (provider != null) return provider.getItemStack(this);
+		if (provider != null) {
+			return provider.getItemStack(this);
+		}
 		return itemstack;
 	}
 
 	@Override
 	public void render(Minecraft mc, int guiLeft, int guiTop, int xSize, int ySize, float zLevel) {
 		ItemStack itemstack = this.getItemStack();
-		if (itemstack == null) return;
+		if (itemstack.isEmpty()) return;
 		float smallest = Math.min(xSize, ySize);
 		float scale = smallest / 16.F;
 
 		String itemslottext = null;
 		if (itemstack.getCount() <= 0) {
-			itemslottext = EnumChatFormatting.RED + Integer.toString(itemstack.getCount());
+			itemslottext = TextFormatting.RED + Integer.toString(itemstack.getCount());
 		}
 
 		GuiUtils.startGlScissor(guiLeft, guiTop, xSize, ySize);
 
-		GL11.glPushMatrix();
-		GL11.glTranslatef(guiLeft, guiTop, 1);
-		GL11.glScalef(scale, scale, 1);
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		itemrenderer.zLevel = zLevel;
-		itemrenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), itemstack, 0, 0);
-		itemrenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.getTextureManager(), itemstack, 0, 0, itemslottext);
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glPopMatrix();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(guiLeft, guiTop, 1);
+        GlStateManager.scale(scale, scale, 1);
+        GlStateManager.enableDepth();
+        RenderItem ri = Minecraft.getMinecraft().getRenderItem();
+        float prev = ri.zLevel;
+        ri.zLevel = zLevel;
+        FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+        FontRenderer custom = itemstack.getItem().getFontRenderer(itemstack);
+        if(custom != null) {
+            fr = custom;
+        }
+        ri.renderItemAndEffectIntoGUI(itemstack, 0, 0);
+        ri.renderItemOverlayIntoGUI(fr, itemstack, 0, 0, itemslottext);
+        ri.zLevel = prev;
+        GlStateManager.disableDepth();
+        GlStateManager.disableLighting();
+        GlStateManager.popMatrix();
 
 		GuiUtils.endGlScissor();
 	}

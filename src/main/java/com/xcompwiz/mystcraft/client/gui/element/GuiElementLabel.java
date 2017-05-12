@@ -7,9 +7,11 @@ import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 public class GuiElementLabel extends GuiElement {
 
 	public interface IGuiLabelDataProvider {
+
 		String getText(GuiElementLabel caller);
 
 		List<String> getTooltip(GuiElementLabel caller);
+
 	}
 
 	//TODO: Alignment options

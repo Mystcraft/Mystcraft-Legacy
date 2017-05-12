@@ -3,12 +3,15 @@ package com.xcompwiz.mystcraft.world.gen.feature;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class WorldGenMystBigTree extends WorldGenerator {
+
 	static final byte	otherCoordPairs[]	= { 2, 0, 0, 1, 2, 1 };
 	Random				rand;
 	World				worldObj;
@@ -99,7 +102,7 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		System.arraycopy(ai, 0, leafNodes, 0, k);
 	}
 
-	void genTreeLayer(int i, int j, int k, float f, byte byte0, Block block) {
+	void genTreeLayer(int i, int j, int k, float f, byte byte0, IBlockState block) {
 		int i1 = (int) (f + 0.61799999999999999D);
 		float f2 = f * f;
 		byte byte1 = otherCoordPairs[byte0];
@@ -116,7 +119,7 @@ public class WorldGenMystBigTree extends WorldGenerator {
 					// int i2 = getBlockId(ai1[0], ai1[1], ai1[2]);
 					// if (i2 != 0 && i2 != 18) {
 					// } else {
-					func_150515_a(worldObj, ai1[0], ai1[1], ai1[2], block);
+					setBlockAndNotifyAdequately(worldObj, new BlockPos(ai1[0], ai1[1], ai1[2]), block);
 					// }
 				}
 			}
@@ -159,11 +162,11 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		for (int i1 = j + leafDistanceLimit; l < i1; l++) {
 			float f = leafSize(l - j);
 			if (f < 0) continue;
-			genTreeLayer(i, l, k, f, (byte) 1, Blocks.LEAVES);
+			genTreeLayer(i, l, k, f, (byte) 1, Blocks.LEAVES.getDefaultState());
 		}
 	}
 
-	void placeBlockLine(int ai[], int ai1[], Block i) {
+	void placeBlockLine(int ai[], int ai1[], IBlockState i) {
 		int ai2[] = { 0, 0, 0 };
 		byte byte0 = 0;
 		int j = 0;
@@ -191,7 +194,7 @@ public class WorldGenMystBigTree extends WorldGenerator {
 			ai3[j] = MathHelper.floor((ai[j] + k) + 0.5D);
 			ai3[byte1] = MathHelper.floor(ai[byte1] + k * d + 0.5D);
 			ai3[byte2] = MathHelper.floor(ai[byte2] + k * d1 + 0.5D);
-			func_150515_a(worldObj, ai3[0], ai3[1], ai3[2], i);
+			setBlockAndNotifyAdequately(worldObj, new BlockPos(ai3[0], ai3[1], ai3[2]), i);
 		}
 	}
 
@@ -215,17 +218,17 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		int l = trueBase[2];
 		int ai[] = { i, j, l };
 		int ai1[] = { i, k, l };
-		placeBlockLine(ai, ai1, Blocks.LOG);
+		placeBlockLine(ai, ai1, Blocks.LOG.getDefaultState());
 		if (trunkSize == 2) {
 			ai[0]++;
 			ai1[0]++;
-			placeBlockLine(ai, ai1, Blocks.LOG);
+			placeBlockLine(ai, ai1, Blocks.LOG.getDefaultState());
 			ai[2]++;
 			ai1[2]++;
-			placeBlockLine(ai, ai1, Blocks.LOG);
+			placeBlockLine(ai, ai1, Blocks.LOG.getDefaultState());
 			ai[0]--;
 			ai1[0]--;
-			placeBlockLine(ai, ai1, Blocks.LOG);
+			placeBlockLine(ai, ai1, Blocks.LOG.getDefaultState());
 		}
 	}
 
@@ -242,7 +245,7 @@ public class WorldGenMystBigTree extends WorldGenerator {
 			ai1[0] = i + rand.nextInt(9) - 4;
 			ai1[1] = j - rand.nextInt(range + 1) - 3;
 			ai1[2] = k + rand.nextInt(9) - 4;
-			placeBlockLine(ai, ai1, Blocks.LOG);
+			placeBlockLine(ai, ai1, Blocks.LOG.getDefaultState());
 		}
 	}
 
@@ -256,7 +259,7 @@ public class WorldGenMystBigTree extends WorldGenerator {
 			ai[1] = ai1[3];
 			int k = ai[1] - basePos[1];
 			if (leafNodeNeedsBase(k)) {
-				placeBlockLine(ai, ai2, Blocks.LOG);
+				placeBlockLine(ai, ai2, Blocks.LOG.getDefaultState());
 			}
 		}
 	}
@@ -323,12 +326,12 @@ public class WorldGenMystBigTree extends WorldGenerator {
 
 	boolean validTreeLocation() {
 		int ai[] = { basePos[0], basePos[1], basePos[2] };
-		Block block = getBlock(basePos[0], basePos[1] - 1, basePos[2]);
-		while (block == Blocks.WATER || block == Blocks.flowing_water) {
+		IBlockState block = getBlock(basePos[0], basePos[1] - 1, basePos[2]);
+		while (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
 			--basePos[1];
 			block = getBlock(basePos[0], basePos[1] - 1, basePos[2]);
 		}
-		if (block != Blocks.DIRT && block != Blocks.GRASS) { return false; }
+		if (block.getBlock() != Blocks.DIRT && block.getBlock() != Blocks.GRASS) { return false; }
 		int ai1[] = { basePos[0], (basePos[1] + heightLimit) - 1, basePos[2] };
 		int j = checkBlockLine(ai, ai1);
 		if (j == -1) { return true; }
@@ -337,9 +340,9 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		return true;
 	}
 
-	private Block getBlock(int i, int j, int k) {
-		if (i >> 4 != ((trueBase[0]) >> 4) || k >> 4 != ((trueBase[2]) >> 4)) return Blocks.AIR;
-		return worldObj.getBlock(i, j, k);
+	private IBlockState getBlock(int i, int j, int k) {
+		if (i >> 4 != ((trueBase[0]) >> 4) || k >> 4 != ((trueBase[2]) >> 4)) return Blocks.AIR.getDefaultState();
+		return worldObj.getBlockState(new BlockPos(i, j, k));
 	}
 
 	// protected void setBlockAndMetadata(World world, int i, int j, int k, int blockId, int meta)
@@ -355,24 +358,24 @@ public class WorldGenMystBigTree extends WorldGenerator {
 	// }
 	// }
 
-	@Override
-	public void setScale(double d, double d1, double d2) {
-		heightLimitLimit = (int) (d * max_height);
-		if (d > 0.5D) {
-			leafDistanceLimit = 4;
-		}
-		scaleWidth = d1;
-		leafDensity = d2;
-	}
+	//@Override
+	//public void setScale(double d, double d1, double d2) {
+	//	heightLimitLimit = (int) (d * max_height);
+	//	if (d > 0.5D) {
+	//		leafDistanceLimit = 4;
+	//	}
+	//	scaleWidth = d1;
+	//	leafDensity = d2;
+	//}
 
 	@Override
-	public boolean generate(World world, Random random, int i, int j, int k) {
+	public boolean generate(World world, Random random, BlockPos pos) {
 		worldObj = world;
 		long l = random.nextLong();
 		rand.setSeed(l);
-		trueBase[0] = basePos[0] = i;
-		basePos[1] = j;
-		trueBase[2] = basePos[2] = k;
+		trueBase[0] = basePos[0] = pos.getX();
+		basePos[1] = pos.getY();
+		trueBase[2] = basePos[2] = pos.getZ();
 		if (heightLimit == 0) {
 			heightLimit = 20 + rand.nextInt(heightLimitLimit);
 		}

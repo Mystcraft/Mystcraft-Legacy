@@ -63,8 +63,10 @@ public abstract class TileEntityBase extends TileEntity {
 
     //Use this instead of markDirty. markDirty alone doesn't cause a sync of data to client.
     public final void markForUpdate() {
-        IBlockState thisState = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, thisState, thisState, 3);
+        if(world != null) {
+            IBlockState thisState = world.getBlockState(pos);
+            world.notifyBlockUpdate(pos, thisState, thisState, 3);
+        }
         markDirty();
     }
 

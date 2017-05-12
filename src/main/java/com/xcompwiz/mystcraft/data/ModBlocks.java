@@ -80,42 +80,50 @@ public class ModBlocks {
 		black_ink.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.fluidblock_black_ink));
 
 		GameRegistry.register(inkmixer);
-		GameRegistry.register(new ItemBlock(inkmixer));
+		registerItemBlock(inkmixer);
 		GameRegistry.register(bookbinder);
-		GameRegistry.register(new ItemBlock(bookbinder));
+        registerItemBlock(bookbinder);
 		GameRegistry.register(receptacle);
-		GameRegistry.register(new ItemBlock(receptacle));
+        registerItemBlock(receptacle);
 		GameRegistry.register(bookstand);
-		GameRegistry.register(new ItemBlock(bookstand));
+        registerItemBlock(bookstand);
 		GameRegistry.register(lectern);
-		GameRegistry.register(new ItemBlock(lectern));
+        registerItemBlock(lectern);
 		GameRegistry.register(decay);
-		GameRegistry.register(new ItemDecayBlock(decay));
+        ItemBlock ib = new ItemDecayBlock(decay);
+        ib.setRegistryName(decay.getRegistryName());
+        GameRegistry.register(ib);
 		GameRegistry.register(linkmodifier);
-		GameRegistry.register(new ItemBlock(linkmodifier));
+        registerItemBlock(linkmodifier);
 		GameRegistry.register(crystal);
-		GameRegistry.register(new ItemBlock(crystal));
+        registerItemBlock(crystal);
 		GameRegistry.register(portal);
-		GameRegistry.register(new ItemBlock(portal));
+        registerItemBlock(portal);
 		GameRegistry.register(writingdesk);
-		GameRegistry.register(new ItemBlock(writingdesk));
+        //registerItemBlock(writingdesk);
 		GameRegistry.register(starfissure);
-		GameRegistry.register(new ItemBlock(starfissure));
+        registerItemBlock(starfissure);
 		GameRegistry.register(black_ink);
 		//GameRegistry.register(new ItemBlockFluid(black_ink)); Hellfire> it's not necessary to add a fluid itemblock.. I'd suggest we don't atm.
 
 		// Set mining difficulties/tools
-		decay.setHarvestLevel("pickaxe",   0, decay.getStateFromMeta(DecayHandler.BLUE));
-		decay.setHarvestLevel("shovel",    0, decay.getStateFromMeta(DecayHandler.RED));
-		decay.setHarvestLevel("pickaxe",   0, decay.getStateFromMeta(DecayHandler.PURPLE));
-		decay.setHarvestLevel("pickaxe",   2, decay.getStateFromMeta(DecayHandler.WHITE));
-		decay.setHarvestLevel("shovel",    0, decay.getStateFromMeta(DecayHandler.BLACK));
+		decay.setHarvestLevel("pickaxe",   0, decay.getStateFromMeta(DecayHandler.DecayType.BLUE.getIndex()));
+		decay.setHarvestLevel("shovel",    0, decay.getStateFromMeta(DecayHandler.DecayType.RED.getIndex()));
+		decay.setHarvestLevel("pickaxe",   0, decay.getStateFromMeta(DecayHandler.DecayType.PURPLE.getIndex()));
+		decay.setHarvestLevel("pickaxe",   2, decay.getStateFromMeta(DecayHandler.DecayType.WHITE.getIndex()));
+		decay.setHarvestLevel("shovel",    0, decay.getStateFromMeta(DecayHandler.DecayType.BLACK.getIndex()));
 		crystal.setHarvestLevel("pickaxe", 0);
+	}
+
+	private static void registerItemBlock(Block b) {
+        ItemBlock ib = new ItemBlock(b);
+        ib.setRegistryName(b.getRegistryName());
+        GameRegistry.register(ib);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void registerModels() {
-		BlockModelShapes bms = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
+		//BlockModelShapes bms = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
 
 		ItemModelMesher imm = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		imm.register(Item.getItemFromBlock(inkmixer), 0, mrlItemBlockModel("inkmixer"));
@@ -132,11 +140,8 @@ public class ModBlocks {
 
 
 		imm.register(Item.getItemFromBlock(decay), (stack -> {
-			DecayHandler handle = DecayHandler.getHandler(stack.getItemDamage());
-			if(handle == null) {
-				handle = DecayHandler.getHandler(DecayHandler.BLACK);
-			}
-			return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "decay_" + handle.getIdentifier()), "inventory");
+			DecayHandler.DecayType type = DecayHandler.DecayType.values()[stack.getItemDamage()];
+			return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "decay_" + type.getName()), "inventory");
 		}));
 
 		BlockColors colors = Minecraft.getMinecraft().getBlockColors();

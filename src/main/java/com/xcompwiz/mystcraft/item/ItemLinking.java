@@ -108,7 +108,7 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 		info.setFlag(LinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM, true);
 		info.setFlag(LinkPropertyAPI.FLAG_GENERATE_PLATFORM, false);
 		info.setFlag(LinkPropertyAPI.FLAG_EXTERNAL, true);
-		info.setProperty(LinkPropertyAPI.PROP_SOUND, Sounds.PORTALLINK);
+		info.setProperty(LinkPropertyAPI.PROP_SOUND, Sounds.KEY_NAME_PORTALLINK);
 		MinecraftForge.EVENT_BUS.post(new PortalLinkEvent(worldObj, entity, info));
 		LinkController.travelEntity(worldObj, entity, info);
 	}

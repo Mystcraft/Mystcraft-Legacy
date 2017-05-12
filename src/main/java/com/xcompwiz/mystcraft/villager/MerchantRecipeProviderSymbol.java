@@ -8,9 +8,12 @@ import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
+import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
+
+import javax.annotation.Nonnull;
 
 public class MerchantRecipeProviderSymbol implements IMerchantRecipeProvider {
 
@@ -20,9 +23,10 @@ public class MerchantRecipeProviderSymbol implements IMerchantRecipeProvider {
 		this.symbol = symbol;
 	}
 
+	@Nonnull
 	@Override
-	public List<MerchantRecipe> createNewMerchantRecipes(EntityVillager villager, Random random) {
-		List<MerchantRecipe> merchantrecipes = new ArrayList<MerchantRecipe>();
+	public List<MerchantRecipe> createNewMerchantRecipes(@Nonnull IMerchant villagerMerchant, @Nonnull Random random) {
+		List<MerchantRecipe> merchantrecipes = new ArrayList<>();
 		MerchantRecipe merchantrecipe = null;
 		List<ItemStack> buyitems = SymbolManager.getSymbolTradeItems(symbol.identifier());
 		if (buyitems.size() > 0 && buyitems.get(0) != null) {
@@ -33,7 +37,7 @@ public class MerchantRecipeProviderSymbol implements IMerchantRecipeProvider {
 			}
 		}
 		if (merchantrecipe != null) {
-			merchantrecipe.func_82783_a(-6);
+			merchantrecipe.increaseMaxTradeUses(-6);
 			merchantrecipes.add(merchantrecipe);
 		}
 		return merchantrecipes;

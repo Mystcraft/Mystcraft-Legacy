@@ -31,29 +31,34 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import javax.annotation.Nonnull;
+
 public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPagesProvider, IGuiOnClickHandler, IGuiStateProvider, IGuiTextProvider, IGuiOnTextChange {
+
 	private Minecraft				mc;
 	private float					xSize;
 
-	private ItemStack				cached_tabitem;
+	@Nonnull
+	private ItemStack				cached_tabitem = ItemStack.EMPTY;
 	private List<PositionableItem>	arranged_pages;
 	private Comparator<ItemStack>	sorttype		= SortingUtils.ComparatorItemSymbolAlphabetical.instance;
 	private boolean					showall			= false;
-	private Collection<GuiElement>	surfaceelements	= new HashSet<GuiElement>();
+	private Collection<GuiElement>	surfaceelements	= new HashSet<>();
 
 	public GuiElementSurfaceControlsBase(Minecraft mc, int guiLeft, int guiTop, int width, int height) {
 		this.mc = mc;
 		this.xSize = width;
 	}
 
+	@Nonnull
 	public abstract ItemStack getItemStack();
 
 	@Override
 	public List<PositionableItem> getPositionedPages() {
 		ItemStack itemstack = getItemStack();
 		if (!ItemStack.areItemStacksEqual(itemstack, cached_tabitem)) {
-			if (itemstack == null) {
-				cached_tabitem = null;
+			if (itemstack.isEmpty()) {
+				cached_tabitem = ItemStack.EMPTY;
 				arranged_pages = null;
 				return null;
 			}
@@ -69,7 +74,9 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 
 	private void updateCollection() {
 		arranged_pages = null;
-		if (cached_tabitem == null) { return; }
+		if (cached_tabitem.isEmpty()) {
+			return;
+		}
 		boolean iscollection = cached_tabitem.getItem() instanceof IItemPageCollection;
 		for (GuiElement element : surfaceelements) {
 			element.setEnabled(iscollection);
@@ -77,10 +84,10 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 		if (iscollection) {
 			IItemPageCollection item = (IItemPageCollection) cached_tabitem.getItem();
 			Map<NBTTagCompound, PositionableItem> collection = new HashMap<NBTTagCompound, PositionableItem>();
-			List<ItemStack> pages = item.getItems(mc.thePlayer, cached_tabitem);
+			List<ItemStack> pages = item.getItems(mc.player, cached_tabitem);
 			if (pages != null) {
 				for (ItemStack page : pages) {
-					if (page.stackTagCompound != null) {
+					if (page.getTagCompound() != null) {
 						//XXX: Filters
 						String displayname = null;
 						if (Page.getSymbol(page) != null) {
@@ -95,7 +102,7 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 						}
 					}
 					ItemStack copy = page.copy();
-					copy.stackSize = 1;
+					copy.setCount(1);
 					NBTTagCompound key = new NBTTagCompound();
 					copy.writeToNBT(key);
 					PositionableItem newpos = collection.get(key);
@@ -132,15 +139,15 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 					}
 				}
 			}
-			arranged_pages = new LinkedList<PositionableItem>();
+			arranged_pages = new LinkedList<>();
 			arranged_pages.addAll(collection.values());
 			sort(sorttype);
 		} else if (cached_tabitem.getItem() instanceof IItemPageProvider) {
 			int i = 0;
 
 			IItemPageProvider item = (IItemPageProvider) cached_tabitem.getItem();
-			List<ItemStack> pages = item.getPageList(mc.thePlayer, cached_tabitem);
-			arranged_pages = new LinkedList<PositionableItem>();
+			List<ItemStack> pages = item.getPageList(mc.player, cached_tabitem);
+			arranged_pages = new LinkedList<>();
 			for (ItemStack page : pages) {
 				PositionableItem newpos = new PositionableItem();
 				newpos.itemstack = page;
@@ -149,7 +156,9 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 				arranged_pages.add(newpos);
 			}
 		}
-		if (arranged_pages != null) arrange();
+		if (arranged_pages != null) {
+			arrange();
+		}
 	}
 
 	public void arrange() {
@@ -169,12 +178,7 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 	}
 
 	public void sort(final Comparator<ItemStack> comparator) {
-		Collections.sort(arranged_pages, new Comparator<PositionableItem>() {
-			@Override
-			public int compare(PositionableItem arg0, PositionableItem arg1) {
-				return comparator.compare(arg0.itemstack, arg1.itemstack);
-			}
-		});
+		arranged_pages.sort((arg0, arg1) -> comparator.compare(arg0.itemstack, arg1.itemstack));
 	}
 
 	@Override
@@ -195,7 +199,7 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 		return false;
 	}
 
-	private List<IGuiOnTextChange>	listeners	= new ArrayList<IGuiOnTextChange>();
+	private List<IGuiOnTextChange>	listeners	= new ArrayList<>();
 	private String					searchtext	= null;
 
 	@Override
@@ -206,7 +210,7 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 	@Override
 	public void onTextChange(GuiElementTextField caller, String newtext) {
 		searchtext = newtext;
-		if (cached_tabitem != null && cached_tabitem.getItem() instanceof IItemPageCollection) {
+		if (!cached_tabitem.isEmpty() && cached_tabitem.getItem() instanceof IItemPageCollection) {
 			this.updateCollection();
 		}
 		for (IGuiOnTextChange listener : listeners) {

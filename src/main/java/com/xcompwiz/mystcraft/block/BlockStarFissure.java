@@ -34,7 +34,7 @@ public class BlockStarFissure extends BlockContainer {
 		defaultstarfissure.setDimensionUID(Mystcraft.homeDimension);
 		defaultstarfissure.setFlag(LinkPropertyAPI.FLAG_NATURAL, true);
 		defaultstarfissure.setFlag(LinkPropertyAPI.FLAG_EXTERNAL, true);
-		defaultstarfissure.setProperty(LinkPropertyAPI.PROP_SOUND, Sounds.FISSURELINK);
+		defaultstarfissure.setProperty(LinkPropertyAPI.PROP_SOUND, Sounds.KEY_NAME_FISSURELINK);
 	}
 
 	public BlockStarFissure() {

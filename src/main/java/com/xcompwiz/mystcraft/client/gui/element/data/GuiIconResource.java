@@ -6,7 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiIconResource implements IGuiIcon {
-	private ResourceLocation	resource;
+
+	private ResourceLocation resource;
 	private int x,y,u,v;
 
 	public GuiIconResource(ResourceLocation resource, int sourceX, int sourceY, int xSize, int ySize) {

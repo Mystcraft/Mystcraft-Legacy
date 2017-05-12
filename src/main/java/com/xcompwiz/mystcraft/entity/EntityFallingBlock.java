@@ -38,9 +38,11 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
+
 public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawnData {
 
-    private static final DataParameter<BlockPos> ORIGIN = EntityDataManager.<BlockPos>createKey(net.minecraft.entity.item.EntityFallingBlock.class, DataSerializers.BLOCK_POS);
+    protected static final DataParameter<BlockPos> ORIGIN = EntityDataManager.<BlockPos>createKey(net.minecraft.entity.item.EntityFallingBlock.class, DataSerializers.BLOCK_POS);
 
 	private static final String	NBT_Drops				= "Drops";
 	private static final String	NBT_TE					= "TE";
@@ -48,6 +50,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 	public IBlockState          falltile;
 	public int					fallTime;
 	private NBTTagCompound		data;
+	private ArrayList			collidingBoundingBoxes	= new ArrayList();
 
 	public EntityFallingBlock(World world) {
 		super(world);
@@ -68,7 +71,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 		prevPosY = d1;
 		prevPosZ = d2;
 		this.data = data;
-		setOrigin(new BlockPos(this));
+        this.setOrigin(new BlockPos(this));
 	}
 
     public void setOrigin(BlockPos pos) {
@@ -80,12 +83,13 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
         return this.dataManager.get(ORIGIN);
     }
 
-    protected boolean canTriggerWalking() {
-        return false;
-    }
-
+    @Override
     protected void entityInit() {
         this.dataManager.register(ORIGIN, BlockPos.ORIGIN);
+	}
+
+    protected boolean canTriggerWalking() {
+        return false;
     }
 
 	public static void cascade(World world, BlockPos pos) {
@@ -100,14 +104,14 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	public static void drop(World world, BlockPos pos) {
-		if (world.isRemote) return;
+		if (world.isRemote) {
+			return;
+		}
 		boolean flag = false;
-		Material material = world.getBlockState(pos).getMaterial();
+		IBlockState posState = world.getBlockState(pos);
+		Material material = posState.getMaterial();
 		while (material == Material.LAVA || material == Material.WATER) {
-			flag = true;
 			world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
-			pos = pos.up();
-			material = world.getBlockState(pos).getMaterial();
 			return;
 		}
 		if (flag) return;
@@ -116,15 +120,15 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 
 		NBTTagCompound data = new NBTTagCompound();
 
-        IBlockState state = world.getBlockState(pos);
-        List<ItemStack> drops = state.getBlock().getDrops(world, pos, state, 0);
+		List drops = posState.getBlock().getDrops(world, pos, posState, 0);
 		data.setTag(NBT_Drops, NBTUtils.writeItemStackCollection(new NBTTagList(), drops));
 		if (world.getTileEntity(pos) != null) {
-			NBTTagCompound tedata = world.getTileEntity(pos).writeToNBT(new NBTTagCompound());
+			NBTTagCompound tedata = new NBTTagCompound();
+			world.getTileEntity(pos).writeToNBT(tedata);
 			world.removeTileEntity(pos);
 			data.setTag(NBT_TE, tedata);
 		}
-		EntityFallingBlock entityfalling = new EntityFallingBlock(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, state, data);
+		EntityFallingBlock entityfalling = new EntityFallingBlock(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, posState, data);
 		world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
 		world.spawnEntity(entityfalling);
 	}
@@ -186,11 +190,11 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 				NBTTagCompound tileentity = data.getCompoundTag(NBT_TE);
 				tileentity.setInteger("x", pos.getX());
 				tileentity.setInteger("y", pos.getY());
-				tileentity.setInteger("z", z);
-				if (worldObj.getTileEntity(x, y, z) != null) {
-					worldObj.getTileEntity(x, y, z).readFromNBT(tileentity);
+				tileentity.setInteger("z", pos.getZ());
+				if (world.getTileEntity(pos) != null) {
+                    world.getTileEntity(pos).readFromNBT(tileentity);
 				} else {
-					worldObj.setTileEntity(x, y, z, TileEntity.createAndLoadEntity(tileentity));
+				    world.setTileEntity(pos, TileEntity.create(world, tileentity));
 				}
 			}
 		}
@@ -315,7 +319,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 
 	private void handleDrops() {
 		NBTTagList drops = data.getTagList(NBT_Drops, Constants.NBT.TAG_COMPOUND);
-		Collection<ItemStack> items = NBTUtils.readItemStackCollection(drops, new ArrayList<ItemStack>());
+		Collection<ItemStack> items = NBTUtils.readItemStackCollection(drops, new ArrayList<>());
 		for (ItemStack itemstack : items) {
 			entityDropItem(itemstack, 0.0F);
 		}
@@ -328,48 +332,59 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
         compound.setString("Block", resourcelocation == null ? "" : resourcelocation.toString());
         compound.setByte("Data", (byte) block.getMetaFromState(this.falltile));
         compound.setInteger("Time", this.fallTime);
-		if (data != null) {
-			compound.setTag("Data", data);
-		}
+        if (this.data != null) {
+            compound.setTag("TileEntityData", this.data);
+        }
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {
-		if (nbttagcompound.hasKey("TileID")) {
-			block = Block.getBlockById(nbttagcompound.getInteger("TileID"));
-		} else {
-			block = Block.getBlockById(nbttagcompound.getInteger("Tile"));
-		}
-		metadata = nbttagcompound.getShort("Metadata");
-		fallTime = nbttagcompound.getShort("fallTime");
-		if (nbttagcompound.hasKey("Data")) {
-			data = nbttagcompound.getCompoundTag("Data");
-		}
-		if (nbttagcompound.hasKey("TileEntity")) {
-			NBTTagCompound tileentity = nbttagcompound.getCompoundTag("TileEntity");
-			data = new NBTTagCompound();
-			data.setTag(NBT_TE, tileentity);
-		}
+	protected void readEntityFromNBT(NBTTagCompound compound) {
+        int i = compound.getByte("Data") & 255;
+
+        this.falltile = null; //Reset
+        if (compound.hasKey("Block", 8)) {
+            Block b = Block.getBlockFromName(compound.getString("Block"));
+            if(b != null) {
+                this.falltile = b.getStateFromMeta(i);
+            }
+        }
+
+        this.fallTime = compound.getInteger("Time");
+
+        if (compound.hasKey("TileEntityData", 10)) {
+            this.data = compound.getCompoundTag("TileEntityData");
+        }
+
+        if (falltile == null || falltile.getMaterial() == Material.AIR) {
+            this.falltile = Blocks.SAND.getDefaultState();
+        }
 	}
 
-	@Override
-	public float getShadowSize() {
-		return 0.0F;
-	}
+	@SideOnly(Side.CLIENT)
+    public boolean canRenderOnFire() {
+        return false;
+    }
 
-	public World getWorld() {
-		return worldObj;
-	}
+    @Nullable
+    public IBlockState getBlock() {
+        return this.falltile;
+    }
+
+    public boolean ignoreItemEntityData() {
+        return true;
+    }
+
+    public World getWorld() {
+	    return world;
+    }
 
 	@Override
 	public void writeSpawnData(ByteBuf data) {
-		data.writeInt(Block.getIdFromBlock(this.block));
-		data.writeByte(metadata);
+	    data.writeInt(Block.getStateId(this.falltile));
 	}
 
 	@Override
 	public void readSpawnData(ByteBuf data) {
-		block = Block.getBlockById(data.readInt());
-		metadata = data.readByte();
+	    falltile = Block.getStateById(data.readInt());
 	}
 }

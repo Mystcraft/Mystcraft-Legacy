@@ -42,11 +42,9 @@ public class DecayHandlerBlack extends DecayHandler {
 				if (!WorldInfoUtils.isInstabilityEnabled(world)) {
 					return;
 				}
-				IBlockState state = world.getBlockState(pos.down());
-				if (state.getBlock().equals(ModBlocks.decay) && ModBlocks.decay.getMetaFromState(state) == this.getMetadata()) {
-					EntityFallingBlock.drop(world, pos);
-					world.setBlockToAir(pos.down());
-					return;
+				if (world.getBlockState(pos.up()) == this.getBlockState()) {
+					world.setBlockToAir(pos);
+					EntityFallingBlock.drop(world, pos.up());
 				}
 				state = world.getBlockState(pos.up());
 				if (state.getBlock().equals(ModBlocks.decay) && ModBlocks.decay.getMetaFromState(state) == this.getMetadata()) {

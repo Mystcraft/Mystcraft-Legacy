@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.client.gui.element;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
@@ -16,12 +17,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 @SideOnly(Side.CLIENT)
 public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChange {
+
 	public static class PositionableItem {
 
 		public int			slotId;
-		public ItemStack	itemstack;
+		@Nonnull
+		public ItemStack	itemstack = ItemStack.EMPTY;
 		public float		x;
 		public float		y;
 
@@ -32,6 +37,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	public final static float	pageheight	= pagewidth * 4 / 3;
 
 	public interface IGuiPositionedPagesProvider {
+
 		List<PositionableItem> getPositionedPages();
 
 		void place(int index, boolean single);
@@ -39,6 +45,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		void pickup(PositionableItem hoverpage);
 
 		void copy(PositionableItem hoverpage);
+
 	}
 
 	private IGuiPositionedPagesProvider	pagesProvider;
@@ -79,11 +86,13 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	public boolean _onMouseDown(int mouseX, int mouseY, int button) {
 		if (this.contains(mouseX, mouseY)) {
 			if (pagesProvider == null) return false;
-			if (mc.player.inventory.getItemStack() != null) {
+			if (!mc.player.inventory.getItemStack().isEmpty()) {
 				List<PositionableItem> pages = getPages();
 				if (pages == null) return false;
 				int index = pages.size();
-				if (hoverpage != null) index = hoverpage.slotId;
+				if (hoverpage != null) {
+					index = hoverpage.slotId;
+				}
 				pagesProvider.place(index, button == 1);
 				return true;
 			}
@@ -114,7 +123,9 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 
 	@Override
 	public List<String> _getTooltipInfo() {
-		if (hovertext != null && hovertext.size() > 0) { return hovertext; }
+		if (hovertext != null && hovertext.size() > 0) {
+			return hovertext;
+		}
 		return super._getTooltipInfo();
 	}
 
@@ -131,11 +142,10 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 
 		// Render pages
 		GuiUtils.drawGradientRect(guiLeft, guiTop, guiLeft + xSize - 20, guiTop + ySize, 0x000000, 0x000000, this.getZLevel());
-		//GL11.glDisable(GL11.GL_DEPTH_TEST);
-		GL11.glDepthFunc(GL11.GL_GEQUAL);
+		GlStateManager.depthFunc(GL11.GL_GEQUAL);
 		GuiUtils.startGlScissor(guiLeft, guiTop, xSize, ySize - 1);
 		this.setZLevel(1.0F);
-		GL11.glPushMatrix();
+		GlStateManager.pushMatrix();
 		int currentScroll = -scrollbar.getCurrentPos();
 		List<PositionableItem> pages = getPages();
 		int maxScroll = 0;
@@ -152,13 +162,21 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 				if (pageY + pageHeight - ySize > maxScroll) {
 					maxScroll = (int) (pageY + pageHeight + 6 - ySize);
 				}
-				if (y + pageY < guiTop - pageHeight) continue;
-				if (y + pageY > guiTop + ySize) continue;
+				if (y + pageY < guiTop - pageHeight) {
+					continue;
+				}
+				if (y + pageY > guiTop + ySize) {
+					continue;
+				}
 				String displayname = null;
 				if (Page.getSymbol(page) != null) {
 					IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
-					if (symbol != null) displayname = symbol.displayName();
-					if (displayname == null) displayname = Page.getSymbol(page);
+					if (symbol != null) {
+						displayname = symbol.displayName();
+					}
+					if (displayname == null) {
+						displayname = Page.getSymbol(page);
+					}
 				}
 				if (displayname != null && searchtext != null && searchtext.length() > 0) {
 					if (!displayname.toLowerCase().contains(searchtext.toLowerCase())) {
@@ -186,8 +204,8 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 			}
 		}
 		scrollbar.setMaxScroll(maxScroll);
-		GL11.glPopMatrix();
-		GL11.glDepthFunc(GL11.GL_LEQUAL);
+		GlStateManager.popMatrix();
+		GlStateManager.depthFunc(GL11.GL_LEQUAL);
 		this.setZLevel(2.0F);
 		GuiUtils.endGlScissor();
 	}

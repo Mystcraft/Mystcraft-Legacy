@@ -2,6 +2,12 @@ package com.xcompwiz.mystcraft.client.render;
 
 import java.util.Random;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.world.AgeController;
@@ -10,7 +16,6 @@ import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
@@ -18,6 +23,7 @@ import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WeatherRendererMyst extends IRenderHandler {
+
 	private static final ResourceLocation	locationRainPng	= new ResourceLocation("textures/environment/rain.png");
 	private static final ResourceLocation	locationSnowPng	= new ResourceLocation("textures/environment/snow.png");
 
@@ -31,11 +37,11 @@ public class WeatherRendererMyst extends IRenderHandler {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void render(float partialTicks, WorldClient worldObj, Minecraft mc) {
-		float rain_strength = worldObj.getRainStrength(partialTicks);
+	public void render(float partialTicks, WorldClient world, Minecraft mc) {
+		float rainStrength = mc.world.getRainStrength(partialTicks);
 
-		if (rain_strength > 0.0F) {
-			mc.entityRenderer.enableLightmap(partialTicks);
+		if (rainStrength > 0.0F) {
+			mc.entityRenderer.enableLightmap();
 
 			if (this.rainXCoords == null) {
 				this.rainXCoords = new float[1024];
@@ -45,140 +51,142 @@ public class WeatherRendererMyst extends IRenderHandler {
 					for (int z = 0; z < 32; ++z) {
 						float x2 = (z - 16);
 						float z2 = (x - 16);
-						float distance = MathHelper.sqrt_float(x2 * x2 + z2 * z2);
+						float distance = MathHelper.sqrt(x2 * x2 + z2 * z2);
 						this.rainXCoords[x << 5 | z] = -z2 / distance;
 						this.rainYCoords[x << 5 | z] = x2 / distance;
 					}
 				}
 			}
 
-			GL11.glPushMatrix();
-			GL11.glRotatef(0, 1, 0, 0);
-			EntityLivingBase entitylivingbase = mc.renderViewEntity;
-			WorldClient worldclient = worldObj;
-			int entityX = MathHelper.floor(entitylivingbase.posX);
-			int entityY = MathHelper.floor(entitylivingbase.posY);
-			int entityZ = MathHelper.floor(entitylivingbase.posZ);
-			Tessellator tessellator = Tessellator.instance;
-			GL11.glDisable(GL11.GL_CULL_FACE);
-			GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GL11.glAlphaFunc(GL11.GL_GREATER, 0.01F);
-			mc.getTextureManager().bindTexture(locationSnowPng);
-			double smoothedX = entitylivingbase.lastTickPosX + (entitylivingbase.posX - entitylivingbase.lastTickPosX) * partialTicks;
-			double smoothedY = entitylivingbase.lastTickPosY + (entitylivingbase.posY - entitylivingbase.lastTickPosY) * partialTicks;
-			double smoothedZ = entitylivingbase.lastTickPosZ + (entitylivingbase.posZ - entitylivingbase.lastTickPosZ) * partialTicks;
-			int ismoothedY = MathHelper.floor(smoothedY);
-			byte iteration_count = 5;
+			GlStateManager.pushMatrix();
+			GlStateManager.rotate(0, 1, 0, 0);
+			Entity entity = mc.getRenderViewEntity();
+			int i = MathHelper.floor(entity.posX);
+			int j = MathHelper.floor(entity.posY);
+			int k = MathHelper.floor(entity.posZ);
+			Tessellator tes = Tessellator.getInstance();
+			VertexBuffer vb = tes.getBuffer();
+
+			GlStateManager.disableCull();
+			GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
+			GlStateManager.enableBlend();
+			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+			GlStateManager.alphaFunc(516, 0.1F);
+			double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
+			double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
+			double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+			int l = MathHelper.floor(d1);
+			int i1 = 5;
 
 			if (mc.gameSettings.fancyGraphics) {
-				iteration_count = 10;
+				i1 = 10;
 			}
 
-			byte pass_param = -1;
-			float softTick = this.rendererUpdateCount + partialTicks;
+			int j1 = -1;
+			float f1 = (float) this.rendererUpdateCount + partialTicks;
 
-			if (mc.gameSettings.fancyGraphics) {
-				iteration_count = 10;
-			}
+			vb.setTranslation(-d0, -d1, -d2);
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+			BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			for (int k1 = k - i1; k1 <= k + i1; ++k1) {
+				for (int l1 = i - i1; l1 <= i + i1; ++l1) {
+					int i2 = (k1 - k + 16) * 32 + l1 - i + 16;
+					double d3 = (double) this.rainXCoords[i2] * 0.5D;
+					double d4 = (double) this.rainYCoords[i2] * 0.5D;
+					blockpos$mutableblockpos.setPos(l1, 0, k1);
+					Biome biome = world.getBiome(blockpos$mutableblockpos);
 
-			for (int zPos = entityZ - iteration_count; zPos <= entityZ + iteration_count; ++zPos) {
-				for (int xPos = entityX - iteration_count; xPos <= entityX + iteration_count; ++xPos) {
-					int coords = (zPos - entityZ + 16) * 32 + xPos - entityX + 16;
-					float rainX = this.rainXCoords[coords] * 0.5F;
-					float rainZ = this.rainYCoords[coords] * 0.5F;
-					Biome Biome = worldclient.getBiomeGenForCoords(xPos, zPos);
+					if (biome.canRain() || biome.getEnableSnow()) {
+						int j2 = world.getPrecipitationHeight(blockpos$mutableblockpos).getY();
+						int k2 = j - i1;
+						int l2 = j + i1;
 
-					if (Biome.canSpawnLightningBolt() || Biome.getEnableSnow()) {
-						int height = worldclient.getPrecipitationHeight(xPos, zPos);
-						int lowY = entityY - iteration_count;
-						int higY = entityY + iteration_count;
-
-						if (lowY < height) {
-							lowY = height;
+						if (k2 < j2) {
+							k2 = j2;
 						}
 
-						if (higY < height) {
-							higY = height;
+						if (l2 < j2) {
+							l2 = j2;
 						}
 
-						float scale = 1.0F;
-						int i3 = height;
+						int i3 = j2;
 
-						if (height < ismoothedY) {
-							i3 = ismoothedY;
+						if (j2 < l) {
+							i3 = l;
 						}
 
-						if (lowY != higY) {
-							this.random.setSeed((xPos * xPos * 3121 + xPos * 45238971 ^ zPos * zPos * 418711 + zPos * 13761));
-							float temperature = Biome.getFloatTemperature(xPos, lowY, zPos);
+						if (k2 != l2) {
+							this.random.setSeed((long) (l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
+							blockpos$mutableblockpos.setPos(l1, k2, k1);
+							float f2 = biome.getFloatTemperature(blockpos$mutableblockpos);
 
-							if (worldclient.getWorldChunkManager().getTemperatureAtHeight(temperature, height) >= 0.15F) {
-								if (pass_param != 0) {
-									if (pass_param >= 0) {
-										tessellator.draw();
+							if (world.getBiomeProvider().getTemperatureAtHeight(f2, j2) >= 0.15F) {
+								if (j1 != 0) {
+									if (j1 >= 0) {
+										tes.draw();
 									}
 
-									pass_param = 0;
+									j1 = 0;
 									mc.getTextureManager().bindTexture(locationRainPng);
-									tessellator.startDrawingQuads();
+									vb.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 								}
 
-								float rate = ((this.rendererUpdateCount + xPos * xPos * 3121 + xPos * 45238971 + zPos * zPos * 418711 + zPos * 13761 & 31) + partialTicks) / 32.0F * (3.0F + this.random.nextFloat());
-								double xOffset = (xPos + 0.5F) - entitylivingbase.posX;
-								double zOffset = (zPos + 0.5F) - entitylivingbase.posZ;
-								float distance = MathHelper.sqrt_double(xOffset * xOffset + zOffset * zOffset) / iteration_count;
-								tessellator.setBrightness(worldclient.getLightBrightnessForSkyBlocks(xPos, i3, zPos, 0));
-								tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, ((1.0F - distance * distance) * 0.5F + 0.5F) * rain_strength);
-								tessellator.setTranslation(-smoothedX * 1.0D, -smoothedY * 1.0D, -smoothedZ * 1.0D);
-								tessellator.addVertexWithUV((xPos - rainX) + 0.5D, lowY, (zPos - rainZ) + 0.5D, (0.0F * scale), (lowY * scale / 4.0F + rate * scale));
-								tessellator.addVertexWithUV((xPos + rainX) + 0.5D, lowY, (zPos + rainZ) + 0.5D, (1.0F * scale), (lowY * scale / 4.0F + rate * scale));
-								tessellator.addVertexWithUV((xPos + rainX) + 0.5D, higY, (zPos + rainZ) + 0.5D, (1.0F * scale), (higY * scale / 4.0F + rate * scale));
-								tessellator.addVertexWithUV((xPos - rainX) + 0.5D, higY, (zPos - rainZ) + 0.5D, (0.0F * scale), (higY * scale / 4.0F + rate * scale));
-								tessellator.setTranslation(0.0D, 0.0D, 0.0D);
+								double d5 = -((double) (this.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + (double) partialTicks) / 32.0D * (3.0D + this.random.nextDouble());
+								double d6 = (double) ((float) l1 + 0.5F) - entity.posX;
+								double d7 = (double) ((float) k1 + 0.5F) - entity.posZ;
+								float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) i1;
+								float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * rainStrength;
+								blockpos$mutableblockpos.setPos(l1, i3, k1);
+								int j3 = world.getCombinedLight(blockpos$mutableblockpos, 0);
+								int k3 = j3 >> 16 & 65535;
+								int l3 = j3 & 65535;
+								vb.pos((double) l1 - d3 + 0.5D, (double) l2, (double) k1 - d4 + 0.5D).tex(0.0D, (double) k2 * 0.25D + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
+								vb.pos((double) l1 + d3 + 0.5D, (double) l2, (double) k1 + d4 + 0.5D).tex(1.0D, (double) k2 * 0.25D + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
+								vb.pos((double) l1 + d3 + 0.5D, (double) k2, (double) k1 + d4 + 0.5D).tex(1.0D, (double) l2 * 0.25D + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
+								vb.pos((double) l1 - d3 + 0.5D, (double) k2, (double) k1 - d4 + 0.5D).tex(0.0D, (double) l2 * 0.25D + d5).color(1.0F, 1.0F, 1.0F, f4).lightmap(k3, l3).endVertex();
 							} else {
-								if (pass_param != 1) {
-									if (pass_param >= 0) {
-										tessellator.draw();
+								if (j1 != 1) {
+									if (j1 >= 0) {
+										tes.draw();
 									}
 
-									pass_param = 1;
+									j1 = 1;
 									mc.getTextureManager().bindTexture(locationSnowPng);
-									tessellator.startDrawingQuads();
+									vb.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 								}
 
-								float rate = ((this.rendererUpdateCount & 511) + partialTicks) / 512.0F;
-								float drift = this.random.nextFloat() + softTick * 0.01F * (float) this.random.nextGaussian();
-								float variable_rate = this.random.nextFloat() + softTick * (float) this.random.nextGaussian() * 0.001F;
-								double xOffset = (xPos + 0.5F) - entitylivingbase.posX;
-								double zOffset = (zPos + 0.5F) - entitylivingbase.posZ;
-								float distance = MathHelper.sqrt_double(xOffset * xOffset + zOffset * zOffset) / iteration_count;
-								tessellator.setBrightness((worldclient.getLightBrightnessForSkyBlocks(xPos, i3, zPos, 0) * 3 + 15728880) / 4);
-								tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, ((1.0F - distance * distance) * 0.3F + 0.5F) * rain_strength);
-								tessellator.setTranslation(-smoothedX * 1.0D, -smoothedY * 1.0D, -smoothedZ * 1.0D);
-								tessellator.addVertexWithUV((xPos - rainX) + 0.5D, lowY, (zPos - rainZ) + 0.5D, (0.0F * scale + drift), (lowY * scale / 4.0F + rate * scale + variable_rate));
-								tessellator.addVertexWithUV((xPos + rainX) + 0.5D, lowY, (zPos + rainZ) + 0.5D, (1.0F * scale + drift), (lowY * scale / 4.0F + rate * scale + variable_rate));
-								tessellator.addVertexWithUV((xPos + rainX) + 0.5D, higY, (zPos + rainZ) + 0.5D, (1.0F * scale + drift), (higY * scale / 4.0F + rate * scale + variable_rate));
-								tessellator.addVertexWithUV((xPos - rainX) + 0.5D, higY, (zPos - rainZ) + 0.5D, (0.0F * scale + drift), (higY * scale / 4.0F + rate * scale + variable_rate));
-								tessellator.setTranslation(0.0D, 0.0D, 0.0D);
+								double d8 = (double) (-((float) (this.rendererUpdateCount & 511) + partialTicks) / 512.0F);
+								double d9 = this.random.nextDouble() + (double) f1 * 0.01D * (double) ((float) this.random.nextGaussian());
+								double d10 = this.random.nextDouble() + (double) (f1 * (float) this.random.nextGaussian()) * 0.001D;
+								double d11 = (double) ((float) l1 + 0.5F) - entity.posX;
+								double d12 = (double) ((float) k1 + 0.5F) - entity.posZ;
+								float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float) i1;
+								float f5 = ((1.0F - f6 * f6) * 0.3F + 0.5F) * rainStrength;
+								blockpos$mutableblockpos.setPos(l1, i3, k1);
+								int i4 = (world.getCombinedLight(blockpos$mutableblockpos, 0) * 3 + 15728880) / 4;
+								int j4 = i4 >> 16 & 65535;
+								int k4 = i4 & 65535;
+								vb.pos((double) l1 - d3 + 0.5D, (double) l2, (double) k1 - d4 + 0.5D).tex(0.0D + d9, (double) k2 * 0.25D + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
+								vb.pos((double) l1 + d3 + 0.5D, (double) l2, (double) k1 + d4 + 0.5D).tex(1.0D + d9, (double) k2 * 0.25D + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
+								vb.pos((double) l1 + d3 + 0.5D, (double) k2, (double) k1 + d4 + 0.5D).tex(1.0D + d9, (double) l2 * 0.25D + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
+								vb.pos((double) l1 - d3 + 0.5D, (double) k2, (double) k1 - d4 + 0.5D).tex(0.0D + d9, (double) l2 * 0.25D + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
 							}
 						}
 					}
 				}
 			}
 
-			if (pass_param >= 0) {
-				tessellator.draw();
+			if (j1 >= 0) {
+				tes.draw();
 			}
-			GL11.glPopMatrix();
+			vb.setTranslation(0.0D, 0.0D, 0.0D);
+			GlStateManager.popMatrix();
 
-			GL11.glEnable(GL11.GL_CULL_FACE);
-			GL11.glDisable(GL11.GL_BLEND);
-			GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
-			mc.entityRenderer.disableLightmap(partialTicks);
+			GlStateManager.enableCull();
+			GlStateManager.disableBlend();
+			GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
+			mc.entityRenderer.disableLightmap();
 		}
 	}
 

@@ -16,6 +16,7 @@ import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
@@ -46,10 +47,12 @@ public class ModSymbolsFluids {
 			if (block == Blocks.WATER) continue;
 			if (block == Blocks.LAVA) continue;
 			if (block == null) continue;
-			if (Item.getItemFromBlock(block) == null) continue;
+			if (Item.getItemFromBlock(block) == Items.AIR) continue;
 
 			byte meta = 0;
-			if (block instanceof BlockFluidBase) meta = (byte) ((BlockFluidBase) block).getMaxRenderHeightMeta();
+			if (block instanceof BlockFluidBase) {
+				meta = (byte) ((BlockFluidBase) block).getMaxRenderHeightMeta();
+			}
 			String fluidkey = getFluidKey(fluid);
 			BlockModifierContainerObject container = BlockModifierContainerObject.create(WordData.Sea, symbolCardRank(fluidkey), block, meta);
 			InstabilityBlockManager.setInstabilityFactors(block, factor1(fluidkey), factor2(fluidkey));

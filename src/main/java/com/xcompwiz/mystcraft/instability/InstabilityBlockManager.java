@@ -38,18 +38,13 @@ public class InstabilityBlockManager {
 		freevals = newfreevals;
 	}
 
-	private static final HashMap<IBlockState, String>	keys	= new HashMap<IBlockState, String>();
+	private static final HashMap<IBlockState, String> keys = new HashMap<>();
 
-	private static String getOrCreateUnlocalizedKey(Block block, int metadata) {
-		HashMap<Integer, String> metakeys = keys.get(block);
-		if (metakeys == null) {
-			metakeys = new HashMap<>();
-			keys.put(block, metakeys);
-		}
-		String key = metakeys.get(metadata);
+	//This name is not used for display/translation. a registry name is the better choice here.
+	private static String getOrCreateUnlocalizedKey(IBlockState blockstate) {
+		String key = keys.get(blockstate);
 		if (key == null) {
-			ItemStack localizationitemstack = new ItemStack(blockstate);
-			key = localizationitemstack.getUnlocalizedName();
+		    key = blockstate.getBlock().getRegistryName().toString() + "_" + blockstate.getBlock().getMetaFromState(blockstate);
 			keys.put(blockstate, key);
 		}
 		return key;

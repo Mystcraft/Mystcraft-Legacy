@@ -6,25 +6,27 @@ import com.xcompwiz.mystcraft.page.Page;
 
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class PageAPIDelegate {
 
-	public String getPageSymbol(ItemStack page) {
+	public String getPageSymbol(@Nonnull ItemStack page) {
 		return Page.getSymbol(page);
 	}
 
-	public boolean isPageWritable(ItemStack page) {
+	public boolean isPageWritable(@Nonnull ItemStack page) {
 		return Page.isBlank(page);
 	}
 
-	public void setPageSymbol(ItemStack page, String symbol) {
+	public void setPageSymbol(@Nonnull ItemStack page, String symbol) {
 		Page.setSymbol(page, symbol);
 	}
 
-	public Collection<String> getPageLinkProperties(ItemStack page) {
+	public Collection<String> getPageLinkProperties(@Nonnull ItemStack page) {
 		return Page.getLinkProperties(page);
 	}
 
-	public boolean hasLinkPanel(ItemStack page) {
+	public boolean hasLinkPanel(@Nonnull ItemStack page) {
 		return Page.isLinkPanel(page);
 	}
 

@@ -45,6 +45,6 @@ public class IMCBlockInstability implements IMCProcessor {
 
 		if (nbt.hasKey("Metadata")) metadata = NBTUtils.readNumber(nbt.getTag("Metadata")).intValue();
 
-		InstabilityBlockManager.setInstabilityFactors(block, metadata, nbt.getFloat("Accessibility"), nbt.getFloat("Flat"));
+		InstabilityBlockManager.setInstabilityFactors(block.getStateFromMeta(metadata), nbt.getFloat("Accessibility"), nbt.getFloat("Flat"));
 	}
 }

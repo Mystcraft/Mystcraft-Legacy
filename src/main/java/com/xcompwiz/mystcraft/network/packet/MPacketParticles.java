@@ -16,6 +16,7 @@ public class MPacketParticles extends PacketBase<MPacketParticles, MPacketPartic
 
 	public MPacketParticles() {}
 
+	//Hellfire> DO NOT USE THIS FOR VANILLA PARTICLES!
 	public MPacketParticles(double x, double y, double z, String particle) {
 	    this.x = x;
 	    this.y = y;

@@ -11,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
  * @author xcompwiz
  */
 public final class BlockDescriptor {
+
 	public final IBlockState blockstate;
 	private final HashMap<String, Boolean> useable = new HashMap<String, Boolean>();
 

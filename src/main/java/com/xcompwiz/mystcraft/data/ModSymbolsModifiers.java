@@ -59,7 +59,7 @@ public class ModSymbolsModifiers {
 		}
 
 		public static BlockModifierContainerObject create(String word, int cardrank, Block block, int metadata) {
-			return BlockModifierContainerObject.create(word, cardrank, block, (byte) metadata);
+			return BlockModifierContainerObject.create(word, cardrank, block.getStateFromMeta(metadata));
 		}
 
 		public IAgeSymbol getSymbol() {

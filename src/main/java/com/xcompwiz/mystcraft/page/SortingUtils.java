@@ -8,6 +8,8 @@ import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import javax.annotation.Nonnull;
+
 /**
  * Provides helper methods and classes for sorting items, pages, and symbols
  * @author xcompwiz
@@ -39,7 +41,7 @@ public final class SortingUtils {
 		public static ComparatorItemSymbolAlphabetical	instance	= new ComparatorItemSymbolAlphabetical();
 
 		@Override
-		public int compare(ItemStack itemstack1, ItemStack itemstack2) {
+		public int compare(@Nonnull ItemStack itemstack1, @Nonnull ItemStack itemstack2) {
 			String id1 = InternalAPI.page.getPageSymbol(itemstack1);
 			String id2 = InternalAPI.page.getPageSymbol(itemstack2);
 			if (id1 == id2) return 0;

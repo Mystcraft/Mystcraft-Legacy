@@ -2,9 +2,7 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import java.util.Random;
 
-import com.xcompwiz.mystcraft.client.render.GLRenderUtils;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.relauncher.Side;

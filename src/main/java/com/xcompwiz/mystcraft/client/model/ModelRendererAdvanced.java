@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.client.renderer.VertexBuffer;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.model.ModelBase;
@@ -54,15 +55,15 @@ public class ModelRendererAdvanced {
 		this.mirror = false;
 		this.showModel = true;
 		this.isHidden = false;
-		this.elementList = new ArrayList<ModelElement>();
+		this.elementList = new ArrayList<>();
 		this.baseModel = par1ModelBase;
-		par1ModelBase.boxList.add(this);
+		//par1ModelBase.boxList.add(this);
 		this.modelName = par2Str;
 		this.setTextureSize(par1ModelBase.textureWidth, par1ModelBase.textureHeight);
 	}
 
 	public ModelRendererAdvanced(ModelBase par1ModelBase) {
-		this(par1ModelBase, (String) null);
+		this(par1ModelBase, null);
 	}
 
 	public ModelRendererAdvanced(ModelBase par1ModelBase, int par2, int par3) {
@@ -72,7 +73,7 @@ public class ModelRendererAdvanced {
 
 	public void addChild(ModelRendererAdvanced par1ModelRenderer) {
 		if (this.childModels == null) {
-			this.childModels = new ArrayList<ModelRendererAdvanced>();
+			this.childModels = new ArrayList<>();
 		}
 
 		this.childModels.add(par1ModelRenderer);
@@ -255,10 +256,11 @@ public class ModelRendererAdvanced {
 	private void compileDisplayList(float par1) {
 		this.displayList = GLAllocation.generateDisplayLists(1);
 		GL11.glNewList(this.displayList, GL11.GL_COMPILE);
-		Tessellator tesselator = Tessellator.instance;
+		Tessellator tesselator = Tessellator.getInstance();
+		VertexBuffer vb = tesselator.getBuffer();
 
 		for (ModelElement element : this.elementList) {
-			element.render(tesselator, par1);
+			element.render(vb, par1);
 		}
 
 		GL11.glEndList();

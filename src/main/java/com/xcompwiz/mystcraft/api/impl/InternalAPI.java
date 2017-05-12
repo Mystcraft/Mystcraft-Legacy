@@ -14,6 +14,7 @@ import com.xcompwiz.mystcraft.api.impl.page.PageAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.symbol.SymbolAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.symbol.SymbolFactoryImpl;
 import com.xcompwiz.mystcraft.page.SortingUtils.ComparatorItemSymbolAlphabetical;
+import net.minecraft.item.ItemStack;
 
 public class InternalAPI {
 
@@ -54,7 +55,7 @@ public class InternalAPI {
 		render = new RenderAPIDelegate();
 
 		//TODO: Why do I do this?
-		ComparatorItemSymbolAlphabetical.instance.compare(null, null);
+		ComparatorItemSymbolAlphabetical.instance.compare(ItemStack.EMPTY, ItemStack.EMPTY);
 
 		APIProviderImpl.init();
 	}

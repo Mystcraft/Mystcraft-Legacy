@@ -1,13 +1,14 @@
 package com.xcompwiz.mystcraft.client.gui;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.word.DrawableWord;
@@ -27,24 +28,13 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class GuiUtils {
-
-	public static Collection<String> getRegisteredIcons(TextureMap texturemap) {
-		try {
-			Map<String, IIcon> local = ObfuscationReflectionHelper.getPrivateValue(TextureMap.class, texturemap, "mapUploadedSprites", "field_" + "94252_e");
-			return local.keySet();
-		} catch (Exception e) {
-		}
-		return null;
-	}
 
 	//XXX: Probably need to move the symbol drawing code elsewhere
 	@SideOnly(Side.CLIENT)
@@ -60,19 +50,23 @@ public final class GuiUtils {
 
 	@SideOnly(Side.CLIENT)
 	private static void drawPageBackground(TextureManager renderEngine, float zLevel, ItemStack page, float xSize, float ySize, float x, float y) {
-		GL11.glDisable(GL11.GL_BLEND);
+		GlStateManager.disableBlend();
 		renderEngine.bindTexture(GUIs.book_page_left);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		if (page == null) GL11.glColor4f(0.2F, 0.2F, 0.2F, 0.2F);
+		GlStateManager.color(1F, 1F, 1F, 1F);
+		if (page == null) {
+			GlStateManager.color(0.2F, 0.2F, 0.2F, 0.2F);
+		}
 		drawTexturedModalRect(x, y, 156, 0, 30, 40, zLevel, xSize, ySize);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void drawSymbol(TextureManager renderEngine, float zLevel, IAgeSymbol symbol, float scale, float x, float y) {
-		if (SeasonalManager.drawSymbol(renderEngine, zLevel, symbol, scale, x, y)) return;
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		if (SeasonalManager.drawSymbol(renderEngine, zLevel, symbol, scale, x, y)) {
+			return;
+		}
+		GlStateManager.enableAlpha();
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		if (symbol == null) {
 			drawWord(renderEngine, zLevel, null, scale, x, y);
 			return;
@@ -85,11 +79,11 @@ public final class GuiUtils {
 			drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(null), s * 2, x + o, y + o);
 			return;
 		}
-		if (words.length > 0) drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[0]), 2 * s, x + o, y);
+		if (words.length > 0) drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[0]), 2 * s, x + o,        y);
 		if (words.length > 1) drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[1]), 2 * s, x + o * 2, y + o);
-		if (words.length > 2) drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[2]), 2 * s, x + o, y + o * 2);
-		if (words.length > 3) drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[3]), 2 * s, x, y + o);
-		GL11.glDisable(GL11.GL_BLEND);
+		if (words.length > 2) drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[2]), 2 * s, x + o,     y + o * 2);
+		if (words.length > 3) drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[3]), 2 * s,    x,         y + o);
+		GlStateManager.disableBlend();
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -102,12 +96,14 @@ public final class GuiUtils {
 			colors = word.colors();
 			imagesource = word.imageSource();
 		}
-		if (imagesource == null) imagesource = DrawableWord.word_components;
+		if (imagesource == null) {
+			imagesource = DrawableWord.word_components;
+		}
 		renderEngine.bindTexture(imagesource);
 		if (components == null || components.size() == 0) { // No drawable -> ? image
-			components = new ArrayList<Integer>();
+			components = new ArrayList<>();
 			components.add(0);
-			colors = new ArrayList<Integer>();
+			colors = new ArrayList<>();
 		}
 		for (int c = 0; c < components.size(); ++c) {
 			int color = 0;
@@ -130,19 +126,22 @@ public final class GuiUtils {
 		float fRed = (color >> 16 & 0xff) / 255F;
 		float fGreen = (color >> 8 & 0xff) / 255F;
 		float fBlue = (color & 0xff) / 255F;
-		GL11.glColor4f(fRed, fGreen, fBlue, 1.0F);
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(x + 0, y + drawscale, zLevel, (iconX + 0) * transform, (iconY + iconSize) * transform);
-		tessellator.addVertexWithUV(x + drawscale, y + drawscale, zLevel, (iconX + iconSize) * transform, (iconY + iconSize) * transform);
-		tessellator.addVertexWithUV(x + drawscale, y + 0, zLevel, (iconX + iconSize) * transform, (iconY + 0) * transform);
-		tessellator.addVertexWithUV(x + 0, y + 0, zLevel, (iconX + 0) * transform, (iconY + 0) * transform);
-		tessellator.draw();
+		GlStateManager.color(fRed, fGreen, fBlue, 1F);
+		Tessellator tes = Tessellator.getInstance();
+		VertexBuffer vb = tes.getBuffer();
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		vb.pos(x + 0,         y + drawscale, zLevel).tex((iconX + 0)        * transform, (iconY + iconSize) * transform).endVertex();
+		vb.pos(x + drawscale, y + drawscale, zLevel).tex((iconX + iconSize) * transform, (iconY + iconSize) * transform).endVertex();
+		vb.pos(x + drawscale, y + 0,         zLevel).tex((iconX + iconSize) * transform, (iconY + 0)        * transform).endVertex();
+		vb.pos(x + 0,         y + 0,         zLevel).tex((iconX + 0)        * transform, (iconY + 0)        * transform).endVertex();
+		tes.draw();
 	}
 
 	//XXX: This doesn't really belong here
 	public static String getHoverText(IAgeSymbol symbol) {
-		if (symbol != null) return symbol.displayName();
+		if (symbol != null) {
+			return symbol.displayName();
+		}
 		return "?";
 	}
 
@@ -155,40 +154,42 @@ public final class GuiUtils {
 	public static void drawTexturedModalRect(float x, float y, float u, float v, float width, float height, float zLevel, float xSize, float ySize) {
 		float var7 = 0.00390625F;
 		float var8 = 0.00390625F;
-		Tessellator var9 = Tessellator.instance;
-		var9.startDrawingQuads();
-		var9.addVertexWithUV((x + 0), (y + ySize), zLevel, ((u + 0) * var7), ((v + height) * var8));
-		var9.addVertexWithUV((x + xSize), (y + ySize), zLevel, ((u + width) * var7), ((v + height) * var8));
-		var9.addVertexWithUV((x + xSize), (y + 0), zLevel, ((u + width) * var7), ((v + 0) * var8));
-		var9.addVertexWithUV((x + 0), (y + 0), zLevel, ((u + 0) * var7), ((v + 0) * var8));
-		var9.draw();
+		Tessellator tes = Tessellator.getInstance();
+		VertexBuffer vb = tes.getBuffer();
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        vb.pos((x + 0),     (y + ySize), zLevel).tex(((u + 0)     * var7), ((v + height) * var8)).endVertex();
+        vb.pos((x + xSize), (y + ySize), zLevel).tex(((u + width) * var7), ((v + height) * var8)).endVertex();
+        vb.pos((x + xSize), (y + 0),     zLevel).tex(((u + width) * var7), ((v + 0)      * var8)).endVertex();
+        vb.pos((x + 0),     (y + 0),     zLevel).tex(((u + 0)     * var7), ((v + 0)      * var8)).endVertex();
+		tes.draw();
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static IIcon getIconSafe(IIcon icon) {
-		if (icon == null) {
-			icon = ((TextureMap) Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
+	public static TextureAtlasSprite getIconSafe(TextureAtlasSprite tas) {
+		if (tas == null) {
+			tas = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
 		}
-		return icon;
+		return tas;
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static void drawIcon(int x, int y, IIcon icon, int xSize, int ySize, double zLevel) {
-		if (icon == null) {
+	public static void drawIcon(int x, int y, TextureAtlasSprite tas, int xSize, int ySize, double zLevel) {
+		if (tas == null) {
 			LoggerUtils.warn("Error attepting to render icon: null icon object.");
 			return;
 		}
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV((x + 0), (y + ySize), zLevel, icon.getMinU(), icon.getMaxV());
-		tessellator.addVertexWithUV((x + xSize), (y + ySize), zLevel, icon.getMaxU(), icon.getMaxV());
-		tessellator.addVertexWithUV((x + xSize), (y + 0), zLevel, icon.getMaxU(), icon.getMinV());
-		tessellator.addVertexWithUV((x + 0), (y + 0), zLevel, icon.getMinU(), icon.getMinV());
-		tessellator.draw();
+		Tessellator tes = Tessellator.getInstance();
+		VertexBuffer vb = tes.getBuffer();
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        vb.pos((x + 0),     (y + ySize), zLevel).tex(tas.getMinU(), tas.getMaxV()).endVertex();
+        vb.pos((x + xSize), (y + ySize), zLevel).tex(tas.getMaxU(), tas.getMaxV()).endVertex();
+        vb.pos((x + xSize), (y + 0),     zLevel).tex(tas.getMaxU(), tas.getMinV()).endVertex();
+        vb.pos((x + 0),     (y + 0),     zLevel).tex(tas.getMinU(), tas.getMinV()).endVertex();
+		tes.draw();
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static void drawIconRepeating(TextureManager render, IIcon icon, int color, int left, int top, int width, int height, float zLevel) {
+	public static void drawIconRepeating(TextureManager render, TextureAtlasSprite tas, int color, int left, int top, int width, int height, float zLevel) {
 		float red, green, blue;
 		red = (color >> 16 & 255) / 255.0F;
 		green = (color >> 8 & 255) / 255.0F;
@@ -197,56 +198,56 @@ public final class GuiUtils {
 		int y = 0;
 		int drawHeight = 0;
 		int drawWidth = 0;
-		GL11.glColor4f(red, green, blue, 1.0F);
+		GlStateManager.color(red, green, blue, 1F);
 		for (x = 0; x < width; x += 16) {
 			for (y = 0; y < height; y += 16) {
 				drawWidth = Math.min(width - x, 16);
 				drawHeight = Math.min(height - y, 16);
-				drawIcon(left + x, top + y, icon, drawWidth, drawHeight, zLevel);
+				drawIcon(left + x, top + y, tas, drawWidth, drawHeight, zLevel);
 			}
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void drawFluid(TextureManager render, Fluid fluid, int left, int top, int width, int height, float zLevel) {
-		IIcon icon = fluid.getIcon();
-		if (icon == null) {
-			LoggerUtils.warn("Error attepting to render fluid (%s): null icon object.", new Object[] { fluid.getName() });
+        TextureAtlasSprite tas = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getStill().toString());
+		if (tas == null) {
+			LoggerUtils.warn("Error attepting to render fluid (%s): null icon object.", fluid.getName());
 			return;
 		}
 		int color = fluid.getColor();
-		render.bindTexture(fluid.getSpriteNumber() == 0 ? TextureMap.locationBlocksTexture : TextureMap.locationItemsTexture);
-		drawIconRepeating(render, icon, color, left, top, width, height, zLevel);
+		render.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		drawIconRepeating(render, tas, color, left, top, width, height, zLevel);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void drawFluid(TextureManager render, FluidStack fluidstack, int left, int top, int width, int height, float zLevel) {
 		Fluid fluid = fluidstack.getFluid();
-		IIcon icon = fluid.getIcon(fluidstack);
-		if (icon == null) {
-			LoggerUtils.warn("Error attepting to render fluid (%s): null icon object.", new Object[] { fluid.getName() });
+        TextureAtlasSprite tas = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getStill(fluidstack).toString());
+		if (tas == null) {
+			LoggerUtils.warn("Error attepting to render fluid (%s): null icon object.", fluid.getName());
 			return;
 		}
 		int color = fluid.getColor(fluidstack);
-		render.bindTexture(fluid.getSpriteNumber() == 0 ? TextureMap.locationBlocksTexture : TextureMap.locationItemsTexture);
-		drawIconRepeating(render, icon, color, left, top, width, height, zLevel);
+		render.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		drawIconRepeating(render, tas, color, left, top, width, height, zLevel);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void drawTooltip(FontRenderer fontRenderer, int xcoord, int ycoord, float zLevel, List<String> list, int maxwidth, int maxheight) {
 		if (list.size() > 0) {
-			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		    GlStateManager.disableRescaleNormal();
 			RenderHelper.disableStandardItemLighting();
-			GL11.glDisable(GL11.GL_LIGHTING);
-			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GlStateManager.disableLighting();
+			GlStateManager.disableDepth();
 
 			int width = 0;
-			for (int k2 = 0; k2 < list.size(); k2++) {
-				int i3 = fontRenderer.getStringWidth(list.get(k2));
-				if (i3 > width) {
-					width = i3;
-				}
-			}
+            for (String aList : list) {
+                int strLength = fontRenderer.getStringWidth(aList);
+                if (strLength > width) {
+                    width = strLength;
+                }
+            }
 
 			int height = 8;
 			if (list.size() > 1) {
@@ -274,17 +275,16 @@ public final class GuiUtils {
 			drawGradientRect(xcoord + width + 2, (ycoord - 3) + 1, xcoord + width + 3, (ycoord + height + 3) - 1, color1, color2, zLevel);
 			drawGradientRect(xcoord - 3, ycoord - 3, xcoord + width + 3, (ycoord - 3) + 1, color1, color1, zLevel);
 			drawGradientRect(xcoord - 3, ycoord + height + 2, xcoord + width + 3, ycoord + height + 3, color2, color2, zLevel);
-			for (int i = 0; i < list.size(); i++) {
-				String str = list.get(i);
-				str = (new StringBuilder()).append("\247F").append(str).toString();
-				fontRenderer.drawStringWithShadow(str, xcoord, ycoord, -1);
-				ycoord += 10;
-			}
+            for (String str : list) {
+                str = (new StringBuilder()).append("\247F").append(str).toString();
+                fontRenderer.drawStringWithShadow(str, xcoord, ycoord, -1);
+                ycoord += 10;
+            }
 
 			zLevel = 0.0F;
 			// itemRenderer.zLevel = 0.0F;
-			GL11.glEnable(GL11.GL_LIGHTING);
-			GL11.glEnable(GL11.GL_DEPTH_TEST);
+            GlStateManager.enableLighting();
+            GlStateManager.enableDepth();
 			RenderHelper.enableGUIStandardItemLighting();
 		}
 	}
@@ -294,32 +294,35 @@ public final class GuiUtils {
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void drawGradientRect(float par1, float par2, float par3, float par4, int color1, int color2, float zLevel) {
-		float var7 = (color1 >> 24 & 255) / 255.0F;
-		float var8 = (color1 >> 16 & 255) / 255.0F;
-		float var9 = (color1 >> 8 & 255) / 255.0F;
-		float var10 = (color1 & 255) / 255.0F;
-		float var11 = (color2 >> 24 & 255) / 255.0F;
-		float var12 = (color2 >> 16 & 255) / 255.0F;
-		float var13 = (color2 >> 8 & 255) / 255.0F;
-		float var14 = (color2 & 255) / 255.0F;
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glDisable(GL11.GL_ALPHA_TEST);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glShadeModel(GL11.GL_SMOOTH);
-		Tessellator var15 = Tessellator.instance;
-		var15.startDrawingQuads();
-		var15.setColorRGBA_F(var8, var9, var10, var7);
-		var15.addVertex(par3, par2, zLevel);
-		var15.addVertex(par1, par2, zLevel);
-		var15.setColorRGBA_F(var12, var13, var14, var11);
-		var15.addVertex(par1, par4, zLevel);
-		var15.addVertex(par3, par4, zLevel);
-		var15.draw();
-		GL11.glShadeModel(GL11.GL_FLAT);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_ALPHA_TEST);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		float alpha1  = (color1 >> 24 & 255) / 255.0F;
+		float red1  = (color1 >> 16 & 255) / 255.0F;
+		float green1  = (color1 >> 8 & 255) / 255.0F;
+		float blue1 = (color1 & 255) / 255.0F;
+
+		float alpha2 = (color2 >> 24 & 255) / 255.0F;
+		float red2 = (color2 >> 16 & 255) / 255.0F;
+		float green2 = (color2 >> 8 & 255) / 255.0F;
+		float blue2 = (color2 & 255) / 255.0F;
+
+		GlStateManager.disableTexture2D();
+		GlStateManager.enableBlend();
+		GlStateManager.disableAlpha();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		GlStateManager.shadeModel(GL11.GL_SMOOTH);
+
+		Tessellator tes = Tessellator.getInstance();
+		VertexBuffer vb = tes.getBuffer();
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        vb.pos(par3, par2, zLevel).color(red1, green1, blue1, alpha1).endVertex();
+        vb.pos(par1, par2, zLevel).color(red1, green1, blue1, alpha1).endVertex();
+        vb.pos(par1, par4, zLevel).color(red2, green2, blue2, alpha2).endVertex();
+        vb.pos(par3, par4, zLevel).color(red2, green2, blue2, alpha2).endVertex();
+		tes.draw();
+
+        GlStateManager.shadeModel(GL11.GL_FLAT);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
 	}
 
 	public static boolean contains(int mouseX, int mouseY, int guiLeft, int guiTop, int width, int height) {
@@ -336,44 +339,46 @@ public final class GuiUtils {
 	@SideOnly(Side.CLIENT)
 	public static void drawSprite(int x, int y, int xOffset, int yOffset, float zLevel) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(Vanilla.slot_tex);
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV((x + 0), (y + 18), zLevel, ((xOffset + 0) * 0.0078125F), ((yOffset + 18) * 0.0078125F));
-		tessellator.addVertexWithUV((x + 18), (y + 18), zLevel, ((xOffset + 18) * 0.0078125F), ((yOffset + 18) * 0.0078125F));
-		tessellator.addVertexWithUV((x + 18), (y + 0), zLevel, ((xOffset + 18) * 0.0078125F), ((yOffset + 0) * 0.0078125F));
-		tessellator.addVertexWithUV((x + 0), (y + 0), zLevel, ((xOffset + 0) * 0.0078125F), ((yOffset + 0) * 0.0078125F));
-		tessellator.draw();
+        Tessellator tes = Tessellator.getInstance();
+        VertexBuffer vb = tes.getBuffer();
+        vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        vb.pos((x + 0),  (y + 18), zLevel).tex(((xOffset + 0)  * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
+        vb.pos((x + 18), (y + 18), zLevel).tex(((xOffset + 18) * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
+        vb.pos((x + 18), (y + 0),  zLevel).tex(((xOffset + 18) * 0.0078125F), ((yOffset + 0)  * 0.0078125F)).endVertex();
+        vb.pos((x + 0),  (y + 0),  zLevel).tex(((xOffset + 0)  * 0.0078125F), ((yOffset + 0)  * 0.0078125F)).endVertex();
+        tes.draw();
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void drawSprite(int x, int y, int xSize, int ySize, int xOffset, int yOffset, float zLevel) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(Vanilla.slot_tex);
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV((x + 0), (y + ySize), zLevel, ((xOffset + 0) * 0.0078125F), ((yOffset + 18) * 0.0078125F));
-		tessellator.addVertexWithUV((x + xSize), (y + ySize), zLevel, ((xOffset + 18) * 0.0078125F), ((yOffset + 18) * 0.0078125F));
-		tessellator.addVertexWithUV((x + xSize), (y + 0), zLevel, ((xOffset + 18) * 0.0078125F), ((yOffset + 0) * 0.0078125F));
-		tessellator.addVertexWithUV((x + 0), (y + 0), zLevel, ((xOffset + 0) * 0.0078125F), ((yOffset + 0) * 0.0078125F));
-		tessellator.draw();
+        Tessellator tes = Tessellator.getInstance();
+        VertexBuffer vb = tes.getBuffer();
+        vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        vb.pos((x + 0),     (y + ySize), zLevel).tex(((xOffset + 0)  * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
+        vb.pos((x + xSize), (y + ySize), zLevel).tex(((xOffset + 18) * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
+        vb.pos((x + xSize), (y + 0),     zLevel).tex(((xOffset + 18) * 0.0078125F), ((yOffset + 0)  * 0.0078125F)).endVertex();
+        vb.pos((x + 0),     (y + 0),     zLevel).tex(((xOffset + 0)  * 0.0078125F), ((yOffset + 0)  * 0.0078125F)).endVertex();
+        tes.draw();
 	}
 
 	// TODO: (Visuals) Padding and alignment for scaled text
 	@SideOnly(Side.CLIENT)
 	public static void drawScaledText(String text, int x, int y, int width, int height, int textcolor) {
-		GL11.glPushMatrix();
+	    GlStateManager.pushMatrix();
 		float scale = 1;
 		int xPad = 0, yPad = 0;
-		int textWidth = Minecraft.getMinecraft().fontRenderer.getStringWidth(text);
+		int textWidth = Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);
 		if (textWidth > width) {
 			scale = (float) width / (float) textWidth;
 		}
-		GL11.glTranslatef(x + xPad, y + yPad, 0);
-		GL11.glScalef(scale, scale, 1);
-		Minecraft.getMinecraft().fontRenderer.drawString(text, 0, 0, textcolor);
-		GL11.glPopMatrix();
+		GlStateManager.translate(x + xPad, y + yPad, 0);
+		GlStateManager.scale(scale, scale, 1);
+		Minecraft.getMinecraft().fontRendererObj.drawString(text, 0, 0, textcolor);
+		GlStateManager.popMatrix();
 	}
 
-	private static List<int[]>	scissors	= new LinkedList<int[]>();
+	private static List<int[]>	scissors	= new LinkedList<>();
 
 	/**
 	 * Clips rendering from top left corner, using Minecraft GUI coords. Don't forget to call endGlScissor after rendering. Edited by XCompWiz to support
@@ -383,7 +388,7 @@ public final class GuiUtils {
 	//TODO: use a push/pop system, allowing for nested clipping settings
 	public static void startGlScissor(int guiLeft, int guiTop, int xSize, int ySize) {
 		Minecraft mc = Minecraft.getMinecraft();
-		ScaledResolution reso = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+		ScaledResolution reso = new ScaledResolution(mc);
 		double scaleW = mc.displayWidth / reso.getScaledWidth_double();
 		double scaleH = mc.displayHeight / reso.getScaledHeight_double();
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);

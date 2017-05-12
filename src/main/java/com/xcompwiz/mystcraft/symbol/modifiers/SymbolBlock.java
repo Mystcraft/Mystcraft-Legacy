@@ -7,8 +7,10 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 
 public class SymbolBlock extends SymbolBase {
 
@@ -28,12 +30,23 @@ public class SymbolBlock extends SymbolBase {
 
 	//TODO: Make into a helper somewhere
 	private static String formatted(BlockDescriptor blockDescriptor) {
-		IBlockState blockstate = blockDescriptor.blockstate;
-		String name = I18n.format(blockstate);
-		if (name.endsWith("Block")) {
-			name = name.substring(0, name.length() - "Block".length()).trim();
+		ItemStack attempt = ItemStack.EMPTY;
+		try {
+			attempt = blockDescriptor.blockstate.getBlock().getPickBlock(blockDescriptor.blockstate, null, null, BlockPos.ORIGIN, null);
+		} catch (Exception ignored) {}
+		if(attempt.isEmpty()) {
+			Item i = Item.getItemFromBlock(blockDescriptor.blockstate.getBlock());
+			if (i != Items.AIR) {
+				int meta = blockDescriptor.blockstate.getBlock().getMetaFromState(blockDescriptor.blockstate);
+				attempt = new ItemStack(i, 1, meta);
+			}
 		}
-		name = I18n.format("myst.symbol.block.wrapper", name);
+		String name;
+		if(attempt.isEmpty()) {
+			name = blockDescriptor.blockstate.getBlock().getUnlocalizedName();
+		} else {
+			name = attempt.getUnlocalizedName();
+		}
 		return name;
 	}
 

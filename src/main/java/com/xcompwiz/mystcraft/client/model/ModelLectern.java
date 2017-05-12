@@ -10,7 +10,8 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 
 public class ModelLectern extends ModelBase {
-	ModelRendererAdvanced	base;
+
+	private ModelRendererAdvanced base;
 
 	public ModelLectern() {
 		textureWidth = 64;

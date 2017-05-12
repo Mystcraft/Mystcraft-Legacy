@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.client.gui;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementIcon;
@@ -66,16 +67,17 @@ public class GuiBookBinder extends GuiContainerElements {
 		@Override
 		public void _renderBackground(float f, int mouseX, int mouseY) {
 			hovered = this.contains(mouseX, mouseY);
-			GL11.glColor4f(1.0F, 0.5F, 0.5F, alpha);
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glDisable(GL11.GL_ALPHA_TEST);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GL11.glShadeModel(GL11.GL_SMOOTH);
+			GlStateManager.color(1F, 0.5F, 0.5F, alpha);
+			GlStateManager.enableBlend();
+			GlStateManager.disableAlpha();
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+			GlStateManager.shadeModel(GL11.GL_SMOOTH);
 			super._renderBackground(f, mouseX, mouseY);
-			GL11.glShadeModel(GL11.GL_FLAT);
-			GL11.glDisable(GL11.GL_BLEND);
-			GL11.glEnable(GL11.GL_ALPHA_TEST);
+			GlStateManager.shadeModel(GL11.GL_FLAT);
+			GlStateManager.disableBlend();
+			GlStateManager.enableAlpha();
 		}
+
 	}
 
 	public class PageListHandler implements IGuiPageListProvider, IGuiScrollableClickHandler {
@@ -104,6 +106,7 @@ public class GuiBookBinder extends GuiContainerElements {
 	}
 
 	public class TextBoxHandler implements IGuiTextProvider, IGuiOnTextChange {
+
 		@Override
 		public String getText(GuiElementTextField caller) {
 			return container.getPendingTitle();
@@ -116,10 +119,10 @@ public class GuiBookBinder extends GuiContainerElements {
 			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(container.windowId, nbttagcompound));
 			container.processMessage(mc.player, nbttagcompound);
 		}
+
 	}
 
 	private ContainerBookBinder	container;
-
 	private GuiElementTextField	txtBookName;
 	private int	errorcolor = 0xFFFF0000;
 	private int	txtcolor = 0xFFA0A0A0;
@@ -154,7 +157,7 @@ public class GuiBookBinder extends GuiContainerElements {
 
 	@Override
 	protected void _drawBackgroundLayer(int mouseX, int mouseY, float f) {
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1F, 1F, 1F, 1F);
 		mc.renderEngine.bindTexture(GUIs.binder);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		fontRendererObj.drawString(I18n.format("container.inventory"), guiLeft + 8, guiTop + (ySize - 96) + 2, 0x404040);

@@ -17,17 +17,23 @@ import com.xcompwiz.mystcraft.item.ItemWritingDesk;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class ModItems {
+
 	public static Item			page;
 	public static ItemAgebook	agebook;
 	public static Item			linkbook;
@@ -79,19 +85,7 @@ public class ModItems {
 	public static void registerModels() {
 		ItemModelMesher imm = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 
-		imm.register(page, (stack) -> {
-			String symbolUniqueId = Page.getSymbol(stack);
-			if(symbolUniqueId == null) {
-				return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "page_no_symbol"), "inventory");
-			} else {
-				IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolUniqueId);
-				if(symbol != null) {
-					return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "page_" + symbol.identifier()), "inventory");
-				} else {
-					return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "page_no_symbol"), "inventory");
-				}
-			}
-		});
+		imm.register(page, new PageMeshDefinition());
 
 		imm.register(agebook, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "agebook"), "inventory"));
 		imm.register(linkbook, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "linkbook"), "inventory"));
@@ -105,6 +99,45 @@ public class ModItems {
 
 		imm.register(inkvial, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "ink_vial"), "inventory"));
 		imm.register(glasses, (stack -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "glasses"), "inventory")));
+	}
+
+	public static class PageMeshDefinition implements ItemMeshDefinition {
+
+		public static PageMeshDefinition instance = new PageMeshDefinition();
+
+		@SideOnly(Side.CLIENT)
+		public String pathForSymbol(@Nullable IAgeSymbol symbol) {
+		    if(symbol == null) {
+		        return "page_no_symbol";
+            }
+			return "page_" + symbol.identifier();
+		}
+
+		@SideOnly(Side.CLIENT)
+		public String pathForSymbol(@Nonnull ItemStack stack) {
+			String symbolUniqueId = Page.getSymbol(stack);
+			if(symbolUniqueId == null) {
+				return "page_no_symbol";
+			} else {
+				IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolUniqueId);
+				if(symbol != null) {
+					return "page_" + symbol.identifier();
+				} else {
+					return "page_no_symbol";
+				}
+			}
+		}
+
+		@Nonnull
+		public ModelResourceLocation getModelLocationForSymbol(@Nullable IAgeSymbol symbol) {
+			return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, pathForSymbol(symbol)), "inventory");
+		}
+
+		@Override
+		@Nonnull
+		public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack) {
+			return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, pathForSymbol(stack)), "inventory");
+		}
 	}
 
 }

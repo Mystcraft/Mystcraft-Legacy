@@ -11,14 +11,19 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class GuiElementPage extends GuiElement {
+
 	public interface IGuiPageProvider {
-		ItemStack getPageItemStack(GuiElementPage elem);
+
+		@Nonnull ItemStack getPageItemStack(GuiElementPage elem);
+
 	}
 
 	private IGuiPageProvider	provider;
 
-	private List<String>		hovertext	= new ArrayList<String>();
+	private List<String>		hovertext	= new ArrayList<>();
 
 	private float				xSizePage;
 	private float				ySizePage;
@@ -33,7 +38,7 @@ public class GuiElementPage extends GuiElement {
 	@Override
 	public boolean isVisible() {
 		ItemStack target = provider.getPageItemStack(this);
-		return super.isVisible() && target != null && target.getItem() instanceof ItemPage;
+		return super.isVisible() && !target.isEmpty() && target.getItem() instanceof ItemPage;
 	}
 
 	@Override
@@ -53,7 +58,9 @@ public class GuiElementPage extends GuiElement {
 
 	@Override
 	public List<String> _getTooltipInfo() {
-		if (!hovertext.isEmpty()) { return hovertext; }
+		if (!hovertext.isEmpty()) {
+			return hovertext;
+		}
 		return super._getTooltipInfo();
 	}
 }

@@ -27,6 +27,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import javax.annotation.Nonnull;
+
 public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClickHandler, IItemStackProvider {
 
 	public class EmeraldsHandler implements IGuiLabelDataProvider {
@@ -59,13 +61,14 @@ public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClick
 		}
 
 		@Override
+		@Nonnull
 		public ItemStack getItemstack(GuiElementShopItem caller) {
 			return container.getShopItem(caller.getId());
 		}
 
 	}
 
-	private ContainerVillagerShop	container;
+	private ContainerVillagerShop container;
 
 	public GuiVillagerShop(EntityPlayer player, EntityVillager entity) {
 		super(new ContainerVillagerShop(player, entity));
@@ -119,9 +122,10 @@ public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClick
 	}
 
 	@Override
+	@Nonnull
 	public ItemStack getItemStack(GuiIconItemStack caller) {
 		if (caller.getId().equals("booster")) return new ItemStack(ModItems.booster, container.getBoosterCount());
 		if (caller.getId().equals("buybtnb")) return new ItemStack(Items.EMERALD, container.getBoosterCost());
-		return null;
+		return ItemStack.EMPTY;
 	}
 }

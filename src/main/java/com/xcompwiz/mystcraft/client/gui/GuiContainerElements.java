@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.client.gui;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
@@ -48,27 +49,27 @@ public abstract class GuiContainerElements extends GuiContainer {
 	}
 
 	@Override
-	protected final void keyTyped(char c, int i) {
+	protected final void keyTyped(char c, int i) throws IOException {
 		boolean eaten = rootelement.onKeyPress(c, i);
 		this._keyTyped(c, i, eaten);
 		if (!eaten) super.keyTyped(c, i);
 	}
 
-	protected void _keyTyped(char c, int i, boolean eaten) {};
+	protected void _keyTyped(char c, int i, boolean eaten) {}
 
 	@Override
-	public final void handleMouseInput() {
+	public final void handleMouseInput() throws IOException {
 		super.handleMouseInput();
 		rootelement.handleMouseInput();
 	}
 
 	@Override
-	protected final void mouseClicked(int mouseX, int mouseY, int button) {
+	protected final void mouseClicked(int mouseX, int mouseY, int button) throws IOException {
 		super.mouseClicked(mouseX, mouseY, button);
 		this._onMouseDown(mouseX, mouseY, button, rootelement.onMouseDown(mouseX, mouseY, button));
 	}
 
-	protected void _onMouseDown(int mouseX, int mouseY, int button, boolean eaten) {};
+	protected void _onMouseDown(int mouseX, int mouseY, int button, boolean eaten) {}
 
 	@Override
 	protected final void mouseClickMove(int mouseX, int mouseY, int clicked_id, long lastclick) {
@@ -77,14 +78,6 @@ public abstract class GuiContainerElements extends GuiContainer {
 	}
 
 	protected void _onMouseDrag(int mouseX, int mouseY, int clicked_id, long lastclick, boolean eaten) {};
-
-	@Override
-	protected final void mouseMovedOrUp(int mouseX, int mouseY, int button) {
-		super.mouseMovedOrUp(mouseX, mouseY, button);
-		this._onMouseUp(mouseX, mouseY, button, rootelement.onMouseUp(mouseX, mouseY, button));
-	}
-
-	protected void _onMouseUp(int mouseX, int mouseY, int button, boolean eaten) {};
 
 	/**
 	 * Draws the screen and all the components in it.

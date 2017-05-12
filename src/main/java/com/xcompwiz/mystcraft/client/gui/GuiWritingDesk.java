@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.client.gui;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
@@ -38,6 +39,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import javax.annotation.Nonnull;
 
 public class GuiWritingDesk extends GuiContainerElements {
 
@@ -100,13 +103,16 @@ public class GuiWritingDesk extends GuiContainerElements {
 	}
 
 	public class PageListHandler implements IGuiPageListProvider, IGuiScrollableClickHandler {
+
 		@Override
 		public List<ItemStack> getPageList() {
 			ItemStack target = container.getTarget();
-			if (target == null || target.getItem() == null) return null;
-			if (container.getBook() != null) return null;
+			if (target.isEmpty()) return null;
+			if (!container.getBook().isEmpty()) return null;
 			if (target.getItem() == ModItems.page) return null;
-			if (target.getItem() instanceof IItemWritable) { return container.getBookPageList(); }
+			if (target.getItem() instanceof IItemWritable) {
+				return container.getBookPageList();
+			}
 			return null;
 		}
 
@@ -130,6 +136,7 @@ public class GuiWritingDesk extends GuiContainerElements {
 	}
 
 	public class SurfaceTabsHandler implements IGuiSurfaceTabsHandler {
+
 		@Override
 		public void onSurfaceTabClick(int button, byte slot) {
 			if (!mc.player.inventory.getItemStack().isEmpty()) {
@@ -147,6 +154,7 @@ public class GuiWritingDesk extends GuiContainerElements {
 		}
 
 		@Override
+		@Nonnull
 		public ItemStack getItemInSlot(byte slot) {
 			return container.getTabSlot(slot);
 		}
@@ -171,12 +179,14 @@ public class GuiWritingDesk extends GuiContainerElements {
 	}
 
 	public class LinkHandler implements IGuiOnLinkHandler {
+
 		@Override
 		public void onLink(GuiElement elem) {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setByte(ContainerWritingDesk.Messages.Link, (byte) 0);
 			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(container.windowId, nbttagcompound));
 		}
+
 	}
 
 	public class TextBoxHandlerTargetName implements IGuiTextProvider, IGuiOnTextChange {
@@ -199,10 +209,13 @@ public class GuiWritingDesk extends GuiContainerElements {
 	}
 
 	public class PageHandlerTarget implements IGuiPageProvider {
+
 		@Override
+		@Nonnull
 		public ItemStack getPageItemStack(GuiElementPage elem) {
 			return container.getTarget();
 		}
+
 	}
 
 	private ContainerWritingDesk	container;
@@ -276,7 +289,7 @@ public class GuiWritingDesk extends GuiContainerElements {
 
 	@Override
 	protected void _drawBackgroundLayer(int mouseX, int mouseY, float f) {
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1F, 1F, 1F, 1F);
 		mc.renderEngine.bindTexture(GUIs.desk);
 		drawTexturedModalRect(guiLeft + guiCenter, guiTop + mainTop, 0, 0, windowsizeX, windowsizeY);
 	}
