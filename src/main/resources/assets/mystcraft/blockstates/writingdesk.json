@@ -1,0 +1,10 @@
+{
+    "forge_marker": 0,
+    "multipart": [
+        {
+            "apply": [
+                { "model": "mystcraft:blockmodel_empty" }
+            ]
+        }
+    ]
+}

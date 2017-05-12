@@ -111,7 +111,7 @@ public class SkyRendererMyst extends IRenderHandler {
         GlStateManager.enableFog();
         GlStateManager.disableTexture2D();
         GlStateManager.color(0.0F, 0.0F, 0.0F);
-        double horizonDst = mc.player.getPositionEyes(partialTicks).yCoord - world.getHorizon();
+        double horizonDst = mc.player.getPositionEyes(1F).yCoord - world.getHorizon();
         boolean renderHorizon = controller.shouldRenderHorizon();
         boolean renderVoid = controller.shouldRenderVoid();
 

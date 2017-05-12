@@ -1,5 +1,9 @@
 package com.xcompwiz.mystcraft.client.render;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.word.DrawableWord;
@@ -7,13 +11,19 @@ import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.ForgeBlockStateV1;
+import net.minecraftforge.client.model.ItemLayerModel;
+import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -32,6 +42,10 @@ import java.util.List;
 
 public class PageBuilder {
 
+    private static final Gson GSON = (new GsonBuilder())
+            .registerTypeAdapter(TRSRTransformation.class, ForgeBlockStateV1.TRSRDeserializer.INSTANCE)
+            .create();
+
     private static BufferedImage pageImage = null;
     private static Map<ResourceLocation, BufferedImage> customSymbolSources = new HashMap<>();
 
@@ -47,6 +61,21 @@ public class PageBuilder {
             }
             ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(null);
             tm.setTextureEntry(new PageSprite(mrl, null));
+        }
+    }
+
+    @SubscribeEvent
+    public void onModelBake(ModelBakeEvent event) {
+        if(Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION)) {
+            for (IAgeSymbol symbol : SymbolManager.getAgeSymbols()) {
+                ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(symbol);
+                IBakedModel model = (new ItemLayerModel(ImmutableList.of(mrl)))
+                        .bake(TRSRTransformation.identity(), DefaultVertexFormats.ITEM,
+                                location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString()));
+                event.getModelRegistry().putObject(mrl, model);
+            }
+            //ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(null);
+
         }
     }
 

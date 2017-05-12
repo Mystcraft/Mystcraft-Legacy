@@ -31,7 +31,6 @@ public class WeatherRendererMyst extends IRenderHandler {
 
 	private float[]							rainXCoords;
 	private float[]							rainYCoords;
-	private Random							random			= new Random();
 
 	public WeatherRendererMyst(WorldProviderMyst provider, AgeController controller) {}
 
@@ -114,7 +113,7 @@ public class WeatherRendererMyst extends IRenderHandler {
                         }
 
                         if (k2 != l2) {
-                            this.random.setSeed((long)(l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
+                            Random r = new Random((long)(l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
                             blockpos$mutableblockpos.setPos(l1, k2, k1);
                             float f2 = biome.getFloatTemperature(blockpos$mutableblockpos);
 
@@ -129,7 +128,7 @@ public class WeatherRendererMyst extends IRenderHandler {
                                     vb.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
                                 }
 
-                                double d5 = -((double)(this.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + (double)partialTicks) / 32.0D * (3.0D + this.random.nextDouble());
+                                double d5 = -((double)(this.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + (double) partialTicks) / 32.0D * (3.0D + r.nextDouble());
                                 double d6 = (double)((float)l1 + 0.5F) - entity.posX;
                                 double d7 = (double)((float)k1 + 0.5F) - entity.posZ;
                                 float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float)i1;
@@ -154,8 +153,8 @@ public class WeatherRendererMyst extends IRenderHandler {
                                 }
 
                                 double d8 = (double)(-((float)(this.rendererUpdateCount & 511) + partialTicks) / 512.0F);
-                                double d9 = this.random.nextDouble() + (double)f1 * 0.01D * (double)((float)this.random.nextGaussian());
-                                double d10 = this.random.nextDouble() + (double)(f1 * (float)this.random.nextGaussian()) * 0.001D;
+                                double d9 = r.nextDouble() + (double)f1 * 0.01D * (double)((float) r.nextGaussian());
+                                double d10 = r.nextDouble() + (double)(f1 * (float) r.nextGaussian()) * 0.001D;
                                 double d11 = (double)((float)l1 + 0.5F) - entity.posX;
                                 double d12 = (double)((float)k1 + 0.5F) - entity.posZ;
                                 float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float)i1;
