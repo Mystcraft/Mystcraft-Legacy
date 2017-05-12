@@ -9,11 +9,15 @@ import com.xcompwiz.mystcraft.network.packet.MPacketDimensions;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
@@ -21,7 +25,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -68,16 +71,26 @@ public class MystcraftConnectionHandler {
 		}
 	}
 
+	//Not *perfect* but at least very close
+    //The connect event is too early
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onLoad(GuiOpenEvent event) {
+	    if(event.getGui() != null && event.getGui() instanceof GuiDownloadTerrain) {
+            connected = true;
+            Mystcraft.clientStorage = Minecraft.getMinecraft().world.getMapStorage();
+        }
+    }
+
+	//@SubscribeEvent
+	//@SideOnly(Side.CLIENT)
+	//public void connectionOpened(ClientConnectedToServerEvent event) {
+	//	connected = true;
+	//	Mystcraft.clientStorage = Minecraft.getMinecraft().world.getMapStorage();
+	//}
 
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public void connectionOpened(ClientConnectedToServerEvent event) {
-		connected = true;
-		Mystcraft.clientStorage = Minecraft.getMinecraft().world.getMapStorage();
-	}
-
-	@SubscribeEvent
-	public void onPlJoin(PlayerEvent.PlayerLoggedInEvent event) {
+	public void onPlJoin(PlayerLoggedInEvent event) {
 		if(!event.player.world.isRemote) { //Just double-checking :V
 			MystcraftPacketHandler.CHANNEL.sendTo(new MPacketDimensions(Mystcraft.registeredDims), (EntityPlayerMP) event.player);
 			MystcraftPacketHandler.CHANNEL.sendTo(MPacketConfigs.createPacket(), (EntityPlayerMP) event.player);

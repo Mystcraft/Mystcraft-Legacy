@@ -66,7 +66,6 @@ public class MystcraftFirstRun {
 		// Start the instability calculator
 		instabilitycalculator = new InstabilityDataCalculator(mcserver, storage);
 		instabilitycalculator.setCallback(guiscreen);
-		FMLCommonHandler.instance().bus().register(instabilitycalculator);
 		MinecraftForge.EVENT_BUS.register(instabilitycalculator);
 	}
 
@@ -75,7 +74,6 @@ public class MystcraftFirstRun {
 		storage.saveAllData();
 		instabilitycalculator.shutdown();
 		MinecraftForge.EVENT_BUS.unregister(instabilitycalculator);
-		FMLCommonHandler.instance().bus().unregister(instabilitycalculator);
 		storage = null;
 		instabilitycalculator = null;
 		// Spin down the server instance
@@ -83,7 +81,7 @@ public class MystcraftFirstRun {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (mc.world != null) {
 			mc.world.sendQuittingDisconnectingPacket();
-			mc.loadWorld((WorldClient) null);
+			mc.loadWorld(null);
 		}
 	}
 

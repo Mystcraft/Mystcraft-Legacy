@@ -345,7 +345,9 @@ public class Mystcraft {
 			overworld = DimensionManager.getWorld(0);
 		}
 		if (overworld == null) {
-			if (clientStorage == null) throw new RuntimeException("Client-Side Storage Missing (Attempted as " + (isServer ? "server" : "remote") + ")");
+			if (clientStorage == null) {
+				throw new RuntimeException("Client-Side Storage Missing (Attempted as " + (isServer ? "server" : "remote") + ")");
+			}
 			return clientStorage;
 		}
 		return overworld.getMapStorage();

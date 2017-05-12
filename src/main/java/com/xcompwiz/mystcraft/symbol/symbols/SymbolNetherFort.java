@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.structure.MapGenNetherBridge;
 
 public class SymbolNetherFort extends SymbolBase {
@@ -58,8 +59,8 @@ public class SymbolNetherFort extends SymbolBase {
 		}
 
 		@Override
-		public void alterTerrain(World worldObj, int chunkX, int chunkZ, IBlockState[] blocks) {
-			generator.generate(worldObj, chunkX, chunkZ, null);
+		public void alterTerrain(World worldObj, int chunkX, int chunkZ, ChunkPrimer primer) {
+			generator.generate(worldObj, chunkX, chunkZ, primer);
 		}
 	}
 

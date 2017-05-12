@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 public class MapGenCavesMyst extends MapGenAdvanced {
 	private int	rate	= 15;
@@ -24,17 +25,17 @@ public class MapGenCavesMyst extends MapGenAdvanced {
 	/**
 	 * Generates a larger initial cave node than usual. Called 25% of the time.
 	 */
-	protected void generateLargeCaveNode(long seed, int chunkX, int chunkZ, IBlockState[] blocks, double baseX, double baseY, double baseZ) {
-		generateCaveNode(seed, chunkX, chunkZ, blocks, baseX, baseY, baseZ, 1.0F + rand.nextFloat() * 6F, 0.0F, 0.0F, -1, -1, 0.5D);
+	protected void generateLargeCaveNode(long seed, int chunkX, int chunkZ, ChunkPrimer primer, double baseX, double baseY, double baseZ) {
+		generateCaveNode(seed, chunkX, chunkZ, primer, baseX, baseY, baseZ, 1.0F + rand.nextFloat() * 6F, 0.0F, 0.0F, -1, -1, 0.5D);
 	}
 
 	/**
 	 * Generates a node in the current cave system recursion tree.
 	 */
-	protected void generateCaveNode(long seed, int chunkX, int chunkZ, IBlockState[] blocks, double baseX, double baseY, double baseZ, float par12, float par13, float par14, int par15, int par16, double par17) {
+	protected void generateCaveNode(long seed, int chunkX, int chunkZ, ChunkPrimer primer, double baseX, double baseY, double baseZ, float par12, float par13, float par14, int par15, int par16, double par17) {
 		double chunkXmid = chunkX * 16 + 8;
 		double chunkZmid = chunkZ * 16 + 8;
-		int layers = blocks.length / 256;
+		int layers = 256;
 		float f = 0.0F;
 		float f1 = 0.0F;
 		Random random = new Random(seed);
@@ -77,8 +78,8 @@ public class MapGenCavesMyst extends MapGenAdvanced {
 			f += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 4F;
 
 			if (!flag && par15 == j && par12 > 1.0F && par16 > 0) {
-				generateCaveNode(random.nextLong(), chunkX, chunkZ, blocks, baseX, baseY, baseZ, random.nextFloat() * 0.5F + 0.5F, par13 - ((float) Math.PI / 2F), par14 / 3F, par15, par16, 1.0D);
-				generateCaveNode(random.nextLong(), chunkX, chunkZ, blocks, baseX, baseY, baseZ, random.nextFloat() * 0.5F + 0.5F, par13 + ((float) Math.PI / 2F), par14 / 3F, par15, par16, 1.0D);
+				generateCaveNode(random.nextLong(), chunkX, chunkZ, primer, baseX, baseY, baseZ, random.nextFloat() * 0.5F + 0.5F, par13 - ((float) Math.PI / 2F), par14 / 3F, par15, par16, 1.0D);
+				generateCaveNode(random.nextLong(), chunkX, chunkZ, primer, baseX, baseY, baseZ, random.nextFloat() * 0.5F + 0.5F, par13 + ((float) Math.PI / 2F), par14 / 3F, par15, par16, 1.0D);
 				return;
 			}
 
@@ -139,10 +140,8 @@ public class MapGenCavesMyst extends MapGenAdvanced {
 						double xfactorSq = xfactor * xfactor;
 
 						if (xfactorSq + zfactorSq < 1.0D) {
-							int coords = localY << 8 | localZ << 4 | localX;
-
 							if (yfactor > -0.69999999999999996D && xfactorSq + yfactorSq + zfactorSq < 1.0D) {
-								placeBlock(blocks, coords);
+								placeBlock(primer, localX, localY, localZ);
 							}
 						}
 					}
@@ -159,7 +158,7 @@ public class MapGenCavesMyst extends MapGenAdvanced {
 	 * Recursively called by generate() (generate) and optionally by itself.
 	 */
 	@Override
-	protected void recursiveGenerate(World worldObj, int x, int y, int chunkX, int chunkZ, IBlockState[] blocks) {
+	protected void recursiveGenerate(World worldObj, int x, int y, int chunkX, int chunkZ, ChunkPrimer primer) {
 		int maxNodes = rand.nextInt(rand.nextInt(rand.nextInt(size) + 1) + 1);
 
 		if (rand.nextInt(rate) != 0) {
@@ -173,7 +172,7 @@ public class MapGenCavesMyst extends MapGenAdvanced {
 			int k = 1;
 
 			if (rand.nextInt(4) == 0) {
-				generateLargeCaveNode(rand.nextLong(), chunkX, chunkZ, blocks, d, d1, d2);
+				generateLargeCaveNode(rand.nextLong(), chunkX, chunkZ, primer, d, d1, d2);
 				k += rand.nextInt(4);
 			}
 
@@ -186,7 +185,7 @@ public class MapGenCavesMyst extends MapGenAdvanced {
 					f2 *= rand.nextFloat() * rand.nextFloat() * 3F + 1.0F;
 				}
 
-				generateCaveNode(rand.nextLong(), chunkX, chunkZ, blocks, d, d1, d2, f2, f, f1, 0, 0, 1.0D);
+				generateCaveNode(rand.nextLong(), chunkX, chunkZ, primer, d, d1, d2, f2, f, f1, 0, 0, 1.0D);
 			}
 		}
 	}

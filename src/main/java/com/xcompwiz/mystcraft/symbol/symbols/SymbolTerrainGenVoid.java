@@ -6,6 +6,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 public class SymbolTerrainGenVoid extends SymbolBase {
 
@@ -27,7 +28,7 @@ public class SymbolTerrainGenVoid extends SymbolBase {
 		public TerrainGenerator() {}
 
 		@Override
-		public void generateTerrain(int chunkX, int chunkZ, IBlockState[] blocks) {}
+		public void generateTerrain(int chunkX, int chunkZ, ChunkPrimer primer) {}
 
 	}
 }

@@ -35,7 +35,7 @@ public final class FluidUtils {
 				return container;
 			}
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 }

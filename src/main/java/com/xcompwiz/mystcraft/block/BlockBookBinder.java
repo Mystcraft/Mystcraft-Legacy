@@ -21,6 +21,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -66,10 +68,11 @@ public class BlockBookBinder extends BlockContainer {
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		IInventory tileentity = (IInventory) world.getTileEntity(pos);
-		if (tileentity != null) {
-			for (int l = 0; l < tileentity.getSizeInventory(); l++) {
-				ItemStack itemstack = tileentity.getStackInSlot(l);
+		TileEntity tileentity = world.getTileEntity(pos);
+		if (tileentity != null && tileentity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+            IItemHandler handle = tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			for (int l = 0; l < handle.getSlots(); l++) {
+				ItemStack itemstack = handle.getStackInSlot(l);
 				if (itemstack.isEmpty()) {
 					continue;
 				}

@@ -332,9 +332,12 @@ public class AgeData extends WorldSavedData {
 
 	public static AgeData getAge(int uid, boolean isRemote) {
 		MapStorage storage = Mystcraft.getStorage(!isRemote);
-		if (storage == null) throw new RuntimeException("Mystcraft could not load the agedata file.  The storage object is null. (Attempted as " + (isRemote ? "remote" : "server") + ")");
+		if (storage == null) {
+			throw new RuntimeException("Mystcraft could not load the agedata file.  The storage object is null. (Attempted as " + (isRemote ? "remote" : "server") + ")");
+		}
 		return getAge(uid, storage);
 	}
+
 	public static AgeData getAge(int uid, MapStorage storage) {
 		if (!DimensionManager.isDimensionRegistered(uid)) return null;
 		if (DimensionManager.getProviderType(uid) != Mystcraft.dimensionType) return null;

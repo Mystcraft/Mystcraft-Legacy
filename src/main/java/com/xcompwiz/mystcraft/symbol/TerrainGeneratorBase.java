@@ -8,6 +8,7 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 
@@ -46,7 +47,7 @@ public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 	}
 
 	@Override
-	public void generateTerrain(int chunkX, int chunkZ, IBlockState[] blocks) {
+	public void generateTerrain(int chunkX, int chunkZ, ChunkPrimer primer) {
 		int fillcount = 0;
 		int seacount = 0;
 		int xzstep = 4;
@@ -89,7 +90,7 @@ public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 							double xczcyc = x0zcyc;
 							double xdzcyc = (x1zcyc - x0zcyc) * noise_xzstep_factor;
 
-							int coords = y << 8 | z << 4 | largeX * xzstep;
+							int x = largeX * xzstep;
 							for (int subX = 0; subX < xzstep; ++subX) {
 
 								IBlockState block = Blocks.AIR.getDefaultState();
@@ -103,9 +104,9 @@ public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 									++seacount;
 								}
 
-								blocks[coords] = block;
+								primer.setBlockState(x, y, z, block);
 								xczcyc += xdzcyc;
-								++coords;
+								++x;
 							}
 
 							x0zcyc += x0zdyc;

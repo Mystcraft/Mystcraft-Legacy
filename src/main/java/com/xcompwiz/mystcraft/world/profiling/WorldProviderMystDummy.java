@@ -1,15 +1,19 @@
 package com.xcompwiz.mystcraft.world.profiling;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
+import com.google.common.collect.Sets;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 import com.xcompwiz.mystcraft.world.AgeController;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
+import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -24,9 +28,12 @@ import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
+import javax.annotation.Nullable;
+
 public class WorldProviderMystDummy extends WorldProviderMyst {
 
 	private static class AnvilChunkLoaderDummy extends AnvilChunkLoader {
+
 		public AnvilChunkLoaderDummy(File p_i2003_1_) {
 			super(p_i2003_1_, null);
 		}
@@ -40,12 +47,14 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		public Chunk loadChunk(World p_75815_1_, int p_75815_2_, int p_75815_3_) throws java.io.IOException {
 			return null;
 		}
+
 	}
 
 	private static class ChunkProviderServerDummy extends ChunkProviderServer {
-		private Chunk		defaultEmptyChunk;
 
-		private List<Long>	chunkqueue	= new LinkedList<Long>();
+		private Chunk defaultEmptyChunk;
+
+        private final Set<Long> droppedChunksSet = Sets.<Long>newHashSet();
 
 		public ChunkProviderServerDummy(WorldServer worldServer, IChunkLoader loader, IChunkGenerator provider) {
 			super(worldServer, loader, provider);
@@ -57,28 +66,57 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 			return false;
 		}
 
-		@Override
+        public void unloadAllChunks() {
+            for (Chunk chunk : this.id2ChunkMap.values()) {
+                this.unload(chunk);
+            }
+        }
+
+        public void unload(Chunk chunkIn) {
+            if (this.world.provider.canDropChunk(chunkIn.xPosition, chunkIn.zPosition)) {
+                this.droppedChunksSet.add(ChunkPos.asLong(chunkIn.xPosition, chunkIn.zPosition));
+                chunkIn.unloaded = true;
+            }
+        }
+
+        @Nullable
+        @Override
+        public Chunk getLoadedChunk(int x, int z) {
+            long i = ChunkPos.asLong(x, z);
+            Chunk chunk = this.id2ChunkMap.get(i);
+            if (chunk != null) {
+                chunk.unloaded = false;
+            }
+            return chunk;
+        }
+
+        @Override
 		public Chunk loadChunk(int chunkX, int chunkZ) {
-			if (outOfBounds(chunkX, chunkZ)) { return defaultEmptyChunk; }
-			Chunk chunk = super.loadChunk(chunkX, chunkZ);
-			this.chunkqueue.add(ChunkPos.asLong(chunkX, chunkZ));
-			return chunk;
+			if (outOfBounds(chunkX, chunkZ)) {
+				return defaultEmptyChunk;
+			}
+			return super.loadChunk(chunkX, chunkZ);
 		}
 
 		@Override
 		public boolean tick() {
-			for (int i = 0; i < 100 && this.chunkqueue.size() > 64; ++i) {
-				Long olong = this.chunkqueue.get(0);
-				Chunk chunk = (Chunk) this.id2ChunkMap.get(olong);
-				if (chunk != null) {
-                    chunk.onChunkUnload();
+		    //> 80 otherwise we don't have anything to work with in terms of population
+			if (!this.droppedChunksSet.isEmpty() && this.droppedChunksSet.size() > 80) {
+				Iterator<Long> iterator = this.droppedChunksSet.iterator();
+				for (int i = 0; i < 100 && iterator.hasNext(); iterator.remove()) {
+					Long olong = iterator.next();
+					Chunk chunk = this.id2ChunkMap.get(olong);
+					if (chunk != null && chunk.unloaded) {
+						chunk.onChunkUnload();
+						this.id2ChunkMap.remove(olong);
+						++i;
+					}
 				}
-				chunkqueue.remove(0);
-				this.id2ChunkMap.remove(olong);
+				this.chunkLoader.chunkTick();
 			}
-			this.chunkLoader.chunkTick();
-			return false;
+            return false;
 		}
+
 	}
 
 	private class AgeControllerDummy extends AgeController {

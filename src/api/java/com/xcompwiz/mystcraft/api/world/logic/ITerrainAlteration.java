@@ -1,7 +1,7 @@
 package com.xcompwiz.mystcraft.api.world.logic;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 /**
  * Applied to the chunk data after initial generation
@@ -14,7 +14,7 @@ public interface ITerrainAlteration {
 	 * @param worldObj The world object of the chunk being modified. Do NOT access blocks directly through this.
 	 * @param chunkX The chunk x coordinate in chunk space
 	 * @param chunkZ The chunk z coordinate in chunk space
-	 * @param blocks The block array being manipulated (y << 8 | z << 4 | x)
+	 * @param primer The block array being manipulated
 	 */
-	public abstract void alterTerrain(World worldObj, int chunkX, int chunkZ, IBlockState[] blocks);
+	public abstract void alterTerrain(World worldObj, int chunkX, int chunkZ, ChunkPrimer primer);
 }

@@ -20,6 +20,7 @@ import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 
 import net.minecraft.command.CommandServerKick;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.server.MinecraftServer;
@@ -274,6 +275,9 @@ public class InstabilityDataCalculator {
 
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
+		if(!disconnectclients || !mcserver.isDedicatedServer()) {
+			MystcraftPacketHandler.CHANNEL.sendTo(new MPacketProfilingState(true), (EntityPlayerMP) event.player);
+		}
 		if (dimId != null && event.player.dimension == dimId) {
 			DimensionUtils.ejectPlayerFromDimension(event.player);
 		}
@@ -291,8 +295,6 @@ public class InstabilityDataCalculator {
 				} catch (Exception exception) {
 					LoggerUtils.error("Error whilst disconnecting player", exception);
 				}
-			} else {
-			    MystcraftPacketHandler.CHANNEL.sendTo(new MPacketProfilingState(true), ((NetHandlerPlayServer) event.getHandler()).playerEntity);
 			}
 		}
 	}

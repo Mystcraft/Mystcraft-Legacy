@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 
 public class SymbolSkylands extends SymbolBase {
@@ -38,29 +39,29 @@ public class SymbolSkylands extends SymbolBase {
 		}
 
 		@Override
-		public void alterTerrain(World worldObj, int chunkX, int chunkZ, IBlockState[] blocks) {
+		public void alterTerrain(World worldObj, int chunkX, int chunkZ, ChunkPrimer primer) {
 			skyNoise = noiseGen.generateNoiseOctaves(skyNoise, chunkX * 16, chunkZ * 16, 16, 16, 16, 1, factor * 64D, factor * 32D, factor * 64D);
-			int layers = blocks.length / 256;
+			int layers = 256;
 			for (int y = 0; y < layers; ++y) {
 				for (int z = 0; z < 16; ++z) {
 					for (int x = 0; x < 16; ++x) {
 						int height = (76) + (int) (skyNoise[z | x << 4]);
 						int coords = y << 8 | z << 4 | x;
 
-						if (blocks[coords] == Blocks.WATER && !isSupported(x, y, z, height, blocks)) {
-							blocks[coords] = Blocks.AIR.getDefaultState();
+						if (primer.getBlockState(x, y, z).getBlock().equals(Blocks.WATER) && !isSupported(x, y, z, height, primer)) {
+							primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
 						}
 						if (y <= height) {
-							blocks[coords] = Blocks.AIR.getDefaultState();
+							primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
 						}
 					}
 				}
 			}
 		}
 
-		private boolean isSupported(int x, int y, int z, int sky, IBlockState[] blocks) {
+		private boolean isSupported(int x, int y, int z, int sky, ChunkPrimer primer) {
 			if (y < 1) return false;
-			IBlockState block = blocks[(y - 1) << 8 | z << 4 | x];
+			IBlockState block = primer.getBlockState(x, y - 1, z);
 			if (block.getBlock().equals(Blocks.AIR)) return false;
 			if (block.getBlock().equals(Blocks.WATER)) return false;
 			return false;

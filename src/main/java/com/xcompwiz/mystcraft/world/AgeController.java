@@ -56,6 +56,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.gen.ChunkProviderServer;
@@ -536,16 +537,16 @@ public class AgeController implements AgeDirector {
 //		}
 	}
 
-	public void generateTerrain(int chunkX, int chunkZ, IBlockState[] blocks) {
+	public void generateTerrain(int chunkX, int chunkZ, ChunkPrimer primer) {
 		validate();
-		getTerrainGenerator().generateTerrain(chunkX, chunkZ, blocks);
+		getTerrainGenerator().generateTerrain(chunkX, chunkZ, primer);
 	}
 
-	public void modifyTerrain(int chunkX, int chunkZ, IBlockState[] blocks) {
+	public void modifyTerrain(int chunkX, int chunkZ, ChunkPrimer primer) {
 		validate();
 		if (terrainalterations != null && terrainalterations.size() > 0) {
 			for (ITerrainAlteration mod : terrainalterations) {
-				mod.alterTerrain(world, chunkX, chunkZ, blocks);
+				mod.alterTerrain(world, chunkX, chunkZ, primer);
 			}
 		}
 	}

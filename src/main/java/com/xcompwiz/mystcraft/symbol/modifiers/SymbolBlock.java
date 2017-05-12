@@ -43,9 +43,9 @@ public class SymbolBlock extends SymbolBase {
 		}
 		String name;
 		if(attempt.isEmpty()) {
-			name = blockDescriptor.blockstate.getBlock().getUnlocalizedName();
+			name = blockDescriptor.blockstate.getBlock().getUnlocalizedName() + ".name";
 		} else {
-			name = attempt.getUnlocalizedName();
+			name = attempt.getUnlocalizedName() + ".name";
 		}
 		return name;
 	}

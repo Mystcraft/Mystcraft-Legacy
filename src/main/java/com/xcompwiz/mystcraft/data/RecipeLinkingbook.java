@@ -13,7 +13,7 @@ import net.minecraftforge.common.ForgeHooks;
 
 public class RecipeLinkingbook implements IRecipe {
 
-	private ItemStack product;
+	private ItemStack product = ItemStack.EMPTY;
 
 	@Override
 	public boolean matches(InventoryCrafting inventorycrafting, World world) {

@@ -69,8 +69,6 @@ public class CreativeTabMyst extends CreativeTabs {
             creative_collections.add(ModPageCollections.buildPageCollection(getCollectionName("myst.creative.notebook.weather"), GrammarData.WEATHER));
             list.addAll(creative_collections);
         }
-
-        addEnchantmentBooksToList(list, getRelevantEnchantmentTypes()); //Vanilla behavior *shrugs*
     }
 
 	private String getCollectionName(String name) {

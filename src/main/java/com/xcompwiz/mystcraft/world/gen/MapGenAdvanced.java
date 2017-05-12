@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
 
 public class MapGenAdvanced {
@@ -30,7 +31,7 @@ public class MapGenAdvanced {
 		this.state = state;
 	}
 
-	public void generate(IChunkProvider chunkprovider, World worldObj, int chunkX, int chunkZ, IBlockState[] blocks) {
+	public void generate(IChunkProvider chunkprovider, World worldObj, int chunkX, int chunkZ, ChunkPrimer primer) {
 		int range = this.range;
 		this.rand.setSeed(seed);
 		long xseed = this.rand.nextLong();
@@ -44,7 +45,7 @@ public class MapGenAdvanced {
 				long xseed2 = x * xseed;
 				long zseed2 = z * zseed;
 				this.rand.setSeed(xseed2 ^ zseed2 ^ seed);
-				this.recursiveGenerate(worldObj, x, z, chunkX, chunkZ, blocks);
+				this.recursiveGenerate(worldObj, x, z, chunkX, chunkZ, primer);
 			}
 		}
 		if (profiling) {
@@ -56,21 +57,21 @@ public class MapGenAdvanced {
 	/**
 	 * Recursively called by generate() (generate) and optionally by itself.
 	 */
-	protected void recursiveGenerate(World worldObj, int x, int z, int chunkX, int chunkZ, IBlockState[] blocks) {}
+	protected void recursiveGenerate(World worldObj, int x, int z, int chunkX, int chunkZ, ChunkPrimer primer) {}
 
-	protected boolean placeBlock(IBlockState[] blocks, int coords) {
-		IBlockState state = blocks[coords];
+	protected boolean placeBlock(ChunkPrimer primer, int x, int y, int z) {
+		IBlockState state = primer.getBlockState(x, y, z);
 
-		if (this.state == null || (state != null && state.getMaterial().isLiquid())) {
+		if (this.state == null || (state.getMaterial().isLiquid())) {
 			return false;
 		}
-		if (state != null && state.getBlock().equals(Blocks.BEDROCK)) {
+		if (state.getBlock().equals(Blocks.BEDROCK)) {
 			return false;
 		}
 		++blockcounttotal;
 		++blockcount;
 
-		blocks[coords] = this.state;
+		primer.setBlockState(x, y, z, this.state);
 		return true;
 	}
 

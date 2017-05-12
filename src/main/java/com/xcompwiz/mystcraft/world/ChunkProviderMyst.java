@@ -19,6 +19,7 @@ import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
@@ -55,16 +56,15 @@ public class ChunkProviderMyst implements IChunkGenerator {
 		stoneNoiseGen = new NoiseGeneratorPerlin(this.rand, 4);
 	}
 
-	private IBlockState[] vblocks;
+	//private IBlockState[] vblocks;
 
-	private void replaceBlocksForBiome(int chunkX, int chunkZ, IBlockState[] blocks, Biome[] aBiome) {
-		if (vblocks == null || vblocks.length != blocks.length) {
-		    vblocks = new IBlockState[blocks.length];
-        }
-		ArrayMappingUtils.mapLocalToVanilla(blocks, vblocks);
-		StateBasedChunkPrimer primer = StateBasedChunkPrimer.intoData(blocks); //Primer that'll feed/mirror this state-array
+	private void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, Biome[] aBiome) {
+		//if (vblocks == null || vblocks.length != blocks.length) {
+		//    vblocks = new IBlockState[blocks.length];
+        //}
+		//ArrayMappingUtils.mapLocalToVanilla(blocks, vblocks);
+		//StateBasedChunkPrimer primer = StateBasedChunkPrimer.intoData(blocks); //Primer that'll feed/mirror this state-array
 
-        ArrayMappingUtils.fillPrimerVanillaIndexing(primer, blocks);
 		ChunkGeneratorEvent.ReplaceBiomeBlocks event = new ChunkGeneratorEvent.ReplaceBiomeBlocks(this, chunkX, chunkZ, primer, this.worldObj);
 		MinecraftForge.EVENT_BUS.post(event);
 		if (event.getResult() != Event.Result.DENY) {
@@ -79,21 +79,20 @@ public class ChunkProviderMyst implements IChunkGenerator {
 				}
 			}
 		}
-		ArrayMappingUtils.mapVanillaToLocal(vblocks, blocks);
+		//ArrayMappingUtils.mapVanillaToLocal(vblocks, blocks);
 	}
 
 	@Override
     @Nonnull
 	public Chunk provideChunk(int chunkX, int chunkZ) {
 		rand.setSeed(chunkX * 0x4f9939f508L + chunkZ * 0x1ef1565bd5L);
-		IBlockState[] blocks = new IBlockState[256 * 256];
-		controller.generateTerrain(chunkX, chunkZ, blocks);
+		ChunkPrimer primer = new ChunkPrimer();
+		controller.generateTerrain(chunkX, chunkZ, primer);
 		biomesForGeneration = worldObj.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, chunkX * 16, chunkZ * 16, 16, 16);
-		replaceBlocksForBiome(chunkX, chunkZ, blocks, biomesForGeneration);
-		controller.modifyTerrain(chunkX, chunkZ, blocks);
-		this.scatteredFeatureGenerator.generate(worldObj, chunkX, chunkZ, null);
-		Chunk chunk = new Chunk(worldObj, chunkX, chunkZ);
-		mapBlocksToChunk(chunk, blocks);
+		replaceBlocksForBiome(chunkX, chunkZ, primer, biomesForGeneration);
+		controller.modifyTerrain(chunkX, chunkZ, primer);
+		this.scatteredFeatureGenerator.generate(worldObj, chunkX, chunkZ, primer);
+		Chunk chunk = new Chunk(worldObj, primer, chunkX, chunkZ);
 		chunk.generateSkylightMap();
 		for (int x = 0; x < 16; ++x) {
 			for (int z = 0; z < 16; ++z) {
@@ -106,29 +105,29 @@ public class ChunkProviderMyst implements IChunkGenerator {
 		return chunk;
 	}
 
-	private void mapBlocksToChunk(Chunk chunk, IBlockState[] blocks) {
-		ExtendedBlockStorage[] storageArrays = new ExtendedBlockStorage[16];
-		int layers = blocks.length / 256;
-		boolean flag = !worldObj.provider.hasNoSky();
-		for (int y = 0; y < layers; ++y) {
-			int storagei = y >> 4;
-			for (int z = 0; z < 16; ++z) {
-				for (int x = 0; x < 16; ++x) {
-					int coords = y << 8 | z << 4 | x;
-					IBlockState block = blocks[coords];
+	//private void mapBlocksToChunk(Chunk chunk, IBlockState[] blocks) {
+	//	ExtendedBlockStorage[] storageArrays = new ExtendedBlockStorage[16];
+	//	int layers = blocks.length / 256;
+	//	boolean flag = !worldObj.provider.hasNoSky();
+	//	for (int y = 0; y < layers; ++y) {
+	//		int storagei = y >> 4;
+	//		for (int z = 0; z < 16; ++z) {
+	//			for (int x = 0; x < 16; ++x) {
+	//				int coords = y << 8 | z << 4 | x;
+	//				IBlockState block = blocks[coords];
 
-					if (block != null && !block.getBlock().equals(Blocks.AIR)) {
-						if (storageArrays[storagei] == null) {
-							storageArrays[storagei] = new ExtendedBlockStorage(storagei << 4, flag);
-						}
+	//				if (block != null && !block.getBlock().equals(Blocks.AIR)) {
+	//					if (storageArrays[storagei] == null) {
+	//						storageArrays[storagei] = new ExtendedBlockStorage(storagei << 4, flag);
+	//					}
 
-						storageArrays[storagei].set(x, y & 15, z, block);
-					}
-				}
-			}
-		}
-		chunk.setStorageArrays(storageArrays);
-	}
+	//					storageArrays[storagei].set(x, y & 15, z, block);
+	//				}
+	//			}
+	//		}
+	//	}
+	//	chunk.setStorageArrays(storageArrays);
+	//}
 
 	@Override
 	public void populate(int chunkX, int chunkZ) {

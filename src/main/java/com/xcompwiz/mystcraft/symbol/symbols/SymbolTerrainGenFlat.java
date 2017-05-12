@@ -10,6 +10,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 public class SymbolTerrainGenFlat extends SymbolBase {
 
@@ -51,10 +52,10 @@ public class SymbolTerrainGenFlat extends SymbolBase {
 		}
 
 		@Override
-		public void generateTerrain(int chunkX, int chunkZ, IBlockState[] blocks) {
+		public void generateTerrain(int chunkX, int chunkZ, ChunkPrimer primer) {
 			int plane = controller.getAverageGroundLevel();
 			int sealevel = controller.getSeaLevel();
-			int layers = blocks.length / 256;
+			int layers = 256;
 
 			for (int y = 0; y < layers; ++y) {
 				IBlockState blockId = Blocks.AIR.getDefaultState();
@@ -67,7 +68,7 @@ public class SymbolTerrainGenFlat extends SymbolBase {
 				}
 				for (int z = 0; z < 16; ++z) {
 					for (int x = 0; x < 16; ++x) {
-						blocks[y << 8 | z << 4 | x] = blockId;
+						primer.setBlockState(x, y, z, blockId);
 					}
 				}
 			}

@@ -57,8 +57,8 @@ public class SymbolMineshafts extends SymbolBase {
 		}
 
 		@Override
-		public void alterTerrain(World worldObj, int chunkX, int chunkZ, IBlockState[] blocks) {
-			mineshaftGenerator.generate(worldObj, chunkX, chunkZ, null); //Primer actually never used here.
+		public void alterTerrain(World worldObj, int chunkX, int chunkZ, ChunkPrimer primer) {
+			mineshaftGenerator.generate(worldObj, chunkX, chunkZ, primer); //Primer actually never used here.
 		}
 	}
 }

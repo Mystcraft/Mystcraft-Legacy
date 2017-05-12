@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 public class MapGenSpheresMyst extends MapGenAdvanced {
 
@@ -20,17 +21,17 @@ public class MapGenSpheresMyst extends MapGenAdvanced {
 	/**
 	 * Generates a larger initial cave node than usual. Called 25% of the time.
 	 */
-	protected void generateLargeCaveNode(long seed, int chunkX, int chunkZ, IBlockState[] blocks, double baseX, double baseY, double baseZ) {
-		generateCaveNode(seed, chunkX, chunkZ, blocks, baseX, baseY, baseZ, 1.0F + rand.nextFloat() * 6F, 0.0F, 0.0F, -1, -1, 1.0D);
+	protected void generateLargeCaveNode(long seed, int chunkX, int chunkZ, ChunkPrimer primer, double baseX, double baseY, double baseZ) {
+		generateCaveNode(seed, chunkX, chunkZ, primer, baseX, baseY, baseZ, 1.0F + rand.nextFloat() * 6F, 0.0F, 0.0F, -1, -1, 1.0D);
 	}
 
 	/**
 	 * Generates a node in the current cave system recursion tree.
 	 */
-	protected void generateCaveNode(long seed, int chunkX, int chunkZ, IBlockState[] blocks, double baseX, double baseY, double baseZ, float angleA, float angleB, float angleC, int loopc, int maxLoops, double squash) {
+	protected void generateCaveNode(long seed, int chunkX, int chunkZ, ChunkPrimer primer, double baseX, double baseY, double baseZ, float angleA, float angleB, float angleC, int loopc, int maxLoops, double squash) {
 		double chunkXmid = chunkX * 16 + 8;
 		double chunkZmid = chunkZ * 16 + 8;
-		int layers = blocks.length / 256;
+		int layers = 256;
 		float f = 0.0F;
 		float f1 = 0.0F;
 		Random random = new Random(seed);
@@ -73,8 +74,8 @@ public class MapGenSpheresMyst extends MapGenAdvanced {
 			f += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 4F;
 
 			if (!flag && loopc == j && angleA > 1.0F && maxLoops > 0) {
-				generateCaveNode(random.nextLong(), chunkX, chunkZ, blocks, baseX, baseY, baseZ, random.nextFloat() * 0.5F + 0.5F, angleB - ((float) Math.PI / 2F), angleC / 3F, loopc, maxLoops, 1.0D);
-				generateCaveNode(random.nextLong(), chunkX, chunkZ, blocks, baseX, baseY, baseZ, random.nextFloat() * 0.5F + 0.5F, angleB + ((float) Math.PI / 2F), angleC / 3F, loopc, maxLoops, 1.0D);
+				generateCaveNode(random.nextLong(), chunkX, chunkZ, primer, baseX, baseY, baseZ, random.nextFloat() * 0.5F + 0.5F, angleB - ((float) Math.PI / 2F), angleC / 3F, loopc, maxLoops, 1.0D);
+				generateCaveNode(random.nextLong(), chunkX, chunkZ, primer, baseX, baseY, baseZ, random.nextFloat() * 0.5F + 0.5F, angleB + ((float) Math.PI / 2F), angleC / 3F, loopc, maxLoops, 1.0D);
 				return;
 			}
 
@@ -139,7 +140,7 @@ public class MapGenSpheresMyst extends MapGenAdvanced {
 
 							double total = xfactorSq + yfactorSq + zfactorSq;
 							if (total < 1.0D) {
-								placeBlock(blocks, coords);
+								placeBlock(primer, localX, localY, localZ);
 							}
 						}
 					}
@@ -156,7 +157,7 @@ public class MapGenSpheresMyst extends MapGenAdvanced {
 	 * Recursively called by generate() (generate) and optionally by itself.
 	 */
 	@Override
-	protected void recursiveGenerate(World par1World, int x, int z, int chunkX, int chunkZ, IBlockState[] blocks) {
+	protected void recursiveGenerate(World par1World, int x, int z, int chunkX, int chunkZ, ChunkPrimer primer) {
 		float roll = rand.nextFloat();
 		if (roll > 0.05F) return;
 
@@ -164,6 +165,6 @@ public class MapGenSpheresMyst extends MapGenAdvanced {
 		double dy = rand.nextInt(rand.nextInt(192) + 1) + 32;
 		double dz = z * 16 + rand.nextInt(16);
 		// generateLargeCaveNode(rand.nextLong(), chunkX, chunkZ, blocks, metadata, dx, dy, dz);
-		generateCaveNode(rand.nextLong(), chunkX, chunkZ, blocks, dx, dy, dz, 1.0F + rand.nextFloat() * 4F, 0.0F, 0.0F, -1, -1, 1.0D);
+		generateCaveNode(rand.nextLong(), chunkX, chunkZ, primer, dx, dy, dz, 1.0F + rand.nextFloat() * 4F, 0.0F, 0.0F, -1, -1, 1.0D);
 	}
 }

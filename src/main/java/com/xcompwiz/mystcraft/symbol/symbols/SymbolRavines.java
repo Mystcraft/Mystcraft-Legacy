@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 public class SymbolRavines extends SymbolBase {
 
@@ -32,8 +33,8 @@ public class SymbolRavines extends SymbolBase {
 		}
 
 		@Override
-		public void alterTerrain(World worldObj, int chunkX, int chunkZ, IBlockState[] blocks) {
-			generator.generate(worldObj.getChunkProvider(), worldObj, chunkX, chunkZ, blocks);
+		public void alterTerrain(World worldObj, int chunkX, int chunkZ, ChunkPrimer primer) {
+			generator.generate(worldObj.getChunkProvider(), worldObj, chunkX, chunkZ, primer);
 		}
 	}
 }

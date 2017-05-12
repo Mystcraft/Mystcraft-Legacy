@@ -21,6 +21,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -71,17 +73,18 @@ public class BlockInkMixer extends BlockContainer {
 
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
-	    IInventory inv = (IInventory) world.getTileEntity(pos);
-	    if(inv != null) {
-            for (int i = 0; i < inv.getSizeInventory(); i++) {
-                ItemStack stack = inv.getStackInSlot(i);
-                if(stack.isEmpty()) {
+        TileEntity tileentity = world.getTileEntity(pos);
+        if (tileentity != null && tileentity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+            IItemHandler handle = tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            for (int l = 0; l < handle.getSlots(); l++) {
+                ItemStack itemstack = handle.getStackInSlot(l);
+                if (itemstack.isEmpty()) {
                     continue;
                 }
-                float f = world.rand.nextFloat() * 0.8F + 0.1F;
+                float f =  world.rand.nextFloat() * 0.8F + 0.1F;
                 float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
                 float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
-                EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, stack);
+                EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, itemstack);
                 float f3 = 0.05F;
                 entityitem.motionX = (float) world.rand.nextGaussian() * f3;
                 entityitem.motionY = (float) world.rand.nextGaussian() * f3 + 0.2F;

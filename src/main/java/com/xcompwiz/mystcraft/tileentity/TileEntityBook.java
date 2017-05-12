@@ -45,9 +45,6 @@ public class TileEntityBook extends TileEntityBase implements InventoryUpdateLis
 	@Override
 	public void onChange() {
 		markForUpdate();
-		for (int i = 0; i < this.inventory.getSlots(); i++) {
-			handleItemChange(i);
-		}
 	}
 
 	@Nonnull

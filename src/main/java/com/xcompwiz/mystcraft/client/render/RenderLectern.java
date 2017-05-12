@@ -1,9 +1,12 @@
 package com.xcompwiz.mystcraft.client.render;
 
+import com.xcompwiz.mystcraft.block.BlockLectern;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.EnumFacing;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.Mystcraft;
@@ -45,7 +48,8 @@ public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> 
 		bindTexture(Entities.lectern);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
-		GlStateManager.rotate(90 - te.getYaw(), 0, 1, 0);
+		EnumFacing teRotation = ModBlocks.lectern.getStateFromMeta(te.getBlockMetadata()).getValue(BlockLectern.ROTATION);
+		GlStateManager.rotate(90 + teRotation.getHorizontalIndex() * 90, 0, 1, 0);
 		lectern.render(null, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0625F);
 		GlStateManager.popMatrix();
 

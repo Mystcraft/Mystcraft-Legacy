@@ -23,6 +23,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 public class SymbolFloatingIslands extends SymbolBase {
 
@@ -57,8 +58,8 @@ public class SymbolFloatingIslands extends SymbolBase {
 		}
 
 		@Override
-		public void alterTerrain(World worldObj, int chunkX, int chunkZ, IBlockState[] blocks) {
-			generator.generate(worldObj.getChunkProvider(), worldObj, chunkX, chunkZ, blocks);
+		public void alterTerrain(World worldObj, int chunkX, int chunkZ, ChunkPrimer primer) {
+			generator.generate(worldObj.getChunkProvider(), worldObj, chunkX, chunkZ, primer);
 		}
 
 	}

@@ -227,14 +227,16 @@ public class ChunkProfiler extends WorldSavedData {
 						}
 					}
 					BlockPos pos = new BlockPos(chunkX + x, y, chunkZ + z);
-					//Checks if isPassable
-					if (blockstate.getBlock().isPassable(chunk.getWorld(), pos)) {
-						accessibility = 1;
-					}
-					//Checks if isAir
-					if (blockstate.getBlock().isAir(blockstate, chunk.getWorld(), pos)) {
-						accessibility = 0;
-					}
+					try {
+						//Checks if isPassable
+						if (blockstate.getBlock().isPassable(chunk.getWorld(), pos)) {
+							accessibility = 1;
+						}
+						//Checks if isAir
+						if (blockstate.getBlock().isAir(blockstate, chunk.getWorld(), pos)) {
+							accessibility = 0;
+						}
+					} catch (Exception ignored) {} //For blockstate change shenanigans
 					solidmap[coords] += accessibility;
 				}
 			}
