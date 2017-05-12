@@ -71,23 +71,11 @@ public class MystcraftConnectionHandler {
 		}
 	}
 
-	//Not *perfect* but at least very close
-    //The connect event is too early
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public void onLoad(GuiOpenEvent event) {
-	    if(event.getGui() != null && event.getGui() instanceof GuiDownloadTerrain) {
-            connected = true;
-            Mystcraft.clientStorage = Minecraft.getMinecraft().world.getMapStorage();
-        }
-    }
-
-	//@SubscribeEvent
-	//@SideOnly(Side.CLIENT)
-	//public void connectionOpened(ClientConnectedToServerEvent event) {
-	//	connected = true;
-	//	Mystcraft.clientStorage = Minecraft.getMinecraft().world.getMapStorage();
-	//}
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void connectionOpened(ClientConnectedToServerEvent event) {
+		connected = true;
+	}
 
 	@SubscribeEvent
 	public void onPlJoin(PlayerLoggedInEvent event) {

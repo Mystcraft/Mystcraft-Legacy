@@ -8,6 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.util.IThreadListener;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -54,7 +56,13 @@ public class MPacketGuiMessage extends PacketBase<MPacketGuiMessage, MPacketGuiM
 			return null;
 		}
 		if(thePlayer.openContainer instanceof IGuiMessageHandler) {
-			((IGuiMessageHandler) thePlayer.openContainer).processMessage(thePlayer, message.tag);
+			IThreadListener itl;
+			if(ctx.side.isClient()) {
+				itl = clientListener();
+			} else {
+				itl = thePlayer.world.getMinecraftServer();
+			}
+			itl.addScheduledTask(() -> ((IGuiMessageHandler) thePlayer.openContainer).processMessage(thePlayer, message.tag));
 		}
 		return null;
 	}
@@ -62,6 +70,11 @@ public class MPacketGuiMessage extends PacketBase<MPacketGuiMessage, MPacketGuiM
 	@SideOnly(Side.CLIENT)
 	private EntityPlayer clientPlayer() {
 		return Minecraft.getMinecraft().player;
+	}
+
+	@SideOnly(Side.CLIENT)
+	private IThreadListener clientListener() {
+		return Minecraft.getMinecraft();
 	}
 
 }

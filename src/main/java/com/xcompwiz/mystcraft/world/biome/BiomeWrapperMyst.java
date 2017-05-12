@@ -68,6 +68,9 @@ public class BiomeWrapperMyst extends Biome {
 
 	@Override
 	public BiomeDecorator createBiomeDecorator() {
+	    if(baseBiome == null) {
+	        return null;
+        }
 		return baseBiome.theBiomeDecorator;
 	}
 

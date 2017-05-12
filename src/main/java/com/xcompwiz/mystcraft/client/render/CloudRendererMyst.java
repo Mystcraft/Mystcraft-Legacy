@@ -28,7 +28,6 @@ public class CloudRendererMyst extends IRenderHandler {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void render(float partialTicks, WorldClient world, Minecraft mc) {
-
 	    Entity entity = mc.getRenderViewEntity();
         double p0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double)partialTicks;
         double p1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)partialTicks;

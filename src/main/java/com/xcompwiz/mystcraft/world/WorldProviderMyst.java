@@ -65,6 +65,9 @@ public class WorldProviderMyst extends WorldProvider {
 	@Override
 	protected void init() {
 		//XXX: terrainType = WorldType.DEFAULT;
+        if(world.isRemote) {
+            Mystcraft.clientStorage = world.getPerWorldStorage();
+        }
 		agedata = AgeData.getAge(ageUID, world.isRemote);
 		biomeManager = new BiomeWrapperManager(this);
 		controller = new AgeController(world, agedata);
@@ -371,7 +374,9 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	private void verifySpawn() {
-		if (agedata.getSpawn() != null) return;
+		if (agedata.getSpawn() != null) {
+			return;
+		}
 		if (world.isRemote) {
 			agedata.setSpawn(new BlockPos(0, 0, 0));
 			return;
@@ -383,9 +388,9 @@ public class WorldProviderMyst extends WorldProvider {
 		if (spawnpos == null) {
 			System.out.println("Searching for viable spawn point.");
 		}
-		int x = 0;
+		int x = random.nextInt(64) - random.nextInt(64);
 		int y = getAgeController().getSeaLevel();
-		int z = 0;
+		int z = random.nextInt(64) - random.nextInt(64);
 		for (int l = 0; l < 1000; ++l) {
 			if (canCoordinateBeSpawn(x, z) || agedata.getSpawn() != null) {
 				break;
@@ -578,7 +583,17 @@ public class WorldProviderMyst extends WorldProvider {
 		return getAgeController().getWeatherController().getEnableRain(canSpawnLightningBolt, biomeId);
 	}
 
-	@Override
+    @Override
+    public boolean hasSkyLight() {
+        return true;
+    }
+
+    @Override
+    public boolean hasNoSky() {
+        return false;
+    }
+
+    @Override
 	public DimensionType getDimensionType() {
 		return Mystcraft.dimensionType;
 	}

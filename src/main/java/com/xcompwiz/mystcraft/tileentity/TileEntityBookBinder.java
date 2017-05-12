@@ -48,7 +48,7 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 		if (slot == 1) {
 			if(!isValidCover(stack)) return false;
 		}
-		return false;
+		return true;
 	}
 
 	//XXX: (Crafting) Book binding/covers

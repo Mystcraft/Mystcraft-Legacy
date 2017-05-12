@@ -90,17 +90,17 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		fluidDataContainer.setMax(tileentity.getInkwell().getCapacity());
 
 		for (int i = 0; i < tabslots; ++i) {
-			SlotFiltered slot = new SlotFiltered((IItemHandlerModifiable)  tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, i + tileentity.getMainInventorySize(), 37, 14 + i * 37 + yShift);
+			SlotFiltered slot = new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, i + tileentity.getMainInventorySize(), 37, 14 + i * 37 + yShift);
 			slot.setSlotStackLimit(1);
 			addSlotToContainer(slot);
 		}
 
-		SlotFiltered slot = new SlotFiltered((IItemHandlerModifiable)  tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 0, 8 + xShift, 60 + yShift);
+		SlotFiltered slot = new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 0, 8 + xShift, 60 + yShift);
 		slot.setSlotStackLimit(1);
 		addSlotToContainer(slot);
-		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable)  tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 1, 8 + xShift, 8 + yShift));
-		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable)  tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 2, 152 + xShift, 8 + yShift));
-		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable)  tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 3, 152 + xShift, 60 + yShift));
+		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 1, 8 + xShift, 8 + yShift));
+		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 2, 152 + xShift, 8 + yShift));
+		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 3, 152 + xShift, 60 + yShift));
 
 		for (int i = 0; i < 3; i++) {
 			for (int k = 0; k < 9; k++) {

@@ -92,6 +92,7 @@ public class SymbolSunNormal extends SymbolBase {
             vb.pos((double)  f17,  100.0D, (double)  f17) .tex(1.0D, 1.0D).endVertex();
             vb.pos((double)(-f17), 100.0D, (double)  f17) .tex(0.0D, 1.0D).endVertex();
             tes.draw();
+            GlStateManager.popMatrix();
 
 			this.renderHorizon(eng, world, celestial_period, angle, partial, 1.0F);
 		}

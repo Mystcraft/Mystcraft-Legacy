@@ -129,7 +129,7 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 		creativeTab.registerItemStack(new ItemStack(ModBlocks.bookbinder, 1, 0));
 		creativeTab.registerItemStack(new ItemStack(ModBlocks.linkmodifier, 1, 0));
 		creativeTab.registerItemStack(new ItemStack(ModItems.inkvial, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModBlocks.black_ink, 1, 0));
+		//creativeTab.registerItemStack(new ItemStack(ModBlocks.black_ink, 1, 0));
 
 		// Symbol creative tab
 		CreativeTabMyst pageTab = new CreativeTabMyst("mystcraft.pages");

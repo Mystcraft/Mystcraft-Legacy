@@ -5,6 +5,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.init.Biomes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
@@ -25,7 +26,7 @@ public class BiomeProviderMyst extends BiomeProvider {
 
 	@Override
 	public Biome getBiome(BlockPos pos) {
-		return getBiome(pos, null);
+		return getBiome(pos, Biomes.PLAINS);
 	}
 
 	public Biome getBiome(BlockPos pos, Biome defaultBiome) {

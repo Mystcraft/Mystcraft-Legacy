@@ -47,6 +47,7 @@ public abstract class PacketBase<REQ extends IMessage, REPLY extends IMessage> i
 
 	protected void writeString(ByteBuf data, String str) {
 		byte[] bytes = str.getBytes(Charset.forName("UTF-8"));
+		data.writeInt(bytes.length);
 		data.writeBytes(bytes);
 	}
 

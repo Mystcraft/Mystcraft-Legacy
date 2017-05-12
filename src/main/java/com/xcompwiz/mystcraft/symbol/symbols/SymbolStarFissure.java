@@ -23,12 +23,20 @@ public class SymbolStarFissure extends SymbolBase {
 	}
 
 	private class Populator implements IPopulate {
+
+	    private int waitX, waitZ;
+
 		public Populator() {}
 
 		@Override
 		public boolean populate(World worldObj, Random rand, int i, int j, boolean flag) {
+		    if(waitX == i && waitZ == j) return false; //Stov
+		    waitX = i;
+		    waitZ = j;
 			BlockPos spawn = worldObj.getSpawnPoint();
-			if (i >> 4 != spawn.getX() >> 4 || j >> 4 != spawn.getZ() >> 4) return false;
+			if (i >> 4 != spawn.getX() >> 4 || j >> 4 != spawn.getZ() >> 4) {
+				return false;
+			}
 			WorldGenMystStarFissure gen = new WorldGenMystStarFissure();
 			while (!flag) {
 				i += rand.nextInt(16) + 8;

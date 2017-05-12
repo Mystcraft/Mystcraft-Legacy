@@ -51,7 +51,8 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 	// Server/Client caching for communication
 	private String					cached_title	= "";
 	private NonNullList<ItemStack>	page_list		= NonNullList.create();
-	private ItemStack				cached_helditem;
+	@Nonnull
+	private ItemStack				cached_helditem = ItemStack.EMPTY;
 
 	public ContainerBookBinder(InventoryPlayer inventoryplayer, TileEntityBookBinder tileentity) {
 		this.tileentity = tileentity;

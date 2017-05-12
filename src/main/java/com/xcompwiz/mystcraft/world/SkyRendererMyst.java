@@ -90,7 +90,7 @@ public class SkyRendererMyst extends IRenderHandler {
             f2 = f5;
         }
 
-        GlStateManager.color(f, f1, f2);
+        //GlStateManager.color(f, f1, f2);
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer vertexbuffer = tessellator.getBuffer();
         GlStateManager.depthMask(false);
@@ -109,7 +109,6 @@ public class SkyRendererMyst extends IRenderHandler {
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableFog();
-        GlStateManager.popMatrix();
         GlStateManager.disableTexture2D();
         GlStateManager.color(0.0F, 0.0F, 0.0F);
         double horizonDst = mc.player.getPositionEyes(partialTicks).yCoord - world.getHorizon();

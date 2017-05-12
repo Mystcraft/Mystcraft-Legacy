@@ -103,7 +103,7 @@ public class ItemWritingDesk extends Item {
 				world.setBlockState(up.add(xOffset, 0, zOffset), def.withProperty(BlockWritingDesk.IS_TOP, true).withProperty(BlockWritingDesk.IS_FOOT, true));
 			}
 			stack.shrink(1);
-			return EnumActionResult.SUCCESS;
+			return EnumActionResult.PASS;
 		}
 		return EnumActionResult.PASS;
 	}
@@ -118,6 +118,7 @@ public class ItemWritingDesk extends Item {
 			return EnumActionResult.PASS;
 		}
 		EnumFacing facing = player.getHorizontalFacing();
+        facing = facing.rotateAround(EnumFacing.Axis.Y);
 		int xOffset = 0;
 		int zOffset = 0;
 		if (facing.getHorizontalIndex() == 0) {

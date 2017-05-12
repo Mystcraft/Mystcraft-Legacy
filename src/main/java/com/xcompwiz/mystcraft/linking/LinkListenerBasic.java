@@ -46,7 +46,7 @@ public class LinkListenerBasic {
 		Integer dimid = info.getDimensionUID();
 		if (dimid == null) {
 			event.setCanceled(true); //We'll need to override isLinkPermitted handling for unestablished links
-		} else if (entity.isDead || entity.world != world || !entity.isBeingRidden()) {
+		} else if (entity.isDead || entity.world != world || entity.isBeingRidden()) {
 			event.setCanceled(true);
 		} else if (entity.world.provider.getDimension() == dimid && !info.getFlag(LinkPropertyAPI.FLAG_INTRA_LINKING)) {
 			event.setCanceled(true);

@@ -59,9 +59,9 @@ public class LinkListenerPermissions {
 	}
 
 	private boolean canPlayerLeaveDimension(EntityPlayer player, int dim) {
-		Set<Integer> restricted = restrictDepart.get(player.getDisplayName());
+		Set<Integer> restricted = restrictDepart.get(player.getDisplayNameString());
 		if (restricted != null && restricted.contains(dim)) return false;
-		Set<Integer> permitted = permitDepart.get(player.getDisplayName());
+		Set<Integer> permitted = permitDepart.get(player.getDisplayNameString());
 		if (permitted != null && !permitted.contains(dim)) return false;
 
 		return true;

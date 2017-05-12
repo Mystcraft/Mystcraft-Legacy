@@ -1,6 +1,8 @@
 package com.xcompwiz.mystcraft.inventory;
 
+import com.xcompwiz.mystcraft.tileentity.IOInventory;
 import com.xcompwiz.mystcraft.tileentity.InventoryFilter;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
@@ -22,7 +24,20 @@ public class SlotFiltered extends SlotItemHandler {
 		this.slotIndex = slot;
 	}
 
-	@Override
+    @Override
+    public boolean canTakeStack(EntityPlayer playerIn) {
+	    if(inventory instanceof IOInventory) {
+	        boolean allowed = ((IOInventory) inventory).allowAnySlots;
+	        ((IOInventory) inventory).allowAnySlots = true;
+	        boolean take = super.canTakeStack(playerIn);
+	        ((IOInventory) inventory).allowAnySlots = allowed;
+	        return take;
+        } else {
+            return super.canTakeStack(playerIn);
+        }
+    }
+
+    @Override
 	public boolean isItemValid(@Nonnull ItemStack itemstack) {
 		return filter == null || filter.canAcceptItem(this.slotIndex, itemstack);
 	}

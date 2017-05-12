@@ -106,6 +106,11 @@ public class BlockWritingDesk extends Block {
 	}
 
 	@Override
+	public boolean isFullCube(IBlockState state) {
+		return !isBlockTop(state);
+	}
+
+	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
@@ -149,7 +154,9 @@ public class BlockWritingDesk extends Block {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (world.isRemote) return true;
+		if (world.isRemote) {
+		    return true;
+        }
 		playerIn.openGui(Mystcraft.instance, ModGUIs.WRITING_DESK.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
@@ -208,7 +215,9 @@ public class BlockWritingDesk extends Block {
 			return 1;
 		} else if (j == -1) {
 			return 2;
-		} else if (i == 1) { return 3; }
+		} else if (i == 1) {
+			return 3;
+		}
 		return 0;
 	}
 

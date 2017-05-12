@@ -36,12 +36,12 @@ public class BlockLectern extends BlockBookDisplay {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(ROTATION, EnumFacing.values()[meta]);
+		return getDefaultState().withProperty(ROTATION, EnumFacing.getHorizontal(meta));
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(ROTATION).ordinal();
+		return state.getValue(ROTATION).getHorizontalIndex();
 	}
 
 	@Override
@@ -57,6 +57,11 @@ public class BlockLectern extends BlockBookDisplay {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return new AxisAlignedBB(0, 0, 0, 1, 0.4375, 1);
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
 	}
 
 	@Override

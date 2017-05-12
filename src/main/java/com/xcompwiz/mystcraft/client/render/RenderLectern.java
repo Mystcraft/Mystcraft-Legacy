@@ -49,12 +49,14 @@ public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 		EnumFacing teRotation = ModBlocks.lectern.getStateFromMeta(te.getBlockMetadata()).getValue(BlockLectern.ROTATION);
-		GlStateManager.rotate(90 + teRotation.getHorizontalIndex() * 90, 0, 1, 0);
+		if(teRotation.getAxis() == EnumFacing.Axis.Z) teRotation = teRotation.getOpposite();
+		GlStateManager.rotate(teRotation.getHorizontalAngle() + 90, 0, 1, 0);
 		lectern.render(null, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0625F);
 		GlStateManager.popMatrix();
 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
+		GlStateManager.rotate(teRotation.getHorizontalAngle() + 90, 0, 1, 0);
 		renderItem(te);
 		GlStateManager.popMatrix();
 
@@ -115,7 +117,6 @@ public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> 
 		if (!itemstack.isEmpty()) {
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(0, 0.255F, 0);
-			GlStateManager.rotate(90.0F - lectern.getYaw(), 0.0F, 1.0F, 0.0F);
 			GlStateManager.rotate(110.0F, 0.0F, 0.0F, 1.0F);
 
 			if (itemstack.getItem() instanceof ItemLinking) {
