@@ -202,7 +202,7 @@ public final class PortalUtils {
 		while (validate.size() > 0) {
 			BlockPos coords = validate.pop();
 			if (!checkPortalTension(world, coords)) {
-				world.setBlockState(pos, Blocks.AIR.getDefaultState(), 0);
+				world.setBlockState(coords, Blocks.AIR.getDefaultState(), 0);
 			}
 		}
 	}
