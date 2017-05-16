@@ -172,7 +172,7 @@ public final class PortalUtils {
 	private static void unpath(World world, BlockPos pos) {
 		List<BlockPos> blocks = new LinkedList<BlockPos>();
 		List<BlockPos> notify = new LinkedList<BlockPos>();
-		blocks.add(new BlockPos(pos));
+		blocks.add(pos);
 		while (blocks.size() > 0) {
 			BlockPos coords = blocks.remove(0);
 			depolarize(world, coords.east(), blocks);
@@ -237,25 +237,25 @@ public final class PortalUtils {
 	}
 
 	private static void addSurrounding(Collection<BlockPos> set, BlockPos pos) {
-		set.add(new BlockPos(pos.west()));
 		set.add(new BlockPos(pos.east()));
+		set.add(new BlockPos(pos.west()));
 		set.add(new BlockPos(pos.up()));
 		set.add(new BlockPos(pos.down()));
 		set.add(new BlockPos(pos.south()));
 		set.add(new BlockPos(pos.north()));
 
-		set.add(new BlockPos(pos.west().up()));
 		set.add(new BlockPos(pos.east().up()));
-		set.add(new BlockPos(pos.west().down()));
+		set.add(new BlockPos(pos.west().up()));
 		set.add(new BlockPos(pos.east().down()));
+		set.add(new BlockPos(pos.west().down()));
 		set.add(new BlockPos(pos.south().up()));
 		set.add(new BlockPos(pos.north().up()));
 		set.add(new BlockPos(pos.south().down()));
 		set.add(new BlockPos(pos.north().down()));
-		set.add(new BlockPos(pos.west().south()));
 		set.add(new BlockPos(pos.east().south()));
-		set.add(new BlockPos(pos.west().north()));
+		set.add(new BlockPos(pos.west().south()));
 		set.add(new BlockPos(pos.east().north()));
+		set.add(new BlockPos(pos.west().north()));
 	}
 
 	private static void expandPortal(World world, BlockPos pos, Collection<BlockPos> set, Stack<BlockPos> created) {
@@ -272,6 +272,7 @@ public final class PortalUtils {
 		IBlockState blockState = world.getBlockState(pos);
 		if (isValidLinkPortalBlock(blockState) == 0) return;
 		if (isBlockActive(blockState)) return;
+		world.setBlockState(pos, getDirectedState(blockState, meta - 1), 0);
 		if (blockState.getBlock() == getPortalBlock()) {
 			portals.add(pos);
 		} else {
@@ -296,7 +297,7 @@ public final class PortalUtils {
 		while (blockstate.getBlock() != getReceptacleBlock()) {
 			if (isValidLinkPortalBlock(blockstate) == 0) return null;
 			if (!visited.add(pos)) { return null; }
-			pos = getReceptacleBase(pos, getBlockFacing(blockstate));
+			pos = pos.offset(getBlockFacing(blockstate));
 			blockstate = blockaccess.getBlockState(pos);
 		}
 		return blockaccess.getTileEntity(pos);
