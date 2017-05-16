@@ -67,6 +67,11 @@ public class BlockBookstand extends BlockBookDisplay {
 		return new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.75, 0.875);
 	}
 
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
 	@Nullable
 	@Override
 	public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {

@@ -175,6 +175,7 @@ public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> 
 				//	}
 				//}
 
+				GlStateManager.translate(0, 0.25F, 0);
 				Minecraft.getMinecraft().getRenderItem().renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED);
 
 				//if (itemstack.getItem().equals(Items.COMPASS)) {

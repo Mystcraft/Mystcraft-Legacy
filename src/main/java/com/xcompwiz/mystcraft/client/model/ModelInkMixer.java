@@ -115,19 +115,19 @@ public class ModelInkMixer extends ModelBase {
 		component = addComponent(32, 30);
 		component.addBox(-3F, 0F, -2F, 5, 0, 7);
 		component.setRotationPoint(-2.5F, 11.8F, -5.3F);
-		component.setTextureSize(128, 64);
+		component.setTextureSize(64, 64);
 		component.mirror = true;
 		setRotation(component, 0F, -0.1396263F, 0F);
 		component = addComponent(32, 30);
 		component.addBox(-3F, 0F, -2F, 5, 1, 7);
 		component.setRotationPoint(-2.5F, 11.5F, -5F);
-		component.setTextureSize(128, 64);
+		component.setTextureSize(64, 64);
 		component.mirror = true;
 		setRotation(component, 0F, -0.2094395F, 0F);
 		component = addComponent(32, 30);
 		component.addBox(-3F, 0F, -2F, 5, 0, 7);
 		component.setRotationPoint(-2.5F, 11.6F, -5F);
-		component.setTextureSize(128, 64);
+		component.setTextureSize(64, 64);
 		component.mirror = true;
 		setRotation(component, 0F, -0.2792527F, 0F);
 	}

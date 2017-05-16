@@ -160,7 +160,7 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	}
 
 	public int getInventorySize() {
-	    if(linkbook != null) {
+	    if(linkbook != null && !linkbook.isDead) {
 	        return 1;
         } else if(bookTile != null) {
 	        return 1;
@@ -191,7 +191,7 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 				this.inventoryItemStacks.clear();
 				addInventorySlots();
                 IItemHandlerModifiable other = getCurrentOtherInventory();
-				addSlotToContainer(new SlotFiltered(other, other instanceof InventoryFilter ? (InventoryFilter) other : null, 0, 80, 35));
+				addSlotToContainer(new SlotFiltered(other, other instanceof InventoryFilter ? (InventoryFilter) other : bookTile, 0, 80, 35));
 			} else if ((book.isEmpty() && getCurrentOtherInventorySize() == 0 && this.inventorySlots.size() != 36)) {
 				this.inventorySlots.clear();
 				this.inventoryItemStacks.clear();
@@ -261,7 +261,7 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	@Override
 	public boolean canInteractWith(@Nonnull EntityPlayer entityplayer) {
 		updateSlots();
-		if (linkbook == null) {
+		if (linkbook != null && !linkbook.isDead) {
 			return !getBook().isEmpty();
 		}
 		return true;

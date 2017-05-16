@@ -1,0 +1,41 @@
+{
+    "forge_marker": 0,
+    "multipart": [
+        {
+            "when": {"facing": "north"},
+            "apply": [
+                {
+                    "model": "mystcraft:linkmodifier_model",
+                    "y": 0
+                }
+            ]
+        },
+        {
+            "when": {"facing": "east"},
+            "apply": [
+                {
+                    "model": "mystcraft:linkmodifier_model",
+                    "y": 90
+                }
+            ]
+        },
+        {
+            "when": {"facing": "south"},
+            "apply": [
+                {
+                    "model": "mystcraft:linkmodifier_model",
+                    "y": 180
+                }
+            ]
+        },
+        {
+            "when": {"facing": "west"},
+            "apply": [
+                {
+                    "model": "mystcraft:linkmodifier_model",
+                    "y": 270
+                }
+            ]
+        }
+    ]
+}

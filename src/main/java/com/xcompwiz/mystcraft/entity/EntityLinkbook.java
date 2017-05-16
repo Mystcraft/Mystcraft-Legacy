@@ -116,7 +116,9 @@ public class EntityLinkbook extends EntityLiving {
 	}
 
 	private void updateBookHealth() {
-		if (getBook().isEmpty()) return;
+		if (getBook().isEmpty()) {
+		    return;
+        }
 		ItemLinking.setHealth(getBook(), this.getHealth());
 	}
 
@@ -309,6 +311,16 @@ public class EntityLinkbook extends EntityLiving {
 		@Nonnull
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			if(slot == 0) {
+				ItemStack in = getStackInSlot(0); //Book, if present
+				if(!simulate) {
+					setStackInSlot(0, ItemStack.EMPTY);
+				}
+				if(parent.getBook().isEmpty()) {
+				    parent.setDead();
+                }
+				return in;
+			}
 			return ItemStack.EMPTY;
 		}
 

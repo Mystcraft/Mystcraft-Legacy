@@ -1,0 +1,22 @@
+{
+    "forge_marker": 0,
+    "multipart": [
+        {
+            "when": {"OR": [{"facing": "north"}, {"facing": "south"}]},
+            "apply": [
+                {
+                    "model": "mystcraft:bookbinder_model"
+                }
+            ]
+        },
+        {
+            "when": {"OR": [{"facing": "east"}, {"facing": "west"}]},
+            "apply": [
+                {
+                    "model": "mystcraft:bookbinder_model",
+                    "y": 90
+                }
+            ]
+        }
+    ]
+}

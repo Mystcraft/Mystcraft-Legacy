@@ -37,7 +37,12 @@ public class SlotFiltered extends SlotItemHandler {
         }
     }
 
-    @Override
+	@Override
+	public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
+		return super.onTake(thePlayer, stack);
+	}
+
+	@Override
 	public boolean isItemValid(@Nonnull ItemStack itemstack) {
 		return filter == null || filter.canAcceptItem(this.slotIndex, itemstack);
 	}

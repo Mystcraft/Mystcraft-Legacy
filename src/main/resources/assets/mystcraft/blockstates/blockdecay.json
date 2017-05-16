@@ -1,0 +1,11 @@
+{
+    "variants": {
+        "decay=black": { "model":"mystcraft:blockdecay_black" },
+        "decay=red": { "model":"mystcraft:blockdecay_red" },
+        "decay=green": { "model":"mystcraft:blockdecay_green" },
+        "decay=blue": { "model":"mystcraft:blockdecay_blue" },
+        "decay=purple": { "model":"mystcraft:blockdecay_purple" },
+        "decay=yellow": { "model":"mystcraft:blockdecay_yellow" },
+        "decay=white": { "model":"mystcraft:blockdecay_white" }
+    }
+}

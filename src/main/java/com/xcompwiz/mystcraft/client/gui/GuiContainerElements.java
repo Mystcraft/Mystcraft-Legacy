@@ -77,7 +77,15 @@ public abstract class GuiContainerElements extends GuiContainer {
 		this._onMouseDrag(mouseX, mouseY, clicked_id, lastclick, rootelement.onMouseDrag(mouseX, mouseY, clicked_id, lastclick));
 	}
 
-	protected void _onMouseDrag(int mouseX, int mouseY, int clicked_id, long lastclick, boolean eaten) {};
+	protected void _onMouseDrag(int mouseX, int mouseY, int clicked_id, long lastclick, boolean eaten) {}
+
+	@Override
+	protected void mouseReleased(int mouseX, int mouseY, int state) {
+		super.mouseReleased(mouseX, mouseY, state);
+		this._onMouseUp(mouseX, mouseY, state, rootelement.onMouseUp(mouseX, mouseY, state));
+	}
+
+	protected void _onMouseUp(int mouseX, int mouseY, int clicked_id, boolean eaten) {}
 
 	/**
 	 * Draws the screen and all the components in it.

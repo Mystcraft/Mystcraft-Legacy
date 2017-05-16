@@ -18,7 +18,7 @@ public class Assets {
 		public static final ResourceLocation	bookbinder		= new ResourceLocation("mystcraft:textures/entity/bookbinder.png");
 		public static final ResourceLocation	bookstand		= new ResourceLocation("mystcraft:textures/entity/bookstand.png");
 		public static final ResourceLocation	desk			= new ResourceLocation("mystcraft:textures/entity/desk.png");
-		public static final ResourceLocation	inkmixer		= new ResourceLocation("mystcraft:textures/entity/inkwell/inkwell.png");
+		public static final ResourceLocation	inkmixer		= new ResourceLocation("mystcraft:textures/entity/inkwell/inkwell_base.png");
 		public static final ResourceLocation	lectern			= new ResourceLocation("mystcraft:textures/entity/lectern.png");
 		public static final ResourceLocation	linkbook		= new ResourceLocation("mystcraft:textures/entity/linkbook.png");
 		public static final ResourceLocation	linkmodifier	= new ResourceLocation("mystcraft:textures/entity/linkbookmodifier.png");
