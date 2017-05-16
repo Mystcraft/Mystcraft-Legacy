@@ -125,8 +125,6 @@ public class ModBlocks {
 
 	@SideOnly(Side.CLIENT)
 	public static void registerModels() {
-		//BlockModelShapes bms = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes();
-
 		ItemModelMesher imm = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		imm.register(Item.getItemFromBlock(inkmixer), 0, mrlItemBlockModel("blockinkmixer"));
 		imm.register(Item.getItemFromBlock(bookbinder), 0, mrlItemBlockModel("blockbookbinder"));
@@ -136,17 +134,6 @@ public class ModBlocks {
 		imm.register(Item.getItemFromBlock(linkmodifier), 0, mrlItemBlockModel("blocklinkmodifier"));
 		imm.register(Item.getItemFromBlock(crystal), 0, mrlItemBlockModel("blockcrystal"));
 		imm.register(Item.getItemFromBlock(portal), 0, mrlItemBlockModel("portal"));
-
-		//ModelBakery.registerItemVariants(Item.getItemFromBlock(writingdesk),
-        //        new ResourceLocation(MystObjects.MystcraftModId, "writingdesk_base"),
-        //        new ResourceLocation(MystObjects.MystcraftModId, "writingdesk_top"));
-		//imm.register(Item.getItemFromBlock(writingdesk), (stack) -> {
-		//    if(stack.getItemDamage() == 0) {
-		//        return mrlItemBlockModel("writingdesk_base");
-        //    } else {
-		//        return mrlItemBlockModel("writingdesk_top");
-        //    }
-        //});
 
         ModelBakery.registerItemVariants(Item.getItemFromBlock(decay),
                 new ResourceLocation(MystObjects.MystcraftModId, "decay_black"),

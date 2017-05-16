@@ -1,9 +1,13 @@
 package com.xcompwiz.mystcraft.client.render;
 
+import com.xcompwiz.mystcraft.block.BlockBookReceptacle;
+import com.xcompwiz.mystcraft.data.ModBlocks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
@@ -44,6 +48,27 @@ public class RenderBookReceptacle extends TileEntitySpecialRenderer<TileEntityBo
 		}
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y + 0.5, z);
+		IBlockState state = ModBlocks.receptacle.getStateFromMeta(te.getBlockMetadata());
+		EnumFacing rotation = state.getValue(BlockBookReceptacle.ROTATION);
+		switch (rotation) {
+			case DOWN:
+				break;
+			case UP:
+				GlStateManager.rotate(-90, 1, 0, 0);
+				GlStateManager.rotate(90, 0, 1, 0);
+				break;
+			case NORTH:
+				GlStateManager.rotate(-90, 0, 1, 0);
+				break;
+			case SOUTH:
+				GlStateManager.rotate(90, 0, 1, 0);
+				break;
+			case WEST:
+				break;
+			case EAST:
+				GlStateManager.rotate(180, 0, 1, 0);
+				break;
+		}
 		GlStateManager.rotate(te.getPitch(), 1, 0, 0);
 		GlStateManager.rotate(te.getYaw(), 0, 1, 0);
 		GlStateManager.scale(0.8F, 0.8F, 0.8F);

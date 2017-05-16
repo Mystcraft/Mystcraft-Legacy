@@ -71,6 +71,11 @@ public class BlockBookReceptacle extends BlockContainer {
 	}
 
 	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 		return EnumBlockRenderType.MODEL;
 	}
@@ -95,15 +100,15 @@ public class BlockBookReceptacle extends BlockContainer {
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         switch (state.getValue(ROTATION)) {
             case UP:
-                return new AxisAlignedBB(0, 0, 0, 1, 0.375, 1).offset(pos);
+                return new AxisAlignedBB(0, 0, 0, 1, 0.375, 1);
             case NORTH:
-                return new AxisAlignedBB(0, 0, 1 - 0.375, 1, 1, 1).offset(pos);
+                return new AxisAlignedBB(0, 0, 1 - 0.375, 1, 1, 1);
             case SOUTH:
-                return new AxisAlignedBB(0, 0, 0, 1, 1, 0.375).offset(pos);
+                return new AxisAlignedBB(0, 0, 0, 1, 1, 0.375);
             case WEST:
-                return new AxisAlignedBB(1 - 0.375, 0, 0, 1, 1, 1).offset(pos);
+                return new AxisAlignedBB(1 - 0.375, 0, 0, 1, 1, 1);
             case EAST:
-                return new AxisAlignedBB(0, 0, 0, 0.375, 1, 1).offset(pos);
+                return new AxisAlignedBB(0, 0, 0, 0.375, 1, 1);
         }
         return FULL_BLOCK_AABB;
     }

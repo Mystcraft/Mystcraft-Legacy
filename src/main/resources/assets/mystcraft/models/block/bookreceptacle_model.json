@@ -1,0 +1,22 @@
+{
+    "parent": "block/block",
+    "textures": {
+        "particle": "mystcraft:blocks/crystal",
+        "0": "mystcraft:blocks/crystal",
+        "1": "mystcraft:blocks/book_receptacle"
+    },
+    "elements": [
+        {
+            "from": [ 0.0, 0.0, 0.0 ], 
+            "to": [ 16.0, 16.0, 6.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "east": { "texture": "#0", "uv": [ 0.0, 0.0, 6.0, 16.0 ] },
+                "south": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "west": { "texture": "#0", "uv": [ 0.0, 0.0, 6.0, 16.0 ] },
+                "up": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 6.0 ] },
+                "down": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 6.0 ] }
+            }
+        }
+    ]
+}

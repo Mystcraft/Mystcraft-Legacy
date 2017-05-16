@@ -1,0 +1,49 @@
+{
+    "multipart": [
+        {
+            "when": {"rotation": "north"},
+            "apply": [
+                {
+                    "model": "mystcraft:bookreceptacle_model",
+                    "y": 180
+                }
+            ]
+        },
+        {
+            "when": {"rotation": "east"},
+            "apply": [
+                {
+                    "model": "mystcraft:bookreceptacle_model",
+                    "y": 270
+                }
+            ]
+        },
+        {
+            "when": {"rotation": "south"},
+            "apply": [
+                {
+                    "model": "mystcraft:bookreceptacle_model",
+                    "y": 0
+                }
+            ]
+        },
+        {
+            "when": {"rotation": "west"},
+            "apply": [
+                {
+                    "model": "mystcraft:bookreceptacle_model",
+                    "y": 90
+                }
+            ]
+        },
+        {
+            "when": {"OR": [{"rotation": "up"}, {"rotation": "down"}]},
+            "apply": [
+                {
+                    "model": "mystcraft:bookreceptacle_model",
+                    "x": 90
+                }
+            ]
+        }
+    ]
+}
