@@ -1,0 +1,37 @@
+{
+    "forge_marker": 0,
+    "multipart": [
+        {
+            "when": {"AND": [{"hasface": "true"}, {"renderface": "x"}]},
+            "apply": [
+                {
+                    "model": "mystcraft:linkportal_ew"
+                }
+            ]
+        },
+        {
+            "when": {"AND": [{"hasface": "true"}, {"renderface": "y"}]},
+            "apply": [
+                {
+                    "model": "mystcraft:linkportal_ud"
+                }
+            ]
+        },
+        {
+            "when": {"AND": [{"hasface": "true"}, {"renderface": "z"}]},
+            "apply": [
+                {
+                    "model": "mystcraft:linkportal_ns"
+                }
+            ]
+        },
+        {
+            "when": {"hasface": "false"},
+            "apply": [
+                {
+                    "model": "mystcraft:linkportal_full"
+                }
+            ]
+        }
+    ]
+}

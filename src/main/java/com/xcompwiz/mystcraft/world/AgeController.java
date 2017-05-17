@@ -636,7 +636,9 @@ public class AgeController implements AgeDirector {
 				lowest = temp;
 			}
 		}
-		if ((1 - highest) < lowest) return highest;
+		if ((1 - highest) < lowest) {
+			return highest;
+		}
 		return lowest;
 	}
 

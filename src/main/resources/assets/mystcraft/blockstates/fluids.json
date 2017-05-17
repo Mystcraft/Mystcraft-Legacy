@@ -1,0 +1,9 @@
+{
+     "forge_marker": 1,
+     "variants": {
+         "myst.ink.black": {
+             "model": "forge:fluid",
+             "custom": { "fluid": "myst.ink.black" }
+         }
+     }
+ }

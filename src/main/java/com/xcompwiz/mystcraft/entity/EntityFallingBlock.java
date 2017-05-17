@@ -176,7 +176,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 			}
 			for (EnumFacing face : EnumFacing.VALUES) {
 				if(face != EnumFacing.DOWN) {
-					drop(world, getPosition().offset(face));
+					//drop(world, getPosition().offset(face));
 				}
 			}
 		}

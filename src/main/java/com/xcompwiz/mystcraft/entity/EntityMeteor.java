@@ -149,7 +149,7 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 				// par1MovingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this), 6);
 			}
 
-			this.breakBlocksInAABB(this.getCollisionBoundingBox());
+			this.breakBlocksInAABB(getEntityBoundingBox());
 			if (inGroundTime >= penetration) {
 				newExplosion(this, this.posX, this.posY, this.posZ, 5.0F, false, true);
 				newExplosion(this, this.posX, this.posY - scale / 10, this.posZ, scale, false, true);

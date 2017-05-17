@@ -49,17 +49,17 @@ public class ItemWritingDesk extends Item {
 	}
 
 	@Override
-	@Nonnull
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(worldIn.isRemote) {
+	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+		if(world.isRemote) {
 			return EnumActionResult.PASS;
 		}
 		ItemStack held = player.getHeldItem(hand);
+		if(held.isEmpty()) return EnumActionResult.FAIL;
 		int dmg = held.getItemDamage();
 		if(dmg == 0) {
-			return placeDesk(held, player, worldIn, pos, facing);
+			return placeDesk(held, player, world, pos, side);
 		} else if(dmg == 1) {
-			return extendDesk(held, player, worldIn, pos, facing);
+			return extendDesk(held, player, world, pos, side);
 		}
 		return EnumActionResult.PASS;
 	}
@@ -102,8 +102,10 @@ public class ItemWritingDesk extends Item {
 			if(world.getBlockState(up).getBlock().equals(ModBlocks.writingdesk)) {
 				world.setBlockState(up.add(xOffset, 0, zOffset), def.withProperty(BlockWritingDesk.IS_TOP, true).withProperty(BlockWritingDesk.IS_FOOT, true));
 			}
-			stack.shrink(1);
-			return EnumActionResult.PASS;
+            if(!player.isCreative()) {
+                stack.shrink(1);
+            }
+			return EnumActionResult.SUCCESS;
 		}
 		return EnumActionResult.PASS;
 	}
@@ -143,7 +145,9 @@ public class ItemWritingDesk extends Item {
 			if(world.getBlockState(pos).getBlock().equals(ModBlocks.writingdesk)) {
 				world.setBlockState(pos.add(xOffset, 0, zOffset), def.withProperty(BlockWritingDesk.IS_FOOT, true));
 			}
-			stack.shrink(1);
+			if(!player.isCreative()) {
+                stack.shrink(1);
+            }
 			return EnumActionResult.SUCCESS;
 		}
 		return EnumActionResult.PASS;

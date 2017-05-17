@@ -85,7 +85,6 @@ public class BlockWritingDesk extends Block {
 		float ymax = 1.0F;
 		float zmin = 0.0F;
 		float zmax = 1.0F;
-		AxisAlignedBB box = new AxisAlignedBB(0, 0, 0, 1, 1, 1);
 		if(isBlockTop(state)) {
 			ymax = 0.75F;
 			int dirInt = getDirectionFromMetadata(state).getHorizontalIndex();

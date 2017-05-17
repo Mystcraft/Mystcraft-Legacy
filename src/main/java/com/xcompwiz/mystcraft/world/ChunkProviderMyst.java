@@ -25,6 +25,7 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
@@ -136,22 +137,26 @@ public class ChunkProviderMyst implements IChunkGenerator {
 		BlockFalling.fallInstantly = true;
 		int x = chunkX * 16;
 		int z = chunkZ * 16;
-		Biome Biome = worldObj.getBiomeProvider().getBiome(new BlockPos(x + 16, 0, z + 16)); //TODO: (BiomeDecoration) Wrap these biomes?
-		rand.setSeed(agedata.getSeed());
-		long l1 = (rand.nextLong() / 2L) * 2L + 1L;
-		long l2 = (rand.nextLong() / 2L) * 2L + 1L;
-		rand.setSeed(chunkX * l1 + chunkZ * l2 ^ agedata.getSeed());
-
-		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(this, worldObj, rand, chunkX, chunkZ, false));
+		BlockPos blockpos = new BlockPos(x, 0, z);
+		Biome biome = worldObj.getBiome(blockpos.add(16, 0, 16));
+		this.rand.setSeed(worldObj.getSeed());
+		long k = this.rand.nextLong() / 2L * 2L + 1L;
+		long l = this.rand.nextLong() / 2L * 2L + 1L;
+		this.rand.setSeed((long) x * k + (long) z * l ^ worldObj.getSeed());
+		boolean flag = false;
+		ChunkPos chunkpos = new ChunkPos(x, z);
+		ForgeEventFactory.onChunkPopulate(true, this, worldObj, this.rand, x, z, flag);
 
 		try {
-			Biome.decorate(worldObj, rand, new BlockPos(x, 0, z)); //Column gen?..
+			biome.decorate(this.worldObj, this.rand, new BlockPos(x, 0, z));
 		} catch (Exception e) {
-			throw new RuntimeException(String.format("Biome [%s] threw an error while populating chunk.", Biome.getBiomeName()), e);
+			throw new RuntimeException(String.format("Biome [%s] threw an error while populating chunk.", biome.getBiomeName()), e);
 		}
-		this.scatteredFeatureGenerator.generateStructure(this.worldObj, this.rand, new ChunkPos(chunkX, chunkZ));
-        WorldEntitySpawner.performWorldGenSpawning(worldObj, Biome, x + 8, z + 8, 16, 16, rand); // TODO: (Spawning) Rewrite to use getPossibleCreatures
+		if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.worldObj, this.rand, x, z, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS)) {
+			WorldEntitySpawner.performWorldGenSpawning(this.worldObj, biome, x + 8, z + 8, 16, 16, this.rand);
+		}
 		controller.populate(worldObj, rand, x, z);
+		blockpos = blockpos.add(8, 0, 8);
 
 		boolean doGen = TerrainGen.generateOre(worldObj, this.rand, worldgenminablequartz, new BlockPos(x, 0, z), OreGenEvent.GenerateMinable.EventType.QUARTZ);
 		for (int k1 = 0; doGen && k1 < 16; ++k1) {
@@ -160,22 +165,25 @@ public class ChunkProviderMyst implements IChunkGenerator {
 			int gz = z + this.rand.nextInt(16);
 			worldgenminablequartz.generate(this.worldObj, this.rand, new BlockPos(gx, gy, gz));
 		}
-		for (int i2 = 0; i2 < 16; i2++) {
-			for (int j3 = 0; j3 < 16; j3++) {
-				int j4 = worldObj.getPrecipitationHeight(new BlockPos(x + i2, 0, z + j3)).getY();
-				BlockPos at = new BlockPos(i2 + x, j4, j3 + z);
-				if (worldObj.canBlockFreezeWater(at.down())) {
-					worldObj.setBlockState(at.down(), Blocks.ICE.getDefaultState(), 2);
-				}
-				if (worldObj.canSnowAt(at, false)) {
-					worldObj.setBlockState(at, Blocks.SNOW_LAYER.getDefaultState(), 2);
+
+		if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.worldObj, this.rand, x, z, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE))  {
+			for (int k2 = 0; k2 < 16; ++k2) {
+				for (int j3 = 0; j3 < 16; ++j3) {
+					BlockPos blockpos1 = this.worldObj.getPrecipitationHeight(blockpos.add(k2, 0, j3));
+					BlockPos blockpos2 = blockpos1.down();
+
+					if (this.worldObj.canBlockFreezeWater(blockpos2)) {
+						this.worldObj.setBlockState(blockpos2, Blocks.ICE.getDefaultState(), 2);
+					}
+
+					if (this.worldObj.canSnowAt(blockpos1, true)) {
+						this.worldObj.setBlockState(blockpos1, Blocks.SNOW_LAYER.getDefaultState(), 2);
+					}
 				}
 			}
-
 		}
 
-		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Post(this, worldObj, rand, chunkX, chunkZ, false));
-
+		net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(false, this, this.worldObj, this.rand, x, z, flag);
 		BlockFalling.fallInstantly = false;
 		chunk.setTerrainPopulated(true);
 	}

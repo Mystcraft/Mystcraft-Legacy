@@ -1,8 +1,13 @@
 package com.xcompwiz.mystcraft.block;
 
+import java.util.List;
 import java.util.Random;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.portal.PortalUtils;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
 
@@ -10,6 +15,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -23,6 +29,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -33,6 +42,9 @@ public class BlockLinkPortal extends BlockBreakable {
     public static final PropertyEnum<EnumFacing> SOURCE_DIRECTION = PropertyEnum.create("source", EnumFacing.class);
 	public static final PropertyBool IS_PART_OF_PORTAL = PropertyBool.create("active");
 
+	public static final PropertyEnum<EnumFacing.Axis> RENDER_ROTATION = PropertyEnum.create("renderface", EnumFacing.Axis.class); //If, render specific facing
+	public static final PropertyBool HAS_ROTATION = PropertyBool.create("hasface"); //If not, render full cube
+
 	public BlockLinkPortal() {
 		super(Material.PORTAL, false);
 		setTickRandomly(true);
@@ -40,7 +52,9 @@ public class BlockLinkPortal extends BlockBreakable {
 		setSoundType(SoundType.GLASS);
 		setLightLevel(0.75F);
 		setUnlocalizedName("myst.linkportal");
-		setDefaultState(this.blockState.getBaseState().withProperty(IS_PART_OF_PORTAL, false).withProperty(SOURCE_DIRECTION, EnumFacing.DOWN));
+		setDefaultState(this.blockState.getBaseState()
+                .withProperty(HAS_ROTATION, false).withProperty(RENDER_ROTATION, EnumFacing.Axis.X) //Doesn't matter normally, but is required.
+                .withProperty(IS_PART_OF_PORTAL, false).withProperty(SOURCE_DIRECTION, EnumFacing.DOWN));
 	}
 
     @Override
@@ -61,10 +75,67 @@ public class BlockLinkPortal extends BlockBreakable {
 
     @Override
     protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, SOURCE_DIRECTION, IS_PART_OF_PORTAL);
+		return new BlockStateContainer(this,
+                SOURCE_DIRECTION, IS_PART_OF_PORTAL, HAS_ROTATION, RENDER_ROTATION);
     }
 
-    @Nullable
+	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        List<EnumFacing.Axis> validAxis = Lists.newArrayList();
+
+        boolean has = true;
+        EnumFacing offset = EnumFacing.NORTH;
+        EnumFacing.Axis axis = EnumFacing.Axis.X;
+        for (int i = 0; i < 4; i++) {
+            offset = offset.rotateAround(axis);
+            if(!isPortalBlock(worldIn.getBlockState(pos.offset(offset)))) {
+                has = false;
+                break;
+            }
+        }
+        if(has) {
+            validAxis.add(axis);
+        }
+
+        has = true;
+        offset = EnumFacing.NORTH;
+        axis = EnumFacing.Axis.Y;
+        for (int i = 0; i < 4; i++) {
+            offset = offset.rotateAround(axis);
+            if(!isPortalBlock(worldIn.getBlockState(pos.offset(offset)))) {
+                has = false;
+                break;
+            }
+        }
+        if(has) {
+            validAxis.add(axis);
+        }
+
+        has = true;
+        offset = EnumFacing.UP;
+        axis = EnumFacing.Axis.Z;
+        for (int i = 0; i < 4; i++) {
+            offset = offset.rotateAround(axis);
+            if(!isPortalBlock(worldIn.getBlockState(pos.offset(offset)))) {
+                has = false;
+                break;
+            }
+        }
+        if(has) {
+            validAxis.add(axis);
+        }
+        state = state.withProperty(HAS_ROTATION, validAxis.size() == 1);
+        if(validAxis.size() == 1) {
+            state = state.withProperty(RENDER_ROTATION, validAxis.get(0));
+        }
+		return state;
+	}
+
+	private boolean isPortalBlock(IBlockState state) {
+	    return state.getBlock().equals(ModBlocks.portal) || state.getBlock().equals(ModBlocks.crystal);
+    }
+
+	@Nullable
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
         return NULL_AABB;
@@ -104,7 +175,25 @@ public class BlockLinkPortal extends BlockBreakable {
 		return false;
 	}
 
-	//Hellfire> referenced now from ModBlocks -> custom IBlockColor implementation
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	    if(!blockState.getValue(HAS_ROTATION)) {
+	        IBlockState offset = blockAccess.getBlockState(pos.offset(side));
+	        offset = offset.getActualState(blockAccess, pos.offset(side));
+	        if(isPortalBlock(offset) && (offset.getBlock().equals(ModBlocks.crystal) || !offset.getValue(HAS_ROTATION))) {
+	            return false;
+            }
+            return true;
+        }
+        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+    }
+
+    //Hellfire> referenced now from ModBlocks -> custom IBlockColor implementation
 	@SideOnly(Side.CLIENT)
 	public static int colorMultiplier(IBlockAccess blockAccess, BlockPos pos) {
 		TileEntity entity = PortalUtils.getTileEntity(blockAccess, pos);
@@ -179,4 +268,5 @@ public class BlockLinkPortal extends BlockBreakable {
 	//			par1World.markBlockForRenderUpdate(par2, par3, par4);
 	//		}
 	//	}
+
 }

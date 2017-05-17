@@ -37,6 +37,7 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 
 	@Override
 	@Nonnull
+	@SideOnly(Side.CLIENT)
 	public String getItemStackDisplayName(@Nonnull ItemStack itemstack) {
 		if (itemstack.getTagCompound() != null) {
 			if (Page.isLinkPanel(itemstack)) return I18n.format(this.getUnlocalizedName(itemstack) + ".panel.name");
@@ -44,7 +45,7 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 			String symbolId = Page.getSymbol(itemstack);
 			IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolId);
 			if (symbol == null) { return I18n.format(this.getUnlocalizedName(itemstack) + ".symbol.name") + " (Unknown: " + symbolId + ")"; }
-			return I18n.format(this.getUnlocalizedName(itemstack) + ".symbol.name") + " (" + symbol.displayName() + ")";
+			return I18n.format(this.getUnlocalizedName(itemstack) + ".symbol.name") + " (" + I18n.format(symbol.displayName()) + ")";
 		}
 		return I18n.format(this.getUnlocalizedName(itemstack) + ".blank.name");
 	}

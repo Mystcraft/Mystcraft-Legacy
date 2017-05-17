@@ -20,21 +20,28 @@ import com.xcompwiz.mystcraft.item.ItemDecayBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.MaterialLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+import java.awt.*;
 
 public class ModBlocks {
 
@@ -125,6 +132,21 @@ public class ModBlocks {
 
 	@SideOnly(Side.CLIENT)
 	public static void registerModels() {
+        BlockColors colors = Minecraft.getMinecraft().getBlockColors();
+        colors.registerBlockColorHandler((state, world, pos, tint) -> {
+            if(world instanceof World) {
+                return ModFluids.black_ink.getColor((World) world, pos);
+            } else {
+                return ModFluids.black_ink.getColor();
+            }
+        }, black_ink);
+        colors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+            if(worldIn == null || pos == null) {
+                return 0x3333FF;
+            }
+            return BlockLinkPortal.colorMultiplier(worldIn, pos);
+        }, portal);
+
 		ItemModelMesher imm = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		imm.register(Item.getItemFromBlock(inkmixer), 0, mrlItemBlockModel("blockinkmixer"));
 		imm.register(Item.getItemFromBlock(bookbinder), 0, mrlItemBlockModel("blockbookbinder"));
@@ -133,7 +155,7 @@ public class ModBlocks {
 		imm.register(Item.getItemFromBlock(lectern), 0, mrlItemBlockModel("blocklectern"));
 		imm.register(Item.getItemFromBlock(linkmodifier), 0, mrlItemBlockModel("blocklinkmodifier"));
 		imm.register(Item.getItemFromBlock(crystal), 0, mrlItemBlockModel("blockcrystal"));
-		imm.register(Item.getItemFromBlock(portal), 0, mrlItemBlockModel("portal"));
+		imm.register(Item.getItemFromBlock(portal), 0, mrlItemBlockModel("linkportal"));
 
         ModelBakery.registerItemVariants(Item.getItemFromBlock(decay),
                 new ResourceLocation(MystObjects.MystcraftModId, "decay_black"),
@@ -147,16 +169,6 @@ public class ModBlocks {
             DecayHandler.DecayType dt = DecayHandler.DecayType.values()[MathHelper.clamp(stack.getItemDamage(), 0, DecayHandler.DecayType.values().length - 1)];
             return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "decay_" + dt.getName()), "inventory");
         });
-
-		BlockColors colors = Minecraft.getMinecraft().getBlockColors();
-		colors.registerBlockColorHandler((state, world, pos, tint) -> {
-			if(world instanceof World) {
-				return ModFluids.black_ink.getColor((World) world, pos);
-			} else {
-				return ModFluids.black_ink.getColor();
-			}
-		}, black_ink);
-		colors.registerBlockColorHandler(((state, worldIn, pos, tint) -> BlockLinkPortal.colorMultiplier(worldIn, pos)), portal);
 	}
 
 	@SideOnly(Side.CLIENT)

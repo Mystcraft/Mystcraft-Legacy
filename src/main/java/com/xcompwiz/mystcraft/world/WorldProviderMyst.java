@@ -330,7 +330,9 @@ public class WorldProviderMyst extends WorldProvider {
 		if (world.isRemote || !(world instanceof WorldServer)) return;
 		WorldServer world = (WorldServer) this.world;
 		if (this.world.playerEntities.isEmpty()) {
-			if (emptyTicks == 10) world.getChunkProvider().unloadAllChunks();
+			if (emptyTicks == 10) {
+			    world.getChunkProvider().unloadAllChunks();
+            }
 			++emptyTicks;
 		} else {
 			emptyTicks = 0;
@@ -339,13 +341,13 @@ public class WorldProviderMyst extends WorldProvider {
 			this.setWorldTime(this.getWorldTime() + timeToSunrise());
 		}
 		this.setWorldTime(this.getWorldTime() + 1L);
-		if (this.agedata.needsResend() == true && world.getTotalWorldTime() % 200 == 0) {
+		if (this.agedata.needsResend() && world.getTotalWorldTime() % 200 == 0) {
 			this.agedata.resent();
 			for (Object player : this.world.playerEntities) {
 				NetworkUtils.sendAgeData((EntityPlayer) player, this.getDimension());
 			}
 		}
-	}
+    }
 
 	private long timeToSunrise() {
 		return getAgeController().getTimeToSunrise(this.getWorldTime());

@@ -90,17 +90,17 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		fluidDataContainer.setMax(tileentity.getInkwell().getCapacity());
 
 		for (int i = 0; i < tabslots; ++i) {
-			SlotFiltered slot = new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, i + tileentity.getMainInventorySize(), 37, 14 + i * 37 + yShift);
+			SlotFiltered slot = new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), tileentity, i + tileentity.getMainInventorySize(), 37, 14 + i * 37 + yShift);
 			slot.setSlotStackLimit(1);
 			addSlotToContainer(slot);
 		}
 
-		SlotFiltered slot = new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 0, 8 + xShift, 60 + yShift);
+		SlotFiltered slot = new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), tileentity, 0, 8 + xShift, 60 + yShift);
 		slot.setSlotStackLimit(1);
 		addSlotToContainer(slot);
-		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 1, 8 + xShift, 8 + yShift));
-		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 2, 152 + xShift, 8 + yShift));
-		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 3, 152 + xShift, 60 + yShift));
+		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), tileentity, 1, 8 + xShift, 8 + yShift));
+		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), tileentity, 2, 152 + xShift, 8 + yShift));
+		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), tileentity, 3, 152 + xShift, 60 + yShift));
 
 		for (int i = 0; i < 3; i++) {
 			for (int k = 0; k < 9; k++) {
@@ -179,13 +179,11 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			nbttagcompound.setTag(Messages.SetFluid, fluidnbt);
 			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 		}
-		if (!cached_permitted) {
-			cached_permitted = checkLinkPermitted();
-			if (!cached_permitted) {
-				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setBoolean(Messages.LinkPermitted, cached_permitted);
-				packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
-			}
+		boolean perm = checkLinkPermitted();
+		if (cached_permitted != perm) {
+			NBTTagCompound nbttagcompound = new NBTTagCompound();
+			nbttagcompound.setBoolean(Messages.LinkPermitted, cached_permitted);
+			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 		}
 		String temp_title = tileentity.getTargetString(player);
 		if (!this.cached_title.equals(temp_title)) {
@@ -196,9 +194,9 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 		}
 		if (packets.size() > 0) {
-		    for (IContainerListener listener : this.listeners) {
-		        if(listener instanceof EntityPlayerMP) {
-		            for (IMessage message : packets) {
+            for (IContainerListener listener : this.listeners) {
+                if(listener instanceof EntityPlayerMP) {
+                    for (IMessage message : packets) {
                         MystcraftPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) listener);
                     }
                 }

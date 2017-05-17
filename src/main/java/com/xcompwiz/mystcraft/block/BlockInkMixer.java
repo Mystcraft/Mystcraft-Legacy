@@ -74,7 +74,9 @@ public class BlockInkMixer extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (worldIn.isRemote) return true;
+        if (worldIn.isRemote) {
+            return true;
+        }
         playerIn.openGui(Mystcraft.instance, ModGUIs.INK_MIXER.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
 	    return true;
     }

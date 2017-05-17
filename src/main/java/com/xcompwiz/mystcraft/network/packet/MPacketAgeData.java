@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.network.packet;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -10,6 +11,8 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MPacketAgeData extends PacketBase<MPacketAgeData, MPacketAgeData> {
 
@@ -37,9 +40,16 @@ public class MPacketAgeData extends PacketBase<MPacketAgeData, MPacketAgeData> {
 
 	@Override
 	public MPacketAgeData onMessage(MPacketAgeData message, MessageContext ctx) {
-		AgeData agedata = AgeData.getMPAgeData(message.id);
-		agedata.readFromNBT(message.tag);
+		readData(message);
 		return null;
+	}
+
+	@SideOnly(Side.CLIENT)
+	private void readData(MPacketAgeData message) {
+		Minecraft.getMinecraft().addScheduledTask(() -> {
+			AgeData agedata = AgeData.getMPAgeData(message.id);
+			agedata.readFromNBT(message.tag);
+		});
 	}
 
 }

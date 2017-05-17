@@ -55,9 +55,9 @@ public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandl
 
 	public ContainerInkMixer(InventoryPlayer inventoryplayer, TileEntityInkMixer tileentity) {
 		this.tileentity = tileentity;
-		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 0, 8 + shift, 27));
-		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 1, 8 + shift, 48));
-		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), tileentity, 2, 152 + shift, 27));
+		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), tileentity, 0, 8 + shift, 27));
+		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), tileentity, 1, 8 + shift, 48));
+		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), tileentity, 2, 152 + shift, 27));
 
 		for (int i = 0; i < 3; i++) {
 			for (int k = 0; k < 9; k++) {

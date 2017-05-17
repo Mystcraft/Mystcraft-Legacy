@@ -35,8 +35,8 @@ public class ModFluids {
 		Mystcraft.validInks = new HashSet<>();
 
 		black_ink = new FluidColorable(Fluids.black_ink,
-				new ResourceLocation("mystcraft:blocks/fluid_flow.png"),
-				new ResourceLocation("mystcraft:blocks/fluid.png"), 0x191919);
+				new ResourceLocation("mystcraft:blocks/fluid_flow"),
+				new ResourceLocation("mystcraft:blocks/fluid"), 0x191919);
 		FluidRegistry.registerFluid(black_ink);
 		black_ink.setBlock(ModBlocks.black_ink); //Hellfire> that's why blocks need to be initialized first.
 		Mystcraft.validInks.add(black_ink.getName());

@@ -26,16 +26,30 @@ public class SlotFiltered extends SlotItemHandler {
 
     @Override
     public boolean canTakeStack(EntityPlayer playerIn) {
-	    if(inventory instanceof IOInventory) {
-	        boolean allowed = ((IOInventory) inventory).allowAnySlots;
-	        ((IOInventory) inventory).allowAnySlots = true;
+	    if(getItemHandler() instanceof IOInventory) {
+	        boolean allowed = ((IOInventory) getItemHandler()).allowAnySlots;
+	        ((IOInventory) getItemHandler()).allowAnySlots = true;
 	        boolean take = super.canTakeStack(playerIn);
-	        ((IOInventory) inventory).allowAnySlots = allowed;
+	        ((IOInventory) getItemHandler()).allowAnySlots = allowed;
 	        return take;
         } else {
             return super.canTakeStack(playerIn);
         }
     }
+
+	@Nonnull
+	@Override
+	public ItemStack decrStackSize(int amount) {
+		if(getItemHandler() instanceof IOInventory) {
+			boolean allowed = ((IOInventory) getItemHandler()).allowAnySlots;
+			((IOInventory) getItemHandler()).allowAnySlots = true;
+			ItemStack take = super.decrStackSize(amount);
+			((IOInventory) getItemHandler()).allowAnySlots = allowed;
+			return take;
+		} else {
+			return super.decrStackSize(amount);
+		}
+	}
 
 	@Override
 	public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
