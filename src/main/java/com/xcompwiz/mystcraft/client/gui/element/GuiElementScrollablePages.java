@@ -177,7 +177,7 @@ public class GuiElementScrollablePages extends GuiElement {
 					Page.getTooltip(page, hovertext);
 					if (Page.getSymbol(page) != null) {
 						IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
-						if (symbol != null) hovertext.add(symbol.displayName());
+						if (symbol != null) hovertext.add(symbol.getLocalizedName());
 					}
 				}
 				x += pagexSize + 2;

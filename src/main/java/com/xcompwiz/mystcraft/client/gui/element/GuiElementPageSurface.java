@@ -172,7 +172,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 				if (Page.getSymbol(page) != null) {
 					IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
 					if (symbol != null) {
-						displayname = symbol.displayName();
+						displayname = symbol.getLocalizedName();
 					}
 					if (displayname == null) {
 						displayname = Page.getSymbol(page);
@@ -198,7 +198,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 						hovertext.add(displayname);
 					} else if (Page.getSymbol(page) != null) {
 						IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
-						if (symbol != null) hovertext.add(symbol.displayName());
+						if (symbol != null) hovertext.add(symbol.getLocalizedName());
 					}
 				}
 			}

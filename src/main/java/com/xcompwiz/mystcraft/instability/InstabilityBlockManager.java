@@ -8,7 +8,6 @@ import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 
 public class InstabilityBlockManager {
 
@@ -25,13 +24,13 @@ public class InstabilityBlockManager {
 	}
 
 	public static void setInstabilityFactors(IBlockState blockstate, float factor1, float factor2) {
-		setInstabilityFactors(getOrCreateUnlocalizedKey(blockstate), factor1, factor2);
+		setInstabilityFactors(getOrCreateStateKey(blockstate), factor1, factor2);
 	}
 
-	public static void setInstabilityFactors(String unlocalizedkey, float factor1, float factor2) {
-		watchedblocks.add(unlocalizedkey);
-		factor1s.put(unlocalizedkey, factor1);
-		factor2s.put(unlocalizedkey, factor2);
+	public static void setInstabilityFactors(String statekey, float factor1, float factor2) {
+		watchedblocks.add(statekey);
+		factor1s.put(statekey, factor1);
+		factor2s.put(statekey, factor2);
 	}
 
 	public static <T extends Number> void setBaselineStability(Map<String, T> newfreevals) {
@@ -41,7 +40,7 @@ public class InstabilityBlockManager {
 	private static final HashMap<IBlockState, String> keys = new HashMap<>();
 
 	//This name is not used for display/translation. a registry name is the better choice here.
-	private static String getOrCreateUnlocalizedKey(IBlockState blockstate) {
+	private static String getOrCreateStateKey(IBlockState blockstate) {
 		String key = keys.get(blockstate);
 		if (key == null) {
 		    key = blockstate.getBlock().getRegistryName().toString() + "_" + blockstate.getBlock().getMetaFromState(blockstate);
@@ -50,7 +49,7 @@ public class InstabilityBlockManager {
 		return key;
 	}
 
-	public static String getUnlocalizedKey(IBlockState block) {
+	public static String getStateKey(IBlockState block) {
 		return keys.get(block);
 	}
 

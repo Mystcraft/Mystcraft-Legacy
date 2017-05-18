@@ -28,7 +28,7 @@ public class SymbolPhase extends SymbolBase {
 	}
 
 	@Override
-	public String displayName() {
+	public String generateLocalizedName() {
 		//XXX: Localization
 		return display + " Phase";
 	}

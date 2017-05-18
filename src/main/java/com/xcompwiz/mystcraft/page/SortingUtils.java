@@ -65,7 +65,7 @@ public final class SortingUtils {
 			if (symbol1 == symbol2) return 0;
 			if (symbol1 == null) return 1;
 			if (symbol2 == null) return -1;
-			return symbol1.displayName().compareTo(symbol2.displayName());
+			return symbol1.getLocalizedName().compareTo(symbol2.getLocalizedName());
 		}
 	}
 }

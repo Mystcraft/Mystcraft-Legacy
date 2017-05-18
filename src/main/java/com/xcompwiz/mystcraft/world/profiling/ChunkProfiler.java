@@ -220,7 +220,7 @@ public class ChunkProfiler extends WorldSavedData {
 
 					int accessibility = (blockstate.getBlock() != Blocks.AIR ? 2 : 0);
 					if (maps != null) {
-						ChunkProfileData map = maps.get(InstabilityBlockManager.getUnlocalizedKey(blockstate));
+						ChunkProfileData map = maps.get(InstabilityBlockManager.getStateKey(blockstate));
 						if (map != null) {
 							++map.data[coords];
 							accessibility = 1;

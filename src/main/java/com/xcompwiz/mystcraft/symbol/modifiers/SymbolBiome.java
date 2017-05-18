@@ -15,7 +15,7 @@ public class SymbolBiome extends SymbolBase {
 	public static ArrayList<Biome>	selectables	= new ArrayList<Biome>();
 
 	private Biome					biome;
-	private String					displayName;
+	private String					unlocalizedBiomeName;
 
 	public static String getBiomeSymbolId(Biome biome) {
 		return "Biome" + Biome.getIdForBiome(biome);
@@ -24,7 +24,7 @@ public class SymbolBiome extends SymbolBase {
 	public SymbolBiome(Biome biome) {
 		super(getBiomeSymbolId(biome));
 		this.biome = biome;
-		this.displayName = formatted(biome);
+		this.unlocalizedBiomeName = formatted(biome);
 		this.setWords(new String[] { WordData.Nature, WordData.Nurture, WordData.Encourage, biome.getBiomeName() + Biome.getIdForBiome(biome) });
 	}
 
@@ -34,7 +34,6 @@ public class SymbolBiome extends SymbolBase {
 		String replacement = "$1 ";
 		String name = biome.getBiomeName().replaceAll(regex, replacement).replaceAll("([A-Z][a-z]+)  ", replacement).trim();
 		if (name.endsWith("Biome")) name = name.substring(0, name.length() - "Biome".length()).trim();
-		name = I18n.format("myst.symbol.biome.wrapper", name);
 		return name;
 	}
 
@@ -45,8 +44,8 @@ public class SymbolBiome extends SymbolBase {
 	}
 
 	@Override
-	public String displayName() {
-		return displayName;
+	public String generateLocalizedName() {
+		return I18n.format("myst.symbol.biome.wrapper", unlocalizedBiomeName);
 	}
 
 	public static Biome getRandomBiome(Random rand) {

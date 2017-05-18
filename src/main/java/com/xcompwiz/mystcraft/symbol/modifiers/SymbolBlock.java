@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,14 +15,14 @@ import net.minecraft.util.math.BlockPos;
 
 public class SymbolBlock extends SymbolBase {
 
-	private BlockDescriptor	blockDescriptor;
-	private String			displayName;
+	private BlockDescriptor blockDescriptor;
+	private String unlocalizedBlockName;
 
 	public SymbolBlock(BlockDescriptor block, String word) {
 		super("ModMat_" + getBlockStateKey(block.blockstate));
 		this.blockDescriptor = block;
 		this.setWords(new String[] { WordData.Modifier, WordData.Constraint, word, identifier });
-		this.displayName = formatted(block);
+		this.unlocalizedBlockName = getUnlocalizedName(block.blockstate);
 	}
 
 	private static String getBlockStateKey(IBlockState blockstate) {
@@ -29,23 +30,24 @@ public class SymbolBlock extends SymbolBase {
 	}
 
 	//TODO: Make into a helper somewhere
-	private static String formatted(BlockDescriptor blockDescriptor) {
+	private static String getUnlocalizedName(IBlockState blockstate) {
 		ItemStack attempt = ItemStack.EMPTY;
 		try {
-			attempt = blockDescriptor.blockstate.getBlock().getPickBlock(blockDescriptor.blockstate, null, null, BlockPos.ORIGIN, null);
-		} catch (Exception ignored) {}
-		if(attempt.isEmpty()) {
-			Item i = Item.getItemFromBlock(blockDescriptor.blockstate.getBlock());
+			attempt = blockstate.getBlock().getPickBlock(blockstate, null, null, BlockPos.ORIGIN, null);
+		} catch (Exception ignored) {
+		}
+		if (attempt.isEmpty()) {
+			Item i = Item.getItemFromBlock(blockstate.getBlock());
 			if (i != Items.AIR) {
-				int meta = blockDescriptor.blockstate.getBlock().getMetaFromState(blockDescriptor.blockstate);
+				int meta = blockstate.getBlock().getMetaFromState(blockstate);
 				attempt = new ItemStack(i, 1, meta);
 			}
 		}
 		String name;
-		if(attempt.isEmpty()) {
-			name = blockDescriptor.blockstate.getBlock().getUnlocalizedName() + ".name";
+		if (attempt.isEmpty()) {
+			name = blockstate.getBlock().getUnlocalizedName();
 		} else {
-			name = attempt.getUnlocalizedName() + ".name";
+			name = attempt.getUnlocalizedName();
 		}
 		return name;
 	}
@@ -56,7 +58,11 @@ public class SymbolBlock extends SymbolBase {
 	}
 
 	@Override
-	public String displayName() {
-		return displayName;
+	public String generateLocalizedName() {
+		String blockName = I18n.format(unlocalizedBlockName + ".name");
+        if (blockName.endsWith(" Block")) {
+            blockName = blockName.substring(0, blockName.length() - " Block".length()).trim();
+        }
+		return I18n.format("myst.symbol.block.wrapper", blockName);
 	}
 }

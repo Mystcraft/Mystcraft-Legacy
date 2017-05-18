@@ -3,6 +3,9 @@ package com.xcompwiz.mystcraft.api.symbol;
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 /**
  * Implement and register this through the ISymbolAPI to add your own symbols to Mystcraft
  */
@@ -36,7 +39,8 @@ public interface IAgeSymbol {
 	 * Returns the user localized name
 	 * @return Name the user sees for the symbol
 	 */
-	public abstract String displayName();
+	@SideOnly(Side.CLIENT)
+	public abstract String getLocalizedName();
 
 	/**
 	 * Returns a list of words that are used to render the symbol. Should return 4 words to build a Narayan "poem". See {@link WordData}.

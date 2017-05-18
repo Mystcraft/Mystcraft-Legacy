@@ -82,7 +82,7 @@ public class GuiElementShopItem extends GuiElement implements IGuiOnClickHandler
 				String symbolId = Page.getSymbol(itemstack);
 				IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolId);
 				if (symbol == null) return "Unknown: " + symbolId;
-				return symbol.displayName();
+				return symbol.getLocalizedName();
 			}
 			return itemstack.getDisplayName();
 		}

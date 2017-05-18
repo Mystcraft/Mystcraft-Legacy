@@ -92,7 +92,7 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 						String displayname = null;
 						if (Page.getSymbol(page) != null) {
 							IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
-							if (symbol != null) displayname = symbol.displayName();
+							if (symbol != null) displayname = symbol.getLocalizedName();
 							if (displayname == null) displayname = Page.getSymbol(page);
 						}
 						if (searchtext != null && searchtext.length() > 0) {
@@ -121,7 +121,7 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 				for (IAgeSymbol symbol : symbols) {
 					String symbolname = symbol.identifier();
 					//XXX: Filters
-					String displayname = symbol.displayName();
+					String displayname = symbol.getLocalizedName();
 					if (searchtext != null && searchtext.length() > 0) {
 						if (displayname == null || !displayname.toLowerCase().contains(searchtext.toLowerCase())) {
 							continue;

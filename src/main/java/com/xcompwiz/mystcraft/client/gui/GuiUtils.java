@@ -140,7 +140,7 @@ public final class GuiUtils {
 	//XXX: This doesn't really belong here
 	public static String getHoverText(IAgeSymbol symbol) {
 		if (symbol != null) {
-			return symbol.displayName();
+			return symbol.getLocalizedName();
 		}
 		return "?";
 	}

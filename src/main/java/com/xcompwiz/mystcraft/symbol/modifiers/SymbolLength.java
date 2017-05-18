@@ -25,7 +25,7 @@ public class SymbolLength extends SymbolBase {
 	}
 
 	@Override
-	public String displayName() {
+	public String generateLocalizedName() {
 		//XXX (Localization)
 		return display;
 	}

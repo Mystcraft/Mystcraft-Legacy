@@ -8,12 +8,17 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class SymbolBase implements IAgeSymbol {
 
 	protected final String	identifier;
 	private ArrayList<Rule>	rules;
 	private String[]		words;
+
+	@SideOnly(Side.CLIENT)
+	private String localizedName;
 
 	public SymbolBase(String identifier) {
 		this.identifier = identifier;
@@ -56,8 +61,13 @@ public abstract class SymbolBase implements IAgeSymbol {
 	 * Returns the unlocalized name
 	 * @return The lookup key used to map the symbol to a user readable text string
 	 */
-	public String getUnlocalizedName() {
+	protected String getUnlocalizedName() {
 		return "myst.symbol." + this.identifier();
+	}
+
+	@SideOnly(Side.CLIENT)
+	protected String generateLocalizedName() {
+		return I18n.format(this.getUnlocalizedName() + ".name");
 	}
 
 	/**
@@ -65,8 +75,11 @@ public abstract class SymbolBase implements IAgeSymbol {
 	 * @return Name the user sees for the symbol
 	 */
 	@Override
-	public String displayName() {
-		return I18n.format(this.getUnlocalizedName() + ".name");
+	@SideOnly(Side.CLIENT)
+	public String getLocalizedName() {
+		if (localizedName == null)
+			localizedName = generateLocalizedName();
+		return localizedName;
 	}
 
 	@Override
