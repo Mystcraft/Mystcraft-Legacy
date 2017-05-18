@@ -68,7 +68,7 @@ public class SymbolBiomeControllerNative extends SymbolBase {
 		}
 
 		/**
-		 * Calls the WorldChunkManager's biomeCache.cleanupCache()
+		 * Calls the BiomeProvider's biomeCache.cleanupCache()
 		 */
 		@Override
 		public void cleanupCache() {

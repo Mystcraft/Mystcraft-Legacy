@@ -84,7 +84,7 @@ public interface AgeDirector {
 	public long getSeed();
 
 	/** returns the world's chunk manager */
-	public BiomeProvider getWorldChunkManager();
+	public BiomeProvider getBiomeProvider();
 
 	/**
 	 * returns the default sunset color

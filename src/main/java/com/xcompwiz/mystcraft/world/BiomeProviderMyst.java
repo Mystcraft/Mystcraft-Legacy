@@ -48,7 +48,7 @@ public class BiomeProviderMyst extends BiomeProvider {
 
 	/**
 	 * Gets biomes to use for the blocks and loads the other data like
-	 * temperature and humidity onto the WorldChunkManager.
+	 * temperature and humidity onto the BiomeProvider.
 	 */
 	public Biome[] getBiomes(@Nullable Biome[] oldBiomeList, int x, int z, int width, int depth) {
 		return this.getBiomes(oldBiomeList, x, z, width, depth, true);

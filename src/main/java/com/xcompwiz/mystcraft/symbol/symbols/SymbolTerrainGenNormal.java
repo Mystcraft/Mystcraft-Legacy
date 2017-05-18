@@ -67,7 +67,7 @@ public class SymbolTerrainGenNormal extends SymbolBase {
 
 		@Override
 		protected double[] initializeNoiseField(double noise_field[], int subchunkX, int subchunkY, int subchunkZ, int sizeX, int sizeY, int sizeZ) {
-			biomesForGeneration = controller.getWorldChunkManager().getBiomesForGeneration(biomesForGeneration, subchunkX - 2, subchunkZ - 2, sizeX + 5, sizeZ + 5);
+			biomesForGeneration = controller.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, subchunkX - 2, subchunkZ - 2, sizeX + 5, sizeZ + 5);
 			if (noise_field == null) {
 				noise_field = new double[sizeX * sizeY * sizeZ];
 			}

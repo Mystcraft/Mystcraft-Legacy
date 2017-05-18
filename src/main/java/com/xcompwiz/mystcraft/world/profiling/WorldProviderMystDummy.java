@@ -196,7 +196,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		agedata.markVisited();
 
 		controller = new AgeControllerDummy(world, agedata);
-		biomeProvider = controller.getWorldChunkManager();
+		biomeProvider = controller.getBiomeProvider();
 		setWorldInfo();
 	}
 

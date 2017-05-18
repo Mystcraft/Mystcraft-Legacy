@@ -120,7 +120,7 @@ public class SymbolProfiler implements AgeDirector {
 	}
 
 	@Override
-	public BiomeProvider getWorldChunkManager() {
+	public BiomeProvider getBiomeProvider() {
 		return null;
 	}
 

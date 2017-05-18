@@ -58,7 +58,7 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 
 		protected BiomeController(AgeDirector controller, int zoom, List<Biome> biomes) {
 			this.zoomscale = zoom;
-			biomeCache = new BiomeCache(controller.getWorldChunkManager());
+			biomeCache = new BiomeCache(controller.getBiomeProvider());
 			biomesToSpawnIn = new ArrayList<>();
 			biomesToSpawnIn.add(Biomes.FOREST);
 			biomesToSpawnIn.add(Biomes.PLAINS);
@@ -144,7 +144,7 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 		}
 
 		/**
-		 * Calls the WorldChunkManager's biomeCache.cleanupCache()
+		 * Calls the BiomeProvider's biomeCache.cleanupCache()
 		 */
 		@Override
 		public void cleanupCache() {

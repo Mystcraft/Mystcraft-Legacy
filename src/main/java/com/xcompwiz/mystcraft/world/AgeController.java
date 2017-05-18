@@ -68,7 +68,7 @@ public class AgeController implements AgeDirector {
 	private static final int								MINCHUNKS			= 400;
 
 	private World											world;
-	private BiomeProvider									chunkManager;
+	private BiomeProvider									biomeProvider;
 	private SkyRendererMyst									skyrenderer;
 	private CloudRendererMyst								cloudrenderer;
 	private WeatherRendererMyst								weatherrenderer;
@@ -123,7 +123,7 @@ public class AgeController implements AgeDirector {
 	public AgeController(World worldObj, AgeData age) {
 		world = worldObj;
 		agedata = age;
-		chunkManager = new BiomeProviderMyst(this);
+		biomeProvider = new BiomeProviderMyst(this);
 		skyrenderer = new SkyRendererMyst((WorldProviderMyst) world.provider, this);
 		cloudrenderer = new CloudRendererMyst((WorldProviderMyst) world.provider, this);
 		weatherrenderer = new WeatherRendererMyst((WorldProviderMyst) world.provider, this);
@@ -677,8 +677,8 @@ public class AgeController implements AgeDirector {
 	}
 
 	@Override
-	public BiomeProvider getWorldChunkManager() {
-		return this.chunkManager;
+	public BiomeProvider getBiomeProvider() {
+		return this.biomeProvider;
 	}
 
 	public SkyRendererMyst getSkyRenderer() {

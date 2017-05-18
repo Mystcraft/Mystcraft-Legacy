@@ -74,7 +74,7 @@ public class WorldProviderMyst extends WorldProvider {
 		skyrenderer = controller.getSkyRenderer();
 		weatherrenderer = controller.getWeatherRenderer();
 		cloudrenderer = controller.getCloudRenderer();
-		biomeProvider = controller.getWorldChunkManager();
+		biomeProvider = controller.getBiomeProvider();
 		setWorldInfo();
 	}
 
