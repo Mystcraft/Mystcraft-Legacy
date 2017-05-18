@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
+import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.data.InkEffects;
 import com.xcompwiz.mystcraft.page.Page;
 
@@ -24,6 +26,7 @@ public class MerchantRecipeProviderLinkpanel implements IMerchantRecipeProvider 
 	public List<MerchantRecipe> createNewMerchantRecipes(@Nonnull IMerchant villagerMerchant, @Nonnull Random random) {
 		List<MerchantRecipe> merchantrecipes = new ArrayList<>();
 		for (String effect : InkEffects.getProperties()) {
+			if(effect.equals(LinkPropertyAPI.FLAG_RELATIVE)) continue;
 			ItemStack page = Page.createLinkPage(effect);
 			MerchantRecipe merchantrecipe = new MerchantRecipeMyst(getPropertyTrade(effect), page);
 			merchantrecipe.increaseMaxTradeUses(-6);

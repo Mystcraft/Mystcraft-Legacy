@@ -66,7 +66,7 @@ public class PageBuilder {
             }
             ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(null);
             ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
-            tm.setTextureEntry(new PageSprite(unwrapped, null));
+            tm.setTextureEntry(new LinkingPageSprite(unwrapped));
         }
     }
 
@@ -81,6 +81,12 @@ public class PageBuilder {
                                 location -> Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(unwrapped.toString()));
                 event.getModelRegistry().putObject(mrl, model);
             }
+            ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(null);
+            ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
+            IBakedModel emptyModel = new ItemLayerModel(ImmutableList.of(unwrapped))
+                    .bake(HELD_ITEM_TRANSFORMS, DefaultVertexFormats.ITEM,
+                            location -> Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(unwrapped.toString()));
+            event.getModelRegistry().putObject(mrl, emptyModel);
         }
     }
 
@@ -128,6 +134,50 @@ public class PageBuilder {
             pageImage = null; //Free memory.
         }
         customSymbolSources.clear();
+    }
+
+    public static class LinkingPageSprite extends TextureAtlasSprite {
+
+        private LinkingPageSprite(ResourceLocation res) {
+            super(res.toString());
+            this.width = 128;
+            this.height = 128;
+        }
+
+        @Override
+        public boolean hasCustomLoader(IResourceManager manager, ResourceLocation location) {
+            return true;
+        }
+
+        @Override
+        public boolean load(IResourceManager manager, ResourceLocation location) {
+            if(pageImage == null) {
+                throw new IllegalStateException("Called texture loading outside of TextureManager's loading cycle!");
+            }
+            ColorModel cm = pageImage.getColorModel();
+            //160x160 here
+            BufferedImage copy =  new BufferedImage(cm, pageImage.copyData(null), cm.isAlphaPremultiplied(), null);
+
+            int width = 110;
+            int height = 45;
+            int startX = 25;
+            int startZ = 30;
+
+            for (int xx = startX; xx <= startX + width; xx++) {
+                for (int zz = startZ; zz <= startZ + height; zz++) {
+                    copy.setRGB(xx, zz, 0xFF000000); //Black
+                }
+            }
+
+            //128x128 here
+            BufferedImage down = scale(copy, 0.8, AffineTransformOp.TYPE_BILINEAR);
+            int[][] pixels = new int[Minecraft.getMinecraft().gameSettings.mipmapLevels + 1][];
+            pixels[0] = new int[down.getWidth() * down.getHeight()];
+            down.getRGB(0, 0, down.getWidth(), down.getHeight(), pixels[0], 0, down.getWidth());
+            clearFramesTextureData();
+            this.framesTextureData.add(pixels);
+            return false; //false = stitch onto atlas
+        }
     }
 
     public static class PageSprite extends TextureAtlasSprite {

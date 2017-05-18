@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.client;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleProviderLink;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleUtils;
@@ -140,6 +141,7 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 		linkproperties.addAll(InkEffects.getProperties());
 		Collections.sort(linkproperties);
 		for (String property : linkproperties) {
+			if(property.equals(LinkPropertyAPI.FLAG_RELATIVE)) continue;
 			ModLinkEffects.isPropertyAllowed(property);
 			pageTab.registerItemStack(Page.createLinkPage(property));
 		}

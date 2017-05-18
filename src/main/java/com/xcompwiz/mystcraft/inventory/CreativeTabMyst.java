@@ -6,6 +6,7 @@ import com.xcompwiz.mystcraft.data.ModPageCollections;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -39,7 +40,7 @@ public class CreativeTabMyst extends CreativeTabs {
     @Override
 	public void displayAllRelevantItems(NonNullList<ItemStack> list) {
 		for (Item item : Item.REGISTRY) {
-			if (item == null) {
+			if (item == null || item == Items.AIR) {
 				continue;
 			}
 			for (CreativeTabs tab : item.getCreativeTabs()) {

@@ -156,6 +156,7 @@ public class ModBlocks {
 		imm.register(Item.getItemFromBlock(linkmodifier), 0, mrlItemBlockModel("blocklinkmodifier"));
 		imm.register(Item.getItemFromBlock(crystal), 0, mrlItemBlockModel("blockcrystal"));
 		imm.register(Item.getItemFromBlock(portal), 0, mrlItemBlockModel("linkportal"));
+		imm.register(Item.getItemFromBlock(starfissure), 0, mrlItemBlockModel("blockstarfissure"));
 
         ModelBakery.registerItemVariants(Item.getItemFromBlock(decay),
                 new ResourceLocation(MystObjects.MystcraftModId, "decay_black"),

@@ -22,7 +22,7 @@ public class VillagerArchivist extends VillagerRegistry.VillagerProfession imple
 	public VillagerArchivist() {
 		//This constructor is deprecated cause its zombie-villager textures will default out to the minecraft one.
 		//Unless we wanna do a custom one, this is fine for now.
-		super(MystObjects.MystcraftModId + ":archivist", "mystcraft:textures/villager/archivist");
+		super(MystObjects.MystcraftModId + ":archivist", "mystcraft:textures/villager/archivist.png");
 
         //Also hard-registers the career onto the profession. thus we only call it once.
 		this.career = new ArchivistCareer(this, "archivist");
