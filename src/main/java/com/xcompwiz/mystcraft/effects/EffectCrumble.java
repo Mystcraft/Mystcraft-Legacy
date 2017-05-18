@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.effects;
 import java.util.HashMap;
 import java.util.Random;
 
+import com.google.common.collect.ImmutableList;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 
@@ -56,9 +57,8 @@ public class EffectCrumble implements IEnvironmentalEffect {
 		registerMapping(Blocks.LOG2, Blocks.PLANKS);
 		registerMapping(Blocks.PLANKS, Blocks.DIRT);
 
-		registerMapping(Blocks.WOOL, Blocks.WEB);
-		//registerMapping(Blocks.WOOL, Blocks.WOOL);
-		//registerMapping(Blocks.WOOL, 0, Blocks.WEB, 0);
+		registerMapping(Blocks.WOOL, Blocks.WOOL.getDefaultState());
+		registerMapping(Blocks.WOOL.getDefaultState(), Blocks.WEB.getDefaultState());
 
 		registerMapping(Blocks.SAPLING, Blocks.AIR);
 		registerMapping(Blocks.WEB, Blocks.AIR);
@@ -71,7 +71,15 @@ public class EffectCrumble implements IEnvironmentalEffect {
 	}
 
 	public static boolean registerMapping(Block block, Block block2) {
-		return registerMapping(block.getBlockState().getBaseState(), block2.getBlockState().getBaseState());
+		return registerMapping(block, block2.getDefaultState());
+	}
+	
+	public static boolean registerMapping(Block block, IBlockState block2) {
+		if (map == null) return false;
+		ImmutableList<IBlockState> blockstates = block.getBlockState().getValidStates();
+		for (IBlockState blockstate : blockstates)
+			registerMapping(blockstate, block2);
+		return true;
 	}
 	
 	public static boolean registerMapping(IBlockState block, IBlockState block2) {

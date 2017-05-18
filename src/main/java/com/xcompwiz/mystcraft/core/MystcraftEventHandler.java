@@ -36,7 +36,7 @@ public class MystcraftEventHandler {
 		if (event.getName().startsWith("ore") || event.getName().startsWith("gem") || event.getName().startsWith("dust")) {
 			if (event.getOre().getItem() instanceof ItemBlock) {
 				ItemBlock itemblock = ((ItemBlock) event.getOre().getItem());
-				EffectCrumble.registerMapping(itemblock.block, Blocks.STONE);
+				EffectCrumble.registerMapping(itemblock.block, Blocks.STONE.getDefaultState());
 			}
 		}
 	}
