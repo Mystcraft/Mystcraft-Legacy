@@ -112,7 +112,7 @@ public abstract class DecayHandler {
 
 	public void onBlockDestroyedByPlayer(World world, BlockPos pos) {}
 
-	public float getExplosionResistance(Entity entity, World worldObj, BlockPos pos, Explosion explosion) {
+	public float getExplosionResistance(World worldObj, BlockPos pos, Entity exploder, Explosion explosion) {
 		return 2.5F;
 	}
 

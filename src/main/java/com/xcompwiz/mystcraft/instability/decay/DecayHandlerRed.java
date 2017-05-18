@@ -28,7 +28,7 @@ public class DecayHandlerRed extends DecayHandlerSpreading {
 	}
 
 	@Override
-	public float getExplosionResistance(Entity entity, World worldObj, BlockPos pos, Explosion explosion) {
+	public float getExplosionResistance(World worldObj, BlockPos pos, Entity exploder, Explosion explosion) {
 		return 10.0F;
 	}
 

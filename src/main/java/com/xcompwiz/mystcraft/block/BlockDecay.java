@@ -79,7 +79,7 @@ public class BlockDecay extends Block {
 
 	@Override
 	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-		return getDecayHandler(world.getBlockState(pos).getValue(DECAY_META)).getExplosionResistance(exploder, world, pos, explosion);
+		return getDecayHandler(world.getBlockState(pos).getValue(DECAY_META)).getExplosionResistance(world, pos, exploder, explosion);
 	}
 
 	@Override
