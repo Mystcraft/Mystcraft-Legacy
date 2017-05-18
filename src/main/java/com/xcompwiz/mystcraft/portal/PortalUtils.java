@@ -59,6 +59,12 @@ public final class PortalUtils {
 		return blockstate;
 	}
 
+	private static IBlockState getDisabledState(IBlockState blockstate) {
+		if (blockstate.getBlock() == getFrameBlock()) return blockstate.withProperty(BlockCrystal.IS_PART_OF_PORTAL, false);
+		if (blockstate.getBlock() == getPortalBlock()) return blockstate.withProperty(BlockLinkPortal.IS_PART_OF_PORTAL, false);
+		return blockstate;
+	}
+
 	/**
 	 * Called by the link portal block to verify that it is still valid after a neighbor update
 	 * @param world The world object
@@ -144,6 +150,7 @@ public final class PortalUtils {
 		List<BlockPos> blocks = new LinkedList<BlockPos>();
 		blocks.add(pos);
 		//world.setBlockMetadataWithNotify(pos, 8, 2);
+		world.setBlockState(pos, getDisabledState(world.getBlockState(pos)), 2);
 		while (blocks.size() > 0) {
 			BlockPos coords = blocks.remove(0);
 			redirectPortal(world, tileentity, coords.east(), 5, blocks);
@@ -158,7 +165,7 @@ public final class PortalUtils {
 	private static void redirectPortal(World world, TileEntity tileentity, BlockPos pos, int meta, List<BlockPos> blocks) {
 		IBlockState blockstate = world.getBlockState(pos);
 		if (isValidLinkPortalBlock(blockstate) == 0) return;
-		if (getBlockFacing(blockstate).ordinal() + 1 == meta) {
+		if (isBlockActive(blockstate) && (getBlockFacing(blockstate).ordinal() + 1 == meta)) {
 			for (int m = 1; m < 7; ++m) {
 				if (m == meta) continue;
 				world.setBlockState(pos, getDirectedState(blockstate, m - 1), 2);
@@ -296,6 +303,7 @@ public final class PortalUtils {
 		IBlockState blockstate = blockaccess.getBlockState(pos);
 		while (blockstate.getBlock() != getReceptacleBlock()) {
 			if (isValidLinkPortalBlock(blockstate) == 0) return null;
+			if (isBlockActive(blockstate) == false) return null;
 			if (!visited.add(pos)) { return null; }
 			pos = pos.offset(getBlockFacing(blockstate));
 			blockstate = blockaccess.getBlockState(pos);
