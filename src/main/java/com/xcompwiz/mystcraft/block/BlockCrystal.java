@@ -38,7 +38,7 @@ public class BlockCrystal extends Block {
 		if(meta == 0) {
 			return getDefaultState();
 		} else {
-			int sh = meta >> 1;
+			int sh = meta - 1;
 			return getDefaultState().withProperty(IS_PART_OF_PORTAL, true).withProperty(SOURCE_DIRECTION, EnumFacing.values()[sh]);
 		}
 	}
@@ -46,7 +46,7 @@ public class BlockCrystal extends Block {
 	@Override
 	public int getMetaFromState(IBlockState state) {
 		int side = state.getValue(SOURCE_DIRECTION).ordinal();
-		return state.getValue(IS_PART_OF_PORTAL) ? side << 1 : 0;
+		return state.getValue(IS_PART_OF_PORTAL) ? side + 1 : 0;
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class BlockCrystal extends Block {
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		if(worldIn.isRemote) return;
-		if(state.getBlock().getMetaFromState(state) == 0) return;
+		if(state == getDefaultState()) return;
 		TileEntity tileEntity = PortalUtils.getTileEntity(worldIn, pos);
 		if(tileEntity == null || !(tileEntity instanceof TileEntityBookReceptacle) || ((TileEntityBookReceptacle) tileEntity).getBook() == null) {
 			worldIn.setBlockState(pos, getDefaultState(), 2);

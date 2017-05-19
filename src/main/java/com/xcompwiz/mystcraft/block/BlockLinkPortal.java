@@ -62,7 +62,7 @@ public class BlockLinkPortal extends BlockBreakable {
 		if(meta == 0) {
 			return getDefaultState();
 		} else {
-			int sh = meta >> 1;
+			int sh = meta - 1;
 			return getDefaultState().withProperty(IS_PART_OF_PORTAL, true).withProperty(SOURCE_DIRECTION, EnumFacing.values()[sh]);
 		}
     }
@@ -70,7 +70,7 @@ public class BlockLinkPortal extends BlockBreakable {
     @Override
     public int getMetaFromState(IBlockState state) {
 		int side = state.getValue(SOURCE_DIRECTION).ordinal();
-		return state.getValue(IS_PART_OF_PORTAL) ? side << 1 : 0;
+		return state.getValue(IS_PART_OF_PORTAL) ? side + 1 : 0;
     }
 
     @Override
@@ -201,7 +201,7 @@ public class BlockLinkPortal extends BlockBreakable {
 			TileEntityBookReceptacle book = (TileEntityBookReceptacle) entity;
 			return book.getPortalColor();
 		}
-		return 0x3333FF;
+		return 0xFFFFFF;
 	}
 
 	@Override
