@@ -260,6 +260,7 @@ public class Mystcraft {
 		InstabilityData.initialize();
 
         LootTableHandler.init();
+        MinecraftForge.EVENT_BUS.register(LootTableHandler.EVENT_INSTANCE);
 
 		// Init Archivist
 		if (archivistEnabled()) {

@@ -20,6 +20,8 @@ import java.util.Random;
 
 public class LootTableHandler {
 
+    public static final LootTableHandler EVENT_INSTANCE = new LootTableHandler();
+
     public static final ResourceLocation MYST_TREASURE = new ResourceLocation(MystObjects.MystcraftModId, "mystcraft_treasure");
 
     private static final ImmutableSet<ResourceLocation> pageTables = ImmutableSet.of(
@@ -36,7 +38,7 @@ public class LootTableHandler {
     public void lootLoad(LootTableLoadEvent event) {
         LootTable lt = event.getTable();
         if(event.getName().equals(MYST_TREASURE)) {
-            LootPool main = lt.getPool("main");
+            LootPool main = lt.getPool(MYST_TREASURE.toString());
             ArrayList<IAgeSymbol> symbols = SymbolManager.getAgeSymbols();
             for (IAgeSymbol symbol : symbols) {
                 int maxStack = SymbolManager.getSymbolTreasureMaxStack(symbol);

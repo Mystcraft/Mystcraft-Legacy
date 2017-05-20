@@ -105,12 +105,10 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
         this.fillWithBlocks(worldObj, boundingbox, 0, 4, 1, 8, 4, 5, Blocks.PLANKS.getDefaultState(), Blocks.PLANKS.getDefaultState(), false);
         this.fillWithBlocks(worldObj, boundingbox, 2, 4, 2, 6, 4, 4, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false); // Inner air
 
-        EnumFacing stairF = getStairRotation(EnumFacing.EAST);
-        EnumFacing stairB = getStairRotation(EnumFacing.SOUTH);
         for (int i = -1; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
-                setBlockState(worldObj, Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, stairF), j, 4 + i,        i, boundingbox);
-                setBlockState(worldObj, Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, stairB), j, 4 + i, 6 - i, boundingbox);
+                setBlockState(worldObj, Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), j, 4 + i,        i, boundingbox);
+                setBlockState(worldObj, Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH), j, 4 + i, 6 - i, boundingbox);
             }
         }
 
@@ -124,19 +122,19 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
         // Door
         generateDoor(worldObj, boundingbox, rand, 6, 1, 0, EnumFacing.WEST, Blocks.OAK_DOOR);
         if (this.getBlockStateFromPos(worldObj, 6, 0, -1, boundingbox).getBlock() == Blocks.AIR && this.getBlockStateFromPos(worldObj, 6, -1, -1, boundingbox).getBlock() != Blocks.AIR) {
-            this.setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, getStairRotation(EnumFacing.EAST)), 6, 0, -1, boundingbox);
+            this.setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 6, 0, -1, boundingbox);
         }
 
         // Internal
-        this.setBlockState(worldObj, Blocks.TORCH.getDefaultState(), 1, 3, 2, boundingbox);
-        this.setBlockState(worldObj, Blocks.TORCH.getDefaultState(), 6, 3, 1, boundingbox);
-        this.setBlockState(worldObj, Blocks.TORCH.getDefaultState(), 5, 3, 5, boundingbox);
+        this.placeTorch(worldObj, EnumFacing.NORTH, 1, 3, 1, boundingbox);
+        this.placeTorch(worldObj, EnumFacing.NORTH, 6, 4, 2, boundingbox);
+        this.placeTorch(worldObj, EnumFacing.SOUTH, 5, 3, 5, boundingbox);
 
         this.setBlockState(worldObj, Blocks.OAK_FENCE.getDefaultState(), 6, 1, 4, boundingbox);
         this.setBlockState(worldObj, Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), 6, 2, 4, boundingbox);
-        this.setBlockState(worldObj, Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST) , 6, 1, 5, boundingbox);
-        this.setBlockState(worldObj, Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST) , 7, 1, 5, boundingbox);
-        this.setBlockState(worldObj, Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 7, 1, 4, boundingbox);
+        this.setBlockState(worldObj, Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH) , 6, 1, 5, boundingbox);
+        this.setBlockState(worldObj, Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH) , 7, 1, 5, boundingbox);
+        this.setBlockState(worldObj, Blocks.OAK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 7, 1, 4, boundingbox);
 
         this.setBlockState(worldObj, Blocks.PLANKS.getDefaultState(), 1, 1, 1, boundingbox);
         this.setBlockState(worldObj, Blocks.PLANKS.getDefaultState(), 1, 1, 2, boundingbox);
@@ -155,7 +153,7 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
         this.setBlockState(worldObj, Blocks.BOOKSHELF.getDefaultState(), 3, 2, 5, boundingbox);
 
         if (Mystcraft.villageDeskGen) {
-            this.placeDeskAt(worldObj, 4, 1, 2, 4, 1, boundingbox);
+            this.placeDeskAt(worldObj, 4, 1, 1, 4, 2, boundingbox);
         }
 
         // Generates foundation and clears area above
@@ -237,12 +235,12 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
 
         BlockPos at = new BlockPos(ti, tj, tk);
         if (boundingbox.isVecInside(at)) {
-            EnumFacing horizontal = EnumFacing.fromAngle(360 - getRotation(ti, tk, ti2, tk2) + 270); //todo Hellfire> check rotation of lecterns in villages
+            EnumFacing horizontal = EnumFacing.fromAngle(360 - getRotation(ti, tk, ti2, tk2) + 90); //todo Hellfire> check rotation of lecterns in villages
             worldObj.setBlockState(at, ModBlocks.lectern.getDefaultState().withProperty(BlockLectern.ROTATION, horizontal));
             TileEntityLectern lectern = (TileEntityLectern) worldObj.getTileEntity(at);
 
             if (lectern != null) {
-                lectern.setYaw(360 - getRotation(ti, tk, ti2, tk2) + 270);
+                lectern.setYaw(360 - getRotation(ti, tk, ti2, tk2) + 90);
                 if (rand.nextFloat() < 0.6F) {
                     //This is gonna be stupid, but we have to roll in advance otherwise we can't render it until you "open" the lectern
                     //which is awkward aswell... so whatever.. generating..
