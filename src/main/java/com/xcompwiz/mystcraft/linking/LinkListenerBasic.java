@@ -202,7 +202,7 @@ public class LinkListenerBasic {
 					j = itemstack.getCount();
 				}
 
-				itemstack.shrink(1);
+				itemstack.shrink(j);
 				EntityItem entityitem = new EntityItem(worldObj, par2 + f, par3 + f1, par4 + f2, new ItemStack(itemstack.getItem(), j, itemstack.getItemDamage()));
 
 				if (itemstack.hasTagCompound()) {
