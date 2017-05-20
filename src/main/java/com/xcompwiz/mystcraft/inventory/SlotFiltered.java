@@ -24,16 +24,28 @@ public class SlotFiltered extends SlotItemHandler {
 		this.slotIndex = slot;
 	}
 
+    @Nonnull
+    @Override
+    public ItemStack getStack() {
+        return this.getItemHandler().getStackInSlot(slotIndex);
+    }
+
+    @Override
+    public void putStack(@Nonnull ItemStack stack) {
+        ((IItemHandlerModifiable) this.getItemHandler()).setStackInSlot(slotIndex, stack);
+        this.onSlotChanged();
+    }
+
     @Override
     public boolean canTakeStack(EntityPlayer playerIn) {
 	    if(getItemHandler() instanceof IOInventory) {
 	        boolean allowed = ((IOInventory) getItemHandler()).allowAnySlots;
 	        ((IOInventory) getItemHandler()).allowAnySlots = true;
-	        boolean take = super.canTakeStack(playerIn);
+	        boolean take = !this.getItemHandler().extractItem(slotIndex, 1, true).isEmpty();
 	        ((IOInventory) getItemHandler()).allowAnySlots = allowed;
 	        return take;
         } else {
-            return super.canTakeStack(playerIn);
+            return !this.getItemHandler().extractItem(slotIndex, 1, true).isEmpty();
         }
     }
 
@@ -43,18 +55,51 @@ public class SlotFiltered extends SlotItemHandler {
 		if(getItemHandler() instanceof IOInventory) {
 			boolean allowed = ((IOInventory) getItemHandler()).allowAnySlots;
 			((IOInventory) getItemHandler()).allowAnySlots = true;
-			ItemStack take = super.decrStackSize(amount);
+			ItemStack take = this.getItemHandler().extractItem(slotIndex, amount, false);
 			((IOInventory) getItemHandler()).allowAnySlots = allowed;
 			return take;
 		} else {
-			return super.decrStackSize(amount);
+			return this.getItemHandler().extractItem(slotIndex, amount, false);
 		}
 	}
 
 	@Override
-	public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
-		return super.onTake(thePlayer, stack);
+	public int getItemStackLimit(@Nonnull ItemStack stack) {
+		if(getItemHandler() instanceof IOInventory) {
+			boolean allowed = ((IOInventory) getItemHandler()).allowAnySlots;
+			((IOInventory) getItemHandler()).allowAnySlots = true;
+			int stackLimit = ovrGetItemStackLimit(stack);
+			((IOInventory) getItemHandler()).allowAnySlots = allowed;
+			return stackLimit;
+		} else {
+			return ovrGetItemStackLimit(stack);
+		}
 	}
+
+	private int ovrGetItemStackLimit(@Nonnull ItemStack stack) {
+        ItemStack maxAdd = stack.copy();
+        int maxInput = stack.getMaxStackSize();
+        maxAdd.setCount(maxInput);
+        IItemHandler handler = this.getItemHandler();
+        ItemStack currentStack = handler.getStackInSlot(slotIndex);
+        if (handler instanceof IItemHandlerModifiable) {
+            IItemHandlerModifiable handlerModifiable = (IItemHandlerModifiable) handler;
+
+            handlerModifiable.setStackInSlot(slotIndex, ItemStack.EMPTY);
+
+            ItemStack remainder = handlerModifiable.insertItem(slotIndex, maxAdd, true);
+
+            handlerModifiable.setStackInSlot(slotIndex, currentStack);
+
+            return maxInput - remainder.getCount();
+        } else {
+            ItemStack remainder = handler.insertItem(slotIndex, maxAdd, true);
+
+            int current = currentStack.getCount();
+            int added = maxInput - remainder.getCount();
+            return current + added;
+        }
+    }
 
 	@Override
 	public boolean isItemValid(@Nonnull ItemStack itemstack) {
@@ -64,7 +109,7 @@ public class SlotFiltered extends SlotItemHandler {
 	@Override
 	public int getSlotStackLimit() {
 		if (this.maxstack != null) return this.maxstack;
-		return super.getSlotStackLimit();
+		return getItemHandler().getSlotLimit(this.slotIndex);
 	}
 
 	public void setSlotStackLimit(int max) {

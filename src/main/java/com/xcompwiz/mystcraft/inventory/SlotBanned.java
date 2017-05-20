@@ -22,7 +22,7 @@ public class SlotBanned extends Slot {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean canBeHovered() {
-		return false;
+		return true;
 	}
 
 }

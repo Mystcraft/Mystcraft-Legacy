@@ -12,6 +12,8 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ChatAllowedCharacters;
 
+import javax.annotation.Nullable;
+
 public class GuiElementTextField extends GuiElement {
 
 	public interface IGuiOnTextChange {
@@ -22,6 +24,7 @@ public class GuiElementTextField extends GuiElement {
 
 	public interface IGuiTextProvider {
 
+		@Nullable
 		String getText(GuiElementTextField caller);
 
 	}

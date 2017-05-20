@@ -81,32 +81,6 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 	}
 
 	@Override
-	public void detectAndSendChanges() {
-		super.detectAndSendChanges();
-		List<IMessage> packets = new ArrayList<>();
-		String temp = tileentity.getBookTitle();
-		if (temp == null) {
-			temp = "";
-		}
-		if (!this.cached_title.equals(temp)) {
-			cached_title = temp;
-
-			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setString(Messages.SetTitle, cached_title);
-			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
-		}
-		if (packets.size() > 0) {
-			for (IContainerListener listener : this.listeners) {
-				if(listener instanceof EntityPlayerMP) {
-					for (IMessage message : packets) {
-						MystcraftPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) listener);
-					}
-				}
-			}
-		}
-	}
-
-	@Override
 	public boolean canInteractWith(@Nonnull EntityPlayer entityplayer) {
 		return true;
 	}
@@ -143,7 +117,11 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 	}
 
 	public String getBookTitle() {
-		return cached_title;
+		String title = tileentity.getBookTitle();
+		if(title == null) {
+			title = "";
+		}
+		return title;
 	}
 
 	public boolean getLinkFlag(String id) {

@@ -138,7 +138,9 @@ public abstract class Page {
 		}
 		NBTTagCompound data = getData(page);
 		String symbol = data.getString("symbol");
-		if (symbol.isEmpty()) symbol = null;
+		if (symbol.isEmpty()) {
+			symbol = null;
+		}
 		return symbol;
 	}
 

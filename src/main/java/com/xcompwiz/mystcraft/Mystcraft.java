@@ -248,9 +248,9 @@ public class Mystcraft {
 		GameRegistry.registerTileEntity(TileEntityInkMixer.class, MystObjects.MystcraftModId + ":inkmixer");
 
 		// Init Entities
-        EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.book"), EntityLinkbook.class, "myst.book", 0, instance, 64, 10, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.block"), EntityFallingBlock.class, "myst.block", 1, instance, 16, 60, false);
-        EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.meteor"), EntityMeteor.class, "myst.meteor", 2, instance, 192, 30, false);
+        EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.book"), EntityLinkbook.class, "myst.book", 0, instance, 64, 1, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.block"), EntityFallingBlock.class, "myst.block", 1, instance, 16, 10, false);
+        EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.meteor"), EntityMeteor.class, "myst.meteor", 2, instance, 192, 2, false);
 
 		// Init Symbol System
 		ModSymbols.initialize();

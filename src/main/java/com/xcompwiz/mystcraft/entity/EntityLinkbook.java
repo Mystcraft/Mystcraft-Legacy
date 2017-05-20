@@ -219,11 +219,6 @@ public class EntityLinkbook extends EntityLiving {
 	}
 
 	@Override
-	public boolean isAIDisabled() {
-		return true;
-	}
-
-	@Override
 	public boolean canAttackClass(Class cl) {
 		return false;
 	}

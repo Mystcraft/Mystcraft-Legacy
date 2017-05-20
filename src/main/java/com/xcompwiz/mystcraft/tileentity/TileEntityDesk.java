@@ -36,6 +36,9 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -368,6 +371,12 @@ public class TileEntityDesk extends TileEntityBase implements InventoryFilter, I
 		if (!(book.getItem() instanceof ItemLinking)) return;
 		((ItemLinking) book.getItem()).activate(book, world, player);
 	}
+
+	public IOInventory getContainerItemHandler() {
+        IOInventory inv = IOInventory.mergeBuild(this, inventoryStacks, inventoryTabItems);
+        inv.allowAnySlots = true;
+        return inv;
+    }
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {

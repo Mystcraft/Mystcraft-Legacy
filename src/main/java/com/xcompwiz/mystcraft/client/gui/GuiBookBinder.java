@@ -102,6 +102,8 @@ public class GuiBookBinder extends GuiContainerElements {
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setInteger(ContainerBookBinder.Messages.TakeFromSlider, clickedpage);
 			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
+
+			container.inventoryplayer.setItemStack(container.tileentity.removePage(clickedpage));
 		}
 	}
 

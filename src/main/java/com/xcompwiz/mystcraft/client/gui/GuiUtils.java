@@ -34,11 +34,13 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+
 public final class GuiUtils {
 
 	//XXX: Probably need to move the symbol drawing code elsewhere
 	@SideOnly(Side.CLIENT)
-	public static void drawPage(TextureManager renderEngine, float zLevel, ItemStack page, float xSize, float ySize, float x, float y) {
+	public static void drawPage(TextureManager renderEngine, float zLevel, @Nonnull ItemStack page, float xSize, float ySize, float x, float y) {
 		drawPageBackground(renderEngine, zLevel, page, xSize, ySize, x, y);
 		if (Page.getSymbol(page) != null) {
 			IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));

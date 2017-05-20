@@ -1,9 +1,13 @@
 package com.xcompwiz.mystcraft.client.render;
 
+import com.xcompwiz.mystcraft.block.BlockBookstand;
+import com.xcompwiz.mystcraft.data.ModBlocks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
@@ -37,7 +41,9 @@ public class RenderBookstand extends TileEntitySpecialRenderer<TileEntityBooksta
 		GlStateManager.pushMatrix();
         GlStateManager.translate(x, y + 0.5, z);
         GlStateManager.rotate(180, 0, 0, 1);
-        GlStateManager.rotate(180 + te.getYaw(), 0, 1, 0);
+        IBlockState bookstandState = ModBlocks.bookstand.getStateFromMeta(te.getBlockMetadata());
+        int rotationIndex = bookstandState.getValue(BlockBookstand.ROTATION_INDEX);
+        GlStateManager.rotate(45 * rotationIndex, 0, 1, 0);
         stand.render(null, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0625F);
         GlStateManager.popMatrix();
         ItemStack display = te.getDisplayItem();

@@ -114,11 +114,12 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 
 		int removed = 0;
 		//page.stackSize = 0;
-		// Hellfire> This is critical and shouldn't be done anymore. the stack looses all data 'potentially' upon setting 0 due to read/write actions. i don't wanna risk that.
+		// Hellfire> The old way of doing this was critical and shouldn't be done anymore. the stack looses all data
+		// 'potentially' upon setting 0 due to read/write actions. i don't wanna risk that. Changed to use arbitrary integer instead.
 		while (removed < count && compounds.remove(nbt)) {
 			removed++;
 		}
-		if (removed == 0) {
+		if (removed <= 0) {
 			return ItemStack.EMPTY;
 		}
 		itemstack.getTagCompound().setTag("Collection", NBTUtils.writeTagCompoundCollection(new NBTTagList(), compounds));

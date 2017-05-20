@@ -66,6 +66,7 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
         MinecraftForge.EVENT_BUS.register(startupchecker);
 
         ModFluids.registerModels();
+		registerEntityRenderers();
     }
 
 	@Override
@@ -74,7 +75,6 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
         ModBlocks.registerModels();
         ModItems.registerModels();
 
-		registerEntityRenderers();
 		registerTileEntityRenderers();
 
 		MinecraftForge.EVENT_BUS.register(new PageBuilder());

@@ -180,13 +180,13 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 				}
 				if (displayname != null && searchtext != null && searchtext.length() > 0) {
 					if (!displayname.toLowerCase().contains(searchtext.toLowerCase())) {
-						page = null;
+						page = ItemStack.EMPTY;
 					}
 				}
 				if (positionable.count > 0) {
 					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), page, pagexSize, pageySize, x + pageX, y + pageY);
 				} else {
-					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), null, pagexSize, pageySize, x + pageX, y + pageY);
+					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), ItemStack.EMPTY, pagexSize, pageySize, x + pageX, y + pageY);
 				}
 				if (positionable.count > 1) {
 					GuiUtils.drawScaledText("" + positionable.count, (int) (x + pageX), (int) (y + pageY + pageHeight - 7), 20, 10, 0xFFFFFF);

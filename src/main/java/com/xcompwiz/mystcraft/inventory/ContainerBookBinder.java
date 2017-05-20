@@ -27,6 +27,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ContainerBookBinder extends ContainerBase implements IGuiMessageHandler {
 	public static class Messages {
@@ -34,10 +35,10 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 		public static final String	InsertHeldAt	= "InsertHeldAt";
 		public static final String	TakeFromSlider	= "TakeFromSlider";
 		public static final String	SetTitle		= "SetTitle";
-		public static final String	CSetPage		= "CSetPage";
-		public static final String	CSetPageCount	= "CSetPageCount";
-		public static final String	CSetHeldItem	= "CSetHeldItem";
-		public static final String	CClearHeldItem	= "CClearHeldItem";
+		//public static final String	CSetPage		= "CSetPage";
+		//public static final String	CSetPageCount	= "CSetPageCount";
+		//public static final String	CSetHeldItem	= "CSetHeldItem";
+		//public static final String	CClearHeldItem	= "CClearHeldItem";
 	}
 
 	private static int				shift			= 0;
@@ -45,14 +46,14 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 	// private InventoryCrafting craftMatrix = new InventoryCrafting(this, 2, 2);
 	private IItemHandlerModifiable craftResult		= new InvWrapper(new InventoryCraftResult());
 
-	private TileEntityBookBinder	tileentity;
-	private InventoryPlayer			inventoryplayer;
+    public TileEntityBookBinder	tileentity;
+	public InventoryPlayer			inventoryplayer;
 
 	// Server/Client caching for communication
 	private String					cached_title	= "";
-	private NonNullList<ItemStack>	page_list		= NonNullList.create();
-	@Nonnull
-	private ItemStack				cached_helditem = ItemStack.EMPTY;
+	//private NonNullList<ItemStack>	page_list		= NonNullList.create();
+	//@Nonnull
+	//private ItemStack				cached_helditem = ItemStack.EMPTY;
 
 	public ContainerBookBinder(InventoryPlayer inventoryplayer, TileEntityBookBinder tileentity) {
 		this.tileentity = tileentity;
@@ -103,57 +104,53 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 		super.detectAndSendChanges();
 		List<IMessage> packets = new ArrayList<>();
 
-		ItemStack helditem = inventoryplayer.getItemStack();
-		if (!ItemStack.areItemStacksEqual(helditem, cached_helditem)) {
-			cached_helditem = helditem;
-			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			if (helditem.isEmpty()) {
-				nbttagcompound.setBoolean(Messages.CClearHeldItem, true);
-			} else {
-				nbttagcompound.setTag(Messages.CSetHeldItem, helditem.writeToNBT(new NBTTagCompound()));
-			}
-			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
-		}
+		//ItemStack helditem = inventoryplayer.getItemStack();
+		//if (!ItemStack.areItemStacksEqual(helditem, cached_helditem)) {
+		//	cached_helditem = helditem;
+		//	NBTTagCompound nbttagcompound = new NBTTagCompound();
+		//	if (helditem.isEmpty()) {
+		//		nbttagcompound.setBoolean(Messages.CClearHeldItem, true);
+		//	} else {
+		//		nbttagcompound.setTag(Messages.CSetHeldItem, helditem.writeToNBT(new NBTTagCompound()));
+		//	}
+		//	packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
+		//}
 
 		String temp = tileentity.getPendingTitle();
 		if (!this.cached_title.equals(temp)) {
 			cached_title = temp;
+		}
+		//List<ItemStack> templist = tileentity.getPageList();
+		//for (int i = 0; i < templist.size(); ++i) {
+		//	ItemStack remote = ItemStack.EMPTY, local = templist.get(i);
+		//	if (page_list.size() > i) {
+		//		remote = page_list.get(i);
+		//	}
+		//	if (!ItemStack.areItemStacksEqual(local, remote)) {
+		//		NBTTagCompound nbttagcompound = new NBTTagCompound();
+		//		nbttagcompound.setInteger(Messages.CSetPage, i);
+		//		nbttagcompound.setTag("Item", local.writeToNBT(new NBTTagCompound()));
+		//		packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
+		//		while (page_list.size() < i) {
+		//			page_list.add(ItemStack.EMPTY);
+		//		}
+		//		if (page_list.size() == i) {
+		//			page_list.add(local);
+		//		} else {
+		//			page_list.set(i, local);
+		//		}
+		//	}
+		//}
+		//if (templist.size() < page_list.size()) {
+		//	NBTTagCompound nbttagcompound = new NBTTagCompound();
+		//	nbttagcompound.setInteger(Messages.CSetPageCount, templist.size());
+		//	packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 
-			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setString(Messages.SetTitle, cached_title);
-			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
-		}
-		List<ItemStack> templist = tileentity.getPageList();
-		for (int i = 0; i < templist.size(); ++i) {
-			ItemStack remote = ItemStack.EMPTY, local = templist.get(i);
-			if (page_list.size() > i) {
-				remote = page_list.get(i);
-			}
-			if (!ItemStack.areItemStacksEqual(local, remote)) {
-				NBTTagCompound nbttagcompound = new NBTTagCompound();
-				nbttagcompound.setInteger(Messages.CSetPage, i);
-				nbttagcompound.setTag("Item", local.writeToNBT(new NBTTagCompound()));
-				packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
-				while (page_list.size() < i) {
-					page_list.add(ItemStack.EMPTY);
-				}
-				if (page_list.size() == i) {
-					page_list.add(local);
-				} else {
-					page_list.set(i, local);
-				}
-			}
-		}
-		if (templist.size() < page_list.size()) {
-			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setInteger(Messages.CSetPageCount, templist.size());
-			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
-
-            NonNullList<ItemStack> list = NonNullList.create();
-            List<ItemStack> subList = page_list.subList(0, templist.size());
-            list.addAll(subList);
-            page_list = list;
-		}
+        //    NonNullList<ItemStack> list = NonNullList.create();
+        //    List<ItemStack> subList = page_list.subList(0, templist.size());
+        //    list.addAll(subList);
+        //    page_list = list;
+		//}
 		if (packets.size() > 0) {
 			for (IContainerListener listener : this.listeners) {
 				if(listener instanceof EntityPlayerMP) {
@@ -180,43 +177,45 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 
 	@Override
 	public void processMessage(@Nonnull EntityPlayer player, @Nonnull NBTTagCompound data) {
-		if (data.hasKey(Messages.CClearHeldItem)) {
-			if (tileentity.getWorld().isRemote) {
-				player.inventory.setItemStack(ItemStack.EMPTY);
-			}
-		}
-		if (data.hasKey(Messages.CSetHeldItem)) {
-			if (tileentity.getWorld().isRemote) {
-				player.inventory.setItemStack(new ItemStack(data.getCompoundTag(Messages.CSetHeldItem)));
-			}
-		}
-		if (data.hasKey(Messages.CSetPageCount)) {
-		    NonNullList<ItemStack> list = NonNullList.create();
-			List<ItemStack> subList = page_list.subList(0, data.getInteger(Messages.CSetPageCount));
-			list.addAll(subList);
-			tileentity.setPages(list);
-		}
-		if (data.hasKey(Messages.CSetPage)) {
-			ItemStack item = new ItemStack(data.getCompoundTag("Item"));
-			int i = data.getInteger(Messages.CSetPage);
-			while (page_list.size() < i) {
-				page_list.add(ItemStack.EMPTY);
-			}
-			if (page_list.size() == i) {
-				page_list.add(item);
-			} else {
-				page_list.set(i, item);
-			}
-			tileentity.setPages(page_list);
-		}
+		//if (data.hasKey(Messages.CClearHeldItem)) {
+		//	if (tileentity.getWorld().isRemote) {
+		//		player.inventory.setItemStack(ItemStack.EMPTY);
+		//	}
+		//}
+		//if (data.hasKey(Messages.CSetHeldItem)) {
+		//	if (tileentity.getWorld().isRemote) {
+		//		player.inventory.setItemStack(new ItemStack(data.getCompoundTag(Messages.CSetHeldItem)));
+		//	}
+		//}
+		//if (data.hasKey(Messages.CSetPageCount)) {
+		//    NonNullList<ItemStack> list = NonNullList.create();
+		//	List<ItemStack> subList = page_list.subList(0, data.getInteger(Messages.CSetPageCount));
+		//	list.addAll(subList);
+		//	tileentity.setPages(list);
+		//}
+		//if (data.hasKey(Messages.CSetPage)) {
+		//	ItemStack item = new ItemStack(data.getCompoundTag("Item"));
+		//	int i = data.getInteger(Messages.CSetPage);
+		//	while (page_list.size() < i) {
+		//		page_list.add(ItemStack.EMPTY);
+		//	}
+		//	if (page_list.size() == i) {
+		//		page_list.add(item);
+		//	} else {
+		//		page_list.set(i, item);
+		//	}
+		//	tileentity.setPages(page_list);
+		//}
 		if (data.hasKey(Messages.SetTitle)) {
 			cached_title = data.getString(Messages.SetTitle);
 			this.tileentity.setBookTitle(cached_title);
+			this.tileentity.markForUpdate();
 		}
 		if (data.hasKey(Messages.TakeFromSlider)) {
 			if (!player.inventory.getItemStack().isEmpty()) return;
 			int index = data.getInteger(Messages.TakeFromSlider);
 			player.inventory.setItemStack(tileentity.removePage(index));
+			player.inventory.markDirty();
 		}
 		if (data.hasKey(Messages.InsertHeldAt)) {
 			if (player.inventory.getItemStack().isEmpty()) return;
@@ -243,11 +242,12 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 		}
 	}
 
+	@Nullable
 	public String getPendingTitle() {
-		return cached_title;
+		return tileentity.getPendingTitle();
 	}
 
-	public NonNullList<ItemStack> getPageList() {
-		return page_list;
+	public List<ItemStack> getPageList() {
+		return tileentity.getPageList();
 	}
 }
