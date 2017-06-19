@@ -51,9 +51,7 @@ public class SymbolSkylands extends SymbolBase {
 						} else {
 							IBlockState blockstate = primer.getBlockState(x, y, z);
 							if (blockstate.getMaterial().isLiquid()) { // Detect liquids
-								if (!isSupported(x, y, z, height, primer)) { // remove poorly supported liquids
-									primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
-								}
+								primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
 							} else if (blockstate.getBlock() instanceof BlockFalling) {
 								if (!isSupported(x, y, z, height, primer)) { // Solidify poorly supported falling blocks
 									primer.setBlockState(x, y, z, Blocks.STONE.getDefaultState());
