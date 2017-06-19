@@ -149,7 +149,7 @@ public class InstabilityData {
 		EffectCrumble.initMappings();
 		InstabilityProviderContainerObject.create("crumble", new InstabilityProvider(false, EffectCrumble.class), stability.crumble).add("destructive", 6);
 		//InstabilityProviderContainerObject.create("crumblebedrock", new InstabilityProvider(false, EffectCrumble.class), stability.crumblebedrock).add("eating", 3).add("death", 1);
-		InstabilityProviderContainerObject.create("decayblack", new ProviderDecayBlack(), stability.decayBlack).add("eating", 1).add("death", 3);
+		//InstabilityProviderContainerObject.create("decayblack", new ProviderDecayBlack(), stability.decayBlack).add("eating", 1).add("death", 3);
 		InstabilityProviderContainerObject.create("decayblue", new ProviderDecayBlue(), stability.decayBlue).add("eating", 2).add("death", 1);
 		InstabilityProviderContainerObject.create("decaypurple", new ProviderDecayPurple(), stability.decayPurple).add("eating", 2).add("death", 1);
 		InstabilityProviderContainerObject.create("decayred", new ProviderDecayRed(), stability.decayRed).add("eating", 2).add("death", 1);
