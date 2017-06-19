@@ -65,9 +65,6 @@ public class WorldProviderMyst extends WorldProvider {
 	@Override
 	protected void init() {
 		//XXX: terrainType = WorldType.DEFAULT;
-        if(world.isRemote) {
-            Mystcraft.clientStorage = world.getPerWorldStorage();
-        }
 		agedata = AgeData.getAge(ageUID, world.isRemote);
 		biomeManager = new BiomeWrapperManager(this);
 		controller = new AgeController(world, agedata);

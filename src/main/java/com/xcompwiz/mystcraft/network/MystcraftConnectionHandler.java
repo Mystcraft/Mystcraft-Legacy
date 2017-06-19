@@ -77,6 +77,15 @@ public class MystcraftConnectionHandler {
 		connected = true;
 	}
 
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onLoad(GuiOpenEvent event) {
+        if(connected && event.getGui() != null && event.getGui() instanceof GuiDownloadTerrain) {
+            Mystcraft.clientStorage = Minecraft.getMinecraft().world.getMapStorage();
+        }
+    }
+
+
 	@SubscribeEvent
 	public void onPlJoin(PlayerLoggedInEvent event) {
 		if(!event.player.world.isRemote) { //Just double-checking :V
