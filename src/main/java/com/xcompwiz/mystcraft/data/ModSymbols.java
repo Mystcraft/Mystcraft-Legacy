@@ -202,7 +202,7 @@ public class ModSymbols {
 		registerSymbol(new SymbolDummy("FeatureLargeDummy", InstabilityData.symbol.dummyFeatureLarge), 4, WordData.Contradict, WordData.Chaos, WordData.Exist, WordData.Terrain);
 		registerSymbol(new SymbolDummy("FeatureMediumDummy", InstabilityData.symbol.dummyFeatureMedium), 4, WordData.Contradict, WordData.Chaos, WordData.Exist, WordData.Balance);
 		registerSymbol(new SymbolDummy("FeatureSmallDummy", InstabilityData.symbol.dummyFeatureSmall), 5, WordData.Contradict, WordData.Chaos, WordData.Exist, WordData.Form);
-		registerSymbol(new SymbolHugeTrees("HugeTrees"), 2, WordData.Nature, WordData.Stimulate, WordData.Spur, WordData.Elevate);
+		//FIXME: registerSymbol(new SymbolHugeTrees("HugeTrees"), 2, WordData.Nature, WordData.Stimulate, WordData.Spur, WordData.Elevate);
 		registerSymbol(new SymbolLakesDeep("LakesDeep"), 3, WordData.Nature, WordData.Flow, WordData.Static, WordData.Explore);
 		registerSymbol(new SymbolLakesSurface("LakesSurface"), 3, WordData.Nature, WordData.Flow, WordData.Static, WordData.Elevate);
 		registerSymbol(new SymbolMineshafts("Mineshafts"), 3, WordData.Civilization, WordData.Machine, WordData.Motion, WordData.Tradition);
