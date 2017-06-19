@@ -66,7 +66,7 @@ public class SymbolSkylands extends SymbolBase {
 		}
 
 		private int calcSkyCutoff(int x, int z, double[] skyNoise) {
-			return (76) + (int) (skyNoise[(x) << 5 | (z)]);
+			return (76) + (int) (skyNoise[(x) << 4 | (z)]);
 		}
 
 		private boolean isSupported(int x, int y, int z, int sky, ChunkPrimer primer) {
