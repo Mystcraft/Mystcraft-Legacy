@@ -172,6 +172,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		}
 		boolean perm = checkLinkPermitted();
 		if (cached_permitted != perm) {
+			cached_permitted = perm;
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setBoolean(Messages.LinkPermitted, cached_permitted);
 			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));

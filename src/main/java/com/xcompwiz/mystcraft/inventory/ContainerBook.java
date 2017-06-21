@@ -59,7 +59,7 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	private int				currentpageIndex	= 0;
 
 	private ILinkInfo		cached_linkinfo;
-	private boolean			cached_permitted;
+	private Boolean			cached_permitted;
 
 	//Container originates from entity
 	public ContainerBook(InventoryPlayer inventoryplayer, EntityLinkbook linkbook) {
@@ -223,7 +223,7 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 			if (!ItemStack.areItemStacksEqual(stored, actual)) {
 				if (slotId == 0) {
 					cached_linkinfo = null;
-					cached_permitted = false;
+					cached_permitted = null;
 					NBTTagCompound nbttagcompound = new NBTTagCompound();
 					nbttagcompound.setInteger(Messages.SetCurrentPage, currentpageIndex);
 					packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
@@ -236,9 +236,9 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 				}
 			}
 		}
-		if (!cached_permitted) {
+		if (cached_permitted == null) {
 			cached_permitted = checkLinkPermitted();
-			if (!cached_permitted) {
+			if (cached_permitted != null) {
 				NBTTagCompound nbttagcompound = new NBTTagCompound();
 				nbttagcompound.setBoolean(Messages.LinkPermitted, cached_permitted);
 				packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
@@ -310,7 +310,10 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	@Override
 	public ILinkInfo getLinkInfo() {
 		ItemStack book = getBook();
-		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking)) return null;
+		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking)) {
+			cached_linkinfo = null;
+			return null;
+		}
 		if (cached_linkinfo == null) {
 			cached_linkinfo = ((ItemLinking) book.getItem()).getLinkInfo(book);
 		}
@@ -321,8 +324,9 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	public boolean isLinkPermitted() {
 		ILinkInfo linkinfo = getLinkInfo();
 		if (linkinfo == null) {
-			cached_permitted = false;
+			cached_permitted = null;
 		}
+		if (cached_permitted == null) return false;
 		return cached_permitted;
 	}
 

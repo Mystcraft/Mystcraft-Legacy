@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.network.packet;
 
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 
 import io.netty.buffer.ByteBuf;
@@ -49,21 +50,27 @@ public class MPacketGuiMessage extends PacketBase<MPacketGuiMessage, MPacketGuiM
 		} else {
 			thePlayer = ctx.getServerHandler().playerEntity;
 		}
-		if(thePlayer.openContainer == null || thePlayer.openContainer.windowId != message.windowId) {
-			return null;
+
+		IThreadListener itl;
+		if(ctx.side.isClient()) {
+			itl = clientListener();
+		} else {
+			itl = thePlayer.world.getMinecraftServer();
 		}
-		if(!thePlayer.openContainer.getCanCraft(thePlayer)) { //!thePlayer.openContainer.playerList.contains(player); - the fck is wrong with this implementation... whatever.
-			return null;
-		}
-		if(thePlayer.openContainer instanceof IGuiMessageHandler) {
-			IThreadListener itl;
-			if(ctx.side.isClient()) {
-				itl = clientListener();
-			} else {
-				itl = thePlayer.world.getMinecraftServer();
+		
+		// We should process all of the container checks, etc later, so we can be sure they are set (avoid race conditions)
+		itl.addScheduledTask(() -> {
+			if(thePlayer.openContainer == null || thePlayer.openContainer.windowId != message.windowId) {
+				LoggerUtils.info("%b %s == %d", thePlayer.openContainer == null, (thePlayer.openContainer == null ? "null" : "" + thePlayer.openContainer.windowId), message.windowId);
+				return;
 			}
-			itl.addScheduledTask(() -> ((IGuiMessageHandler) thePlayer.openContainer).processMessage(thePlayer, message.tag));
-		}
+			if(!thePlayer.openContainer.getCanCraft(thePlayer)) { //!thePlayer.openContainer.playerList.contains(player);
+				return;
+			}
+			if(thePlayer.openContainer instanceof IGuiMessageHandler) {
+				((IGuiMessageHandler) thePlayer.openContainer).processMessage(thePlayer, message.tag);
+			}
+		});
 		return null;
 	}
 
