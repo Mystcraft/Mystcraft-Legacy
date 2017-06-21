@@ -24,8 +24,7 @@ public class WorldGenMystStarFissure extends WorldGenerator {
 	}
 
 	private void set(World world, BlockPos pos) {
-		world.setBlockState(pos.up(), ModBlocks.starfissure.getDefaultState());
-		pos = pos.up();
+		world.setBlockState(pos, ModBlocks.starfissure.getDefaultState());
 		for (; pos.getY() < world.getHeight();) {
 			pos = pos.up();
 			world.setBlockToAir(pos);
