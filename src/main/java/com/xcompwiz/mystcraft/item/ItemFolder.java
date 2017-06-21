@@ -96,7 +96,7 @@ public class ItemFolder extends Item implements IItemOrderablePageProvider, IIte
 	@Nonnull
 	public ItemStack removePage(EntityPlayer player, @Nonnull ItemStack folder, int index) {
 		ItemStack itemstack = InventoryFolder.getItem(folder, index);
-		InventoryFolder.removeItem(folder, index, true);
+		InventoryFolder.removeItem(folder, index);
 		return itemstack;
 	}
 

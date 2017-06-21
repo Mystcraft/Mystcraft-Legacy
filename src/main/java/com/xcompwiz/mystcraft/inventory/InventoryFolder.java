@@ -2,10 +2,8 @@ package com.xcompwiz.mystcraft.inventory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
@@ -109,7 +107,7 @@ public class InventoryFolder {
 		if (data == null) {
 			return page;
 		}
-		ItemStack previous = removeItem(folder, slot, false);
+		ItemStack previous = removeItem(folder, slot);
 		if (!page.isEmpty() && page.getCount() > 0) {
 			data.setTag(String.valueOf(slot), page.writeToNBT(new NBTTagCompound()));
 		} else {
@@ -119,7 +117,7 @@ public class InventoryFolder {
 	}
 
 	@Nonnull
-	public static ItemStack removeItem(@Nonnull ItemStack folder, int slot, boolean performSanitization) {
+	public static ItemStack removeItem(@Nonnull ItemStack folder, int slot) {
 		NBTTagCompound data = getInventoryCompound(folder);
 		ItemStack itemstack = ItemStack.EMPTY;
 		String strSlot = String.valueOf(slot);
@@ -128,49 +126,9 @@ public class InventoryFolder {
 				itemstack = new ItemStack(data.getCompoundTag(strSlot));
 			}
 			data.removeTag(strSlot);
-
-			if(performSanitization) {
-                sanitizeOrder(data);
-            }
 		}
 		return itemstack;
 	}
-
-    private static void sanitizeOrder(NBTTagCompound data) {
-        int expectedSize = data.getSize();
-        boolean needsSanitization = false;
-        for (int i = 0; i < expectedSize; i++) {
-            String strKey = String.valueOf(i);
-            if(!data.hasKey(strKey)) {
-                needsSanitization = true;
-                break;
-            }
-        }
-        if(needsSanitization) {
-            List<Integer> entrySlotsFound = Lists.newLinkedList();
-            for (String strKey : data.getKeySet()) {
-                int val;
-                try {
-                    val = Integer.parseInt(strKey);
-                } catch (NumberFormatException exc) {
-                    continue;
-                }
-                if(val >= 0) {
-                    entrySlotsFound.add(val);
-                }
-            }
-            Collections.sort(entrySlotsFound);
-            for (int actualExpected = 0; actualExpected < entrySlotsFound.size(); actualExpected++) {
-                int slotIndex = entrySlotsFound.get(actualExpected);
-                if(actualExpected != slotIndex) { //Order disruption
-                    String strNext = String.valueOf(slotIndex);
-                    NBTTagCompound tag = data.getCompoundTag(strNext);
-                    data.removeTag(strNext);
-                    data.setTag(String.valueOf(actualExpected), tag);
-                }
-            }
-        }
-    }
 
     @Nonnull
 	public static ItemStack addItem(@Nonnull ItemStack folder, @Nonnull ItemStack page) {
@@ -224,20 +182,23 @@ public class InventoryFolder {
 			return;
 		}
 
-		for (String tagname : compound.getKeySet()) {
+		// Take a copy of the tag names to avoid concurrent modification issues (since we modify the set in the loop)
+        Collection<String> tagnames = new ArrayList<String>();
+        tagnames.addAll(compound.getKeySet());
+        for (String tagname : tagnames) {
 			NBTTagCompound pagedata = compound.getCompoundTag(tagname);
 			ItemStack page = new ItemStack(pagedata);
 			List<ItemStack> results = SymbolRemappings.remap(page);
 			int slot = Integer.parseInt(tagname);
 			if (results.size() == 0) {
-				removeItem(folder, slot, true);
+				removeItem(folder, slot);
 				continue;
 			}
 			if (results.size() == 1) {
 				setItem(folder, slot, results.get(0));
 			}
 			if (results.size() != 1) {
-				removeItem(folder, slot, true);
+				removeItem(folder, slot);
 				for (ItemStack item : results) {
 					addItem(folder, item);
 				}
