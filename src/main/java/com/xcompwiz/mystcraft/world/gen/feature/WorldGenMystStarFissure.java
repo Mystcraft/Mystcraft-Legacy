@@ -17,6 +17,7 @@ public class WorldGenMystStarFissure extends WorldGenerator {
 		for (int row = 0; row < noise.length; ++row) {
 			int x = noise[row][0];
 			for (; x <= noise[row][1]; ++x) {
+				set(world, pos.add(x, 0, row * 2));
 				set(world, pos.add(x, 0, row * 2 + 1));
 			}
 		}
