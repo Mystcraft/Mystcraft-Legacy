@@ -57,15 +57,7 @@ public class ChunkProviderMyst implements IChunkGenerator {
 		stoneNoiseGen = new NoiseGeneratorPerlin(this.rand, 4);
 	}
 
-	//private IBlockState[] vblocks;
-
 	private void replaceBlocksForBiome(int chunkX, int chunkZ, ChunkPrimer primer, Biome[] aBiome) {
-		//if (vblocks == null || vblocks.length != blocks.length) {
-		//    vblocks = new IBlockState[blocks.length];
-        //}
-		//ArrayMappingUtils.mapLocalToVanilla(blocks, vblocks);
-		//StateBasedChunkPrimer primer = StateBasedChunkPrimer.intoData(blocks); //Primer that'll feed/mirror this state-array
-
 		ChunkGeneratorEvent.ReplaceBiomeBlocks event = new ChunkGeneratorEvent.ReplaceBiomeBlocks(this, chunkX, chunkZ, primer, this.worldObj);
 		MinecraftForge.EVENT_BUS.post(event);
 		if (event.getResult() != Event.Result.DENY) {
@@ -80,7 +72,6 @@ public class ChunkProviderMyst implements IChunkGenerator {
 				}
 			}
 		}
-		//ArrayMappingUtils.mapVanillaToLocal(vblocks, blocks);
 	}
 
 	@Override
