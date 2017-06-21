@@ -13,6 +13,7 @@ import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.storage.SaveDataMemoryStorage;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -75,16 +76,8 @@ public class MystcraftConnectionHandler {
 	@SideOnly(Side.CLIENT)
 	public void connectionOpened(ClientConnectedToServerEvent event) {
 		connected = true;
+		Mystcraft.clientStorage = new SaveDataMemoryStorage();
 	}
-
-    @SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public void onLoad(GuiOpenEvent event) {
-        if(connected && event.getGui() != null && event.getGui() instanceof GuiDownloadTerrain) {
-            Mystcraft.clientStorage = Minecraft.getMinecraft().world.getMapStorage();
-        }
-    }
-
 
 	@SubscribeEvent
 	public void onPlJoin(PlayerLoggedInEvent event) {
