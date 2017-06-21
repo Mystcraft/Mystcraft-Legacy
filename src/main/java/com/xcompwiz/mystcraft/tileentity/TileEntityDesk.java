@@ -160,8 +160,8 @@ public class TileEntityDesk extends TileEntityBase implements InventoryFilter, I
     public void readCustomNBT(NBTTagCompound compound) {
         super.readCustomNBT(compound);
         this.inkwell.readFromNBT(compound.getCompoundTag("fluid"));
-        this.inventoryStacks = IOInventory.deserialize(this, compound.getCompoundTag("items"));
-        this.inventoryTabItems = IOInventory.deserialize(this, compound.getCompoundTag("notebooks"));
+        this.inventoryStacks.readNBT(compound.getCompoundTag("items"));
+        this.inventoryTabItems.readNBT(compound.getCompoundTag("notebooks"));
     }
 
     @Override

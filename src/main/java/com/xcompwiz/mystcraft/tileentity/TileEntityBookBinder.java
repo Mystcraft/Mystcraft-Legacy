@@ -32,20 +32,22 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 	private List<ItemStack>	pages = new LinkedList<>();
 	private String			pendingtitle = null;
 
+	private static final int cover_slot = 0;
+	
 	public TileEntityBookBinder() {
 		this.inventory = buildInventory();
 	}
 
 	protected IOInventory buildInventory() {
-		return new IOInventory(this, new int[] { 1 }, new int[0], EnumFacing.VALUES)
+		return new IOInventory(this, new int[] { cover_slot }, new int[0], EnumFacing.VALUES)
 				.setMiscSlots(0)
-				.applyFilter(this, 1);
+				.applyFilter(this, cover_slot);
 	}
 
 	@Override
 	public boolean canAcceptItem(int slot, @Nonnull ItemStack stack) {
 		if(stack.isEmpty()) return false;
-		if (slot == 1) {
+		if (slot == cover_slot) {
 			if(!isValidCover(stack)) return false;
 		}
 		return true;
@@ -61,7 +63,7 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 	@Override
 	public void readCustomNBT(NBTTagCompound compound) {
 		super.readCustomNBT(compound);
-		this.inventory = IOInventory.deserialize(this, compound.getCompoundTag("items"));
+		this.inventory.readNBT(compound.getCompoundTag("items"));
 		pages.clear();
 		NBTUtils.readItemStackCollection(compound.getTagList("pages", Constants.NBT.TAG_COMPOUND), pages);
 		SymbolRemappings.remap(pages);
@@ -100,8 +102,10 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 			ItemAgebook.create(itemstack, player, pages, pendingtitle);
 			pages.clear();
 			pendingtitle = null;
-			inventory.getStackInSlot(1).shrink(1);
-			if (inventory.getStackInSlot(1).getCount() <= 0) {
+			ItemStack remainder = inventory.getStackInSlot(cover_slot).copy();
+			remainder.shrink(1);
+			inventory.setStackInSlot(cover_slot, remainder);
+			if (inventory.getStackInSlot(1).getCount() <= 0 || inventory.getStackInSlot(1).isEmpty()) {
 				inventory.setStackInSlot(1, ItemStack.EMPTY);
 			}
 			markForUpdate();
@@ -111,8 +115,8 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 	}
 
 	private boolean canBuildItem() {
-		if(inventory.getStackInSlot(1).isEmpty()) return false;
-		if(!isValidCover(inventory.getStackInSlot(1))) return false;
+		if(inventory.getStackInSlot(cover_slot).isEmpty()) return false;
+		if(!isValidCover(inventory.getStackInSlot(cover_slot))) return false;
 		if (pages.size() == 0) return false;
 		if (!Page.isLinkPanel(pages.get(0))) return false;
 		if (pendingtitle == null || pendingtitle.equals("")) return false;

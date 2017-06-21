@@ -68,7 +68,7 @@ public class TileEntityBook extends TileEntityBase implements InventoryUpdateLis
 	@Override
 	public void readCustomNBT(NBTTagCompound compound) {
 		super.readCustomNBT(compound);
-		this.inventory = IOInventory.deserialize(this, compound.getCompoundTag("inventory"));
+		this.inventory.readNBT(compound.getCompoundTag("inventory"));
 		for (int i = 0; i < inventory.getSlots(); i++) {
 			handleItemChange(i);
 		}

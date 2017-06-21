@@ -47,8 +47,7 @@ public class TileEntityInkMixer extends TileEntityBase implements IItemBuilder, 
 	}
 
 	protected IOInventory buildInventory() {
-	    return new IOInventory(this, new int[] { ink_in, paper }, new int[0], EnumFacing.VALUES)
-                .setMiscSlots(new int[] { ink_out }) //Not input, can't output from this, so.... misc i guess.
+	    return new IOInventory(this, new int[] { ink_in, paper }, new int[] { ink_out }, EnumFacing.VALUES)
                 .setListener(this)
                 .applyFilter(this, ink_in, paper);
     }
@@ -75,7 +74,7 @@ public class TileEntityInkMixer extends TileEntityBase implements IItemBuilder, 
     public void readCustomNBT(NBTTagCompound compound) {
         super.readCustomNBT(compound);
 
-        this.inventory = IOInventory.deserialize(this, compound.getCompoundTag("inventory"));
+        this.inventory.readNBT(compound.getCompoundTag("inventory"));
         this.hasInk = compound.getBoolean("ink");
         this.ink_probabilities = NBTUtils.readFloatMap(compound.getCompoundTag("probabilities"), new HashMap<>());
     }

@@ -58,7 +58,7 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 	public ContainerBookBinder(InventoryPlayer inventoryplayer, TileEntityBookBinder tileentity) {
 		this.tileentity = tileentity;
 		this.inventoryplayer = inventoryplayer;
-		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), this.tileentity, 1, 8 + shift, 27));
+		addSlotToContainer(new SlotFiltered((IItemHandlerModifiable) tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN), this.tileentity, 0, 8 + shift, 27));
 
 		for (int i = 0; i < 3; i++) {
 			for (int k = 0; k < 9; k++) {
