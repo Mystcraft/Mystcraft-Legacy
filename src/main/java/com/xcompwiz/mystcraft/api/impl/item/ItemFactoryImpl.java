@@ -79,7 +79,7 @@ public class ItemFactoryImpl {
 		item.setDisplayName(null, itemstack, name);
 
 		for (ItemStack page : pages) {
-			if (page == null) continue;
+			if (page.isEmpty()) continue;
 			if (!(page.getItem() instanceof ItemPage)) continue;
 			item.addPage(null, itemstack, page.copy());
 		}

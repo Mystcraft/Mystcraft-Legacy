@@ -51,11 +51,11 @@ public final class GuiUtils {
 	}
 
 	@SideOnly(Side.CLIENT)
-	private static void drawPageBackground(TextureManager renderEngine, float zLevel, ItemStack page, float xSize, float ySize, float x, float y) {
+	private static void drawPageBackground(TextureManager renderEngine, float zLevel, @Nonnull ItemStack page, float xSize, float ySize, float x, float y) {
 		GlStateManager.disableBlend();
 		renderEngine.bindTexture(GUIs.book_page_left);
 		GlStateManager.color(1F, 1F, 1F, 1F);
-		if (page == null) {
+		if (page.isEmpty()) {
 			GlStateManager.color(0.2F, 0.2F, 0.2F, 0.2F);
 		}
 		drawTexturedModalRect(x, y, 156, 0, 30, 40, zLevel, xSize, ySize);

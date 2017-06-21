@@ -2,6 +2,8 @@ package com.xcompwiz.mystcraft.villager;
 
 import java.util.concurrent.ConcurrentMap;
 
+import javax.annotation.Nonnull;
+
 import com.google.common.collect.MapMaker;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.data.ModGUIs;
@@ -60,8 +62,8 @@ public class VillagerTradeSystem {
 		}
 	}
 
-	public static int getCardCost(ItemStack itemstack) {
-		if (itemstack == null) return 0;
+	public static int getCardCost(@Nonnull ItemStack itemstack) {
+		if (itemstack.isEmpty()) return 0;
 		//TODO: Base cost of a symbol on scarcity
 		Integer rank = SymbolManager.getSymbolItemCardRank(Page.getSymbol(itemstack));
 		if (rank == null) return 100; //TODO: How to handle cards with missing ranks in price setting? (shouldn't come up)

@@ -215,7 +215,7 @@ public class InventoryFolder {
 	public static boolean writeSymbol(@Nonnull ItemStack folder, String symbol) {
 		List<ItemStack> pages = getItems(folder);
 		for (ItemStack page : pages) {
-			if (page == null) continue;
+			if (page.isEmpty()) continue;
 			if (page.getItem() != ModItems.page) continue;
 			if (InternalAPI.page.isPageWritable(page)) {
 				InternalAPI.page.setPageSymbol(page, symbol);

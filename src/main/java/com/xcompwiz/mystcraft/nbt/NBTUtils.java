@@ -176,7 +176,7 @@ public final class NBTUtils {
 
 	public static NBTTagList writeItemStackCollection(NBTTagList nbttaglist, Collection<ItemStack> collection) {
 		for (ItemStack itemstack : collection) {
-			if (itemstack == null) continue;
+			if (itemstack.isEmpty()) continue;
 			nbttaglist.appendTag(itemstack.writeToNBT(new NBTTagCompound()));
 		}
 		return nbttaglist;
