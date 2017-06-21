@@ -46,6 +46,7 @@ public class RenderBookstand extends TileEntitySpecialRenderer<TileEntityBooksta
         GlStateManager.rotate(45 * rotationIndex, 0, 1, 0);
         stand.render(null, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0625F);
         GlStateManager.popMatrix();
+
         ItemStack display = te.getDisplayItem();
         if (display.isEmpty()) {
             return;
@@ -59,7 +60,7 @@ public class RenderBookstand extends TileEntitySpecialRenderer<TileEntityBooksta
         }
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y + 0.55F, z);
-        GlStateManager.rotate(270 + te.getYaw(), 0, -1, 0);
+        GlStateManager.rotate(90 + 45 * rotationIndex, 0, -1, 0);
         GlStateManager.rotate(120F, 0, 0, 1);
         GlStateManager.scale(0.8, 0.8, 0.8);
         book.render(null, 0.0f, 0.0f, 0.0f, 1.05f /* Open */, 0.0f, 0.0625F);
