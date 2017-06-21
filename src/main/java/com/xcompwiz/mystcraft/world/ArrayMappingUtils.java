@@ -7,6 +7,28 @@ import net.minecraft.world.chunk.ChunkPrimer;
 
 public class ArrayMappingUtils {
 
+	//private void mapBlocksToChunk(Chunk chunk, IBlockState[] blocks) {
+	//	ExtendedBlockStorage[] storageArrays = new ExtendedBlockStorage[16];
+	//	int layers = blocks.length / 256;
+	//	boolean flag = !worldObj.provider.hasNoSky();
+	//	for (int y = 0; y < layers; ++y) {
+	//		int storagei = y >> 4;
+	//		for (int z = 0; z < 16; ++z) {
+	//			for (int x = 0; x < 16; ++x) {
+	//				int coords = y << 8 | z << 4 | x;
+	//				IBlockState block = blocks[coords];
+	//				if (block != null && !block.getBlock().equals(Blocks.AIR)) {
+	//					if (storageArrays[storagei] == null) {
+	//						storageArrays[storagei] = new ExtendedBlockStorage(storagei << 4, flag);
+	//					}
+	//					storageArrays[storagei].set(x, y & 15, z, block);
+	//				}
+	//			}
+	//		}
+	//	}
+	//	chunk.setStorageArrays(storageArrays);
+	//}
+	
 	//On local indexing, we are incrementing x, then z, then y
 	public static void mapLocalToVanilla(IBlockState[] arr1, IBlockState[] arr2) {
 		int len = arr1.length;

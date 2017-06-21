@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
+import com.xcompwiz.mystcraft.world.chunk.ChunkPrimerMyst;
 import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
 
 import net.minecraft.block.BlockFalling;
@@ -78,13 +79,29 @@ public class ChunkProviderMyst implements IChunkGenerator {
     @Nonnull
 	public Chunk provideChunk(int chunkX, int chunkZ) {
 		rand.setSeed(chunkX * 0x4f9939f508L + chunkZ * 0x1ef1565bd5L);
-		ChunkPrimer primer = new ChunkPrimer();
+		ChunkPrimerMyst primer = new ChunkPrimerMyst();
+
+		// Base terrain generation
 		controller.generateTerrain(chunkX, chunkZ, primer);
+		
+		// Get list of biomes in chunk
 		biomesForGeneration = worldObj.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, chunkX * 16, chunkZ * 16, 16, 16);
+
+		// perform biome decoration pass
+		primer.inBiomeDecoration = true;
 		replaceBlocksForBiome(chunkX, chunkZ, primer, biomesForGeneration);
+		primer.inBiomeDecoration = false;
+		
+		// Perform terrain modification pass (ex. caves, skylands)
 		controller.modifyTerrain(chunkX, chunkZ, primer);
+		
+		// generate features like witch huts, etc //TODO: more such features; world specific control; etc 
 		this.scatteredFeatureGenerator.generate(worldObj, chunkX, chunkZ, primer);
+		
+		// make chunk
 		Chunk chunk = new Chunk(worldObj, primer, chunkX, chunkZ);
+		
+		// lighting calcs
 		chunk.generateSkylightMap();
 		for (int x = 0; x < 16; ++x) {
 			for (int z = 0; z < 16; ++z) {
@@ -93,33 +110,11 @@ public class ChunkProviderMyst implements IChunkGenerator {
 				}
 			}
 		}
+		
+		// Final logic pass through chunk (ex. Floating Island biome replacement) 
 		controller.finalizeChunk(chunk, chunkX, chunkZ);
 		return chunk;
 	}
-
-	//private void mapBlocksToChunk(Chunk chunk, IBlockState[] blocks) {
-	//	ExtendedBlockStorage[] storageArrays = new ExtendedBlockStorage[16];
-	//	int layers = blocks.length / 256;
-	//	boolean flag = !worldObj.provider.hasNoSky();
-	//	for (int y = 0; y < layers; ++y) {
-	//		int storagei = y >> 4;
-	//		for (int z = 0; z < 16; ++z) {
-	//			for (int x = 0; x < 16; ++x) {
-	//				int coords = y << 8 | z << 4 | x;
-	//				IBlockState block = blocks[coords];
-
-	//				if (block != null && !block.getBlock().equals(Blocks.AIR)) {
-	//					if (storageArrays[storagei] == null) {
-	//						storageArrays[storagei] = new ExtendedBlockStorage(storagei << 4, flag);
-	//					}
-
-	//					storageArrays[storagei].set(x, y & 15, z, block);
-	//				}
-	//			}
-	//		}
-	//	}
-	//	chunk.setStorageArrays(storageArrays);
-	//}
 
 	@Override
 	public void populate(int chunkX, int chunkZ) {
