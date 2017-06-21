@@ -270,7 +270,7 @@ public class AgeController implements AgeDirector {
 		node.addChild("symbols", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + symbolinstability; }});
 		node.addChild("debug", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + debuginstability; } @Override public void set(ICommandSender agent, String value) { debuginstability = Integer.getInteger(value); }});
 		node.addChild("book", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + agedata.getBaseInstability(); }});
-		node.addChild("total", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + (symbolinstability + (blockinstability == null ? 0 : blockinstability) + agedata.getBaseInstability() + getInstabilityBonusManager().getResult()); }});
+		node.addChild("total", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + (symbolinstability + (blockinstability == null ? 0 : blockinstability) + agedata.getBaseInstability() + bonusmanager.getResult()); }});
 		node.addChild("bonus_total", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + bonusmanager.getResult(); }});
 		node.addChild("blocks_total", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + blockinstability; }});
 //@formatter:on	
