@@ -64,7 +64,7 @@ public class BlockStarFissure extends BlockContainer {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return new AxisAlignedBB(0, 0, 0, 0, 0, 0);
+		return new AxisAlignedBB(0, 0, 0, 1, 0.1f, 1);
 	}
 
 	@Override
