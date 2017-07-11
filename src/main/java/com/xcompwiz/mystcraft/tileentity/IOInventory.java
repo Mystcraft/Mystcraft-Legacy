@@ -24,7 +24,7 @@ public class IOInventory implements IItemHandlerModifiable {
     private int[] inSlots = new int[0], outSlots = new int[0], miscSlots = new int[0];
 
     private InventoryUpdateListener listener = null;
-    public List<EnumFacing> accessibleSides = new ArrayList<>();
+    public Set<EnumFacing> accessibleSides = new HashSet<>();
 
     private IOInventory(TileEntityBase owner) {
         this.owner = owner;
@@ -44,7 +44,7 @@ public class IOInventory implements IItemHandlerModifiable {
         for (Integer slot : outSlots) {
             this.inventory.put(slot, new SlotStackHolder(slot));
         }
-        this.accessibleSides = Arrays.asList(accessibleFrom);
+        this.accessibleSides.addAll(Arrays.asList(accessibleFrom));
     }
 
     public IOInventory setMiscSlots(int... miscSlots) {
@@ -232,9 +232,10 @@ public class IOInventory implements IItemHandlerModifiable {
         tag.setTag("inventoryArray", inv);
 
         int[] sides = new int[accessibleSides.size()];
-        for (int i = 0; i < accessibleSides.size(); i++) {
-            EnumFacing side = accessibleSides.get(i);
-            sides[i] = side.ordinal();
+        Iterator<EnumFacing> iter = accessibleSides.iterator();
+        int i = 0;
+        while (iter.hasNext()) {
+            sides[i++] = iter.next().ordinal();
         }
         tag.setIntArray("sides", sides);
         return tag;
@@ -260,6 +261,7 @@ public class IOInventory implements IItemHandlerModifiable {
             this.inventory.put(slot, holder);
         }
 
+        this.accessibleSides.clear();
         int[] sides = tag.getIntArray("sides");
         for (int i : sides) {
             this.accessibleSides.add(EnumFacing.values()[i]);
