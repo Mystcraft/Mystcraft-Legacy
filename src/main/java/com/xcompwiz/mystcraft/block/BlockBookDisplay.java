@@ -42,7 +42,7 @@ public abstract class BlockBookDisplay extends BlockContainer {
 			if(!stack.isEmpty() && tileentity.canAcceptItem(0, stack)) {
 				ItemStack copy = stack.copy();
 				copy.setCount(1);
-				stack.setCount(1);
+				stack.shrink(1);
 				tileentity.setBook(copy);
 				playerIn.setHeldItem(hand, stack);
 			} else {
