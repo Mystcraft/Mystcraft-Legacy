@@ -3,6 +3,8 @@ package com.xcompwiz.mystcraft.client;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleProviderLink;
@@ -34,6 +36,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -62,6 +65,8 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 
 	@Override
 	public void preinit() {
+		OBJLoader.INSTANCE.addDomain(MystObjects.MystcraftModId);
+
         startupchecker = new MystcraftStartupChecker();
         MinecraftForge.EVENT_BUS.register(startupchecker);
 

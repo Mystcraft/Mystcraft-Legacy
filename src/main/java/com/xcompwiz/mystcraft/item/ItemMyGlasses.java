@@ -7,6 +7,8 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class ItemMyGlasses extends ItemArmor {
 
 	public ItemMyGlasses() {
@@ -16,16 +18,14 @@ public class ItemMyGlasses extends ItemArmor {
 		this.setMaxStackSize(64);
 	}
 
-	//@Override
-	//public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-	//	return "mystcraft:textures/models/glasses.png";
-	//}
-
-	//@SideOnly(Side.CLIENT)
-	//@Override
-	//public void registerIcons(IIconRegister register) {
-	//	this.itemIcon = register.registerIcon(Assets.Items.glasses);
-	//}
+	@Nullable
+	@Override
+	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
+	    if(slot != EntityEquipmentSlot.HEAD) {
+	        return super.getArmorTexture(stack, entity, slot, type);
+        }
+		return "mystcraft:textures/models/glasses.png";
+	}
 
 	@Override
 	public String getUnlocalizedNameInefficiently(ItemStack itemstack) {

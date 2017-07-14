@@ -1,0 +1,74 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "mystcraft:obj/bookstand.obj"
+    },
+    "variants": {
+        "rotindex=0": {
+            "model": "mystcraft:blockmodel_nothing"
+        },
+        "rotindex=1": {
+            "model": "mystcraft:blockmodel_nothing"
+        },
+        "rotindex=2": {
+            "model": "mystcraft:blockmodel_nothing"
+        },
+        "rotindex=3": {
+            "model": "mystcraft:blockmodel_nothing"
+        },
+        "rotindex=4": {
+            "model": "mystcraft:blockmodel_nothing"
+        },
+        "rotindex=5": {
+            "model": "mystcraft:blockmodel_nothing"
+        },
+        "rotindex=6": {
+            "model": "mystcraft:blockmodel_nothing"
+        },
+        "rotindex=7": {
+            "model": "mystcraft:blockmodel_nothing"
+        },
+        "inventory": [{
+            "transform": {
+                "gui": {
+                    "translation": [ -0.75, 0.1, 0 ],
+                    "rotation": [
+                        { "x": 30 },
+                        { "y": 225 }
+                    ]
+                },
+                "ground": {
+                    "translation": [ 0.25, 0, 0.25 ],
+                    "scale": 0.5
+                },
+                "fixed": {
+                    "translation": [ 0.5, 0, 0.41 ]
+                },
+
+                "thirdperson_righthand": {
+                    "translation": [ -0.21, 0.05, -0.3 ],
+                    "rotation": [
+                        { "x": -190 },
+                        { "z": 180 }
+                    ],
+                    "scale": 0.45
+                },
+                "thirdperson_lefthand": {
+                    "translation": [ 0.21, 0.05, -0.3 ],
+                    "rotation": [
+                        { "x": -190 },
+                        { "z": -180 }
+                    ],
+                    "scale": 0.45
+                },
+                "firstperson_righthand": {
+                    "translation": [ 0.2, 0.1, 0 ],
+                    "rotation": [
+                        { "y": 45 }
+                    ],
+                    "scale": 0.5
+                }
+            }
+        }]
+    }
+}
