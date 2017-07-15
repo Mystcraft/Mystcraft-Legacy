@@ -246,7 +246,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 				}
 				player.inventory.setItemStack(stack);
 				if (ret.isEmpty()) return;
-				if (stack .isEmpty()) {
+				if (stack.isEmpty()) {
 					player.inventory.setItemStack(ret);
 					return;
 				}

@@ -101,8 +101,8 @@ public class ItemFolder extends Item implements IItemOrderablePageProvider, IIte
 	}
 
 	@Override
-	public List<ItemStack> getPageList(EntityPlayer player, @Nonnull ItemStack itemstack) {
-		return InventoryFolder.getItems(itemstack);
+	public List<ItemStack> getPageList(EntityPlayer player, @Nonnull ItemStack folder) {
+		return InventoryFolder.getItems(folder);
 	}
 
 	@Override
