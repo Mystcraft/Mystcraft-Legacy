@@ -275,8 +275,8 @@ public class InstabilityDataCalculator {
 
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
-		if(!disconnectclients || !mcserver.isDedicatedServer()) {
-			MystcraftPacketHandler.CHANNEL.sendTo(new MPacketProfilingState(true), (EntityPlayerMP) event.player);
+		if(running) {
+			MystcraftPacketHandler.CHANNEL.sendTo(new MPacketProfilingState(running), (EntityPlayerMP) event.player);
 		}
 		if (dimId != null && event.player.dimension == dimId) {
 			DimensionUtils.ejectPlayerFromDimension(event.player);
