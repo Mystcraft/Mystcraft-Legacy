@@ -255,6 +255,8 @@ public class IOInventory implements IItemHandlerModifiable {
             ItemStack stack = ItemStack.EMPTY;
             if(!isEmpty) {
                 stack = ItemStackUtils.loadItemStackFromNBT(holderTag);
+                if (stack.hasTagCompound()) //XXX: Fix for local "network" not serializing and thus maintaining references across server/client
+                	stack.setTagCompound(stack.getTagCompound().copy());
             }
             SlotStackHolder holder = new SlotStackHolder(slot);
             holder.itemStack = stack;
