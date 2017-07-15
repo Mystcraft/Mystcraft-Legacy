@@ -276,8 +276,8 @@ public class TileEntityDesk extends TileEntityBase implements InventoryFilter, I
     public ItemStack placePageOnSurface(EntityPlayer player, @Nonnull ItemStack itemstack, @Nonnull ItemStack page, int index) {
         if (itemstack.isEmpty()) return page;
 		ItemStack result = page;
-		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).addPage(player, itemstack, page);
 		if (itemstack.getItem() instanceof IItemOrderablePageProvider) result = ((IItemOrderablePageProvider) itemstack.getItem()).setPage(player, itemstack, page, index);
+		else if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).addPage(player, itemstack, page);
 		if (result == page) return result;
         this.markForUpdate();
 		return result;
