@@ -53,9 +53,11 @@ public class LinkController {
 		MinecraftForge.EVENT_BUS.post(event);
 		if (event.spawn != null) {
 			spawn = event.spawn;
+			info.setSpawn(spawn);
 		}
 		if (event.rotationYaw != null) {
 			yaw = event.rotationYaw;
+			info.setSpawnYaw(yaw);
 		}
 
 		// Move entity
