@@ -202,12 +202,8 @@ public class LinkListenerBasic {
 					j = itemstack.getCount();
 				}
 
-				itemstack.shrink(j);
-				EntityItem entityitem = new EntityItem(worldObj, par2 + f, par3 + f1, par4 + f2, new ItemStack(itemstack.getItem(), j, itemstack.getItemDamage()));
-
-				if (itemstack.hasTagCompound()) {
-					entityitem.getEntityItem().setTagCompound(itemstack.getTagCompound().copy());
-				}
+				ItemStack splitstack = itemstack.splitStack(j);
+				EntityItem entityitem = new EntityItem(worldObj, par2 + f, par3 + f1, par4 + f2, splitstack);
 
 				float f3 = 0.05F;
 				entityitem.motionX = (float) worldObj.rand.nextGaussian() * f3;
