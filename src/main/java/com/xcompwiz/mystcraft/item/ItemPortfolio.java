@@ -123,6 +123,7 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 			return ItemStack.EMPTY;
 		}
 		itemstack.getTagCompound().setTag("Collection", NBTUtils.writeTagCompoundCollection(new NBTTagList(), compounds));
+		page.setCount(removed);
 		return page;
 	}
 
