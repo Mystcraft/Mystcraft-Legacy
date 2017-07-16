@@ -1,7 +1,7 @@
 package com.xcompwiz.mystcraft.client.render;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
@@ -102,7 +102,7 @@ public class RenderRainbow {
 		 * 0f; }
 		 */
 		Tessellator tes = Tessellator.getInstance();
-		VertexBuffer vb = tes.getBuffer();
+		BufferBuilder vb = tes.getBuffer();
 		float numStrips = 50;
 		float stripWidth = width / numStrips;
 

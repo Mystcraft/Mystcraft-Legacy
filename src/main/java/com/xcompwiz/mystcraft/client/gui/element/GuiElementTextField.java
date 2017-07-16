@@ -1,7 +1,7 @@
 package com.xcompwiz.mystcraft.client.gui.element;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
@@ -75,7 +75,7 @@ public class GuiElementTextField extends GuiElement {
 	public GuiElementTextField(IGuiTextProvider textprovider, IGuiOnTextChange changehandler, String id, int guiLeft, int guiTop, int xSize, int ySize) {
 		super(guiLeft, guiTop, xSize, ySize);
 		this.id = id;
-		this.fontRenderer = mc.fontRendererObj;
+		this.fontRenderer = mc.fontRenderer;
 		this.textprovider = textprovider;
 		this.textchangehandler = changehandler;
 	}
@@ -519,7 +519,7 @@ public class GuiElementTextField extends GuiElement {
 		}
 
 		Tessellator tes = Tessellator.getInstance();
-        VertexBuffer vb = tes.getBuffer();
+        BufferBuilder vb = tes.getBuffer();
         GlStateManager.color(0, 0, 1, 1);
         GlStateManager.disableTexture2D();
         GlStateManager.enableColorLogic();

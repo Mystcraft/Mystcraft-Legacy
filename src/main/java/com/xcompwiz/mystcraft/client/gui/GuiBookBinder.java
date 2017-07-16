@@ -162,6 +162,6 @@ public class GuiBookBinder extends GuiContainerElements {
 		GlStateManager.color(1F, 1F, 1F, 1F);
 		mc.renderEngine.bindTexture(GUIs.binder);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-		fontRendererObj.drawString(I18n.format("container.inventory"), guiLeft + 8, guiTop + (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString(I18n.format("container.inventory"), guiLeft + 8, guiTop + (ySize - 96) + 2, 0x404040);
 	}
 }

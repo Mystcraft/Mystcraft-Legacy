@@ -21,8 +21,8 @@ public class SlotBanned extends Slot {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean canBeHovered() {
-		return true;
+	public boolean isEnabled() {
+		return false;
 	}
 
 }

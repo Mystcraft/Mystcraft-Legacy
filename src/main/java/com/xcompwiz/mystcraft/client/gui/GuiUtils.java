@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
@@ -130,7 +130,7 @@ public final class GuiUtils {
 		float fBlue = (color & 0xff) / 255F;
 		GlStateManager.color(fRed, fGreen, fBlue, 1F);
 		Tessellator tes = Tessellator.getInstance();
-		VertexBuffer vb = tes.getBuffer();
+		BufferBuilder vb = tes.getBuffer();
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		vb.pos(x + 0,         y + drawscale, zLevel).tex((iconX + 0)        * transform, (iconY + iconSize) * transform).endVertex();
 		vb.pos(x + drawscale, y + drawscale, zLevel).tex((iconX + iconSize) * transform, (iconY + iconSize) * transform).endVertex();
@@ -157,7 +157,7 @@ public final class GuiUtils {
 		float var7 = 0.00390625F;
 		float var8 = 0.00390625F;
 		Tessellator tes = Tessellator.getInstance();
-		VertexBuffer vb = tes.getBuffer();
+		BufferBuilder vb = tes.getBuffer();
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         vb.pos((x + 0),     (y + ySize), zLevel).tex(((u + 0)     * var7), ((v + height) * var8)).endVertex();
         vb.pos((x + xSize), (y + ySize), zLevel).tex(((u + width) * var7), ((v + height) * var8)).endVertex();
@@ -181,7 +181,7 @@ public final class GuiUtils {
 			return;
 		}
 		Tessellator tes = Tessellator.getInstance();
-		VertexBuffer vb = tes.getBuffer();
+		BufferBuilder vb = tes.getBuffer();
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         vb.pos((x + 0),     (y + ySize), zLevel).tex(tas.getMinU(), tas.getMaxV()).endVertex();
         vb.pos((x + xSize), (y + ySize), zLevel).tex(tas.getMaxU(), tas.getMaxV()).endVertex();
@@ -313,7 +313,7 @@ public final class GuiUtils {
 		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 
 		Tessellator tes = Tessellator.getInstance();
-		VertexBuffer vb = tes.getBuffer();
+		BufferBuilder vb = tes.getBuffer();
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
         vb.pos(par3, par2, zLevel).color(red1, green1, blue1, alpha1).endVertex();
         vb.pos(par1, par2, zLevel).color(red1, green1, blue1, alpha1).endVertex();
@@ -342,7 +342,7 @@ public final class GuiUtils {
 	public static void drawSprite(int x, int y, int xOffset, int yOffset, float zLevel) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(Vanilla.slot_tex);
         Tessellator tes = Tessellator.getInstance();
-        VertexBuffer vb = tes.getBuffer();
+        BufferBuilder vb = tes.getBuffer();
         vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         vb.pos((x + 0),  (y + 18), zLevel).tex(((xOffset + 0)  * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
         vb.pos((x + 18), (y + 18), zLevel).tex(((xOffset + 18) * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
@@ -355,7 +355,7 @@ public final class GuiUtils {
 	public static void drawSprite(int x, int y, int xSize, int ySize, int xOffset, int yOffset, float zLevel) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(Vanilla.slot_tex);
         Tessellator tes = Tessellator.getInstance();
-        VertexBuffer vb = tes.getBuffer();
+        BufferBuilder vb = tes.getBuffer();
         vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         vb.pos((x + 0),     (y + ySize), zLevel).tex(((xOffset + 0)  * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
         vb.pos((x + xSize), (y + ySize), zLevel).tex(((xOffset + 18) * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
@@ -370,13 +370,13 @@ public final class GuiUtils {
 	    GlStateManager.pushMatrix();
 		float scale = 1;
 		int xPad = 0, yPad = 0;
-		int textWidth = Minecraft.getMinecraft().fontRendererObj.getStringWidth(text);
+		int textWidth = Minecraft.getMinecraft().fontRenderer.getStringWidth(text);
 		if (textWidth > width) {
 			scale = (float) width / (float) textWidth;
 		}
 		GlStateManager.translate(x + xPad, y + yPad, 0);
 		GlStateManager.scale(scale, scale, 1);
-		Minecraft.getMinecraft().fontRendererObj.drawString(text, 0, 0, textcolor);
+		Minecraft.getMinecraft().fontRenderer.drawString(text, 0, 0, textcolor);
 		GlStateManager.popMatrix();
 	}
 

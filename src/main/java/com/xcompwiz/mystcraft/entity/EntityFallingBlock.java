@@ -206,7 +206,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
             this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, y, z));
             this.resetPositionToBB();
         } else {
-            this.world.theProfiler.startSection("move");
+            this.world.profiler.startSection("move");
             double d10 = this.posX;
             double d11 = this.posY;
             double d1 = this.posZ;
@@ -226,6 +226,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
             double d3 = y;
             double d4 = z;
 
+            //TODO hellfirepvp> .addCoord doesn't exist anymore and there's no method that does the same.
             List<AxisAlignedBB> list1 = this.world.getCollisionBoxes(this, this.getEntityBoundingBox().addCoord(x, y, z));
             AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
 
@@ -264,8 +265,8 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
             }
 
             boolean flag = this.onGround || d3 != y && d3 < 0.0D;
-            this.world.theProfiler.endSection();
-            this.world.theProfiler.startSection("rest");
+            this.world.profiler.endSection();
+            this.world.profiler.startSection("rest");
             this.resetPositionToBB();
             this.isCollidedHorizontally = d2 != x || d4 != z;
             this.isCollidedVertically = d3 != y;
@@ -313,7 +314,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
                 throw new ReportedException(crashreport);
             }
 
-            this.world.theProfiler.endSection();
+            this.world.profiler.endSection();
         }
 	}
 

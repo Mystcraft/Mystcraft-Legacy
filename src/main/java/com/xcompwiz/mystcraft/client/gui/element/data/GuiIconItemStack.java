@@ -69,7 +69,7 @@ public class GuiIconItemStack implements IGuiIcon {
         RenderItem ri = Minecraft.getMinecraft().getRenderItem();
         float prev = ri.zLevel;
         ri.zLevel = zLevel;
-        FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+        FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
         FontRenderer custom = itemstack.getItem().getFontRenderer(itemstack);
         if(custom != null) {
             fr = custom;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.model.ModelBase;
@@ -257,7 +257,7 @@ public class ModelRendererAdvanced {
 		this.displayList = GLAllocation.generateDisplayLists(1);
 		GL11.glNewList(this.displayList, GL11.GL_COMPILE);
 		Tessellator tesselator = Tessellator.getInstance();
-		VertexBuffer vb = tesselator.getBuffer();
+		BufferBuilder vb = tesselator.getBuffer();
 
 		for (ModelElement element : this.elementList) {
 			element.render(vb, par1);

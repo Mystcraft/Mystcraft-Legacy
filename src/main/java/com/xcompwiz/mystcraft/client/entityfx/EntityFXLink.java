@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.client.entityfx;
 import java.util.Random;
 
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
@@ -34,7 +34,7 @@ public class EntityFXLink extends Particle {
 	}
 
 	@Override
-	public void renderParticle(VertexBuffer buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		float var8 = (this.particleAge + partialTicks) / this.particleMaxAge * 32.0F;
 
 		if (var8 < 0.0F) {

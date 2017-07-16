@@ -24,9 +24,9 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
+import net.minecraft.world.storage.WorldSavedData;
 
 public class ChunkProfiler extends WorldSavedData {
 	public static final String	ID			= "MystChunkProfile";
@@ -204,8 +204,8 @@ public class ChunkProfiler extends WorldSavedData {
 	}
 
 	private void profileChunk(Chunk chunk, ChunkProfileData soliddata, Map<String, ChunkProfileData> maps) {
-		int chunkX = chunk.xPosition << 4;
-		int chunkZ = chunk.zPosition << 4;
+		int chunkX = chunk.x << 4;
+		int chunkZ = chunk.z << 4;
 		ExtendedBlockStorage[] storageArrays = chunk.getBlockStorageArray();
 		int[] solidmap = soliddata.data;
 		int layers = solidmap.length / 256;

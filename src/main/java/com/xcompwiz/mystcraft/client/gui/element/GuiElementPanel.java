@@ -1,7 +1,7 @@
 package com.xcompwiz.mystcraft.client.gui.element;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
@@ -66,7 +66,7 @@ public class GuiElementPanel extends GuiElement {
 		float b2 = (color2 & 255) / 255.0F;
 		GlStateManager.disableTexture2D();
 		Tessellator tes = Tessellator.getInstance();
-		VertexBuffer vb = tes.getBuffer();
+		BufferBuilder vb = tes.getBuffer();
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 		vb.pos(x2, y1, zLevel).color(r1, g1, b1, a1).endVertex();
 		vb.pos(x1, y1, zLevel).color(r1, g1, b1, a1).endVertex();

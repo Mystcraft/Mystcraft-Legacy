@@ -87,9 +87,9 @@ public class EntityLinkbook extends EntityLiving {
 		((ItemLinking) book.getItem()).activate(book, world, entity);
 	}
 
-	@Override
 	@Nullable
-	protected SoundEvent getHurtSound() {
+	@Override
+	protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
 		return null;
 	}
 

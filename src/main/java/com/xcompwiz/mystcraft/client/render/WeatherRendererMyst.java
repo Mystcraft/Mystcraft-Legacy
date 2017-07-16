@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.client.render;
 import java.util.Random;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
@@ -65,7 +65,7 @@ public class WeatherRendererMyst extends IRenderHandler {
 			int j = MathHelper.floor(entity.posY);
 			int k = MathHelper.floor(entity.posZ);
 			Tessellator tes = Tessellator.getInstance();
-			VertexBuffer vb = tes.getBuffer();
+			BufferBuilder vb = tes.getBuffer();
 			GlStateManager.disableCull();
 			GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
 			GlStateManager.enableBlend();

@@ -62,7 +62,7 @@ public class SunsetRenderer {
 	protected void renderHorizon(TextureManager eng, World worldObj, float celestial_period, float angle, float partial, float alpha) {
 		float celestial_radians = celestial_period * (float) Math.PI * 2.0F;
 		Tessellator tes = Tessellator.getInstance();
-		VertexBuffer vb = tes.getBuffer();
+		BufferBuilder vb = tes.getBuffer();
 		RenderHelper.disableStandardItemLighting();
 		float[] horizoncolors = getSunriseSunsetColors(celestial_period, partial);
 		if (horizoncolors != null) {

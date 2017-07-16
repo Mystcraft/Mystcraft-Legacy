@@ -22,7 +22,7 @@ public class MystEmptyChunk extends Chunk {
     }
 
     public boolean isAtLocation(int x, int z) {
-        return x == this.xPosition && z == this.zPosition;
+        return x == this.x && z == this.z;
     }
 
     @Override
@@ -89,16 +89,20 @@ public class MystEmptyChunk extends Chunk {
     public void removeTileEntity(BlockPos pos) {}
 
     @Override
-    public void onChunkUnload() {}
+    public void onUnload() {
+        super.onUnload();
+    }
 
     @Override
-    public void onChunkLoad() {}
+    public void onLoad() {
+        super.onLoad();
+    }
 
     @Override
-    public void setChunkModified() {}
+    public void setModified(boolean modified) {}
 
     @Override
-    public <T extends Entity> void getEntitiesOfTypeWithinAAAB(Class<? extends T> entityClass, AxisAlignedBB aabb, List<T> listToFill, Predicate<? super T> filter) {}
+    public <T extends Entity> void getEntitiesOfTypeWithinAABB(Class<? extends T> entityClass, AxisAlignedBB aabb, List<T> listToFill, Predicate<? super T> filter) {}
 
     @Override
     public void getEntitiesWithinAABBForEntity(@Nullable Entity entityIn, AxisAlignedBB aabb, List<Entity> listToFill, Predicate<? super Entity> p_177414_4_) {}
@@ -109,7 +113,7 @@ public class MystEmptyChunk extends Chunk {
     }
 
     public Random getRandomWithSeed(long seed){
-        return new Random(this.getWorld().getSeed() + (long)(this.xPosition * this.xPosition * 4987142) + (long)(this.xPosition * 5947611) + (long)(this.zPosition * this.zPosition) * 4392871L + (long)(this.zPosition * 389711) ^ seed);
+        return new Random(this.getWorld().getSeed() + (long)(this.x * this.x * 4987142) + (long)(this.x * 5947611) + (long)(this.z * this.z) * 4392871L + (long)(this.z * 389711) ^ seed);
     }
 
     @Override
@@ -118,7 +122,7 @@ public class MystEmptyChunk extends Chunk {
     }
 
     @Override
-    public boolean getAreLevelsEmpty(int startY, int endY) {
+    public boolean isEmptyBetween(int startY, int endY) {
         return true;
     }
 

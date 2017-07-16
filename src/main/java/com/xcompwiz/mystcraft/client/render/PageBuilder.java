@@ -1,6 +1,5 @@
 package com.xcompwiz.mystcraft.client.render;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
@@ -44,6 +43,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.List;
+import java.util.function.Function;
 
 @SideOnly(Side.CLIENT)
 public class PageBuilder {
@@ -150,7 +150,7 @@ public class PageBuilder {
         }
 
         @Override
-        public boolean load(IResourceManager manager, ResourceLocation location) {
+        public boolean load(IResourceManager manager, ResourceLocation location, Function<ResourceLocation, TextureAtlasSprite> textureGetter) {
             if(pageImage == null) {
                 throw new IllegalStateException("Called texture loading outside of TextureManager's loading cycle!");
             }
@@ -178,6 +178,7 @@ public class PageBuilder {
             this.framesTextureData.add(pixels);
             return false; //false = stitch onto atlas
         }
+
     }
 
     public static class PageSprite extends TextureAtlasSprite {
@@ -198,7 +199,7 @@ public class PageBuilder {
         }
 
         @Override
-        public boolean load(IResourceManager manager, ResourceLocation location) {
+        public boolean load(IResourceManager manager, ResourceLocation location, Function<ResourceLocation, TextureAtlasSprite> textureGetter) {
             if(pageImage == null) {
                 throw new IllegalStateException("Called texture loading outside of TextureManager's loading cycle!");
             }
@@ -375,7 +376,7 @@ public class PageBuilder {
         @Override
         public Optional<TRSRTransformation> apply(Optional<? extends IModelPart> part) {
             if(!part.isPresent() || !(part.get() instanceof ItemCameraTransforms.TransformType) || !transforms.containsKey(part.get())) {
-                return Optional.absent();
+                return Optional.empty();
             }
             return Optional.of(transforms.get(part.get()));
         }

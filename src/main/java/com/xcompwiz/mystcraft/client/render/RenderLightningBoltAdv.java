@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.client.render;
 import java.util.Random;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
@@ -29,7 +29,7 @@ public class RenderLightningBoltAdv extends Render<EntityLightningBoltAdv> {
     @Override
     public void doRender(EntityLightningBoltAdv entity, double x, double y, double z, float entityYaw, float partialTicks) {
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer vertexbuffer = tessellator.getBuffer();
+        BufferBuilder BufferBuilder = tessellator.getBuffer();
 
         GlStateManager.disableTexture2D();
         GlStateManager.disableLighting();
@@ -79,7 +79,7 @@ public class RenderLightningBoltAdv extends Render<EntityLightningBoltAdv> {
                         d3 += (double) (random1.nextInt(31) - 15);
                     }
 
-                    vertexbuffer.begin(5, DefaultVertexFormats.POSITION_COLOR);
+                    BufferBuilder.begin(5, DefaultVertexFormats.POSITION_COLOR);
                     float f = 0.5F;
                     float f1 = 0.45F;
                     float f2 = 0.45F;
@@ -118,8 +118,8 @@ public class RenderLightningBoltAdv extends Render<EntityLightningBoltAdv> {
                         if (j1 == 2 || j1 == 3) {
                             d11 += d7 * 2.0D;
                         }
-                        vertexbuffer.pos(d10 + d2, y + (double) (i1 * 16),      d11 + d3).color(c.r, c.g, c.b, 0.51F).endVertex();
-                        vertexbuffer.pos(d8 + d4,  y + (double) ((i1 + 1) * 16), d9 + d5).color(c.r, c.g, c.b, 0.51F).endVertex();
+                        BufferBuilder.pos(d10 + d2, y + (double) (i1 * 16),      d11 + d3).color(c.r, c.g, c.b, 0.51F).endVertex();
+                        BufferBuilder.pos(d8 + d4,  y + (double) ((i1 + 1) * 16), d9 + d5).color(c.r, c.g, c.b, 0.51F).endVertex();
                     }
 
                     tessellator.draw();

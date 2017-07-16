@@ -15,7 +15,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelBook;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
@@ -33,7 +33,7 @@ public class RenderBookstand extends TileEntitySpecialRenderer<TileEntityBooksta
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntityBookstand te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileEntityBookstand te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		x += 0.5;
 		z += 0.5;
 		bindTexture(Entities.bookstand);
@@ -96,7 +96,7 @@ public class RenderBookstand extends TileEntitySpecialRenderer<TileEntityBooksta
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         GlStateManager.disableTexture2D();
         Tessellator tes = Tessellator.getInstance();
-        VertexBuffer vb = tes.getBuffer();
+        BufferBuilder vb = tes.getBuffer();
         byte byte0 = 0;
         int j = fontrenderer.getStringWidth(s) / 2;
         vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);

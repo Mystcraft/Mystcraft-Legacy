@@ -338,8 +338,8 @@ public class AgeController implements AgeDirector {
 		int chunksneeded = MINCHUNKS - profiler.getCount();
 		while (chunksneeded > 0 && ChunkProfilerManager.getSize() < chunksneeded) {
 			iter.step();
-			int chunkX = chunkPos.chunkXPos + iter.x;
-			int chunkZ = chunkPos.chunkZPos + iter.y;
+			int chunkX = chunkPos.x + iter.x;
+			int chunkZ = chunkPos.z + iter.y;
 			if (safeLoadChunk(chunkloader, world, chunkX, chunkZ) == null) {
 				chunkgen.provideChunk(chunkX, chunkZ);
 			}

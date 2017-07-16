@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.client.model;
 import net.minecraft.client.model.PositionTextureVertex;
 import net.minecraft.client.model.TexturedQuad;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -99,7 +99,7 @@ public class ModelBox extends ModelElement {
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void render(VertexBuffer vb, float par2) {
+	public void render(BufferBuilder vb, float par2) {
 		TexturedQuad[] qList = this.quadList;
 		int length = qList.length;
 

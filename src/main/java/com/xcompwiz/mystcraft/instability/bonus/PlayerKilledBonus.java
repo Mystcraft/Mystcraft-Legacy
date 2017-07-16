@@ -61,9 +61,9 @@ public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOn
 	@Override
 	public void onEntityDeath(LivingDeathEvent event) {
 		if (event.getEntity().dimension == dimensionid && event.getEntity().getName().equals(playername)) {
-			if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof EntityPlayer) {
+			if (event.getSource().getTrueSource() != null && event.getSource().getTrueSource() instanceof EntityPlayer) {
 				current = max;
-				announce("instability.bonus.death", playername, event.getSource().getEntity().getName());
+				announce("instability.bonus.death", playername, event.getSource().getTrueSource().getName());
 			} else {
 				current = Math.max(max / 2, current);
 				announce("instability.bonus.death.partial", playername);

@@ -85,10 +85,11 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
-@Mod(modid = MystObjects.MystcraftModId, version = "@VERSION@", name = "Mystcraft", acceptedMinecraftVersions = "[1.11.2]")
+@Mod(modid = MystObjects.MystcraftModId, version = "@VERSION@", name = "Mystcraft", acceptedMinecraftVersions = "[1.12]")
 public class Mystcraft {
 
 	@Instance(MystObjects.MystcraftModId)
@@ -235,6 +236,7 @@ public class Mystcraft {
 		// Register the GUI Handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		// Init Recipes
+		//TODO hellfire> No. this doesn't work that way anymore.
 		ModRecipes.addRecipes(CraftingManager.getInstance());
 
 		// Init TileEntities
@@ -265,7 +267,8 @@ public class Mystcraft {
 		// Init Archivist
 		if (archivistEnabled()) {
 			archivist = new VillagerArchivist();
-			VillagerRegistry.instance().getRegistry().register(archivist);
+			//TODO Hellfire> move to registry event
+			ForgeRegistries.VILLAGER_PROFESSIONS.register(archivist);
 		}
 		VillagerRegistry.instance().registerVillageCreationHandler(new VillageCreationHandlerArchivistHouse());
 
@@ -324,7 +327,7 @@ public class Mystcraft {
 		profilingThread.start();
 
 		sidedProxy.startBaselineProfiling(mcserver);
-		registerDimensions(mcserver.worldServerForDimension(0).getSaveHandler());
+		registerDimensions(mcserver.getWorld(0).getSaveHandler());
 		LinkListenerPermissions.loadState();
 	}
 

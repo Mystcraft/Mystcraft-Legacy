@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 import java.util.Random;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
@@ -141,7 +141,7 @@ public class SymbolStarsTwinkle extends SymbolBase {
 
 		private void renderStars() {
 			Tessellator tes = Tessellator.getInstance();
-			VertexBuffer vb = tes.getBuffer();
+			BufferBuilder vb = tes.getBuffer();
 			vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 
 			for (int i = 0; i < 100; ++i) {

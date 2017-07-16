@@ -11,8 +11,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 public class MystWorldGenerator implements IWorldGenerator {
@@ -25,7 +25,7 @@ public class MystWorldGenerator implements IWorldGenerator {
 		BlockPos spawn = worldObj.getSpawnPoint();
 		ChunkPos spawnChunk = null;
 		if (spawn != null) spawnChunk = new ChunkPos(spawn);
-		if (spawnChunk != null && spawnChunk.chunkXPos == chunkX && spawnChunk.chunkZPos == chunkZ) generatePlatform(worldObj, spawn.getX(), spawn.getY() - 1, spawn.getZ(), Blocks.COBBLESTONE);
+		if (spawnChunk != null && spawnChunk.x == chunkX && spawnChunk.z == chunkZ) generatePlatform(worldObj, spawn.getX(), spawn.getY() - 1, spawn.getZ(), Blocks.COBBLESTONE);
 
 		ChunkProfiler profiler = controller.getChunkProfiler();
 		profileCompletedChunks(profiler, chunkX, chunkZ, ichunkprovider);

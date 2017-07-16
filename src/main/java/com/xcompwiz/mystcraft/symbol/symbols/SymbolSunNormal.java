@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 import java.util.Random;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
@@ -74,7 +74,7 @@ public class SymbolSunNormal extends SymbolBase {
         @SideOnly(Side.CLIENT)
 		public void render(TextureManager eng, World world, float partial) {
 		    Tessellator tes = Tessellator.getInstance();
-            VertexBuffer vb = tes.getBuffer();
+            BufferBuilder vb = tes.getBuffer();
 
             float celestial_period = this.getAltitudeAngle(world.getWorldTime(), partial);
             GlStateManager.enableTexture2D();

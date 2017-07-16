@@ -45,7 +45,7 @@ public class CreativeTabMyst extends CreativeTabs {
 			}
 			for (CreativeTabs tab : item.getCreativeTabs()) {
 				if (tab == this) {
-					item.getSubItems(item, this, list);
+					item.getSubItems(this, list);
 				}
 			}
 		}

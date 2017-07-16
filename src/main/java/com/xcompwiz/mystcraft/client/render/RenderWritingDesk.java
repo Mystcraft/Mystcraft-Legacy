@@ -33,7 +33,7 @@ public class RenderWritingDesk extends TileEntitySpecialRenderer<TileEntityDesk>
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntityDesk te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileEntityDesk te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		int horizontalFacingIndex = te.getBlockMetadata() & 3;
 		x += 0.5;
 		z += 0.5;
@@ -90,7 +90,7 @@ public class RenderWritingDesk extends TileEntitySpecialRenderer<TileEntityDesk>
 			if (itemstack.getItem() == Items.FILLED_MAP) {
 				this.bindTexture(Vanilla.map_background);
 				Tessellator tes = Tessellator.getInstance();
-                VertexBuffer vb = tes.getBuffer();
+                BufferBuilder vb = tes.getBuffer();
 				GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
 				GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
 				GlStateManager.scale(0.006F, 0.006F, 0.006F);

@@ -14,7 +14,7 @@ import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
 public class StorageInstabilityData extends WorldSavedData {

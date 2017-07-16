@@ -14,6 +14,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -25,6 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ItemPage extends Item implements IItemWritable, IItemPageProvider, IItemOnLoadable {
 
@@ -52,7 +54,7 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, List<String> tooltip, boolean advancedTooltip) {
+	public void addInformation(@Nonnull ItemStack itemstack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if (itemstack.getTagCompound() != null) {
 			Page.getTooltip(itemstack, tooltip);
 		}

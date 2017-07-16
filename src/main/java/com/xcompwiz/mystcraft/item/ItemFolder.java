@@ -8,6 +8,7 @@ import com.xcompwiz.mystcraft.api.item.IItemWritable;
 import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.inventory.InventoryFolder;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,8 +36,8 @@ public class ItemFolder extends Item implements IItemOrderablePageProvider, IIte
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(@Nonnull ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-		String name = InventoryFolder.getName(stack);
+	public void addInformation(@Nonnull ItemStack itemstack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		String name = InventoryFolder.getName(itemstack);
 		if (name != null) {
 			tooltip.add(name);
 		}

@@ -45,7 +45,7 @@ public class CommandToggleDownfall extends CommandBaseAdv {
 	 * Toggle rain and enable thundering.
 	 */
 	protected void toggleDownfall(MinecraftServer server, int dimension) {
-		World world = server.worldServerForDimension(dimension);
+		World world = server.getWorld(dimension);
 		world.getWorldInfo().setRaining(!world.isRaining()); // Forge: !!!Welp, they broke weather more! Override for getWorldInfo would fix.
 		world.getWorldInfo().setThundering(true);
 	}

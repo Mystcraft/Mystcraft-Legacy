@@ -115,7 +115,7 @@ public abstract class GuiContainerElements extends GuiContainer {
 			tooltip = this.getTooltipInfo();
 		}
 		if (tooltip != null) {
-			GuiUtils.drawTooltip(fontRendererObj, mouseX + 12, mouseY - 12, zLevel, tooltip, this.width, this.height);
+			GuiUtils.drawTooltip(fontRenderer, mouseX + 12, mouseY - 12, zLevel, tooltip, this.width, this.height);
 		}
 	}
 

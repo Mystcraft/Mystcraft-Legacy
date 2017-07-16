@@ -107,7 +107,7 @@ public class CommandTPX extends CommandBaseAdv {
 		if (link == null) {
 			link = new LinkOptions(null);
 			int dim = (int) (handleRelativeNumber(sender, subject.dimension, sTarget, 0, 0) - 0.5D);
-			if (server.worldServerForDimension(dim) == null) { throw new CommandException("commands.myst.tpx.fail.noworld", new Object[] { dim }); }
+			if (server.getWorld(dim) == null) { throw new CommandException("commands.myst.tpx.fail.noworld", new Object[] { dim }); }
 			link.setDimensionUID(dim);
 			if (sX != null && sY != null && sZ != null) {
 				int x = (int) handleRelativeNumber(sender, subject.posX, sX);

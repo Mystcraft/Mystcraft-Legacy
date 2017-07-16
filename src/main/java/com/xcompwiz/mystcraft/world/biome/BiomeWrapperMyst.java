@@ -55,7 +55,7 @@ public class BiomeWrapperMyst extends Biome {
 
 		this.provider = provider;
 		this.baseBiome = baseBiome;
-		this.theBiomeDecorator = baseBiome.theBiomeDecorator;
+		this.decorator = baseBiome.decorator;
 
 		this.topBlock = baseBiome.topBlock;
 		this.fillerBlock = baseBiome.fillerBlock;
@@ -71,7 +71,7 @@ public class BiomeWrapperMyst extends Biome {
 	    if(baseBiome == null) {
 	        return null;
         }
-		return baseBiome.theBiomeDecorator;
+		return baseBiome.decorator;
 	}
 
 	@Override
@@ -80,8 +80,8 @@ public class BiomeWrapperMyst extends Biome {
 	}
 
 	@Override
-	public WorldGenAbstractTree genBigTreeChance(Random rand) {
-		return baseBiome.genBigTreeChance(rand);
+	public WorldGenAbstractTree getRandomTreeFeature(Random rand) {
+		return baseBiome.getRandomTreeFeature(rand);
 	}
 
 	/**

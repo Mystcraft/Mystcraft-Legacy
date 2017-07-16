@@ -42,7 +42,7 @@ public class SymbolStarsEndSky extends SymbolBase {
 		@Override
 		public void render(TextureManager textureManager, World worldObj, float partial) {
 			Tessellator tes = Tessellator.getInstance();
-			VertexBuffer vb = tes.getBuffer();
+			BufferBuilder vb = tes.getBuffer();
 
 			Color color = gradient.getColor(controller.getTime() / 12000F);
             java.awt.Color awt = color.toAWT();

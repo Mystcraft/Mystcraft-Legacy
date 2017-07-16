@@ -15,8 +15,8 @@ public class EffectMeteor implements IEnvironmentalEffect {
 
 	@Override
 	public void tick(World worldObj, Chunk chunk) {
-		int var5 = chunk.xPosition * 16;
-		int var6 = chunk.zPosition * 16;
+		int var5 = chunk.x * 16;
+		int var6 = chunk.z * 16;
 		int var8;
 		int var9;
 		int var10;

@@ -5,6 +5,7 @@ import java.util.List;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.page.Page;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -18,6 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ItemLinkbookUnlinked extends Item {
 
@@ -29,9 +31,9 @@ public class ItemLinkbookUnlinked extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(@Nonnull ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-	    if(stack.getTagCompound() != null) {
-	        Page.getTooltip(stack, tooltip);
+    public void addInformation(@Nonnull ItemStack itemstack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	    if(itemstack.getTagCompound() != null) {
+	        Page.getTooltip(itemstack, tooltip);
         }
     }
 

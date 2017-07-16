@@ -48,7 +48,7 @@ public class MPacketGuiMessage extends PacketBase<MPacketGuiMessage, MPacketGuiM
 		if(ctx.side.isClient()) {
 			thePlayer = clientPlayer();
 		} else {
-			thePlayer = ctx.getServerHandler().playerEntity;
+			thePlayer = ctx.getServerHandler().player;
 		}
 
 		IThreadListener itl;

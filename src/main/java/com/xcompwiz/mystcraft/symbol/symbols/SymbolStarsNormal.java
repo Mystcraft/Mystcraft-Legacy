@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 import java.util.Random;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
@@ -113,7 +113,7 @@ public class SymbolStarsNormal extends SymbolBase {
         @SideOnly(Side.CLIENT)
 		private void renderStars() {
 		    Tessellator tes = Tessellator.getInstance();
-            VertexBuffer vb = tes.getBuffer();
+            BufferBuilder vb = tes.getBuffer();
             Random random = new Random(10842L);
             vb.begin(7, DefaultVertexFormats.POSITION);
 

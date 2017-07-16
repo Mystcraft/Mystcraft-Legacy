@@ -1,7 +1,7 @@
 package com.xcompwiz.mystcraft.nbt;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 
 public class NBTDataContainer extends WorldSavedData {
 

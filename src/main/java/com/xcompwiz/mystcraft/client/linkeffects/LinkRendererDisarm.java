@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
@@ -121,7 +121,7 @@ public class LinkRendererDisarm implements ILinkPanelEffect {
             GlStateManager.shadeModel(GL11.GL_SMOOTH);
 
             Tessellator tes = Tessellator.getInstance();
-            VertexBuffer vb = tes.getBuffer();
+            BufferBuilder vb = tes.getBuffer();
 
 			long seed = rand.nextLong();
 			Random lrand = new Random();

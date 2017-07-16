@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.Vec3d;
@@ -37,7 +37,7 @@ public class RenderStarFissure extends TileEntitySpecialRenderer<TileEntityStarF
     }
 
 	@Override
-	public void renderTileEntityAt(TileEntityStarFissure te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileEntityStarFissure te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		float rx = (float) rendererDispatcher.entityX;
         float ry = (float) rendererDispatcher.entityY;
         float rz = (float) rendererDispatcher.entityZ;
@@ -72,8 +72,8 @@ public class RenderStarFissure extends TileEntitySpecialRenderer<TileEntityStarF
                 f6 = 0.5F;
             }
             float f8 = (float) -y;
-            float f9 = f8 + (float) pos.yCoord;
-            float f10 = f8 + f5 + (float) pos.yCoord;
+            float f9 = f8 + (float) pos.y;
+            float f10 = f8 + f5 + (float) pos.z;
             float f11 = f9 / f10;
             f11 = (float) y + f11;
             GlStateManager.translate(rx, f11, rz);
@@ -105,8 +105,8 @@ public class RenderStarFissure extends TileEntitySpecialRenderer<TileEntityStarF
             GlStateManager.translate(-0.5F, -0.5F, 0.0F);
             GlStateManager.translate(-rx, -rz, -ry);
 
-            f9 = (float) (f8 + pos.yCoord);
-            GlStateManager.translate((pos.xCoord * f5) / f9, (pos.zCoord * f5) / f9, -ry);
+            f9 = (float) (f8 + pos.y);
+            GlStateManager.translate((pos.x * f5) / f9, (pos.z * f5) / f9, -ry);
 
             drawTopFace(RANDOM, i, x, y, z, f7);
             drawBottomFace(RANDOM, i, x, y, z, f7);
@@ -125,7 +125,7 @@ public class RenderStarFissure extends TileEntitySpecialRenderer<TileEntityStarF
 
 	private void drawTopFace(Random random, int pass, double x, double y, double z, float colorShift) {
 	    Tessellator tes = Tessellator.getInstance();
-        VertexBuffer vb = tes.getBuffer();
+        BufferBuilder vb = tes.getBuffer();
         float f11 = random.nextFloat() * 0.5F + 0.1F;
         float f12 = random.nextFloat() * 0.5F + 0.4F;
         float f13 = random.nextFloat() * 0.5F + 0.5F;
@@ -142,7 +142,7 @@ public class RenderStarFissure extends TileEntitySpecialRenderer<TileEntityStarF
 
 	private void drawBottomFace(Random random, int pass, double x, double y, double z, float colorShift) {
         Tessellator tes = Tessellator.getInstance();
-        VertexBuffer vb = tes.getBuffer();
+        BufferBuilder vb = tes.getBuffer();
         float f11 = random.nextFloat() * 0.5F + 0.1F;
         float f12 = random.nextFloat() * 0.5F + 0.4F;
         float f13 = random.nextFloat() * 0.5F + 0.5F;

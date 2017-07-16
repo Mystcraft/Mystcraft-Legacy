@@ -17,6 +17,7 @@ import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -65,7 +66,7 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 
 	@Override
     @SideOnly(Side.CLIENT)
-	public void addInformation(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, List<String> tooltip, boolean advancedTooltip) {
+	public void addInformation(@Nonnull ItemStack itemstack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if (itemstack.getTagCompound() != null) {
 			String name = LinkOptions.getDisplayName(itemstack.getTagCompound());
 			if (!name.isEmpty()) {

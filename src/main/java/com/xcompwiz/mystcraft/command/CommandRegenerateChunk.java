@@ -91,7 +91,7 @@ public class CommandRegenerateChunk extends CommandBaseAdv {
 				}
 				Chunk c = chunkprovider.getLoadedChunk(x, z);
 				if(c != null) {
-					chunkprovider.unload(c);
+					chunkprovider.queueUnload(c);
 				}
 			}
 		}
@@ -107,7 +107,7 @@ public class CommandRegenerateChunk extends CommandBaseAdv {
                 long i = ChunkPos.asLong(x, z);
                 Chunk chunk;
                 try {
-                    chunk = chunkprovider.chunkGenerator.provideChunk(x, z);
+                    chunk = chunkprovider.chunkGenerator.generateChunk(x, z);
                 } catch (Throwable throwable) {
                     CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception generating new chunk");
                     CrashReportCategory crashreportcategory = crashreport.makeCategory("Chunk to be generated");
@@ -118,8 +118,8 @@ public class CommandRegenerateChunk extends CommandBaseAdv {
                 }
 
                 chunkprovider.id2ChunkMap.put(i, chunk);
-                chunk.onChunkLoad();
-                chunk.populateChunk(chunkprovider, chunkprovider.chunkGenerator);
+                chunk.onLoad();
+                chunk.populate(chunkprovider, chunkprovider.chunkGenerator);
 				chunkprovider.loadChunk(x, z);
 			}
 		}
@@ -137,7 +137,7 @@ public class CommandRegenerateChunk extends CommandBaseAdv {
 
 	private void sendToAllPlayersWatchingChunk(WorldServer worldObj, ChunkPos chunkLocation, Packet pkt) {
 		Collection<EntityPlayer> players = worldObj.playerEntities;
-		PlayerChunkMapEntry entry = worldObj.getPlayerChunkMap().getEntry(chunkLocation.chunkXPos, chunkLocation.chunkZPos);
+		PlayerChunkMapEntry entry = worldObj.getPlayerChunkMap().getEntry(chunkLocation.x, chunkLocation.z);
 		if(entry != null) {
             entry.sendPacket(pkt);
         }

@@ -63,8 +63,8 @@ public class EffectDecayBasic implements IEnvironmentalEffect {
 
 	@Override
 	public void tick(World worldObj, Chunk chunk) {
-		int chunkX = chunk.xPosition * 16;
-		int chunkZ = chunk.zPosition * 16;
+		int chunkX = chunk.x * 16;
+		int chunkZ = chunk.z * 16;
 		int score = controller.getInstabilityScore();
 
 		if (worldObj.rand.nextInt(maxscore) < score) {

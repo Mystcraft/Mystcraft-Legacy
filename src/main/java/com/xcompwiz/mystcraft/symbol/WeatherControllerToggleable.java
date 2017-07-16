@@ -47,8 +47,8 @@ public abstract class WeatherControllerToggleable implements IWeatherController 
 	@Override
 	public void tick(World worldObj, Chunk chunk) {
 		if (worldObj.isRaining() && worldObj.isThundering() && worldObj.rand.nextInt(100000) == 0) {
-			int xBase = chunk.xPosition * 16;
-			int zBase = chunk.zPosition * 16;
+			int xBase = chunk.x * 16;
+			int zBase = chunk.z * 16;
 			updateLCG = updateLCG * 3 + 1013904223;
 			int coords = updateLCG >> 2;
 			int x = xBase + (coords & 15);

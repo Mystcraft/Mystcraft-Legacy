@@ -75,7 +75,7 @@ public class SymbolNetherFort extends SymbolBase {
 		@Override
 		public BlockPos locate(World world, String s, BlockPos pos, boolean genChunks) {
 			if ("Nether Fortress".equals(s) && generator != null) {
-				return generator.getClosestStrongholdPos(world, pos, genChunks);
+				return generator.getNearestStructurePos(world, pos, genChunks);
 			}
 			return null;
 		}

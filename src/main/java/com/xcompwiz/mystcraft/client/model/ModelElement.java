@@ -1,10 +1,10 @@
 package com.xcompwiz.mystcraft.client.model;
 
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 
 public abstract class ModelElement {
 
-	//VertexBuffer passed in has to be the VertexBuffer from Tessellator.getInstance
-	public abstract void render(VertexBuffer vb, float partialTicks);
+	//BufferBuilder passed in has to be the BufferBuilder from Tessellator.getInstance
+	public abstract void render(BufferBuilder vb, float partialTicks);
 
 }

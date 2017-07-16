@@ -1,7 +1,7 @@
 package com.xcompwiz.mystcraft.client.render;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
@@ -88,7 +88,7 @@ public class RenderLinkbook extends Render<EntityLinkbook> {
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		GlStateManager.disableTexture2D();
 		Tessellator tes = Tessellator.getInstance();
-		VertexBuffer vb = tes.getBuffer();
+		BufferBuilder vb = tes.getBuffer();
 		byte byte0 = 0;
 		int j = fontrenderer.getStringWidth(s) / 2;
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);

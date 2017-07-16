@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.client.render;
 import com.xcompwiz.mystcraft.block.BlockLectern;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
@@ -42,7 +42,7 @@ public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> 
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntityLectern te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileEntityLectern te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		x += 0.5;
 		z += 0.5;
 		bindTexture(Entities.lectern);
@@ -91,7 +91,7 @@ public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> 
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		GlStateManager.disableTexture2D();
 		Tessellator tes = Tessellator.getInstance();
-		VertexBuffer vb = tes.getBuffer();
+		BufferBuilder vb = tes.getBuffer();
 		byte byte0 = 0;
 		int j = fontrenderer.getStringWidth(s) / 2;
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
@@ -138,7 +138,7 @@ public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> 
 			if (itemstack.getItem() == Items.FILLED_MAP) {
 				this.bindTexture(Vanilla.map_background);
 				Tessellator tes = Tessellator.getInstance();
-				VertexBuffer vb = tes.getBuffer();
+				BufferBuilder vb = tes.getBuffer();
 				GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
 				GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
 				GlStateManager.scale(0.006F, 0.006F, 0.006F);

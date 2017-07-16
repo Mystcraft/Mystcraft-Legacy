@@ -24,15 +24,15 @@ public class EffectExtraTicks implements IEnvironmentalEffect {
 
 	@Override
 	public void tick(World worldObj, Chunk chunk) {
-		int xPos = chunk.xPosition * 16;
-		int zPos = chunk.zPosition * 16;
+		int xPos = chunk.x * 16;
+		int zPos = chunk.z * 16;
 
 		ExtendedBlockStorage[] storagea = chunk.getBlockStorageArray();
 
 		for (int k = 0; k < storagea.length; ++k) {
 			ExtendedBlockStorage storage = storagea[k];
 
-			if (storage != null && storage.getNeedsRandomTick()) {
+			if (storage != null && storage.needsRandomTick()) {
 				for (int i = 0; i < 3; ++i) {
 					this.updateLCG = this.updateLCG * 3 + 1013904223;
 					int bits = this.updateLCG >> 2;

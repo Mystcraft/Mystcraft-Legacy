@@ -56,12 +56,11 @@ public class MapGenScatteredFeatureMyst extends MapGenStructure {
 		return stringId;
 	}
 
-	//TODO implement if this causes issues?...
-    @Nullable
-    @Override
-    public BlockPos getClosestStrongholdPos(World worldIn, BlockPos pos, boolean generateChunks) {
-        return null;
-    }
+	@Nullable
+	@Override
+	public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean findUnexplored) {
+		return null;
+	}
 
     @Override
 	protected boolean canSpawnStructureAtCoords(int par1, int par2) {

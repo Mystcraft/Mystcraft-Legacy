@@ -18,11 +18,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import javax.annotation.Nullable;
@@ -70,9 +70,9 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
         }
 
         public void unload(Chunk chunkIn) {
-            if (this.world.provider.canDropChunk(chunkIn.xPosition, chunkIn.zPosition)) {
-                this.droppedChunksSet.add(ChunkPos.asLong(chunkIn.xPosition, chunkIn.zPosition));
-                chunkIn.unloaded = true;
+            if (this.world.provider.canDropChunk(chunkIn.x, chunkIn.z)) {
+                this.droppedChunksSet.add(ChunkPos.asLong(chunkIn.x, chunkIn.z));
+                chunkIn.unloadQueued = true;
             }
         }
 
@@ -82,7 +82,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
             long i = ChunkPos.asLong(x, z);
             Chunk chunk = this.id2ChunkMap.get(i);
             if (chunk != null) {
-                chunk.unloaded = false;
+                chunk.unloadQueued = false;
             }
             return chunk;
         }
@@ -103,8 +103,8 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 				for (int i = 0; i < 100 && iterator.hasNext(); iterator.remove()) {
 					Long olong = iterator.next();
 					Chunk chunk = this.id2ChunkMap.get(olong);
-					if (chunk != null && chunk.unloaded) {
-						chunk.onChunkUnload();
+					if (chunk != null && chunk.unloadQueued) {
+						chunk.onUnload();
 						this.id2ChunkMap.remove(olong);
 						++i;
 					}

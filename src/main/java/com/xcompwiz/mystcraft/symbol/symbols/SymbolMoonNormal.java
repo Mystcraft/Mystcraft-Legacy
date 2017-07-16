@@ -3,7 +3,7 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 import java.util.Random;
 
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
@@ -69,7 +69,7 @@ public class SymbolMoonNormal extends SymbolBase {
 		public void render(TextureManager eng, World worldObj, float partial) {
 			// Draw Moon
 			Tessellator tes = Tessellator.getInstance();
-			VertexBuffer vb = tes.getBuffer();
+			BufferBuilder vb = tes.getBuffer();
 
 			float invertRain = 1.0F - worldObj.getRainStrength(partial);
 			float celestial_period = getAltitudeAngle(worldObj.getWorldTime(), partial);

@@ -169,20 +169,20 @@ public class GuiElementBook extends GuiElement {
 				drawTexturedModalRect(40, 20, 156, 0, 18, 18);
 			}
 			Collection<String> authors = bookcontainer.getBookAuthors();
-			mc.fontRendererObj.drawString(bookcontainer.getBookTitle(), 40, 40, 0x000000);
+			mc.fontRenderer.drawString(bookcontainer.getBookTitle(), 40, 40, 0x000000);
 			int y = 50;
 			if (authors != null) for (String author : authors) {
 				GlStateManager.pushMatrix();
 				GlStateManager.translate(50, y, 0);
 				GlStateManager.scale(0.5, 0.5, 1);
-				mc.fontRendererObj.drawString(author, 0, 0, 0x000000);
+				mc.fontRenderer.drawString(author, 0, 0, 0x000000);
 				GlStateManager.popMatrix();
 				y += 5;
 			}
 		}
 		String s = "" + (getCurrentPageIndex()) + "/" + (bookcontainer.getPageCount());
-		int j = mc.fontRendererObj.getStringWidth(s) / 2;
-		mc.fontRendererObj.drawString(s, 165 - j, 185, 0x000000);
+		int j = mc.fontRenderer.getStringWidth(s) / 2;
+		mc.fontRenderer.drawString(s, 165 - j, 185, 0x000000);
 		GlStateManager.enableDepth();
 		GlStateManager.popMatrix();
 	}

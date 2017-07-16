@@ -4,7 +4,7 @@ import com.xcompwiz.mystcraft.block.BlockBookReceptacle;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -31,7 +31,7 @@ public class RenderBookReceptacle extends TileEntitySpecialRenderer<TileEntityBo
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntityBookReceptacle te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileEntityBookReceptacle te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		x += 0.5;
 		z += 0.5;
 		ItemStack display = te.getDisplayItem();
@@ -105,7 +105,7 @@ public class RenderBookReceptacle extends TileEntitySpecialRenderer<TileEntityBo
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		GlStateManager.disableTexture2D();
 		Tessellator tes = Tessellator.getInstance();
-		VertexBuffer vb = tes.getBuffer();
+		BufferBuilder vb = tes.getBuffer();
 		byte byte0 = 0;
 		int j = fontrenderer.getStringWidth(s) / 2;
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);

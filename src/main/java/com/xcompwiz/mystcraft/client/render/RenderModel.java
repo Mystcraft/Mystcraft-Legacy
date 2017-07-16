@@ -19,7 +19,7 @@ public class RenderModel<T extends TileEntity> extends TileEntitySpecialRenderer
 	}
 
 	@Override
-	public void renderTileEntityAt(T te, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		x += 0.5;
 		z += 0.5;
 		this.bindTexture(texture);

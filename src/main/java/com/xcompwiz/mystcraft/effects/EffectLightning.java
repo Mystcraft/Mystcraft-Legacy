@@ -29,8 +29,8 @@ public class EffectLightning implements IEnvironmentalEffect {
 	@Override
 	public void tick(World worldObj, Chunk chunk) {
 		if (worldObj.isRemote) return;
-		int chunkX = chunk.xPosition * 16;
-		int chunkZ = chunk.zPosition * 16;
+		int chunkX = chunk.x * 16;
+		int chunkZ = chunk.z * 16;
 		int coords;
 		int x;
 		int z;

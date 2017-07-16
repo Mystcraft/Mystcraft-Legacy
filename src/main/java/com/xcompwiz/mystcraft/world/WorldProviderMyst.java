@@ -30,7 +30,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -177,9 +177,9 @@ public class WorldProviderMyst extends WorldProvider {
 		float grn;
 		float blu;
 		if (temp != null) {
-			red = (float) temp.xCoord;
-			grn = (float) temp.yCoord;
-			blu = (float) temp.zCoord;
+			red = (float) temp.x;
+			grn = (float) temp.y;
+			blu = (float) temp.z;
 		} else {
 			red = 1.0F;
 			grn = 1.0F;
@@ -328,7 +328,7 @@ public class WorldProviderMyst extends WorldProvider {
 		WorldServer world = (WorldServer) this.world;
 		if (this.world.playerEntities.isEmpty()) {
 			if (emptyTicks == 10) {
-			    world.getChunkProvider().unloadAllChunks();
+			    world.getChunkProvider().queueUnloadAll();
             }
 			++emptyTicks;
 		} else {
@@ -473,9 +473,9 @@ public class WorldProviderMyst extends WorldProvider {
 			green *= var4;
 			blue *= var4;
 		} else {
-			red = (float) out.xCoord;
-			green = (float) out.yCoord;
-			blue = (float) out.zCoord;
+			red = (float) out.x;
+			green = (float) out.y;
+			blue = (float) out.z;
 		}
 		float rainstrength = this.world.getRainStrength(partialtick);
 		float var14;
@@ -522,16 +522,6 @@ public class WorldProviderMyst extends WorldProvider {
 
 	public static String getSaveFolderName(int dimid) {
 		return "DIM_MYST" + dimid;
-	}
-
-	@Override
-	public String getWelcomeMessage() {
-		return "Traveling to " + getDimensionName();
-	}
-
-	@Override
-	public String getDepartMessage() {
-		return "Traveling from " + getDimensionName();
 	}
 
 	public String getDimensionName() {
@@ -587,10 +577,10 @@ public class WorldProviderMyst extends WorldProvider {
         return true;
     }
 
-    @Override
-    public boolean hasNoSky() {
-        return false;
-    }
+	@Override
+	public boolean isNether() {
+		return false;
+	}
 
     @Override
 	public DimensionType getDimensionType() {

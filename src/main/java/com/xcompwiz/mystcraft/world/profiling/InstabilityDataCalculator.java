@@ -289,8 +289,8 @@ public class InstabilityDataCalculator {
 			if (disconnectclients && mcserver.isDedicatedServer()) {
 				String denymessage = "Mystcraft still needs to finish profiling. Please try again later.";
 				try {
-                    ((NetHandlerPlayServer) event.getHandler()).disconnect(denymessage);
-					GameProfile gameprofile = ((NetHandlerPlayServer) event.getHandler()).playerEntity.getGameProfile();
+					((NetHandlerPlayServer) event.getHandler()).disconnect(new TextComponentString(denymessage));
+					GameProfile gameprofile = ((NetHandlerPlayServer) event.getHandler()).player.getGameProfile();
 					LoggerUtils.info("Disconnecting " + getIDString(event.getManager(), gameprofile) + ": " + denymessage);
 				} catch (Exception exception) {
 					LoggerUtils.error("Error whilst disconnecting player", exception);
@@ -349,7 +349,7 @@ public class InstabilityDataCalculator {
 			WorldProviderMystDummy.setBounds(profiler.getCount() - 1, //TODO: Tie this to the needed chunk radius
 					minimumchunks + 2, -1, 2);
 			//Finally we obtain a world instance and set the chunk profiler for it.
-			world = mcserver.worldServerForDimension(dimId);
+			world = mcserver.getWorld(dimId);
 			if (world == null) throw new RuntimeException("Could not create Instability Comparison Dimension");
 		}
 
