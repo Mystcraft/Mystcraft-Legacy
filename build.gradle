@@ -86,11 +86,13 @@ configFile.withReader {
 	ext.config = new ConfigSlurper().parse prop
 }
 
-passFile.withReader {
-	// read pass file. it shall from now on be referenced as simply pass or as project.pass
-	def prop = new Properties()
-	prop.load(it)
-	ext.pass = new ConfigSlurper().parse prop
+if (passFile.exists()) {
+	passFile.withReader {
+		// read pass file. it shall from now on be referenced as simply pass or as project.pass
+		def prop = new Properties()
+		prop.load(it)
+		ext.pass = new ConfigSlurper().parse prop
+	}
 }
 
 version = "${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"
