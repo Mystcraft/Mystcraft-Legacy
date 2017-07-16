@@ -1,4 +1,4 @@
-ext.forgeversion     = "1.12-14.21.1.2413"
+ext.forgeversion     = "1.12-14.21.1.2410"
 group                = "com.xcompwiz.mystcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 ext.archivesBaseName = "mystcraft"
 ext.nameCased        = "Mystcraft"
@@ -44,7 +44,7 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
 		classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.0.8'
 	}
 }
