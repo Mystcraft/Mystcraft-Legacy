@@ -9,6 +9,7 @@ ext.curseIncludeDev  = true
 
 // define some stuff.  hereafter referenced as project.varName
 ext.configFile = file "build.properties"
+ext.passFile = file "passwords.gradle"
 ext.smallChangelog = file("changes.txt")
 ext.releaseChangelog = file("changelog.txt")
 ext.publishChangelog = file("changes.txt")
@@ -69,10 +70,6 @@ apply plugin: 'maven'
 apply plugin: 'com.matthewprenger.cursegradle'
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-if (file('passwords.gradle').exists()) {
-	apply from: 'locations.gradle'
-}
-
 if (file('locations.gradle').exists()) {
 	apply from: 'locations.gradle'
 }
@@ -81,6 +78,7 @@ if (file('dependencies.gradle').exists()) {
 	apply from: 'dependencies.gradle'
 }
 
+
 configFile.withReader {
 	// read config. it shall from now on be referenced as simply config or as project.config
 	def prop = new Properties()
@@ -88,7 +86,20 @@ configFile.withReader {
 	ext.config = new ConfigSlurper().parse prop
 }
 
+passFile.withReader {
+	// read pass file. it shall from now on be referenced as simply pass or as project.pass
+	def prop = new Properties()
+	prop.load(it)
+	ext.pass = new ConfigSlurper().parse prop
+}
+
 version = "${config.version.super}.${config.version.major}.${config.version.minor}.${config.version.build}"
+
+// Java version
+sourceCompatibility = targetCompatibility = '1.8'
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+}
 
 // Setup the forge minecraft plugin data. Specify the preferred forge/minecraft version here
 minecraft {
