@@ -1,7 +1,9 @@
 package com.xcompwiz.mystcraft.world.profiling;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Sets;
@@ -12,6 +14,7 @@ import com.xcompwiz.mystcraft.world.MystEmptyChunk;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
+import net.minecraft.init.Biomes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -51,7 +54,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 
 		private Chunk defaultEmptyChunk;
 
-        private final Set<Long> droppedChunksSet = Sets.<Long>newHashSet();
+		private final Set<Long> droppedChunksSet = Sets.<Long> newHashSet();
 
 		public ChunkProviderServerDummy(WorldServer worldServer, IChunkLoader loader, IChunkGenerator provider) {
 			super(worldServer, loader, provider);
@@ -63,31 +66,33 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 			return false;
 		}
 
-        public void unloadAllChunks() {
-            for (Chunk chunk : this.id2ChunkMap.values()) {
-                this.unload(chunk);
-            }
-        }
+		@Override
+		public void unloadAllChunks() {
+			for (Chunk chunk : this.id2ChunkMap.values()) {
+				this.unload(chunk);
+			}
+		}
 
-        public void unload(Chunk chunkIn) {
-            if (this.world.provider.canDropChunk(chunkIn.x, chunkIn.z)) {
-                this.droppedChunksSet.add(ChunkPos.asLong(chunkIn.x, chunkIn.z));
-                chunkIn.unloadQueued = true;
-            }
-        }
+		@Override
+		public void unload(Chunk chunkIn) {
+			if (this.world.provider.canDropChunk(chunkIn.xPosition, chunkIn.zPosition)) {
+				this.droppedChunksSet.add(ChunkPos.asLong(chunkIn.xPosition, chunkIn.zPosition));
+				chunkIn.unloaded = true;
+			}
+		}
 
-        @Nullable
-        @Override
-        public Chunk getLoadedChunk(int x, int z) {
-            long i = ChunkPos.asLong(x, z);
-            Chunk chunk = this.id2ChunkMap.get(i);
-            if (chunk != null) {
-                chunk.unloadQueued = false;
-            }
-            return chunk;
-        }
+		@Nullable
+		@Override
+		public Chunk getLoadedChunk(int x, int z) {
+			long i = ChunkPos.asLong(x, z);
+			Chunk chunk = this.id2ChunkMap.get(i);
+			if (chunk != null) {
+				chunk.unloaded = false;
+			}
+			return chunk;
+		}
 
-        @Override
+		@Override
 		public Chunk loadChunk(int chunkX, int chunkZ) {
 			if (outOfBounds(chunkX, chunkZ)) {
 				return defaultEmptyChunk;
@@ -97,7 +102,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 
 		@Override
 		public boolean tick() {
-		    //> 80 otherwise we don't have anything to work with in terms of population
+			//> 80 otherwise we don't have anything to work with in terms of population
 			if (!this.droppedChunksSet.isEmpty() && this.droppedChunksSet.size() > 80) {
 				Iterator<Long> iterator = this.droppedChunksSet.iterator();
 				for (int i = 0; i < 100 && iterator.hasNext(); iterator.remove()) {
@@ -111,7 +116,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 				}
 				this.chunkLoader.chunkTick();
 			}
-            return false;
+			return false;
 		}
 
 	}
@@ -145,17 +150,20 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		return chunkZ < chunkZ_min || chunkZ > chunkZ_max || chunkX < chunkX_min;
 	}
 
-	private AgeController			controller;
-	private static ChunkProfiler	chunkprofiler;
-	private static int				chunkX_min;
-	private static int				chunkZ_min;
-	private static int				chunkZ_max;
-	private int						chunkX, chunkZ;
-	private boolean					chunkproviderreplaced;
+	private AgeController controller;
+	private static ChunkProfiler chunkprofiler;
+	private static int chunkX_min;
+	private static int chunkZ_min;
+	private static int chunkZ_max;
+	private int chunkX, chunkZ;
+	private boolean chunkproviderreplaced;
+
+	private static List<Biome> biomeList;
 
 	//We build a fake dimension setup using our own controller and a predefined agedata setup
-	@Override
-	protected void init() {
+	// NOTE: The reason why we do this and not just profile the Overworld is mostly biome distribution:
+	//     If we profiled the Overworld we'd be biased towards whatever regions are generated in that dimension. ex. Emeralds could be super valuable.
+	@Override protected void init() {
 		chunkX = chunkX_min;
 		chunkZ = chunkZ_min;
 		agedata = new AgeData("CONTROL");
@@ -163,9 +171,8 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		agedata.setSpawn(null);
 		agedata.setInstabilityEnabled(true);
 
-		for (Biome biome : SymbolBiome.selectables) {
-			agedata.addSymbol(SymbolBiome.getBiomeSymbolId(biome), 0);
-		}
+		addBiomeSymbols(agedata);
+
 		agedata.addSymbol("BioConGrid", 0);
 		agedata.addSymbol("ModMat_tile.stone", 0);
 		agedata.addSymbol("ModMat_tile.water", 0);
@@ -195,6 +202,37 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		controller = new AgeControllerDummy(world, agedata);
 		biomeProvider = controller.getBiomeProvider();
 		setWorldInfo();
+	}
+
+	private void addBiomeSymbols(AgeData agedata) {
+		// Use only Overworld biomes. See {GenLayerBiome}.
+		if (biomeList == null)
+			getAndPrepareBiomeList();
+		for (Biome biome : biomeList) {
+			agedata.addSymbol(SymbolBiome.getBiomeSymbolId(biome), 0);
+		}
+	}
+
+	public static List<Biome> getAndPrepareBiomeList() {
+		if (biomeList != null)
+			return biomeList;
+		
+		List<Biome> biomeList = new ArrayList<>();
+
+		// Use only Overworld biomes. See {GenLayerBiome}.
+		for (net.minecraftforge.common.BiomeManager.BiomeType type : net.minecraftforge.common.BiomeManager.BiomeType.values()) {
+			com.google.common.collect.ImmutableList<net.minecraftforge.common.BiomeManager.BiomeEntry> biomesToAdd = net.minecraftforge.common.BiomeManager.getBiomes(type);
+
+			for (net.minecraftforge.common.BiomeManager.BiomeEntry biomeentry : biomesToAdd) {
+				biomeList.add(biomeentry.biome);
+			}
+		}
+
+		biomeList.add(Biomes.DESERT);
+		biomeList.add(Biomes.SAVANNA);
+		biomeList.add(Biomes.PLAINS);
+		WorldProviderMystDummy.biomeList = biomeList;
+		return biomeList;
 	}
 
 	@Override
@@ -261,7 +299,9 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 
 	//XXX: Duplicated from AgeController
 	private Chunk safeLoadChunk(IChunkLoader chunkloader, World worldObj, int par1, int par2) {
-		if (chunkloader == null) { return null; }
+		if (chunkloader == null) {
+			return null;
+		}
 		try {
 			return chunkloader.loadChunk(worldObj, par1, par2);
 		} catch (Exception exception) {

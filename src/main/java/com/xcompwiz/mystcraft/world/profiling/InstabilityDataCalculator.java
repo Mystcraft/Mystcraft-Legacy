@@ -209,7 +209,11 @@ public class InstabilityDataCalculator {
 	}
 
 	public static int getChunksRemaining(ChunkProfiler profiler) {
-		if (minimumchunks == 0) minimumchunks = SymbolBiome.selectables.size() * 20; // TODO: Make configurable
+		if (minimumchunks == 0) {
+			int factor = (int)Math.ceil(500D / WorldProviderMystDummy.getAndPrepareBiomeList().size());
+			if (factor < 10) factor = 10;
+			minimumchunks = WorldProviderMystDummy.getAndPrepareBiomeList().size() * factor;
+		}
 		return minimumchunks - profiler.getCount();
 	}
 
