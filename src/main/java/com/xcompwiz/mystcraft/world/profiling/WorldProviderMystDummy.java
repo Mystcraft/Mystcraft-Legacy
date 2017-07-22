@@ -9,12 +9,14 @@ import java.util.Set;
 import com.google.common.collect.Sets;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBlock;
 import com.xcompwiz.mystcraft.world.AgeController;
 import com.xcompwiz.mystcraft.world.MystEmptyChunk;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 import net.minecraft.init.Biomes;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -174,15 +176,15 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		addBiomeSymbols(agedata);
 
 		agedata.addSymbol("BioConGrid", 0);
-		agedata.addSymbol("ModMat_minecraft:stone_0", 0);
-		agedata.addSymbol("ModMat_minecraft:flowing_water_0", 0);
+		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.STONE.getDefaultState()), 0);
+		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.FLOWING_WATER.getDefaultState()), 0);
 		agedata.addSymbol("TerrainNormal", 0);
 
 		//Lakes
-		agedata.addSymbol("ModMat_minecraft:flowing_water_0", 0);
+		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.FLOWING_WATER.getDefaultState()), 0);
 		agedata.addSymbol("LakesSurface", 0);
 
-		agedata.addSymbol("ModMat_minecraft:flowing_lava_0", 0);
+		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.FLOWING_LAVA.getDefaultState()), 0);
 		agedata.addSymbol("LakesDeep", 0);
 
 		//Caves
