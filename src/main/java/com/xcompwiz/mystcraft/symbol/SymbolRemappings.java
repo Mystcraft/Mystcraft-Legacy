@@ -19,6 +19,11 @@ public class SymbolRemappings {
 		skyColorRemappings();
 		horizonColorRemappings();
 
+		
+		addSymbolRemapping("ModMat_tile.stone", "ModMat_minecraft:stone_0");
+		addSymbolRemapping("ModMat_tile.lava", "ModMat_minecraft:flowing_lava_0");
+		addSymbolRemapping("ModMat_tile.water", "ModMat_minecraft:flowing_water_0");
+		
 		addSymbolRemapping("ModMaroon", "ModColorMaroon");
 		addSymbolRemapping("ModRed", "ModColorRed");
 		addSymbolRemapping("ModOlive", "ModColorOlive");

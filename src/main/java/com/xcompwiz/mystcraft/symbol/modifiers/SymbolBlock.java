@@ -19,13 +19,17 @@ public class SymbolBlock extends SymbolBase {
 	private String unlocalizedBlockName;
 
 	public SymbolBlock(BlockDescriptor block, String word) {
-		super("ModMat_" + getBlockStateKey(block.blockstate));
+		super(getSymbolIdentifier(block.blockstate));
 		this.blockDescriptor = block;
 		this.setWords(new String[] { WordData.Modifier, WordData.Constraint, word, identifier });
 		this.unlocalizedBlockName = getUnlocalizedName(block.blockstate);
 	}
+	
+	public static String getSymbolIdentifier(IBlockState blockstate) {
+		return "ModMat_" + getBlockStateKey(blockstate);
+	}
 
-	private static String getBlockStateKey(IBlockState blockstate) {
+	public static String getBlockStateKey(IBlockState blockstate) {
 		return blockstate.getBlock().getRegistryName().toString() + "_" + blockstate.getBlock().getMetaFromState(blockstate);
 	}
 

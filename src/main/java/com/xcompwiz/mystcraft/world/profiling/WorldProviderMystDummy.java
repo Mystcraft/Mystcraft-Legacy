@@ -174,15 +174,15 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		addBiomeSymbols(agedata);
 
 		agedata.addSymbol("BioConGrid", 0);
-		agedata.addSymbol("ModMat_tile.stone", 0);
-		agedata.addSymbol("ModMat_tile.water", 0);
+		agedata.addSymbol("ModMat_minecraft:stone_0", 0);
+		agedata.addSymbol("ModMat_minecraft:flowing_water_0", 0);
 		agedata.addSymbol("TerrainNormal", 0);
 
 		//Lakes
-		agedata.addSymbol("ModMat_tile.water", 0);
+		agedata.addSymbol("ModMat_minecraft:flowing_water_0", 0);
 		agedata.addSymbol("LakesSurface", 0);
 
-		agedata.addSymbol("ModMat_tile.lava", 0);
+		agedata.addSymbol("ModMat_minecraft:flowing_lava_0", 0);
 		agedata.addSymbol("LakesDeep", 0);
 
 		//Caves

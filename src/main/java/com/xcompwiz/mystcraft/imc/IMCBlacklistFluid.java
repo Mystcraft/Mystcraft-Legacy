@@ -4,8 +4,10 @@ import com.xcompwiz.mystcraft.data.ModSymbolsFluids;
 import com.xcompwiz.mystcraft.imc.IMCHandler.IMCProcessor;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
+import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBlock;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
@@ -17,7 +19,7 @@ public class IMCBlacklistFluid implements IMCProcessor {
 	@Override
 	public void process(IMCMessage message) {
 		Fluid fluid = null;
-		ItemStack itemstack = ItemStack.EMPTY;
+		IBlockState blockstate = null;
 		if (message.isStringMessage()) {
 			LoggerUtils.info(String.format("Receiving fluid symbol blacklist request from [%s] for fluid %s", message.getSender(), message.getStringValue()));
 			String fluidname = message.getStringValue();
@@ -31,20 +33,17 @@ public class IMCBlacklistFluid implements IMCProcessor {
 			if (block instanceof BlockFluidBase) {
 				meta = (byte) ((BlockFluidBase) block).getMaxRenderHeightMeta();
 			}
-			//TODO: Share code with ModifierBlock
-			itemstack = new ItemStack(block, 1, meta);
-			if (itemstack.isEmpty()) {
-				throw new RuntimeException("Invalid item form for block " + block.getUnlocalizedName() + "with metadata " + meta);
-			}
+			blockstate = block.getStateFromMeta(meta);
 		}
-		if (message.isItemStackMessage()) {
-			itemstack = message.getItemStackValue();
-			LoggerUtils.info(String.format("Receiving fluid symbol blacklist request from [%s] for fluid %s", message.getSender(), message.getItemStackValue().getUnlocalizedName()));
-		}
-		if (itemstack.isEmpty()) {
+//		if (message.isItemStackMessage()) {
+//			ItemStack itemstack = message.getItemStackValue();
+//			LoggerUtils.info(String.format("Receiving fluid symbol blacklist request from [%s] for fluid %s", message.getSender(), message.getItemStackValue().getUnlocalizedName()));
+//			blockstate = ; //TODO:
+//		}
+		if (blockstate == null) {
 			return;
 		}
-		String identifier = "ModMat_" + itemstack.getUnlocalizedName(); //XXX: Building ModMat identifier externally...
+		String identifier = SymbolBlock.getSymbolIdentifier(blockstate);
 		SymbolManager.blackListSymbol(identifier);
 		ModSymbolsFluids.blacklist(fluid);
 		LoggerUtils.info("Fluid blacklist request successful.");
