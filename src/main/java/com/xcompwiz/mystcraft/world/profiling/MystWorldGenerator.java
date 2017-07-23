@@ -71,9 +71,9 @@ public class MystWorldGenerator implements IWorldGenerator {
 		int size = 2;
 		for (int x = -size; x <= size; ++x) {
 			for (int z = -size; z <= size; ++z) {
-				worldObj.setBlockState(new BlockPos(i + x, j, k + z), block.getDefaultState(), 2); // Updateless set to block
 				for (int y = j + 1; y < j + 5; ++y)
-					worldObj.setBlockState(new BlockPos(i + x, j, k + z), Blocks.AIR.getDefaultState(), 2); // Updateless set air
+					worldObj.setBlockState(new BlockPos(i + x, y, k + z), Blocks.AIR.getDefaultState(), 2); // Updateless set air
+				worldObj.setBlockState(new BlockPos(i + x, j, k + z), block.getDefaultState(), 2); // Updateless set to block
 			}
 		}
 	}
