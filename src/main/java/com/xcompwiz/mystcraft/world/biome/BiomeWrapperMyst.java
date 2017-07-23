@@ -19,6 +19,9 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.BiomeEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -52,6 +55,15 @@ public class BiomeWrapperMyst extends Biome {
 
 	public BiomeWrapperMyst(WorldProviderMyst provider, Biome baseBiome) {
 		super(generateBiomeProperties(provider, baseBiome));
+
+		//HellFire> This way we always will mirror down towards the actual biome in registry questions.
+		//This might be unsafe?
+		ModContainer active = Loader.instance().activeModContainer();
+		String makeActiveId = baseBiome.getRegistryName().getResourceDomain();
+		ModContainer tryActive = "minecraft".equals(makeActiveId) ? Loader.instance().getMinecraftModContainer() : Loader.instance().getIndexedModList().get(makeActiveId);
+		Loader.instance().setActiveModContainer(tryActive);
+		setRegistryName(baseBiome.getRegistryName());
+		Loader.instance().setActiveModContainer(active);
 
 		this.provider = provider;
 		this.baseBiome = baseBiome;
