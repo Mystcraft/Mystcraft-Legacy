@@ -67,7 +67,12 @@ public class LinkController {
 
 	private static Entity teleportEntity(World newworld, Entity entity, int dimension, BlockPos spawn, float yaw, ILinkInfo info) {
 		World origin = entity.getEntityWorld();
-		if (!LinkListenerManager.isLinkPermitted(origin, entity, info)) { return null; }
+		if (!LinkListenerManager.isLinkPermitted(origin, entity, info)) {
+			return null;
+		}
+        if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(entity, dimension)) {
+		    return null;
+        }
 		Entity mount = entity.getRidingEntity();
 		if (mount != null) {
 			entity.dismountRidingEntity();
@@ -76,6 +81,7 @@ public class LinkController {
 		boolean changingworlds = origin != newworld;
 		LinkListenerManager.onLinkStart(origin, entity, info);
 		origin.updateEntityWithOptionalForce(entity, false);
+
 		if (entity instanceof EntityPlayerMP) {
 			EntityPlayerMP player = (EntityPlayerMP) entity;
 			player.closeScreen();
@@ -92,43 +98,54 @@ public class LinkController {
 		// Move entity
 		entity.setLocationAndAngles(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5, yaw, entity.rotationPitch);
 		((WorldServer) newworld).getChunkProvider().loadChunk(spawn.getX() >> 4, spawn.getZ() >> 4);
+
 		while (LinkController.getCollidingWorldGeometry(newworld, entity.getEntityBoundingBox(), entity).size() != 0) {
 			spawn = spawn.up();
 			entity.setPosition(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5);
 		}
+
 		if (changingworlds) {
 			if (!(entity instanceof EntityPlayer)) {
-				NBTTagCompound entityNBT = new NBTTagCompound();
+				origin.removeEntity(entity);
 				entity.isDead = false;
-				String entitystr = EntityList.getEntityString(entity);
-				if (entitystr == null) {
-					LoggerUtils.warn("Failed to save entity when linking");
-					return null;
-				}
-				entityNBT.setString("id", entitystr);
-				entity.writeToNBT(entityNBT);
-				entity.isDead = true;
-				entity = EntityList.createEntityFromNBT(entityNBT, newworld);
-				if (entity == null) {
+				NBTTagCompound nbttagcompound = entity.writeToNBT(new NBTTagCompound());
+				nbttagcompound.removeTag("Dimension");
+
+				Entity newEntity = EntityList.createEntityFromNBT(nbttagcompound, newworld);
+				if (newEntity == null) {
 					LoggerUtils.warn("Failed to reconstruct entity when linking");
 					return null;
 				}
-				entity.dimension = newworld.provider.getDimension();
+				newEntity.readFromNBT(nbttagcompound);
+				newEntity.timeUntilPortal = entity.timeUntilPortal;
+				entity.isDead = true;
+				newEntity.dimension = newworld.provider.getDimension();
+
+				boolean flag = newEntity.forceSpawn;
+				newEntity.forceSpawn = true;
+				newworld.spawnEntity(newEntity);
+				newEntity.forceSpawn = flag;
+				entity = newEntity;
+			} else {
+				newworld.spawnEntity(entity);
 			}
-			newworld.spawnEntity(entity);
 			entity.setWorld(newworld);
 		}
 		entity.setLocationAndAngles(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5, yaw, entity.rotationPitch);
 		LinkListenerManager.onEnterWorld(origin, newworld, entity, info);
 		newworld.updateEntityWithOptionalForce(entity, false);
 		entity.setLocationAndAngles(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5, yaw, entity.rotationPitch);
+
 		if (entity instanceof EntityPlayerMP) {
 			EntityPlayerMP player = (EntityPlayerMP) entity;
 			if (changingworlds) {
-				player.mcServer.getPlayerList().preparePlayer(player, (WorldServer) newworld);
+				//Removing being done way above
+				player.getServerWorld().getPlayerChunkMap().addPlayer(player);
+				player.getServerWorld().getChunkProvider().provideChunk((int)player.posX >> 4, (int)player.posZ >> 4);
 			}
 			player.connection.setPlayerLocation(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5, player.rotationYaw, player.rotationPitch);
 		}
+
 		newworld.updateEntityWithOptionalForce(entity, false);
 		if (entity instanceof EntityPlayerMP && changingworlds) {
 			EntityPlayerMP player = (EntityPlayerMP) entity;
