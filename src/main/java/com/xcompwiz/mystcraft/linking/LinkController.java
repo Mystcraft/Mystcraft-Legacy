@@ -127,6 +127,7 @@ public class LinkController {
 				newEntity.forceSpawn = flag;
 				entity = newEntity;
 			} else {
+				entity.setPositionAndUpdate(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5);
 				newworld.spawnEntity(entity);
 			}
 			entity.setWorld(newworld);
