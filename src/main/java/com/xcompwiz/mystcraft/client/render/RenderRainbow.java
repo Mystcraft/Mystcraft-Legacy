@@ -127,6 +127,7 @@ public class RenderRainbow {
 				vb.pos((line * stripWidth) - stripWidth - (rainbowWidth / 2f),  yHeight, zPos + patchHeight).color(color[0] / 255f, color[1] / 255f, color[2] / 255f, 0.2f).endVertex();
 			}
 		}
+		tes.draw();
 		GlStateManager.disableColorMaterial();
 		GlStateManager.popMatrix();
 	}
