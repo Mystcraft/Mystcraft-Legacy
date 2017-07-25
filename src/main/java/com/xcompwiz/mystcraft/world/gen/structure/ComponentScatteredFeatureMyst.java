@@ -13,22 +13,22 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 
 abstract class ComponentScatteredFeatureMyst extends StructureComponent {
 
-	/** The size of the bounding box for this feature in the X axis */
-	protected int	scatteredFeatureSizeX;
-	/** The size of the bounding box for this feature in the Y axis */
-	protected int	scatteredFeatureSizeY;
-	/** The size of the bounding box for this feature in the Z axis */
-	protected int	scatteredFeatureSizeZ;
+	/** The position of the bounding box for this feature in the X axis */
+	protected int scatteredFeaturePosX;
+	/** The position of the bounding box for this feature in the Y axis */
+	protected int scatteredFeaturePosY;
+	/** The position of the bounding box for this feature in the Z axis */
+	protected int scatteredFeaturePosZ;
 
-	protected int	field_74936_d	= -1;
+	protected int horizontalPos = -1;
 
 	public ComponentScatteredFeatureMyst() {}
 
 	protected ComponentScatteredFeatureMyst(Random par1Random, int x, int y, int z, int sizeX, int sizeY, int sizeZ) {
 		super(0);
-		this.scatteredFeatureSizeX = x;
-		this.scatteredFeatureSizeY = y;
-		this.scatteredFeatureSizeZ = z;
+		this.scatteredFeaturePosX = x;
+		this.scatteredFeaturePosY = y;
+		this.scatteredFeaturePosZ = z;
 		setCoordBaseMode(EnumFacing.HORIZONTALS[par1Random.nextInt(EnumFacing.HORIZONTALS.length)]);
 
 		switch (getCoordBaseMode()) {
@@ -41,20 +41,21 @@ abstract class ComponentScatteredFeatureMyst extends StructureComponent {
 		}
 	}
 
+	//HellFire> who came up with the naming of these to be width, height, depth ??...
 	@Override
 	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
-		tagCompound.setInteger("Width", this.scatteredFeatureSizeX);
-		tagCompound.setInteger("Height", this.scatteredFeatureSizeY);
-		tagCompound.setInteger("Depth", this.scatteredFeatureSizeZ);
-		tagCompound.setInteger("HPos", this.field_74936_d);
+		tagCompound.setInteger("Width", this.scatteredFeaturePosX);
+		tagCompound.setInteger("Height", this.scatteredFeaturePosY);
+		tagCompound.setInteger("Depth", this.scatteredFeaturePosZ);
+		tagCompound.setInteger("HPos", this.horizontalPos);
 	}
 
 	@Override
 	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager p_143011_2_) {
-		this.scatteredFeatureSizeX = tagCompound.getInteger("Width");
-		this.scatteredFeatureSizeY = tagCompound.getInteger("Height");
-		this.scatteredFeatureSizeZ = tagCompound.getInteger("Depth");
-		this.field_74936_d = tagCompound.getInteger("HPos");
+		this.scatteredFeaturePosX = tagCompound.getInteger("Width");
+		this.scatteredFeaturePosY = tagCompound.getInteger("Height");
+		this.scatteredFeaturePosZ = tagCompound.getInteger("Depth");
+		this.horizontalPos = tagCompound.getInteger("HPos");
 	}
 
 	/**
@@ -78,7 +79,7 @@ abstract class ComponentScatteredFeatureMyst extends StructureComponent {
 	}
 
 	protected boolean shouldBuildHere(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3) {
-		if (this.field_74936_d >= 0) return true;
+		if (this.horizontalPos >= 0) return true;
 		int var4 = 0;
 		int var5 = 0;
 
@@ -93,8 +94,8 @@ abstract class ComponentScatteredFeatureMyst extends StructureComponent {
 
 		if (var5 == 0) return false;
 
-		this.field_74936_d = var4 / var5;
-		this.boundingBox.offset(0, this.field_74936_d - this.boundingBox.minY + par3, 0);
+		this.horizontalPos = var4 / var5;
+		this.boundingBox.offset(0, this.horizontalPos - this.boundingBox.minY + par3, 0);
 		return true;
 
 	}

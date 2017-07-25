@@ -127,8 +127,10 @@ public class ChunkProviderMyst implements IChunkGenerator {
 		long l = this.rand.nextLong() / 2L * 2L + 1L;
 		this.rand.setSeed((long) x * k + (long) z * l ^ worldObj.getSeed());
 		boolean flag = false;
-		ChunkPos chunkpos = new ChunkPos(x, z);
+		ChunkPos chunkpos = new ChunkPos(chunkX, chunkZ);
 		ForgeEventFactory.onChunkPopulate(true, this, worldObj, this.rand, x, z, flag);
+
+		this.scatteredFeatureGenerator.generateStructure(this.worldObj, this.rand, chunkpos);
 
 		try {
 			biome.decorate(this.worldObj, this.rand, new BlockPos(x, 0, z));

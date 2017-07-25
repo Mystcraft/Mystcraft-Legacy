@@ -614,22 +614,22 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 		setBlockState(worldObj, Blocks.PLANKS.getDefaultState(), 8, 3, 8, boundingbox);
 		setBlockState(worldObj, Blocks.PLANKS.getDefaultState(), 8, 4, 2, boundingbox);
 		setBlockState(worldObj, Blocks.PLANKS.getDefaultState(), 8, 4, 8, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 0, 0, 4, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 0, 0, 5, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 0, 0, 6, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 2, 0, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 2, 0, 1, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 2, 0, 2, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 2, 0, 3, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 2, 0, 8, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 2, 0, 9, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 3, 8, 4, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 3, 8, 5, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 3, 8, 6, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 4, 9, 4, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 4, 9, 5, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 4, 9, 6, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 8, 9, 4, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 0, 0, 4, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 0, 0, 5, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 0, 0, 6, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 2, 0, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 2, 0, 1, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 2, 0, 2, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 2, 0, 3, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 2, 0, 8, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 2, 0, 9, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 3, 8, 4, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 3, 8, 5, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 3, 8, 6, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 4, 9, 4, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 4, 9, 5, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 4, 9, 6, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST), 8, 9, 4, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST), 8, 9, 5, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST), 9, 8, 4, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST), 9, 8, 5, boundingbox);
@@ -645,30 +645,30 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST), 10, 0, 8, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST), 10, 0, 9, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST), 10, 0, 10, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 0, 0, 3, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 1, 0, 3, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 1, 4, 3, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 1, 5, 4, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 2, 4, 3, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 2, 5, 4, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 3, 0, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 3, 8, 3, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 4, 0, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 4, 8, 3, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 5, 0, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 5, 8, 3, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 5, 9, 4, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 6, 0, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 6, 8, 3, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 6, 9, 4, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 7, 0, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 7, 8, 3, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 7, 9, 4, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 8, 0, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 8, 8, 3, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 9, 0, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 9, 8, 3, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST), 10, 0, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 0, 0, 3, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 1, 0, 3, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 1, 4, 3, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 1, 5, 4, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 2, 4, 3, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 2, 5, 4, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 3, 0, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 3, 8, 3, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 4, 0, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 4, 8, 3, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 5, 0, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 5, 8, 3, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 5, 9, 4, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 6, 0, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 6, 8, 3, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 6, 9, 4, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 7, 0, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 7, 8, 3, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 7, 9, 4, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 8, 0, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 8, 8, 3, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 9, 0, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 9, 8, 3, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH), 10, 0, 0, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH), 0, 0, 7, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH), 1, 0, 7, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH), 1, 4, 7, boundingbox);
@@ -694,16 +694,16 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH), 8, 8, 7, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH), 8, 9, 6, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH), 9, 0, 10, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 1, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 2, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 3, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 4, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 5, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 6, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 7, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 8, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 9, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 10, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 1, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 2, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 3, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 4, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 5, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 6, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 7, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 8, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 9, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 10, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 10, 7, 0, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 10, 7, 1, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 10, 7, 2, boundingbox);
@@ -714,14 +714,14 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 10, 7, 7, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 10, 7, 8, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 10, 7, 9, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 3, 7, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 4, 7, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 5, 7, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 6, 7, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 7, 7, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 8, 7, 0, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 9, 7, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 2, 7, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 3, 7, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 4, 7, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 5, 7, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 6, 7, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 7, 7, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 8, 7, 0, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 9, 7, 0, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 3, 7, 10, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 4, 7, 10, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 5, 7, 10, boundingbox);
@@ -766,12 +766,12 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 		setBlockState(worldObj, Blocks.WEB.getDefaultState(), 8, 6, 3, boundingbox);
 		setBlockState(worldObj, Blocks.WEB.getDefaultState(), 8, 6, 6, boundingbox);
 
-		for (int i = 0; i <= this.scatteredFeatureSizeX; ++i) {
-			for (int j = 0; j <= this.scatteredFeatureSizeZ; ++j) {
+		for (int i = 0; i <= this.scatteredFeaturePosX; ++i) {
+			for (int j = 0; j <= this.scatteredFeaturePosZ; ++j) {
 				this.replaceAirAndLiquidDownwards(worldObj, Blocks.COBBLESTONE.getDefaultState(), i, -1, j, boundingbox);
 			}
 		}
-		this.fillWithBlocks(worldObj, boundingbox, 0, -1, 0, scatteredFeatureSizeX, -1, scatteredFeatureSizeY, Blocks.COBBLESTONE.getDefaultState(), Blocks.COBBLESTONE.getDefaultState(), false);
+		this.fillWithBlocks(worldObj, boundingbox, 0, -1, 0, scatteredFeaturePosX, -1, scatteredFeaturePosY, Blocks.COBBLESTONE.getDefaultState(), Blocks.COBBLESTONE.getDefaultState(), false);
 
 		setBlockState(worldObj, Blocks.COBBLESTONE_WALL.getDefaultState(), 1, 1, 4, boundingbox);
 		setBlockState(worldObj, Blocks.COBBLESTONE_WALL.getDefaultState(), 1, 1, 6, boundingbox);
@@ -787,50 +787,6 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 		}
 
 		return true;
-	}
-
-	//Duh. copied from 1.7.10 :^)
-	private EnumFacing getStairRotation(EnumFacing original) {
-		if (getCoordBaseMode() == null) return original;
-		switch (getCoordBaseMode()) {
-			case NORTH:
-				if (original == EnumFacing.SOUTH) {
-					return EnumFacing.EAST;
-				}
-				if (original == EnumFacing.EAST) {
-					return EnumFacing.SOUTH;
-				}
-				break;
-			case WEST:
-				if (original == EnumFacing.NORTH) {
-					return EnumFacing.SOUTH;
-				}
-				if (original == EnumFacing.WEST) {
-					return EnumFacing.EAST;
-				}
-				if (original == EnumFacing.SOUTH) {
-					return EnumFacing.NORTH;
-				}
-				if (original == EnumFacing.EAST) {
-					return EnumFacing.WEST;
-				}
-				break;
-			case EAST:
-				if (original == EnumFacing.NORTH) {
-					return EnumFacing.SOUTH;
-				}
-				if (original == EnumFacing.WEST) {
-					return EnumFacing.EAST;
-				}
-				if (original == EnumFacing.SOUTH) {
-					return EnumFacing.WEST;
-				}
-				if (original == EnumFacing.EAST) {
-					return EnumFacing.NORTH;
-				}
-				break;
-		}
-		return original;
 	}
 
 	protected boolean generateStructureLectern(World worldObj, StructureBoundingBox boundingbox, Random rand, int i, int j, int k, int i2, int k2) {

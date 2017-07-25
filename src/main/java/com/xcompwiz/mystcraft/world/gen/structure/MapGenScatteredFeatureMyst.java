@@ -63,20 +63,20 @@ public class MapGenScatteredFeatureMyst extends MapGenStructure {
 	}
 
     @Override
-	protected boolean canSpawnStructureAtCoords(int par1, int par2) {
-		int var3 = par1;
-		int var4 = par2;
+	protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
+		int var3 = chunkX;
+		int var4 = chunkZ;
 
-		if (par1 < 0) {
-			par1 -= this.maxDistanceBetweenScatteredFeatures - 1;
+		if (chunkX < 0) {
+			chunkX -= this.maxDistanceBetweenScatteredFeatures - 1;
 		}
 
-		if (par2 < 0) {
-			par2 -= this.maxDistanceBetweenScatteredFeatures - 1;
+		if (chunkZ < 0) {
+			chunkZ -= this.maxDistanceBetweenScatteredFeatures - 1;
 		}
 
-		int var5 = par1 / this.maxDistanceBetweenScatteredFeatures;
-		int var6 = par2 / this.maxDistanceBetweenScatteredFeatures;
+		int var5 = chunkX / this.maxDistanceBetweenScatteredFeatures;
+		int var6 = chunkZ / this.maxDistanceBetweenScatteredFeatures;
 		Random var7 = this.world.setRandomSeed(var5, var6, 14357617);
 		var5 *= this.maxDistanceBetweenScatteredFeatures;
 		var6 *= this.maxDistanceBetweenScatteredFeatures;
