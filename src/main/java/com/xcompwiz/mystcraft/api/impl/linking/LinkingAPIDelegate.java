@@ -14,6 +14,7 @@ import com.xcompwiz.mystcraft.linking.LinkController;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 
+import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -37,7 +38,11 @@ public class LinkingAPIDelegate {
 		link.setTargetUUID(DimensionUtils.getDimensionUUID(world.provider.getDimension()));
 		link.setSpawn(new BlockPos(location));
 		link.setSpawnYaw(location.rotationYaw);
-		link.setDisplayName(world.getWorldInfo().getWorldName());
+		if(world.provider instanceof WorldProviderMyst) {
+			link.setDisplayName(((WorldProviderMyst) world.provider).getDimensionName());
+		} else {
+			link.setDisplayName(world.provider.getDimensionType().getName());
+		}
 		return link;
 	}
 
