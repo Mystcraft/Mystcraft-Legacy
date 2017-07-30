@@ -61,6 +61,9 @@ import com.xcompwiz.mystcraft.world.storage.FileUtils;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
@@ -233,6 +236,17 @@ public class Mystcraft {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		FMLInterModComms.sendMessage("lookingglass", "API", "com.xcompwiz.mystcraft.integration.lookingglass.LookingGlassIntegration.register");
+
+		FMLInterModComms.sendMessage("reccomplex", "registerDimensionType", "MYSTCRAFT_PROFILING");
+
+		NBTTagCompound tagRegisterDimensionTypes = new NBTTagCompound();
+		tagRegisterDimensionTypes.setInteger("dimensionID", Integer.MAX_VALUE);
+		NBTTagList types = new NBTTagList();
+		types.appendTag(new NBTTagString("MYSTCRAFT_PROFILING"));
+		tagRegisterDimensionTypes.setTag("types", types);
+		FMLInterModComms.sendMessage("reccomplex", "registerDimension", tagRegisterDimensionTypes);
+
+
 		// Register the GUI Handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		// Init Recipes
