@@ -109,6 +109,8 @@ public class RenderWritingDesk extends TileEntitySpecialRenderer<TileEntityDesk>
 					Minecraft.getMinecraft().entityRenderer.getMapItemRenderer().renderMap(mapdata, true);
 				}
 			} else {
+				GlStateManager.translate(0, 0.3, 0.02);
+				GlStateManager.scale(0.7F, 0.7F, 0.7F);
                 GlStateManager.pushAttrib();
                 RenderHelper.enableStandardItemLighting();
                 Minecraft.getMinecraft().getRenderItem().renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED);
