@@ -44,12 +44,12 @@ public class BlockInkMixer extends BlockContainer {
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(ROTATION, EnumFacing.values()[meta]);
+        return getDefaultState().withProperty(ROTATION, EnumFacing.getHorizontal(meta));
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(ROTATION).ordinal();
+        return state.getValue(ROTATION).getHorizontalIndex();
     }
 
     @Override
