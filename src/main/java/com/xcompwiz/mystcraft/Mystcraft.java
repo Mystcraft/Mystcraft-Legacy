@@ -240,7 +240,7 @@ public class Mystcraft {
 		FMLInterModComms.sendMessage("reccomplex", "registerDimensionType", "MYSTCRAFT_PROFILING");
 
 		NBTTagCompound tagRegisterDimensionTypes = new NBTTagCompound();
-		tagRegisterDimensionTypes.setInteger("dimensionID", Integer.MAX_VALUE);
+		tagRegisterDimensionTypes.setInteger("dimensionID", Integer.MIN_VALUE); //HellFire> MIN_VALUE is the id for the profiling dimension
 		NBTTagList types = new NBTTagList();
 		types.appendTag(new NBTTagString("MYSTCRAFT_PROFILING"));
 		tagRegisterDimensionTypes.setTag("types", types);
