@@ -1,10 +1,12 @@
 package com.xcompwiz.mystcraft.inventory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.annotation.Nonnull;
 
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
@@ -22,13 +24,10 @@ import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.InvWrapper;
-
-import javax.annotation.Nonnull;
 
 public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandler {
 
@@ -49,7 +48,6 @@ public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandl
 	private long					cached_seed			= 0;
 
 	private HashMap<String, Float>	properties			= new HashMap<>();
-	private List<IMessage>			packets				= new LinkedList<>();
 
 	private ColorGradient			propertyGradient	= null;
 
@@ -101,6 +99,7 @@ public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandl
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
+		List<IMessage> packets = new ArrayList<>();
 		if (cached_hasink != tileentity.getHasInk()) {
 			cached_hasink = tileentity.getHasInk();
 
