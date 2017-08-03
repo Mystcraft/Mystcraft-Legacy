@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.event.PortalLinkEvent;
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
@@ -109,7 +110,7 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 		info.setFlag(LinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM, true);
 		info.setFlag(LinkPropertyAPI.FLAG_GENERATE_PLATFORM, false);
 		info.setFlag(LinkPropertyAPI.FLAG_EXTERNAL, true);
-		info.setProperty(LinkPropertyAPI.PROP_SOUND, Sounds.KEY_NAME_PORTALLINK);
+		info.setProperty(LinkPropertyAPI.PROP_SOUND, MystObjects.MystcraftModId + ":" + Sounds.KEY_NAME_PORTALLINK);
 		MinecraftForge.EVENT_BUS.post(new PortalLinkEvent(worldObj, entity, info));
 		LinkController.travelEntity(worldObj, entity, info);
 	}

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.event.StarFissureLinkEvent;
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
@@ -34,7 +35,7 @@ public class BlockStarFissure extends BlockContainer {
 		defaultstarfissure.setDimensionUID(Mystcraft.homeDimension);
 		defaultstarfissure.setFlag(LinkPropertyAPI.FLAG_NATURAL, true);
 		defaultstarfissure.setFlag(LinkPropertyAPI.FLAG_EXTERNAL, true);
-		defaultstarfissure.setProperty(LinkPropertyAPI.PROP_SOUND, Sounds.KEY_NAME_FISSURELINK);
+		defaultstarfissure.setProperty(LinkPropertyAPI.PROP_SOUND, MystObjects.MystcraftModId + ":" + Sounds.KEY_NAME_FISSURELINK);
 	}
 
 	public BlockStarFissure() {
