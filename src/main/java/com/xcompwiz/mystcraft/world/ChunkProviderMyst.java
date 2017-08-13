@@ -188,6 +188,11 @@ public class ChunkProviderMyst implements IChunkGenerator {
 	}
 
 	@Override
+	public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
+		return controller.isInsideFeature(worldIn, structureName, pos);
+	}
+
+	@Override
 	public boolean generateStructures(Chunk chunkIn, int x, int z) {
 		return false;
 	}

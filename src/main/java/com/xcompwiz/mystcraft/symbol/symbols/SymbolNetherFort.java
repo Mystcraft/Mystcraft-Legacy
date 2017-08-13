@@ -79,6 +79,15 @@ public class SymbolNetherFort extends SymbolBase {
 			}
 			return null;
 		}
+
+		@Override
+		public boolean isInsideFeature(World world, String identifier, BlockPos pos) {
+			if ("Nether Fortress".equals(identifier) && generator != null) {
+				return generator.isPositionInStructure(world, pos);
+			}
+			return false;
+		}
+
 	}
 
 }

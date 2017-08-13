@@ -25,7 +25,7 @@ public class IMCBlockInstability implements IMCProcessor {
 		if (nbt.hasKey("ItemStack")) {
 			ItemStack itemstack = new ItemStack(nbt.getCompoundTag("ItemStack"));
 			if (!(itemstack.getItem() instanceof ItemBlock)) throw new RuntimeException("Itemstacks references used for setting instability factors must extend ItemBlock");
-			block = ((ItemBlock)itemstack.getItem()).block;
+			block = ((ItemBlock)itemstack.getItem()).getBlock();
 			metadata = itemstack.getMetadata();
 		}
 

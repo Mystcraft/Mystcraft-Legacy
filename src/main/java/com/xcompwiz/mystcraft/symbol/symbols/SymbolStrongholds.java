@@ -79,6 +79,14 @@ public class SymbolStrongholds extends SymbolBase {
 			}
 			return null;
 		}
+
+		@Override
+		public boolean isInsideFeature(World world, String identifier, BlockPos pos) {
+			if ("Stronghold".equals(identifier) && generator != null) {
+				return generator.isPositionInStructure(world, pos);
+			}
+			return false;
+		}
 	}
 
 }

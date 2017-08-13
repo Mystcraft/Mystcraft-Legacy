@@ -27,10 +27,10 @@ public class ModRegistryPrimer {
     }
 
     private <V extends IForgeRegistryEntry<V>> void addToRegistry(IForgeRegistry<V> registry) {
-        List<V> entries = (List<V>) bufferedRegistry.get(registry.getRegistrySuperType());
+        List<IForgeRegistryEntry<?>> entries = bufferedRegistry.get(registry.getRegistrySuperType());
         if(entries != null) {
-            for (V entry : entries) {
-                registry.register(entry);
+            for (IForgeRegistryEntry<?> entry : entries) {
+                registry.register((V) entry);
             }
         }
     }

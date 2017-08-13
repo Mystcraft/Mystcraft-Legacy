@@ -608,6 +608,19 @@ public class AgeController implements AgeDirector {
 		return found;
 	}
 
+	public boolean isInsideFeature(World world, String identifier, BlockPos pos) {
+		validate();
+		if (featureLocators == null || featureLocators.size() == 0) {
+			return false;
+		}
+		for (ITerrainFeatureLocator mod : featureLocators) {
+			if(mod.isInsideFeature(world, identifier, pos)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public int scaleLighting(int blockLightValue) {
 		validate();
 		return getLightingController().scaleLighting(blockLightValue);
