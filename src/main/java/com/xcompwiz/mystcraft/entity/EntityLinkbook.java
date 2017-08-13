@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 
 public class EntityLinkbook extends EntityLiving {
 
-	private static final DataParameter<ItemStack> BOOK = EntityDataManager.createKey(EntityLinkbook.class, DataSerializers.OPTIONAL_ITEM_STACK);
+	private static final DataParameter<ItemStack> BOOK = EntityDataManager.createKey(EntityLinkbook.class, DataSerializers.ITEM_STACK);
 	private static final DataParameter<String> AGE_NAME = EntityDataManager.createKey(EntityLinkbook.class, DataSerializers.STRING);
 
 	private int	decaytimer;
@@ -239,20 +239,13 @@ public class EntityLinkbook extends EntityLiving {
 	public void faceEntity(Entity par1Entity, float par2, float par3) {}
 
 	@Override
-	public EntityLivingBase getAITarget() {
-		return null;
-	}
-
-	@Override
 	public void setRevengeTarget(EntityLivingBase par1) {}
 
+	@Nullable
 	@Override
-	public EntityLivingBase getLastAttacker() {
+	public EntityLivingBase getRevengeTarget() {
 		return null;
 	}
-
-	@Override
-	public void setLastAttacker(Entity par1) {}
 
 	@Nonnull
 	public EntityLinkbookItemWrapper createBookWrapper() {

@@ -36,7 +36,7 @@ public class MystcraftEventHandler {
 		if (event.getName().startsWith("ore") || event.getName().startsWith("gem") || event.getName().startsWith("dust")) {
 			if (event.getOre().getItem() instanceof ItemBlock) {
 				ItemBlock itemblock = ((ItemBlock) event.getOre().getItem());
-				EffectCrumble.registerMapping(itemblock.block, Blocks.STONE.getDefaultState());
+				EffectCrumble.registerMapping(itemblock.getBlock(), Blocks.STONE.getDefaultState());
 			}
 		}
 	}
@@ -75,7 +75,7 @@ public class MystcraftEventHandler {
 	public void onEntityAttack(LivingAttackEvent event) {
 		WorldProvider provider = event.getEntity().world.provider;
 		if (provider instanceof WorldProviderMyst) {
-			if (event.getSource().getSourceOfDamage() instanceof EntityPlayer && event.getEntity() instanceof EntityPlayer) {
+			if (event.getSource().getTrueSource() instanceof EntityPlayer && event.getEntity() instanceof EntityPlayer) {
 				if (!((WorldProviderMyst) provider).isPvPEnabled()) {
 					event.setCanceled(true);
 				}

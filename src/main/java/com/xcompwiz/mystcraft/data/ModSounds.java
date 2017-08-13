@@ -24,7 +24,7 @@ public class ModSounds {
         ResourceLocation rl = new ResourceLocation(MystObjects.MystcraftModId, name);
         SoundEvent ev = new SoundEvent(rl);
         ev.setRegistryName(rl);
-        GameRegistry.register(ev);
+        ModRegistryPrimer.queueForRegistration(ev);
         return ev;
     }
 

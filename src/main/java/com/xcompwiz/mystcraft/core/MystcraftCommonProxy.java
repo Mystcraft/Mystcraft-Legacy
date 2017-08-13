@@ -46,7 +46,7 @@ public class MystcraftCommonProxy {
 	 */
 	public void startBaselineProfiling(MinecraftServer mcserver) {
 		if (InstabilityDataCalculator.isDisabled()) return;
-		instabilitycalculator = new InstabilityDataCalculator(mcserver, mcserver.worldServerForDimension(0).getMapStorage());
+		instabilitycalculator = new InstabilityDataCalculator(mcserver, mcserver.getWorld(0).getMapStorage());
 		MinecraftForge.EVENT_BUS.register(instabilitycalculator);
 	}
 

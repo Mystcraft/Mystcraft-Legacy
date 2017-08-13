@@ -141,6 +141,9 @@ public class Mystcraft {
 		MystcraftPacketHandler.init();
 		MinecraftForge.EVENT_BUS.register(new MystcraftConnectionHandler());
 
+		//Setup RegistryPrimer
+		MinecraftForge.EVENT_BUS.register(ModRegistryPrimer.INSTANCE);
+
 		// Register Event Handler
 		MinecraftForge.EVENT_BUS.register(new MystcraftEventHandler());
 		EventManager eventmanager = new EventManager();
@@ -250,8 +253,7 @@ public class Mystcraft {
 		// Register the GUI Handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		// Init Recipes
-		//TODO hellfire> No. this doesn't work that way anymore.
-		ModRecipes.addRecipes(CraftingManager.getInstance());
+		ModRecipes.addRecipes();
 
 		// Init TileEntities
 		GameRegistry.registerTileEntity(TileEntityLectern.class, MystObjects.MystcraftModId + ":linkbook_lectern");

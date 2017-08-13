@@ -95,10 +95,10 @@ public class GuiNotification extends Gui {
             this.drawTexturedModalRect(i, j, 96, 202, 160, 32);
 
             if (this.title == null) {
-                mc.fontRendererObj.drawSplitString(this.message, i + 30, j + 7, 120, -1);
+                mc.fontRenderer.drawSplitString(this.message, i + 30, j + 7, 120, -1);
             } else {
-                mc.fontRendererObj.drawString(this.title, i + 30, j + 7, -256);
-                mc.fontRendererObj.drawString(this.message, i + 30, j + 18, -1);
+                mc.fontRenderer.drawString(this.title, i + 30, j + 7, -256);
+                mc.fontRenderer.drawString(this.message, i + 30, j + 18, -1);
             }
 
             //RenderHelper.enableGUIStandardItemLighting();

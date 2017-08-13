@@ -69,17 +69,17 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		}
 
 		@Override
-		public void unloadAllChunks() {
+		public void queueUnloadAll() {
 			for (Chunk chunk : this.id2ChunkMap.values()) {
-				this.unload(chunk);
+				this.queueUnload(chunk);
 			}
 		}
 
 		@Override
-		public void unload(Chunk chunkIn) {
-			if (this.world.provider.canDropChunk(chunkIn.xPosition, chunkIn.zPosition)) {
-				this.droppedChunksSet.add(ChunkPos.asLong(chunkIn.xPosition, chunkIn.zPosition));
-				chunkIn.unloaded = true;
+		public void queueUnload(Chunk chunkIn) {
+			if (this.world.provider.canDropChunk(chunkIn.x, chunkIn.z)) {
+				this.droppedChunksSet.add(ChunkPos.asLong(chunkIn.x, chunkIn.z));
+				chunkIn.unloadQueued = true;
 			}
 		}
 
@@ -89,7 +89,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 			long i = ChunkPos.asLong(x, z);
 			Chunk chunk = this.id2ChunkMap.get(i);
 			if (chunk != null) {
-				chunk.unloaded = false;
+				chunk.unloadQueued = false;
 			}
 			return chunk;
 		}

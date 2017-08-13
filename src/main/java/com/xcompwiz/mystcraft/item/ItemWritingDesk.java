@@ -32,7 +32,6 @@ public class ItemWritingDesk extends Item {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
 		if(isInCreativeTab(tab)) {
 			subItems.add(new ItemStack(this, 1, 0));

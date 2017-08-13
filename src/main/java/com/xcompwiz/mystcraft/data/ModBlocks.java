@@ -88,31 +88,31 @@ public class ModBlocks {
 
 		black_ink.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.fluidblock_black_ink));
 
-		GameRegistry.register(inkmixer);
+		ModRegistryPrimer.queueForRegistration(inkmixer);
 		registerItemBlock(inkmixer);
-		GameRegistry.register(bookbinder);
+		ModRegistryPrimer.queueForRegistration(bookbinder);
         registerItemBlock(bookbinder);
-		GameRegistry.register(receptacle);
+		ModRegistryPrimer.queueForRegistration(receptacle);
         registerItemBlock(receptacle);
-		GameRegistry.register(bookstand);
+		ModRegistryPrimer.queueForRegistration(bookstand);
         registerItemBlock(bookstand);
-		GameRegistry.register(lectern);
+		ModRegistryPrimer.queueForRegistration(lectern);
         registerItemBlock(lectern);
-		GameRegistry.register(decay);
+		ModRegistryPrimer.queueForRegistration(decay);
         ItemBlock ib = new ItemDecayBlock(decay);
         ib.setRegistryName(decay.getRegistryName());
-        GameRegistry.register(ib);
-		GameRegistry.register(linkmodifier);
+        ModRegistryPrimer.queueForRegistration(ib);
+		ModRegistryPrimer.queueForRegistration(linkmodifier);
         registerItemBlock(linkmodifier);
-		GameRegistry.register(crystal);
+		ModRegistryPrimer.queueForRegistration(crystal);
         registerItemBlock(crystal);
-		GameRegistry.register(portal);
+		ModRegistryPrimer.queueForRegistration(portal);
         registerItemBlock(portal);
-		GameRegistry.register(writingdesk);
+		ModRegistryPrimer.queueForRegistration(writingdesk);
         //registerItemBlock(writingdesk);
-		GameRegistry.register(starfissure);
+		ModRegistryPrimer.queueForRegistration(starfissure);
         registerItemBlock(starfissure);
-		GameRegistry.register(black_ink);
+		ModRegistryPrimer.queueForRegistration(black_ink);
 		//GameRegistry.register(new ItemBlockFluid(black_ink)); Hellfire> it's not necessary to add a fluid itemblock.. I'd suggest we don't atm.
 
 		// Set mining difficulties/tools
@@ -127,7 +127,7 @@ public class ModBlocks {
 	private static void registerItemBlock(Block b) {
         ItemBlock ib = new ItemBlock(b);
         ib.setRegistryName(b.getRegistryName());
-        GameRegistry.register(ib);
+        ModRegistryPrimer.queueForRegistration(ib);
 	}
 
 	@SideOnly(Side.CLIENT)

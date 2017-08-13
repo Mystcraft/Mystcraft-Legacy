@@ -132,13 +132,13 @@ public class GuiElementSurfaceTabs extends GuiElement {
 				if (name != null) {
 				    GlStateManager.pushMatrix();
 					float scale = 1;
-					int j = mc.fontRendererObj.getStringWidth(name) + 16;
+					int j = mc.fontRenderer.getStringWidth(name) + 16;
 					if (j > xSizeTab) {
 						scale = (float) xSizeTab / (float) j;
 					}
 					GlStateManager.translate(guiLeft + 4, tabY + 25, 0);
 					GlStateManager.scale(scale, scale, 1);
-					mc.fontRendererObj.drawString(name, 0, 0, 0x404040);
+					mc.fontRenderer.drawString(name, 0, 0, 0x404040);
 					GlStateManager.popMatrix();
 				}
 			}

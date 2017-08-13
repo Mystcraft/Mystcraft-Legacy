@@ -40,7 +40,7 @@ public class LinkController {
 		if (!LinkListenerManager.isLinkPermitted(world, entity, info)) return false;
 		MinecraftServer mcServer = Mystcraft.sidedProxy.getMCServer();
 		if (mcServer == null || (dimension != 0 && !mcServer.getAllowNether())) return false;
-		WorldServer newworld = mcServer.worldServerForDimension(dimension);
+		WorldServer newworld = mcServer.getWorld(dimension);
 		if (newworld == null) {
 			System.err.println("Cannot Link Entity to Dimension: Could not get World for Dimension " + dimension);
 			return false;

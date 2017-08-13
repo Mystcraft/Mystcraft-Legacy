@@ -72,16 +72,16 @@ public class ModItems {
 		inkvial.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, MystObjects.Items.inkvial));
 		glasses.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, "glasses"));
 
-		GameRegistry.register(page);
-		GameRegistry.register(agebook);
-		GameRegistry.register(linkbook);
-		GameRegistry.register(unlinked);
-		GameRegistry.register(booster);
-		GameRegistry.register(folder);
-		GameRegistry.register(portfolio);
-		GameRegistry.register(desk);
-		GameRegistry.register(inkvial);
-		GameRegistry.register(glasses);
+		ModRegistryPrimer.queueForRegistration(page);
+		ModRegistryPrimer.queueForRegistration(agebook);
+		ModRegistryPrimer.queueForRegistration(linkbook);
+		ModRegistryPrimer.queueForRegistration(unlinked);
+		ModRegistryPrimer.queueForRegistration(booster);
+		ModRegistryPrimer.queueForRegistration(folder);
+		ModRegistryPrimer.queueForRegistration(portfolio);
+		ModRegistryPrimer.queueForRegistration(desk);
+		ModRegistryPrimer.queueForRegistration(inkvial);
+		ModRegistryPrimer.queueForRegistration(glasses);
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -91,7 +91,7 @@ public class GuiInkMixer extends GuiContainer {
 		GlStateManager.color(1F, 1F, 1F, 1F);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-		fontRendererObj.drawString(I18n.format("container.inventory"), guiLeft + 8, guiTop + (ySize - 96) + 2, 0x404040);
+		fontRenderer.drawString(I18n.format("container.inventory"), guiLeft + 8, guiTop + (ySize - 96) + 2, 0x404040);
 	}
 
 	private void renderTank(int left, int top, int width, int height) {

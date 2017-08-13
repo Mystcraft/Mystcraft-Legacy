@@ -74,7 +74,7 @@ public class ChunkProviderMyst implements IChunkGenerator {
 
 	@Override
     @Nonnull
-	public Chunk provideChunk(int chunkX, int chunkZ) {
+	public Chunk generateChunk(int chunkX, int chunkZ) {
 		rand.setSeed(chunkX * 0x4f9939f508L + chunkZ * 0x1ef1565bd5L);
 		ChunkPrimerMyst primer = new ChunkPrimerMyst();
 

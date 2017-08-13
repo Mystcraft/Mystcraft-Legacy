@@ -226,9 +226,9 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
             double d3 = y;
             double d4 = z;
 
-            //TODO hellfirepvp> .addCoord doesn't exist anymore and there's no method that does the same.
-            List<AxisAlignedBB> list1 = this.world.getCollisionBoxes(this, this.getEntityBoundingBox().addCoord(x, y, z));
-            AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
+			AxisAlignedBB box = this.getEntityBoundingBox();
+			box = addCoord(x, y, z, box);
+            List<AxisAlignedBB> list1 = this.world.getCollisionBoxes(this, box);
 
             if (y != 0.0D) {
                 int k = 0;
@@ -388,4 +388,31 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 	public void readSpawnData(ByteBuf data) {
 	    falltile = Block.getStateById(data.readInt());
 	}
+
+	//Doesn't exist anymore in AABB
+	private AxisAlignedBB addCoord(double x, double y, double z, AxisAlignedBB toAddTo) {
+		double d0 = toAddTo.minX;
+		double d1 = toAddTo.minY;
+		double d2 = toAddTo.minZ;
+		double d3 = toAddTo.maxX;
+		double d4 = toAddTo.maxY;
+		double d5 = toAddTo.maxZ;
+		if (x < 0.0D) {
+			d0 += x;
+		} else if (x > 0.0D) {
+			d3 += x;
+		}
+		if (y < 0.0D) {
+			d1 += y;
+		} else if (y > 0.0D) {
+			d4 += y;
+		}
+		if (z < 0.0D) {
+			d2 += z;
+		} else if (z > 0.0D) {
+			d5 += z;
+		}
+		return new AxisAlignedBB(d0, d1, d2, d3, d4, d5);
+	}
+
 }

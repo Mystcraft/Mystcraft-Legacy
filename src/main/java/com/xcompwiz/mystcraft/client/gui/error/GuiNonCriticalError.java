@@ -43,7 +43,7 @@ public class GuiNonCriticalError extends GuiYesNo {
 		super.drawScreen(par1, par2, par3);
 		int y = 20;
 		for (String msg : message) {
-			this.drawCenteredString(this.fontRendererObj, msg, this.width / 2, y, 0xFFFFFF);
+			this.drawCenteredString(this.fontRenderer, msg, this.width / 2, y, 0xFFFFFF);
 			y += 10;
 		}
 	}

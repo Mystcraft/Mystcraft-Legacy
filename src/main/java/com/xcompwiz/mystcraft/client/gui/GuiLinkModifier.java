@@ -123,6 +123,6 @@ public class GuiLinkModifier extends GuiContainerElements {
 		this.mc.renderEngine.bindTexture(GUIs.single_slot);
 		GlStateManager.color(1F, 1F, 1F, 1F);
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
-		this.fontRendererObj.drawStringWithShadow(container.getLinkDimensionUID(), guiLeft + 100, guiTop + 40, 0xFFFFFF);
+		this.fontRenderer.drawStringWithShadow(container.getLinkDimensionUID(), guiLeft + 100, guiTop + 40, 0xFFFFFF);
 	}
 }
