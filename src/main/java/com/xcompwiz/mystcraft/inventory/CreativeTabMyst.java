@@ -43,11 +43,7 @@ public class CreativeTabMyst extends CreativeTabs {
 			if (item == null || item == Items.AIR) {
 				continue;
 			}
-			for (CreativeTabs tab : item.getCreativeTabs()) {
-				if (tab == this) {
-					item.getSubItems(this, list);
-				}
-			}
+			item.getSubItems(this, list);
 		}
 
         list.addAll(forcelist);
