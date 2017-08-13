@@ -224,16 +224,27 @@ public class Mystcraft {
 		ModBlocks.init();
 		InkEffects.init();
 
+		// Init Recipes
+		ModRecipes.addRecipes();
+
 		//Hellfire> registered by the actual item.
 		//FluidContainerRegistry.registerFluidContainer(ModFluids.black_ink, new ItemStack(ModItems.inkvial, 1, 0), new ItemStack(Items.GLASS_BOTTLE));
 		ModSymbolsFluids.init();
 
-		// Init Achievements
+		// Init Advancement triggers
 		ModAchievements.init();
 
         ModSounds.init();
 
 		sidedProxy.preinit();
+
+
+		// Init Symbol System
+		ModSymbols.initialize();
+		ModWords.initialize();
+		SymbolRules.initialize();
+		//register instability data
+		InstabilityData.initialize();
 	}
 
 	@EventHandler
@@ -252,8 +263,6 @@ public class Mystcraft {
 
 		// Register the GUI Handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
-		// Init Recipes
-		ModRecipes.addRecipes();
 
 		// Init TileEntities
 		GameRegistry.registerTileEntity(TileEntityLectern.class, MystObjects.MystcraftModId + ":linkbook_lectern");
@@ -270,12 +279,12 @@ public class Mystcraft {
         EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.block"), EntityFallingBlock.class, "myst.block", 1, instance, 16, 10, false);
         EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.meteor"), EntityMeteor.class, "myst.meteor", 2, instance, 192, 2, false);
 
-		// Init Symbol System
-		ModSymbols.initialize();
-		ModWords.initialize();
-		SymbolRules.initialize();
-		//register instability data 
-		InstabilityData.initialize();
+		//// Init Symbol System
+		//ModSymbols.initialize();
+		//ModWords.initialize();
+		//SymbolRules.initialize();
+		////register instability data
+		//InstabilityData.initialize();
 
         LootTableHandler.init();
         MinecraftForge.EVENT_BUS.register(LootTableHandler.EVENT_INSTANCE);

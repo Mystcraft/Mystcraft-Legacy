@@ -10,6 +10,7 @@
             "translate": "achievement.myst.write.desc"
         }
     },
+    "parent": "mystcraft:root",
     "criteria": {
         "myst_write_desk_in_inventory": {
             "trigger": "mystcraft:writing_desk_write"

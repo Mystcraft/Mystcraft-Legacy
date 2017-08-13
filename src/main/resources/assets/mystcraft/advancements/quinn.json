@@ -10,6 +10,7 @@
             "translate": "achievement.myst.quinn.desc"
         }
     },
+    "parent": "mystcraft:root",
     "criteria": {
         "myst_write_desk_in_inventory": {
             "trigger": "mystcraft:enter_myst_dimension"

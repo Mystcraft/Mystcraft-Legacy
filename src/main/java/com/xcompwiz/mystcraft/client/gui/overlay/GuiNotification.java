@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiNotification extends Gui {
 
-    private static final ResourceLocation achievementBG = new ResourceLocation("textures/gui/achievement/achievement_background.png");
+    private static final ResourceLocation achievementBG = new ResourceLocation("textures/gui/toasts.png");
     private int width;
     private int height;
     private String title;
@@ -92,7 +92,7 @@ public class GuiNotification extends Gui {
             GlStateManager.enableTexture2D();
             mc.getTextureManager().bindTexture(achievementBG);
             GlStateManager.disableLighting();
-            this.drawTexturedModalRect(i, j, 96, 202, 160, 32);
+            this.drawTexturedModalRect(i, j, 0, 0, 160, 32);
 
             if (this.title == null) {
                 mc.fontRenderer.drawSplitString(this.message, i + 30, j + 7, 120, -1);

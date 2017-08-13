@@ -28,6 +28,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -85,32 +86,7 @@ public class ModItems {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static void registerModels() {
-		ItemModelMesher imm = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-
-		imm.register(page, new PageMeshDefinition());
-
-		imm.register(agebook, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "agebook"), "inventory"));
-		imm.register(linkbook, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "linkbook"), "inventory"));
-		imm.register(unlinked, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "unlinkedbook"), "inventory"));
-		imm.register(booster, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "booster"), "inventory"));
-		imm.register(folder, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "folder"), "inventory"));
-		imm.register(portfolio, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "portfolio"), "inventory"));
-
-		ModelBakery.registerItemVariants(desk,
-				new ResourceLocation(MystObjects.MystcraftModId, "desk_bottom"),
-				new ResourceLocation(MystObjects.MystcraftModId, "desk_top"));
-		imm.register(desk, (stack) -> {
-			if(stack.getItemDamage() == 0) {
-				return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "desk_bottom"), "inventory");
-			} else {
-				return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "desk_top"), "inventory");
-			}
-		});
-
-		imm.register(inkvial, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "vial"), "inventory"));
-		imm.register(glasses, (stack -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "glasses"), "inventory")));
-
+	public static void registerModelColors() {
 		ItemColors ic = Minecraft.getMinecraft().getItemColors();
 		ic.registerItemColorHandler(new IItemColor() {
 			@Override
@@ -124,6 +100,31 @@ public class ModItems {
 				return ModFluids.black_ink.getColor();
 			}
 		}, ModBlocks.black_ink);
+	}
+
+	@SideOnly(Side.CLIENT)
+	public static void registerModels() {
+		ModelLoader.setCustomMeshDefinition(page, new PageMeshDefinition());
+		ModelLoader.setCustomMeshDefinition(agebook, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "agebook"), "inventory"));
+		ModelLoader.setCustomMeshDefinition(linkbook, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "linkbook"), "inventory"));
+		ModelLoader.setCustomMeshDefinition(unlinked, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "unlinkedbook"), "inventory"));
+		ModelLoader.setCustomMeshDefinition(booster, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "booster"), "inventory"));
+		ModelLoader.setCustomMeshDefinition(folder, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "folder"), "inventory"));
+		ModelLoader.setCustomMeshDefinition(portfolio, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "portfolio"), "inventory"));
+
+		ModelBakery.registerItemVariants(desk,
+				new ResourceLocation(MystObjects.MystcraftModId, "desk_bottom"),
+				new ResourceLocation(MystObjects.MystcraftModId, "desk_top"));
+		ModelLoader.setCustomMeshDefinition(desk, (stack) -> {
+			if(stack.getItemDamage() == 0) {
+				return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "desk_bottom"), "inventory");
+			} else {
+				return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "desk_top"), "inventory");
+			}
+		});
+
+		ModelLoader.setCustomMeshDefinition(inkvial, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "vial"), "inventory"));
+		ModelLoader.setCustomMeshDefinition(glasses, (stack -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "glasses"), "inventory")));
 	}
 
 	public static class PageMeshDefinition implements ItemMeshDefinition {

@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -131,32 +132,34 @@ public class ModBlocks {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static void registerModels() {
-        BlockColors colors = Minecraft.getMinecraft().getBlockColors();
-        colors.registerBlockColorHandler((state, world, pos, tint) -> {
-            if(world instanceof World) {
-                return ModFluids.black_ink.getColor((World) world, pos);
-            } else {
-                return ModFluids.black_ink.getColor();
-            }
-        }, black_ink);
-        colors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
-            if(worldIn == null || pos == null) {
-                return 0x3333FF;
-            }
-            return BlockLinkPortal.colorMultiplier(worldIn, pos);
-        }, portal);
+	public static void registerModelColors() {
+		BlockColors colors = Minecraft.getMinecraft().getBlockColors();
+		colors.registerBlockColorHandler((state, world, pos, tint) -> {
+			if(world instanceof World) {
+				return ModFluids.black_ink.getColor((World) world, pos);
+			} else {
+				return ModFluids.black_ink.getColor();
+			}
+		}, black_ink);
+		colors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
+			if(worldIn == null || pos == null) {
+				return 0x3333FF;
+			}
+			return BlockLinkPortal.colorMultiplier(worldIn, pos);
+		}, portal);
+	}
 
-		ItemModelMesher imm = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		imm.register(Item.getItemFromBlock(inkmixer), 0, mrlItemBlockModel("blockinkmixer"));
-		imm.register(Item.getItemFromBlock(bookbinder), 0, mrlItemBlockModel("blockbookbinder"));
-		imm.register(Item.getItemFromBlock(receptacle), 0, mrlItemBlockModel("blockbookreceptacle"));
-		imm.register(Item.getItemFromBlock(bookstand), 0, mrlItemBlockModel("blockbookstand"));
-		imm.register(Item.getItemFromBlock(lectern), 0, mrlItemBlockModel("blocklectern"));
-		imm.register(Item.getItemFromBlock(linkmodifier), 0, mrlItemBlockModel("blocklinkmodifier"));
-		imm.register(Item.getItemFromBlock(crystal), 0, mrlItemBlockModel("blockcrystal"));
-		imm.register(Item.getItemFromBlock(portal), 0, mrlItemBlockModel("linkportal"));
-		imm.register(Item.getItemFromBlock(starfissure), 0, mrlItemBlockModel("blockstarfissure"));
+	@SideOnly(Side.CLIENT)
+	public static void registerModels() {
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(inkmixer), 0, mrlItemBlockModel("blockinkmixer"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(bookbinder), 0, mrlItemBlockModel("blockbookbinder"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(receptacle), 0, mrlItemBlockModel("blockbookreceptacle"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(bookstand), 0, mrlItemBlockModel("blockbookstand"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(lectern), 0, mrlItemBlockModel("blocklectern"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(linkmodifier), 0, mrlItemBlockModel("blocklinkmodifier"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(crystal), 0, mrlItemBlockModel("blockcrystal"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(portal), 0, mrlItemBlockModel("linkportal"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(starfissure), 0, mrlItemBlockModel("blockstarfissure"));
 
         ModelBakery.registerItemVariants(Item.getItemFromBlock(decay),
                 new ResourceLocation(MystObjects.MystcraftModId, "decay_black"),
@@ -166,7 +169,7 @@ public class ModBlocks {
                 new ResourceLocation(MystObjects.MystcraftModId, "decay_purple"),
                 new ResourceLocation(MystObjects.MystcraftModId, "decay_yellow"),
                 new ResourceLocation(MystObjects.MystcraftModId, "decay_white"));
-		imm.register(Item.getItemFromBlock(decay), (stack) -> {
+		ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(decay), (stack) -> {
             DecayHandler.DecayType dt = DecayHandler.DecayType.values()[MathHelper.clamp(stack.getItemDamage(), 0, DecayHandler.DecayType.values().length - 1)];
             return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "decay_" + dt.getName()), "inventory");
         });

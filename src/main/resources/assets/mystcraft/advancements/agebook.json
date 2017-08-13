@@ -10,6 +10,7 @@
             "translate": "achievement.myst.agebook.desc"
         }
     },
+    "parent": "mystcraft:root",
     "criteria": {
         "myst_agebook_in_inventory": {
             "trigger": "minecraft:inventory_changed",

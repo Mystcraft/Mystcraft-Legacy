@@ -56,38 +56,34 @@ public class PageBuilder {
     @SubscribeEvent
     public void onTextureStitch(TextureStitchEvent.Pre event) {
         TextureMap tm = event.getMap();
-        if(Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION)) {
-            pageImage = buildBackground();
-            buildSymbolImage(DrawableWord.word_components);
-            for (IAgeSymbol symbol : SymbolManager.getAgeSymbols()) {
-                ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(symbol);
-                ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
-                tm.setTextureEntry(new PageSprite(unwrapped, symbol));
-            }
-            ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(null);
+        pageImage = buildBackground();
+        buildSymbolImage(DrawableWord.word_components);
+        for (IAgeSymbol symbol : SymbolManager.getAgeSymbols()) {
+            ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(symbol);
             ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
-            tm.setTextureEntry(new LinkingPageSprite(unwrapped));
+            tm.setTextureEntry(new PageSprite(unwrapped, symbol));
         }
+        ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(null);
+        ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
+        tm.setTextureEntry(new LinkingPageSprite(unwrapped));
     }
 
     @SubscribeEvent
     public void onModelBake(ModelBakeEvent event) {
-        if(Loader.instance().hasReachedState(LoaderState.POSTINITIALIZATION)) {
-            for (IAgeSymbol symbol : SymbolManager.getAgeSymbols()) {
-                ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(symbol);
-                ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
-                IBakedModel model = (new ItemLayerModel(ImmutableList.of(unwrapped)))
-                        .bake(HELD_ITEM_TRANSFORMS, DefaultVertexFormats.ITEM,
-                                location -> Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(unwrapped.toString()));
-                event.getModelRegistry().putObject(mrl, model);
-            }
-            ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(null);
+        for (IAgeSymbol symbol : SymbolManager.getAgeSymbols()) {
+            ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(symbol);
             ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
-            IBakedModel emptyModel = new ItemLayerModel(ImmutableList.of(unwrapped))
+            IBakedModel model = (new ItemLayerModel(ImmutableList.of(unwrapped)))
                     .bake(HELD_ITEM_TRANSFORMS, DefaultVertexFormats.ITEM,
                             location -> Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(unwrapped.toString()));
-            event.getModelRegistry().putObject(mrl, emptyModel);
+            event.getModelRegistry().putObject(mrl, model);
         }
+        ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(null);
+        ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
+        IBakedModel emptyModel = new ItemLayerModel(ImmutableList.of(unwrapped))
+                .bake(HELD_ITEM_TRANSFORMS, DefaultVertexFormats.ITEM,
+                        location -> Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(unwrapped.toString()));
+        event.getModelRegistry().putObject(mrl, emptyModel);
     }
 
     private static BufferedImage buildSymbolImage(ResourceLocation src) {

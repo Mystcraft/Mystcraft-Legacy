@@ -36,10 +36,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -69,6 +71,8 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 
         startupchecker = new MystcraftStartupChecker();
         MinecraftForge.EVENT_BUS.register(startupchecker);
+		MinecraftForge.EVENT_BUS.register(new PageBuilder());
+		MinecraftForge.EVENT_BUS.register(this); //Placed in here to keep rendering registration in 1 place
 
         ModFluids.registerModels();
 		registerEntityRenderers();
@@ -76,17 +80,20 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 
 	@Override
 	public void init() {
-
-        ModBlocks.registerModels();
-        ModItems.registerModels();
+		ModBlocks.registerModelColors();
+		ModItems.registerModelColors();
 
 		registerTileEntityRenderers();
-
-		MinecraftForge.EVENT_BUS.register(new PageBuilder());
 
 		InternalAPI.render.registerRenderEffect(new LinkRendererDisarm());
 
 		ParticleUtils.registerParticle("link", new ParticleProviderLink());
+	}
+
+	@SubscribeEvent
+	public void initModels(ModelRegistryEvent event) {
+		ModBlocks.registerModels();
+		ModItems.registerModels();
 	}
 
 	private void registerEntityRenderers() {
