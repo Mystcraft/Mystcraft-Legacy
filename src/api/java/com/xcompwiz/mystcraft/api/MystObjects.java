@@ -1,7 +1,5 @@
 package com.xcompwiz.mystcraft.api;
 
-import net.minecraftforge.common.AchievementPage;
-
 /**
  * This class provides a bunch of constant values which are the identifiers for various things. For things like Blocks and Items you'll use GameRegistry to get
  * an instance. For things like the Achievements you'll need to look them up in their respective locations.
@@ -19,9 +17,6 @@ public final class MystObjects {
 
 	/** For use with ChestGenHooks. Treasure is not built until post-init. */
 	public static final String	MYST_TREASURE		= "mystcraftTreasure"; //FIXME Hellfire> might be most likely subject for removal...
-
-	/** For registering Mystcraft related achievements. See {@link AchievementPage}. */
-	public static final String	ACHIEVEMENT_PAGE	= "Mystcraft";
 
 	public static final class Blocks {
 		public static final String	portal				= "linkportal";

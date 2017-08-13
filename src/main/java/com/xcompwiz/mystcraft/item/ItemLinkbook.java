@@ -41,9 +41,7 @@ public class ItemLinkbook extends ItemLinking implements IItemRenameable, IItemP
 	}
 
 	@Override
-	public void onCreated(@Nonnull ItemStack par1ItemStack, World world, EntityPlayer player) {
-		player.addStat(ModAchievements.linkbook, 1);
-	}
+	public void onCreated(@Nonnull ItemStack par1ItemStack, World world, EntityPlayer player) {}
 
 	@Override
 	public String getDisplayName(EntityPlayer player, @Nonnull ItemStack itemstack) {

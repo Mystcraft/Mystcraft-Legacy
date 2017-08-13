@@ -82,6 +82,9 @@ myst.creative.notebook.weather=Weather
 fluid.myst.ink.black=Black Ink
 tile.myst.fluid.myst.ink.black.name=Black Ink
 
+advancements.myst.root.title=Mystcraft
+advancements.myst.root.description=
+
 achievement.myst.symbol=Small Step of the Journey
 achievement.myst.symbol.desc=Find a Symbol
 achievement.myst.write=The Art: A Primer

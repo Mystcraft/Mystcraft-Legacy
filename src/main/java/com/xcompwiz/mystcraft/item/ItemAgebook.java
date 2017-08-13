@@ -111,9 +111,7 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
     }
 
 	@Override
-	public void onCreated(@Nonnull ItemStack stack, World world, EntityPlayer player) {
-		player.addStat(ModAchievements.agebook, 1);
-	}
+	public void onCreated(@Nonnull ItemStack stack, World world, EntityPlayer player) {}
 
 	@Override
 	public void activate(@Nonnull ItemStack itemstack, World worldObj, Entity entity) {

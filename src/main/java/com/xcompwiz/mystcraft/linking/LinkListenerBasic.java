@@ -22,6 +22,7 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.ContainerHorseChest;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -129,7 +130,9 @@ public class LinkListenerBasic {
 				ItemStack itemstack = player.inventory.getStackInSlot(i);
 				if (!itemstack.isEmpty() && itemstack.getItem() instanceof ItemLinkbook) return;
 			}
-			player.addStat(ModAchievements.quinn, 1);
+			if(player instanceof EntityPlayerMP) {
+				ModAchievements.TRIGGER_ENTER_MYST_DIM.trigger((EntityPlayerMP) player);
+			}
 		}
 	}
 

@@ -74,7 +74,6 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 		}
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer player = ((EntityPlayer) entity);
-			player.addStat(ModAchievements.symbol, 1);
 			remapItemstack(player, itemstack, itemSlot);
 		}
 	}

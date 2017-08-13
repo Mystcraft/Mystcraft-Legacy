@@ -1,43 +1,24 @@
 package com.xcompwiz.mystcraft.data;
 
-import com.xcompwiz.mystcraft.api.MystObjects;
-import com.xcompwiz.mystcraft.config.MystConfig;
-import com.xcompwiz.mystcraft.page.Page;
+import com.xcompwiz.mystcraft.advancements.TriggerEnterMystDimension;
+import com.xcompwiz.mystcraft.advancements.TriggerWrite;
 
-import net.minecraft.stats.Achievement;
-import net.minecraftforge.common.AchievementPage;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.ICriterionTrigger;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+
+import java.util.Map;
 
 public class ModAchievements {
 
-	private static int			symbol_id	= 5000;
-	private static int			agebook_id	= 5001;
-	private static int			linkbook_id	= 5002;
-	private static int			quinn_id	= 5003;
-	private static int			write_id	= 5004;
-
-	public static Achievement	symbol;
-	public static Achievement	write;
-	public static Achievement	agebook;
-	public static Achievement	linkbook;
-	public static Achievement	quinn;
-
-	public static void loadConfigs(MystConfig config) {
-		symbol_id = config.get("achievements", "achievement.symbol", symbol_id).getInt();
-		agebook_id = config.get("achievements", "achievement.agebook", agebook_id).getInt();
-		linkbook_id = config.get("achievements", "achievement.linkbook", linkbook_id).getInt();
-		quinn_id = config.get("achievements", "achievement.quinn", quinn_id).getInt();
-		write_id = config.get("achievements", "achievement.write", write_id).getInt();
-	}
+	public static TriggerWrite TRIGGER_WRITE = new TriggerWrite();
+	public static TriggerEnterMystDimension TRIGGER_ENTER_MYST_DIM = new TriggerEnterMystDimension();
 
 	public static void init() {
-		symbol = new Achievement("achievement.myst.symbol", "myst.symbol", 0, -2, Page.createSymbolPage("BioConSingle"), null).registerStat();
-		write = new Achievement("achievement.myst.write", "myst.write", 0, 0, Page.createPage(), symbol).registerStat();
-		agebook = new Achievement("achievement.myst.agebook", "myst.agebook", 0, 3, ModItems.agebook, null).initIndependentStat().registerStat();
-		linkbook = new Achievement("achievement.myst.linkbook", "myst.linkbook", 2, 3, ModItems.linkbook, null).initIndependentStat().registerStat();
-		quinn = new Achievement("achievement.myst.quinn", "myst.quinn", 4, 3, ModItems.linkbook, null).registerStat();
-
-		AchievementPage page = new AchievementPage(MystObjects.ACHIEVEMENT_PAGE, agebook, linkbook, quinn, write, symbol);
-		AchievementPage.registerAchievementPage(page);
+		Map<ResourceLocation, ICriterionTrigger<?>> criteriaTriggerRegistry = ReflectionHelper.getPrivateValue(CriteriaTriggers.class, null, "REGISTRY", "field_192139_s");
+		criteriaTriggerRegistry.put(TRIGGER_WRITE.getId(), TRIGGER_WRITE);
+		criteriaTriggerRegistry.put(TRIGGER_ENTER_MYST_DIM.getId(), TRIGGER_ENTER_MYST_DIM);
 	}
 
 }

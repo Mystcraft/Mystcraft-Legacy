@@ -1,0 +1,18 @@
+{
+    "display": {
+        "icon": {
+            "item": "mystcraft:linkbook"
+        },
+        "title": {
+            "translate": "achievement.myst.quinn"
+        },
+        "description": {
+            "translate": "achievement.myst.quinn.desc"
+        }
+    },
+    "criteria": {
+        "myst_write_desk_in_inventory": {
+            "trigger": "mystcraft:enter_myst_dimension"
+        }
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "display": {
+        "icon": {
+            "item": "mystcraft:portfolio"
+        },
+        "title": {
+            "translate": "achievement.myst.write"
+        },
+        "description": {
+            "translate": "achievement.myst.write.desc"
+        }
+    },
+    "criteria": {
+        "myst_write_desk_in_inventory": {
+            "trigger": "mystcraft:writing_desk_write"
+        }
+    }
+}

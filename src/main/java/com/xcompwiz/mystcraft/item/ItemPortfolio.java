@@ -13,6 +13,7 @@ import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -45,7 +46,7 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(@Nonnull ItemStack itemstack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		String name = this.getDisplayName(entityplayer, itemstack);
+		String name = this.getDisplayName(Minecraft.getMinecraft().player, itemstack);
 		if (name != null) {
 			tooltip.add(name);
 		}
@@ -70,7 +71,7 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 
 	@Override
 	@Nullable
-	public String getDisplayName(EntityPlayer player, @Nonnull ItemStack stack) {
+	public String getDisplayName(@Nullable EntityPlayer player, @Nonnull ItemStack stack) {
 		if (stack.isEmpty()) return null;
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());

@@ -22,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -221,7 +222,9 @@ public class TileEntityDesk extends TileEntityBase implements InventoryFilter, I
 		if (target.isEmpty()) return;
 		if (target.getItem() instanceof IItemWritable && ((IItemWritable) target.getItem()).writeSymbol(player, target, symbol)) {
 			useink();
-			player.addStat(ModAchievements.write, 1);
+			if(player instanceof EntityPlayerMP) {
+				ModAchievements.TRIGGER_WRITE.trigger((EntityPlayerMP) player);
+			}
 			return;
 		}
 		ItemStack paperstack = this.inventoryStacks.getStackInSlot(slot_pap);
