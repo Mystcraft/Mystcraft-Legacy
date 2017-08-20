@@ -19,7 +19,6 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.BiomeEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -42,7 +41,7 @@ public class BiomeWrapperMyst extends Biome {
 			properties.setTemperature(biome.getTemperature());
 			properties.setRainfall(biome.getRainfall());
 		}
-		properties.setWaterColor(biome.getWaterColor());
+		properties.setWaterColor(biome.getWaterColorMultiplier());
 		if (!biome.canRain())
 			properties.setRainDisabled();
 		if (biome.getEnableSnow())
