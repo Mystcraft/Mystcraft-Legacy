@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.block;
 
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookstand;
 
 import net.minecraft.block.SoundType;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -39,7 +41,7 @@ public class BlockBookstand extends BlockBookDisplay {
 		setResistance(2F);
 		setSoundType(SoundType.WOOD);
 		setUnlocalizedName("myst.bookstand");
-		setCreativeTab(CreativeTabs.DECORATIONS);
+		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 	}
 
 	@Override

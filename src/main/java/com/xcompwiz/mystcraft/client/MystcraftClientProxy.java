@@ -125,42 +125,6 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 	}
 
 	@Override
-	public void createCreativeTabs() {
-		// Basic creative tab
-		CreativeTabMyst creativeTab = new CreativeTabMyst("mystcraft.common", true);
-		creativeTab.registerItemStack(new ItemStack(ModItems.agebook, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModItems.unlinked, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModItems.folder, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModItems.portfolio, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModItems.booster, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModItems.desk, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModItems.desk, 1, 1));
-		creativeTab.registerItemStack(new ItemStack(ModBlocks.bookstand, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModBlocks.lectern, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModBlocks.crystal, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModBlocks.receptacle, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModBlocks.inkmixer, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModBlocks.bookbinder, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModBlocks.linkmodifier, 1, 0));
-		creativeTab.registerItemStack(new ItemStack(ModItems.inkvial, 1, 0));
-		//creativeTab.registerItemStack(new ItemStack(ModBlocks.black_ink, 1, 0));
-
-		// Symbol creative tab
-		CreativeTabMyst pageTab = new CreativeTabMyst("mystcraft.pages");
-		pageTab.setHasSearchBar(true);
-		pageTab.registerItemStack(Page.createLinkPage());
-		ArrayList<String> linkproperties = new ArrayList<>();
-		linkproperties.addAll(InkEffects.getProperties());
-		Collections.sort(linkproperties);
-		for (String property : linkproperties) {
-			if(property.equals(LinkPropertyAPI.FLAG_RELATIVE)) continue;
-			ModLinkEffects.isPropertyAllowed(property);
-			pageTab.registerItemStack(Page.createLinkPage(property));
-		}
-		ModPageCollections.addSymbolPages(pageTab);
-	}
-
-	@Override
 	public void startBaselineProfiling(MinecraftServer mcserver) {
 		if (InstabilityDataCalculator.isPerSave()) super.startBaselineProfiling(mcserver);
 	}

@@ -9,6 +9,7 @@ import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
 import com.xcompwiz.mystcraft.api.item.IItemRenameable;
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
@@ -40,7 +41,7 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 	public ItemPortfolio() {
 		setMaxStackSize(1);
 		setUnlocalizedName("myst.portfolio");
-		setCreativeTab(CreativeTabs.MISC);
+		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 	}
 
 	@Override

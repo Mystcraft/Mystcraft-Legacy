@@ -1,26 +1,34 @@
 package com.xcompwiz.mystcraft.item;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
 import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.item.IItemWritable;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
+import com.xcompwiz.mystcraft.data.InkEffects;
 import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.data.ModLinkEffects;
 import com.xcompwiz.mystcraft.page.Page;
+import com.xcompwiz.mystcraft.page.SortingUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,7 +42,28 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 		setMaxStackSize(64);
 		setHasSubtypes(true);
 		setUnlocalizedName("myst.page");
-		setCreativeTab(null);
+		setCreativeTab(MystcraftCommonProxy.tabMystPages);
+	}
+
+	@Override
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if(isInCreativeTab(tab)) {
+			items.add(Page.createLinkPage());
+
+			ArrayList<String> linkproperties = new ArrayList<>();
+			linkproperties.addAll(InkEffects.getProperties());
+			Collections.sort(linkproperties);
+			for (String property : linkproperties) {
+				if(property.equals(LinkPropertyAPI.FLAG_RELATIVE)) continue;
+				items.add(Page.createLinkPage(property));
+			}
+
+			ArrayList<IAgeSymbol> symbols = SymbolManager.getAgeSymbols();
+			symbols.sort(SortingUtils.ComparatorSymbolAlphabetical.instance);
+			for (IAgeSymbol symbol : symbols) {
+				items.add(Page.createSymbolPage(symbol.identifier()));
+			}
+		}
 	}
 
 	@Override

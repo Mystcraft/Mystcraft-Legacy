@@ -1,6 +1,7 @@
 package com.xcompwiz.mystcraft.block;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
 
@@ -37,7 +38,7 @@ public class BlockLinkModifier extends BlockContainer {
 		setResistance(2F);
 		setSoundType(SoundType.METAL);
 		setUnlocalizedName("myst.linkmodifier");
-		setCreativeTab(CreativeTabs.DECORATIONS);
+		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 	}
 
 	@Override

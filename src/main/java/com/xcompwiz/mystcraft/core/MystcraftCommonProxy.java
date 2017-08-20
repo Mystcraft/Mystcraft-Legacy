@@ -1,6 +1,11 @@
 package com.xcompwiz.mystcraft.core;
 
+import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
+import com.xcompwiz.mystcraft.data.InkEffects;
+import com.xcompwiz.mystcraft.data.ModLinkEffects;
 import com.xcompwiz.mystcraft.error.MystcraftStartupChecker;
+import com.xcompwiz.mystcraft.inventory.CreativeTabMyst;
+import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
 
 import net.minecraft.entity.Entity;
@@ -10,7 +15,13 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class MystcraftCommonProxy {
+
+	public static CreativeTabMyst tabMystCommon = null;
+	public static CreativeTabMyst tabMystPages = null;
 
 	public Entity getEntityByID(World worldObj, int id) {
 		if (worldObj instanceof WorldServer) return worldObj.getEntityByID(id);
@@ -29,7 +40,21 @@ public class MystcraftCommonProxy {
 
 	public void postInit() {}
 
-	public void createCreativeTabs() {}
+	public void createCreativeTabs() {
+		tabMystCommon = new CreativeTabMyst("mystcraft.common", true);
+
+		tabMystPages = new CreativeTabMyst("mystcraft.pages");
+		tabMystPages.setHasSearchBar(true);
+
+		ArrayList<String> linkproperties = new ArrayList<>();
+		linkproperties.addAll(InkEffects.getProperties());
+		Collections.sort(linkproperties);
+		for (String property : linkproperties) {
+			if(property.equals(LinkPropertyAPI.FLAG_RELATIVE)) continue;
+			ModLinkEffects.isPropertyAllowed(property);
+			//HellFire> have consistency remain with this creating config entries...
+		}
+	}
 
 	public void initShaders() {}
 

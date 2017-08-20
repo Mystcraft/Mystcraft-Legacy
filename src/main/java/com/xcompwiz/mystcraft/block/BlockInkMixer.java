@@ -1,6 +1,7 @@
 package com.xcompwiz.mystcraft.block;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer;
 
@@ -39,7 +40,7 @@ public class BlockInkMixer extends BlockContainer {
 		setResistance(2F);
 		setSoundType(SoundType.WOOD);
 		setUnlocalizedName("myst.inkmixer");
-		setCreativeTab(CreativeTabs.DECORATIONS);
+        setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 	}
 
     @Override

@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.block;
 
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.portal.PortalUtils;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
 
@@ -29,7 +30,7 @@ public class BlockCrystal extends Block {
 		setSoundType(SoundType.GLASS);
 		setLightLevel(0.5F);
 		setUnlocalizedName("myst.crystal");
-		setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 		setDefaultState(this.blockState.getBaseState().withProperty(IS_PART_OF_PORTAL, false).withProperty(SOURCE_DIRECTION, EnumFacing.DOWN));
 	}
 

@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.item;
 
 import java.util.List;
 
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.page.Page;
 
@@ -14,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,7 +28,7 @@ public class ItemLinkbookUnlinked extends Item {
 	public ItemLinkbookUnlinked() {
 		setMaxStackSize(16);
 		setUnlocalizedName("myst.unlinkedbook");
-		setCreativeTab(CreativeTabs.TRANSPORTATION);
+		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 	}
 
     @Override

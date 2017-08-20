@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.block;
 
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 
 import net.minecraft.block.SoundType;
@@ -31,7 +32,7 @@ public class BlockLectern extends BlockBookDisplay {
 		setResistance(2F);
 		setSoundType(SoundType.WOOD);
 		setUnlocalizedName("myst.lectern");
-		setCreativeTab(CreativeTabs.DECORATIONS);
+		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 	}
 
 	@Override

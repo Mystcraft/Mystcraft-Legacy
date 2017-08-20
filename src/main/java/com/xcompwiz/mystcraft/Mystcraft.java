@@ -188,7 +188,9 @@ public class Mystcraft {
 		providerId = config.get(MystConfig.CATEGORY_GENERAL, "ids.dim_provider", 1210950779).getInt();
 
 		serverLabels = renderlabels;
-		if (generate_template) ModSymbolsFluids.setReferenceConfig(new MystConfig(new File(configroot, "mystcraft/balance_template.cfg")));
+		if (generate_template) {
+			ModSymbolsFluids.setReferenceConfig(new MystConfig(new File(configroot, "mystcraft/balance_template.cfg")));
+		}
 
 		ModFluids.loadConfigs(config);
 		ModItems.loadConfigs(config);
@@ -197,7 +199,9 @@ public class Mystcraft {
 		ModLinkEffects.setConfigs(config);
 		InstabilityDataCalculator.loadConfigs(config);
 
-		if (config.hasChanged()) config.save();
+		if (config.hasChanged()) {
+			config.save();
+		}
 
 		MapGenStructureIO.registerStructure(StructureScatteredFeatureStartMyst.class, MapGenScatteredFeatureMyst.stringId);
 		MapGenStructureIO.registerStructureComponent(ComponentScatteredFeatureSmallLibrary.class, "TeMystSL");
@@ -211,6 +215,8 @@ public class Mystcraft {
 		dimensionType = DimensionType.register("Mystcraft", "_myst", Mystcraft.providerId, WorldProviderMyst.class, false);
 		GameRegistry.registerWorldGenerator(new MystWorldGenerator(), Integer.MAX_VALUE);
 
+		//HellFire> moved to preinit from postinit
+		sidedProxy.createCreativeTabs();
 
 		// Link Listeners
 		MinecraftForge.EVENT_BUS.register(new LinkListenerBasic());
@@ -280,6 +286,7 @@ public class Mystcraft {
         EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.meteor"), EntityMeteor.class, "myst.meteor", 2, instance, 192, 2, false);
 
 		//// Init Symbol System
+		//HellFire> Moved to preinit
 		//ModSymbols.initialize();
 		//ModWords.initialize();
 		//SymbolRules.initialize();
@@ -315,8 +322,6 @@ public class Mystcraft {
 	public void modsLoaded(FMLPostInitializationEvent event) {
 		sidedProxy.postInit();
 
-		ModSymbols.generateBiomeSymbols();
-		ModSymbolsFluids.modsLoaded();
 		SymbolManager.buildCardRanks();
 		SymbolManager.registerRules();
 		GrammarGenerator.buildGrammar();
@@ -327,8 +332,6 @@ public class Mystcraft {
 		    archivist.registerRecipe(
 		            new MerchantRecipeProviderItem(new ItemStack(Items.EMERALD, 25), ItemStack.EMPTY, new ItemStack(ModItems.booster)));
         }
-
-		sidedProxy.createCreativeTabs();
 	}
 
 	@EventHandler

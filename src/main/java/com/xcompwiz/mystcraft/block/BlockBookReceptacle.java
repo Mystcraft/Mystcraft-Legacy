@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.block;
 import java.util.Random;
 
 import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.portal.PortalUtils;
 import com.xcompwiz.mystcraft.tileentity.IOInventory;
@@ -47,7 +48,7 @@ public class BlockBookReceptacle extends BlockContainer {
 		setHardness(1F);
 		setSoundType(SoundType.GLASS);
 		setUnlocalizedName("myst.receptacle");
-		setCreativeTab(CreativeTabs.DECORATIONS);
+		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 	}
 
     @Override

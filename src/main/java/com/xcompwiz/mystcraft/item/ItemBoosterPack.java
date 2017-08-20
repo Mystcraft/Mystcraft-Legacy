@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.xcompwiz.mystcraft.api.item.IItemPageAcceptor;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.page.Page;
@@ -29,7 +30,7 @@ public class ItemBoosterPack extends Item {
 
 	public ItemBoosterPack() {
 		setUnlocalizedName("myst.booster");
-		setCreativeTab(CreativeTabs.MISC);
+		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 	}
 
 	@Override

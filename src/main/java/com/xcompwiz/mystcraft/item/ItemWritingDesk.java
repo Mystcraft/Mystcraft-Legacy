@@ -1,6 +1,7 @@
 package com.xcompwiz.mystcraft.item;
 
 import com.xcompwiz.mystcraft.block.BlockWritingDesk;
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 
 import net.minecraft.block.Block;
@@ -28,7 +29,7 @@ public class ItemWritingDesk extends Item {
 	public ItemWritingDesk() {
 		this.setHasSubtypes(true);
 		setUnlocalizedName("myst.writingdesk");
-		setCreativeTab(CreativeTabs.DECORATIONS);
+		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 	}
 
 	@Override

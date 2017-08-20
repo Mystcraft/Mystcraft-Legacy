@@ -5,6 +5,7 @@ import java.util.List;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
 import com.xcompwiz.mystcraft.api.item.IItemWritable;
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.inventory.InventoryFolder;
 
@@ -18,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -31,7 +33,7 @@ public class ItemFolder extends Item implements IItemOrderablePageProvider, IIte
 	public ItemFolder() {
 		setMaxStackSize(1);
 		setUnlocalizedName("myst.folder");
-		setCreativeTab(CreativeTabs.MISC);
+		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 	}
 
 	@Override

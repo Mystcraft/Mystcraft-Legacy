@@ -17,7 +17,6 @@ import javax.annotation.Nonnull;
 
 public class CreativeTabMyst extends CreativeTabs {
 
-	private NonNullList<ItemStack> forcelist = NonNullList.create();
 	private boolean			hasSearchBar	= false;
 	private boolean			collections		= false;
 
@@ -46,8 +45,6 @@ public class CreativeTabMyst extends CreativeTabs {
 			item.getSubItems(this, list);
 		}
 
-        list.addAll(forcelist);
-
         if (collections) {
             //TODO: Use folders builder system
             NonNullList<ItemStack> creative_collections = NonNullList.create();
@@ -70,10 +67,6 @@ public class CreativeTabMyst extends CreativeTabs {
 
 	private String getCollectionName(String name) {
 		return I18n.format("myst.creative.notebook.wrapper", I18n.format(name));
-	}
-
-	public void registerItemStack(@Nonnull ItemStack itemstack) {
-		forcelist.add(itemstack);
 	}
 
 	public void setHasSearchBar(boolean flag) {

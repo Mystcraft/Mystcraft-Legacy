@@ -4,7 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -53,6 +55,12 @@ public class ModRegistryPrimer {
     @SubscribeEvent
     public void onRegistryEventSounds(RegistryEvent.Register<SoundEvent> event) {
         addToRegistry(event.getRegistry());
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onRegistryBiomes(RegistryEvent.Register<Biome> event) {
+        ModSymbols.generateBiomeSymbols();
+        ModSymbolsFluids.modsLoaded();
     }
 
 }

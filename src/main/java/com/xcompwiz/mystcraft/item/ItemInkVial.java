@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.item;
 
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModFluids;
 import com.xcompwiz.mystcraft.data.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
@@ -25,7 +26,7 @@ public class ItemInkVial extends Item {
 	public ItemInkVial() {
 		setMaxStackSize(16);
 		setUnlocalizedName("myst.vial");
-		setCreativeTab(CreativeTabs.MATERIALS);
+		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 		setContainerItem(Items.GLASS_BOTTLE);
 	}
 

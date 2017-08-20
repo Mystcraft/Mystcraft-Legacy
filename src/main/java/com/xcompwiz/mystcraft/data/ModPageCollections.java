@@ -40,12 +40,4 @@ public class ModPageCollections {
 		return InternalAPI.itemFact.buildCollectionItem(name, args);
 	}
 
-	public static void addSymbolPages(CreativeTabMyst pageTab) {
-		ArrayList<IAgeSymbol> symbols = SymbolManager.getAgeSymbols();
-		Collections.sort(symbols, ComparatorSymbolAlphabetical.instance);
-		for (IAgeSymbol symbol : symbols) {
-			// Creative tab item
-			pageTab.registerItemStack(Page.createSymbolPage(symbol.identifier()));
-		}
-	}
 }

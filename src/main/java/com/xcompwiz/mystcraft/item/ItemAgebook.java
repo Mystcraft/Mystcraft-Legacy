@@ -8,6 +8,7 @@ import java.util.List;
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.item.IItemWritable;
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
@@ -23,6 +24,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
@@ -33,7 +35,14 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 
 	public ItemAgebook() {
 		setUnlocalizedName("myst.agebook");
-		setCreativeTab(CreativeTabs.TRANSPORTATION);
+		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
+	}
+
+	@Override
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if(isInCreativeTab(tab)) {
+			items.add(new ItemStack(this));
+		}
 	}
 
 	@Override

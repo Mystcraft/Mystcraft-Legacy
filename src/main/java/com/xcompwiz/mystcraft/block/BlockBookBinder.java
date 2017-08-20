@@ -1,6 +1,7 @@
 package com.xcompwiz.mystcraft.block;
 
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
 
@@ -37,7 +38,7 @@ public class BlockBookBinder extends BlockContainer {
 		setResistance(2F);
 		setSoundType(SoundType.WOOD);
 		setUnlocalizedName("myst.bookbinder");
-		setCreativeTab(CreativeTabs.DECORATIONS);
+		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 	}
 
 	@Override
