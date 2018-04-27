@@ -8,31 +8,39 @@ import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
+import com.xcompwiz.mystcraft.utility.ReflectionUtil;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 
 public class SymbolBiome extends SymbolBase {
+
 	public static ArrayList<Biome>	selectables	= new ArrayList<Biome>();
 
 	private Biome					biome;
 	private String					unlocalizedBiomeName;
 
-	public static String getBiomeSymbolId(Biome biome) {
-		return "Biome" + Biome.getIdForBiome(biome);
+	public static ResourceLocation getBiomeSymbolId(String ownerModid, Biome biome) {
+		return new ResourceLocation(ownerModid, "Biome" + Biome.getIdForBiome(biome));
 	}
 
-	public SymbolBiome(Biome biome) {
-		super(getBiomeSymbolId(biome));
+	public SymbolBiome(String ownerModid, Biome biome) {
+		super(getBiomeSymbolId(ownerModid, biome));
 		this.biome = biome;
 		this.unlocalizedBiomeName = formatted(biome);
-		this.setWords(new String[] { WordData.Nature, WordData.Nurture, WordData.Encourage, biome.getBiomeName() + Biome.getIdForBiome(biome) });
+		this.setWords(new String[] { WordData.Nature, WordData.Nurture, WordData.Encourage, ReflectionUtil.getBiomeName(biome) + Biome.getIdForBiome(biome) });
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	//TODO: Make into a helper somewhere
 	private static String formatted(Biome biome) {
 		String regex = "([A-Z][a-z]+)";
 		String replacement = "$1 ";
-		String name = biome.getBiomeName().replaceAll(regex, replacement).replaceAll("([A-Z][a-z]+)  ", replacement).trim();
+		String name = ReflectionUtil.getBiomeName(biome).replaceAll(regex, replacement).replaceAll("([A-Z][a-z]+)  ", replacement).trim();
 		if (name.endsWith("Biome")) name = name.substring(0, name.length() - "Biome".length()).trim();
 		return name;
 	}

@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -42,8 +43,8 @@ public final class SortingUtils {
 
 		@Override
 		public int compare(@Nonnull ItemStack itemstack1, @Nonnull ItemStack itemstack2) {
-			String id1 = InternalAPI.page.getPageSymbol(itemstack1);
-			String id2 = InternalAPI.page.getPageSymbol(itemstack2);
+			ResourceLocation id1 = InternalAPI.page.getPageSymbol(itemstack1);
+			ResourceLocation id2 = InternalAPI.page.getPageSymbol(itemstack2);
 			if (id1 == id2) return 0;
 			if (id1 == null) return -1;
 			if (id2 == null) return 1;

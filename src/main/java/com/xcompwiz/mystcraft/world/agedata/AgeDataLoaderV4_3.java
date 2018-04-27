@@ -1,6 +1,5 @@
 package com.xcompwiz.mystcraft.world.agedata;
 
-import java.util.Set;
 import java.util.UUID;
 
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
@@ -9,46 +8,54 @@ import com.xcompwiz.mystcraft.world.agedata.AgeDataLoaderManager.AgeDataLoader;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.util.Constants;
 
 public class AgeDataLoaderV4_3 extends AgeDataLoader {
-	public static class AgeDataData extends com.xcompwiz.mystcraft.world.agedata.AgeData.AgeDataData {}
 
-	@Override
-	public AgeDataData load(NBTTagCompound nbttagcompound) {
-		AgeDataData data = new AgeDataData();
-		data.version = "4.3";
-		data.agename = nbttagcompound.getString("AgeName");
-		data.seed = nbttagcompound.getLong("Seed");
-		data.uuid = UUID.fromString(nbttagcompound.getString("UUID"));
-		data.visited = nbttagcompound.getBoolean("Visited");
-		data.dead = nbttagcompound.getBoolean("Dead");
-		data.worldtime = nbttagcompound.getLong("WorldTime");
+    public static class AgeDataData extends AgeData.AgeDataData {}
 
-		data.instability = nbttagcompound.getShort("BaseIns");
-		data.instabilityEnabled = nbttagcompound.getBoolean("InstabilityEnabled");
+    @Override
+    public AgeDataData load(NBTTagCompound nbttagcompound) {
+        AgeDataData data = new AgeDataData();
+        data.version = "4.3";
+        data.agename = nbttagcompound.getString("AgeName");
+        data.seed = nbttagcompound.getLong("Seed");
+        data.uuid = UUID.fromString(nbttagcompound.getString("UUID"));
+        data.visited = nbttagcompound.getBoolean("Visited");
+        data.dead = nbttagcompound.getBoolean("Dead");
+        data.worldtime = nbttagcompound.getLong("WorldTime");
 
-		data.datacompound = nbttagcompound.getCompoundTag("DataCompound");
+        data.instability = nbttagcompound.getShort("BaseIns");
+        data.instabilityEnabled = nbttagcompound.getBoolean("InstabilityEnabled");
 
-		if (nbttagcompound.hasKey("SpawnX") && nbttagcompound.hasKey("SpawnY") && nbttagcompound.hasKey("SpawnZ")) {
-			data.spawn = new BlockPos(nbttagcompound.getInteger("SpawnX"), nbttagcompound.getInteger("SpawnY"), nbttagcompound.getInteger("SpawnZ"));
-		}
+        data.datacompound = nbttagcompound.getCompoundTag("DataCompound");
 
-		NBTTagList list = null;
-		list = nbttagcompound.getTagList("Pages", Constants.NBT.TAG_COMPOUND);
-		for (int i = 0; i < list.tagCount(); ++i) {
-			data.pages.add(Page.createPage(list.getCompoundTagAt(i)));
-		}
+        if (nbttagcompound.hasKey("SpawnX") && nbttagcompound.hasKey("SpawnY") && nbttagcompound.hasKey("SpawnZ")) {
+            data.spawn = new BlockPos(nbttagcompound.getInteger("SpawnX"), nbttagcompound.getInteger("SpawnY"), nbttagcompound.getInteger("SpawnZ"));
+        }
 
-		NBTUtils.readStringCollection(nbttagcompound.getTagList("Symbols", Constants.NBT.TAG_STRING), data.symbols);
-		NBTUtils.readStringCollection(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), data.authors);
+        NBTTagList list;
+        list = nbttagcompound.getTagList("Pages", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < list.tagCount(); ++i) {
+            data.pages.add(Page.createPage(list.getCompoundTagAt(i)));
+        }
 
-		NBTTagCompound cruftnbt = nbttagcompound.getCompoundTag("Cruft");
-		for (String key : cruftnbt.getKeySet()) {
-			data.cruft.put(key, cruftnbt.getTag(key));
-		}
-		return data;
-	}
+        nbttagcompound.getTagList("Symbols", Constants.NBT.TAG_STRING).forEach(nbtbase -> {
+            if(nbtbase instanceof NBTTagString) {
+                data.symbols.add(new ResourceLocation(((NBTTagString) nbtbase).getString()));
+            } else {
+                data.symbols.add(new ResourceLocation(nbtbase.toString()));
+            }
+        });
+        NBTUtils.readStringCollection(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), data.authors);
+
+        NBTTagCompound cruftnbt = nbttagcompound.getCompoundTag("Cruft");
+        for (String key : cruftnbt.getKeySet()) {
+            data.cruft.put(key, cruftnbt.getTag(key));
+        }
+        return data;
+    }
 }

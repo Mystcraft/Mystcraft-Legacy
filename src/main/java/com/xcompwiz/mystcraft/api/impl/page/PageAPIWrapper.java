@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class PageAPIWrapper extends APIWrapper implements PageAPI {
 
@@ -30,12 +31,12 @@ public class PageAPIWrapper extends APIWrapper implements PageAPI {
 	}
 
 	@Override
-	public String getPageSymbol(ItemStack page) {
+	public ResourceLocation getPageSymbol(ItemStack page) {
 		return InternalAPI.page.getPageSymbol(page);
 	}
 
 	@Override
-	public void setPageSymbol(ItemStack page, String symbol) {
+	public void setPageSymbol(ItemStack page, ResourceLocation symbol) {
 		InternalAPI.page.setPageSymbol(page, symbol);		
 	}
 

@@ -42,9 +42,9 @@ public class LootTableHandler {
             ArrayList<IAgeSymbol> symbols = SymbolManager.getAgeSymbols();
             for (IAgeSymbol symbol : symbols) {
                 int maxStack = SymbolManager.getSymbolTreasureMaxStack(symbol);
-                int chance = SymbolManager.getSymbolItemWeight(symbol.identifier());
-                ItemStack symbolStack = Page.createSymbolPage(symbol.identifier());
-                main.addEntry(new LootEntry(chance, 0, new LootCondition[0], symbol.identifier()) {
+                int chance = SymbolManager.getSymbolItemWeight(symbol.getRegistryName());
+                ItemStack symbolStack = Page.createSymbolPage(symbol.getRegistryName());
+                main.addEntry(new LootEntry(chance, 0, new LootCondition[0], symbol.getRegistryName().toString()) {
                     @Override
                     public void addLoot(Collection<ItemStack> stacks, Random rand, LootContext context) {
                         ItemStack copy = symbolStack.copy();

@@ -6,11 +6,12 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 public class SymbolTerrainGenVoid extends SymbolBase {
 
-	public SymbolTerrainGenVoid(String identifier) {
+	public SymbolTerrainGenVoid(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -21,6 +22,11 @@ public class SymbolTerrainGenVoid extends SymbolBase {
 		controller.setHorizon(0);
 		controller.setDrawHorizon(false);
 		controller.setDrawVoid(false);
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class TerrainGenerator implements ITerrainGenerator {

@@ -7,11 +7,12 @@ import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 
 public class SymbolBiomeControllerSmall extends SymbolBase {
 
-	public SymbolBiomeControllerSmall(String identifier) {
+	public SymbolBiomeControllerSmall(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -26,5 +27,10 @@ public class SymbolBiomeControllerSmall extends SymbolBase {
 		}
 
 		controller.registerInterface(new SymbolBiomeControllerLarge.BiomeController(controller, 1, biomes));
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 }

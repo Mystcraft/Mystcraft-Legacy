@@ -7,18 +7,24 @@ import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGenMystBigTree;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SymbolHugeTrees extends SymbolBase {
 
-	public SymbolHugeTrees(String identifier) {
+	public SymbolHugeTrees(ResourceLocation identifier) {
 		super(identifier);
 	}
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		controller.registerInterface(new Populator());
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class Populator implements IPopulate {

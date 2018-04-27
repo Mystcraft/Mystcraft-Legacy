@@ -11,7 +11,10 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+
+import javax.annotation.Nullable;
 
 public class SymbolBlock extends SymbolBase {
 
@@ -21,17 +24,21 @@ public class SymbolBlock extends SymbolBase {
 	public SymbolBlock(BlockDescriptor block, String word) {
 		super(getSymbolIdentifier(block.blockstate));
 		this.blockDescriptor = block;
-		this.setWords(new String[] { WordData.Modifier, WordData.Constraint, word, identifier });
+		this.setWords(new String[] { WordData.Modifier, WordData.Constraint, word, registryName.getResourcePath() });
 		this.unlocalizedBlockName = getUnlocalizedName(block.blockstate);
 	}
-	
-	public static String getSymbolIdentifier(IBlockState blockstate) {
-		return "ModMat_" + getBlockStateKey(blockstate);
+
+	public static ResourceLocation getSymbolIdentifier(IBlockState blockstate) {
+		return new ResourceLocation(
+				blockstate.getBlock().getRegistryName().getResourceDomain(),
+				"ModMat_" + blockstate.getBlock().getRegistryName().getResourcePath() + "_" + blockstate.getBlock().getMetaFromState(blockstate));
 	}
 
-	public static String getBlockStateKey(IBlockState blockstate) {
-		return blockstate.getBlock().getRegistryName().toString() + "_" + blockstate.getBlock().getMetaFromState(blockstate);
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
+
 
 	//TODO: Make into a helper somewhere
 	private static String getUnlocalizedName(IBlockState blockstate) {

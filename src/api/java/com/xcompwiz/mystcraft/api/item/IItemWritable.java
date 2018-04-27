@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.api.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -19,6 +20,6 @@ public interface IItemWritable {
 	 * @param symbol The id of the symbol being written
 	 * @return True on success
 	 */
-	boolean writeSymbol(EntityPlayer player, @Nonnull ItemStack itemstack, String symbol);
+	boolean writeSymbol(EntityPlayer player, @Nonnull ItemStack itemstack, ResourceLocation symbol);
 
 }

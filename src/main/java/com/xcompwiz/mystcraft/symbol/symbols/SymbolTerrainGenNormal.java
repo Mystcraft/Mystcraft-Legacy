@@ -9,13 +9,14 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.TerrainGeneratorBase;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 
 public class SymbolTerrainGenNormal extends SymbolBase {
 
-	public SymbolTerrainGenNormal(String identifier) {
+	public SymbolTerrainGenNormal(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -32,6 +33,11 @@ public class SymbolTerrainGenNormal extends SymbolBase {
 			gen.setTerrainBlock(block.blockstate);
 		}
 		controller.registerInterface(gen);
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	public static class TerrainGeneratorNormal extends TerrainGeneratorBase {

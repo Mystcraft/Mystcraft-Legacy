@@ -12,12 +12,13 @@ import com.xcompwiz.mystcraft.world.gen.feature.WorldGenSpikesAdv;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SymbolSpikes extends SymbolBase {
 
-	public SymbolSpikes(String identifier) {
+	public SymbolSpikes(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -31,6 +32,11 @@ public class SymbolSpikes extends SymbolBase {
 			generator = new WorldGenSpikesAdv(Blocks.STONE);
 		}
 		controller.registerInterface(new Populator(generator));
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private static class Populator implements IPopulate {

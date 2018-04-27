@@ -2,16 +2,19 @@ package com.xcompwiz.mystcraft.symbol;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
+import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.page.Page;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class SymbolRemappings {
 
-	private static HashMap<String, List<String>>	mappings	= new HashMap<String, List<String>>();
+	private static HashMap<ResourceLocation, List<ResourceLocation>> mappings = new HashMap<>();
 
 	public static void initialize() {
 		fogColorRemappings();
@@ -19,123 +22,123 @@ public class SymbolRemappings {
 		skyColorRemappings();
 		horizonColorRemappings();
 
-		
-		addSymbolRemapping("ModMat_tile.stone", "ModMat_minecraft:stone_0");
-		addSymbolRemapping("ModMat_tile.lava", "ModMat_minecraft:flowing_lava_0");
-		addSymbolRemapping("ModMat_tile.water", "ModMat_minecraft:flowing_water_0");
-		
-		addSymbolRemapping("ModMaroon", "ModColorMaroon");
-		addSymbolRemapping("ModRed", "ModColorRed");
-		addSymbolRemapping("ModOlive", "ModColorOlive");
-		addSymbolRemapping("ModYellow", "ModColorYellow");
-		addSymbolRemapping("ModDark Green", "ModColorDarkGreen");
-		addSymbolRemapping("ModGreen", "ModColorGreen");
-		addSymbolRemapping("ModTeal", "ModColorTeal");
-		addSymbolRemapping("ModCyan", "ModColorCyan");
-		addSymbolRemapping("ModNavy", "ModColorNavy");
-		addSymbolRemapping("ModBlue", "ModColorBlue");
-		addSymbolRemapping("ModPurple", "ModColorPurple");
-		addSymbolRemapping("ModMagenta", "ModColorMagenta");
-		addSymbolRemapping("ModBlack", "ModColorBlack");
-		addSymbolRemapping("ModGrey", "ModColorGrey");
-		addSymbolRemapping("ModSilver", "ModColorSilver");
-		addSymbolRemapping("ModWhite", "ModColorWhite");
 
-		addSymbolRemapping("LavaLakes", "ModMat_tile.lava", "LakesDeep");
-		addSymbolRemapping("Lakes", "ModMat_tile.water", "LakesSurface");
+		addSymbolRemappingInternal("ModMat_tile.stone", "ModMat_minecraft:stone_0");
+		addSymbolRemappingInternal("ModMat_tile.lava", "ModMat_minecraft:flowing_lava_0");
+		addSymbolRemappingInternal("ModMat_tile.water", "ModMat_minecraft:flowing_water_0");
 
-		addSymbolRemapping("CryFormCry", "ModMat_tile.myst.crystal", "CryForm");
-		addSymbolRemapping("CryFormGlow", "ModMat_tile.myst.lightgem", "CryForm");
-		addSymbolRemapping("CryFormQuartz", "ModMat_tile.myst.netherquartz", "CryForm");
+		addSymbolRemappingInternal("ModMaroon", "ModColorMaroon");
+		addSymbolRemappingInternal("ModRed", "ModColorRed");
+		addSymbolRemappingInternal("ModOlive", "ModColorOlive");
+		addSymbolRemappingInternal("ModYellow", "ModColorYellow");
+		addSymbolRemappingInternal("ModDark Green", "ModColorDarkGreen");
+		addSymbolRemappingInternal("ModGreen", "ModColorGreen");
+		addSymbolRemappingInternal("ModTeal", "ModColorTeal");
+		addSymbolRemappingInternal("ModCyan", "ModColorCyan");
+		addSymbolRemappingInternal("ModNavy", "ModColorNavy");
+		addSymbolRemappingInternal("ModBlue", "ModColorBlue");
+		addSymbolRemappingInternal("ModPurple", "ModColorPurple");
+		addSymbolRemappingInternal("ModMagenta", "ModColorMagenta");
+		addSymbolRemappingInternal("ModBlack", "ModColorBlack");
+		addSymbolRemappingInternal("ModGrey", "ModColorGrey");
+		addSymbolRemappingInternal("ModSilver", "ModColorSilver");
+		addSymbolRemappingInternal("ModWhite", "ModColorWhite");
 
-		addSymbolRemapping("Standard Terrain", "TerrainNormal");
-		addSymbolRemapping("Star Fissure", "StarFissure");
+		addSymbolRemappingInternal("LavaLakes", "ModMat_tile.lava", "LakesDeep");
+		addSymbolRemappingInternal("Lakes", "ModMat_tile.water", "LakesSurface");
 
-		addSymbolRemapping("Rain", "WeatherRain");
-		addSymbolRemapping("Snow", "WeatherSnow");
+		addSymbolRemappingInternal("CryFormCry", "ModMat_tile.myst.crystal", "CryForm");
+		addSymbolRemappingInternal("CryFormGlow", "ModMat_tile.myst.lightgem", "CryForm");
+		addSymbolRemappingInternal("CryFormQuartz", "ModMat_tile.myst.netherquartz", "CryForm");
 
-		addSymbolRemapping("Huge Trees", "HugeTrees");
+		addSymbolRemappingInternal("Standard Terrain", "TerrainNormal");
+		addSymbolRemappingInternal("Star Fissure", "StarFissure");
 
-		addSymbolRemapping("NormalStars", "StarsNormal");
+		addSymbolRemappingInternal("Rain", "WeatherRain");
+		addSymbolRemappingInternal("Snow", "WeatherSnow");
 
-		addSymbolRemapping("Single Biome", "BioConSingle");
+		addSymbolRemappingInternal("Huge Trees", "HugeTrees");
 
-		addSymbolRemapping("Checkerboard Biomes", "BioConTiled");
+		addSymbolRemappingInternal("NormalStars", "StarsNormal");
 
-		addSymbolRemapping("BiomeControllerNative", "BioConNative");
+		addSymbolRemappingInternal("Single Biome", "BioConSingle");
 
-		addSymbolRemapping("Lava Lakes", "LavaLakes");
+		addSymbolRemappingInternal("Checkerboard Biomes", "BioConTiled");
 
-		addSymbolRemapping("WeatherSun", "WeatherOff");
+		addSymbolRemappingInternal("BiomeControllerNative", "BioConNative");
 
-		addSymbolRemapping("Standard Lighting", "LightingNormal");
+		addSymbolRemappingInternal("Lava Lakes", "LavaLakes");
 
-		addSymbolRemapping("Storm", "WeatherStorm");
+		addSymbolRemappingInternal("WeatherSun", "WeatherOff");
 
-		addSymbolRemapping("Fog", "ColorFog");
+		addSymbolRemappingInternal("Standard Lighting", "LightingNormal");
 
-		addSymbolRemapping("ModFluid_tile.lava", "ModMat_tile.lava");
-		addSymbolRemapping("ModFluid_tile.water", "ModMat_tile.water");
-		addSymbolRemapping("ModFluidtile.water", "ModMat_tile.water");
-		addSymbolRemapping("ModFluidtile.lava", "ModMat_tile.lava");
+		addSymbolRemappingInternal("Storm", "WeatherStorm");
 
-		addSymbolRemapping("ModLavaSea", "ModMat_tile.lava");
-		addSymbolRemapping("ModNetherTerrain", "ModMat_tile.hellrock");
+		addSymbolRemappingInternal("Fog", "ColorFog");
 
-		addSymbolRemapping("ModMattile.hellrock", "ModMat_tile.hellrock");
-		addSymbolRemapping("ModMattile.whiteStone", "ModMat_tile.whiteStone");
-		addSymbolRemapping("ModMattile.oreDiamond", "ModMat_tile.oreDiamond");
+		addSymbolRemappingInternal("ModFluid_tile.lava", "ModMat_tile.lava");
+		addSymbolRemappingInternal("ModFluid_tile.water", "ModMat_tile.water");
+		addSymbolRemappingInternal("ModFluidtile.water", "ModMat_tile.water");
+		addSymbolRemappingInternal("ModFluidtile.lava", "ModMat_tile.lava");
 
-		addSymbolRemapping("TendrilsIce", "ModMat_tile.ice", "Tendrils");
-		addSymbolRemapping("WoodCaves", "Tendrils");
+		addSymbolRemappingInternal("ModLavaSea", "ModMat_tile.lava");
+		addSymbolRemappingInternal("ModNetherTerrain", "ModMat_tile.hellrock");
 
-		addSymbolRemapping("SkyDropDark", "StarsDark");
+		addSymbolRemappingInternal("ModMattile.hellrock", "ModMat_tile.hellrock");
+		addSymbolRemappingInternal("ModMattile.whiteStone", "ModMat_tile.whiteStone");
+		addSymbolRemappingInternal("ModMattile.oreDiamond", "ModMat_tile.oreDiamond");
+
+		addSymbolRemappingInternal("TendrilsIce", "ModMat_tile.ice", "Tendrils");
+		addSymbolRemappingInternal("WoodCaves", "Tendrils");
+
+		addSymbolRemappingInternal("SkyDropDark", "StarsDark");
 
 		// Fast Time
-		addSymbolRemapping("FTime", "ModHalf", "SunNormal", "ModHalf", "MoonNormal");
+		addSymbolRemappingInternal("FTime", "ModHalf", "SunNormal", "ModHalf", "MoonNormal");
 
 		// Slow Time
-		addSymbolRemapping("STime", "ModDouble", "SunNormal", "ModDouble", "MoonNormal");
+		addSymbolRemappingInternal("STime", "ModDouble", "SunNormal", "ModDouble", "MoonNormal");
 
 		// Normal Time
-		addSymbolRemapping("NTime", "ModFull", "SunNormal", "ModFull", "MoonNormal");
+		addSymbolRemappingInternal("NTime", "ModFull", "SunNormal", "ModFull", "MoonNormal");
 
 		// Eternal Dusk
-		addSymbolRemapping("Dusk", "ModZero", "ModSetting", "SunNormal", "ModZero", "MoonNormal");
+		addSymbolRemappingInternal("Dusk", "ModZero", "ModSetting", "SunNormal", "ModZero", "MoonNormal");
 
 		// Eternal Night
-		addSymbolRemapping("Night", "SunDark", "ModZero", "MoonNormal");
+		addSymbolRemappingInternal("Night", "SunDark", "ModZero", "MoonNormal");
 
 		// Eternal Day
-		addSymbolRemapping("Day", "MoonDark", "ModZero", "ModNoon", "SunNormal");
+		addSymbolRemappingInternal("Day", "MoonDark", "ModZero", "ModNoon", "SunNormal");
 
-		addSymbolRemapping("Heavy Resources", "DenseOres");
+		addSymbolRemappingInternal("Heavy Resources", "DenseOres");
 
-		addSymbolRemapping("SunsetNormal", "SunsetRed");
+		addSymbolRemappingInternal("SunsetNormal", "SunsetRed");
 
 		// "CloudNormal" -> "CloudWhite"
-		addSymbolRemapping("CloudNormal", "CloudWhite");
+		addSymbolRemappingInternal("CloudNormal", "CloudWhite");
 
-		addSymbolRemapping("Normal Sunset Colors", "SunsetRed");
+		addSymbolRemappingInternal("Normal Sunset Colors", "SunsetRed");
 
-		addSymbolRemapping("NativeBiomeController", "BioConLarge");
+		addSymbolRemappingInternal("NativeBiomeController", "BioConLarge");
 
-		addSymbolRemapping("Flat Sea", "TerrainFlat");
+		addSymbolRemappingInternal("Flat Sea", "TerrainFlat");
 
-		addSymbolRemapping("Sky Islands", "Skylands");
+		addSymbolRemappingInternal("Sky Islands", "Skylands");
 
-		addSymbolRemapping("Tree Age", "Huge Trees", "TerrainFlat", "Swampland", "BioConSingle");
+		addSymbolRemappingInternal("Tree Age", "Huge Trees", "TerrainFlat", "Swampland", "BioConSingle");
 
-		addSymbolRemapping("DefaultBiome", "BioConSingle");
+		addSymbolRemappingInternal("DefaultBiome", "BioConSingle");
 
-		addSymbolRemapping("DefaultLighting", "Standard Lighting");
+		addSymbolRemappingInternal("DefaultLighting", "Standard Lighting");
 
-		addSymbolRemapping("DefaultSunrise", "Normal Sunset Colors");
+		addSymbolRemappingInternal("DefaultSunrise", "Normal Sunset Colors");
 
-		addSymbolRemapping("DefaultTerrain", "Standard Terrain");
+		addSymbolRemappingInternal("DefaultTerrain", "Standard Terrain");
 
-		addSymbolRemapping("Flat", "TerrainFlat");
-		addSymbolRemapping("Void", "TerrainVoid");
+		addSymbolRemappingInternal("Flat", "TerrainFlat");
+		addSymbolRemappingInternal("Void", "TerrainVoid");
 	}
 
 	private static void addChromaticGradients(List<String> mapping) {
@@ -154,203 +157,203 @@ public class SymbolRemappings {
 	}
 
 	private static void fogColorRemappings() {
-		List<String> mapping = null;
+		List<String> mapping;
 
 		// FogChromatic
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		addChromaticGradients(mapping);
 		mapping.add("ColorFog");
-		addSymbolRemapping("FogChromatic", mapping);
+		addSymbolRemappingInternal("FogChromatic", mapping);
 
 		// FogRed
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModRed");
 		mapping.add("ColorFog");
-		addSymbolRemapping("FogRed", mapping);
+		addSymbolRemappingInternal("FogRed", mapping);
 
 		// FogGreen
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModGreen");
 		mapping.add("ColorFog");
-		addSymbolRemapping("FogGreen", mapping);
+		addSymbolRemappingInternal("FogGreen", mapping);
 
 		// FogBlue
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModBlue");
 		mapping.add("ColorFog");
-		addSymbolRemapping("FogBlue", mapping);
+		addSymbolRemappingInternal("FogBlue", mapping);
 
 		// FogBlack
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModBlack");
 		mapping.add("ColorFog");
-		addSymbolRemapping("FogBlack", mapping);
+		addSymbolRemappingInternal("FogBlack", mapping);
 
 		// FogWhite
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModWhite");
 		mapping.add("ColorFog");
-		addSymbolRemapping("FogWhite", mapping);
+		addSymbolRemappingInternal("FogWhite", mapping);
 
 		// FogNormal
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModWhite");
 		mapping.add("ColorFog");
-		addSymbolRemapping("FogNormal", mapping);
+		addSymbolRemappingInternal("FogNormal", mapping);
 	}
 
 	private static void cloudColorRemappings() {
-		List<String> mapping = null;
+		List<String> mapping;
 
 		// CloudChromatic
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		addChromaticGradients(mapping);
 		mapping.add("ColorCloud");
-		addSymbolRemapping("CloudChromatic", mapping);
+		addSymbolRemappingInternal("CloudChromatic", mapping);
 
 		// CloudRed
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModRed");
 		mapping.add("ColorCloud");
-		addSymbolRemapping("CloudRed", mapping);
+		addSymbolRemappingInternal("CloudRed", mapping);
 
 		// CloudGreen
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModGreen");
 		mapping.add("ColorCloud");
-		addSymbolRemapping("CloudGreen", mapping);
+		addSymbolRemappingInternal("CloudGreen", mapping);
 
 		// CloudBlue
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModBlue");
 		mapping.add("ColorCloud");
-		addSymbolRemapping("CloudBlue", mapping);
+		addSymbolRemappingInternal("CloudBlue", mapping);
 
 		// CloudBlack
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModBlack");
 		mapping.add("ColorCloud");
-		addSymbolRemapping("CloudBlack", mapping);
+		addSymbolRemappingInternal("CloudBlack", mapping);
 
 		// CloudWhite
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModWhite");
 		mapping.add("ColorCloud");
-		addSymbolRemapping("CloudWhite", "ModWhite", "ColorCloud");
+		addSymbolRemappingInternal("CloudWhite", "ModWhite", "ColorCloud");
 	}
 
 	private static void skyColorRemappings() {
-		List<String> mapping = null;
+		List<String> mapping;
 
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModGradient");
 		mapping.add("ColorSky");
-		addSymbolRemapping("ModGradient_HERE", mapping);
+		addSymbolRemappingInternal("ModGradient_HERE", mapping);
 
 		// SkyChromatic
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		addChromaticGradients(mapping);
 		mapping.add("ColorSky");
-		addSymbolRemapping("SkyChromatic", mapping);
+		addSymbolRemappingInternal("SkyChromatic", mapping);
 
 		// SkyRed
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModRed");
 		mapping.add("ColorSky");
-		addSymbolRemapping("SkyRed", mapping);
+		addSymbolRemappingInternal("SkyRed", mapping);
 
 		// SkyGreen
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModGreen");
 		mapping.add("ColorSky");
-		addSymbolRemapping("SkyGreen", mapping);
+		addSymbolRemappingInternal("SkyGreen", mapping);
 
 		// SkyBlue
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModBlue");
 		mapping.add("ColorSky");
-		addSymbolRemapping("SkyBlue", mapping);
+		addSymbolRemappingInternal("SkyBlue", mapping);
 
 		// SkyBlack
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModBlack");
 		mapping.add("ColorSky");
-		addSymbolRemapping("SkyBlack", mapping);
+		addSymbolRemappingInternal("SkyBlack", mapping);
 
 		// SkyWhite
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModWhite");
 		mapping.add("ColorSky");
-		addSymbolRemapping("SkyWhite", mapping);
+		addSymbolRemappingInternal("SkyWhite", mapping);
 
 		// SkyNormal
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModBlue");
 		mapping.add("ColorSky");
-		addSymbolRemapping("SkyNormal", mapping);
+		addSymbolRemappingInternal("SkyNormal", mapping);
 	}
 
 	private static void horizonColorRemappings() {
-		List<String> mapping = null;
+		List<String> mapping;
 
 		// SunsetChromatic
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		addChromaticGradients(mapping);
 		mapping.add("ColorHorizon");
-		addSymbolRemapping("SunsetChromatic", mapping);
+		addSymbolRemappingInternal("SunsetChromatic", mapping);
 
 		// SunsetRed
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModRed");
 		mapping.add("ColorHorizon");
-		addSymbolRemapping("SunsetRed", mapping);
+		addSymbolRemappingInternal("SunsetRed", mapping);
 
 		// SunsetGreen
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModGreen");
 		mapping.add("ColorHorizon");
-		addSymbolRemapping("SunsetGreen", mapping);
+		addSymbolRemappingInternal("SunsetGreen", mapping);
 
 		// SunsetBlue
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModBlue");
 		mapping.add("ColorHorizon");
-		addSymbolRemapping("SunsetBlue", mapping);
+		addSymbolRemappingInternal("SunsetBlue", mapping);
 
 		// SunsetBlack
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModBlack");
 		mapping.add("ColorHorizon");
-		addSymbolRemapping("SunsetBlack", mapping);
+		addSymbolRemappingInternal("SunsetBlack", mapping);
 
 		// SunsetWhite
-		mapping = new ArrayList<String>();
+		mapping = new ArrayList<>();
 		mapping.add("ModWhite");
 		mapping.add("ColorHorizon");
-		addSymbolRemapping("SunsetWhite", mapping);
+		addSymbolRemappingInternal("SunsetWhite", mapping);
 	}
 
-	public static boolean hasRemapping(String symbol) {
+	public static boolean hasRemapping(ResourceLocation symbol) {
 		return mappings.get(symbol) != null;
 	}
 
-	public static List<String> remap(String symbol) {
-		List<String> symbols = mappings.get(symbol);
+	public static List<ResourceLocation> remap(ResourceLocation symbol) {
+		List<ResourceLocation> symbols = mappings.get(symbol);
 		if (symbols == null) {
-			symbols = new ArrayList<String>();
+			symbols = new ArrayList<>();
 			symbols.add(symbol);
 		}
 		return symbols;
 	}
 
 	public static List<ItemStack> remap(ItemStack page) {
-		List<ItemStack> result = new ArrayList<ItemStack>();
+		List<ItemStack> result = new ArrayList<>();
 		if (page == null) return result;
 		if (!(page.getItem() instanceof ItemPage)) return result;
-		String symbol = Page.getSymbol(page);
-		List<String> symbols = mappings.get(symbol);
+		ResourceLocation symbol = Page.getSymbol(page);
+		List<ResourceLocation> symbols = mappings.get(symbol);
 		if (symbols != null) {
-			for (String mapping : symbols) {
+			for (ResourceLocation mapping : symbols) {
 				result.add(Page.createSymbolPage(mapping));
 			}
 			if (symbols.size() > 0) {
@@ -367,8 +370,8 @@ public class SymbolRemappings {
 		for (int i = 0; i < collection.size();) {
 			T element = collection.remove(i);
 			List<T> mapping = null;
-			if (element instanceof String) mapping = (List<T>) SymbolRemappings.remap((String)element);
-			if (element instanceof ItemStack) mapping = (List<T>) SymbolRemappings.remap((ItemStack)element);
+			if (element instanceof ResourceLocation) mapping = (List<T>) SymbolRemappings.remap((ResourceLocation) element);
+			if (element instanceof ItemStack) mapping = (List<T>) SymbolRemappings.remap((ItemStack) element);
 			if (mapping == null) continue;
 			collection.addAll(i, mapping);
 			if (mapping.size() > 0 && element.equals(mapping.get(0))) {
@@ -378,13 +381,30 @@ public class SymbolRemappings {
 		return collection;
 	}
 
-	private static void addSymbolRemapping(String id, List<String> mapping) {
+	//Also automatically lowercases things
+	private static void addSymbolRemappingInternal(String mystId, List<String> mapping) {
+		List<ResourceLocation> mappingList = new LinkedList<>();
+		for (String str : mapping) {
+			mappingList.add(new ResourceLocation(MystObjects.MystcraftModId, str));
+		}
+		addSymbolRemapping(new ResourceLocation(MystObjects.MystcraftModId, mystId), mappingList);
+	}
+
+	private static void addSymbolRemappingInternal(String mystId, String... newMappings) {
+		ResourceLocation[] mappingArr = new ResourceLocation[newMappings.length];
+		for (int i = 0; i < newMappings.length; i++) {
+			mappingArr[i] = new ResourceLocation(MystObjects.MystcraftModId, newMappings[i]);
+		}
+		addSymbolRemapping(new ResourceLocation(MystObjects.MystcraftModId, mystId), mappingArr);
+	}
+
+	private static void addSymbolRemapping(ResourceLocation id, List<ResourceLocation> mapping) {
 		mappings.put(id, mapping);
 	}
 
-	public static void addSymbolRemapping(String id, String... newids) {
-		List<String> mapping = new ArrayList<String>();
-		for (String newid : newids) {
+	public static void addSymbolRemapping(ResourceLocation id, ResourceLocation... newids) {
+		List<ResourceLocation> mapping = new ArrayList<>();
+		for (ResourceLocation newid : newids) {
 			mapping.add(newid);
 		}
 		mappings.put(id, mapping);

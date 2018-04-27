@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.data;
 
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
@@ -35,6 +36,11 @@ public class ModRegistryPrimer {
                 registry.register((V) entry);
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onRegistrySymbols(RegistryEvent.Register<IAgeSymbol> event) {
+        addToRegistry(event.getRegistry());
     }
 
     @SubscribeEvent

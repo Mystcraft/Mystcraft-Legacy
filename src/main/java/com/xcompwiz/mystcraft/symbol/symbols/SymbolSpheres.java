@@ -12,12 +12,13 @@ import com.xcompwiz.mystcraft.world.gen.MapGenSpheresMyst;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 public class SymbolSpheres extends SymbolBase {
 
-	public SymbolSpheres(String identifier) {
+	public SymbolSpheres(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -31,6 +32,11 @@ public class SymbolSpheres extends SymbolBase {
 			generator = new MapGenSpheresMyst(seed, Blocks.COBBLESTONE);
 		}
 		controller.registerInterface(new TerrainAlteration(generator));
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class TerrainAlteration implements ITerrainAlteration {

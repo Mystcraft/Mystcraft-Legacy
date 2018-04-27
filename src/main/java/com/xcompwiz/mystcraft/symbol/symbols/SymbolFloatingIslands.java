@@ -20,6 +20,7 @@ import com.xcompwiz.mystcraft.world.gen.MapGenFloatingIslands.IModifiedHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
@@ -27,7 +28,7 @@ import net.minecraft.world.chunk.ChunkPrimer;
 
 public class SymbolFloatingIslands extends SymbolBase {
 
-	public SymbolFloatingIslands(String identifier) {
+	public SymbolFloatingIslands(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -43,6 +44,11 @@ public class SymbolFloatingIslands extends SymbolBase {
 		BiomeReplacer replacer = new BiomeReplacer(biome);
 		controller.registerInterface(new TerrainAlteration(seed, blockdesc, biome, replacer));
 		controller.registerInterface(replacer);
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class TerrainAlteration implements ITerrainAlteration {

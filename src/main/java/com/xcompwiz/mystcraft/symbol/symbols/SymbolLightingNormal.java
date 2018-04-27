@@ -3,16 +3,22 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.ILightingController;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+import net.minecraft.util.ResourceLocation;
 
 public class SymbolLightingNormal extends SymbolBase {
 
-	public SymbolLightingNormal(String identifier) {
+	public SymbolLightingNormal(ResourceLocation identifier) {
 		super(identifier);
 	}
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		controller.registerInterface(new LightingController());
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class LightingController implements ILightingController {

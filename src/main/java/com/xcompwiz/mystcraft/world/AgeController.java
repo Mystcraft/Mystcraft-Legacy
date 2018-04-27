@@ -46,6 +46,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3d;
@@ -195,8 +196,8 @@ public class AgeController implements AgeDirector {
 		staticColorLists.put(IStaticColorProvider.WATER, waterColorProviders);
 
 		// Read Symbols
-		List<String> symbols = new ArrayList<String>(agedata.getSymbols(world.isRemote));
-		for (String name : symbols) {
+		List<ResourceLocation> symbols = new ArrayList<>(agedata.getSymbols(world.isRemote));
+		for (ResourceLocation name : symbols) {
 			IAgeSymbol symbol = SymbolManager.getAgeSymbol(name);
 			if (symbol == null) {
 				LoggerUtils.error("Attempting to generate age containing unmatched symbol " + name + ".  Results are undefined.");
@@ -208,22 +209,22 @@ public class AgeController implements AgeDirector {
 		if (biomeController == null) {
 			IAgeSymbol symbol = SymbolManager.findAgeSymbolImplementing(new Random(agedata.getSeed()), IBiomeController.class);
 			addSymbol(symbol);
-			agedata.addSymbol(symbol.identifier(), InstabilityData.missing.controller);
+			agedata.addSymbol(symbol.getRegistryName(), InstabilityData.missing.controller);
 		}
 		if (genTerrain == null) {
 			IAgeSymbol symbol = SymbolManager.findAgeSymbolImplementing(new Random(agedata.getSeed()), ITerrainGenerator.class);
 			addSymbol(symbol);
-			agedata.addSymbol(symbol.identifier(), InstabilityData.missing.controller);
+			agedata.addSymbol(symbol.getRegistryName(), InstabilityData.missing.controller);
 		}
 		if (lightingController == null) {
 			IAgeSymbol symbol = SymbolManager.findAgeSymbolImplementing(new Random(agedata.getSeed()), ILightingController.class);
 			addSymbol(symbol);
-			agedata.addSymbol(symbol.identifier(), 0);
+			agedata.addSymbol(symbol.getRegistryName(), 0);
 		}
 		if (weatherController == null) {
 			IAgeSymbol symbol = SymbolManager.findAgeSymbolImplementing(new Random(agedata.getSeed()), IWeatherController.class);
 			addSymbol(symbol);
-			agedata.addSymbol(symbol.identifier(), InstabilityData.missing.controller);
+			agedata.addSymbol(symbol.getRegistryName(), InstabilityData.missing.controller);
 		}
 
 		weatherController.setDataObject(agedata.getStorageObject("weather"));

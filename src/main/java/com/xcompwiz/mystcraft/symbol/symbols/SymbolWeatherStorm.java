@@ -14,13 +14,18 @@ import net.minecraft.world.chunk.Chunk;
 
 public class SymbolWeatherStorm extends SymbolBase {
 
-	public SymbolWeatherStorm(String identifier) {
+	public SymbolWeatherStorm(ResourceLocation identifier) {
 		super(identifier);
 	}
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		controller.registerInterface(new WeatherController());
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private static class WeatherController extends WeatherControllerToggleable {

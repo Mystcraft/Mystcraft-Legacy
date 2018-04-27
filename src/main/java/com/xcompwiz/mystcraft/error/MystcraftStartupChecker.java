@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.error;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import com.xcompwiz.mystcraft.MystcraftFirstRun;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
@@ -24,6 +25,7 @@ import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiWorldSelection;
 import net.minecraft.client.multiplayer.GuiConnecting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.InitGuiEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -59,15 +61,17 @@ public class MystcraftStartupChecker {
 	public static class CheckSymbolLoadError extends ErrorChecker {
 		@Override
 		protected GuiScreen getErrorGui() {
-			HashSet<String> errored = SymbolManager.getErroredSymbols();
+			Set<ResourceLocation> errored = SymbolManager.getErroredSymbols();
 			if (!errored.isEmpty()) {
-				ArrayList<String> messages = new ArrayList<String>();
+				ArrayList<String> messages = new ArrayList<>();
 				messages.add("WARNING: Mystcraft detected errors in the following symbols on loadup.");
 				messages.add("These symbols are not loaded and will not occur in the game.");
 				messages.add("Please check your setup and attempt to get a log of this session to the symbol developer.");
 				messages.add("To prevent this message from coming up in the future, disable or remove these symbols.");
 				messages.add("");
-				messages.addAll(errored);
+				for (ResourceLocation rl : errored) {
+					messages.add(rl.toString());
+				}
 				return new GuiNonCriticalError(messages);
 			}
 			return null;

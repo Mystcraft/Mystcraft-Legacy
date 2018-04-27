@@ -10,12 +10,13 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.TerrainGeneratorBase;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 
 public class SymbolTerrainGenEnd extends SymbolBase {
 
-	public SymbolTerrainGenEnd(String identifier) {
+	public SymbolTerrainGenEnd(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -38,6 +39,11 @@ public class SymbolTerrainGenEnd extends SymbolBase {
 		controller.setSeaLevel(49);
 		controller.setDrawHorizon(false);
 		controller.setDrawVoid(false);
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private static class TerrainGenerator extends TerrainGeneratorBase {

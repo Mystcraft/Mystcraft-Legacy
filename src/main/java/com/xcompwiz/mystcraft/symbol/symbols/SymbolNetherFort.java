@@ -9,6 +9,7 @@ import com.xcompwiz.mystcraft.api.world.logic.ITerrainFeatureLocator;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -17,7 +18,7 @@ import net.minecraft.world.gen.structure.MapGenNetherBridge;
 
 public class SymbolNetherFort extends SymbolBase {
 
-	public SymbolNetherFort(String identifier) {
+	public SymbolNetherFort(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -33,6 +34,11 @@ public class SymbolNetherFort extends SymbolBase {
 	public int instabilityModifier(int count) {
 		if (count > 3) return 100;
 		return 0;
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class Populator implements IPopulate {

@@ -8,6 +8,7 @@ import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class SymbolValuesAPIWrapper extends APIWrapper implements SymbolValuesAPI {
 
@@ -26,12 +27,12 @@ public class SymbolValuesAPIWrapper extends APIWrapper implements SymbolValuesAP
 	}
 
 	@Override
-	public float getSymbolItemWeight(String identifier) {
+	public float getSymbolItemWeight(ResourceLocation identifier) {
 		return InternalAPI.symbolValues.getSymbolItemWeight(identifier);
 	}
 
 	@Override
-	public boolean getSymbolIsTradable(String identifier) {
+	public boolean getSymbolIsTradable(ResourceLocation identifier) {
 		return InternalAPI.symbolValues.getSymbolIsTradable(identifier);
 	}
 
@@ -46,7 +47,7 @@ public class SymbolValuesAPIWrapper extends APIWrapper implements SymbolValuesAP
 	}
 
 	@Override
-	public List<ItemStack> getSymbolTradeItems(String identifier) {
+	public List<ItemStack> getSymbolTradeItems(ResourceLocation identifier) {
 		return InternalAPI.symbolValues.getSymbolTradeItems(identifier);
 	}
 

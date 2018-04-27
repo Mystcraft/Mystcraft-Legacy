@@ -10,26 +10,27 @@ import java.util.Random;
 
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
+import net.minecraft.util.ResourceLocation;
 
 public class GrammarTree {
 
 	private static class GrammarNode {
-		public final String			token;
-		public final boolean		isTerminal;
-		public Rule					selected	= null;
-		private GrammarNode			parent;
-		private List<GrammarNode>	children	= new ArrayList<GrammarNode>();
-		private Integer				leftPos;
-		private Integer				rightPos;
+		public final ResourceLocation 	token;
+		public final boolean			isTerminal;
+		public Rule						selected	= null;
+		private GrammarNode				parent;
+		private List<GrammarNode>		children	= new ArrayList<GrammarNode>();
+		private Integer					leftPos;
+		private Integer					rightPos;
 
-		public GrammarNode(String token) {
+		public GrammarNode(ResourceLocation token) {
 			this.token = token;
 			this.leftPos = null;
 			this.rightPos = null;
 			this.isTerminal = false;
 		}
 
-		public GrammarNode(String token, int pos) {
+		public GrammarNode(ResourceLocation token, int pos) {
 			this.token = token;
 			this.leftPos = pos;
 			this.rightPos = pos;
@@ -120,7 +121,7 @@ public class GrammarTree {
 		}
 
 		private GrammarNode flatClone(GrammarNode grammarNode) {
-			GrammarNode clone = null;
+			GrammarNode clone;
 			if (grammarNode.isTerminal) {
 				clone = new GrammarNode(grammarNode.token, grammarNode.leftPos);
 			} else {
@@ -139,16 +140,16 @@ public class GrammarTree {
 	}
 
 	/** The root node of the tree */
-	private GrammarNode			root;
+	private GrammarNode					root;
 	/** The currently unexpanded nodes in the tree, with more recently added nodes on the "top" */
-	private List<GrammarNode>	unexplored	= new LinkedList<GrammarNode>();
+	private List<GrammarNode>			unexplored	= new LinkedList<>();
 	/** The roots of orphaned subtrees */
-	private List<GrammarNode>	subroots	= new ArrayList<GrammarNode>();
+	private List<GrammarNode>			subroots	= new ArrayList<>();
 
 	/** The symbol list before parsing */
-	private List<String>		terminals;
+	private List<ResourceLocation>		terminals;
 
-	public GrammarTree(String root) {
+	public GrammarTree(ResourceLocation root) {
 		this.root = new GrammarNode(root);
 	}
 
@@ -157,10 +158,10 @@ public class GrammarTree {
 	 * @param terminals The original symbol list
 	 * @param rand The random number generator to use to decide between ties in shortest path
 	 */
-	public void parseTerminals(List<String> terminals, Random rand) {
+	public void parseTerminals(List<ResourceLocation> terminals, Random rand) {
 		this.terminals = Collections.unmodifiableList(terminals);
 		for (int i = terminals.size(); i > 0; --i) {
-			String terminal = terminals.get(i - 1);
+			ResourceLocation terminal = terminals.get(i - 1);
 			buildSubtree(new GrammarNode(terminal, i - 1), rand);
 		}
 	}
@@ -170,13 +171,11 @@ public class GrammarTree {
 	 * @param rand The random number generator to use when choosing expansion paths
 	 * @return the list of symbols after expanding the remaining tokens
 	 */
-	public List<String> getExpanded(Random rand) {
+	public List<ResourceLocation> getExpanded(Random rand) {
 		//Init the out list
-		List<String> out = new ArrayList<String>();
+		List<ResourceLocation> out = new ArrayList<>();
 		if (terminals != null) {
-			for (String str : terminals) {
-				out.add(str);
-			}
+			out.addAll(terminals);
 		}
 
 		//If root node is unexplored, add it to the list.
@@ -204,12 +203,12 @@ public class GrammarTree {
 		subroots = failedsubs;
 
 		//Determine the insertion locations (into the output list) for the nodes of the tree
-		HashMap<Integer, List<String>> insertLeft = new HashMap<Integer, List<String>>();
-		HashMap<Integer, List<String>> insertRight = new HashMap<Integer, List<String>>();
+		HashMap<Integer, List<ResourceLocation>> insertLeft = new HashMap<>();
+		HashMap<Integer, List<ResourceLocation>> insertRight = new HashMap<>();
 		getInsertions(insertLeft, insertRight);
 
 		//Insert all of the tokens into the list, expanding non-terminated symbols
-		List<String> products = null;
+		List<ResourceLocation> products;
 		for (int i = out.size() + 1; i > 0; --i) {
 			products = insertRight.get(i - 1);
 			if (products != null) {
@@ -229,11 +228,11 @@ public class GrammarTree {
 	}
 
 	/** Returns the insertions to make to the symbol list */
-	private void getInsertions(GrammarNode node, HashMap<Integer, List<String>> insertLeft, HashMap<Integer, List<String>> insertRight) {
+	private void getInsertions(GrammarNode node, HashMap<Integer, List<ResourceLocation>> insertLeft, HashMap<Integer, List<ResourceLocation>> insertRight) {
 		for (GrammarNode child : node.children) {
 			getInsertions(child, insertLeft, insertRight);
 		}
-		if (node.children.size() == 0 && node.selected == null && node.isTerminal == false) {
+		if (node.children.size() == 0 && node.selected == null && !node.isTerminal) {
 			Integer left = node.getLeftPosition();
 			if (left == null) {
 				Integer right = node.getRightPosition();
@@ -250,18 +249,13 @@ public class GrammarTree {
 	}
 
 	/** Returns the insertions to make to the symbol list */
-	private void getInsertions(HashMap<Integer, List<String>> left, HashMap<Integer, List<String>> right) {
+	private void getInsertions(HashMap<Integer, List<ResourceLocation>> left, HashMap<Integer, List<ResourceLocation>> right) {
 		getInsertions(root, left, right);
 	}
 
 	/** Helper function for working with HashMap<Integer, List<String>> maps */
-	private List<String> getOrCreateList(Integer key, HashMap<Integer, List<String>> map) {
-		List<String> rules = map.get(key);
-		if (rules == null) {
-			rules = new ArrayList<String>();
-			map.put(key, rules);
-		}
-		return rules;
+	private List<ResourceLocation> getOrCreateList(Integer key, HashMap<Integer, List<ResourceLocation>> map) {
+		return map.computeIfAbsent(key, keyNew -> new ArrayList<>());
 	}
 
 	/** Prints the node and its children */
@@ -421,7 +415,7 @@ public class GrammarTree {
 	 * @param subroot The root of the tree to search
 	 * @return If the token is the token of any node in the tree
 	 */
-	private boolean checkForLoop(String parent, GrammarNode subroot) {
+	private boolean checkForLoop(ResourceLocation parent, GrammarNode subroot) {
 		List<GrammarNode> nodes = new LinkedList<GrammarNode>();
 		nodes.add(subroot);
 		while (nodes.size() > 0) {
@@ -507,9 +501,9 @@ public class GrammarTree {
 	private void expandUnexploredNode(int index, Rule rule) {
 		GrammarNode node = unexplored.remove(index);
 		node.selected = rule;
-		List<String> products = rule.getValues();
+		List<ResourceLocation> products = rule.getValues();
 		for (int i = products.size(); i > 0; --i) {
-			String product = products.get(i - 1);
+			ResourceLocation product = products.get(i - 1);
 			GrammarNode newnode = new GrammarNode(product);
 			node.addChild(0, newnode);
 			unexplored.add(index, newnode);
@@ -526,9 +520,9 @@ public class GrammarTree {
 	private GrammarNode reverseExpand(GrammarNode subroot, Rule rule) {
 		GrammarNode newroot = new GrammarNode(rule.getParent());
 		newroot.selected = rule;
-		List<String> products = rule.getValues();
+		List<ResourceLocation> products = rule.getValues();
 		for (int i = products.size(); i > 0; --i) {
-			String product = products.get(i - 1);
+			ResourceLocation product = products.get(i - 1);
 			if (subroot != null && product.equals(subroot.token)) {
 				newroot.addChild(0, subroot);
 				subroot = null;

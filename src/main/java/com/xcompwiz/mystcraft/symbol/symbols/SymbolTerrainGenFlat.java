@@ -10,11 +10,12 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 public class SymbolTerrainGenFlat extends SymbolBase {
 
-	public SymbolTerrainGenFlat(String identifier) {
+	public SymbolTerrainGenFlat(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -31,6 +32,11 @@ public class SymbolTerrainGenFlat extends SymbolBase {
 			gen.setTerrainBlock(block.blockstate);
 		}
 		controller.registerInterface(gen);
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private static class TerrainGenerator implements ITerrainGenerator {

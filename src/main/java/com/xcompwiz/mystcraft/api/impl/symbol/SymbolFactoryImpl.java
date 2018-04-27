@@ -10,12 +10,12 @@ import net.minecraft.block.state.IBlockState;
 
 public class SymbolFactoryImpl {
 
-	public IAgeSymbol createSymbol(Block block, String thirdword, int rank, CategoryPair... pairs) {
-		return createSymbol(block.getDefaultState(), thirdword, rank, pairs);
+	public IAgeSymbol createSymbol(String ownerModid, Block block, String thirdword, int rank, CategoryPair... pairs) {
+		return createSymbol(ownerModid, block.getDefaultState(), thirdword, rank, pairs);
 	}
 
-	public IAgeSymbol createSymbol(IBlockState blockstate, String thirdword, int rank, CategoryPair... pairs) {
-		BlockModifierContainerObject container = BlockModifierContainerObject.create(thirdword, rank, blockstate);
+	public IAgeSymbol createSymbol(String ownerModid, IBlockState blockstate, String thirdword, int rank, CategoryPair... pairs) {
+		BlockModifierContainerObject container = BlockModifierContainerObject.create(ownerModid, rank, blockstate);
 		if (pairs != null) for (CategoryPair pair : pairs) {
 			BlockCategory cat = pair.category;
 			Integer c_rank = pair.rank;

@@ -9,13 +9,14 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 
 public class SymbolSkylands extends SymbolBase {
 
-	public SymbolSkylands(String identifier) {
+	public SymbolSkylands(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -25,6 +26,11 @@ public class SymbolSkylands extends SymbolBase {
 		controller.registerInterface(new TerrainAlteration(noise));
 		controller.setCloudHeight(42.5F);
 		controller.setHorizon(0);
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private static class TerrainAlteration implements ITerrainAlteration {

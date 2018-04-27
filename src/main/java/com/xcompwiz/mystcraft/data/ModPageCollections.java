@@ -12,6 +12,7 @@ import com.xcompwiz.mystcraft.page.SortingUtils.ComparatorSymbolAlphabetical;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -26,7 +27,7 @@ public class ModPageCollections {
 		symbols.addAll(SymbolManager.getAgeSymbols());
 		Collections.sort(symbols, ComparatorSymbolAlphabetical.instance);
 		for (IAgeSymbol symbol : symbols) {
-			item.addPage(null, collection, Page.createSymbolPage(symbol.identifier()));
+			item.addPage(null, collection, Page.createSymbolPage(symbol.getRegistryName()));
 		}
 		return collection;
 	}
@@ -36,7 +37,7 @@ public class ModPageCollections {
 	}
 
 	@Nonnull
-	public static ItemStack buildPageCollection(String name, String... args) {
+	public static ItemStack buildPageCollection(String name, ResourceLocation... args) {
 		return InternalAPI.itemFact.buildCollectionItem(name, args);
 	}
 

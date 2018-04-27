@@ -6,6 +6,7 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameType;
 import net.minecraft.world.WorldSettings;
@@ -16,13 +17,18 @@ import net.minecraft.world.storage.WorldInfo;
 
 public class SymbolBiomeControllerNative extends SymbolBase {
 
-	public SymbolBiomeControllerNative(String identifier) {
+	public SymbolBiomeControllerNative(ResourceLocation identifier) {
 		super(identifier);
 	}
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		controller.registerInterface(new BiomeController(controller));
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class BiomeController implements IBiomeController {

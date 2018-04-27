@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
@@ -92,11 +93,11 @@ public class GuiWritingDesk extends GuiContainerElements {
 
 		@Override
 		public void copy(PositionableItem collectionelement) {
-			String symbol = Page.getSymbol(collectionelement.itemstack);
+			ResourceLocation symbol = Page.getSymbol(collectionelement.itemstack);
 			if (symbol == null) return;
 			if (collectionelement.count <= 0) return;
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setString(ContainerWritingDesk.Messages.WriteSymbol, symbol);
+			nbttagcompound.setString(ContainerWritingDesk.Messages.WriteSymbol, symbol.toString());
 			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
 			container.processMessage(mc.player, nbttagcompound);
 		}

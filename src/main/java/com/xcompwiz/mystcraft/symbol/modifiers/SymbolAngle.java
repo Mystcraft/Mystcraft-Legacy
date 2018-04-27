@@ -3,15 +3,21 @@ package com.xcompwiz.mystcraft.symbol.modifiers;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+import net.minecraft.util.ResourceLocation;
 
 public class SymbolAngle extends SymbolBase {
 	private final float		value;
 	private final String	display;
 
-	public SymbolAngle(String identifier, float value, String display) {
+	public SymbolAngle(ResourceLocation identifier, float value, String display) {
 		super(identifier);
 		this.value = value;
 		this.display = display;
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	@Override

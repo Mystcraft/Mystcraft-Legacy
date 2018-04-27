@@ -9,6 +9,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -16,7 +17,7 @@ import net.minecraft.world.gen.structure.MapGenVillage;
 
 public class SymbolVillages extends SymbolBase {
 
-	public SymbolVillages(String identifier) {
+	public SymbolVillages(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -31,6 +32,11 @@ public class SymbolVillages extends SymbolBase {
 	public int instabilityModifier(int count) {
 		if (count > 3) return 100;
 		return 0;
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class Populator implements IPopulate {

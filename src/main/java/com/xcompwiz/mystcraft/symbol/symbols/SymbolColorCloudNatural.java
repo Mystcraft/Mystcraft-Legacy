@@ -6,17 +6,23 @@ import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 
 public class SymbolColorCloudNatural extends SymbolBase {
 
-	public SymbolColorCloudNatural(String identifier) {
+	public SymbolColorCloudNatural(ResourceLocation identifier) {
 		super(identifier);
 	}
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		controller.registerInterface(new CloudColorizer(), IDynamicColorProvider.CLOUD);
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class CloudColorizer implements IDynamicColorProvider {

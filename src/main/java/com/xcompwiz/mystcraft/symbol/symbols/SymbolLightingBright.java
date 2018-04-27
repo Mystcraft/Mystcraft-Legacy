@@ -4,10 +4,11 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.ILightingController;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+import net.minecraft.util.ResourceLocation;
 
 public class SymbolLightingBright extends SymbolBase {
 
-	public SymbolLightingBright(String identifier) {
+	public SymbolLightingBright(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -19,6 +20,11 @@ public class SymbolLightingBright extends SymbolBase {
 	@Override
 	public int instabilityModifier(int count) {
 		return InstabilityData.symbol.bright;
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class LightingController implements ILightingController {

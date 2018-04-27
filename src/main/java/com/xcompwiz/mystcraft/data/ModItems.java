@@ -90,13 +90,13 @@ public class ModItems {
 		ItemColors ic = Minecraft.getMinecraft().getItemColors();
 		ic.registerItemColorHandler(new IItemColor() {
 			@Override
-			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+			public int colorMultiplier(ItemStack stack, int tintIndex) {
 				return 0x3333FF;
 			}
 		}, ModBlocks.portal);
 		ic.registerItemColorHandler(new IItemColor() {
 			@Override
-			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+			public int colorMultiplier(ItemStack stack, int tintIndex) {
 				return ModFluids.black_ink.getColor();
 			}
 		}, ModBlocks.black_ink);
@@ -115,6 +115,8 @@ public class ModItems {
 		ModelBakery.registerItemVariants(desk,
 				new ResourceLocation(MystObjects.MystcraftModId, "desk_bottom"),
 				new ResourceLocation(MystObjects.MystcraftModId, "desk_top"));
+
+
 		ModelLoader.setCustomMeshDefinition(desk, (stack) -> {
 			if(stack.getItemDamage() == 0) {
 				return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "desk_bottom"), "inventory");
@@ -125,6 +127,10 @@ public class ModItems {
 
 		ModelLoader.setCustomMeshDefinition(inkvial, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "vial"), "inventory"));
 		ModelLoader.setCustomMeshDefinition(glasses, (stack -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "glasses"), "inventory")));
+
+
+
+		ModelLoader.setCustomMeshDefinition(page, new PageMeshDefinition());
 	}
 
 	public static class PageMeshDefinition implements ItemMeshDefinition {
@@ -136,18 +142,18 @@ public class ModItems {
 		    if(symbol == null) {
 		        return "page_no_symbol";
             }
-			return "page_" + symbol.identifier();
+			return "page_" + symbol.getRegistryName().getResourcePath();
 		}
 
 		@SideOnly(Side.CLIENT)
 		public String pathForSymbol(@Nonnull ItemStack stack) {
-			String symbolUniqueId = Page.getSymbol(stack);
+			ResourceLocation symbolUniqueId = Page.getSymbol(stack);
 			if(symbolUniqueId == null) {
 				return "page_no_symbol";
 			} else {
 				IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolUniqueId);
 				if(symbol != null) {
-					return "page_" + symbol.identifier();
+					return "page_" + symbol.getRegistryName().getResourcePath();
 				} else {
 					return "page_no_symbol";
 				}

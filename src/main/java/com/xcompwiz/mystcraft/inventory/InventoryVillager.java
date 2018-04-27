@@ -169,7 +169,7 @@ public class InventoryVillager {
 	public ItemStack getShopItem(int index) {
 		if (this.pageitems[index].isEmpty() && !villager.world.isRemote) {
 			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(new Random(), SymbolManager.getSymbolsByRank(index + 1, null), WeightProviderSymbolItem.instance);
-			this.pageitems[index] = Page.createSymbolPage(symbol.identifier());
+			this.pageitems[index] = Page.createSymbolPage(symbol.getRegistryName());
 			this.pageitems[index].setCount(3);
 		}
 		return this.pageitems[index];

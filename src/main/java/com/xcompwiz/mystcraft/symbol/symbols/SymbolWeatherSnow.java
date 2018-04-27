@@ -8,13 +8,18 @@ import net.minecraft.util.ResourceLocation;
 
 public class SymbolWeatherSnow extends SymbolBase {
 
-	public SymbolWeatherSnow(String identifier) {
+	public SymbolWeatherSnow(ResourceLocation identifier) {
 		super(identifier);
 	}
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		controller.registerInterface(new WeatherController());
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private static class WeatherController extends WeatherControllerToggleable {

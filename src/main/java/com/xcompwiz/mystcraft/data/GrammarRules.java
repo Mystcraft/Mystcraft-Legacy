@@ -2,63 +2,65 @@ package com.xcompwiz.mystcraft.data;
 
 import java.util.ArrayList;
 
+import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.grammar.GrammarData;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.util.CollectionUtils;
+import net.minecraft.util.ResourceLocation;
 
 public class GrammarRules {
-	public static final String	ROOT				= "Age";
+	public static final ResourceLocation	ROOT				= asMyst("Age");
 
-	private static final String	BIOME_GEN			= "BiomesAdv";
-	private static final String	BIOME_EXT			= "BiomesExt";
+	private static final ResourceLocation	BIOME_GEN			= asMyst("BiomesAdv");
+	private static final ResourceLocation	BIOME_EXT			= asMyst("BiomesExt");
 
-	private static final String	VISUAL_EFFECT_GEN	= "VisualsAdv";
-	private static final String	VISUAL_EFFECT_EXT	= "VisualsExt";
+	private static final ResourceLocation	VISUAL_EFFECT_GEN	= asMyst("VisualsAdv");
+	private static final ResourceLocation	VISUAL_EFFECT_EXT	= asMyst("VisualsExt");
 
-	private static final String	FEATURE_LARGE_GEN	= "FeatureLargeAdv";
-	public  static final String	FEATURE_LARGE_EXT	= "FeatureLargeExt";
+	private static final ResourceLocation	FEATURE_LARGE_GEN	= asMyst("FeatureLargeAdv");
+	public  static final ResourceLocation	FEATURE_LARGE_EXT	= asMyst("FeatureLargeExt");
 
-	private static final String	FEATURE_MEDIUM_GEN	= "FeatureMediumAdv";
-	public  static final String	FEATURE_MEDIUM_EXT	= "FeatureMediumExt";
+	private static final ResourceLocation	FEATURE_MEDIUM_GEN	= asMyst("FeatureMediumAdv");
+	public  static final ResourceLocation	FEATURE_MEDIUM_EXT	= asMyst("FeatureMediumExt");
 
-	private static final String	FEATURE_SMALL_GEN	= "FeatureSmallAdv";
-	public  static final String	FEATURE_SMALL_EXT	= "FeatureSmallExt";
+	private static final ResourceLocation	FEATURE_SMALL_GEN	= asMyst("FeatureSmallAdv");
+	public  static final ResourceLocation	FEATURE_SMALL_EXT	= asMyst("FeatureSmallExt");
 
-	private static final String	EFFECT_GEN			= "EffectsAdv";
-	private static final String	EFFECT_EXT			= "EffectsExt";
+	private static final ResourceLocation	EFFECT_GEN			= asMyst("EffectsAdv");
+	private static final ResourceLocation	EFFECT_EXT			= asMyst("EffectsExt");
 
-	private static final String	SUN_GEN				= "SunsAdv";
-	private static final String	SUN_EXT				= "SunsExt";
+	private static final ResourceLocation	SUN_GEN				= asMyst("SunsAdv");
+	private static final ResourceLocation	SUN_EXT				= asMyst("SunsExt");
 
-	private static final String	MOON_GEN			= "MoonsAdv";
-	private static final String	MOON_EXT			= "MoonsExt";
+	private static final ResourceLocation	MOON_GEN			= asMyst("MoonsAdv");
+	private static final ResourceLocation	MOON_EXT			= asMyst("MoonsExt");
 
-	private static final String	STARFIELD_GEN		= "StarfieldsAdv";
-	private static final String	STARFIELD_EXT		= "StarfieldsExt";
+	private static final ResourceLocation	STARFIELD_GEN		= asMyst("StarfieldsAdv");
+	private static final ResourceLocation	STARFIELD_EXT		= asMyst("StarfieldsExt");
 
-	private static final String	DOODAD_GEN			= "DoodadsAdv";
-	private static final String	DOODAD_EXT			= "DoodadsExt";
+	private static final ResourceLocation	DOODAD_GEN			= asMyst("DoodadsAdv");
+	private static final ResourceLocation	DOODAD_EXT			= asMyst("DoodadsExt");
 
-	private static final String	ANGLE_GEN			= "AngleAdv";
-	private static final String	PERIOD_GEN			= "PeriodAdv";
-	private static final String	PHASE_GEN			= "PhaseAdv";
-	private static final String	COLOR_GEN			= "ColorAdv";
-	private static final String	GRADIENT_GEN		= "GradientAdv";
+	private static final ResourceLocation	ANGLE_GEN			= asMyst("AngleAdv");
+	private static final ResourceLocation	PERIOD_GEN			= asMyst("PeriodAdv");
+	private static final ResourceLocation	PHASE_GEN			= asMyst("PhaseAdv");
+	private static final ResourceLocation	COLOR_GEN			= asMyst("ColorAdv");
+	private static final ResourceLocation	GRADIENT_GEN		= asMyst("GradientAdv");
 
-	public static final String	ANGLE_EXT			= "Angle_Ext";
-	public static final String	PERIOD_EXT			= "Period_Ext";
-	public static final String	PHASE_EXT			= "Phase_Ext";
-	public static final String	COLOR_EXT			= "Color_Ext";
-	public static final String	GRADIENT_EXT		= "Gradient_Ext";
-	public static final String	SUNSET_EXT			= "Sunset_Ext";
+	public static final ResourceLocation	ANGLE_EXT			= asMyst("Angle_Ext");
+	public static final ResourceLocation	PERIOD_EXT			= asMyst("Period_Ext");
+	public static final ResourceLocation	PHASE_EXT			= asMyst("Phase_Ext");
+	public static final ResourceLocation	COLOR_EXT			= asMyst("Color_Ext");
+	public static final ResourceLocation	GRADIENT_EXT		= asMyst("Gradient_Ext");
+	public static final ResourceLocation	SUNSET_EXT			= asMyst("Sunset_Ext");
 
-	public static final String	BLOCK_NONSOLID		= "BLOCK_NONSOLID";
+	public static final ResourceLocation	BLOCK_NONSOLID		= asMyst("BLOCK_NONSOLID");
 
 	public static void initialize() {
-		registerRule(buildRule(0, ROOT, GrammarData.TERRAIN, GrammarData.BIOMECONTROLLER, GrammarData.WEATHER, GrammarData.LIGHTING, "Spawning0", "Suns0", "Moons0", "Starfields0", "Doodads0", "Visuals0", "FeatureSmalls0", "FeatureMediums0", "FeatureLarges0", "Effects0"));
+		registerRule(buildRule(0, ROOT, GrammarData.TERRAIN, GrammarData.BIOMECONTROLLER, GrammarData.WEATHER, GrammarData.LIGHTING, asMyst("Spawning0"), asMyst("Suns0"), asMyst("Moons0"), asMyst("Starfields0"), asMyst("Doodads0"), asMyst("Visuals0"), asMyst("FeatureSmalls0"), asMyst("FeatureMediums0"), asMyst("FeatureLarges0"), asMyst("Effects0")));
 
-		registerRule(buildRule(10, "Spawning0"));
+		registerRule(buildRule(10, asMyst("Spawning0")));
 
 		registerRule(buildRule(1, GrammarData.BIOME_LIST, BIOME_GEN));
 		registerRule(buildRule(2, BIOME_GEN, BIOME_GEN, GrammarData.BIOME));
@@ -67,72 +69,72 @@ public class GrammarRules {
 		registerRule(buildRule(null, BIOME_EXT, BIOME_EXT, GrammarData.BIOME_LIST));
 		registerRule(buildRule(1, BIOME_EXT));
 
-		registerRule(buildRule(1, "Suns0", SUN_GEN));
+		registerRule(buildRule(1, asMyst("Suns0"), SUN_GEN));
 		registerRule(buildRule(4, SUN_GEN, SUN_GEN, GrammarData.SUN));
 		registerRule(buildRule(2, SUN_GEN, GrammarData.SUN));
-		registerRule(buildRule(null, "Suns0", SUN_EXT, GrammarData.SUN));
+		registerRule(buildRule(null, asMyst("Suns0"), SUN_EXT, GrammarData.SUN));
 		registerRule(buildRule(null, SUN_EXT, SUN_EXT, GrammarData.SUN));
 		registerRule(buildRule(1, SUN_EXT));
 
-		registerRule(buildRule(1, "Moons0", MOON_GEN));
+		registerRule(buildRule(1, asMyst("Moons0"), MOON_GEN));
 		registerRule(buildRule(2, MOON_GEN, MOON_GEN, GrammarData.MOON));
 		registerRule(buildRule(2, MOON_GEN, GrammarData.MOON));
-		registerRule(buildRule(null, "Moons0", MOON_EXT, GrammarData.MOON));
+		registerRule(buildRule(null, asMyst("Moons0"), MOON_EXT, GrammarData.MOON));
 		registerRule(buildRule(null, MOON_EXT, MOON_EXT, GrammarData.MOON));
 		registerRule(buildRule(1, MOON_EXT));
 
-		registerRule(buildRule(1, "Starfields0", STARFIELD_GEN));
+		registerRule(buildRule(1, asMyst("Starfields0"), STARFIELD_GEN));
 		registerRule(buildRule(3, STARFIELD_GEN, STARFIELD_GEN, GrammarData.STARFIELD));
 		registerRule(buildRule(2, STARFIELD_GEN, GrammarData.STARFIELD));
-		registerRule(buildRule(null, "Starfields0", STARFIELD_EXT, GrammarData.STARFIELD));
+		registerRule(buildRule(null, asMyst("Starfields0"), STARFIELD_EXT, GrammarData.STARFIELD));
 		registerRule(buildRule(null, STARFIELD_EXT, STARFIELD_EXT, GrammarData.STARFIELD));
 		registerRule(buildRule(1, STARFIELD_EXT));
 		registerRule(buildRule(1, GrammarData.STARFIELD));
 
-		registerRule(buildRule(1, "Doodads0", DOODAD_GEN));
+		registerRule(buildRule(1, asMyst("Doodads0"), DOODAD_GEN));
 		registerRule(buildRule(5, DOODAD_GEN, DOODAD_GEN, GrammarData.DOODAD));
 		registerRule(buildRule(2, DOODAD_GEN, GrammarData.DOODAD));
-		registerRule(buildRule(null, "Doodads0", DOODAD_EXT, GrammarData.DOODAD));
+		registerRule(buildRule(null, asMyst("Doodads0"), DOODAD_EXT, GrammarData.DOODAD));
 		registerRule(buildRule(null, DOODAD_EXT, DOODAD_EXT, GrammarData.DOODAD));
 		registerRule(buildRule(1, DOODAD_EXT));
 		registerRule(buildRule(0, GrammarData.DOODAD));
 
-		registerRule(buildRule(1, "Visuals0", VISUAL_EFFECT_GEN));
+		registerRule(buildRule(1, asMyst("Visuals0"), VISUAL_EFFECT_GEN));
 		registerRule(buildRule(3, VISUAL_EFFECT_GEN, VISUAL_EFFECT_GEN, GrammarData.VISUAL_EFFECT));
 		registerRule(buildRule(2, VISUAL_EFFECT_GEN, GrammarData.VISUAL_EFFECT));
-		registerRule(buildRule(null, "Visuals0", VISUAL_EFFECT_EXT, GrammarData.VISUAL_EFFECT));
+		registerRule(buildRule(null, asMyst("Visuals0"), VISUAL_EFFECT_EXT, GrammarData.VISUAL_EFFECT));
 		registerRule(buildRule(null, VISUAL_EFFECT_EXT, VISUAL_EFFECT_EXT, GrammarData.VISUAL_EFFECT));
 		registerRule(buildRule(1, VISUAL_EFFECT_EXT));
 		registerRule(buildRule(1, GrammarData.VISUAL_EFFECT));
 
-		registerRule(buildRule(1, "FeatureLarges0", FEATURE_LARGE_GEN));
+		registerRule(buildRule(1, asMyst("FeatureLarges0"), FEATURE_LARGE_GEN));
 		registerRule(buildRule(2, FEATURE_LARGE_GEN, FEATURE_LARGE_GEN, GrammarData.FEATURE_LARGE));
 		registerRule(buildRule(2, FEATURE_LARGE_GEN, GrammarData.FEATURE_LARGE));
-		registerRule(buildRule(null, "FeatureLarges0", FEATURE_LARGE_EXT, GrammarData.FEATURE_LARGE));
+		registerRule(buildRule(null, asMyst("FeatureLarges0"), FEATURE_LARGE_EXT, GrammarData.FEATURE_LARGE));
 		registerRule(buildRule(null, FEATURE_LARGE_EXT, FEATURE_LARGE_EXT, GrammarData.FEATURE_LARGE));
 		registerRule(buildRule(1, FEATURE_LARGE_EXT));
 		registerRule(buildRule(4, GrammarData.FEATURE_LARGE));
 
-		registerRule(buildRule(1, "FeatureMediums0", FEATURE_MEDIUM_GEN));
+		registerRule(buildRule(1, asMyst("FeatureMediums0"), FEATURE_MEDIUM_GEN));
 		registerRule(buildRule(2, FEATURE_MEDIUM_GEN, FEATURE_MEDIUM_GEN, GrammarData.FEATURE_MEDIUM));
 		registerRule(buildRule(3, FEATURE_MEDIUM_GEN, GrammarData.FEATURE_MEDIUM));
-		registerRule(buildRule(null, "FeatureMediums0", FEATURE_MEDIUM_EXT, GrammarData.FEATURE_MEDIUM));
+		registerRule(buildRule(null, asMyst("FeatureMediums0"), FEATURE_MEDIUM_EXT, GrammarData.FEATURE_MEDIUM));
 		registerRule(buildRule(null, FEATURE_MEDIUM_EXT, FEATURE_MEDIUM_EXT, GrammarData.FEATURE_MEDIUM));
 		registerRule(buildRule(1, FEATURE_MEDIUM_EXT));
 		registerRule(buildRule(4, GrammarData.FEATURE_MEDIUM));
 
-		registerRule(buildRule(1, "FeatureSmalls0", FEATURE_SMALL_GEN));
+		registerRule(buildRule(1, asMyst("FeatureSmalls0"), FEATURE_SMALL_GEN));
 		registerRule(buildRule(2, FEATURE_SMALL_GEN, FEATURE_SMALL_GEN, GrammarData.FEATURE_SMALL));
 		registerRule(buildRule(4, FEATURE_SMALL_GEN, GrammarData.FEATURE_SMALL));
-		registerRule(buildRule(null, "FeatureSmalls0", FEATURE_SMALL_EXT, GrammarData.FEATURE_SMALL));
+		registerRule(buildRule(null, asMyst("FeatureSmalls0"), FEATURE_SMALL_EXT, GrammarData.FEATURE_SMALL));
 		registerRule(buildRule(null, FEATURE_SMALL_EXT, FEATURE_SMALL_EXT, GrammarData.FEATURE_SMALL));
 		registerRule(buildRule(1, FEATURE_SMALL_EXT));
 		registerRule(buildRule(4, GrammarData.FEATURE_SMALL));
 
-		registerRule(buildRule(1, "Effects0", EFFECT_GEN));
+		registerRule(buildRule(1, asMyst("Effects0"), EFFECT_GEN));
 		registerRule(buildRule(3, EFFECT_GEN, EFFECT_GEN, GrammarData.EFFECT));
 		registerRule(buildRule(2, EFFECT_GEN, GrammarData.EFFECT));
-		registerRule(buildRule(null, "Effects0", EFFECT_EXT, GrammarData.EFFECT));
+		registerRule(buildRule(null, asMyst("Effects0"), EFFECT_EXT, GrammarData.EFFECT));
 		registerRule(buildRule(null, EFFECT_EXT, EFFECT_EXT, GrammarData.EFFECT));
 		registerRule(buildRule(1, EFFECT_EXT));
 		registerRule(buildRule(1, GrammarData.EFFECT));
@@ -196,9 +198,13 @@ public class GrammarRules {
 		GrammarGenerator.registerRule(rule);
 	}
 
+	private static ResourceLocation asMyst(String path) {
+		return new ResourceLocation(MystObjects.MystcraftModId, path);
+	}
+
 	//XXX: (Helper) Absorb this helper into something else (API?)
-	private static Rule buildRule(Integer rank, String parent, String... args) {
-		ArrayList<String> list = CollectionUtils.buildList(args);
+	private static Rule buildRule(Integer rank, ResourceLocation parent, ResourceLocation... args) {
+		ArrayList<ResourceLocation> list = CollectionUtils.buildList(args);
 		return new Rule(parent, list, rank);
 	}
 }

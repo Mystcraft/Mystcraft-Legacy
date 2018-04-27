@@ -9,6 +9,7 @@ import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugTaskCallback;
 import com.xcompwiz.mystcraft.grammar.GrammarTree;
 
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 
 public final class DebugFlags {
@@ -24,7 +25,7 @@ public final class DebugFlags {
 			public void run(ICommandSender agent, Object... args) {
 				Random rand = new Random();
 				GrammarTree tree = new GrammarTree(GrammarRules.ROOT);
-				List<String> symbols = new ArrayList<String>();
+				List<ResourceLocation> symbols = new ArrayList<>();
 				tree.parseTerminals(symbols, rand);
 				symbols = tree.getExpanded(rand);
 				if (DebugFlags.grammar) {

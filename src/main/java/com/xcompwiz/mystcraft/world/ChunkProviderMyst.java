@@ -135,7 +135,7 @@ public class ChunkProviderMyst implements IChunkGenerator {
 		try {
 			biome.decorate(this.worldObj, this.rand, new BlockPos(x, 0, z));
 		} catch (Exception e) {
-			throw new RuntimeException(String.format("Biome [%s] threw an error while populating chunk.", biome.getBiomeName()), e);
+			throw new RuntimeException(String.format("Biome [%s] threw an error while populating chunk.", biome.getRegistryName()), e);
 		}
 		if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.worldObj, this.rand, x, z, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS)) {
 			WorldEntitySpawner.performWorldGenSpawning(this.worldObj, biome, x + 8, z + 8, 16, 16, this.rand);

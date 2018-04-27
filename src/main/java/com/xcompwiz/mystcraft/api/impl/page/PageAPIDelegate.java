@@ -5,12 +5,13 @@ import java.util.Collection;
 import com.xcompwiz.mystcraft.page.Page;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
 public class PageAPIDelegate {
 
-	public String getPageSymbol(@Nonnull ItemStack page) {
+	public ResourceLocation getPageSymbol(@Nonnull ItemStack page) {
 		return Page.getSymbol(page);
 	}
 
@@ -18,7 +19,7 @@ public class PageAPIDelegate {
 		return Page.isBlank(page);
 	}
 
-	public void setPageSymbol(@Nonnull ItemStack page, String symbol) {
+	public void setPageSymbol(@Nonnull ItemStack page, ResourceLocation symbol) {
 		Page.setSymbol(page, symbol);
 	}
 

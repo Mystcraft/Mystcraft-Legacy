@@ -4,10 +4,11 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.effects.EffectScorched;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+import net.minecraft.util.ResourceLocation;
 
 public class SymbolEnvScorched extends SymbolBase {
 
-	public SymbolEnvScorched(String identifier) {
+	public SymbolEnvScorched(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -20,5 +21,10 @@ public class SymbolEnvScorched extends SymbolBase {
 	public int instabilityModifier(int count) {
 		if (count > 1) return 0;
 		return InstabilityData.symbol.scorched;
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 }

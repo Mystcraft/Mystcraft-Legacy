@@ -13,6 +13,7 @@ import com.xcompwiz.mystcraft.world.gen.layer.GenLayerBiomeMyst;
 import com.xcompwiz.mystcraft.world.gen.layer.GenLayerZoomMyst;
 
 import net.minecraft.init.Biomes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeCache;
@@ -25,7 +26,7 @@ import net.minecraft.world.gen.layer.IntCache;
 
 public class SymbolBiomeControllerLarge extends SymbolBase {
 
-	public SymbolBiomeControllerLarge(String identifier) {
+	public SymbolBiomeControllerLarge(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -40,6 +41,11 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 		}
 
 		controller.registerInterface(new BiomeController(controller, 3, biomes));
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	static class BiomeController implements IBiomeController {

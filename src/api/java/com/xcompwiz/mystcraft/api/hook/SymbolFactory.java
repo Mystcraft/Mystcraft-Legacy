@@ -5,6 +5,7 @@ import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * Provides methods for generating boilerplate {@link IAgeSymbol}s. These methods do not register the symbol directly. Use the {@link SymbolAPI} for that. The
@@ -15,20 +16,21 @@ public interface SymbolFactory {
 
 	/**
 	 * Creates a block modifier symbol from a specified block. Remember to register the symbol via {@link SymbolAPI}.
-	 * @param blockstate The block to use
+	 * @param ownerModid the modid of the mod owning/registering this symbol
+	 * @param blockState The block to use
 	 * @param thirdword The third word in the Narayan poem (symbol rendering)
 	 * @param rank The rank category for the symbol (0 super common, 1 common, 2 uncommon, 3 rare, 4+ increasing levels of rarity)
 	 * @param categories Category-Integer pairs in object arrays used to specify which categories the block can be used in and what rank the grammar treats the
 	 *            rule as. (ex: {BlockCategory.TERRAIN, 4} or {"BlockTerrain", 2})
 	 * @return
 	 */
-	public IAgeSymbol createSymbol(IBlockState block, String thirdword, int rank, CategoryPair... categories);
+	public IAgeSymbol createSymbol(String ownerModid, IBlockState blockState, String thirdword, int rank, CategoryPair... categories);
 
 	public static class CategoryPair {
 		public final BlockCategory category;
 		public final int rank;
 
-		public CategoryPair(String category, int rank) {
+		public CategoryPair(ResourceLocation category, int rank) {
 			this.category = BlockCategory.getBlockCategory(category);
 			this.rank = rank;
 		}

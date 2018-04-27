@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.api.hook;
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 import com.xcompwiz.mystcraft.api.util.Color;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -40,7 +41,7 @@ public interface RenderAPI {
 	 * @param identifier The string identifier of the symbol to draw
 	 */
 	@SideOnly(Side.CLIENT)
-	public void drawSymbol(float x, float y, float zLevel, float scale, String identifier);
+	public void drawSymbol(float x, float y, float zLevel, float scale, ResourceLocation identifier);
 
 	/**
 	 * Draws a D'ni color "eye". The eye will be in and represent the provided color.

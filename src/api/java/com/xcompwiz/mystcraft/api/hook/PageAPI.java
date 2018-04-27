@@ -6,6 +6,7 @@ import com.google.common.annotations.Beta;
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * Provides methods for accessing and setting information in pages. The implementation of this is provided by {@link APIInstanceProvider}. Look at the {@link ItemFactory} for
@@ -41,12 +42,12 @@ public interface PageAPI {
 	 * @param page The page to query
 	 * @return The symbol identifier or null
 	 */
-	public String getPageSymbol(ItemStack page);
+	public ResourceLocation getPageSymbol(ItemStack page);
 
 	/**
 	 * Sets the symbol on the page.
 	 * @param page The page to affect
 	 * @param symbol The identifier of the symbol to apply
 	 */
-	public void setPageSymbol(ItemStack page, String symbol);
+	public void setPageSymbol(ItemStack page, ResourceLocation symbol);
 }

@@ -6,18 +6,24 @@ import com.xcompwiz.mystcraft.api.world.logic.IDynamicColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 
 public class SymbolColorFogNatural extends SymbolBase {
 	
-	public SymbolColorFogNatural(String identifier) {
+	public SymbolColorFogNatural(ResourceLocation identifier) {
 		super(identifier);
 	}
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		controller.registerInterface(new FogColorizer(), IDynamicColorProvider.FOG);
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private static class FogColorizer implements IDynamicColorProvider {

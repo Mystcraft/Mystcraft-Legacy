@@ -12,6 +12,7 @@ import java.util.Random;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector.IWeightedItem;
 import com.xcompwiz.util.CollectionUtils;
+import net.minecraft.util.ResourceLocation;
 
 public class GrammarGenerator {
 	public static final class RankData {
@@ -19,14 +20,15 @@ public class GrammarGenerator {
 		public HashMap<Integer, Integer>	rankweights	= null;
 	}
 
-	public static final Map<String, RankData>	ranks	= new HashMap<String, RankData>();
+	public static final Map<ResourceLocation, RankData>	ranks	= new HashMap<>();
 
 	public static final class Rule implements IWeightedItem {
-		private final String		parent;
-		private final List<String>	values;
+		private final ResourceLocation		parent;
+		private final List<ResourceLocation>	values;
 		private final Integer		rank;
 
-		public Rule(String parent, List<String> values, Integer rank) {
+		//todo RL
+		public Rule(ResourceLocation parent, List<ResourceLocation> values, Integer rank) {
 			this.parent = parent;
 			this.values = Collections.unmodifiableList(values);
 			this.rank = rank;
@@ -38,11 +40,11 @@ public class GrammarGenerator {
 			return GrammarGenerator.ranks.get(this.parent).rankweights.get(this.rank);
 		}
 
-		public String getParent() {
+		public ResourceLocation getParent() {
 			return parent;
 		}
 
-		public List<String> getValues() {
+		public List<ResourceLocation> getValues() {
 			if (values == null) return null;
 			return values;
 		}
@@ -54,10 +56,10 @@ public class GrammarGenerator {
 	}
 
 	// Rules the string expands to
-	private static HashMap<String, List<Rule>>							mappings			= new HashMap<String, List<Rule>>();
+	private static HashMap<ResourceLocation, List<Rule>>							mappings			= new HashMap<>();
 	// Rules that expand to include the string
-	private static HashMap<String, List<Rule>>							reverseLookup		= new HashMap<String, List<Rule>>();
-	private static HashMap<String, HashMap<String, List<List<Rule>>>>	shortestpaths;
+	private static HashMap<ResourceLocation, List<Rule>>							reverseLookup		= new HashMap<>();
+	private static HashMap<ResourceLocation, HashMap<ResourceLocation, List<List<Rule>>>>	shortestpaths;
 
 	private static boolean												profile_pathbuilder	= false;
 
@@ -65,7 +67,7 @@ public class GrammarGenerator {
 		if (rule.parent == null) { throw new RuntimeException("Invalid CFG Rule.  Requires parent to expand."); }
 		if (shortestpaths != null) { throw new RuntimeException("You must register your rules before the grammar is finalized! (before Mystcraft's post-init)"); }
 		CollectionUtils.getOrCreateElement(rule.parent, mappings).add(rule);
-		for (String value : rule.values) {
+		for (ResourceLocation value : rule.values) {
 			CollectionUtils.getOrCreateElement(value, reverseLookup).add(rule);
 		}
 		if (rule.rank != null) {
@@ -81,33 +83,33 @@ public class GrammarGenerator {
 		}
 	}
 
-	public static List<Rule> getParentRules(String str) {
+	public static List<Rule> getParentRules(ResourceLocation str) {
 		List<Rule> rules = CollectionUtils.getOrCreateElement(str, reverseLookup);
 		return Collections.unmodifiableList(rules);
 	}
 
-	public static List<Rule> getAllRules(String str) {
+	public static List<Rule> getAllRules(ResourceLocation str) {
 		List<Rule> mapping = mappings.get(str);
 		if (mapping == null) return null;
 		return Collections.unmodifiableList(mapping);
 	}
 
-	public static Rule getRandomRule(String str, Random rand) {
+	public static Rule getRandomRule(ResourceLocation str, Random rand) {
 		List<Rule> rules = mappings.get(str);
 		if (rules == null || rules.size() == 0) return null;
 		return WeightedItemSelector.getRandomItem(rand, rules);
 	}
 
-	public static List<String> explore(String str, Random rand) {
-		List<String> list = new ArrayList<String>();
+	public static List<ResourceLocation> explore(ResourceLocation str, Random rand) {
+		List<ResourceLocation> list = new ArrayList<>();
 		Rule rule = getRandomRule(str, rand);
 		if (rule == null) {
 			list.add(str);
 			return list;
 		}
 		if (rule.size() == 0) { return list; }
-		List<String> result = rule.getValues();
-		for (String t : result) {
+		List<ResourceLocation> result = rule.getValues();
+		for (ResourceLocation t : result) {
 			list.addAll(explore(t, rand));
 		}
 		return list;
@@ -120,42 +122,42 @@ public class GrammarGenerator {
 	 * @param node_token The node to connect to via rules
 	 * @return The list of rules that make up the path in order of subroot to node
 	 */
-	public static List<List<Rule>> getShortestPaths(String subtree_token, String node_token) {
+	public static List<List<Rule>> getShortestPaths(ResourceLocation subtree_token, ResourceLocation node_token) {
 		if (shortestpaths == null) throw new RuntimeException("Somebody's trying to use the grammar before we're done building it!");
 		List<List<Rule>> paths = null;
-		HashMap<String, List<List<Rule>>> allpaths = shortestpaths.get(subtree_token);
+		HashMap<ResourceLocation, List<List<Rule>>> allpaths = shortestpaths.get(subtree_token);
 		if (allpaths != null) {
 			paths = allpaths.get(node_token);
 		}
-		if (paths == null) return paths;
+		if (paths == null) return null;
 		return Collections.unmodifiableList(paths);
 	}
 
 	public static class VisitPair {
-		public String		target;
+		public ResourceLocation		target;
 		public List<Rule>	path;
 
-		public VisitPair(String target, List<Rule> path) {
+		public VisitPair(ResourceLocation target, List<Rule> path) {
 			this.target = target;
 			this.path = path;
 		}
 
 	}
 
-	private static HashMap<String, List<List<Rule>>> getOrCalculatePaths(HashMap<String, HashMap<String, List<List<Rule>>>> shortestpaths, String token) {
-		HashMap<String, List<List<Rule>>> allpaths = shortestpaths.get(token);
+	private static HashMap<ResourceLocation, List<List<Rule>>> getOrCalculatePaths(HashMap<ResourceLocation, HashMap<ResourceLocation, List<List<Rule>>>> shortestpaths, ResourceLocation token) {
+		HashMap<ResourceLocation, List<List<Rule>>> allpaths = shortestpaths.get(token);
 		if (allpaths != null) return allpaths;
-		allpaths = new HashMap<String, List<List<Rule>>>();
+		allpaths = new HashMap<>();
 
 		List<Rule> producers = reverseLookup.get(token);
-		List<VisitPair> tovisit = new LinkedList<VisitPair>();
+		List<VisitPair> tovisit = new LinkedList<>();
 
 		if (producers != null) for (Rule rule : producers) {
 			tovisit.add(new VisitPair(rule.parent, Collections.unmodifiableList(CollectionUtils.buildList(rule))));
 		}
 		while (tovisit.size() > 0) {
 			VisitPair elem = tovisit.remove(0);
-			String target = elem.target;
+			ResourceLocation target = elem.target;
 			if (target.equals(token)) continue;
 			List<Rule> path = elem.path;
 			List<List<Rule>> paths_to_target = CollectionUtils.getOrCreateElement(target, allpaths);
@@ -185,10 +187,10 @@ public class GrammarGenerator {
 	private static void buildShortestPaths() {
 		long timestart = System.currentTimeMillis();
 		if (profile_pathbuilder) System.out.println("Starting buildShortestPaths");
-		shortestpaths = new HashMap<String, HashMap<String, List<List<Rule>>>>();
+		shortestpaths = new HashMap<>();
 
-		for (Entry<String, List<Rule>> lookup : reverseLookup.entrySet()) {
-			String token = lookup.getKey();
+		for (Entry<ResourceLocation, List<Rule>> lookup : reverseLookup.entrySet()) {
+			ResourceLocation token = lookup.getKey();
 			if (shortestpaths.containsKey(token)) continue;
 			getOrCalculatePaths(shortestpaths, token);
 		}
@@ -199,7 +201,7 @@ public class GrammarGenerator {
 	private static void buildRankWeights() {
 		final int step = 1; //Increment between ranks
 		for (RankData rankdata : ranks.values()) {
-			rankdata.rankweights = new HashMap<Integer, Integer>();
+			rankdata.rankweights = new HashMap<>();
 			int weight = 1;
 			int lasttotal = 0;
 			for (int i = rankdata.ranksizes.size() - 1; i >= 0; --i) {
@@ -215,15 +217,15 @@ public class GrammarGenerator {
 	}
 
 	public static String pathToString(List<Rule> path) {
-		String out = "";
+		StringBuilder out = new StringBuilder();
 		for (Rule rule : path) {
-			if (!out.equals("")) out += " - ";
-			out += rule.parent;
+			if (!out.toString().equals("")) out.append(" - ");
+			out.append(rule.parent);
 		}
-		return out;
+		return out.toString();
 	}
 
-	public static void testShortestPaths(String token1, String token2) {
+	public static void testShortestPaths(ResourceLocation token1, ResourceLocation token2) {
 		System.out.println(token1 + " - " + token2);
 		List<List<Rule>> paths = GrammarGenerator.getShortestPaths(token1, token2);
 		if (paths == null) {

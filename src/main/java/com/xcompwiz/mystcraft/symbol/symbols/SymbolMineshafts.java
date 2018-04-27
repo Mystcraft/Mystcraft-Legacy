@@ -9,6 +9,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -17,7 +18,7 @@ import net.minecraft.world.gen.structure.MapGenMineshaft;
 
 public class SymbolMineshafts extends SymbolBase {
 
-	public SymbolMineshafts(String identifier) {
+	public SymbolMineshafts(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -32,6 +33,11 @@ public class SymbolMineshafts extends SymbolBase {
 	public int instabilityModifier(int count) {
 		if (count > 3) return 100;
 		return 0;
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class Populator implements IPopulate {

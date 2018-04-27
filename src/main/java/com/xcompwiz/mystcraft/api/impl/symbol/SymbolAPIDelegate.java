@@ -8,14 +8,15 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class SymbolAPIDelegate {
 	public void setSymbolCardRank(IAgeSymbol symbol, int rank) {
-		SymbolManager.setSymbolItemCardRank(symbol.identifier(), rank);
+		SymbolManager.setSymbolItemCardRank(symbol.getRegistryName(), rank);
 	}
 
 	public void setSymbolIsPurchasable(IAgeSymbol symbol, boolean flag) {
-		SymbolManager.setSymbolIsTradable(symbol.identifier(), flag);
+		SymbolManager.setSymbolIsTradable(symbol.getRegistryName(), flag);
 	}
 
 	public void setSymbolTradeItem(IAgeSymbol symbol, ItemStack itemstack) {
@@ -23,31 +24,23 @@ public class SymbolAPIDelegate {
 	}
 
 	public void setSymbolTradeItems(IAgeSymbol symbol, ItemStack primary, ItemStack secondary) {
-		SymbolManager.setSymbolTradeItems(symbol.identifier(), primary, secondary);
+		SymbolManager.setSymbolTradeItems(symbol.getRegistryName(), primary, secondary);
 	}
 
-	public float getSymbolItemWeight(String identifier) {
+	public float getSymbolItemWeight(ResourceLocation identifier) {
 		return SymbolManager.getSymbolItemWeight(identifier);
 	}
 
-	public boolean getSymbolIsTradable(String identifier) {
+	public boolean getSymbolIsTradable(ResourceLocation identifier) {
 		return SymbolManager.isSymbolTradable(identifier);
 	}
 
-	public List<ItemStack> getSymbolTradeItems(String identifier) {
+	public List<ItemStack> getSymbolTradeItems(ResourceLocation identifier) {
 		return SymbolManager.getSymbolTradeItems(identifier);
 	}
 
-	public void blacklistIdentifier(String identifier) {
+	public void blacklistIdentifier(ResourceLocation identifier) {
 		SymbolManager.blackListSymbol(identifier);
-	}
-
-	public boolean registerSymbol(IAgeSymbol symbol, String modid) {
-		return SymbolManager.registerSymbol(symbol, true, modid);
-	}
-
-	public boolean registerSymbol(IAgeSymbol symbol, boolean generateConfigOption, String modid) {
-		return SymbolManager.registerSymbol(symbol, generateConfigOption, modid);
 	}
 
 	public void registerWord(String name, DrawableWord word) {
@@ -62,11 +55,11 @@ public class SymbolAPIDelegate {
 		return SymbolManager.getAgeSymbols();
 	}
 
-	public IAgeSymbol getSymbol(String identifier) {
+	public IAgeSymbol getSymbol(ResourceLocation identifier) {
 		return SymbolManager.getAgeSymbol(identifier);
 	}
 
-	public String getSymbolOwner(String identifier) {
+	public String getSymbolOwner(ResourceLocation identifier) {
 		return SymbolManager.getSymbolOwner(identifier);
 	}
 

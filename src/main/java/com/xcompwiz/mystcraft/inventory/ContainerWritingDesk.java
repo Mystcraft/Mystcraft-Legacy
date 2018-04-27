@@ -29,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -286,7 +287,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			}
 		}
 		if (data.hasKey(Messages.WriteSymbol)) {
-			tileentity.writeSymbol(player, data.getString(Messages.WriteSymbol));
+			tileentity.writeSymbol(player, new ResourceLocation(data.getString(Messages.WriteSymbol)));
 		}
 		//XXX: This is weird, as it's only meaningful client-side
 		if (data.hasKey(Messages.SetActiveNotebook)) {

@@ -13,15 +13,16 @@ import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.grammar.GrammarTree;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.util.CollectionUtils;
+import net.minecraft.util.ResourceLocation;
 
 public class GrammarAPIDelegate {
 
-	public void registerGrammarRule(String parent, Integer rank, String... args) {
-		ArrayList<String> list = CollectionUtils.buildList(args);
+	public void registerGrammarRule(ResourceLocation parent, Integer rank, ResourceLocation... args) {
+		ArrayList<ResourceLocation> list = CollectionUtils.buildList(args);
 		GrammarGenerator.registerRule(new Rule(parent, list, rank));
 	}
 
-	public Collection<IAgeSymbol> getSymbolsExpandingToken(String token) {
+	public Collection<IAgeSymbol> getSymbolsExpandingToken(ResourceLocation token) {
 		// First, grab all the rules
 		List<Rule> rules = new ArrayList<Rule>();
 		List<Rule> tokenrules = GrammarGenerator.getAllRules(token);
@@ -31,7 +32,7 @@ public class GrammarAPIDelegate {
 
 		// Get symbols
 		for (Rule rule : rules) {
-			for (String rule_token : rule.getValues()) {
+			for (ResourceLocation rule_token : rule.getValues()) {
 				if (!SymbolManager.hasBinding(rule_token)) continue;
 				IAgeSymbol symbol = SymbolManager.getAgeSymbol(rule_token);
 				if (symbol == null) continue;
@@ -41,8 +42,8 @@ public class GrammarAPIDelegate {
 		return symbols;
 	}
 
-	public Collection<String> getTokensProducingToken(String token) {
-		Set<String> set = new HashSet<String>();
+	public Collection<ResourceLocation> getTokensProducingToken(ResourceLocation token) {
+		Set<ResourceLocation> set = new HashSet<>();
 		List<Rule> rules = GrammarGenerator.getParentRules(token);
 		for (Rule rule : rules) {
 			set.add(rule.getParent());
@@ -50,12 +51,12 @@ public class GrammarAPIDelegate {
 		return set;
 	}
 
-	public List<String> generateFromToken(String root, Random rand) {
+	public List<ResourceLocation> generateFromToken(ResourceLocation root, Random rand) {
 		GrammarTree tree = new GrammarTree(root);
 		return tree.getExpanded(rand);
 	}
 
-	public List<String> generateFromToken(String root, Random rand, List<String> parsed) {
+	public List<ResourceLocation> generateFromToken(ResourceLocation root, Random rand, List<ResourceLocation> parsed) {
 		GrammarTree tree = new GrammarTree(root);
 		tree.parseTerminals(parsed, rand);
 		return tree.getExpanded(rand);

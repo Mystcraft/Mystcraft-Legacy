@@ -9,6 +9,7 @@ import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -43,7 +44,7 @@ public class IMCBlacklistFluid implements IMCProcessor {
 		if (blockstate == null) {
 			return;
 		}
-		String identifier = SymbolBlock.getSymbolIdentifier(blockstate);
+		ResourceLocation identifier = SymbolBlock.getSymbolIdentifier(blockstate);
 		SymbolManager.blackListSymbol(identifier);
 		ModSymbolsFluids.blacklist(fluid);
 		LoggerUtils.info("Fluid blacklist request successful.");

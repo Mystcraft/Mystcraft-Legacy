@@ -6,10 +6,11 @@ import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.symbols.SymbolTerrainGenNormal.TerrainGeneratorNormal;
+import net.minecraft.util.ResourceLocation;
 
 public class SymbolTerrainGenAmplified extends SymbolBase {
 
-	public SymbolTerrainGenAmplified(String identifier) {
+	public SymbolTerrainGenAmplified(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -26,5 +27,10 @@ public class SymbolTerrainGenAmplified extends SymbolBase {
 			gen.setTerrainBlock(block.blockstate);
 		}
 		controller.registerInterface(gen);
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 }

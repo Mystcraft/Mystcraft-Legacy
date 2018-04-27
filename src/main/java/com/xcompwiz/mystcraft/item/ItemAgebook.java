@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
@@ -175,7 +176,7 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 	}
 	
 	@Override
-	public boolean writeSymbol(EntityPlayer player, @Nonnull ItemStack itemstack, String symbol) {
+	public boolean writeSymbol(EntityPlayer player, @Nonnull ItemStack itemstack, ResourceLocation symbol) {
 		if (isVisited(itemstack, player.world.isRemote)) return false;
 		if (itemstack.getTagCompound() == null) return false;
 		NBTTagCompound nbttagcompound = itemstack.getTagCompound();

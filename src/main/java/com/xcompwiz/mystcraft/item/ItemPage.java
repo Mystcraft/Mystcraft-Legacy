@@ -29,6 +29,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -61,7 +62,7 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 			ArrayList<IAgeSymbol> symbols = SymbolManager.getAgeSymbols();
 			symbols.sort(SortingUtils.ComparatorSymbolAlphabetical.instance);
 			for (IAgeSymbol symbol : symbols) {
-				items.add(Page.createSymbolPage(symbol.identifier()));
+				items.add(Page.createSymbolPage(symbol.getRegistryName()));
 			}
 		}
 	}
@@ -73,7 +74,7 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 		if (itemstack.getTagCompound() != null) {
 			if (Page.isLinkPanel(itemstack)) return I18n.format(this.getUnlocalizedName(itemstack) + ".panel.name");
 			if (Page.isBlank(itemstack)) return I18n.format(this.getUnlocalizedName(itemstack) + ".blank.name");
-			String symbolId = Page.getSymbol(itemstack);
+			ResourceLocation symbolId = Page.getSymbol(itemstack);
 			IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolId);
 			if (symbol == null) { return I18n.format(this.getUnlocalizedName(itemstack) + ".symbol.name") + " (Unknown: " + symbolId + ")"; }
 			return I18n.format(this.getUnlocalizedName(itemstack) + ".symbol.name") + " (" + symbol.getLocalizedName() + ")";
@@ -146,7 +147,7 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 	public void setDisplayName(EntityPlayer player, @Nonnull ItemStack itemstack, String name) {}
 
 	@Override
-	public boolean writeSymbol(EntityPlayer player, @Nonnull ItemStack itemstack, String symbol) {
+	public boolean writeSymbol(EntityPlayer player, @Nonnull ItemStack itemstack, ResourceLocation symbol) {
 		if (!Page.isBlank(itemstack)) return false;
 		Page.setSymbol(itemstack, symbol);
 		return true;

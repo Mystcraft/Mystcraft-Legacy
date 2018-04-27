@@ -9,11 +9,12 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.TerrainGeneratorBase;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 
 public class SymbolTerrainGenNether extends SymbolBase {
 
-	public SymbolTerrainGenNether(String identifier) {
+	public SymbolTerrainGenNether(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -33,6 +34,11 @@ public class SymbolTerrainGenNether extends SymbolBase {
 		controller.setCloudHeight(200);
 		controller.setHorizon(128);
 		controller.setSeaLevel(32);
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private static class TerrainGenerator extends TerrainGeneratorBase {

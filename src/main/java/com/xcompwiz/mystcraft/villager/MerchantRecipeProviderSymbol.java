@@ -28,12 +28,12 @@ public class MerchantRecipeProviderSymbol implements IMerchantRecipeProvider {
 	public List<MerchantRecipe> createNewMerchantRecipes(@Nonnull IMerchant villagerMerchant, @Nonnull Random random) {
 		List<MerchantRecipe> merchantrecipes = new ArrayList<>();
 		MerchantRecipe merchantrecipe = null;
-		List<ItemStack> buyitems = SymbolManager.getSymbolTradeItems(symbol.identifier());
+		List<ItemStack> buyitems = SymbolManager.getSymbolTradeItems(symbol.getRegistryName());
 		if (buyitems.size() > 0 && buyitems.get(0) != null) {
 			if (buyitems.size() > 1 && buyitems.get(1) != null) {
-				merchantrecipe = new MerchantRecipeMyst(buyitems.get(0), buyitems.get(1), Page.createSymbolPage(symbol.identifier()));
+				merchantrecipe = new MerchantRecipeMyst(buyitems.get(0), buyitems.get(1), Page.createSymbolPage(symbol.getRegistryName()));
 			} else {
-				merchantrecipe = new MerchantRecipeMyst(buyitems.get(0), Page.createSymbolPage(symbol.identifier()));
+				merchantrecipe = new MerchantRecipeMyst(buyitems.get(0), Page.createSymbolPage(symbol.getRegistryName()));
 			}
 		}
 		if (merchantrecipe != null) {

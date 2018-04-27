@@ -4,11 +4,17 @@ import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+import net.minecraft.util.ResourceLocation;
 
 public class SymbolGradient extends SymbolBase {
 
-	public SymbolGradient(String identifier) {
+	public SymbolGradient(ResourceLocation identifier) {
 		super(identifier);
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	@Override

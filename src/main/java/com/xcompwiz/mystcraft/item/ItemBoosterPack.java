@@ -88,7 +88,7 @@ public class ItemBoosterPack extends Item {
 		for (int i = 0; i < count; ++i) {
 			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, collection, WeightProviderSymbolItem.instance);
 			if (checker(symbol, collection)) continue;
-			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
+			item.addPage(null, itemstack, Page.createSymbolPage(symbol.getRegistryName()));
 		}
 	}
 

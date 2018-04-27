@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
+import net.minecraft.util.ResourceLocation;
 
 public class SymbolAPIWrapper extends APIWrapper implements SymbolAPI {
 
@@ -15,19 +16,9 @@ public class SymbolAPIWrapper extends APIWrapper implements SymbolAPI {
 	}
 
 	@Override
-	public void blacklistIdentifier(String identifier) {
+	public void blacklistIdentifier(ResourceLocation identifier) {
 		InternalAPI.symbol.blacklistIdentifier(identifier);
 		LoggerUtils.info(String.format("[%s] has blacklisted symbol identifier %s", this.getOwnerMod(), identifier));
-	}
-
-	@Override
-	public boolean registerSymbol(IAgeSymbol symbol) {
-		return InternalAPI.symbol.registerSymbol(symbol, this.getOwnerMod());
-	}
-
-	@Override
-	public boolean registerSymbol(IAgeSymbol symbol, boolean generateConfigOption) {
-		return InternalAPI.symbol.registerSymbol(symbol, generateConfigOption, this.getOwnerMod());
 	}
 
 	@Override
@@ -36,12 +27,12 @@ public class SymbolAPIWrapper extends APIWrapper implements SymbolAPI {
 	}
 
 	@Override
-	public IAgeSymbol getSymbol(String identifier) {
+	public IAgeSymbol getSymbol(ResourceLocation identifier) {
 		return InternalAPI.symbol.getSymbol(identifier);
 	}
 
 	@Override
-	public String getSymbolOwner(String identifier) {
+	public String getSymbolOwner(ResourceLocation identifier) {
 		return InternalAPI.symbol.getSymbolOwner(identifier);
 	}
 

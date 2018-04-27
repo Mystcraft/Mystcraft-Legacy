@@ -10,11 +10,12 @@ import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 
 public class SymbolBiomeControllerSingle extends SymbolBase {
 
-	public SymbolBiomeControllerSingle(String identifier) {
+	public SymbolBiomeControllerSingle(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -32,6 +33,11 @@ public class SymbolBiomeControllerSingle extends SymbolBase {
 			biomes.add(SymbolBiome.getRandomBiome(rand));
 		}
 		controller.registerInterface(new BiomeController(biomes));
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class BiomeController implements IBiomeController {

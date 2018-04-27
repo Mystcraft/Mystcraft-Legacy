@@ -14,6 +14,7 @@ import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.data.ModSymbolsModifiers.BlockModifierContainerObject;
 import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
 
+import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -44,9 +45,9 @@ public class ModSymbolsFluids {
 			Fluid fluid = entry.getValue();
 			if (blacklist.contains(fluid)) continue;
 			Block block = fluid.getBlock();
-			if (block == Blocks.WATER) continue;
-			if (block == Blocks.LAVA) continue;
 			if (block == null) continue;
+			if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) continue;
+			if (block == Blocks.LAVA || block == Blocks.FLOWING_LAVA) continue;
 			if (Item.getItemFromBlock(block) == Items.AIR) continue;
 
 			byte meta = 0;
@@ -62,7 +63,9 @@ public class ModSymbolsFluids {
 				if (!isBannedSea(fluidkey)) container.add(BlockCategory.SEA, grammarRank(fluidkey));
 				container.add(BlockCategory.FLUID, grammarRank(fluidkey));
 			}
-			if (container.getSymbol() != null) InternalAPI.symbol.registerSymbol(container.getSymbol(), MystObjects.MystcraftModId);
+			if (container.getSymbol() != null) {
+				SymbolManager.tryAddSymbol(container.getSymbol());
+			}
 		}
 		if (config != null && config.hasChanged()) config.save();
 		if (refconfig != null && refconfig.hasChanged()) refconfig.save();

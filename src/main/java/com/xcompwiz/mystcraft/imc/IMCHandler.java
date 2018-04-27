@@ -20,7 +20,6 @@ public class IMCHandler {
 
 	static {
 		registerProcessor("api", new IMCAPIRegister());
-		registerProcessor("blockmodifier", new IMCBlockModifier());
 		registerProcessor("blockinstability", new IMCBlockInstability());
 		registerProcessor("blacklistfluid", new IMCBlacklistFluid());
 		registerProcessor("blacklist", new IMCBlacklistSymbol());

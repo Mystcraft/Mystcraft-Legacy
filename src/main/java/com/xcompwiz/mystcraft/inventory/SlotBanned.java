@@ -19,10 +19,4 @@ public class SlotBanned extends Slot {
 		return false;
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean isEnabled() {
-		return false;
-	}
-
 }

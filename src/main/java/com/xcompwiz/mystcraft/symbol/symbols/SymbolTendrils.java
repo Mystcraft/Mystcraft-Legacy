@@ -12,12 +12,13 @@ import com.xcompwiz.mystcraft.world.gen.MapGenCavesMyst;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 public class SymbolTendrils extends SymbolBase {
 
-	public SymbolTendrils(String identifier) {
+	public SymbolTendrils(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -45,5 +46,10 @@ public class SymbolTendrils extends SymbolBase {
 		public void alterTerrain(World worldObj, int chunkX, int chunkZ, ChunkPrimer primer) {
 			generator.generate(worldObj.getChunkProvider(), worldObj, chunkX, chunkZ, primer);
 		}
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 }

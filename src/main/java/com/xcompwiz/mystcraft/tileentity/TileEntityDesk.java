@@ -29,6 +29,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
@@ -202,7 +203,7 @@ public class TileEntityDesk extends TileEntityBase implements InventoryFilter, I
 		return ((IItemPageProvider) itemstack.getItem()).getPageList(player, itemstack);
 	}
 
-	public void writeSymbol(EntityPlayer player, String symbol) {
+	public void writeSymbol(EntityPlayer player, ResourceLocation symbol) {
 		if (world.isRemote) return;
 		if (!hasEnoughInk()) return;
 

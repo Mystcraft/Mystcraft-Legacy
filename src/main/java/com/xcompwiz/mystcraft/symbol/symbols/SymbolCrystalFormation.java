@@ -12,12 +12,13 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGenMystCrystalFormation;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SymbolCrystalFormation extends SymbolBase {
 
-	public SymbolCrystalFormation(String identifier) {
+	public SymbolCrystalFormation(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -31,6 +32,11 @@ public class SymbolCrystalFormation extends SymbolBase {
 			generator = new WorldGenMystCrystalFormation(ModBlocks.crystal);
 		}
 		controller.registerInterface(new Populator(generator));
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private static class Populator implements IPopulate {

@@ -14,6 +14,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -80,7 +81,7 @@ public class GuiElementShopItem extends GuiElement implements IGuiOnClickHandler
 			ItemStack itemstack = shop.getItemstack(this);
 			if (itemstack.isEmpty()) return "";
 			if (itemstack.getItem() instanceof ItemPage) {
-				String symbolId = Page.getSymbol(itemstack);
+				ResourceLocation symbolId = Page.getSymbol(itemstack);
 				IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolId);
 				if (symbol == null) return "Unknown: " + symbolId;
 				return I18n.format(symbol.displayName());

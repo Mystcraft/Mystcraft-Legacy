@@ -6,10 +6,11 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.effects.EffectLightning;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+import net.minecraft.util.ResourceLocation;
 
 public class SymbolEnvLightning extends SymbolBase {
 
-	public SymbolEnvLightning(String identifier) {
+	public SymbolEnvLightning(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -27,5 +28,10 @@ public class SymbolEnvLightning extends SymbolBase {
 	public int instabilityModifier(int count) {
 		if (count > 1) return 0;
 		return InstabilityData.symbol.charged;
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 }

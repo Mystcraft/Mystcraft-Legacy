@@ -12,12 +12,13 @@ import com.xcompwiz.mystcraft.world.gen.feature.WorldGenLakesAdv;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SymbolLakesDeep extends SymbolBase {
 
-	public SymbolLakesDeep(String identifier) {
+	public SymbolLakesDeep(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -31,6 +32,11 @@ public class SymbolLakesDeep extends SymbolBase {
 			generator = new WorldGenLakesAdv(Blocks.LAVA);
 		}
 		controller.registerInterface(new Populator(controller, generator));
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class Populator implements IPopulate {

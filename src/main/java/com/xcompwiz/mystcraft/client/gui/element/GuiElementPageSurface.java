@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
@@ -175,7 +176,10 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 						displayname = symbol.getLocalizedName();
 					}
 					if (displayname == null) {
-						displayname = Page.getSymbol(page);
+						ResourceLocation res = Page.getSymbol(page);
+						if(res != null) {
+							displayname = res.getResourcePath();
+						}
 					}
 				}
 				if (displayname != null && searchtext != null && searchtext.length() > 0) {

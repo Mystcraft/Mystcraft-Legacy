@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * For defining information for block modifiers This handles the block modifier system. Use this to get block modifiers for usage as well as to push block
@@ -13,7 +14,7 @@ import net.minecraft.block.state.IBlockState;
 public final class BlockDescriptor {
 
 	public final IBlockState blockstate;
-	private final HashMap<String, Boolean> useable = new HashMap<String, Boolean>();
+	private final HashMap<ResourceLocation, Boolean> useable = new HashMap<>();
 
 	/**
 	 * Describes a block

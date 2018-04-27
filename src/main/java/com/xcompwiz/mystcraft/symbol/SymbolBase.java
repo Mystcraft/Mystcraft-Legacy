@@ -8,20 +8,23 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
+
 public abstract class SymbolBase implements IAgeSymbol {
 
-	protected final String	identifier;
+	protected final ResourceLocation registryName;
 	private ArrayList<Rule>	rules;
 	private String[]		words;
 
 	@SideOnly(Side.CLIENT)
 	private String localizedName;
 
-	public SymbolBase(String identifier) {
-		this.identifier = identifier;
+	public SymbolBase(ResourceLocation registryName) {
+		this.registryName = registryName;
 	}
 
 	public void setWords(String[] words) {
@@ -52,9 +55,15 @@ public abstract class SymbolBase implements IAgeSymbol {
 		rules.add(rule);
 	}
 
+	@Nullable
 	@Override
-	public final String identifier() {
-		return this.identifier;
+	public ResourceLocation getRegistryName() {
+		return registryName;
+	}
+
+	@Override
+	public IAgeSymbol setRegistryName(ResourceLocation registryName) {
+		return this;
 	}
 
 	/**
@@ -62,7 +71,7 @@ public abstract class SymbolBase implements IAgeSymbol {
 	 * @return The lookup key used to map the symbol to a user readable text string
 	 */
 	protected String getUnlocalizedName() {
-		return "myst.symbol." + this.identifier();
+		return "myst.symbol." + this.getRegistryName().getResourcePath();
 	}
 
 	@SideOnly(Side.CLIENT)

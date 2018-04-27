@@ -11,6 +11,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -212,7 +213,7 @@ public class InventoryFolder {
 	 * @param symbol Symbol to write
 	 * @return
 	 */
-	public static boolean writeSymbol(@Nonnull ItemStack folder, String symbol) {
+	public static boolean writeSymbol(@Nonnull ItemStack folder, ResourceLocation symbol) {
 		List<ItemStack> pages = getItems(folder);
 		for (ItemStack page : pages) {
 			if (page.isEmpty()) continue;

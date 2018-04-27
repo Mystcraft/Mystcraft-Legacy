@@ -4,10 +4,11 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.effects.EffectExtraTicks;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+import net.minecraft.util.ResourceLocation;
 
 public class SymbolEnvAccelerated extends SymbolBase {
 
-	public SymbolEnvAccelerated(String identifier) {
+	public SymbolEnvAccelerated(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -19,5 +20,10 @@ public class SymbolEnvAccelerated extends SymbolBase {
 	@Override
 	public int instabilityModifier(int count) {
 		return InstabilityData.symbol.accelerated;
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 }

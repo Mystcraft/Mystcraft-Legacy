@@ -30,6 +30,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -93,7 +94,12 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 						if (Page.getSymbol(page) != null) {
 							IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
 							if (symbol != null) displayname = symbol.getLocalizedName();
-							if (displayname == null) displayname = Page.getSymbol(page);
+							if (displayname == null) {
+								ResourceLocation id = Page.getSymbol(page);
+								if(id != null) {
+									displayname = id.getResourcePath();
+								}
+							}
 						}
 						if (searchtext != null && searchtext.length() > 0) {
 							if (displayname == null || !displayname.toLowerCase().contains(searchtext.toLowerCase())) {
@@ -119,7 +125,7 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 			if (showall) {
 				Collection<IAgeSymbol> symbols = SymbolManager.getAgeSymbols();
 				for (IAgeSymbol symbol : symbols) {
-					String symbolname = symbol.identifier();
+					ResourceLocation symbolname = symbol.getRegistryName();
 					//XXX: Filters
 					String displayname = symbol.getLocalizedName();
 					if (searchtext != null && searchtext.length() > 0) {

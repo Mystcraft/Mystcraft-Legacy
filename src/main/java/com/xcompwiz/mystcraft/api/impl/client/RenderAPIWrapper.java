@@ -5,6 +5,7 @@ import com.xcompwiz.mystcraft.api.hook.RenderAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.util.Color;
+import net.minecraft.util.ResourceLocation;
 
 public class RenderAPIWrapper extends APIWrapper implements RenderAPI {
 
@@ -28,7 +29,7 @@ public class RenderAPIWrapper extends APIWrapper implements RenderAPI {
 	}
 
 	@Override
-	public void drawSymbol(float x, float y, float zLevel, float scale, String identifier) {
+	public void drawSymbol(float x, float y, float zLevel, float scale, ResourceLocation identifier) {
 		InternalAPI.render.drawSymbol(x, y, zLevel, scale, InternalAPI.symbol.getSymbol(identifier));
 	}
 

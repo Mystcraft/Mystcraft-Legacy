@@ -16,6 +16,7 @@ import com.xcompwiz.mystcraft.page.SortingUtils.ComparatorSymbolAlphabetical;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -25,7 +26,7 @@ public class ItemFactoryImpl {
 		return Page.createPage();
 	}
 
-	public ItemStack buildSymbolPage(String identifier) {
+	public ItemStack buildSymbolPage(ResourceLocation identifier) {
 		return Page.createSymbolPage(identifier);
 	}
 
@@ -39,36 +40,35 @@ public class ItemFactoryImpl {
 	}
 
 	@Nonnull
-	public ItemStack buildCollectionItem(String name, String... tokens) {
+	public ItemStack buildCollectionItem(String name, ResourceLocation... tokens) {
 		// First, grab all the rules
-		HashSet<Rule> rules = new HashSet<Rule>();
-		for (String token : tokens) {
+		HashSet<Rule> rules = new HashSet<>();
+		for (ResourceLocation token : tokens) {
 			if (token == null) continue;
 			List<Rule> tokenrules = GrammarGenerator.getAllRules(token);
 			if (tokenrules != null) rules.addAll(tokenrules);
 		}
 
-		HashSet<IAgeSymbol> symbolsset = new HashSet<IAgeSymbol>();
+		HashSet<IAgeSymbol> symbolsSet = new HashSet<>();
 
 		// Get symbols
 		for (Rule rule : rules) {
-			for (String token : rule.getValues()) {
-				if (!SymbolManager.hasBinding(token)) continue;
-				IAgeSymbol symbol = SymbolManager.getAgeSymbol(token);
+			for (ResourceLocation tok : rule.getValues()) {
+				if (!SymbolManager.hasBinding(tok)) continue;
+				IAgeSymbol symbol = SymbolManager.getAgeSymbol(tok);
 				if (symbol == null) continue;
-				symbolsset.add(symbol);
+				symbolsSet.add(symbol);
 			}
 		}
-		ArrayList<IAgeSymbol> symbols = new ArrayList<IAgeSymbol>();
-		symbols.addAll(symbolsset);
-		Collections.sort(symbols, ComparatorSymbolAlphabetical.instance);
+		ArrayList<IAgeSymbol> symbols = new ArrayList<>(symbolsSet);
+		symbols.sort(ComparatorSymbolAlphabetical.instance);
 
 		ItemStack itemstack = new ItemStack(ModItems.portfolio, 1, 0);
 		IItemPageCollection item = (IItemPageCollection) itemstack.getItem();
 		item.setDisplayName(null, itemstack, name);
 
 		for (IAgeSymbol symbol : symbols) {
-			item.addPage(null, itemstack, Page.createSymbolPage(symbol.identifier()));
+			item.addPage(null, itemstack, Page.createSymbolPage(symbol.getRegistryName()));
 		}
 		return itemstack;
 	}

@@ -8,6 +8,7 @@ import com.xcompwiz.mystcraft.api.hook.GrammarAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+import net.minecraft.util.ResourceLocation;
 
 public class GrammarAPIWrapper extends APIWrapper implements GrammarAPI {
 
@@ -16,27 +17,27 @@ public class GrammarAPIWrapper extends APIWrapper implements GrammarAPI {
 	}
 
 	@Override
-	public void registerGrammarRule(String parent, Integer rank, String... args) {
+	public void registerGrammarRule(ResourceLocation parent, Integer rank, ResourceLocation... args) {
 		InternalAPI.grammar.registerGrammarRule(parent, rank, args);
 	}
 
 	@Override
-	public Collection<String> getTokensProducingToken(String token) {
+	public Collection<ResourceLocation> getTokensProducingToken(ResourceLocation token) {
 		return InternalAPI.grammar.getTokensProducingToken(token);
 	}
 
 	@Override
-	public List<String> generateFromToken(String root, Random rand) {
+	public List<ResourceLocation> generateFromToken(ResourceLocation root, Random rand) {
 		return InternalAPI.grammar.generateFromToken(root, rand);
 	}
 
 	@Override
-	public List<String> generateFromToken(String root, Random rand, List<String> written) {
+	public List<ResourceLocation> generateFromToken(ResourceLocation root, Random rand, List<ResourceLocation> written) {
 		return InternalAPI.grammar.generateFromToken(root, rand, written);
 	}
 
 	@Override
-	public Collection<IAgeSymbol> getSymbolsExpandingToken(String token) {
+	public Collection<IAgeSymbol> getSymbolsExpandingToken(ResourceLocation token) {
 		return InternalAPI.grammar.getSymbolsExpandingToken(token);
 	}
 

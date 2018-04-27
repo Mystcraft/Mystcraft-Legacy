@@ -5,6 +5,7 @@ import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class ItemFactAPIWrapper extends APIWrapper implements ItemFactory {
 
@@ -18,7 +19,7 @@ public class ItemFactAPIWrapper extends APIWrapper implements ItemFactory {
 	}
 
 	@Override
-	public ItemStack buildSymbolPage(String identifier) {
+	public ItemStack buildSymbolPage(ResourceLocation identifier) {
 		return InternalAPI.itemFact.buildSymbolPage(identifier);
 	}
 
@@ -28,7 +29,7 @@ public class ItemFactAPIWrapper extends APIWrapper implements ItemFactory {
 	}
 
 	@Override
-	public ItemStack buildCollectionItem(String name, String... tokens) {
+	public ItemStack buildCollectionItem(String name, ResourceLocation... tokens) {
 		return InternalAPI.itemFact.buildCollectionItem(name, tokens);
 	}
 

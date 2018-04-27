@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.Sets;
+import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBlock;
@@ -17,6 +18,7 @@ import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -175,30 +177,30 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 
 		addBiomeSymbols(agedata);
 
-		agedata.addSymbol("BioConGrid", 0);
+		agedata.addSymbol(forMyst("BioConGrid"), 0);
 		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.STONE.getDefaultState()), 0);
 		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.FLOWING_WATER.getDefaultState()), 0);
-		agedata.addSymbol("TerrainNormal", 0);
+		agedata.addSymbol(forMyst("TerrainNormal"), 0);
 
 		//Lakes
 		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.FLOWING_WATER.getDefaultState()), 0);
-		agedata.addSymbol("LakesSurface", 0);
+		agedata.addSymbol(forMyst("LakesSurface"), 0);
 
 		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.FLOWING_LAVA.getDefaultState()), 0);
-		agedata.addSymbol("LakesDeep", 0);
+		agedata.addSymbol(forMyst("LakesDeep"), 0);
 
 		//Caves
-		agedata.addSymbol("Caves", 0);
+		agedata.addSymbol(forMyst("Caves"), 0);
 		//Ravines
-		agedata.addSymbol("Ravines", 0);
+		agedata.addSymbol(forMyst("Ravines"), 0);
 		//Villages
-		agedata.addSymbol("Villages", 0);
+		agedata.addSymbol(forMyst("Villages"), 0);
 		//Mineshafts
-		agedata.addSymbol("Mineshafts", 0);
+		agedata.addSymbol(forMyst("Mineshafts"), 0);
 		//NormalWeather
-		agedata.addSymbol("WeatherNorm", 0);
+		agedata.addSymbol(forMyst("WeatherNorm"), 0);
 		//NormalLighting
-		agedata.addSymbol("LightingNormal", 0);
+		agedata.addSymbol(forMyst("LightingNormal"), 0);
 		agedata.markVisited();
 
 		controller = new AgeControllerDummy(world, agedata);
@@ -206,12 +208,16 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		setWorldInfo();
 	}
 
+	private ResourceLocation forMyst(String id) {
+		return new ResourceLocation(MystObjects.MystcraftModId, id);
+	}
+
 	private void addBiomeSymbols(AgeData agedata) {
 		// Use only Overworld biomes. See {GenLayerBiome}.
 		if (biomeList == null)
 			getAndPrepareBiomeList();
 		for (Biome biome : biomeList) {
-			agedata.addSymbol(SymbolBiome.getBiomeSymbolId(biome), 0);
+			agedata.addSymbol(SymbolBiome.getBiomeSymbolId(MystObjects.MystcraftModId, biome), 0);
 		}
 	}
 

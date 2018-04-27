@@ -242,7 +242,7 @@ public class WorldProviderMyst extends WorldProvider {
 	@Override
 	public boolean canBlockFreeze(BlockPos pos, boolean reqLand) {
 		Biome biome = this.getBiomeForCoords(pos);
-		float temp = biome.getFloatTemperature(pos);
+		float temp = biome.getTemperature(pos);
 		int y = pos.getY();
 		temp = this.getAgeController().getTemperatureAtHeight(temp, y);
 
@@ -281,7 +281,7 @@ public class WorldProviderMyst extends WorldProvider {
 	@Override
 	public boolean canSnowAt(BlockPos pos, boolean checkLight) {
 		Biome biome = this.getBiomeForCoords(pos);
-		float temp = biome.getFloatTemperature(pos);
+		float temp = biome.getTemperature(pos);
 		int y = pos.getY();
 		temp = this.getAgeController().getTemperatureAtHeight(temp, y);
 
@@ -464,7 +464,7 @@ public class WorldProviderMyst extends WorldProvider {
 				var4 = 1.0F;
 			}
 
-			float var8 = biome.getFloatTemperature(blockPos);
+			float var8 = biome.getTemperature(blockPos);
 			int var9 = getSkyColorByTemp(var8);
 			red = (var9 >> 16 & 255) / 255.0F;
 			green = (var9 >> 8 & 255) / 255.0F;

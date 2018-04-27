@@ -7,15 +7,21 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 
 public class SymbolNoSea extends SymbolBase {
 
 	private BlockDescriptor	blockDescriptor;
 
-	public SymbolNoSea(String identifier) {
+	public SymbolNoSea(ResourceLocation identifier) {
 		super(identifier);
 		blockDescriptor = new BlockDescriptor(Blocks.AIR);
 		blockDescriptor.setUsable(BlockCategory.SEA, true);
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	@Override

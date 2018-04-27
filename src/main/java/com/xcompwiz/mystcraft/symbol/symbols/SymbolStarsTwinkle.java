@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
@@ -23,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SymbolStarsTwinkle extends SymbolBase {
 
-	public SymbolStarsTwinkle(String identifier) {
+	public SymbolStarsTwinkle(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -33,6 +34,11 @@ public class SymbolStarsTwinkle extends SymbolBase {
 		Number angle = controller.popModifier(ModifierUtils.ANGLE).asNumber();
 		ColorGradient gradient = ModifierUtils.popGradient(controller, 1, 1, 1);
 		controller.registerInterface(new SkyBackground(controller, seed, period, angle, gradient));
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class SkyBackground extends CelestialBase {

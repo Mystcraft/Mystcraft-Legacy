@@ -6,6 +6,7 @@ import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * Allows the setting of various treasure rarity and weighting values for symbols. See {@link GrammarAPI} for setting the grammar rule(s) for a symbol. These
@@ -33,14 +34,14 @@ public interface SymbolValuesAPI {
 	 * @param identifier The identifier of the symbol to use
 	 * @return The weight used when generating treasure and selecting pages for trades
 	 */
-	public float getSymbolItemWeight(String identifier);
+	public float getSymbolItemWeight(ResourceLocation identifier);
 
 	/**
 	 * Returns if the symbol is procurable through trade
 	 * @param identifier The identifier of the symbol to use
 	 * @return True is the symbol can be traded for. False otherwise.
 	 */
-	public boolean getSymbolIsTradable(String identifier);
+	public boolean getSymbolIsTradable(ResourceLocation identifier);
 
 	/**
 	 * Can be used to set the item a villager will trade the symbol for
@@ -63,5 +64,5 @@ public interface SymbolValuesAPI {
 	 * @param identifier The identifier of the symbol to use
 	 * @return The item(s) that the villager is willing to trade for as a list (which is never more than two elements).
 	 */
-	public List<ItemStack> getSymbolTradeItems(String identifier);
+	public List<ItemStack> getSymbolTradeItems(ResourceLocation identifier);
 }

@@ -4,6 +4,7 @@ import com.google.common.annotations.Beta;
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * Provides a set of functions for building Mystcraft items. The implementation of this is provided by {@link APIInstanceProvider}.
@@ -22,7 +23,7 @@ public interface ItemFactory {
 	 * @param identifier The identifier of the symbol
 	 * @return The page item
 	 */
-	public ItemStack buildSymbolPage(String identifier);
+	public ItemStack buildSymbolPage(ResourceLocation identifier);
 
 	/**
 	 * Builds a link panel page with the specified properties. Note: no filtering is applied to the link properties listed.
@@ -37,7 +38,7 @@ public interface ItemFactory {
 	 * @param tokens The list of grammar tokens to expand for symbols
 	 * @return The collection itemstack
 	 */
-	public ItemStack buildCollectionItem(String name, String... tokens);
+	public ItemStack buildCollectionItem(String name, ResourceLocation... tokens);
 
 	/**
 	 * Builds a collection item (portfolio) containing the provided pages. This clones the itemstacks of the pages and will only add items which can be put into

@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
+import com.xcompwiz.mystcraft.utility.ReflectionUtil;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import net.minecraft.block.BlockFlower;
@@ -30,15 +31,15 @@ public class BiomeWrapperMyst extends Biome {
 	private final Biome baseBiome;
 
 	private static BiomeProperties generateBiomeProperties(WorldProviderMyst provider, Biome biome) {
-		BiomeProperties properties = new BiomeProperties(biome.getBiomeName());
+		BiomeProperties properties = new BiomeProperties(ReflectionUtil.getBiomeName(biome));
 		properties.setBaseHeight(biome.getBaseHeight());
 		properties.setHeightVariation(biome.getHeightVariation());
 		if (provider != null) {
 			ResourceLocation biomeIdentifier = biome.getRegistryName();
-			properties.setTemperature(provider.getTemperature(biome.getTemperature(), biomeIdentifier));
+			properties.setTemperature(provider.getTemperature(biome.getDefaultTemperature(), biomeIdentifier));
 			properties.setRainfall(provider.getRainfall(biome.getRainfall(), biomeIdentifier));
 		} else {
-			properties.setTemperature(biome.getTemperature());
+			properties.setTemperature(biome.getDefaultTemperature());
 			properties.setRainfall(biome.getRainfall());
 		}
 		properties.setWaterColor(biome.getWaterColorMultiplier());

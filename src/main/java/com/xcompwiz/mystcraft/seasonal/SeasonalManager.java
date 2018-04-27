@@ -43,7 +43,7 @@ public class SeasonalManager {
 		}
 		//TODO: color palette based on symbol id
 		//SEE http://stackoverflow.com/questions/43044/algorithm-to-randomly-generate-an-aesthetically-pleasing-color-palette
-		drawEggColors(renderEngine, zLevel, null, scale, x, y, 0xFF000000, getRandom(symbol.identifier()));
+		drawEggColors(renderEngine, zLevel, null, scale, x, y, 0xFF000000, getRandom(symbol.getRegistryName().toString()));
 		String[] words = symbol.getPoem();
 		if (words == null) { return true; }
 		for (int i = 0; i < 4; ++i) {
@@ -130,7 +130,6 @@ public class SeasonalManager {
 
 	/**
 	 * Compute the day of the year that Easter falls on. Step names E1 E2 etc., are direct references to Knuth, Vol 1, p 155.
-	 * @exception IllegalArgumentexception If the year is before 1582 (since the algorithm only works on the Gregorian calendar).
 	 */
 	public static final Calendar findEasterDate(int year) {
 		if (year <= 1582) { throw new IllegalArgumentException("Algorithm invalid before April 1583"); }

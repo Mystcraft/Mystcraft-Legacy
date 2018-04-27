@@ -10,24 +10,31 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.util.CollectionUtils;
+import net.minecraft.util.ResourceLocation;
 
 public class SymbolColor extends SymbolBase {
 	private float	red;
 	private float	green;
 	private float	blue;
 
-	public SymbolColor(float r, float g, float b, String identifier) {
+	public SymbolColor(float r, float g, float b, ResourceLocation identifier) {
 		super(identifier);
 		this.red = r;
 		this.green = g;
 		this.blue = b;
-		this.setWords(new String[] { WordData.Modifier, WordData.Image, WordData.Weave, this.identifier });
+		this.setWords(new String[] { WordData.Modifier, WordData.Image, WordData.Weave, this.registryName.getResourcePath() });
 		this.setCardRank(0);
 	}
 
 	@Override
+	public boolean generatesConfigOption() {
+		return true;
+	}
+
+	@Override
 	public ArrayList<Rule> createRules() {
-		return CollectionUtils.buildList(new Rule(GrammarData.COLOR_BASIC, CollectionUtils.buildList(this.identifier()), 1));
+		return CollectionUtils.buildList(new Rule(GrammarData.COLOR_BASIC,
+				CollectionUtils.buildList(this.getRegistryName()), 1));
 	}
 
 	@Override

@@ -9,12 +9,13 @@ import com.xcompwiz.mystcraft.world.gen.MapGenCavesMyst;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 public class SymbolCaves extends SymbolBase {
 
-	public SymbolCaves(String identifier) {
+	public SymbolCaves(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -22,6 +23,11 @@ public class SymbolCaves extends SymbolBase {
 	public void registerLogic(AgeDirector controller, long seed) {
 		MapGenAdvanced generator = new MapGenCavesMyst(seed, 15, 40, Blocks.AIR);
 		controller.registerInterface(new TerrainAlteration(generator));
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private static class TerrainAlteration implements ITerrainAlteration {

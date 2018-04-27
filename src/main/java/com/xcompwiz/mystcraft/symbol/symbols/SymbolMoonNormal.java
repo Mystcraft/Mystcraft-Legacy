@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
@@ -23,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SymbolMoonNormal extends SymbolBase {
 
-	public SymbolMoonNormal(String identifier) {
+	public SymbolMoonNormal(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -34,6 +35,11 @@ public class SymbolMoonNormal extends SymbolBase {
 		Number offset = controller.popModifier(ModifierUtils.PHASE).asNumber();
 		ColorGradient sunset = controller.popModifier(ModifierUtils.SUNSET).asGradient();
 		controller.registerInterface(new CelestialObject(controller, seed, period, angle, offset, sunset));
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private static class CelestialObject extends SunsetRenderer implements ICelestial {

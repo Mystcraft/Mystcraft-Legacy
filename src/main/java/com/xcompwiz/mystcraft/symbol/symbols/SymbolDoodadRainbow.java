@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 import java.util.Random;
 
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SymbolDoodadRainbow extends SymbolBase {
 
-    public SymbolDoodadRainbow(String identifier) {
+    public SymbolDoodadRainbow(ResourceLocation identifier) {
         super(identifier);
     }
 
@@ -27,6 +28,11 @@ public class SymbolDoodadRainbow extends SymbolBase {
     public void registerLogic(AgeDirector controller, long seed) {
         Number angle = controller.popModifier(ModifierUtils.ANGLE).asNumber();
         controller.registerInterface(new CelestialObject(controller, seed, angle));
+    }
+
+    @Override
+    public boolean generatesConfigOption() {
+        return true;
     }
 
     private class CelestialObject extends CelestialBase {

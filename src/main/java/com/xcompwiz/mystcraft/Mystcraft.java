@@ -44,6 +44,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 import com.xcompwiz.mystcraft.tileentity.*;
 import com.xcompwiz.mystcraft.treasure.LootTableHandler;
+import com.xcompwiz.mystcraft.utility.ReflectionUtil;
 import com.xcompwiz.mystcraft.villager.MerchantRecipeProviderItem;
 import com.xcompwiz.mystcraft.villager.VillageCreationHandlerArchivistHouse;
 import com.xcompwiz.mystcraft.villager.VillagerArchivist;
@@ -141,8 +142,10 @@ public class Mystcraft {
 		MystcraftPacketHandler.init();
 		MinecraftForge.EVENT_BUS.register(new MystcraftConnectionHandler());
 
-		//Setup RegistryPrimer
+		//Setup RegistryPrimer & Registry things
 		MinecraftForge.EVENT_BUS.register(ModRegistryPrimer.INSTANCE);
+		SymbolManager.buildRegistry();
+		ReflectionUtil.init();
 
 		// Register Event Handler
 		MinecraftForge.EVENT_BUS.register(new MystcraftEventHandler());

@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
@@ -16,7 +17,7 @@ import net.minecraft.world.World;
 
 public class SymbolStarsEndSky extends SymbolBase {
 
-	public SymbolStarsEndSky(String identifier) {
+	public SymbolStarsEndSky(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -28,6 +29,11 @@ public class SymbolStarsEndSky extends SymbolBase {
 		controller.setDrawHorizon(false);
 		controller.setDrawVoid(false);
 	}
+
+    @Override
+    public boolean generatesConfigOption() {
+        return true;
+    }
 
 	private static class SkyBackground extends CelestialBase {
 

@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nonnull;
@@ -119,7 +120,7 @@ public abstract class Page {
 		}
 	}
 
-	public static void setSymbol(@Nonnull ItemStack page, String symbol) {
+	public static void setSymbol(@Nonnull ItemStack page, ResourceLocation symbol) {
 		if(page.isEmpty() || page.getTagCompound() == null) {
 			return;
 		}
@@ -127,21 +128,22 @@ public abstract class Page {
 		if (symbol == null) {
 			data.removeTag("symbol");
 		} else {
-			data.setString("symbol", symbol);
+			data.setString("symbol", symbol.toString());
 		}
 	}
 
 	@Nullable
-	public static String getSymbol(@Nonnull ItemStack page) {
+	public static ResourceLocation getSymbol(@Nonnull ItemStack page) {
 		if(page.isEmpty() || page.getTagCompound() == null) {
 			return null;
 		}
 		NBTTagCompound data = getData(page);
 		String symbol = data.getString("symbol");
 		if (symbol.isEmpty()) {
-			symbol = null;
+			return null;
+		} else {
+			return new ResourceLocation(symbol);
 		}
-		return symbol;
 	}
 
 	public static void getTooltip(ItemStack page, List<String> list) {
@@ -184,7 +186,7 @@ public abstract class Page {
 	}
 
 	@Nonnull
-	public static ItemStack createSymbolPage(String symbol) {
+	public static ItemStack createSymbolPage(ResourceLocation symbol) {
 		ItemStack page = new ItemStack(ModItems.page, 1, 0);
 		page.setTagCompound(createDefault());
 		setSymbol(page, symbol);

@@ -6,13 +6,14 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
 public class SymbolColorWater extends SymbolBase {
 
-	public SymbolColorWater(String identifier) {
+	public SymbolColorWater(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -20,6 +21,11 @@ public class SymbolColorWater extends SymbolBase {
 	public void registerLogic(AgeDirector controller, long seed) {
 		Color color = controller.popModifier(ModifierUtils.COLOR).asColor();
 		controller.registerInterface(new StaticColorProvider(color), IStaticColorProvider.WATER);
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	public class StaticColorProvider implements IStaticColorProvider {

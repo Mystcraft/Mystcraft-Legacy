@@ -5,11 +5,12 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
  * Implement and register this through the ISymbolAPI to add your own symbols to Mystcraft
  */
-public interface IAgeSymbol {
+public interface IAgeSymbol extends IForgeRegistryEntry<IAgeSymbol> {
 
 	/**
 	 * Called when it is time for the Symbol to register its logic elements to the controller
@@ -30,10 +31,11 @@ public interface IAgeSymbol {
 	public abstract int instabilityModifier(int count);
 
 	/**
-	 * Provides a unique string identifier for the symbol
-	 * @return a unique identifier
+	 * Defines if the IAgeSymbol should generate a config entry in the Mystcraft config once the symbol is registered
+	 * The config entry generated defines if the symbol is enabled or not.
+	 * @return true to generate the config entry and prevent registration
 	 */
-	public abstract String identifier();
+	public abstract boolean generatesConfigOption();
 
 	/**
 	 * Returns the user localized name
@@ -47,4 +49,10 @@ public interface IAgeSymbol {
 	 * @return 4 element array of words to be mapped to drawn symbol parts
 	 */
 	public abstract String[] getPoem();
+
+	@Override
+	default public Class<IAgeSymbol> getRegistryType() {
+		return IAgeSymbol.class;
+	}
+
 }

@@ -9,6 +9,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
 import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -17,13 +18,18 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class SymbolDenseOres extends SymbolBase {
 
-	public SymbolDenseOres(String identifier) {
+	public SymbolDenseOres(ResourceLocation identifier) {
 		super(identifier);
 	}
 
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		controller.registerInterface(new Populator());
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class Populator implements IPopulate {

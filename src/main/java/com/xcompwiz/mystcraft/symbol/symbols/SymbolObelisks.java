@@ -13,12 +13,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class SymbolObelisks extends SymbolBase {
 
-	public SymbolObelisks(String identifier) {
+	public SymbolObelisks(ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -26,6 +27,11 @@ public class SymbolObelisks extends SymbolBase {
 	public void registerLogic(AgeDirector controller, long seed) {
 		BlockDescriptor block = ModifierUtils.popBlockMatching(controller, BlockCategory.STRUCTURE);
 		controller.registerInterface(new Populator(block));
+	}
+
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
 	}
 
 	private class Populator implements IPopulate {

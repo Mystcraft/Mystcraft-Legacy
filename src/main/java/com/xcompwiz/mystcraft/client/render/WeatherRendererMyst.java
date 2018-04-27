@@ -115,7 +115,7 @@ public class WeatherRendererMyst extends IRenderHandler {
                         if (k2 != l2) {
                             Random r = new Random((long)(l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
                             blockpos$mutableblockpos.setPos(l1, k2, k1);
-                            float f2 = biome.getFloatTemperature(blockpos$mutableblockpos);
+                            float f2 = biome.getTemperature(blockpos$mutableblockpos);
 
                             if (world.getBiomeProvider().getTemperatureAtHeight(f2, j2) >= 0.15F) {
                                 if (j1 != 0) {

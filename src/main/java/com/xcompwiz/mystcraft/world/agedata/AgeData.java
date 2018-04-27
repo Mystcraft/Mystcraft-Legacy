@@ -1,15 +1,7 @@
 package com.xcompwiz.mystcraft.world.agedata;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.world.storage.StorageObject;
@@ -25,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
@@ -43,8 +36,8 @@ public class AgeData extends WorldSavedData {
 		public short				instability;
 		public boolean				instabilityEnabled;
 		public BlockPos				spawn;
-		public List<ItemStack>		pages	= new ArrayList<ItemStack>();
-		public List<String>			symbols	= new ArrayList<String>();
+		public List<ItemStack>		pages	= new ArrayList<>();
+		public List<ResourceLocation> symbols = new ArrayList<>();
 		public boolean				visited;
 		public boolean				dead;
 		public NBTTagCompound		datacompound;
@@ -61,13 +54,13 @@ public class AgeData extends WorldSavedData {
 	private boolean				instabilityEnabled;
 	private long				worldtime;
 	private BlockPos			spawn;
-	private List<ItemStack>		pages			= new ArrayList<ItemStack>();
-	private List<String>		symbols			= new ArrayList<String>();
+	private List<ItemStack>		pages			= new ArrayList<>();
+	private List<ResourceLocation> symbols = new ArrayList<>();
 	private boolean				visited;
 	private boolean				dead;
 	private NBTTagCompound		datacompound;
 
-	public Map<String, NBTBase>	cruft			= new HashMap<String, NBTBase>();
+	public Map<String, NBTBase>	cruft			= new HashMap<>();
 
 	private boolean				updated;
 	private Boolean				sharedDirty		= Boolean.FALSE;
@@ -213,29 +206,35 @@ public class AgeData extends WorldSavedData {
 	}
 
 	// Used by AgeController to add symbols without adding pages
-	public void addSymbol(String symbol, int instability) {
+	public void addSymbol(ResourceLocation symbol, int instability) {
 		symbols.add(symbol);
 		this.instability += instability;
 		this.markDirty();
 	}
 
 	// Called by AgeController when building the age logic
-	public List<String> getSymbols(boolean isRemote) {
+	public List<ResourceLocation> getSymbols(boolean isRemote) {
 		if (!visited && !isRemote) { // On first link, build the symbol list
 			symbols.clear();
-			for (int i = 0; i < pages.size(); ++i) {
-				String symbol = Page.getSymbol(pages.get(i));
+			for (ItemStack page : pages) {
+				ResourceLocation symbol = Page.getSymbol(page);
 				if (symbol != null) {
 					symbols.add(symbol);
 				}
 			}
 			GrammarTree tree = new GrammarTree(GrammarRules.ROOT);
-			tree.parseTerminals(symbols, new Random(this.seed));
+			List<ResourceLocation> collapsedNames = new LinkedList<>();
+			collapsedNames.addAll(symbols);
+
+			tree.parseTerminals(collapsedNames, new Random(this.seed));
 			if (DebugFlags.grammar) {
 				System.out.println(" == Parsed Tree ==");
 				tree.print();
 			}
-			symbols = tree.getExpanded(new Random(this.seed));
+			collapsedNames = tree.getExpanded(new Random(this.seed));
+			symbols = new LinkedList<>();
+			symbols.addAll(collapsedNames);
+
 			if (DebugFlags.grammar) {
 				System.out.println(" == Produced Tree ==");
 				tree.print();
@@ -304,7 +303,11 @@ public class AgeData extends WorldSavedData {
 		}
 		nbttagcompound.setTag("Pages", list);
 
-		nbttagcompound.setTag("Symbols", NBTUtils.writeStringCollection(new NBTTagList(), symbols));
+		List<String> collapsedName = new LinkedList<>();
+		for (ResourceLocation rl : symbols) {
+			collapsedName.add(rl.toString());
+		}
+		nbttagcompound.setTag("Symbols", NBTUtils.writeStringCollection(new NBTTagList(), collapsedName));
 		if (authors != null) nbttagcompound.setTag("Authors", NBTUtils.writeStringCollection(new NBTTagList(), authors));
 
 		if (cruft != null && cruft.size() > 0) {

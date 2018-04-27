@@ -1,6 +1,7 @@
 package com.xcompwiz.mystcraft.data;
 
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.grammar.GrammarData;
@@ -11,6 +12,7 @@ import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.instability.InstabilityData;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolAngle;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolClear;
@@ -103,10 +105,10 @@ import net.minecraft.world.biome.Biome;
 public class ModSymbols {
 
 	public static void registerSymbol(SymbolBase symbol, Integer cardrank, String... poem) {
-		if (poem.length != 4) LoggerUtils.warn("Weird poem length (%d) when registering %s", poem.length, symbol.identifier());
+		if (poem.length != 4) LoggerUtils.warn("Weird poem length (%d) when registering %s", poem.length, symbol.getRegistryName().toString());
 		symbol.setWords(poem);
 		symbol.setCardRank(cardrank);
-		InternalAPI.symbol.registerSymbol(symbol, MystObjects.MystcraftModId);
+		SymbolManager.tryAddSymbol(symbol);
 	}
 
 	public static void generateBiomeSymbols() {
@@ -116,20 +118,21 @@ public class ModSymbols {
 			Biome biome = iterator.next();
 			if (biome == null) continue;
 			ResourceLocation biomeID = biome.getRegistryName();
-			if (biome.getBiomeName() == null) {
-				LoggerUtils.warn("Biome (id " + biomeID.toString() + ") has null name, could not build symbol");
-				continue;
-			}
+			//if (biome.getBiomeName() == null) { //If it is null, we have bigger problems..
+			//	LoggerUtils.warn("Biome (id " + biomeID.toString() + ") has null name, could not build symbol");
+			//	continue;
+			//}
 
-			SymbolBase symbol = (new SymbolBiome(biome));
-			if (InternalAPI.symbol.registerSymbol(symbol, MystObjects.MystcraftModId)) {
+			SymbolBase symbol = new SymbolBiome(MystObjects.MystcraftModId, biome);
+			if (SymbolManager.tryAddSymbol(symbol)) {
 				Integer rank = 1;
 				if (biome == Biomes.SKY) {
 					rank = null;
 				} else {
 					symbol.setCardRank(2);
 				}
-				GrammarGenerator.registerRule(new Rule(GrammarData.BIOME, CollectionUtils.buildList(symbol.identifier()), rank));
+				GrammarGenerator.registerRule(new Rule(GrammarData.BIOME,
+						CollectionUtils.buildList(symbol.getRegistryName()), rank));
 				InternalAPI.symbolValues.setSymbolTradeItem(symbol, new ItemStack(Items.EMERALD, 1));
 				SymbolBiome.selectables.add(biome);
 			}
@@ -139,99 +142,104 @@ public class ModSymbols {
 	public static void initialize() {
 		ModSymbolsModifiers.initialize();
 
-		registerSymbol(new SymbolColorCloud("ColorCloud"), 1, WordData.Image, WordData.Entropy, WordData.Believe, WordData.Weave);
-		registerSymbol(new SymbolColorCloudNatural("ColorCloudNat"), 1, WordData.Image, WordData.Entropy, WordData.Believe, WordData.Nature);
-		registerSymbol(new SymbolColorFog("ColorFog"), 1, WordData.Image, WordData.Entropy, WordData.Explore, WordData.Weave);
-		registerSymbol(new SymbolColorFogNatural("ColorFogNat"), 1, WordData.Image, WordData.Entropy, WordData.Explore, WordData.Nature);
-		registerSymbol(new SymbolColorFoliage("ColorFoliage"), 1, WordData.Image, WordData.Growth, WordData.Elevate, WordData.Weave);
-		registerSymbol(new SymbolColorFoliageNatural("ColorFoliageNat"), 1, WordData.Image, WordData.Growth, WordData.Elevate, WordData.Nature);
-		registerSymbol(new SymbolColorGrass("ColorGrass"), 1, WordData.Image, WordData.Growth, WordData.Resilience, WordData.Weave);
-		registerSymbol(new SymbolColorGrassNatural("ColorGrassNat"), 1, WordData.Image, WordData.Growth, WordData.Resilience, WordData.Nature);
-		registerSymbol(new SymbolColorSky("ColorSky"), 1, WordData.Image, WordData.Celestial, WordData.Harmony, WordData.Weave);
-		registerSymbol(new SymbolColorSkyNatural("ColorSkyNat"), 1, WordData.Image, WordData.Celestial, WordData.Harmony, WordData.Nature);
-		registerSymbol(new SymbolColorSkyNight("ColorSkyNight"), 1, WordData.Image, WordData.Celestial, WordData.Contradict, WordData.Weave);
-		registerSymbol(new SymbolColorWater("ColorWater"), 1, WordData.Image, WordData.Flow, WordData.Constraint, WordData.Weave);
-		registerSymbol(new SymbolColorWaterNatural("ColorWaterNat"), 1, WordData.Image, WordData.Flow, WordData.Constraint, WordData.Nature);
-		registerSymbol(new SymbolDoodadRainbow("Rainbow"), 1, WordData.Celestial, WordData.Image, WordData.Harmony, WordData.Balance);
-		registerSymbol(new SymbolHideHorizon("NoHorizon"), 1, WordData.Celestial, WordData.Inhibit, WordData.Image, WordData.Void);
-		registerSymbol(new SymbolDummy("MoonDark"), 1, WordData.Celestial, WordData.Void, WordData.Inhibit, WordData.Wisdom);
-		registerSymbol(new SymbolMoonNormal("MoonNormal"), 1, WordData.Celestial, WordData.Image, WordData.Cycle, WordData.Wisdom);
-		registerSymbol(new SymbolDummy("StarsDark"), 1, WordData.Celestial, WordData.Void, WordData.Inhibit, WordData.Order);
-		registerSymbol(new SymbolStarsEndSky("StarsEndSky"), 1, WordData.Celestial, WordData.Image, WordData.Chaos, WordData.Weave);
-		registerSymbol(new SymbolStarsNormal("StarsNormal"), 1, WordData.Celestial, WordData.Harmony, WordData.Ethereal, WordData.Order);
-		registerSymbol(new SymbolStarsTwinkle("StarsTwinkle"), 1, WordData.Celestial, WordData.Harmony, WordData.Ethereal, WordData.Entropy);
-		registerSymbol(new SymbolDummy("SunDark"), 1, WordData.Celestial, WordData.Void, WordData.Inhibit, WordData.Energy);
-		registerSymbol(new SymbolSunNormal("SunNormal"), 2, WordData.Celestial, WordData.Image, WordData.Stimulate, WordData.Energy);
-		registerSymbol(new SymbolBiomeControllerGrid("BioConGrid"), 3, WordData.Constraint, WordData.Nature, WordData.Chain, WordData.Mutual);
-		registerSymbol(new SymbolBiomeControllerNative("BioConNative"), 3, WordData.Constraint, WordData.Nature, WordData.Tradition, WordData.Sustain);
-		registerSymbol(new SymbolBiomeControllerSingle("BioConSingle"), 3, WordData.Constraint, WordData.Nature, WordData.Infinite, WordData.Static);
-		registerSymbol(new SymbolBiomeControllerTiled("BioConTiled"), 3, WordData.Constraint, WordData.Nature, WordData.Chain, WordData.Contradict);
-		registerSymbol(new SymbolBiomeControllerHuge("BioConHuge"), 3, WordData.Constraint, WordData.Nature, WordData.Weave, "Huge");
-		registerSymbol(new SymbolBiomeControllerLarge("BioConLarge"), 3, WordData.Constraint, WordData.Nature, WordData.Weave, "Large");
-		registerSymbol(new SymbolBiomeControllerMedium("BioConMedium"), 3, WordData.Constraint, WordData.Nature, WordData.Weave, "Medium");
-		registerSymbol(new SymbolBiomeControllerSmall("BioConSmall"), 3, WordData.Constraint, WordData.Nature, WordData.Weave, "Small");
-		registerSymbol(new SymbolBiomeControllerTiny("BioConTiny"), 3, WordData.Constraint, WordData.Nature, WordData.Weave, "Tiny");
-		registerSymbol(new SymbolNoSea("NoSea"), 2, WordData.Modifier, WordData.Constraint, WordData.Flow, WordData.Inhibit);
-		registerSymbol(new SymbolAntiPvP("PvPOff"), null, WordData.Chain, WordData.Chaos, WordData.Encourage, WordData.Harmony);
-		registerSymbol(new SymbolEnvAccelerated("EnvAccel"), 3, WordData.Environment, WordData.Dynamic, WordData.Change, WordData.Spur);
-		registerSymbol(new SymbolEnvExplosions("EnvExplosions"), 3, WordData.Environment, WordData.Sacrifice, WordData.Power, WordData.Force);
-		registerSymbol(new SymbolEnvLightning("EnvLightning"), 3, WordData.Environment, WordData.Sacrifice, WordData.Power, WordData.Energy);
-		registerSymbol(new SymbolEnvMeteor("EnvMeteor"), 3, WordData.Environment, WordData.Sacrifice, WordData.Power, WordData.Momentum);
-		registerSymbol(new SymbolEnvScorched("EnvScorch"), 3, WordData.Environment, WordData.Sacrifice, WordData.Power, WordData.Chaos);
-		registerSymbol(new SymbolLightingBright("LightingBright"), 3, WordData.Ethereal, WordData.Power, WordData.Infinite, WordData.Spur);
-		registerSymbol(new SymbolLightingDark("LightingDark"), 3, WordData.Ethereal, WordData.Void, WordData.Constraint, WordData.Inhibit);
-		registerSymbol(new SymbolLightingNormal("LightingNormal"), 2, WordData.Ethereal, WordData.Dynamic, WordData.Cycle, WordData.Balance);
-		registerSymbol(new SymbolAngle("ModNorth", 000.0F, "North"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Control);
-		registerSymbol(new SymbolAngle("ModEast", 090.0F, "East"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Tradition);
-		registerSymbol(new SymbolAngle("ModSouth", 180.0F, "South"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Chaos);
-		registerSymbol(new SymbolAngle("ModWest", 270.0F, "West"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Change);
-		registerSymbol(new SymbolClear("ModClear"), 0, WordData.Contradict, WordData.Transform, WordData.Change, WordData.Void);
-		registerSymbol(new SymbolGradient("ModGradient"), 0, WordData.Modifier, WordData.Image, WordData.Merge, WordData.Weave);
-		registerSymbol(new SymbolHorizonColor("ColorHorizon"), 0, WordData.Modifier, WordData.Image, WordData.Celestial, WordData.Change);
-		registerSymbol(new SymbolLength("ModZero", 0.0F, "Zero Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Inhibit);
-		registerSymbol(new SymbolLength("ModHalf", 0.5F, "Half Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Stimulate);
-		registerSymbol(new SymbolLength("ModFull", 1.0F, "Full Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Balance);
-		registerSymbol(new SymbolLength("ModDouble", 2.0F, "Double Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Sacrifice);
-		registerSymbol(new SymbolPhase("ModEnd", 000F, "Nadir"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Rebirth);
-		registerSymbol(new SymbolPhase("ModRising", 090F, "Rising"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Growth);
-		registerSymbol(new SymbolPhase("ModNoon", 180F, "Zenith"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Harmony);
-		registerSymbol(new SymbolPhase("ModSetting", 270F, "Setting"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Future);
-		registerSymbol(new SymbolCaves("Caves"), 2, WordData.Terrain, WordData.Transform, WordData.Void, WordData.Flow);
-		registerSymbol(new SymbolDungeons("Dungeons"), 2, WordData.Civilization, WordData.Constraint, WordData.Chain, WordData.Resurrect);
-		registerSymbol(new SymbolFloatingIslands("FloatIslands"), 3, WordData.Terrain, WordData.Transform, WordData.Form, WordData.Celestial);
-		registerSymbol(new SymbolDummy("FeatureLargeDummy", InstabilityData.symbol.dummyFeatureLarge), 4, WordData.Contradict, WordData.Chaos, WordData.Exist, WordData.Terrain);
-		registerSymbol(new SymbolDummy("FeatureMediumDummy", InstabilityData.symbol.dummyFeatureMedium), 4, WordData.Contradict, WordData.Chaos, WordData.Exist, WordData.Balance);
-		registerSymbol(new SymbolDummy("FeatureSmallDummy", InstabilityData.symbol.dummyFeatureSmall), 5, WordData.Contradict, WordData.Chaos, WordData.Exist, WordData.Form);
+		registerSymbol(new SymbolColorCloud(forMyst("ColorCloud")), 1, WordData.Image, WordData.Entropy, WordData.Believe, WordData.Weave);
+		registerSymbol(new SymbolColorCloudNatural(forMyst("ColorCloudNat")), 1, WordData.Image, WordData.Entropy, WordData.Believe, WordData.Nature);
+		registerSymbol(new SymbolColorFog(forMyst("ColorFog")), 1, WordData.Image, WordData.Entropy, WordData.Explore, WordData.Weave);
+		registerSymbol(new SymbolColorFogNatural(forMyst("ColorFogNat")), 1, WordData.Image, WordData.Entropy, WordData.Explore, WordData.Nature);
+		registerSymbol(new SymbolColorFoliage(forMyst("ColorFoliage")), 1, WordData.Image, WordData.Growth, WordData.Elevate, WordData.Weave);
+		registerSymbol(new SymbolColorFoliageNatural(forMyst("ColorFoliageNat")), 1, WordData.Image, WordData.Growth, WordData.Elevate, WordData.Nature);
+		registerSymbol(new SymbolColorGrass(forMyst("ColorGrass")), 1, WordData.Image, WordData.Growth, WordData.Resilience, WordData.Weave);
+		registerSymbol(new SymbolColorGrassNatural(forMyst("ColorGrassNat")), 1, WordData.Image, WordData.Growth, WordData.Resilience, WordData.Nature);
+		registerSymbol(new SymbolColorSky(forMyst("ColorSky")), 1, WordData.Image, WordData.Celestial, WordData.Harmony, WordData.Weave);
+		registerSymbol(new SymbolColorSkyNatural(forMyst("ColorSkyNat")), 1, WordData.Image, WordData.Celestial, WordData.Harmony, WordData.Nature);
+		registerSymbol(new SymbolColorSkyNight(forMyst("ColorSkyNight")), 1, WordData.Image, WordData.Celestial, WordData.Contradict, WordData.Weave);
+		registerSymbol(new SymbolColorWater(forMyst("ColorWater")), 1, WordData.Image, WordData.Flow, WordData.Constraint, WordData.Weave);
+		registerSymbol(new SymbolColorWaterNatural(forMyst("ColorWaterNat")), 1, WordData.Image, WordData.Flow, WordData.Constraint, WordData.Nature);
+		registerSymbol(new SymbolDoodadRainbow(forMyst("Rainbow")), 1, WordData.Celestial, WordData.Image, WordData.Harmony, WordData.Balance);
+		registerSymbol(new SymbolHideHorizon(forMyst("NoHorizon")), 1, WordData.Celestial, WordData.Inhibit, WordData.Image, WordData.Void);
+		registerSymbol(new SymbolDummy(forMyst("MoonDark")), 1, WordData.Celestial, WordData.Void, WordData.Inhibit, WordData.Wisdom);
+		registerSymbol(new SymbolMoonNormal(forMyst("MoonNormal")), 1, WordData.Celestial, WordData.Image, WordData.Cycle, WordData.Wisdom);
+		registerSymbol(new SymbolDummy(forMyst("StarsDark")), 1, WordData.Celestial, WordData.Void, WordData.Inhibit, WordData.Order);
+		registerSymbol(new SymbolStarsEndSky(forMyst("StarsEndSky")), 1, WordData.Celestial, WordData.Image, WordData.Chaos, WordData.Weave);
+		registerSymbol(new SymbolStarsNormal(forMyst("StarsNormal")), 1, WordData.Celestial, WordData.Harmony, WordData.Ethereal, WordData.Order);
+		registerSymbol(new SymbolStarsTwinkle(forMyst("StarsTwinkle")), 1, WordData.Celestial, WordData.Harmony, WordData.Ethereal, WordData.Entropy);
+		registerSymbol(new SymbolDummy(forMyst("SunDark")), 1, WordData.Celestial, WordData.Void, WordData.Inhibit, WordData.Energy);
+		registerSymbol(new SymbolSunNormal(forMyst("SunNormal")), 2, WordData.Celestial, WordData.Image, WordData.Stimulate, WordData.Energy);
+		registerSymbol(new SymbolBiomeControllerGrid(forMyst("BioConGrid")), 3, WordData.Constraint, WordData.Nature, WordData.Chain, WordData.Mutual);
+		registerSymbol(new SymbolBiomeControllerNative(forMyst("BioConNative")), 3, WordData.Constraint, WordData.Nature, WordData.Tradition, WordData.Sustain);
+		registerSymbol(new SymbolBiomeControllerSingle(forMyst("BioConSingle")), 3, WordData.Constraint, WordData.Nature, WordData.Infinite, WordData.Static);
+		registerSymbol(new SymbolBiomeControllerTiled(forMyst("BioConTiled")), 3, WordData.Constraint, WordData.Nature, WordData.Chain, WordData.Contradict);
+		registerSymbol(new SymbolBiomeControllerHuge(forMyst("BioConHuge")), 3, WordData.Constraint, WordData.Nature, WordData.Weave, "Huge");
+		registerSymbol(new SymbolBiomeControllerLarge(forMyst("BioConLarge")), 3, WordData.Constraint, WordData.Nature, WordData.Weave, "Large");
+		registerSymbol(new SymbolBiomeControllerMedium(forMyst("BioConMedium")), 3, WordData.Constraint, WordData.Nature, WordData.Weave, "Medium");
+		registerSymbol(new SymbolBiomeControllerSmall(forMyst("BioConSmall")), 3, WordData.Constraint, WordData.Nature, WordData.Weave, "Small");
+		registerSymbol(new SymbolBiomeControllerTiny(forMyst("BioConTiny")), 3, WordData.Constraint, WordData.Nature, WordData.Weave, "Tiny");
+		registerSymbol(new SymbolNoSea(forMyst("NoSea")), 2, WordData.Modifier, WordData.Constraint, WordData.Flow, WordData.Inhibit);
+		registerSymbol(new SymbolAntiPvP(forMyst("PvPOff")), null, WordData.Chain, WordData.Chaos, WordData.Encourage, WordData.Harmony);
+		registerSymbol(new SymbolEnvAccelerated(forMyst("EnvAccel")), 3, WordData.Environment, WordData.Dynamic, WordData.Change, WordData.Spur);
+		registerSymbol(new SymbolEnvExplosions(forMyst("EnvExplosions")), 3, WordData.Environment, WordData.Sacrifice, WordData.Power, WordData.Force);
+		registerSymbol(new SymbolEnvLightning(forMyst("EnvLightning")), 3, WordData.Environment, WordData.Sacrifice, WordData.Power, WordData.Energy);
+		registerSymbol(new SymbolEnvMeteor(forMyst("EnvMeteor")), 3, WordData.Environment, WordData.Sacrifice, WordData.Power, WordData.Momentum);
+		registerSymbol(new SymbolEnvScorched(forMyst("EnvScorch")), 3, WordData.Environment, WordData.Sacrifice, WordData.Power, WordData.Chaos);
+		registerSymbol(new SymbolLightingBright(forMyst("LightingBright")), 3, WordData.Ethereal, WordData.Power, WordData.Infinite, WordData.Spur);
+		registerSymbol(new SymbolLightingDark(forMyst("LightingDark")), 3, WordData.Ethereal, WordData.Void, WordData.Constraint, WordData.Inhibit);
+		registerSymbol(new SymbolLightingNormal(forMyst("LightingNormal")), 2, WordData.Ethereal, WordData.Dynamic, WordData.Cycle, WordData.Balance);
+		registerSymbol(new SymbolAngle(forMyst("ModNorth"), 000.0F, "North"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Control);
+		registerSymbol(new SymbolAngle(forMyst("ModEast"), 090.0F, "East"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Tradition);
+		registerSymbol(new SymbolAngle(forMyst("ModSouth"), 180.0F, "South"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Chaos);
+		registerSymbol(new SymbolAngle(forMyst("ModWest"), 270.0F, "West"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Change);
+		registerSymbol(new SymbolClear(forMyst("ModClear")), 0, WordData.Contradict, WordData.Transform, WordData.Change, WordData.Void);
+		registerSymbol(new SymbolGradient(forMyst("ModGradient")), 0, WordData.Modifier, WordData.Image, WordData.Merge, WordData.Weave);
+		registerSymbol(new SymbolHorizonColor(forMyst("ColorHorizon")), 0, WordData.Modifier, WordData.Image, WordData.Celestial, WordData.Change);
+		registerSymbol(new SymbolLength(forMyst("ModZero"), 0.0F, "Zero Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Inhibit);
+		registerSymbol(new SymbolLength(forMyst("ModHalf"), 0.5F, "Half Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Stimulate);
+		registerSymbol(new SymbolLength(forMyst("ModFull"), 1.0F, "Full Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Balance);
+		registerSymbol(new SymbolLength(forMyst("ModDouble"), 2.0F, "Double Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Sacrifice);
+		registerSymbol(new SymbolPhase(forMyst("ModEnd"), 000F, "Nadir"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Rebirth);
+		registerSymbol(new SymbolPhase(forMyst("ModRising"), 090F, "Rising"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Growth);
+		registerSymbol(new SymbolPhase(forMyst("ModNoon"), 180F, "Zenith"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Harmony);
+		registerSymbol(new SymbolPhase(forMyst("ModSetting"), 270F, "Setting"), 0, WordData.Modifier, WordData.Cycle, WordData.System, WordData.Future);
+		registerSymbol(new SymbolCaves(forMyst("Caves")), 2, WordData.Terrain, WordData.Transform, WordData.Void, WordData.Flow);
+		registerSymbol(new SymbolDungeons(forMyst("Dungeons")), 2, WordData.Civilization, WordData.Constraint, WordData.Chain, WordData.Resurrect);
+		registerSymbol(new SymbolFloatingIslands(forMyst("FloatIslands")), 3, WordData.Terrain, WordData.Transform, WordData.Form, WordData.Celestial);
+		registerSymbol(new SymbolDummy(forMyst("FeatureLargeDummy"), InstabilityData.symbol.dummyFeatureLarge), 4, WordData.Contradict, WordData.Chaos, WordData.Exist, WordData.Terrain);
+		registerSymbol(new SymbolDummy(forMyst("FeatureMediumDummy"), InstabilityData.symbol.dummyFeatureMedium), 4, WordData.Contradict, WordData.Chaos, WordData.Exist, WordData.Balance);
+		registerSymbol(new SymbolDummy(forMyst("FeatureSmallDummy"), InstabilityData.symbol.dummyFeatureSmall), 5, WordData.Contradict, WordData.Chaos, WordData.Exist, WordData.Form);
 		//FIXME: registerSymbol(new SymbolHugeTrees("HugeTrees"), 2, WordData.Nature, WordData.Stimulate, WordData.Spur, WordData.Elevate);
-		registerSymbol(new SymbolLakesDeep("LakesDeep"), 3, WordData.Nature, WordData.Flow, WordData.Static, WordData.Explore);
-		registerSymbol(new SymbolLakesSurface("LakesSurface"), 3, WordData.Nature, WordData.Flow, WordData.Static, WordData.Elevate);
-		registerSymbol(new SymbolMineshafts("Mineshafts"), 3, WordData.Civilization, WordData.Machine, WordData.Motion, WordData.Tradition);
-		registerSymbol(new SymbolNetherFort("NetherFort"), 3, WordData.Civilization, WordData.Machine, WordData.Power, WordData.Entropy);
-		registerSymbol(new SymbolObelisks("Obelisks"), 3, WordData.Civilization, WordData.Resilience, WordData.Static, WordData.Form);
-		registerSymbol(new SymbolRavines("Ravines"), 2, WordData.Terrain, WordData.Transform, WordData.Void, WordData.Weave);
-		registerSymbol(new SymbolSpheres("TerModSpheres"), 2, WordData.Terrain, WordData.Transform, WordData.Form, WordData.Cycle);
-		registerSymbol(new SymbolSpikes("GenSpikes"), 3, WordData.Nature, WordData.Encourage, WordData.Entropy, WordData.Structure);
-		registerSymbol(new SymbolStrongholds("Strongholds"), 3, WordData.Civilization, WordData.Wisdom, WordData.Future, WordData.Honor);
-		registerSymbol(new SymbolTendrils("Tendrils"), 3, WordData.Terrain, WordData.Transform, WordData.Growth, WordData.Flow);
-		registerSymbol(new SymbolVillages("Villages"), 3, WordData.Civilization, WordData.Society, WordData.Harmony, WordData.Nurture);
-		registerSymbol(new SymbolCrystalFormation("CryForm"), 3, WordData.Nature, WordData.Encourage, WordData.Growth, WordData.Structure);
-		registerSymbol(new SymbolSkylands("Skylands"), 3, WordData.Terrain, WordData.Transform, WordData.Void, WordData.Elevate);
-		registerSymbol(new SymbolStarFissure("StarFissure"), 3, WordData.Nature, WordData.Harmony, WordData.Mutual, WordData.Void);
-		registerSymbol(new SymbolDenseOres("DenseOres"), 5, WordData.Environment, WordData.Stimulate, WordData.Machine, WordData.Chaos);
-		registerSymbol(new SymbolWeatherAlways("WeatherOn"), 3, WordData.Sustain, WordData.Static, WordData.Tradition, WordData.Stimulate);
-		registerSymbol(new SymbolWeatherCloudy("WeatherCloudy"), 3, WordData.Sustain, WordData.Static, WordData.Believe, WordData.Motion);
-		registerSymbol(new SymbolWeatherFast("WeatherFast"), 3, WordData.Sustain, WordData.Dynamic, WordData.Tradition, WordData.Spur);
-		registerSymbol(new SymbolWeatherNormal("WeatherNorm"), 2, WordData.Sustain, WordData.Dynamic, WordData.Tradition, WordData.Balance);
-		registerSymbol(new SymbolWeatherOff("WeatherOff"), 3, WordData.Sustain, WordData.Static, WordData.Stimulate, WordData.Energy);
-		registerSymbol(new SymbolWeatherRain("WeatherRain"), 3, WordData.Sustain, WordData.Static, WordData.Rebirth, WordData.Growth);
-		registerSymbol(new SymbolWeatherSlow("WeatherSlow"), 3, WordData.Sustain, WordData.Dynamic, WordData.Tradition, WordData.Inhibit);
-		registerSymbol(new SymbolWeatherSnow("WeatherSnow"), 3, WordData.Sustain, WordData.Static, WordData.Inhibit, WordData.Energy);
-		registerSymbol(new SymbolWeatherStorm("WeatherStorm"), 3, WordData.Sustain, WordData.Static, WordData.Nature, WordData.Power);
-		registerSymbol(new SymbolTerrainGenAmplified("TerrainAmplified"), 3, WordData.Terrain, WordData.Form, WordData.Tradition, WordData.Spur);
-		registerSymbol(new SymbolTerrainGenEnd("TerrainEnd"), 4, WordData.Terrain, WordData.Form, WordData.Ethereal, WordData.Flow);
-		registerSymbol(new SymbolTerrainGenFlat("TerrainFlat"), 3, WordData.Terrain, WordData.Form, WordData.Inhibit, WordData.Motion);
-		registerSymbol(new SymbolTerrainGenNether("TerrainNether"), 4, WordData.Terrain, WordData.Form, WordData.Constraint, WordData.Entropy);
-		registerSymbol(new SymbolTerrainGenNormal("TerrainNormal"), 2, WordData.Terrain, WordData.Form, WordData.Tradition, WordData.Flow);
-		registerSymbol(new SymbolTerrainGenVoid("TerrainVoid"), 4, WordData.Terrain, WordData.Form, WordData.Infinite, WordData.Void);
+		registerSymbol(new SymbolLakesDeep(forMyst("LakesDeep")), 3, WordData.Nature, WordData.Flow, WordData.Static, WordData.Explore);
+		registerSymbol(new SymbolLakesSurface(forMyst("LakesSurface")), 3, WordData.Nature, WordData.Flow, WordData.Static, WordData.Elevate);
+		registerSymbol(new SymbolMineshafts(forMyst("Mineshafts")), 3, WordData.Civilization, WordData.Machine, WordData.Motion, WordData.Tradition);
+		registerSymbol(new SymbolNetherFort(forMyst("NetherFort")), 3, WordData.Civilization, WordData.Machine, WordData.Power, WordData.Entropy);
+		registerSymbol(new SymbolObelisks(forMyst("Obelisks")), 3, WordData.Civilization, WordData.Resilience, WordData.Static, WordData.Form);
+		registerSymbol(new SymbolRavines(forMyst("Ravines")), 2, WordData.Terrain, WordData.Transform, WordData.Void, WordData.Weave);
+		registerSymbol(new SymbolSpheres(forMyst("TerModSpheres")), 2, WordData.Terrain, WordData.Transform, WordData.Form, WordData.Cycle);
+		registerSymbol(new SymbolSpikes(forMyst("GenSpikes")), 3, WordData.Nature, WordData.Encourage, WordData.Entropy, WordData.Structure);
+		registerSymbol(new SymbolStrongholds(forMyst("Strongholds")), 3, WordData.Civilization, WordData.Wisdom, WordData.Future, WordData.Honor);
+		registerSymbol(new SymbolTendrils(forMyst("Tendrils")), 3, WordData.Terrain, WordData.Transform, WordData.Growth, WordData.Flow);
+		registerSymbol(new SymbolVillages(forMyst("Villages")), 3, WordData.Civilization, WordData.Society, WordData.Harmony, WordData.Nurture);
+		registerSymbol(new SymbolCrystalFormation(forMyst("CryForm")), 3, WordData.Nature, WordData.Encourage, WordData.Growth, WordData.Structure);
+		registerSymbol(new SymbolSkylands(forMyst("Skylands")), 3, WordData.Terrain, WordData.Transform, WordData.Void, WordData.Elevate);
+		registerSymbol(new SymbolStarFissure(forMyst("StarFissure")), 3, WordData.Nature, WordData.Harmony, WordData.Mutual, WordData.Void);
+		registerSymbol(new SymbolDenseOres(forMyst("DenseOres")), 5, WordData.Environment, WordData.Stimulate, WordData.Machine, WordData.Chaos);
+		registerSymbol(new SymbolWeatherAlways(forMyst("WeatherOn")), 3, WordData.Sustain, WordData.Static, WordData.Tradition, WordData.Stimulate);
+		registerSymbol(new SymbolWeatherCloudy(forMyst("WeatherCloudy")), 3, WordData.Sustain, WordData.Static, WordData.Believe, WordData.Motion);
+		registerSymbol(new SymbolWeatherFast(forMyst("WeatherFast")), 3, WordData.Sustain, WordData.Dynamic, WordData.Tradition, WordData.Spur);
+		registerSymbol(new SymbolWeatherNormal(forMyst("WeatherNorm")), 2, WordData.Sustain, WordData.Dynamic, WordData.Tradition, WordData.Balance);
+		registerSymbol(new SymbolWeatherOff(forMyst("WeatherOff")), 3, WordData.Sustain, WordData.Static, WordData.Stimulate, WordData.Energy);
+		registerSymbol(new SymbolWeatherRain(forMyst("WeatherRain")), 3, WordData.Sustain, WordData.Static, WordData.Rebirth, WordData.Growth);
+		registerSymbol(new SymbolWeatherSlow(forMyst("WeatherSlow")), 3, WordData.Sustain, WordData.Dynamic, WordData.Tradition, WordData.Inhibit);
+		registerSymbol(new SymbolWeatherSnow(forMyst("WeatherSnow")), 3, WordData.Sustain, WordData.Static, WordData.Inhibit, WordData.Energy);
+		registerSymbol(new SymbolWeatherStorm(forMyst("WeatherStorm")), 3, WordData.Sustain, WordData.Static, WordData.Nature, WordData.Power);
+		registerSymbol(new SymbolTerrainGenAmplified(forMyst("TerrainAmplified")), 3, WordData.Terrain, WordData.Form, WordData.Tradition, WordData.Spur);
+		registerSymbol(new SymbolTerrainGenEnd(forMyst("TerrainEnd")), 4, WordData.Terrain, WordData.Form, WordData.Ethereal, WordData.Flow);
+		registerSymbol(new SymbolTerrainGenFlat(forMyst("TerrainFlat")), 3, WordData.Terrain, WordData.Form, WordData.Inhibit, WordData.Motion);
+		registerSymbol(new SymbolTerrainGenNether(forMyst("TerrainNether")), 4, WordData.Terrain, WordData.Form, WordData.Constraint, WordData.Entropy);
+		registerSymbol(new SymbolTerrainGenNormal(forMyst("TerrainNormal")), 2, WordData.Terrain, WordData.Form, WordData.Tradition, WordData.Flow);
+		registerSymbol(new SymbolTerrainGenVoid(forMyst("TerrainVoid")), 4, WordData.Terrain, WordData.Form, WordData.Infinite, WordData.Void);
 	}
+
+	private static ResourceLocation forMyst(String name) {
+		return new ResourceLocation(MystObjects.MystcraftModId, name);
+	}
+
 }
