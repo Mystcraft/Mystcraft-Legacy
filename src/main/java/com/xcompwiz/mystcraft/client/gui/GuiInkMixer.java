@@ -54,6 +54,12 @@ public class GuiInkMixer extends GuiContainer {
 	}
 
 	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
+	}
+
+	@Override
 	protected void keyTyped(char c, int i) throws IOException {
 		if (i == 1 || (i == mc.gameSettings.keyBindInventory.getKeyCode())) {
 			mc.player.closeScreen();

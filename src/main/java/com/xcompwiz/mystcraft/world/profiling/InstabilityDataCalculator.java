@@ -84,18 +84,17 @@ public class InstabilityDataCalculator {
 	}
 
 	private static void setBaselineDefaults() {
-		defaults = new HashMap<String, Number>();
-		defaults.put("tile.lightgem", 0);
-		defaults.put("tile.netherquartz", 0);
-		defaults.put("tile.oreCoal", 300);
-		defaults.put("tile.oreIron", 500);
-		defaults.put("tile.oreGold", 500);
-		defaults.put("tile.oreLapis", 100);
-		defaults.put("tile.oreEmerald", 100);
-		defaults.put("tile.oreRedstone", 600);
-		defaults.put("tile.oreDiamond", 1000);
-		defaults.put("tile.myst_crystal", 0);
-		defaults.put("tile.myst_fluid_myst_ink_black", 0);
+		defaults = new HashMap<>();
+		defaults.put("minecraft:coal_ore_0", 300);
+		defaults.put("minecraft:diamond_ore_0", 1000);
+		defaults.put("minecraft:emerald_ore_0", 100);
+		defaults.put("minecraft:glowstone_0", 0);
+		defaults.put("minecraft:gold_ore_0", 500);
+		defaults.put("minecraft:iron_ore_0", 500);
+		defaults.put("minecraft:lapis_ore_0", 100);
+		defaults.put("minecraft:quartz_ore_0", 0);
+		defaults.put("minecraft:redstone_ore_0", 600);
+		defaults.put("minecraft:blockcrystal_0", 0);
 	}
 
 	private static void loadBaselineFromConfig(Configuration config) {
