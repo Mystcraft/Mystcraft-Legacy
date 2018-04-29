@@ -94,6 +94,20 @@ public class BlockBookBinder extends BlockContainer {
 				world.spawnEntity(entityitem);
 			}
 		}
+		if(tileentity != null && tileentity instanceof TileEntityBookBinder) {
+			for (ItemStack stack : ((TileEntityBookBinder) tileentity).getPageList()) {
+				if(stack.isEmpty()) continue;
+				float f =  world.rand.nextFloat() * 0.8F + 0.1F;
+				float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
+				float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
+				EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, stack);
+				float f3 = 0.05F;
+				entityitem.motionX = (float) world.rand.nextGaussian() * f3;
+				entityitem.motionY = (float) world.rand.nextGaussian() * f3 + 0.2F;
+				entityitem.motionZ = (float) world.rand.nextGaussian() * f3;
+				world.spawnEntity(entityitem);
+			}
+		}
 
 		super.breakBlock(world, pos, state);
 	}
