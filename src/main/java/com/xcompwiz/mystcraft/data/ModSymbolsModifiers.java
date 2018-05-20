@@ -42,10 +42,10 @@ public class ModSymbolsModifiers {
 		public static BlockModifierContainerObject create(String word, int cardrank, IBlockState blockstate) {
 			BlockDescriptor descriptor = new BlockDescriptor(blockstate);
 			SymbolBlock symbol = new SymbolBlock(descriptor, word);
-			//if (SymbolManager.hasBinding(symbol.getRegistryName())) {
-			//	LoggerUtils.info("Some Mod is attempting to register a block symbol over an existing registration.");
-			//	return new BlockModifierContainerObject();
-			//}
+			IAgeSymbol existing = SymbolManager.getAgeSymbol(symbol.getRegistryName());
+			if (existing != null) {
+				symbol = (SymbolBlock)existing;
+			}
 			symbol.setCardRank(cardrank);
 			return new BlockModifierContainerObject(descriptor, symbol);
 		}
