@@ -125,14 +125,15 @@ public class LinkListenerBasic {
 		World world = event.destination;
 
 		if (world.provider instanceof WorldProviderMyst && entity instanceof EntityPlayer) {
-			EntityPlayer player = (EntityPlayer) entity;
+			if(!(entity instanceof EntityPlayerMP))
+				return;
+			EntityPlayerMP player = (EntityPlayerMP) entity;
 			for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
 				ItemStack itemstack = player.inventory.getStackInSlot(i);
-				if (!itemstack.isEmpty() && itemstack.getItem() instanceof ItemLinkbook) return;
+				if (!itemstack.isEmpty() && itemstack.getItem() instanceof ItemLinkbook)
+					return;
 			}
-			if(player instanceof EntityPlayerMP) {
-				ModAchievements.TRIGGER_ENTER_MYST_DIM.trigger((EntityPlayerMP) player);
-			}
+			ModAchievements.TRIGGER_ENTER_MYST_DIM.trigger((EntityPlayerMP) player);
 		}
 	}
 
