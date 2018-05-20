@@ -21,7 +21,7 @@ public class TriggerEnterMystDimension implements ICriterionTrigger<TriggerEnter
     private final Map<PlayerAdvancements, Listeners> listeners = Maps.newHashMap();
 
     @Override
-    public ResourceLocation getId() {
+	public ResourceLocation getId() {
         return ID;
     }
 

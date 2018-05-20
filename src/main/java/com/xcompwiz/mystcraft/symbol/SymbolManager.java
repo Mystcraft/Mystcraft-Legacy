@@ -30,14 +30,14 @@ public class SymbolManager {
 	private static Set<ResourceLocation> blacklist = new HashSet<>();
 	private static Configuration config;
 
-	private static HashMap<ResourceLocation, Integer>			cardranks					= new HashMap<>();
-	private static ArrayList<Integer>				cardranksizes				= new ArrayList<>();
-	private static HashMap<Integer, Integer>		cardrankweights				= null;
-	private static HashMap<ResourceLocation, Integer>			maxTreasureStackOverrides	= new HashMap<>();
-	private static HashMap<ResourceLocation, Boolean>			tradeableOverrides			= new HashMap<>();
-	private static HashMap<ResourceLocation, List<ItemStack>>	tradeItemOverrides			= new HashMap<>();
+	private static HashMap<ResourceLocation, Integer> cardranks = new HashMap<>();
+	private static ArrayList<Integer> cardranksizes = new ArrayList<>();
+	private static HashMap<Integer, Integer> cardrankweights = null;
+	private static HashMap<ResourceLocation, Integer> maxTreasureStackOverrides = new HashMap<>();
+	private static HashMap<ResourceLocation, Boolean> tradeableOverrides = new HashMap<>();
+	private static HashMap<ResourceLocation, List<ItemStack>> tradeItemOverrides = new HashMap<>();
 
-	private static HashMap<Integer, Integer>			defaultMaxStacks			= new HashMap<>();
+	private static HashMap<Integer, Integer> defaultMaxStacks = new HashMap<>();
 
 	static {
 		defaultMaxStacks.put(null, 0);
@@ -48,7 +48,7 @@ public class SymbolManager {
 	}
 
 	public static void buildRegistry() {
-		if(SYMBOL_REGISTRY != null) return;
+		if (SYMBOL_REGISTRY != null) return;
 
 		RegistryBuilder<IAgeSymbol> builder = new RegistryBuilder<>();
 		builder.setName(SYMBOL_REGISTRY_NAME).disableSaving();
@@ -65,7 +65,7 @@ public class SymbolManager {
 	public static void blackListSymbol(ResourceLocation identifier) {
 		blacklist.add(identifier);
 		IAgeSymbol symbol = SYMBOL_REGISTRY.getValue(identifier);
-		if(symbol != null) {
+		if (symbol != null) {
 			symbolProfiler.remove(symbol);
 		}
 	}
@@ -86,8 +86,7 @@ public class SymbolManager {
 		//	return false;
 		//}
 		if (config != null && symbol.generatesConfigOption() &&
-				!config.get(MystConfig.CATEGORY_SYMBOLS + "." + symbol.getRegistryName().getResourceDomain(),
-						symbol.getRegistryName().getResourcePath().toLowerCase().replace(' ', '_') + ".enabled", enabled).getBoolean(enabled)) {
+				!config.get(MystConfig.CATEGORY_SYMBOLS + "." + symbol.getRegistryName().getResourceDomain(), symbol.getRegistryName().getResourcePath().toLowerCase().replace(' ', '_') + ".enabled", enabled).getBoolean(enabled)) {
 			return false;
 		}
 		if (SymbolRemappings.hasRemapping(symbol.getRegistryName())) {
@@ -119,7 +118,7 @@ public class SymbolManager {
 				config.save();
 			}
 		}
-		if(addForRegistration) {
+		if (addForRegistration) {
 			SYMBOL_REGISTRY.register(symbol);
 		}
 		return true;
@@ -131,11 +130,11 @@ public class SymbolManager {
 
 	// Get Age Symbol by identifier
 	public static IAgeSymbol getAgeSymbol(ResourceLocation id) {
-		if(id == null) {
+		if (id == null) {
 			return null;
 		}
 		IAgeSymbol symbol = null;
-		if(!blacklist.contains(id)) {
+		if (!blacklist.contains(id)) {
 			symbol = SYMBOL_REGISTRY.getValue(id);
 		}
 		if (symbol == null && warned.add(id)) {
@@ -149,7 +148,7 @@ public class SymbolManager {
 	}
 
 	public static String getSymbolOwner(ResourceLocation identifier) {
-		if(blacklist.contains(identifier)) {
+		if (blacklist.contains(identifier)) {
 			return null;
 		}
 		IAgeSymbol symbol = SYMBOL_REGISTRY.getValue(identifier);
@@ -160,7 +159,7 @@ public class SymbolManager {
 	public static ArrayList<IAgeSymbol> getAgeSymbols() {
 		ArrayList<IAgeSymbol> symbols = new ArrayList<IAgeSymbol>();
 		for (IAgeSymbol s : SYMBOL_REGISTRY.getValues()) {
-			if(blacklist.contains(s.getRegistryName())) continue;
+			if (blacklist.contains(s.getRegistryName())) continue;
 			symbols.add(s);
 		}
 		return symbols;
@@ -190,7 +189,7 @@ public class SymbolManager {
 		Collection<IAgeSymbol> set = new ArrayList<IAgeSymbol>();
 		Collection<ResourceLocation> symbolIds = SYMBOL_REGISTRY.getKeys();
 		for (ResourceLocation symbolId : symbolIds) {
-			if(blacklist.contains(symbolId)) continue;
+			if (blacklist.contains(symbolId)) continue;
 
 			Integer rank = getSymbolItemCardRank(symbolId);
 			if (rank == null) continue;
@@ -206,7 +205,7 @@ public class SymbolManager {
 
 		@Override
 		public void onAdd(IForgeRegistryInternal<IAgeSymbol> owner, RegistryManager stage, int id, IAgeSymbol obj, @Nullable IAgeSymbol oldObj) {
-			if(!SymbolManager.tryAddSymbol(obj, false)) {
+			if (!SymbolManager.tryAddSymbol(obj, false)) {
 				stage.getRegistry(SYMBOL_REGISTRY_NAME).remove(obj.getRegistryName());
 			}
 		}
@@ -218,12 +217,16 @@ public class SymbolManager {
 		if (!cardranks.containsKey(identifier)) return 0;
 		Integer rank = cardranks.get(identifier);
 		if (rank == null) return 0;
-		if (cardrankweights == null) { throw new RuntimeException("Cannot obtain symbol treasure weight: Card ranking system not built"); }
+		if (cardrankweights == null) {
+			throw new RuntimeException("Cannot obtain symbol treasure weight: Card ranking system not built");
+		}
 		return cardrankweights.get(rank);
 	}
 
 	public static void setSymbolItemCardRank(ResourceLocation identifier, int cardrank) {
-		if (cardrankweights != null) { throw new RuntimeException("Cannot set symbol rarity ranking: rank weights finalized"); }
+		if (cardrankweights != null) {
+			throw new RuntimeException("Cannot set symbol rarity ranking: rank weights finalized");
+		}
 		cardranks.put(identifier, cardrank);
 		while (cardranksizes.size() <= cardrank) {
 			cardranksizes.add(0);
