@@ -391,6 +391,11 @@ uploadArchives {
                             name 'XCompWiz'
                             roles { role 'developer' }
                         }
+                        developer {
+                            id 'HellFirePvP'
+                            name 'HellFirePvP'
+                            roles { role 'developer' }
+                        }
                     }
                 }
             }
