@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.api.hook;
 
+import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 import com.xcompwiz.mystcraft.api.util.Color;
 
@@ -8,7 +9,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * Exposes functions for rendering Mystcraft elements, such as symbols, words, and colors
+ * Exposes functions for rendering Mystcraft elements, such as symbols, words, and colors. The implementation of this is provided by {@link APIInstanceProvider}
+ * as "render-1". Do NOT implement this yourself!
  * @author xcompwiz
  */
 public interface RenderAPI {

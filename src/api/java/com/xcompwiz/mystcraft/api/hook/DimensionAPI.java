@@ -5,7 +5,8 @@ import java.util.Collection;
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 
 /**
- * Functions for interacting with Mystcraft dimensions. The implementation of this is provided by {@link APIInstanceProvider}.
+ * Functions for interacting with Mystcraft dimensions. The implementation of this is provided by {@link APIInstanceProvider} as "dimension-1". Do NOT implement
+ * this yourself!
  * @author xcompwiz
  */
 public interface DimensionAPI {

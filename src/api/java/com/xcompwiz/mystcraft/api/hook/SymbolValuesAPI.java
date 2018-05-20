@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 /**
  * Allows the setting of various treasure rarity and weighting values for symbols. See {@link GrammarAPI} for setting the grammar rule(s) for a symbol. These
- * should be set before post-init. The implementation of this is provided by {@link APIInstanceProvider}.
+ * should be set before post-init. The implementation of this is provided by {@link APIInstanceProvider} as "symbolvals-1". Do NOT implement this yourself!
  * @author xcompwiz
  */
 public interface SymbolValuesAPI {

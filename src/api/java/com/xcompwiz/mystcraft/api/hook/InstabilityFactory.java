@@ -6,7 +6,8 @@ import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
 /**
  * Provides methods for generating boilerplate InstabilityProviders. These functions do not register the instability effect directly. Make sure you do that
- * through the {@link InstabilityAPI}. The implementation of this is provided via the {@link APIInstanceProvider}.
+ * through the {@link InstabilityAPI}. The implementation of this is provided via the {@link APIInstanceProvider} as "instabilityfact-1". Do NOT implement this
+ * yourself!
  * @author xcompwiz
  */
 public interface InstabilityFactory {

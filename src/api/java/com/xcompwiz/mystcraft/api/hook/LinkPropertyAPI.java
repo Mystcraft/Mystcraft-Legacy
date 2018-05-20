@@ -12,8 +12,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
- * Provides functions for adding link properties. Also handles interactions with the ink mixing mechanics. The implementation of this is provided by {@link APIInstanceProvider}. Do
- * NOT implement this yourself!
+ * Provides functions for adding link properties. Also handles interactions with the ink mixing mechanics. The implementation of this is provided by
+ * {@link APIInstanceProvider} as "linkingprop-1". Do NOT implement this yourself!
  * @author xcompwiz
  */
 @Beta
@@ -21,33 +21,33 @@ public interface LinkPropertyAPI {
 
 	/* String ids for standard link flags */
 	/** The link can stay within the same dimension */
-	public static final String	FLAG_INTRA_LINKING		= "Intra Linking";
+	public static final String FLAG_INTRA_LINKING = "Intra Linking";
 	/** The link will retain offset from main spawn */
-	public static final String	FLAG_RELATIVE			= "Relative";
+	public static final String FLAG_RELATIVE = "Relative";
 	/** The link will cause the player to drop all of their items before linking; items won't link */
-	public static final String	FLAG_DISARM				= "Disarm";
+	public static final String FLAG_DISARM = "Disarm";
 	/** The link will not nullify the entity's momentum */
-	public static final String	FLAG_MAINTAIN_MOMENTUM	= "Maintain Momentum";
+	public static final String FLAG_MAINTAIN_MOMENTUM = "Maintain Momentum";
 	/** The link will generate a single block platform on arrival if there is a drop */
-	public static final String	FLAG_GENERATE_PLATFORM	= "Generate Platform";
+	public static final String FLAG_GENERATE_PLATFORM = "Generate Platform";
 	/** The link should be treated as something natural */
-	public static final String	FLAG_NATURAL			= "Natural";
+	public static final String FLAG_NATURAL = "Natural";
 	/** The link was initiated by an outside element (not user interaction) */
-	public static final String	FLAG_EXTERNAL			= "External";
+	public static final String FLAG_EXTERNAL = "External";
 	/** The link was initiated as an attack */
-	public static final String	FLAG_OFFENSIVE			= "Offensive";
+	public static final String FLAG_OFFENSIVE = "Offensive";
 
 	/** The link was started by a command */
-	public static final String	FLAG_TPCOMMAND			= "Op-TP";
+	public static final String FLAG_TPCOMMAND = "Op-TP";
 	/** This is used for books themselves */
-	public static final String	FLAG_FOLLOWING			= "Following";
+	public static final String FLAG_FOLLOWING = "Following";
 
 	/* String ids for standard link properties */
 	/**
 	 * Used to indicate what sound should be played when the link occurs Ignored if the link has the disarm flag or if the linked object is an item The value of
 	 * the property should be the reference of the sound to play, for example: "mystcraft:linking.link"
 	 */
-	public static final String	PROP_SOUND				= "Sound";
+	public static final String PROP_SOUND = "Sound";
 
 	/**
 	 * Registers a link property name and sets the color which represents it. You can use linking events to change the effects of a link if the property is

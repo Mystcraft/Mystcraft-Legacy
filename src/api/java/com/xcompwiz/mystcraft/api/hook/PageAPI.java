@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * Provides methods for accessing and setting information in pages. The implementation of this is provided by {@link APIInstanceProvider}. Look at the {@link ItemFactory} for
- * methods for building page items.
+ * Provides methods for accessing and setting information in pages. The implementation of this is provided by {@link APIInstanceProvider} as "page-1". Do NOT
+ * implement this yourself! Look at the {@link ItemFactory} for methods for building page items.
  * @author xcompwiz
  */
 @Beta

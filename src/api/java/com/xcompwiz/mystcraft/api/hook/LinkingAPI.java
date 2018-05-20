@@ -9,8 +9,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 /**
- * Functions for interfacing with the linking mechanics. The implementation of this is provided by {@link APIInstanceProvider}. See {@link LinkEvent} for events to allow you to
- * alter a link itself.
+ * Functions for interfacing with the linking mechanics. The implementation of this is provided by {@link APIInstanceProvider} as "linking-1". Do NOT implement
+ * this yourself! See {@link LinkEvent} for events to allow you to alter a link itself.
  * @author xcompwiz
  */
 public interface LinkingAPI {

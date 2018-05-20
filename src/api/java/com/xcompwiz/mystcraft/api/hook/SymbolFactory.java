@@ -6,12 +6,11 @@ import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
 
 /**
- * Provides methods for generating boilerplate {@link IAgeSymbol}s.
- * These methods do not register the symbol directly. Use the {@link RegistryEvent.Register<IAgeSymbol>} for that.
- * The implementation of this is provided by {@link APIInstanceProvider}.
+ * Provides methods for generating boilerplate {@link IAgeSymbol}s. These methods do not register the symbol directly. Use the
+ * {@link RegistryEvent.Register<IAgeSymbol>} for that. The implementation of this is provided by {@link APIInstanceProvider} as "symbolfact-1". Do NOT
+ * implement this yourself!
  * @author xcompwiz
  */
 public interface SymbolFactory {

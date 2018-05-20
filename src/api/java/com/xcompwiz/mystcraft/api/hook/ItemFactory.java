@@ -7,7 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * Provides a set of functions for building Mystcraft items. The implementation of this is provided by {@link APIInstanceProvider}.
+ * Provides a set of functions for building Mystcraft items. The implementation of this is provided by {@link APIInstanceProvider} as "itemfact-1". Do NOT
+ * implement this yourself!
  * @author xcompwiz
  */
 @Beta

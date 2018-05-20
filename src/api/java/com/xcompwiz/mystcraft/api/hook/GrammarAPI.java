@@ -9,8 +9,8 @@ import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * Provides methods for interacting with the grammar rules for the symbol generation system. The implementation of this is provided by {@link APIInstanceProvider}. Do NOT implement
- * this yourself!
+ * Provides methods for interacting with the grammar rules for the symbol generation system. The implementation of this is provided by
+ * {@link APIInstanceProvider} as "grammar-1". Do NOT implement this yourself!
  * @author xcompwiz
  */
 public interface GrammarAPI {

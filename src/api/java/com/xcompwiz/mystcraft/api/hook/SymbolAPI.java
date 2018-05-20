@@ -4,15 +4,13 @@ import java.util.List;
 
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
-import com.xcompwiz.mystcraft.api.world.AgeDirector;
+
 import net.minecraft.util.ResourceLocation;
 
 /**
- * Provides functions for registering different aspects to the Symbol system. You can blacklist identifiers and have access to various informations about symbols.
- * The implementation of this is provided by {@link APIInstanceProvider}.
- * 
- * Note: Don't forget to create grammar rules for your symbols! See {@link GrammarAPI}
- * Note: Don't forget to set treasure rarities! See {@link SymbolValuesAPI}
+ * Provides functions for registering different aspects to the Symbol system. You can blacklist identifiers and have access to various informations about
+ * symbols. The implementation of this is provided by {@link APIInstanceProvider} as "symbol-1". Do NOT implement this yourself! Note: Don't forget to create
+ * grammar rules for your symbols! See {@link GrammarAPI} Note: Don't forget to set treasure rarities! See {@link SymbolValuesAPI}
  * @author xcompwiz
  */
 public interface SymbolAPI {
