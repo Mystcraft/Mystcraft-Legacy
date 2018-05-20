@@ -19,7 +19,6 @@ public class IMCHandler {
 	private static Map<String, IMCProcessor>	processors	= new HashMap<String, IMCProcessor>();
 
 	static {
-		registerProcessor("api", new IMCAPIRegister());
 		registerProcessor("blockinstability", new IMCBlockInstability());
 		registerProcessor("blacklistfluid", new IMCBlacklistFluid());
 		registerProcessor("blacklist", new IMCBlacklistSymbol());

@@ -5,10 +5,11 @@ import com.xcompwiz.mystcraft.api.exception.APIVersionRemoved;
 import com.xcompwiz.mystcraft.api.exception.APIVersionUndefined;
 
 /**
- * The purpose of this interface is simply to provide instances of the API interfaces. Request an instance via IMC (see below).
- * This interface supports providing multiple versions of an API, so you can request ex. 'symbol-1' and always get the same interface,
+ * The purpose of this interface is simply to provide instances of the API interfaces.
+ * It is possible to request an instance via the static method, but you should first make sure Mystcraft is loaded.
+ * This interface supports providing multiple versions of an API, so you can request ex. 'someAPI-1' and always get the same interface,
  * enabling the API to move forward without breaking compatibility.
- * The provider instance provided to you, as well as any API interface instances created by it, will belong to the mod which requested the provider.
+ * The APIInstanceProvider instance returned, as well as any API interface instances created by it, will belong to the mod which requested the provider.
  * To see what API interfaces are available, see the hook package.
  * @author xcompwiz
  */
@@ -24,15 +25,22 @@ public interface APIInstanceProvider {
 	 */
 	public Object getAPIInstance(String api) throws APIUndefined, APIVersionUndefined, APIVersionRemoved;
 
+	public static APIInstanceProvider getProviderInstance() {
+		return com.xcompwiz.mystcraft.api.impl.InternalAPI.getAPIProviderInstance();
+	}
+	
 	/*	Example Usage
-	In order to get an instance of this class, send an IMC message to Mystcraft with the key "API" and a string value which is a static method (with classpath)
-	which takes an instance of APIInstanceProvider as it's only param.
-	Example: FMLInterModComms.sendMessage("Mystcraft", "API", "com.xcompwiz.newmod.integration.mystcraft.register");
+ 	public static void doMystcraftIntegration() {
+ 		if (!Loader.isModLoaded("Mystcraft"))
+ 			return;
 
- 	public static void register(APIInstanceProvider provider) {
+ 		APIInstanceProvider provider = APIInstanceProvider.getProviderInstance();
+ 		if (!provider)
+			return;
+ 		
 		try {
 			Object apiinst = provider.getAPIInstance("awesomeAPI-3");
-			apiGet(apiinst); //At this point, we've got an object of the right interface.
+			useAPI(apiinst); //At this point, we've got an object of the right interface.
 		} catch (APIUndefined e) {
 			// The API we requested doesn't exist.  Give up with a nice log message.
 		} catch (APIVersionUndefined e) {
@@ -40,6 +48,23 @@ public interface APIInstanceProvider {
 		} catch (APIVersionRemoved e) {
 			// The API we requested exists, but the version we wanted has been removed and is no longer supported. Better update.
 		}
+	}
+
+	// alternate way, should you want to ensure all of the integration can occur properly
+ 	public static void doMoreComplexMystcraftIntegration() {
+ 		if (!Loader.isModLoaded("Mystcraft"))
+ 			return;
+
+ 		APIInstanceProvider provider = APIInstanceProvider.getProviderInstance();
+ 		if (!provider)
+			return;
+ 		
+ 		Object api1 = helperGetAPI(provider, "awesomeAPI-3");
+ 		Object api2 = helperGetAPI(provider, "otherAPI-1");
+ 		
+ 		if (api1 == null || api2 == null)
+ 			return; //
+ 		doActualIntegration(api1, api2);
 	}
 	*/
 }

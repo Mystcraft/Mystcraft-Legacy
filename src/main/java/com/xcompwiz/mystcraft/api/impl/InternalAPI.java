@@ -13,8 +13,11 @@ import com.xcompwiz.mystcraft.api.impl.linking.LinkingAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.page.PageAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.symbol.SymbolAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.symbol.SymbolFactoryImpl;
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.page.SortingUtils.ComparatorItemSymbolAlphabetical;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 
 public class InternalAPI {
 
@@ -62,7 +65,16 @@ public class InternalAPI {
 
 	private static HashMap<String, APIInstanceProvider>	instances	= new HashMap<String, APIInstanceProvider>();
 
-	public synchronized static APIInstanceProvider getAPIProviderInstance(String modId) {
+	public synchronized static APIInstanceProvider getAPIProviderInstance() {
+		String modId = "ERROR:Unknown";
+		Loader loader = Loader.instance();
+		ModContainer container = null;
+		if (loader != null)
+			container = loader.activeModContainer();
+		if (container != null)
+			modId = container.getModId();
+		else
+			LoggerUtils.warn("Creating API Provider outside of an active Mod Container; unknown mod ownership.");
 		APIInstanceProvider instance = instances.get(modId);
 		if (instance == null) {
 			instance = new APIProviderImpl(modId);
