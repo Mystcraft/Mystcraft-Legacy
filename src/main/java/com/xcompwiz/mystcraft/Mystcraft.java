@@ -93,7 +93,11 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
-@Mod(modid = MystObjects.MystcraftModId, version = "@VERSION@", name = "Mystcraft", acceptedMinecraftVersions = "[1.12]")
+@Mod(modid = MystObjects.MystcraftModId,
+		version = "@VERSION@",
+		name = "Mystcraft",
+		dependencies = "required-after:forge@[14.23.3.2676,)",
+		acceptedMinecraftVersions = "[1.12]")
 public class Mystcraft {
 
 	@Instance(MystObjects.MystcraftModId)

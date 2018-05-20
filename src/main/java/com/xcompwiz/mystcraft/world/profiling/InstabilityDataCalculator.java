@@ -94,7 +94,7 @@ public class InstabilityDataCalculator {
 		defaults.put("minecraft:lapis_ore_0", 100);
 		defaults.put("minecraft:quartz_ore_0", 0);
 		defaults.put("minecraft:redstone_ore_0", 600);
-		defaults.put("minecraft:blockcrystal_0", 0);
+		defaults.put("mystcraft:blockcrystal_0", 0);
 	}
 
 	private static void loadBaselineFromConfig(Configuration config) {

@@ -26,7 +26,7 @@ public final class BlockDescriptor {
 
 	/**
 	 * Describes a block
-	 * @param blockId ID of the block to use in generation
+	 * @param block ID of the block to use in generation
 	 */
 	public BlockDescriptor(Block block) {
 		this(block.getDefaultState());

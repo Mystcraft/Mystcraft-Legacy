@@ -6,16 +6,18 @@ import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.RegistryEvent;
 
 /**
- * Provides methods for generating boilerplate {@link IAgeSymbol}s. These methods do not register the symbol directly. Use the {@link SymbolAPI} for that. The
- * implementation of this is provided by {@link APIInstanceProvider}.
+ * Provides methods for generating boilerplate {@link IAgeSymbol}s.
+ * These methods do not register the symbol directly. Use the {@link RegistryEvent.Register<IAgeSymbol>} for that.
+ * The implementation of this is provided by {@link APIInstanceProvider}.
  * @author xcompwiz
  */
 public interface SymbolFactory {
 
 	/**
-	 * Creates a block modifier symbol from a specified block. Remember to register the symbol via {@link SymbolAPI}.
+	 * Creates a block modifier symbol from a specified block. Remember to register the symbol via {@link RegistryEvent.Register<IAgeSymbol>}.
 	 * @param ownerModid the modid of the mod owning/registering this symbol
 	 * @param blockState The block to use
 	 * @param thirdword The third word in the Narayan poem (symbol rendering)
