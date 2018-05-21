@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.api.impl;
 import java.util.HashMap;
 
 import com.xcompwiz.mystcraft.api.APIInstanceProvider;
+import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.impl.client.RenderAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.grammar.GrammarAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.instability.InstabilityAPIDelegate;
@@ -36,6 +37,15 @@ public class InternalAPI {
 	public static SymbolFactoryImpl			symbolFact;
 	public static ItemFactoryImpl			itemFact;
 
+	public static class ProviderGiver implements APIInstanceProvider.EntryPoint {
+
+		@Override
+		public APIInstanceProvider getProviderInstance() {
+			return InternalAPI.getAPIProviderInstance();
+		}
+		
+	}
+	
 	public static void initAPI() {
 		LinkingAPIDelegate linking_delegate = new LinkingAPIDelegate();
 		dimension = new DimensionAPIDelegate();
@@ -59,6 +69,8 @@ public class InternalAPI {
 
 		//TODO: Why do I do this?
 		ComparatorItemSymbolAlphabetical.instance.compare(ItemStack.EMPTY, ItemStack.EMPTY);
+		
+		MystObjects.entryPoint = new ProviderGiver();
 
 		APIProviderImpl.init();
 	}

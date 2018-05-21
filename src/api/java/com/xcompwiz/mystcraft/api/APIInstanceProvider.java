@@ -13,6 +13,10 @@ import com.xcompwiz.mystcraft.api.exception.APIVersionUndefined;
  */
 public interface APIInstanceProvider {
 
+	public interface EntryPoint {
+		public APIInstanceProvider getProviderInstance();
+	}
+	
 	/**
 	 * Returns a constructed version of the requested API. If the API requested doesn't exist then an exception will be thrown. Be wary when attempting to cast
 	 * the returned instance, as, if you try using an interface not included in the class path, you may get missing definition crashes. It is wiser to, after
@@ -22,11 +26,7 @@ public interface APIInstanceProvider {
 	 */
 	public Object getAPIInstance(String api) throws APIUndefined, APIVersionUndefined, APIVersionRemoved;
 
-	public static APIInstanceProvider getProviderInstance() {
-		return com.xcompwiz.mystcraft.api.impl.InternalAPI.getAPIProviderInstance();
-	}
-
-//@formatter:off
+	//@formatter:off
 	/*	Example Usage
  	public static void doMystcraftIntegration() {
  		if (!Loader.isModLoaded("Mystcraft")) //Note, if the Mystcraft API package isn't included in your packaged code, you'll need to make this check before calling this function
@@ -65,5 +65,5 @@ public interface APIInstanceProvider {
  		doActualIntegration(api1, api2);
 	}
 	*/
-//@formatter:on
+	//@formatter:on
 }

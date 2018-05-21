@@ -7,6 +7,9 @@ package com.xcompwiz.mystcraft.api;
  */
 public final class MystObjects {
 
+	/** This is set during Mystcraft's Pre-Init. Use it to get an API provider instance. */  
+	public static APIInstanceProvider.EntryPoint entryPoint;
+	
 	/** You'll need this to look up the blocks and items */
 	public static final String	MystcraftModId		= "mystcraft";
 
