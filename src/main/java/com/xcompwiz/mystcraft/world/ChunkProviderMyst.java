@@ -125,7 +125,7 @@ public class ChunkProviderMyst implements IChunkGenerator {
 		this.rand.setSeed(worldObj.getSeed());
 		long k = this.rand.nextLong() / 2L * 2L + 1L;
 		long l = this.rand.nextLong() / 2L * 2L + 1L;
-		this.rand.setSeed((long) x * k + (long) z * l ^ worldObj.getSeed());
+		this.rand.setSeed((long) chunkX * k + (long) chunkZ * l ^ worldObj.getSeed());
 		boolean flag = false;
 		ChunkPos chunkpos = new ChunkPos(chunkX, chunkZ);
 		ForgeEventFactory.onChunkPopulate(true, this, worldObj, this.rand, chunkX, chunkZ, flag);
@@ -137,7 +137,7 @@ public class ChunkProviderMyst implements IChunkGenerator {
 		} catch (Exception e) {
 			throw new RuntimeException(String.format("Biome [%s] threw an error while populating chunk.", biome.getRegistryName()), e);
 		}
-		if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.worldObj, this.rand, x, z, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS)) {
+		if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.worldObj, this.rand, chunkX, chunkZ, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS)) {
 			WorldEntitySpawner.performWorldGenSpawning(this.worldObj, biome, x + 8, z + 8, 16, 16, this.rand);
 		}
 		controller.populate(worldObj, rand, x, z);
@@ -151,7 +151,7 @@ public class ChunkProviderMyst implements IChunkGenerator {
 			worldgenminablequartz.generate(this.worldObj, this.rand, new BlockPos(gx, gy, gz));
 		}
 
-		if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.worldObj, this.rand, x, z, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE))  {
+		if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.worldObj, this.rand, chunkX, chunkZ, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE))  {
 			for (int k2 = 0; k2 < 16; ++k2) {
 				for (int j3 = 0; j3 < 16; ++j3) {
 					BlockPos blockpos1 = this.worldObj.getPrecipitationHeight(blockpos.add(k2, 0, j3));
@@ -168,7 +168,7 @@ public class ChunkProviderMyst implements IChunkGenerator {
 			}
 		}
 
-		net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(false, this, this.worldObj, this.rand, x, z, flag);
+		net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(false, this, this.worldObj, this.rand, chunkX, chunkZ, flag);
 		BlockFalling.fallInstantly = false;
 		chunk.setTerrainPopulated(true);
 	}
