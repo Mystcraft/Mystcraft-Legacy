@@ -163,8 +163,8 @@ public class BlockWritingDesk extends Block {
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity tileentity = world.getTileEntity(pos);
-		if (tileentity != null && tileentity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-			IItemHandler handle = tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		if (tileentity != null && tileentity instanceof TileEntityDesk) {
+			IItemHandler handle = ((TileEntityDesk) tileentity).getContainerItemHandler();
 			for (int l = 0; l < handle.getSlots(); l++) {
 				ItemStack itemstack = handle.getStackInSlot(l);
 				if (itemstack.isEmpty()) {
