@@ -22,6 +22,8 @@ public interface LinkPropertyAPI {
 	/* String ids for standard link flags */
 	/** The link can stay within the same dimension */
 	public static final String FLAG_INTRA_LINKING = "Intra Linking";
+	/** The link only works within the same dimension */
+	public static final String FLAG_INTRA_LINKING_ONLY = "Intra Linking Only";
 	/** The link will retain offset from main spawn */
 	public static final String FLAG_RELATIVE = "Relative";
 	/** The link will cause the player to drop all of their items before linking; items won't link */

@@ -20,7 +20,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.passive.AbstractHorse;
-import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -28,9 +27,7 @@ import net.minecraft.inventory.ContainerHorseChest;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -50,6 +47,8 @@ public class LinkListenerBasic {
 		} else if (entity.isDead || entity.world != world || entity.isBeingRidden()) {
 			event.setCanceled(true);
 		} else if (entity.world.provider.getDimension() == dimid && !info.getFlag(LinkPropertyAPI.FLAG_INTRA_LINKING)) {
+			event.setCanceled(true);
+		} else if (entity.world.provider.getDimension() != dimid && info.getFlag(LinkPropertyAPI.FLAG_INTRA_LINKING_ONLY)) {
 			event.setCanceled(true);
 		} else if (DimensionUtils.isDimensionDead(dimid)) {
 			event.setCanceled(true);

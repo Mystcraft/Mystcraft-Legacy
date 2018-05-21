@@ -119,6 +119,7 @@ public class InkEffects {
 
 	public static void init() {
 		registerProperty(LinkPropertyAPI.FLAG_INTRA_LINKING, new Color(0, 1, 0));
+		registerProperty(LinkPropertyAPI.FLAG_INTRA_LINKING_ONLY, new Color(1, 1, 1));
 		registerProperty(LinkPropertyAPI.FLAG_GENERATE_PLATFORM, new Color(0.5F, 0.5F, 0.5F));
 		registerProperty(LinkPropertyAPI.FLAG_MAINTAIN_MOMENTUM, new Color(0, 0, 1));
 		registerProperty(LinkPropertyAPI.FLAG_DISARM, new Color(1, 0, 0));
