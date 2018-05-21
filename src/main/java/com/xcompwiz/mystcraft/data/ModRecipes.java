@@ -69,25 +69,25 @@ public class ModRecipes {
 		}
 		// Crystal Receptacle
 		if (BookReceptacle) {
-			recipe = new ShapedOreRecipe(new ResourceLocation(MystObjects.MystcraftModId, "shaped/receptacle"), new ItemStack(ModBlocks.receptacle), "###", "# #", "###", '#', new ItemStack(ModBlocks.crystal));
+			recipe = new ShapedOreRecipe(new ResourceLocation(MystObjects.MystcraftModId, "shaped/receptacle"), new ItemStack(ModBlocks.getItemBlock(ModBlocks.receptacle)), "###", "# #", "###", '#', new ItemStack(ModBlocks.getItemBlock(ModBlocks.crystal)));
 			recipe.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, "shaped/receptacle"));
 			ModRegistryPrimer.queueForRegistration(recipe);
 		}
 		// Lectern
 		if (Lectern) {
-			recipe = new ShapedOreRecipe(new ResourceLocation(MystObjects.MystcraftModId, "shaped/lectern"), new ItemStack(ModBlocks.lectern, 2), "#  ", "##S", "###", 'S', "stickWood", '#', "plankWood");
+			recipe = new ShapedOreRecipe(new ResourceLocation(MystObjects.MystcraftModId, "shaped/lectern"), new ItemStack(ModBlocks.getItemBlock(ModBlocks.lectern), 2), "#  ", "##S", "###", 'S', "stickWood", '#', "plankWood");
 			recipe.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, "shaped/lectern"));
 			ModRegistryPrimer.queueForRegistration(recipe);
 		}
 		// Bookstand
 		if (Bookstand) {
-			recipe = new ShapedOreRecipe(new ResourceLocation(MystObjects.MystcraftModId, "shaped/bookstand"), new ItemStack(ModBlocks.bookstand), "S S", " # ", 'S', "stickWood", '#', "plankWood");
+			recipe = new ShapedOreRecipe(new ResourceLocation(MystObjects.MystcraftModId, "shaped/bookstand"), new ItemStack(ModBlocks.getItemBlock(ModBlocks.bookstand)), "S S", " # ", 'S', "stickWood", '#', "plankWood");
 			recipe.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, "shaped/bookstand"));
 			ModRegistryPrimer.queueForRegistration(recipe);
 		}
 		// Ink Mixer
 		if (InkMixer) {
-			recipe = new ShapedOreRecipe(new ResourceLocation(MystObjects.MystcraftModId, "shaped/inkmixer"), new ItemStack(ModBlocks.inkmixer), "S S", "SVS", "WSW", 'S', Blocks.STONE, 'V', Items.GLASS_BOTTLE, 'W', "plankWood");
+			recipe = new ShapedOreRecipe(new ResourceLocation(MystObjects.MystcraftModId, "shaped/inkmixer"), new ItemStack(ModBlocks.getItemBlock(ModBlocks.inkmixer)), "S S", "SVS", "WSW", 'S', Blocks.STONE, 'V', Items.GLASS_BOTTLE, 'W', "plankWood");
 			recipe.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, "shaped/inkmixer"));
 			ModRegistryPrimer.queueForRegistration(recipe);
 		}
@@ -105,7 +105,7 @@ public class ModRecipes {
 		}
 		// Book Binder
 		if (BookBinder) {
-			recipe = new ShapedOreRecipe(new ResourceLocation(MystObjects.MystcraftModId, "shaped/bookbinder"), new ItemStack(ModBlocks.bookbinder), "III", "###", "# #", 'I', Items.IRON_INGOT, '#', "plankWood");
+			recipe = new ShapedOreRecipe(new ResourceLocation(MystObjects.MystcraftModId, "shaped/bookbinder"), new ItemStack(ModBlocks.getItemBlock(ModBlocks.bookbinder)), "III", "###", "# #", 'I', Items.IRON_INGOT, '#', "plankWood");
 			recipe.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, "shaped/bookbinder"));
 			ModRegistryPrimer.queueForRegistration(recipe);
 		}

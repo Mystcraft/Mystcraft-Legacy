@@ -28,6 +28,7 @@ import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
@@ -41,10 +42,15 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModBlocks {
+
+	private static Map<Block, Item> itemBlocks = new HashMap<>();
 
 	public static Block	inkmixer;
 	public static Block	bookbinder;
@@ -129,6 +135,12 @@ public class ModBlocks {
         ItemBlock ib = new ItemBlock(b);
         ib.setRegistryName(b.getRegistryName());
         ModRegistryPrimer.queueForRegistration(ib);
+        itemBlocks.put(b, ib);
+	}
+
+	@Nonnull
+	public static Item getItemBlock(Block block) {
+		return itemBlocks.containsKey(block) ? itemBlocks.get(block) : Items.AIR;
 	}
 
 	@SideOnly(Side.CLIENT)
