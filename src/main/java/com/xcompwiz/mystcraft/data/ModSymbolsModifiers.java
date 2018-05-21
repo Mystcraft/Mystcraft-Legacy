@@ -6,6 +6,7 @@ import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBlock;
@@ -42,9 +43,9 @@ public class ModSymbolsModifiers {
 		public static BlockModifierContainerObject create(String word, int cardrank, IBlockState blockstate) {
 			BlockDescriptor descriptor = new BlockDescriptor(blockstate);
 			SymbolBlock symbol = new SymbolBlock(descriptor, word);
-			IAgeSymbol existing = SymbolManager.getAgeSymbol(symbol.getRegistryName());
-			if (existing != null) {
-				symbol = (SymbolBlock)existing;
+			if (SymbolManager.hasBinding(symbol.getRegistryName())) {
+				LoggerUtils.info("Some Mod is attempting to register a block symbol over an existing registration.");
+				return new BlockModifierContainerObject();
 			}
 			symbol.setCardRank(cardrank);
 			return new BlockModifierContainerObject(descriptor, symbol);
