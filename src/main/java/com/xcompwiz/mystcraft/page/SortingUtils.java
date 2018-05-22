@@ -8,6 +8,9 @@ import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 
@@ -66,6 +69,20 @@ public final class SortingUtils {
 			if (symbol1 == symbol2) return 0;
 			if (symbol1 == null) return 1;
 			if (symbol2 == null) return -1;
+			if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+				return compareLocalized(symbol1, symbol2);
+			}
+			ResourceLocation rKey1 = symbol1.getRegistryName();
+			ResourceLocation rKey2 = symbol2.getRegistryName();
+			if (rKey1 == rKey2) return 0;
+			if (rKey1 == null) return 1;
+			if (rKey2 == null) return -1;
+			return rKey1.toString().compareTo(rKey2.toString());
+		}
+
+		//Doesn't need nullability checks since those are done beforehand.
+		@SideOnly(Side.CLIENT)
+		private int compareLocalized(IAgeSymbol symbol1, IAgeSymbol symbol2) {
 			return symbol1.getLocalizedName().compareTo(symbol2.getLocalizedName());
 		}
 	}
