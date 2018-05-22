@@ -48,7 +48,6 @@ public class ModSymbolsFluids {
 			if (block == null) continue;
 			if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) continue;
 			if (block == Blocks.LAVA || block == Blocks.FLOWING_LAVA) continue;
-			if (Item.getItemFromBlock(block) == Items.AIR) continue;
 
 			byte meta = 0;
 			if (block instanceof BlockFluidBase) {
