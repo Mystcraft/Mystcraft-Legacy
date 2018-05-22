@@ -1,0 +1,22 @@
+{
+    "result": {
+        "item": "mystcraft:blocklectern",
+        "count": 2
+    },
+    "pattern": [
+        "p  ",
+        "pps",
+        "ppp"
+    ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "s": {
+            "type": "forge:ore_dict",
+            "ore" : "stickWood"
+        },
+        "p": {
+            "type": "forge:ore_dict",
+            "ore" : "plankWood"
+        }
+    }
+}

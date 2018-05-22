@@ -1,0 +1,21 @@
+{
+    "result": {
+        "item": "mystcraft:blockbookstand",
+        "count": 1
+    },
+    "pattern": [
+        "s s",
+        " p "
+    ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "s": {
+            "type": "forge:ore_dict",
+            "ore" : "stickWood"
+        },
+        "p": {
+            "type": "forge:ore_dict",
+            "ore" : "plankWood"
+        }
+    }
+}

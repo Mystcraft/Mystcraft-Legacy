@@ -1,0 +1,20 @@
+{
+    "result": {
+        "item": "mystcraft:portfolio",
+        "count": 1
+    },
+    "pattern": [
+        "lll",
+        "s  ",
+        "lll"
+    ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "s": {
+            "item": "minecraft:string"
+        },
+        "l": {
+            "item": "minecraft:leather"
+        }
+    }
+}

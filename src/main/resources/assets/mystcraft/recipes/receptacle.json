@@ -1,0 +1,17 @@
+{
+    "result": {
+        "item": "mystcraft:blockbookreceptacle",
+        "count": 1
+    },
+    "pattern": [
+        "ccc",
+        "c c",
+        "ccc"
+    ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "c": {
+            "item": "mystcraft:blockcrystal"
+        }
+    }
+}

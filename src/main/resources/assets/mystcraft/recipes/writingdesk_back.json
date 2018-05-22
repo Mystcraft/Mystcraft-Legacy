@@ -1,0 +1,21 @@
+{
+    "result": {
+        "item": "mystcraft:writingdesk",
+        "data": 1,
+        "count": 1
+    },
+    "pattern": [
+        "ppp",
+        "pfp"
+    ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "f": {
+            "item": "minecraft:item_frame"
+        },
+        "p": {
+            "type": "forge:ore_dict",
+            "ore" : "plankWood"
+        }
+    }
+}

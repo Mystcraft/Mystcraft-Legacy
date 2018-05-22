@@ -50,8 +50,6 @@ import java.util.Map;
 
 public class ModBlocks {
 
-	private static Map<Block, Item> itemBlocks = new HashMap<>();
-
 	public static Block	inkmixer;
 	public static Block	bookbinder;
 	public static Block	receptacle;
@@ -135,12 +133,6 @@ public class ModBlocks {
         ItemBlock ib = new ItemBlock(b);
         ib.setRegistryName(b.getRegistryName());
         ModRegistryPrimer.queueForRegistration(ib);
-        itemBlocks.put(b, ib);
-	}
-
-	@Nonnull
-	public static Item getItemBlock(Block block) {
-		return itemBlocks.containsKey(block) ? itemBlocks.get(block) : Items.AIR;
 	}
 
 	@SideOnly(Side.CLIENT)

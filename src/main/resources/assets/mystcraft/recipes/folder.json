@@ -1,0 +1,20 @@
+{
+    "result": {
+        "item": "mystcraft:folder",
+        "count": 1
+    },
+    "pattern": [
+        " l ",
+        "s  ",
+        " l "
+    ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "s": {
+            "item": "minecraft:string"
+        },
+        "l": {
+            "item": "minecraft:leather"
+        }
+    }
+}

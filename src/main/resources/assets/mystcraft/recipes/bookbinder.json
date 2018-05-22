@@ -1,0 +1,22 @@
+{
+    "result": {
+        "item": "mystcraft:blockbookbinder",
+        "count": 1
+    },
+    "pattern": [
+        "iii",
+        "ppp",
+        "p p"
+    ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "i": {
+            "type": "forge:ore_dict",
+            "ore" : "ingotIron"
+        },
+        "p": {
+            "type": "forge:ore_dict",
+            "ore" : "plankWood"
+        }
+    }
+}

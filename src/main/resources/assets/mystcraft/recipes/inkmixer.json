@@ -1,0 +1,25 @@
+{
+    "result": {
+        "item": "mystcraft:blockinkmixer",
+        "count": 1
+    },
+    "pattern": [
+        "s s",
+        "svs",
+        "psp"
+    ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "s": {
+            "item": "minecraft:stone",
+            "data": 0
+        },
+        "v": {
+            "item": "minecraft:glass_bottle"
+        },
+        "p": {
+            "type": "forge:ore_dict",
+            "ore" : "plankWood"
+        }
+    }
+}
