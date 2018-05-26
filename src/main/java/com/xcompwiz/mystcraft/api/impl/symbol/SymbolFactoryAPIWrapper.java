@@ -14,8 +14,14 @@ public class SymbolFactoryAPIWrapper extends APIWrapper implements SymbolFactory
 	}
 
 	@Override
+	@Deprecated
 	public IAgeSymbol createSymbol(String ownerModid, IBlockState blockstate, String thirdword, int rank, CategoryPair... pairs) {
-		return InternalAPI.symbolFact.createSymbol(ownerModid, blockstate, thirdword, rank, pairs);
+		return createSymbol(blockstate, thirdword, rank, pairs);
+	}
+
+	@Override
+	public IAgeSymbol createSymbol(IBlockState blockState, String thirdword, int rank, CategoryPair... categories) {
+		return InternalAPI.symbolFact.createSymbol(blockState, thirdword, rank, categories);
 	}
 
 }
