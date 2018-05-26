@@ -14,7 +14,7 @@ public class CTAgeSymbol {
 
     //For words check com.xcompwiz.mystcraft.api.word.WordData in the API for informations and valid entries.
     @ZenMethod
-    public static CTAgeSymbol createBlockSymbol(String word, IBlockState ctBlockState, int cardRank) {
+    public static CTBlockSymbol createBlockSymbol(String word, IBlockState ctBlockState, int cardRank) {
         Object internal = ctBlockState.getInternal();
         if (internal == null || !(internal instanceof net.minecraft.block.state.IBlockState)) {
             CraftTweakerAPI.logError("[MystCraft] Tried to register new SymbolBlock with invalid/missing BlockState!");
