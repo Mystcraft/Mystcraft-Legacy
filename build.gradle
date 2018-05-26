@@ -50,6 +50,10 @@ buildscript {
 	}
 }
 
+apply plugin: 'maven'
+apply plugin: 'com.matthewprenger.cursegradle'
+apply plugin: 'net.minecraftforge.gradle.forge'
+
 repositories {
 	mavenLocal()
 	mavenCentral()
@@ -65,12 +69,15 @@ repositories {
 		name 'MinecraftS3'
 		url 'http://s3.amazonaws.com/Minecraft.Download/libraries'
 	}
+	maven {
+		name 'Crafttweaker'
+		url "http://maven.blamejared.com/"
+	}
 }
 
-apply plugin: 'maven'
-apply plugin: 'com.matthewprenger.cursegradle'
-apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'org.tenne.rest'
+dependencies {
+	deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.2.404"
+}
 
 if (file('locations.gradle').exists()) {
 	apply from: 'locations.gradle'
