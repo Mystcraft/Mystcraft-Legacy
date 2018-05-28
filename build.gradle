@@ -46,6 +46,7 @@ buildscript {
 	dependencies {
 		classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
 		classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.0.8'
+		classpath "org._10ne.gradle:rest-gradle-plugin:0.4.2"
 	}
 }
 
@@ -69,6 +70,7 @@ repositories {
 apply plugin: 'maven'
 apply plugin: 'com.matthewprenger.cursegradle'
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'org.tenne.rest'
 
 if (file('locations.gradle').exists()) {
 	apply from: 'locations.gradle'
@@ -359,6 +361,16 @@ curseforge {
 		// addGameversion "1.7.0", "1.7.4"
 	}
 }
+
+task discord(type: org._10ne.gradle.rest.RestTask) {
+	httpMethod = 'post'
+	uri = pass.discordWebhookTest
+	requestBody = [content: "Mystcraft " + "${-> project.version}" + " is uploading to CurseForge\n```" + project.publishChangelog.text + " ```"]
+	contentType = groovyx.net.http.ContentType.JSON
+}
+
+project.tasks.discord.mustRunAfter markChangelog
+project.tasks.curseforge.dependsOn discord
 
 // deployment stuff
 
