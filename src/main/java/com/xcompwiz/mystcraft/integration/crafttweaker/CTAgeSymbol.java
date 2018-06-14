@@ -1,10 +1,10 @@
 package com.xcompwiz.mystcraft.integration.crafttweaker;
 
 import com.xcompwiz.mystcraft.data.ModSymbolsModifiers;
+
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ZenRegister;
 import crafttweaker.api.block.IBlockState;
-import crafttweaker.api.minecraft.CraftTweakerMC;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
