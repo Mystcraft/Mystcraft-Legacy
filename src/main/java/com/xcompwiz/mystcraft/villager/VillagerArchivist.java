@@ -30,7 +30,7 @@ public class VillagerArchivist extends VillagerRegistry.VillagerProfession imple
 		this.career = new ArchivistCareer(this, "archivist");
 	}
 
-	//Only 1 available. index always 0. don't do unnecessary stuffs, just returning that once instance.
+	//Only 1 available. index always 0. don't do unnecessary stuffs, just returning that one instance.
 	@Override
 	public VillagerRegistry.VillagerCareer getCareer(int id) {
 		return career;
@@ -78,7 +78,7 @@ public class VillagerArchivist extends VillagerRegistry.VillagerProfession imple
 		//Returns a List of a list of potential trades. in the end the villager-logic will call upon the
 		//ITradeList in order to potentially have trades added to its MerchantRecipeList
 		public List<EntityVillager.ITradeList> getTrades(int level) {
-			return Lists.newArrayList(parent); //We don't really care about the level. are recipes are treated level independent for now.
+			return Lists.newArrayList(parent); //We don't really care about the level. our recipes are treated level independent for now.
 		}
 	}
 
