@@ -3,8 +3,8 @@ package com.xcompwiz.mystcraft.block;
 import java.util.List;
 import java.util.Random;
 
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableMap;
+import javax.annotation.Nullable;
+
 import com.google.common.collect.Lists;
 import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
 import com.xcompwiz.mystcraft.data.ModBlocks;
@@ -15,7 +15,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -29,13 +28,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
 
 public class BlockLinkPortal extends BlockBreakable {
 
