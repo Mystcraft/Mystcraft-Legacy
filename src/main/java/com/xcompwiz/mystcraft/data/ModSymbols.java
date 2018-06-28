@@ -189,7 +189,7 @@ public class ModSymbols {
 		registerSymbol(new SymbolAngle(forMyst("ModSouth"), 180.0F, "South"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Chaos);
 		registerSymbol(new SymbolAngle(forMyst("ModWest"), 270.0F, "West"), 0, WordData.Modifier, WordData.Flow, WordData.Motion, WordData.Change);
 		registerSymbol(new SymbolClear(forMyst("ModClear")), 0, WordData.Contradict, WordData.Transform, WordData.Change, WordData.Void);
-		registerSymbol(new SymbolGradient(forMyst("ModGradient")), 0, WordData.Modifier, WordData.Image, WordData.Merge, WordData.Weave);
+		registerSymbol(new SymbolGradient(forMyst("ModGradient")), 1, WordData.Modifier, WordData.Image, WordData.Merge, WordData.Weave);
 		registerSymbol(new SymbolHorizonColor(forMyst("ColorHorizon")), 0, WordData.Modifier, WordData.Image, WordData.Celestial, WordData.Change);
 		registerSymbol(new SymbolLength(forMyst("ModZero"), 0.0F, "Zero Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Inhibit);
 		registerSymbol(new SymbolLength(forMyst("ModHalf"), 0.5F, "Half Length"), 0, WordData.Modifier, WordData.Time, WordData.System, WordData.Stimulate);
