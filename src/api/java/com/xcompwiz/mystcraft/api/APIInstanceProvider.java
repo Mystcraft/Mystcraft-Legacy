@@ -29,11 +29,11 @@ public interface APIInstanceProvider {
 	//@formatter:off
 	/*	Example Usage
  	public static void doMystcraftIntegration() {
- 		if (!Loader.isModLoaded("Mystcraft")) //Note, if the Mystcraft API package isn't included in your packaged code, you'll need to make this check before calling this function
+ 		if (!Loader.isModLoaded("mystcraft")) //Note, if the Mystcraft API package isn't included in your packaged code, you'll need to make this check before calling this function
  			return;
 
- 		APIInstanceProvider provider = APIInstanceProvider.getProviderInstance();
- 		if (!provider)
+ 		APIInstanceProvider provider = MystObjects.entryPoint.getProviderInstance();
+ 		if (provider == null)
 			return;
  		
 		try {
