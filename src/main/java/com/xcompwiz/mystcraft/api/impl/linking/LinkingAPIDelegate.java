@@ -36,8 +36,11 @@ public class LinkingAPIDelegate {
 		LinkOptions link = new LinkOptions(null);
 		link.setDimensionUID(world.provider.getDimension());
 		link.setTargetUUID(DimensionUtils.getDimensionUUID(world.provider.getDimension()));
-		link.setSpawn(new BlockPos(location));
-		link.setSpawnYaw(location.rotationYaw);
+		if (location != null)
+		{
+			link.setSpawn(new BlockPos(location));
+			link.setSpawnYaw(location.rotationYaw);
+		}
 		if(world.provider instanceof WorldProviderMyst) {
 			link.setDisplayName(((WorldProviderMyst) world.provider).getDimensionName());
 		} else {
