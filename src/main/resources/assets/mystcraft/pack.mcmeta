@@ -1,5 +1,6 @@
 {
-   "pack": 1,
-   "description": "Forge Mod Defaults"
+   "pack":{
+      "pack_format":3,
+      "description": "Mystcraft"
    }
 }
