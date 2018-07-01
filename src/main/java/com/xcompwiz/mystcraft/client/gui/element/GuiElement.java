@@ -15,21 +15,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public abstract class GuiElement extends Gui {
 
-	protected Minecraft			mc;
+	protected Minecraft mc;
 
-	private GuiElement			parent;
-	private List<GuiElement>	elements	= new LinkedList<GuiElement>();
+	private GuiElement parent;
+	private List<GuiElement> elements = new LinkedList<GuiElement>();
 
-	private boolean				visible		= true;
-	private boolean				enabled		= true;
+	private boolean visible = true;
+	private boolean enabled = true;
 
-	private int					guiLeft;
-	private int					guiTop;
+	private int guiLeft;
+	private int guiTop;
 
-	protected int				xSize;
-	protected int				ySize;
+	protected int xSize;
+	protected int ySize;
 
-	private float				zLevel;
+	private float zLevel;
 
 	public GuiElement(int guiLeft, int guiTop, int xSize, int ySize) {
 		this.mc = Minecraft.getMinecraft();
@@ -47,12 +47,14 @@ public abstract class GuiElement extends Gui {
 
 	//XXX: Handle anchor points (ex. topright, bottomleft, or center of parent) 
 	public final int getLeft() {
-		if (parent != null) return this.guiLeft + parent.getLeft();
+		if (parent != null)
+			return this.guiLeft + parent.getLeft();
 		return guiLeft;
 	}
 
 	public final int getTop() {
-		if (parent != null) return this.guiTop + parent.getTop();
+		if (parent != null)
+			return this.guiTop + parent.getTop();
 		return guiTop;
 	}
 
@@ -89,12 +91,14 @@ public abstract class GuiElement extends Gui {
 	}
 
 	public float getZLevel() {
-		if (this.parent != null) return this.parent.getZLevel() + this.zLevel;
+		if (this.parent != null)
+			return this.parent.getZLevel() + this.zLevel;
 		return this.zLevel;
 	}
 
 	public void focus() {
-		if (this.parent == null) return;
+		if (this.parent == null)
+			return;
 		this.parent.bringToFront(this);
 		this.parent.focus();
 	}
@@ -186,9 +190,12 @@ public abstract class GuiElement extends Gui {
 	protected void _onTick() {}
 
 	public final boolean onKeyPress(char c, int i) {
-		if (!isEnabled()) return false;
+		if (!isEnabled())
+			return false;
 		for (GuiElement elem : elements) {
-			if (elem.onKeyPress(c, i)) { return true; }
+			if (elem.onKeyPress(c, i)) {
+				return true;
+			}
 		}
 		return this._onKeyPress(c, i);
 	}
@@ -199,7 +206,8 @@ public abstract class GuiElement extends Gui {
 
 	//XXX: Change to onMouseWheel/onMouseMove
 	public final void handleMouseInput() {
-		if (!isEnabled()) return;
+		if (!isEnabled())
+			return;
 		for (GuiElement elem : elements) {
 			elem.handleMouseInput();
 		}
@@ -209,46 +217,62 @@ public abstract class GuiElement extends Gui {
 	protected void _handleMouseInput() {};
 
 	public final boolean onMouseUp(int mouseX, int mouseY, int button) {
-		if (!isEnabled()) return false;
+		if (!isEnabled())
+			return false;
 		for (GuiElement elem : elements) {
-			if (elem.onMouseUp(mouseX, mouseY, button)) { return true; }
+			if (elem.onMouseUp(mouseX, mouseY, button)) {
+				return true;
+			}
 		}
 		return this._onMouseUp(mouseX, mouseY, button);
 	}
 
 	protected boolean _onMouseUp(int mouseX, int mouseY, int button) {
-		if (this.contains(mouseX, mouseY)) { return true; }
+		if (this.contains(mouseX, mouseY)) {
+			return true;
+		}
 		return false;
 	}
 
 	public final boolean onMouseDown(int mouseX, int mouseY, int button) {
-		if (!isEnabled()) return false;
+		if (!isEnabled())
+			return false;
 		for (GuiElement elem : elements) {
-			if (elem.onMouseDown(mouseX, mouseY, button)) { return true; }
+			if (elem.onMouseDown(mouseX, mouseY, button)) {
+				return true;
+			}
 		}
 		return this._onMouseDown(mouseX, mouseY, button);
 	}
 
 	protected boolean _onMouseDown(int mouseX, int mouseY, int button) {
-		if (this.contains(mouseX, mouseY)) { return true; }
+		if (this.contains(mouseX, mouseY)) {
+			return true;
+		}
 		return false;
 	}
 
 	public final boolean onMouseDrag(int mouseX, int mouseY, int clicked_id, long lastclick) {
-		if (!isEnabled()) return false;
+		if (!isEnabled())
+			return false;
 		for (GuiElement elem : elements) {
-			if (elem.onMouseDrag(mouseX, mouseY, clicked_id, lastclick)) { return true; }
+			if (elem.onMouseDrag(mouseX, mouseY, clicked_id, lastclick)) {
+				return true;
+			}
 		}
 		return this._onMouseDrag(mouseX, mouseY, clicked_id, lastclick);
 	}
 
 	protected boolean _onMouseDrag(int mouseX, int mouseY, int clicked_id, long lastclick) {
-		if (this.contains(mouseX, mouseY)) { return true; }
+		if (this.contains(mouseX, mouseY)) {
+			return true;
+		}
 		return false;
 	}
 
 	public final void renderBackground(float f, int mouseX, int mouseY) {
-		if (!isVisible()) return;
+		if (!isVisible())
+			return;
 		this._renderBackground(f, mouseX, mouseY);
 		for (int i = elements.size() - 1; i >= 0; --i) {
 			GuiElement elem = elements.get(i);
@@ -262,7 +286,8 @@ public abstract class GuiElement extends Gui {
 	protected void _renderBackgroundPost(float f, int mouseX, int mouseY) {}
 
 	public final void renderForeground(int mouseX, int mouseY) {
-		if (!isVisible()) return;
+		if (!isVisible())
+			return;
 		this._renderForeground(mouseX, mouseY);
 		for (int i = elements.size() - 1; i >= 0; --i) {
 			GuiElement elem = elements.get(i);
@@ -277,10 +302,13 @@ public abstract class GuiElement extends Gui {
 
 	//TODO: Allow the element to change the font renderer in use (for item's getFontRenderer)
 	public final List<String> getTooltipInfo() {
-		if (!isVisible()) return null;
+		if (!isVisible())
+			return null;
 		for (GuiElement elem : elements) {
 			List<String> list = elem.getTooltipInfo();
-			if (list != null) { return list; }
+			if (list != null) {
+				return list;
+			}
 		}
 		return this._getTooltipInfo();
 	}

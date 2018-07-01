@@ -24,7 +24,8 @@ public class SymbolGradient extends SymbolBase {
 		if (factor == null) {
 			factor = 1.0F;
 		}
-		if (gradient == null) gradient = new ColorGradient();
+		if (gradient == null)
+			gradient = new ColorGradient();
 		gradient.pushColor(controller.popModifier(ModifierUtils.COLOR).asColor(), factor.floatValue());
 		controller.setModifier(ModifierUtils.GRADIENT, gradient);
 	}

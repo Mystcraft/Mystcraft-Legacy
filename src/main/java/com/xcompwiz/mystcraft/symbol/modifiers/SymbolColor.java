@@ -13,9 +13,9 @@ import com.xcompwiz.util.CollectionUtils;
 import net.minecraft.util.ResourceLocation;
 
 public class SymbolColor extends SymbolBase {
-	private float	red;
-	private float	green;
-	private float	blue;
+	private float red;
+	private float green;
+	private float blue;
 
 	public SymbolColor(float r, float g, float b, ResourceLocation identifier) {
 		super(identifier);
@@ -33,8 +33,7 @@ public class SymbolColor extends SymbolBase {
 
 	@Override
 	public ArrayList<Rule> createRules() {
-		return CollectionUtils.buildList(new Rule(GrammarData.COLOR_BASIC,
-				CollectionUtils.buildList(this.getRegistryName()), 1));
+		return CollectionUtils.buildList(new Rule(GrammarData.COLOR_BASIC, CollectionUtils.buildList(this.getRegistryName()), 1));
 	}
 
 	@Override

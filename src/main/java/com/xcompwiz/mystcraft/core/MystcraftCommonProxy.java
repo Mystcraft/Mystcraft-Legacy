@@ -24,7 +24,8 @@ public class MystcraftCommonProxy {
 	public static CreativeTabMyst tabMystPages = null;
 
 	public Entity getEntityByID(World worldObj, int id) {
-		if (worldObj instanceof WorldServer) return worldObj.getEntityByID(id);
+		if (worldObj instanceof WorldServer)
+			return worldObj.getEntityByID(id);
 		return null;
 	}
 
@@ -50,7 +51,8 @@ public class MystcraftCommonProxy {
 		linkproperties.addAll(InkEffects.getProperties());
 		Collections.sort(linkproperties);
 		for (String property : linkproperties) {
-			if(property.equals(LinkPropertyAPI.FLAG_RELATIVE)) continue;
+			if (property.equals(LinkPropertyAPI.FLAG_RELATIVE))
+				continue;
 			ModLinkEffects.isPropertyAllowed(property);
 			//HellFire> have consistency remain with this creating config entries...
 		}
@@ -65,19 +67,19 @@ public class MystcraftCommonProxy {
 	private InstabilityDataCalculator instabilitycalculator;
 
 	/**
-	 * Server-side only logic to start up the instability calculator
-	 * Instability profiling is done differently client-side. (See {@link MystcraftStartupChecker})
+	 * Server-side only logic to start up the instability calculator Instability profiling is done differently client-side. (See
+	 * {@link MystcraftStartupChecker})
 	 * @param mcserver The server object for the game
 	 */
 	public void startBaselineProfiling(MinecraftServer mcserver) {
-		if (InstabilityDataCalculator.isDisabled()) return;
+		if (InstabilityDataCalculator.isDisabled())
+			return;
 		instabilitycalculator = new InstabilityDataCalculator(mcserver, mcserver.getWorld(0).getMapStorage());
 		MinecraftForge.EVENT_BUS.register(instabilitycalculator);
 	}
 
 	/**
-	 * Server-side only logic to stop the instability calculator
-	 * Instability profiling is done differently client-side. (See {@link MystcraftStartupChecker})
+	 * Server-side only logic to stop the instability calculator Instability profiling is done differently client-side. (See {@link MystcraftStartupChecker})
 	 */
 	public void stopBaselineProfiling() {
 		if (instabilitycalculator != null) {

@@ -11,10 +11,10 @@ import net.minecraft.world.World;
 
 public class BonusProvider implements IInstabilityBonusProvider {
 
-	private Class<? extends IInstabilityBonus>			bonusclass;
-	private Object[]									itemCtorArgs;
+	private Class<? extends IInstabilityBonus> bonusclass;
+	private Object[] itemCtorArgs;
 
-	private Constructor<? extends IInstabilityBonus>	itemCtor;
+	private Constructor<? extends IInstabilityBonus> itemCtor;
 
 	public BonusProvider(Class<? extends IInstabilityBonus> bonusclass, Object... itemCtorArgs) {
 		this.bonusclass = bonusclass;

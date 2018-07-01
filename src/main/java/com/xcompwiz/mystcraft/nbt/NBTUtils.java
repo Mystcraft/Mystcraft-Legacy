@@ -146,7 +146,8 @@ public final class NBTUtils {
 
 	public static NBTTagList writeStringCollection(NBTTagList nbttaglist, Collection<String> collection) {
 		for (String str : collection) {
-			if (str == null) continue;
+			if (str == null)
+				continue;
 			nbttaglist.appendTag(new NBTTagString(str));
 		}
 		return nbttaglist;
@@ -161,7 +162,8 @@ public final class NBTUtils {
 
 	public static NBTTagList writeTagCompoundCollection(NBTTagList nbttaglist, Collection<NBTTagCompound> collection) {
 		for (NBTTagCompound tag : collection) {
-			if (tag == null) continue;
+			if (tag == null)
+				continue;
 			nbttaglist.appendTag(tag);
 		}
 		return nbttaglist;
@@ -176,7 +178,8 @@ public final class NBTUtils {
 
 	public static NBTTagList writeItemStackCollection(NBTTagList nbttaglist, Collection<ItemStack> collection) {
 		for (ItemStack itemstack : collection) {
-			if (itemstack.isEmpty()) continue;
+			if (itemstack.isEmpty())
+				continue;
 			nbttaglist.appendTag(itemstack.writeToNBT(new NBTTagCompound()));
 		}
 		return nbttaglist;
@@ -195,7 +198,7 @@ public final class NBTUtils {
 	@Nullable
 	public static NBTTagCompound readNBTTagCompound(ByteBuf data) throws IOException {
 		boolean present = data.readBoolean();
-		if(!present) {
+		if (!present) {
 			return null;
 		}
 		return CompressedStreamTools.read(new ByteBufInputStream(data), NBTSizeTracker.INFINITE);

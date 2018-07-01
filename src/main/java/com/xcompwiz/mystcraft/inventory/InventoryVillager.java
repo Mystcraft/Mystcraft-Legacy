@@ -27,17 +27,17 @@ import javax.annotation.Nonnull;
 
 public class InventoryVillager {
 
-	private static final long	step_size	= 12000;
+	private static final long step_size = 12000;
 
-	private boolean			dirty;
-	private long			lastrestock;
-	private long			lastupdated;
+	private boolean dirty;
+	private long lastrestock;
+	private long lastupdated;
 
-	private EntityVillager	villager;
-	private Random			rand			= new Random();
+	private EntityVillager villager;
+	private Random rand = new Random();
 
-	private ItemStack		pageitems[]		= new ItemStack[3];
-	private int				boostercount	= 5;
+	private ItemStack pageitems[] = new ItemStack[3];
+	private int boostercount = 5;
 
 	public InventoryVillager(EntityVillager villager) {
 		this.villager = villager;
@@ -110,13 +110,16 @@ public class InventoryVillager {
 
 	//Use the handler for querying things, the inventoryPlayer for ease of use for certain methods... *shrugs*
 	public boolean purchaseBooster(IItemHandlerModifiable inventoryHandlerPlayer, InventoryPlayer inventoryHelperPlayer) {
-		if (boostercount <= 0) return false;
+		if (boostercount <= 0)
+			return false;
 		int playerEmeralds = getPlayerEmeralds(inventoryHandlerPlayer);
 		int price = getBoosterCost();
 		ItemStack booster = new ItemStack(ModItems.booster);
-		if (playerEmeralds < price) return false;
+		if (playerEmeralds < price)
+			return false;
 		//Add booster to inventory
-		if (!inventoryHelperPlayer.addItemStackToInventory(booster)) return false; //If fail, abort
+		if (!inventoryHelperPlayer.addItemStackToInventory(booster))
+			return false; //If fail, abort
 		//Remove emeralds from user inventory
 		if (!deductPrice(inventoryHandlerPlayer, inventoryHelperPlayer, price)) {
 			InventoryUtils.removeFromInventory(inventoryHandlerPlayer, booster, 1);
@@ -130,15 +133,19 @@ public class InventoryVillager {
 
 	public boolean purchaseShopItem(IItemHandlerModifiable inventoryHandlerPlayer, InventoryPlayer inventoryHelperPlayer, int index) {
 		ItemStack original = getShopItem(index);
-		if (original.isEmpty()) return false;
+		if (original.isEmpty())
+			return false;
 		ItemStack clone = original.copy();
-		if (clone.getCount() <= 0) return false;
+		if (clone.getCount() <= 0)
+			return false;
 		clone.setCount(1);
 		int price = getShopItemPrice(index);
 		int playerEmeralds = getPlayerEmeralds(inventoryHandlerPlayer);
-		if (playerEmeralds < price) return false;
+		if (playerEmeralds < price)
+			return false;
 		//Add booster to inventory
-		if (!inventoryHelperPlayer.addItemStackToInventory(clone)) return false; //If fail, abort
+		if (!inventoryHelperPlayer.addItemStackToInventory(clone))
+			return false; //If fail, abort
 		//Remove emeralds from user inventory
 		if (!deductPrice(inventoryHandlerPlayer, inventoryHelperPlayer, price)) {
 			InventoryUtils.removeFromInventory(inventoryHandlerPlayer, clone, 1);
@@ -153,7 +160,8 @@ public class InventoryVillager {
 	private boolean deductPrice(IItemHandlerModifiable handlerPlayer, InventoryPlayer inventoryplayer, int price) {
 		int playerchange = InventoryUtils.countInInventory(handlerPlayer, new ItemStack(Items.EMERALD));
 		if (playerchange < price % 9) {
-			if (!inventoryplayer.addItemStackToInventory(new ItemStack(Items.EMERALD, 9))) return false;
+			if (!inventoryplayer.addItemStackToInventory(new ItemStack(Items.EMERALD, 9)))
+				return false;
 			InventoryUtils.removeFromInventory(handlerPlayer, new ItemStack(Blocks.EMERALD_BLOCK), 1);
 		}
 		price = price % 9 + 9 * InventoryUtils.removeFromInventory(handlerPlayer, new ItemStack(Blocks.EMERALD_BLOCK), price / 9);
@@ -188,8 +196,10 @@ public class InventoryVillager {
 
 	public void readFromNBT(NBTTagCompound data) {
 		NBTUtils.readInventoryArray(data.getTagList("Inventory", Constants.NBT.TAG_COMPOUND), this.pageitems);
-		if (data.hasKey("boostercount")) boostercount = data.getInteger("boostercount");
-		if (data.hasKey("lastrestock")) lastrestock = data.getInteger("lastrestock");
+		if (data.hasKey("boostercount"))
+			boostercount = data.getInteger("boostercount");
+		if (data.hasKey("lastrestock"))
+			lastrestock = data.getInteger("lastrestock");
 
 		// Initial generation
 		for (int i = 0; i < pageitems.length; ++i) {

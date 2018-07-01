@@ -35,7 +35,7 @@ public class ItemBoosterPack extends Item {
 
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(worldIn.isRemote) {
+		if (worldIn.isRemote) {
 			return EnumActionResult.PASS;
 		}
 		return EnumActionResult.SUCCESS;
@@ -44,19 +44,19 @@ public class ItemBoosterPack extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack held = playerIn.getHeldItem(handIn);
-		if(worldIn.isRemote) {
+		if (worldIn.isRemote) {
 			return ActionResult.newResult(EnumActionResult.PASS, held);
 		}
 		ItemStack newBooster = generateBooster(ItemStack.EMPTY, playerIn.getRNG(), 7, 4, 4, 1);
-		if(newBooster.isEmpty()) {
+		if (newBooster.isEmpty()) {
 			return ActionResult.newResult(EnumActionResult.PASS, held);
 		}
 		held.shrink(1);
-		if(held.isEmpty()) {
+		if (held.isEmpty()) {
 			playerIn.setHeldItem(handIn, ItemStack.EMPTY);
 			held = newBooster;
 		} else {
-			if(!playerIn.inventory.addItemStackToInventory(newBooster)) {
+			if (!playerIn.inventory.addItemStackToInventory(newBooster)) {
 				held.grow(1);
 				return ActionResult.newResult(EnumActionResult.PASS, held);
 			}
@@ -87,7 +87,8 @@ public class ItemBoosterPack extends Item {
 	private static void addRandomPages(Random rand, IItemPageAcceptor item, @Nonnull ItemStack itemstack, int count, Collection<IAgeSymbol> collection) {
 		for (int i = 0; i < count; ++i) {
 			IAgeSymbol symbol = WeightedItemSelector.getRandomItem(rand, collection, WeightProviderSymbolItem.instance);
-			if (checker(symbol, collection)) continue;
+			if (checker(symbol, collection))
+				continue;
 			item.addPage(null, itemstack, Page.createSymbolPage(symbol.getRegistryName()));
 		}
 	}

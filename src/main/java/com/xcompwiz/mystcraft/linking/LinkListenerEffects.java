@@ -30,7 +30,7 @@ public class LinkListenerEffects {
 			entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, Sounds.SOUND_LINK_DISARM, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
 		} else if (info.getProperty(LinkPropertyAPI.PROP_SOUND) != null) {
 			SoundEvent ev = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(info.getProperty(LinkPropertyAPI.PROP_SOUND)));
-			if(ev != null) {
+			if (ev != null) {
 				entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, ev, SoundCategory.PLAYERS, 0.8F, entity.world.rand.nextFloat() * 0.2F + 0.9F);
 			}
 		} else if (info.getFlag(LinkPropertyAPI.FLAG_FOLLOWING)) {

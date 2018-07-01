@@ -11,7 +11,7 @@ import net.minecraft.inventory.Container;
 
 public abstract class GuiContainerElements extends GuiContainer {
 
-	private GuiElement	rootelement;
+	private GuiElement rootelement;
 
 	public GuiContainerElements(Container container) {
 		super(container);
@@ -58,7 +58,8 @@ public abstract class GuiContainerElements extends GuiContainer {
 	protected final void keyTyped(char c, int i) throws IOException {
 		boolean eaten = rootelement.onKeyPress(c, i);
 		this._keyTyped(c, i, eaten);
-		if (!eaten) super.keyTyped(c, i);
+		if (!eaten)
+			super.keyTyped(c, i);
 	}
 
 	protected void _keyTyped(char c, int i, boolean eaten) {}

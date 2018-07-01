@@ -28,11 +28,12 @@ public class ArrayMappingUtils {
 	//	}
 	//	chunk.setStorageArrays(storageArrays);
 	//}
-	
+
 	//On local indexing, we are incrementing x, then z, then y
 	public static void mapLocalToVanilla(IBlockState[] arr1, IBlockState[] arr2) {
 		int len = arr1.length;
-		if (len != arr2.length) throw new RuntimeException("Cannot map data indicies: Arrays of different lengths");
+		if (len != arr2.length)
+			throw new RuntimeException("Cannot map data indicies: Arrays of different lengths");
 		int maxy = len / 256;
 		for (int y = 0; y < maxy; ++y) {
 			for (int z = 0; z < 16; ++z) {
@@ -48,14 +49,16 @@ public class ArrayMappingUtils {
 	//On vanilla indexing, we increment y, then z, then x
 	public static void mapVanillaToLocal(IBlockState[] arr1, IBlockState[] arr2) {
 		int len = arr1.length;
-		if (len != arr2.length) throw new RuntimeException("Cannot map data indicies: Arrays of different lengths");
+		if (len != arr2.length)
+			throw new RuntimeException("Cannot map data indicies: Arrays of different lengths");
 		int maxy = len / 256;
 		for (int z = 0; z < 16; ++z) {
 			for (int x = 0; x < 16; ++x) {
 				for (int y = 0; y < maxy; ++y) {
 					int lcoords = y << 8 | z << 4 | x;
 					int vcoords = ((x << 4 | z) * maxy) | y;
-					if (y < 6 && Blocks.BEDROCK == arr1[vcoords]) continue; //Filter out biome added bedrock layers
+					if (y < 6 && Blocks.BEDROCK == arr1[vcoords])
+						continue; //Filter out biome added bedrock layers
 					arr2[lcoords] = arr1[vcoords];
 				}
 			}
@@ -65,7 +68,8 @@ public class ArrayMappingUtils {
 	public static void fillPrimerVanillaIndexing(ChunkPrimer cp, IBlockState[] blocks) {
 		for (int i = 0; i < blocks.length; i++) {
 			IBlockState state = blocks[i];
-			if(state == null) continue;
+			if (state == null)
+				continue;
 			BlockPos vanillaIndex = getVanillaPos(i);
 			cp.setBlockState(vanillaIndex.getX(), vanillaIndex.getY(), vanillaIndex.getZ(), state);
 		}
@@ -73,7 +77,7 @@ public class ArrayMappingUtils {
 
 	private static BlockPos getVanillaPos(int index) {
 		int x = (index >> 12) & 15;
-		int z = (index >>  8) & 15;
+		int z = (index >> 8) & 15;
 		int y = index & 255;
 		return new BlockPos(x, y, z);
 	}

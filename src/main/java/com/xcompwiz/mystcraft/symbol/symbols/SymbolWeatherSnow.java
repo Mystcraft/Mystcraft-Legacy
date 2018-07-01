@@ -37,7 +37,8 @@ public class SymbolWeatherSnow extends SymbolBase {
 
 		@Override
 		public float getTemperature(float current, ResourceLocation biomeId) {
-			if (current > 0.10F) return 0.10F;
+			if (current > 0.10F)
+				return 0.10F;
 			return current;
 		}
 	}

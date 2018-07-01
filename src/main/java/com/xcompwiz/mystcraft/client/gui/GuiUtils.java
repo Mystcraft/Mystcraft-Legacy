@@ -81,10 +81,14 @@ public final class GuiUtils {
 			drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(null), s * 2, x + o, y + o);
 			return;
 		}
-		if (words.length > 0) drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[0]), 2 * s, x + o,        y);
-		if (words.length > 1) drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[1]), 2 * s, x + o * 2, y + o);
-		if (words.length > 2) drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[2]), 2 * s, x + o,     y + o * 2);
-		if (words.length > 3) drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[3]), 2 * s,    x,         y + o);
+		if (words.length > 0)
+			drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[0]), 2 * s, x + o, y);
+		if (words.length > 1)
+			drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[1]), 2 * s, x + o * 2, y + o);
+		if (words.length > 2)
+			drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[2]), 2 * s, x + o, y + o * 2);
+		if (words.length > 3)
+			drawWord(renderEngine, zLevel, DrawableWordManager.getDrawableWord(words[3]), 2 * s, x, y + o);
 		GlStateManager.disableBlend();
 	}
 
@@ -132,10 +136,10 @@ public final class GuiUtils {
 		Tessellator tes = Tessellator.getInstance();
 		BufferBuilder vb = tes.getBuffer();
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		vb.pos(x + 0,         y + drawscale, zLevel).tex((iconX + 0)        * transform, (iconY + iconSize) * transform).endVertex();
+		vb.pos(x + 0, y + drawscale, zLevel).tex((iconX + 0) * transform, (iconY + iconSize) * transform).endVertex();
 		vb.pos(x + drawscale, y + drawscale, zLevel).tex((iconX + iconSize) * transform, (iconY + iconSize) * transform).endVertex();
-		vb.pos(x + drawscale, y + 0,         zLevel).tex((iconX + iconSize) * transform, (iconY + 0)        * transform).endVertex();
-		vb.pos(x + 0,         y + 0,         zLevel).tex((iconX + 0)        * transform, (iconY + 0)        * transform).endVertex();
+		vb.pos(x + drawscale, y + 0, zLevel).tex((iconX + iconSize) * transform, (iconY + 0) * transform).endVertex();
+		vb.pos(x + 0, y + 0, zLevel).tex((iconX + 0) * transform, (iconY + 0) * transform).endVertex();
 		tes.draw();
 	}
 
@@ -159,10 +163,10 @@ public final class GuiUtils {
 		Tessellator tes = Tessellator.getInstance();
 		BufferBuilder vb = tes.getBuffer();
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        vb.pos((x + 0),     (y + ySize), zLevel).tex(((u + 0)     * var7), ((v + height) * var8)).endVertex();
-        vb.pos((x + xSize), (y + ySize), zLevel).tex(((u + width) * var7), ((v + height) * var8)).endVertex();
-        vb.pos((x + xSize), (y + 0),     zLevel).tex(((u + width) * var7), ((v + 0)      * var8)).endVertex();
-        vb.pos((x + 0),     (y + 0),     zLevel).tex(((u + 0)     * var7), ((v + 0)      * var8)).endVertex();
+		vb.pos((x + 0), (y + ySize), zLevel).tex(((u + 0) * var7), ((v + height) * var8)).endVertex();
+		vb.pos((x + xSize), (y + ySize), zLevel).tex(((u + width) * var7), ((v + height) * var8)).endVertex();
+		vb.pos((x + xSize), (y + 0), zLevel).tex(((u + width) * var7), ((v + 0) * var8)).endVertex();
+		vb.pos((x + 0), (y + 0), zLevel).tex(((u + 0) * var7), ((v + 0) * var8)).endVertex();
 		tes.draw();
 	}
 
@@ -183,10 +187,10 @@ public final class GuiUtils {
 		Tessellator tes = Tessellator.getInstance();
 		BufferBuilder vb = tes.getBuffer();
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        vb.pos((x + 0),     (y + ySize), zLevel).tex(tas.getMinU(), tas.getMaxV()).endVertex();
-        vb.pos((x + xSize), (y + ySize), zLevel).tex(tas.getMaxU(), tas.getMaxV()).endVertex();
-        vb.pos((x + xSize), (y + 0),     zLevel).tex(tas.getMaxU(), tas.getMinV()).endVertex();
-        vb.pos((x + 0),     (y + 0),     zLevel).tex(tas.getMinU(), tas.getMinV()).endVertex();
+		vb.pos((x + 0), (y + ySize), zLevel).tex(tas.getMinU(), tas.getMaxV()).endVertex();
+		vb.pos((x + xSize), (y + ySize), zLevel).tex(tas.getMaxU(), tas.getMaxV()).endVertex();
+		vb.pos((x + xSize), (y + 0), zLevel).tex(tas.getMaxU(), tas.getMinV()).endVertex();
+		vb.pos((x + 0), (y + 0), zLevel).tex(tas.getMinU(), tas.getMinV()).endVertex();
 		tes.draw();
 	}
 
@@ -212,7 +216,7 @@ public final class GuiUtils {
 
 	@SideOnly(Side.CLIENT)
 	public static void drawFluid(TextureManager render, Fluid fluid, int left, int top, int width, int height, float zLevel) {
-        TextureAtlasSprite tas = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getStill().toString());
+		TextureAtlasSprite tas = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getStill().toString());
 		if (tas == null) {
 			LoggerUtils.warn("Error attepting to render fluid (%s): null icon object.", fluid.getName());
 			return;
@@ -225,7 +229,7 @@ public final class GuiUtils {
 	@SideOnly(Side.CLIENT)
 	public static void drawFluid(TextureManager render, FluidStack fluidstack, int left, int top, int width, int height, float zLevel) {
 		Fluid fluid = fluidstack.getFluid();
-        TextureAtlasSprite tas = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getStill(fluidstack).toString());
+		TextureAtlasSprite tas = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getStill(fluidstack).toString());
 		if (tas == null) {
 			LoggerUtils.warn("Error attepting to render fluid (%s): null icon object.", fluid.getName());
 			return;
@@ -238,18 +242,18 @@ public final class GuiUtils {
 	@SideOnly(Side.CLIENT)
 	public static void drawTooltip(FontRenderer fontRenderer, int xcoord, int ycoord, float zLevel, List<String> list, int maxwidth, int maxheight) {
 		if (list.size() > 0) {
-		    GlStateManager.disableRescaleNormal();
+			GlStateManager.disableRescaleNormal();
 			RenderHelper.disableStandardItemLighting();
 			GlStateManager.disableLighting();
 			GlStateManager.disableDepth();
 
 			int width = 0;
-            for (String aList : list) {
-                int strLength = fontRenderer.getStringWidth(aList);
-                if (strLength > width) {
-                    width = strLength;
-                }
-            }
+			for (String aList : list) {
+				int strLength = fontRenderer.getStringWidth(aList);
+				if (strLength > width) {
+					width = strLength;
+				}
+			}
 
 			int height = 8;
 			if (list.size() > 1) {
@@ -277,16 +281,16 @@ public final class GuiUtils {
 			drawGradientRect(xcoord + width + 2, (ycoord - 3) + 1, xcoord + width + 3, (ycoord + height + 3) - 1, color1, color2, zLevel);
 			drawGradientRect(xcoord - 3, ycoord - 3, xcoord + width + 3, (ycoord - 3) + 1, color1, color1, zLevel);
 			drawGradientRect(xcoord - 3, ycoord + height + 2, xcoord + width + 3, ycoord + height + 3, color2, color2, zLevel);
-            for (String str : list) {
-                str = (new StringBuilder()).append("\247F").append(str).toString();
-                fontRenderer.drawStringWithShadow(str, xcoord, ycoord, -1);
-                ycoord += 10;
-            }
+			for (String str : list) {
+				str = (new StringBuilder()).append("\247F").append(str).toString();
+				fontRenderer.drawStringWithShadow(str, xcoord, ycoord, -1);
+				ycoord += 10;
+			}
 
 			zLevel = 0.0F;
 			// itemRenderer.zLevel = 0.0F;
-            GlStateManager.enableLighting();
-            GlStateManager.enableDepth();
+			GlStateManager.enableLighting();
+			GlStateManager.enableDepth();
 			RenderHelper.enableGUIStandardItemLighting();
 		}
 	}
@@ -296,9 +300,9 @@ public final class GuiUtils {
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void drawGradientRect(float par1, float par2, float par3, float par4, int color1, int color2, float zLevel) {
-		float alpha1  = (color1 >> 24 & 255) / 255.0F;
-		float red1  = (color1 >> 16 & 255) / 255.0F;
-		float green1  = (color1 >> 8 & 255) / 255.0F;
+		float alpha1 = (color1 >> 24 & 255) / 255.0F;
+		float red1 = (color1 >> 16 & 255) / 255.0F;
+		float green1 = (color1 >> 8 & 255) / 255.0F;
 		float blue1 = (color1 & 255) / 255.0F;
 
 		float alpha2 = (color2 >> 24 & 255) / 255.0F;
@@ -315,23 +319,27 @@ public final class GuiUtils {
 		Tessellator tes = Tessellator.getInstance();
 		BufferBuilder vb = tes.getBuffer();
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        vb.pos(par3, par2, zLevel).color(red1, green1, blue1, alpha1).endVertex();
-        vb.pos(par1, par2, zLevel).color(red1, green1, blue1, alpha1).endVertex();
-        vb.pos(par1, par4, zLevel).color(red2, green2, blue2, alpha2).endVertex();
-        vb.pos(par3, par4, zLevel).color(red2, green2, blue2, alpha2).endVertex();
+		vb.pos(par3, par2, zLevel).color(red1, green1, blue1, alpha1).endVertex();
+		vb.pos(par1, par2, zLevel).color(red1, green1, blue1, alpha1).endVertex();
+		vb.pos(par1, par4, zLevel).color(red2, green2, blue2, alpha2).endVertex();
+		vb.pos(par3, par4, zLevel).color(red2, green2, blue2, alpha2).endVertex();
 		tes.draw();
 
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-        GlStateManager.disableBlend();
-        GlStateManager.enableAlpha();
-        GlStateManager.enableTexture2D();
+		GlStateManager.shadeModel(GL11.GL_FLAT);
+		GlStateManager.disableBlend();
+		GlStateManager.enableAlpha();
+		GlStateManager.enableTexture2D();
 	}
 
 	public static boolean contains(int mouseX, int mouseY, int guiLeft, int guiTop, int width, int height) {
-		if (mouseX < guiLeft) return false;
-		if (mouseX >= guiLeft + width) return false;
-		if (mouseY < guiTop) return false;
-		if (mouseY >= guiTop + height) return false;
+		if (mouseX < guiLeft)
+			return false;
+		if (mouseX >= guiLeft + width)
+			return false;
+		if (mouseY < guiTop)
+			return false;
+		if (mouseY >= guiTop + height)
+			return false;
 		return true;
 	}
 
@@ -341,33 +349,33 @@ public final class GuiUtils {
 	@SideOnly(Side.CLIENT)
 	public static void drawSprite(int x, int y, int xOffset, int yOffset, float zLevel) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(Vanilla.slot_tex);
-        Tessellator tes = Tessellator.getInstance();
-        BufferBuilder vb = tes.getBuffer();
-        vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        vb.pos((x + 0),  (y + 18), zLevel).tex(((xOffset + 0)  * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
-        vb.pos((x + 18), (y + 18), zLevel).tex(((xOffset + 18) * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
-        vb.pos((x + 18), (y + 0),  zLevel).tex(((xOffset + 18) * 0.0078125F), ((yOffset + 0)  * 0.0078125F)).endVertex();
-        vb.pos((x + 0),  (y + 0),  zLevel).tex(((xOffset + 0)  * 0.0078125F), ((yOffset + 0)  * 0.0078125F)).endVertex();
-        tes.draw();
+		Tessellator tes = Tessellator.getInstance();
+		BufferBuilder vb = tes.getBuffer();
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		vb.pos((x + 0), (y + 18), zLevel).tex(((xOffset + 0) * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
+		vb.pos((x + 18), (y + 18), zLevel).tex(((xOffset + 18) * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
+		vb.pos((x + 18), (y + 0), zLevel).tex(((xOffset + 18) * 0.0078125F), ((yOffset + 0) * 0.0078125F)).endVertex();
+		vb.pos((x + 0), (y + 0), zLevel).tex(((xOffset + 0) * 0.0078125F), ((yOffset + 0) * 0.0078125F)).endVertex();
+		tes.draw();
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void drawSprite(int x, int y, int xSize, int ySize, int xOffset, int yOffset, float zLevel) {
 		Minecraft.getMinecraft().renderEngine.bindTexture(Vanilla.slot_tex);
-        Tessellator tes = Tessellator.getInstance();
-        BufferBuilder vb = tes.getBuffer();
-        vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        vb.pos((x + 0),     (y + ySize), zLevel).tex(((xOffset + 0)  * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
-        vb.pos((x + xSize), (y + ySize), zLevel).tex(((xOffset + 18) * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
-        vb.pos((x + xSize), (y + 0),     zLevel).tex(((xOffset + 18) * 0.0078125F), ((yOffset + 0)  * 0.0078125F)).endVertex();
-        vb.pos((x + 0),     (y + 0),     zLevel).tex(((xOffset + 0)  * 0.0078125F), ((yOffset + 0)  * 0.0078125F)).endVertex();
-        tes.draw();
+		Tessellator tes = Tessellator.getInstance();
+		BufferBuilder vb = tes.getBuffer();
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		vb.pos((x + 0), (y + ySize), zLevel).tex(((xOffset + 0) * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
+		vb.pos((x + xSize), (y + ySize), zLevel).tex(((xOffset + 18) * 0.0078125F), ((yOffset + 18) * 0.0078125F)).endVertex();
+		vb.pos((x + xSize), (y + 0), zLevel).tex(((xOffset + 18) * 0.0078125F), ((yOffset + 0) * 0.0078125F)).endVertex();
+		vb.pos((x + 0), (y + 0), zLevel).tex(((xOffset + 0) * 0.0078125F), ((yOffset + 0) * 0.0078125F)).endVertex();
+		tes.draw();
 	}
 
 	// TODO: (Visuals) Padding and alignment for scaled text
 	@SideOnly(Side.CLIENT)
 	public static void drawScaledText(String text, int x, int y, int width, int height, int textcolor) {
-	    GlStateManager.pushMatrix();
+		GlStateManager.pushMatrix();
 		float scale = 1;
 		int xPad = 0, yPad = 0;
 		int textWidth = Minecraft.getMinecraft().fontRenderer.getStringWidth(text);
@@ -380,7 +388,7 @@ public final class GuiUtils {
 		GlStateManager.popMatrix();
 	}
 
-	private static List<int[]>	scissors	= new LinkedList<>();
+	private static List<int[]> scissors = new LinkedList<>();
 
 	/**
 	 * Clips rendering from top left corner, using Minecraft GUI coords. Don't forget to call endGlScissor after rendering. Edited by XCompWiz to support

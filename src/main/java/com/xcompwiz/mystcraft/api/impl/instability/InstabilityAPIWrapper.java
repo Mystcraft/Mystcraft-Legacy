@@ -20,7 +20,7 @@ public class InstabilityAPIWrapper extends APIWrapper implements InstabilityAPI 
 
 	@Override
 	public void addCards(String deck, String identifier, int count) {
-		InternalAPI.instability.addCards(deck, identifier, count);		
+		InternalAPI.instability.addCards(deck, identifier, count);
 	}
 
 	@Override

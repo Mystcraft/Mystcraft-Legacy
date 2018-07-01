@@ -38,15 +38,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldProviderMyst extends WorldProvider {
 
-	public int					ageUID;
-	public AgeData				agedata;
-	private AgeController		controller;
-	private BiomeWrapperManager	biomeManager;
-	private SkyRendererMyst		skyrenderer;
-	private CloudRendererMyst	cloudrenderer;
-	private WeatherRendererMyst	weatherrenderer;
+	public int ageUID;
+	public AgeData agedata;
+	private AgeController controller;
+	private BiomeWrapperManager biomeManager;
+	private SkyRendererMyst skyrenderer;
+	private CloudRendererMyst cloudrenderer;
+	private WeatherRendererMyst weatherrenderer;
 
-	private int					emptyTicks;
+	private int emptyTicks;
 
 	public WorldProviderMyst() {
 		super();
@@ -84,7 +84,8 @@ public class WorldProviderMyst extends WorldProvider {
 	}
 
 	public void setWorldInfo() {
-		if (world.getWorldInfo() instanceof WorldInfoMyst) return;
+		if (world.getWorldInfo() instanceof WorldInfoMyst)
+			return;
 		ObfuscationReflectionHelper.setPrivateValue(World.class, world, new WorldInfoMyst(this, world.getWorldInfo()), "worldInfo", "field_72986_A");
 	}
 
@@ -129,7 +130,7 @@ public class WorldProviderMyst extends WorldProvider {
 		return getAgeController().calculateCelestialAngle(time, partialtick);
 	}
 
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	@Override
 	public Vec3d getFogColor(float celestial_angle, float partialtick) {
 		//XXX: Is this safe enough?  Should I do something more robust?
@@ -155,7 +156,7 @@ public class WorldProviderMyst extends WorldProvider {
 		return fog;
 	}
 
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	@Override
 	public Vec3d getCloudColor(float partialtick) {
 		float celestial_angle = world.getCelestialAngle(partialtick);
@@ -246,12 +247,16 @@ public class WorldProviderMyst extends WorldProvider {
 		int y = pos.getY();
 		temp = this.getAgeController().getTemperatureAtHeight(temp, y);
 
-		if (temp > 0.15F) { return false; }
+		if (temp > 0.15F) {
+			return false;
+		}
 		if (y >= 0 && y < 256 && world.getLightFor(EnumSkyBlock.BLOCK, pos) < 10) {
 			IBlockState blockstate = world.getBlockState(pos);
 
-			if ((blockstate.getBlock() == Blocks.WATER || blockstate.getBlock() == Blocks.FLOWING_WATER) && ((Integer)blockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0) {
-				if (!reqLand) { return true; }
+			if ((blockstate.getBlock() == Blocks.WATER || blockstate.getBlock() == Blocks.FLOWING_WATER) && ((Integer) blockstate.getValue(BlockLiquid.LEVEL)).intValue() == 0) {
+				if (!reqLand) {
+					return true;
+				}
 
 				boolean canFreeze = true;
 
@@ -285,12 +290,16 @@ public class WorldProviderMyst extends WorldProvider {
 		int y = pos.getY();
 		temp = this.getAgeController().getTemperatureAtHeight(temp, y);
 
-		if (temp > 0.15F) { return false; }
+		if (temp > 0.15F) {
+			return false;
+		}
 
 		if (y >= 0 && y < 256 && world.getLightFor(EnumSkyBlock.BLOCK, pos) < 10) {
 			IBlockState blockstate = world.getBlockState(pos);
 
-			if ((blockstate == null || blockstate.getBlock().isAir(blockstate, world, pos)) && Blocks.SNOW_LAYER.canPlaceBlockAt(world, pos)) { return true; }
+			if ((blockstate == null || blockstate.getBlock().isAir(blockstate, world, pos)) && Blocks.SNOW_LAYER.canPlaceBlockAt(world, pos)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -324,12 +333,13 @@ public class WorldProviderMyst extends WorldProvider {
 		this.world.prevThunderingStrength = this.world.thunderingStrength;
 		this.world.thunderingStrength = this.getAgeController().getWeatherController().getStormStrength();
 
-		if (world.isRemote || !(world instanceof WorldServer)) return;
+		if (world.isRemote || !(world instanceof WorldServer))
+			return;
 		WorldServer world = (WorldServer) this.world;
 		if (this.world.playerEntities.isEmpty()) {
 			if (emptyTicks == 10) {
-			    world.getChunkProvider().queueUnloadAll();
-            }
+				world.getChunkProvider().queueUnloadAll();
+			}
 			++emptyTicks;
 		} else {
 			emptyTicks = 0;
@@ -344,7 +354,7 @@ public class WorldProviderMyst extends WorldProvider {
 				NetworkUtils.sendAgeData((EntityPlayer) player, this.getDimension());
 			}
 		}
-    }
+	}
 
 	private long timeToSunrise() {
 		return getAgeController().getTimeToSunrise(this.getWorldTime());
@@ -413,8 +423,12 @@ public class WorldProviderMyst extends WorldProvider {
 		BlockPos blockpos = new BlockPos(x, 0, z);
 		blockpos = world.getTopSolidOrLiquidBlock(blockpos);
 		IBlockState block = world.getBlockState(blockpos);
-		if (block.getBlock() == Blocks.BEDROCK) { return false; }
-		if (world.isAirBlock(blockpos)) { return false; }
+		if (block.getBlock() == Blocks.BEDROCK) {
+			return false;
+		}
+		if (world.isAirBlock(blockpos)) {
+			return false;
+		}
 		return block.getMaterial().blocksMovement();
 	}
 
@@ -533,7 +547,8 @@ public class WorldProviderMyst extends WorldProvider {
 				agedata = AgeData.getAge(ageUID, false);
 			}
 		}
-		if (agedata == null) return "Age " + ageUID;
+		if (agedata == null)
+			return "Age " + ageUID;
 		return agedata.getAgeName();
 	}
 
@@ -572,17 +587,17 @@ public class WorldProviderMyst extends WorldProvider {
 		return getAgeController().getWeatherController().getEnableRain(canSpawnLightningBolt, biomeId);
 	}
 
-    @Override
-    public boolean hasSkyLight() {
-        return true;
-    }
+	@Override
+	public boolean hasSkyLight() {
+		return true;
+	}
 
 	@Override
 	public boolean isNether() {
 		return false;
 	}
 
-    @Override
+	@Override
 	public DimensionType getDimensionType() {
 		return Mystcraft.dimensionType;
 	}

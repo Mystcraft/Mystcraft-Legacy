@@ -33,8 +33,10 @@ public class SymbolColorSkyNatural extends SymbolBase {
 		public Color getColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick) {
 			float alpha = MathHelper.cos(celestial_angle * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
 
-			if (alpha < 0.0F) alpha = 0.0F;
-			if (alpha > 1.0F) alpha = 1.0F;
+			if (alpha < 0.0F)
+				alpha = 0.0F;
+			if (alpha > 1.0F)
+				alpha = 1.0F;
 
 			float var8 = biome.getTemperature(entity.getPosition());
 			int var9 = getSkyColorByTemp(var8);

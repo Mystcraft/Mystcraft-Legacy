@@ -32,7 +32,8 @@ public class SymbolStrongholds extends SymbolBase {
 
 	@Override
 	public int instabilityModifier(int count) {
-		if (count > 3) return 100;
+		if (count > 3)
+			return 100;
 		return 0;
 	}
 

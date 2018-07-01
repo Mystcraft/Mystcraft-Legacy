@@ -30,16 +30,21 @@ import net.minecraftforge.common.MinecraftForge;
 public class LinkController {
 
 	public static boolean travelEntity(World world, Entity entity, ILinkInfo info) {
-		if (world.isRemote) return false;
-		if (info == null) return false;
+		if (world.isRemote)
+			return false;
+		if (info == null)
+			return false;
 		info = info.clone();
 		Integer dimension = info.getDimensionUID();
-		if (dimension == null) return false;
+		if (dimension == null)
+			return false;
 		BlockPos spawn = info.getSpawn();
 		float yaw = info.getSpawnYaw();
-		if (!LinkListenerManager.isLinkPermitted(world, entity, info)) return false;
+		if (!LinkListenerManager.isLinkPermitted(world, entity, info))
+			return false;
 		MinecraftServer mcServer = Mystcraft.sidedProxy.getMCServer();
-		if (mcServer == null || (dimension != 0 && !mcServer.getAllowNether())) return false;
+		if (mcServer == null || (dimension != 0 && !mcServer.getAllowNether()))
+			return false;
 		WorldServer newworld = mcServer.getWorld(dimension);
 		if (newworld == null) {
 			System.err.println("Cannot Link Entity to Dimension: Could not get World for Dimension " + dimension);
@@ -70,9 +75,9 @@ public class LinkController {
 		if (!LinkListenerManager.isLinkPermitted(origin, entity, info)) {
 			return null;
 		}
-        if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(entity, dimension)) {
-		    return null;
-        }
+		if (!net.minecraftforge.common.ForgeHooks.onTravelToDimension(entity, dimension)) {
+			return null;
+		}
 		Entity mount = entity.getRidingEntity();
 		if (mount != null) {
 			entity.dismountRidingEntity();
@@ -142,7 +147,7 @@ public class LinkController {
 			if (changingworlds) {
 				//Removing being done way above
 				player.getServerWorld().getPlayerChunkMap().addPlayer(player);
-				player.getServerWorld().getChunkProvider().provideChunk((int)player.posX >> 4, (int)player.posZ >> 4);
+				player.getServerWorld().getChunkProvider().provideChunk((int) player.posX >> 4, (int) player.posZ >> 4);
 			}
 			player.connection.setPlayerLocation(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5, player.rotationYaw, player.rotationPitch);
 		}
@@ -199,7 +204,7 @@ public class LinkController {
 		int j1 = MathHelper.floor(axisalignedbb.maxZ + 1.0D);
 		for (int k1 = i; k1 < j; k1++) {
 			for (int l1 = i1; l1 < j1; l1++) {
-				if(!world.isBlockLoaded(new BlockPos(k1, 128 / 2, l1))) {
+				if (!world.isBlockLoaded(new BlockPos(k1, 128 / 2, l1))) {
 					continue;
 				}
 				for (int i2 = k - 1; i2 < l; i2++) {

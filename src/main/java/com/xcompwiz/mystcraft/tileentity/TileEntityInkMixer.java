@@ -32,14 +32,14 @@ public class TileEntityInkMixer extends TileEntityBase implements IItemBuilder, 
 
 	private IOInventory inventory;
 
-	private boolean					hasInk				= false;
-	private HashMap<String, Float>	ink_probabilities	= new HashMap<>();
+	private boolean hasInk = false;
+	private HashMap<String, Float> ink_probabilities = new HashMap<>();
 
-	private long					next_seed;
+	private long next_seed;
 
-	private static final int		ink_in				= 0;
-	private static final int		ink_out				= 2;
-	private static final int		paper				= 1;
+	private static final int ink_in = 0;
+	private static final int ink_out = 2;
+	private static final int paper = 1;
 
 	public TileEntityInkMixer() {
 		next_seed = new Random().nextLong();
@@ -47,49 +47,50 @@ public class TileEntityInkMixer extends TileEntityBase implements IItemBuilder, 
 	}
 
 	protected IOInventory buildInventory() {
-	    return new IOInventory(this, new int[] { ink_in, paper }, new int[] { ink_out }, EnumFacing.VALUES)
-                .setListener(this)
-                .applyFilter(this, ink_in, paper);
-    }
+		return new IOInventory(this, new int[] { ink_in, paper }, new int[] { ink_out }, EnumFacing.VALUES).setListener(this).applyFilter(this, ink_in, paper);
+	}
 
-    @Override
-    public void onChange() {
-        markForUpdate();
-    }
+	@Override
+	public void onChange() {
+		markForUpdate();
+	}
 
-    @Override
-    public boolean canAcceptItem(int slot, @Nonnull ItemStack stack) {
-	    if(stack.isEmpty()) return false;
-	    if(slot == ink_in) {
-	        FluidStack fluidStack = FluidUtil.getFluidContained(stack);
-	        if(fluidStack != null) {
-	            return Mystcraft.validInks.contains(fluidStack.getFluid().getName());
-            }
-        }
-	    if(slot == paper && stack.getItem().equals(Items.PAPER)) return true;
-        return false;
-    }
+	@Override
+	public boolean canAcceptItem(int slot, @Nonnull ItemStack stack) {
+		if (stack.isEmpty())
+			return false;
+		if (slot == ink_in) {
+			FluidStack fluidStack = FluidUtil.getFluidContained(stack);
+			if (fluidStack != null) {
+				return Mystcraft.validInks.contains(fluidStack.getFluid().getName());
+			}
+		}
+		if (slot == paper && stack.getItem().equals(Items.PAPER))
+			return true;
+		return false;
+	}
 
-    @Override
-    public void readCustomNBT(NBTTagCompound compound) {
-        super.readCustomNBT(compound);
+	@Override
+	public void readCustomNBT(NBTTagCompound compound) {
+		super.readCustomNBT(compound);
 
-        this.inventory.readNBT(compound.getCompoundTag("inventory"));
-        this.hasInk = compound.getBoolean("ink");
-        this.ink_probabilities = NBTUtils.readFloatMap(compound.getCompoundTag("probabilities"), new HashMap<>());
-    }
+		this.inventory.readNBT(compound.getCompoundTag("inventory"));
+		this.hasInk = compound.getBoolean("ink");
+		this.ink_probabilities = NBTUtils.readFloatMap(compound.getCompoundTag("probabilities"), new HashMap<>());
+	}
 
-    @Override
-    public void writeCustomNBT(NBTTagCompound compound) {
-        super.writeCustomNBT(compound);
-        compound.setTag("inventory", this.inventory.writeNBT());
-        compound.setBoolean("ink", this.hasInk);
-        compound.setTag("probabilities", NBTUtils.writeFloatMap(new NBTTagCompound(), this.ink_probabilities));
-    }
+	@Override
+	public void writeCustomNBT(NBTTagCompound compound) {
+		super.writeCustomNBT(compound);
+		compound.setTag("inventory", this.inventory.writeNBT());
+		compound.setBoolean("ink", this.hasInk);
+		compound.setTag("probabilities", NBTUtils.writeFloatMap(new NBTTagCompound(), this.ink_probabilities));
+	}
 
 	@Override
 	public void buildItem(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer player) {
-		if (!canBuildItem()) return;
+		if (!canBuildItem())
+			return;
 		if (itemstack.getItem() instanceof ItemPage) {
 			Random rand = new Random(next_seed);
 			for (Entry<String, Float> entry : ink_probabilities.entrySet()) {
@@ -110,12 +111,13 @@ public class TileEntityInkMixer extends TileEntityBase implements IItemBuilder, 
 	}
 
 	private boolean canBuildItem() {
-	    return !this.inventory.getStackInSlot(paper).isEmpty() && this.inventory.getStackInSlot(paper).getItem().equals(Items.PAPER) && hasInk;
+		return !this.inventory.getStackInSlot(paper).isEmpty() && this.inventory.getStackInSlot(paper).getItem().equals(Items.PAPER) && hasInk;
 	}
 
-    @Nonnull
-    public ItemStack getCraftedItem() {
-		if (!canBuildItem()) return ItemStack.EMPTY;
+	@Nonnull
+	public ItemStack getCraftedItem() {
+		if (!canBuildItem())
+			return ItemStack.EMPTY;
 		return Page.createLinkPage();
 	}
 
@@ -135,38 +137,40 @@ public class TileEntityInkMixer extends TileEntityBase implements IItemBuilder, 
 		this.next_seed = seed;
 	}
 
-    @Override
-    public void update() {
-        if(world.isRemote) return;
+	@Override
+	public void update() {
+		if (world.isRemote)
+			return;
 
-        if(!this.inventory.getStackInSlot(ink_in).isEmpty() && !hasInk) {
-            ItemStack fluidContainer = this.inventory.getStackInSlot(ink_in);
-            ItemStack emptyContainer = fluidContainer.getItem().getContainerItem(fluidContainer);
-            if(emptyContainer.isEmpty() || mergeItemStacksLeft(this.inventory.getStackInSlot(ink_out), emptyContainer) != this.inventory.getStackInSlot(ink_out)) {
-                ItemStack result = fillBasinWithContainer(fluidContainer);
-                if(!result.isEmpty()) {
-                    this.inventory.setStackInSlot(ink_out, mergeItemStacksLeft(this.inventory.getStackInSlot(ink_out), result));
-                    if(fluidContainer.getCount() <= 0) {
-                        this.inventory.setStackInSlot(ink_in, ItemStack.EMPTY);
-                    }
-                }
-            }
-        }
-    }
+		if (!this.inventory.getStackInSlot(ink_in).isEmpty() && !hasInk) {
+			ItemStack fluidContainer = this.inventory.getStackInSlot(ink_in);
+			ItemStack emptyContainer = fluidContainer.getItem().getContainerItem(fluidContainer);
+			if (emptyContainer.isEmpty() || mergeItemStacksLeft(this.inventory.getStackInSlot(ink_out), emptyContainer) != this.inventory.getStackInSlot(ink_out)) {
+				ItemStack result = fillBasinWithContainer(fluidContainer);
+				if (!result.isEmpty()) {
+					this.inventory.setStackInSlot(ink_out, mergeItemStacksLeft(this.inventory.getStackInSlot(ink_out), result));
+					if (fluidContainer.getCount() <= 0) {
+						this.inventory.setStackInSlot(ink_in, ItemStack.EMPTY);
+					}
+				}
+			}
+		}
+	}
+
 	// XXX: (Fluids) Handle fluids better
-    // Hellfire> +1 that ^ - will do. eventually. TODO use forge's FluidUtil to do fluids 'better'
-    @Nonnull
-    private ItemStack fillBasinWithContainer(@Nonnull ItemStack containerStack) {
+	// Hellfire> +1 that ^ - will do. eventually. TODO use forge's FluidUtil to do fluids 'better'
+	@Nonnull
+	private ItemStack fillBasinWithContainer(@Nonnull ItemStack containerStack) {
 		ItemStack container = containerStack.copy();
 		container.setCount(1);
 		FluidStack contained = FluidUtil.getFluidContained(container);
 		if (contained != null) {
 			if (!Mystcraft.validInks.contains(contained.getFluid().getName())) {
-			    return ItemStack.EMPTY;
-            }
+				return ItemStack.EMPTY;
+			}
 			int used = Fluid.BUCKET_VOLUME;
 			if (used == contained.amount) {
-			    containerStack.shrink(1);
+				containerStack.shrink(1);
 				hasInk = true;
 				container = FluidUtils.emptyContainer(container);
 				return container;
@@ -175,10 +179,12 @@ public class TileEntityInkMixer extends TileEntityBase implements IItemBuilder, 
 		return ItemStack.EMPTY;
 	}
 
-    @Nonnull
-    private ItemStack mergeItemStacksLeft(@Nonnull ItemStack left, @Nonnull ItemStack right) {
-		if (right.isEmpty()) return left;
-		if (left.isEmpty()) return right;
+	@Nonnull
+	private ItemStack mergeItemStacksLeft(@Nonnull ItemStack left, @Nonnull ItemStack right) {
+		if (right.isEmpty())
+			return left;
+		if (left.isEmpty())
+			return right;
 		if (left.getItem() != right.getItem()) {
 			return left;
 		} else if (left.hasTagCompound() != right.hasTagCompound()) {
@@ -188,7 +194,7 @@ public class TileEntityInkMixer extends TileEntityBase implements IItemBuilder, 
 		} else if (left.getItem().getHasSubtypes() && left.getItemDamage() != right.getItemDamage()) {
 			return left;
 		} else if (left.getCount() + right.getCount() > left.getMaxStackSize()) {
-		    return left;
+			return left;
 		}
 		left = left.copy();
 		left.grow(right.getCount());
@@ -202,32 +208,38 @@ public class TileEntityInkMixer extends TileEntityBase implements IItemBuilder, 
 
 	@Nonnull
 	public ItemStack addItems(@Nonnull ItemStack itemstack, int amount) {
-        Map<String, Float> itemprobs = InkEffects.getItemEffects(itemstack);
+		Map<String, Float> itemprobs = InkEffects.getItemEffects(itemstack);
 
-		if (itemprobs == null) return itemstack;
+		if (itemprobs == null)
+			return itemstack;
 
 		float total = 0.0F;
 		for (Entry<String, Float> entry : itemprobs.entrySet()) {
-			if (entry.getKey().equals("")) continue;
-			if (!isPropertyAllowed(entry.getKey())) continue;
+			if (entry.getKey().equals(""))
+				continue;
+			if (!isPropertyAllowed(entry.getKey()))
+				continue;
 			total += entry.getValue();
 		}
 		float inverse = 1 - total;
 
 		if (amount > itemstack.getCount()) {
-		    amount = itemstack.getCount();
-        }
+			amount = itemstack.getCount();
+		}
 		for (int i = 0; i < amount; ++i) {
-		    itemstack.shrink(1);
+			itemstack.shrink(1);
 			for (Entry<String, Float> entry : ink_probabilities.entrySet()) {
 				entry.setValue(entry.getValue() * inverse);
 			}
 			for (Entry<String, Float> entry : itemprobs.entrySet()) {
-				if (entry.getKey().equals("")) continue;
-				if (!isPropertyAllowed(entry.getKey())) continue;
+				if (entry.getKey().equals(""))
+					continue;
+				if (!isPropertyAllowed(entry.getKey()))
+					continue;
 				float prob = entry.getValue();
 				Float f = ink_probabilities.get(entry.getKey());
-				if (f != null) prob += f;
+				if (f != null)
+					prob += f;
 				ink_probabilities.put(entry.getKey(), prob);
 			}
 		}
@@ -247,26 +259,26 @@ public class TileEntityInkMixer extends TileEntityBase implements IItemBuilder, 
 			entry.setValue(entry.getValue() * inverse);
 		}
 		if (trait.equals("")) {
-		    return;
-        }
+			return;
+		}
 		Float f = ink_probabilities.get(trait);
 		if (f != null) {
-		    prob += f;
-        }
+			prob += f;
+		}
 		ink_probabilities.put(trait, prob);
 	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.inventory.hasCapability(facing);
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.inventory.hasCapability(facing);
+	}
 
-    @Nullable
-    @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return (T) this.inventory.getCapability(facing);
-        }
-        return null;
-    }
+	@Nullable
+	@Override
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			return (T) this.inventory.getCapability(facing);
+		}
+		return null;
+	}
 }

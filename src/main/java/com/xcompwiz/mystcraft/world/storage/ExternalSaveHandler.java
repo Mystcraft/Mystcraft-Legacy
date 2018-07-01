@@ -20,9 +20,9 @@ import net.minecraft.world.storage.WorldInfo;
 
 public class ExternalSaveHandler implements ISaveHandler {
 	/** The directory in which to save world data. */
-	private final File			mapDataDir;
+	private final File mapDataDir;
 	/** The time in milliseconds when this field was initialized. Stored in the session lock file. */
-	private final long			initializationTime	= MinecraftServer.getCurrentTimeMillis();
+	private final long initializationTime = MinecraftServer.getCurrentTimeMillis();
 
 	public ExternalSaveHandler(File directory, String savename) {
 		this.mapDataDir = new File(directory, savename);
@@ -67,7 +67,9 @@ public class ExternalSaveHandler implements ISaveHandler {
 			DataInputStream datainputstream = new DataInputStream(new FileInputStream(file1));
 
 			try {
-				if (datainputstream.readLong() != this.initializationTime) { throw new MinecraftException("The save is being accessed from another location, aborting"); }
+				if (datainputstream.readLong() != this.initializationTime) {
+					throw new MinecraftException("The save is being accessed from another location, aborting");
+				}
 			} finally {
 				datainputstream.close();
 			}

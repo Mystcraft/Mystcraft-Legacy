@@ -63,7 +63,7 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 	@Nonnull
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn) {
 		ItemStack held = playerIn.getHeldItem(handIn);
-		if(worldIn.isRemote) {
+		if (worldIn.isRemote) {
 			return ActionResult.newResult(EnumActionResult.PASS, held);
 		}
 		playerIn.openGui(Mystcraft.instance, ModGUIs.PORTFOLIO.ordinal(), worldIn, MathHelper.floor(playerIn.posX + 0.5D), MathHelper.floor(playerIn.posY + 0.5D), MathHelper.floor(playerIn.posZ + 0.5D));
@@ -73,11 +73,12 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 	@Override
 	@Nullable
 	public String getDisplayName(@Nullable EntityPlayer player, @Nonnull ItemStack stack) {
-		if (stack.isEmpty()) return null;
+		if (stack.isEmpty())
+			return null;
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
-		if(!stack.getTagCompound().hasKey("Name")) {
+		if (!stack.getTagCompound().hasKey("Name")) {
 			return null;
 		}
 		return stack.getTagCompound().getString("Name");
@@ -85,7 +86,8 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 
 	@Override
 	public void setDisplayName(EntityPlayer player, @Nonnull ItemStack stack, String name) {
-		if (stack.isEmpty()) return;
+		if (stack.isEmpty())
+			return;
 		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
@@ -103,10 +105,10 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 	@Override
 	@Nonnull
 	public ItemStack remove(EntityPlayer player, @Nonnull ItemStack itemstack, @Nonnull ItemStack page) {
-		if(itemstack.isEmpty() || page.isEmpty()) {
+		if (itemstack.isEmpty() || page.isEmpty()) {
 			return ItemStack.EMPTY;
 		}
-		if(itemstack.getTagCompound() == null) {
+		if (itemstack.getTagCompound() == null) {
 			itemstack.setTagCompound(new NBTTagCompound());
 		}
 		Collection<NBTTagCompound> compounds = NBTUtils.readTagCompoundCollection(itemstack.getTagCompound().getTagList("Collection", Constants.NBT.TAG_COMPOUND), new LinkedList<>());
@@ -133,35 +135,38 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 	@Override
 	@Nonnull
 	public ItemStack addPage(EntityPlayer player, @Nonnull ItemStack itemstack, @Nonnull ItemStack page) {
-		if(itemstack.isEmpty() || page.isEmpty()) {
+		if (itemstack.isEmpty() || page.isEmpty()) {
 			return page;
 		}
 		if (page.getItem() instanceof IItemPageCollection) {
-			if (page.getCount() != 1) return page;
+			if (page.getCount() != 1)
+				return page;
 			IItemPageCollection otheritem = (IItemPageCollection) page.getItem();
 			List<ItemStack> pages = otheritem.getItems(player, page);
 			for (ItemStack p : pages) {
 				ItemStack out = this.addPage(player, itemstack, otheritem.remove(player, page, p));
-				if(!out.isEmpty()) {
+				if (!out.isEmpty()) {
 					otheritem.addPage(player, page, out);
 				}
 			}
 			return page;
 		}
 		if (page.getItem() instanceof IItemOrderablePageProvider) {
-			if (page.getCount() != 1) return page;
+			if (page.getCount() != 1)
+				return page;
 			IItemOrderablePageProvider otheritem = (IItemOrderablePageProvider) page.getItem();
 			List<ItemStack> pages = otheritem.getPageList(player, page);
 			for (int i = 0; i < pages.size(); ++i) {
 				ItemStack out = this.addPage(player, itemstack, otheritem.removePage(player, page, i));
-				if(!out.isEmpty()) {
+				if (!out.isEmpty()) {
 					otheritem.addPage(player, page, out);
 				}
 			}
 			return page;
 		}
-		if(!isItemValid(page)) return page;
-		if(itemstack.getTagCompound() == null) {
+		if (!isItemValid(page))
+			return page;
+		if (itemstack.getTagCompound() == null) {
 			itemstack.setTagCompound(new NBTTagCompound());
 		}
 		Collection<NBTTagCompound> compounds = NBTUtils.readTagCompoundCollection(itemstack.getTagCompound().getTagList("Collection", Constants.NBT.TAG_COMPOUND), new LinkedList<>());
@@ -180,8 +185,9 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 	@Override
 	@Nullable
 	public List<ItemStack> getItems(EntityPlayer player, @Nonnull ItemStack itemstack) {
-		if(itemstack.isEmpty()) return null;
-		if(itemstack.getTagCompound() == null) {
+		if (itemstack.isEmpty())
+			return null;
+		if (itemstack.getTagCompound() == null) {
 			itemstack.setTagCompound(new NBTTagCompound());
 		}
 		Collection<NBTTagCompound> compounds = NBTUtils.readTagCompoundCollection(itemstack.getTagCompound().getTagList("Collection", Constants.NBT.TAG_COMPOUND), new LinkedList<>());

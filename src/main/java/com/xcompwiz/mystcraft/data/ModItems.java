@@ -38,16 +38,16 @@ import javax.annotation.Nullable;
 
 public class ModItems {
 
-	public static Item			page;
-	public static ItemAgebook	agebook;
-	public static Item			linkbook;
-	public static Item			unlinked;
-	public static Item			booster;
-	public static Item			folder;
-	public static Item			portfolio;
-	public static Item			desk;
-	public static ItemInkVial	inkvial;
-	public static Item			glasses	= new ItemMyGlasses();
+	public static Item page;
+	public static ItemAgebook agebook;
+	public static Item linkbook;
+	public static Item unlinked;
+	public static Item booster;
+	public static Item folder;
+	public static Item portfolio;
+	public static Item desk;
+	public static ItemInkVial inkvial;
+	public static Item glasses = new ItemMyGlasses();
 
 	public static void loadConfigs(MystConfig config) {}
 
@@ -112,13 +112,10 @@ public class ModItems {
 		ModelLoader.setCustomMeshDefinition(folder, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "folder"), "inventory"));
 		ModelLoader.setCustomMeshDefinition(portfolio, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "portfolio"), "inventory"));
 
-		ModelBakery.registerItemVariants(desk,
-				new ResourceLocation(MystObjects.MystcraftModId, "desk_bottom"),
-				new ResourceLocation(MystObjects.MystcraftModId, "desk_top"));
-
+		ModelBakery.registerItemVariants(desk, new ResourceLocation(MystObjects.MystcraftModId, "desk_bottom"), new ResourceLocation(MystObjects.MystcraftModId, "desk_top"));
 
 		ModelLoader.setCustomMeshDefinition(desk, (stack) -> {
-			if(stack.getItemDamage() == 0) {
+			if (stack.getItemDamage() == 0) {
 				return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "desk_bottom"), "inventory");
 			} else {
 				return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "desk_top"), "inventory");
@@ -127,8 +124,6 @@ public class ModItems {
 
 		ModelLoader.setCustomMeshDefinition(inkvial, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "vial"), "inventory"));
 		ModelLoader.setCustomMeshDefinition(glasses, (stack -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "glasses"), "inventory")));
-
-
 
 		ModelLoader.setCustomMeshDefinition(page, new PageMeshDefinition());
 	}
@@ -139,20 +134,20 @@ public class ModItems {
 
 		@SideOnly(Side.CLIENT)
 		public String pathForSymbol(@Nullable IAgeSymbol symbol) {
-		    if(symbol == null) {
-		        return "page_no_symbol";
-            }
+			if (symbol == null) {
+				return "page_no_symbol";
+			}
 			return "page_" + symbol.getRegistryName().getResourcePath();
 		}
 
 		@SideOnly(Side.CLIENT)
 		public String pathForSymbol(@Nonnull ItemStack stack) {
 			ResourceLocation symbolUniqueId = Page.getSymbol(stack);
-			if(symbolUniqueId == null) {
+			if (symbolUniqueId == null) {
 				return "page_no_symbol";
 			} else {
 				IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolUniqueId);
-				if(symbol != null) {
+				if (symbol != null) {
 					return "page_" + symbol.getRegistryName().getResourcePath();
 				} else {
 					return "page_no_symbol";

@@ -17,15 +17,17 @@ public class IMCBlockInstability implements IMCProcessor {
 
 	@Override
 	public void process(IMCMessage message) {
-		if (!message.isNBTMessage()) throw new RuntimeException("Message type must be NBT");
+		if (!message.isNBTMessage())
+			throw new RuntimeException("Message type must be NBT");
 		NBTTagCompound nbt = message.getNBTValue();
 		Block block = null;
 		int metadata = 0;
 
 		if (nbt.hasKey("ItemStack")) {
 			ItemStack itemstack = new ItemStack(nbt.getCompoundTag("ItemStack"));
-			if (!(itemstack.getItem() instanceof ItemBlock)) throw new RuntimeException("Itemstacks references used for setting instability factors must extend ItemBlock");
-			block = ((ItemBlock)itemstack.getItem()).getBlock();
+			if (!(itemstack.getItem() instanceof ItemBlock))
+				throw new RuntimeException("Itemstacks references used for setting instability factors must extend ItemBlock");
+			block = ((ItemBlock) itemstack.getItem()).getBlock();
 			metadata = itemstack.getMetadata();
 		}
 
@@ -43,7 +45,8 @@ public class IMCBlockInstability implements IMCProcessor {
 			return;
 		}
 
-		if (nbt.hasKey("Metadata")) metadata = NBTUtils.readNumber(nbt.getTag("Metadata")).intValue();
+		if (nbt.hasKey("Metadata"))
+			metadata = NBTUtils.readNumber(nbt.getTag("Metadata")).intValue();
 
 		InstabilityBlockManager.setInstabilityFactors(block.getStateFromMeta(metadata), nbt.getFloat("Accessibility"), nbt.getFloat("Flat"));
 	}

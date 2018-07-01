@@ -31,7 +31,8 @@ public class SymbolMineshafts extends SymbolBase {
 
 	@Override
 	public int instabilityModifier(int count) {
-		if (count > 3) return 100;
+		if (count > 3)
+			return 100;
 		return 0;
 	}
 
@@ -41,7 +42,7 @@ public class SymbolMineshafts extends SymbolBase {
 	}
 
 	private class Populator implements IPopulate {
-		MapGenMineshaft	mineshaftGenerator;
+		MapGenMineshaft mineshaftGenerator;
 
 		public Populator(MapGenMineshaft gen) {
 			mineshaftGenerator = gen;
@@ -56,7 +57,7 @@ public class SymbolMineshafts extends SymbolBase {
 
 	private class TerrainAlteration implements ITerrainAlteration {
 
-		private MapGenMineshaft	mineshaftGenerator;
+		private MapGenMineshaft mineshaftGenerator;
 
 		public TerrainAlteration(MapGenMineshaft gen) {
 			mineshaftGenerator = gen;

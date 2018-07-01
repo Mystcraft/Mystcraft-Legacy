@@ -8,8 +8,8 @@ import java.util.LinkedList;
  */
 public final class VectorPool {
 
-	private static LinkedList<Vector>	usedVectors		= new LinkedList<Vector>();
-	private static LinkedList<Vector>	unusedVectors	= new LinkedList<Vector>();
+	private static LinkedList<Vector> usedVectors = new LinkedList<Vector>();
+	private static LinkedList<Vector> unusedVectors = new LinkedList<Vector>();
 
 	public static Vector getFreeVector() {
 		if (unusedVectors.size() == 0) {

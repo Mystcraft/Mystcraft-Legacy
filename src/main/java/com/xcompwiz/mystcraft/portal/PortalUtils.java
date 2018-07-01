@@ -35,33 +35,44 @@ public final class PortalUtils {
 	}
 
 	public static int isValidLinkPortalBlock(IBlockState blockstate) {
-		if (blockstate.getBlock() == getFrameBlock()) return 1;
-		if (blockstate.getBlock() == getPortalBlock()) return 1;
+		if (blockstate.getBlock() == getFrameBlock())
+			return 1;
+		if (blockstate.getBlock() == getPortalBlock())
+			return 1;
 		return 0;
 	}
 
 	private static EnumFacing getBlockFacing(IBlockState blockstate) {
-		if (blockstate.getBlock() == getFrameBlock()) return blockstate.getValue(BlockCrystal.SOURCE_DIRECTION);
-		if (blockstate.getBlock() == getPortalBlock()) return blockstate.getValue(BlockLinkPortal.SOURCE_DIRECTION);
-		if (blockstate.getBlock() == getReceptacleBlock()) return blockstate.getValue(BlockBookReceptacle.ROTATION);
+		if (blockstate.getBlock() == getFrameBlock())
+			return blockstate.getValue(BlockCrystal.SOURCE_DIRECTION);
+		if (blockstate.getBlock() == getPortalBlock())
+			return blockstate.getValue(BlockLinkPortal.SOURCE_DIRECTION);
+		if (blockstate.getBlock() == getReceptacleBlock())
+			return blockstate.getValue(BlockBookReceptacle.ROTATION);
 		return EnumFacing.DOWN;
 	}
 
 	private static boolean isBlockActive(IBlockState blockstate) {
-		if (blockstate.getBlock() == getFrameBlock()) return blockstate.getValue(BlockCrystal.IS_PART_OF_PORTAL);
-		if (blockstate.getBlock() == getPortalBlock()) return blockstate.getValue(BlockLinkPortal.IS_PART_OF_PORTAL);
+		if (blockstate.getBlock() == getFrameBlock())
+			return blockstate.getValue(BlockCrystal.IS_PART_OF_PORTAL);
+		if (blockstate.getBlock() == getPortalBlock())
+			return blockstate.getValue(BlockLinkPortal.IS_PART_OF_PORTAL);
 		return false;
 	}
 
 	private static IBlockState getDirectedState(IBlockState blockstate, int m) {
-		if (blockstate.getBlock() == getFrameBlock()) return blockstate.withProperty(BlockCrystal.IS_PART_OF_PORTAL, true).withProperty(BlockCrystal.SOURCE_DIRECTION, EnumFacing.values()[m]);
-		if (blockstate.getBlock() == getPortalBlock()) return blockstate.withProperty(BlockLinkPortal.IS_PART_OF_PORTAL, true).withProperty(BlockLinkPortal.SOURCE_DIRECTION, EnumFacing.values()[m]);
+		if (blockstate.getBlock() == getFrameBlock())
+			return blockstate.withProperty(BlockCrystal.IS_PART_OF_PORTAL, true).withProperty(BlockCrystal.SOURCE_DIRECTION, EnumFacing.values()[m]);
+		if (blockstate.getBlock() == getPortalBlock())
+			return blockstate.withProperty(BlockLinkPortal.IS_PART_OF_PORTAL, true).withProperty(BlockLinkPortal.SOURCE_DIRECTION, EnumFacing.values()[m]);
 		return blockstate;
 	}
 
 	private static IBlockState getDisabledState(IBlockState blockstate) {
-		if (blockstate.getBlock() == getFrameBlock()) return blockstate.withProperty(BlockCrystal.IS_PART_OF_PORTAL, false);
-		if (blockstate.getBlock() == getPortalBlock()) return blockstate.withProperty(BlockLinkPortal.IS_PART_OF_PORTAL, false);
+		if (blockstate.getBlock() == getFrameBlock())
+			return blockstate.withProperty(BlockCrystal.IS_PART_OF_PORTAL, false);
+		if (blockstate.getBlock() == getPortalBlock())
+			return blockstate.withProperty(BlockLinkPortal.IS_PART_OF_PORTAL, false);
 		return blockstate;
 	}
 
@@ -71,12 +82,14 @@ public final class PortalUtils {
 	 * @param start The coordinates of the portal block from which to start
 	 */
 	public static void validatePortal(World world, BlockPos start) {
-		if (world.isRemote) return;
+		if (world.isRemote)
+			return;
 		List<BlockPos> blocks = new LinkedList<BlockPos>();
 		blocks.add(start);
 		while (blocks.size() > 0) {
 			BlockPos coords = blocks.remove(0);
-			if (world.getBlockState(coords).getBlock() != getPortalBlock()) continue;
+			if (world.getBlockState(coords).getBlock() != getPortalBlock())
+				continue;
 			validatePortal(world, coords, blocks);
 		}
 	}
@@ -164,13 +177,16 @@ public final class PortalUtils {
 
 	private static void redirectPortal(World world, TileEntity tileentity, BlockPos pos, int meta, List<BlockPos> blocks) {
 		IBlockState blockstate = world.getBlockState(pos);
-		if (isValidLinkPortalBlock(blockstate) == 0) return;
+		if (isValidLinkPortalBlock(blockstate) == 0)
+			return;
 		if (isBlockActive(blockstate) && (getBlockFacing(blockstate).ordinal() + 1 == meta)) {
 			for (int m = 1; m < 7; ++m) {
-				if (m == meta) continue;
+				if (m == meta)
+					continue;
 				world.setBlockState(pos, getDirectedState(blockstate, m - 1), 2);
 				TileEntity local = getTileEntity(world, pos);
-				if (local == tileentity || (local != null && tileentity == null)) return; // Portal is valid; return
+				if (local == tileentity || (local != null && tileentity == null))
+					return; // Portal is valid; return
 			}
 			world.setBlockState(pos, blockstate.getBlock().getDefaultState(), 2);
 		}
@@ -215,14 +231,18 @@ public final class PortalUtils {
 	}
 
 	private static boolean isPortalBlockStable(World world, BlockPos pos) {
-		if (world.isRemote) return true;
-		if (!checkPortalTension(world, pos)) return false;
-		if (getTileEntity(world, pos) == null) return false;
+		if (world.isRemote)
+			return true;
+		if (!checkPortalTension(world, pos))
+			return false;
+		if (getTileEntity(world, pos) == null)
+			return false;
 		return true;
 	}
 
 	private static boolean checkPortalTension(World world, BlockPos pos) {
-		if (world.isRemote) return true;
+		if (world.isRemote)
+			return true;
 		int score = 0;
 		if (isValidLinkPortalBlock(world.getBlockState(pos.east())) > 0 && isValidLinkPortalBlock(world.getBlockState(pos.west())) > 0) {
 			++score;
@@ -266,7 +286,8 @@ public final class PortalUtils {
 	}
 
 	private static void expandPortal(World world, BlockPos pos, Collection<BlockPos> set, Stack<BlockPos> created) {
-		if (!world.isAirBlock(pos)) return;
+		if (!world.isAirBlock(pos))
+			return;
 		int score = isValidLinkPortalBlock(world.getBlockState(pos.east())) + isValidLinkPortalBlock(world.getBlockState(pos.west())) + isValidLinkPortalBlock(world.getBlockState(pos.up())) + isValidLinkPortalBlock(world.getBlockState(pos.down())) + isValidLinkPortalBlock(world.getBlockState(pos.south())) + isValidLinkPortalBlock(world.getBlockState(pos.north()));
 		if (score > 1) {
 			world.setBlockState(pos, getPortalBlock().getDefaultState(), 0);
@@ -277,8 +298,10 @@ public final class PortalUtils {
 
 	private static void directPortal(World world, BlockPos pos, int meta, List<BlockPos> blocks, List<BlockPos> portals) {
 		IBlockState blockState = world.getBlockState(pos);
-		if (isValidLinkPortalBlock(blockState) == 0) return;
-		if (isBlockActive(blockState)) return;
+		if (isValidLinkPortalBlock(blockState) == 0)
+			return;
+		if (isBlockActive(blockState))
+			return;
 		world.setBlockState(pos, getDirectedState(blockState, meta - 1), 0);
 		if (blockState.getBlock() == getPortalBlock()) {
 			portals.add(pos);
@@ -289,8 +312,10 @@ public final class PortalUtils {
 
 	private static void depolarize(World world, BlockPos pos, List<BlockPos> blocks) {
 		IBlockState blockstate = world.getBlockState(pos);
-		if (isValidLinkPortalBlock(blockstate) == 0) return;
-		if (!isBlockActive(blockstate)) return;
+		if (isValidLinkPortalBlock(blockstate) == 0)
+			return;
+		if (!isBlockActive(blockstate))
+			return;
 		world.setBlockState(pos, blockstate.getBlock().getDefaultState(), 0);
 		if (blockstate.getBlock() == getPortalBlock() && !isPortalBlockStable(world, pos)) {
 			world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
@@ -302,9 +327,13 @@ public final class PortalUtils {
 		HashSet<BlockPos> visited = new HashSet<BlockPos>();
 		IBlockState blockstate = blockaccess.getBlockState(pos);
 		while (blockstate.getBlock() != getReceptacleBlock()) {
-			if (isValidLinkPortalBlock(blockstate) == 0) return null;
-			if (isBlockActive(blockstate) == false) return null;
-			if (!visited.add(pos)) { return null; }
+			if (isValidLinkPortalBlock(blockstate) == 0)
+				return null;
+			if (isBlockActive(blockstate) == false)
+				return null;
+			if (!visited.add(pos)) {
+				return null;
+			}
 			pos = pos.offset(getBlockFacing(blockstate));
 			blockstate = blockaccess.getBlockState(pos);
 		}

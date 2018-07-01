@@ -27,8 +27,10 @@ public class IMCBlacklistFluid implements IMCProcessor {
 			if (fluidname != null) {
 				fluid = FluidRegistry.getFluid(fluidname);
 			}
-			if (fluid == null) return;
-			if (fluid.getBlock() == null) return;
+			if (fluid == null)
+				return;
+			if (fluid.getBlock() == null)
+				return;
 			Block block = fluid.getBlock();
 			byte meta = 0;
 			if (block instanceof BlockFluidBase) {

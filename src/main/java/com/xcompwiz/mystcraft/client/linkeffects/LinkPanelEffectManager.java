@@ -7,7 +7,7 @@ import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 
 public class LinkPanelEffectManager {
 
-	private static Collection<ILinkPanelEffect>	effects	= new ArrayList<ILinkPanelEffect>();
+	private static Collection<ILinkPanelEffect> effects = new ArrayList<ILinkPanelEffect>();
 
 	public static void registerEffect(ILinkPanelEffect effect) {
 		effects.add(effect);

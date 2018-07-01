@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 public interface IItemOnLoadable {
 
-    @Nonnull ItemStack onLoad(@Nonnull ItemStack itemstack);
+	@Nonnull
+	ItemStack onLoad(@Nonnull ItemStack itemstack);
 
 }

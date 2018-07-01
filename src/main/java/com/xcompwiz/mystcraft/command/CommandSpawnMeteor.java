@@ -32,7 +32,8 @@ public class CommandSpawnMeteor extends CommandBaseAdv {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		World worldObj = sender.getEntityWorld();
-		if (worldObj == null) throw new CommandException("This command does not function from the commandline");
+		if (worldObj == null)
+			throw new CommandException("This command does not function from the commandline");
 		Integer dimId = worldObj.provider.getDimension();
 		BlockPos coords = sender.getPosition();
 		Double originx = 0.5D + coords.getX();

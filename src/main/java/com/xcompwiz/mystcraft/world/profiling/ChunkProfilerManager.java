@@ -14,8 +14,8 @@ public class ChunkProfilerManager extends Thread {
 
 	public static class ChunkProfileTask {
 
-		private ChunkProfiler	profiler;
-		private Chunk			chunk;
+		private ChunkProfiler profiler;
+		private Chunk chunk;
 
 		public ChunkProfileTask(ChunkProfiler profiler, Chunk chunk) {
 			this.profiler = profiler;
@@ -28,9 +28,9 @@ public class ChunkProfilerManager extends Thread {
 
 	}
 
-	private static List<ChunkProfileTask>	profilingqueue	= new LinkedList<ChunkProfileTask>();
-	private static Semaphore				semaphore		= new Semaphore(1, true);
-	private static boolean					safesaveenabled	= false;
+	private static List<ChunkProfileTask> profilingqueue = new LinkedList<ChunkProfileTask>();
+	private static Semaphore semaphore = new Semaphore(1, true);
+	private static boolean safesaveenabled = false;
 
 	static {
 		//@formatter:off
@@ -38,7 +38,7 @@ public class ChunkProfilerManager extends Thread {
 		//@formatter:on
 	}
 
-	private boolean							isRunning		= true;
+	private boolean isRunning = true;
 
 	public static void addChunk(ChunkProfiler profiler, Chunk chunk) {
 		try {
@@ -111,7 +111,8 @@ public class ChunkProfilerManager extends Thread {
 	}
 
 	public static void releaseSaveSafe() {
-		if (!safesaveenabled) throw new RuntimeException("Attempted to release SafeSave while not in SafeSave.");
+		if (!safesaveenabled)
+			throw new RuntimeException("Attempted to release SafeSave while not in SafeSave.");
 		safesaveenabled = false;
 		semaphore.release();
 	}

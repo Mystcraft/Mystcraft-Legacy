@@ -6,52 +6,52 @@ import net.minecraft.entity.Entity;
 
 public class ModelWritingDesk extends ModelBase {
 	// fields
-	ModelRenderer			bottomShelf;
-	ModelRenderer			middleShelf;
-	ModelRenderer			deskTop;
-	ModelRenderer			deskMiddle;
-	ModelRenderer			deskLeft;
-	ModelRenderer			deskRight;
-	ModelRenderer			deskBack;
-	ModelRenderer			deskMiddleBottom;
+	ModelRenderer bottomShelf;
+	ModelRenderer middleShelf;
+	ModelRenderer deskTop;
+	ModelRenderer deskMiddle;
+	ModelRenderer deskLeft;
+	ModelRenderer deskRight;
+	ModelRenderer deskBack;
+	ModelRenderer deskMiddleBottom;
 
-	ModelRenderer			deskTopBack;
-	ModelRenderer			deskTopLeft;
-	ModelRenderer			deskTopRight;
-	ModelRenderer			deskTopTop;
-	ModelRenderer			angleLeft;
-	ModelRenderer			angleRight;
-	ModelRenderer			cupboardLeft;
-	ModelRenderer			cupboardRight;
+	ModelRenderer deskTopBack;
+	ModelRenderer deskTopLeft;
+	ModelRenderer deskTopRight;
+	ModelRenderer deskTopTop;
+	ModelRenderer angleLeft;
+	ModelRenderer angleRight;
+	ModelRenderer cupboardLeft;
+	ModelRenderer cupboardRight;
 
-	ModelRenderer			lampRod;
-	ModelRenderer			lamp1;
-	ModelRenderer			lamp2;
+	ModelRenderer lampRod;
+	ModelRenderer lamp1;
+	ModelRenderer lamp2;
 
-	ModelRenderer			book1;
-	ModelRenderer			book2;
-	ModelRenderer			book3;
-	ModelRenderer			book4;
-	ModelRenderer			book5;
-	ModelRenderer			book6;
-	ModelRenderer			book7;
-	ModelRenderer			book8;
-	ModelRenderer			book9;
-	ModelRenderer			book10;
-	ModelRenderer			book11;
-	ModelRenderer			book12;
-	ModelRenderer			book13;
-	ModelRenderer			book14;
-	ModelRenderer			book15;
-	ModelRenderer			book16;
+	ModelRenderer book1;
+	ModelRenderer book2;
+	ModelRenderer book3;
+	ModelRenderer book4;
+	ModelRenderer book5;
+	ModelRenderer book6;
+	ModelRenderer book7;
+	ModelRenderer book8;
+	ModelRenderer book9;
+	ModelRenderer book10;
+	ModelRenderer book11;
+	ModelRenderer book12;
+	ModelRenderer book13;
+	ModelRenderer book14;
+	ModelRenderer book15;
+	ModelRenderer book16;
 
-	ModelRenderer			paper1;
-	ModelRenderer			paper2;
-	ModelRenderer			paper3;
-	ModelRenderer			paperStack1;
-	ModelRenderer			paperStack2;
+	ModelRenderer paper1;
+	ModelRenderer paper2;
+	ModelRenderer paper3;
+	ModelRenderer paperStack1;
+	ModelRenderer paperStack2;
 
-	private ModelRenderer[]	books	= new ModelRenderer[16];
+	private ModelRenderer[] books = new ModelRenderer[16];
 
 	public ModelWritingDesk() {
 		textureWidth = 256;
@@ -351,11 +351,16 @@ public class ModelWritingDesk extends ModelBase {
 			books[i].render(scale);
 		}
 
-		if (papercount > 0) paper2.render(scale);
-		if (papercount > 1) paper3.render(scale);
-		if (papercount > 2) paper1.render(scale);
-		if (papercount > 27) paperStack2.render(scale);
-		if (papercount > 47) paperStack1.render(scale);
+		if (papercount > 0)
+			paper2.render(scale);
+		if (papercount > 1)
+			paper3.render(scale);
+		if (papercount > 2)
+			paper1.render(scale);
+		if (papercount > 27)
+			paperStack2.render(scale);
+		if (papercount > 47)
+			paperStack1.render(scale);
 	}
 
 	@Override

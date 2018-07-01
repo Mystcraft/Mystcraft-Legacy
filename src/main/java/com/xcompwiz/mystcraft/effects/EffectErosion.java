@@ -18,7 +18,7 @@ import net.minecraftforge.fluids.BlockFluidBase;
 
 public class EffectErosion implements IEnvironmentalEffect {
 
-	private int	updateLCG	= (new Random()).nextInt();
+	private int updateLCG = (new Random()).nextInt();
 
 	public void onChunkPopulate(World worldObj, Random rand, int x, int z) {
 		if (rand.nextInt(4) == 0) {
@@ -49,23 +49,24 @@ public class EffectErosion implements IEnvironmentalEffect {
 			int z = (var8 >> 16 & 127);
 			BlockPos pos = new BlockPos(x, y, z);
 			IBlockState state = worldObj.getBlockState(pos);
-			if (state.getBlock() instanceof BlockContainer) return;
-			if (state.getMaterial().isLiquid()) return;
+			if (state.getBlock() instanceof BlockContainer)
+				return;
+			if (state.getMaterial().isLiquid())
+				return;
 			Block ajacent = adjacentFluid(worldObj, pos);
 			if (ajacent != null) {
-			    worldObj.setBlockState(pos, ajacent.getDefaultState());
+				worldObj.setBlockState(pos, ajacent.getDefaultState());
 			}
 		}
 	}
 
 	private Block adjacentFluid(World par1World, BlockPos pos) {
 		for (EnumFacing face : EnumFacing.VALUES) {
-			if(face != EnumFacing.DOWN) {
+			if (face != EnumFacing.DOWN) {
 				IBlockState adj = par1World.getBlockState(pos.offset(face));
-				if(adj.getBlock() instanceof BlockLiquid ||
-                        adj.getBlock() instanceof BlockFluidBase) {
-				    return adj.getBlock();
-                }
+				if (adj.getBlock() instanceof BlockLiquid || adj.getBlock() instanceof BlockFluidBase) {
+					return adj.getBlock();
+				}
 			}
 		}
 		return null;

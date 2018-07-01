@@ -32,14 +32,15 @@ public abstract class BlockBookDisplay extends BlockContainer {
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(worldIn.isRemote) return true;
+		if (worldIn.isRemote)
+			return true;
 		TileEntityBookRotateable tileentity = (TileEntityBookRotateable) worldIn.getTileEntity(pos);
 		if (tileentity == null) {
 			return true;
 		}
-		if(tileentity.getBook().isEmpty()) {
+		if (tileentity.getBook().isEmpty()) {
 			ItemStack stack = playerIn.getHeldItem(hand);
-			if(!stack.isEmpty() && tileentity.canAcceptItem(0, stack)) {
+			if (!stack.isEmpty() && tileentity.canAcceptItem(0, stack)) {
 				ItemStack copy = stack.copy();
 				copy.setCount(1);
 				stack.shrink(1);
@@ -50,7 +51,7 @@ public abstract class BlockBookDisplay extends BlockContainer {
 				return true;
 			}
 		} else {
-			if(playerIn.isSneaking() && playerIn.getHeldItem(hand).isEmpty()) {
+			if (playerIn.isSneaking() && playerIn.getHeldItem(hand).isEmpty()) {
 				playerIn.setHeldItem(hand, tileentity.getBook());
 				tileentity.setBook(ItemStack.EMPTY);
 				return true;
@@ -64,12 +65,12 @@ public abstract class BlockBookDisplay extends BlockContainer {
 
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		if(!worldIn.isRemote) {
+		if (!worldIn.isRemote) {
 			TileEntityBookRotateable book = (TileEntityBookRotateable) worldIn.getTileEntity(pos);
-			if(book != null) {
+			if (book != null) {
 				ItemStack item = book.getBook();
 				book.setBook(ItemStack.EMPTY);
-				if(!item.isEmpty()) {
+				if (!item.isEmpty()) {
 					EntityItem drop = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), item);
 					worldIn.spawnEntity(drop);
 				}
@@ -87,9 +88,9 @@ public abstract class BlockBookDisplay extends BlockContainer {
 	@Override
 	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
 		TileEntity te = worldIn.getTileEntity(pos);
-		if(te != null) {
+		if (te != null) {
 			IItemHandler cap = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
-			if(cap != null && cap instanceof IOInventory) {
+			if (cap != null && cap instanceof IOInventory) {
 				return ((IOInventory) cap).calcRedstoneFromInventory();
 			}
 		}

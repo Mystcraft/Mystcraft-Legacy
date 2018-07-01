@@ -88,7 +88,9 @@ public class MapGenSpheresMyst extends MapGenAdvanced {
 			double zoffset = maxLoops - loopc;
 			double d7 = angleA + 2.0F + 16F;
 
-			if ((xoffset * xoffset + yoffset * yoffset) - zoffset * zoffset > d7 * d7) { return; }
+			if ((xoffset * xoffset + yoffset * yoffset) - zoffset * zoffset > d7 * d7) {
+				return;
+			}
 
 			if (baseX < chunkXmid - 16D - d2 * 2D || baseZ < chunkZmid - 16D - d2 * 2D || baseX > chunkXmid + 16D + d2 * 2D || baseZ > chunkZmid + 16D + d2 * 2D) {
 				continue;
@@ -159,7 +161,8 @@ public class MapGenSpheresMyst extends MapGenAdvanced {
 	@Override
 	protected void recursiveGenerate(World par1World, int x, int z, int chunkX, int chunkZ, ChunkPrimer primer) {
 		float roll = rand.nextFloat();
-		if (roll > 0.05F) return;
+		if (roll > 0.05F)
+			return;
 
 		double dx = x * 16 + rand.nextInt(16);
 		double dy = rand.nextInt(rand.nextInt(192) + 1) + 32;

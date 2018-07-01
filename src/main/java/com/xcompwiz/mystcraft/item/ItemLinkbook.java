@@ -61,7 +61,9 @@ public class ItemLinkbook extends ItemLinking implements IItemRenameable, IItemP
 
 	@Override
 	public Collection<String> getAuthors(@Nonnull ItemStack itemstack) {
-		if (itemstack.getTagCompound() != null && itemstack.getTagCompound().hasKey("Author")) { return Collections.singleton(itemstack.getTagCompound().getString("Author")); }
+		if (itemstack.getTagCompound() != null && itemstack.getTagCompound().hasKey("Author")) {
+			return Collections.singleton(itemstack.getTagCompound().getString("Author"));
+		}
 		return Collections.emptySet();
 	}
 

@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 
 public abstract class ContainerBase extends Container {
 
-	protected List<SlotCollection>	collections	= new ArrayList<>();
+	protected List<SlotCollection> collections = new ArrayList<>();
 
 	@Override
 	@Nonnull
@@ -24,7 +24,8 @@ public abstract class ContainerBase extends Container {
 			clone = original.copy();
 
 			for (SlotCollection collection : collections) {
-				if (!collection.contains(i)) continue;
+				if (!collection.contains(i))
+					continue;
 				collection.onShiftClick(original);
 				break;
 			}

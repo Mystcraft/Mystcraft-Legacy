@@ -36,7 +36,7 @@ public class BlockCrystal extends Block {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		if(meta == 0) {
+		if (meta == 0) {
 			return getDefaultState();
 		} else {
 			int sh = meta - 1;
@@ -57,10 +57,12 @@ public class BlockCrystal extends Block {
 
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if(worldIn.isRemote) return;
-		if(state == getDefaultState()) return;
+		if (worldIn.isRemote)
+			return;
+		if (state == getDefaultState())
+			return;
 		TileEntity tileEntity = PortalUtils.getTileEntity(worldIn, pos);
-		if(tileEntity == null || !(tileEntity instanceof TileEntityBookReceptacle) || ((TileEntityBookReceptacle) tileEntity).getBook() == null) {
+		if (tileEntity == null || !(tileEntity instanceof TileEntityBookReceptacle) || ((TileEntityBookReceptacle) tileEntity).getBook() == null) {
 			worldIn.setBlockState(pos, getDefaultState(), 2);
 			PortalUtils.shutdownPortal(worldIn, pos);
 		}

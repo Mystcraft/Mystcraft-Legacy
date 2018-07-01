@@ -13,7 +13,8 @@ public class EffectPotionEnemy extends EffectPotion {
 
 	@Override
 	protected boolean isTargetValid(World worldObj, Entity entity) {
-		if (entity instanceof EntityPlayer) return false;
+		if (entity instanceof EntityPlayer)
+			return false;
 		return super.isTargetValid(worldObj, entity);
 	}
 }

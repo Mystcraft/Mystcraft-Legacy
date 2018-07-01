@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 public class WorldGenLakesAdv extends WorldGeneratorAdv {
 
-	private IBlockState	state;
+	private IBlockState state;
 
 	public WorldGenLakesAdv(IBlockState state) {
 		this.state = state;
@@ -74,7 +74,9 @@ public class WorldGenLakesAdv extends WorldGeneratorAdv {
 						BlockPos posAt = pos.add(i1, i2, j2);
 						Material material = worldObj.getBlockState(posAt).getMaterial();
 
-						if (i2 >= 4 && material.isLiquid()) { return false; }
+						if (i2 >= 4 && material.isLiquid()) {
+							return false;
+						}
 
 						if (i2 < 4 && !material.isSolid() && !worldObj.getBlockState(posAt).getBlock().equals(state.getBlock())) {
 							return false;

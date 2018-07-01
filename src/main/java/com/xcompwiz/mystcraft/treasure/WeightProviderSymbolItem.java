@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class WeightProviderSymbolItem implements IWeightProvider {
 
-	public static final IWeightProvider	instance	= new WeightProviderSymbolItem();
+	public static final IWeightProvider instance = new WeightProviderSymbolItem();
 
 	private WeightProviderSymbolItem() {}
 

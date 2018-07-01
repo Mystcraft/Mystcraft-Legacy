@@ -23,17 +23,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SeasonalManager {
 
-	public static final ResourceLocation	egg_components	= new ResourceLocation(MystObjects.MystcraftModId,"textures/eastercomponents.png");
+	public static final ResourceLocation egg_components = new ResourceLocation(MystObjects.MystcraftModId, "textures/eastercomponents.png");
 
-	private static boolean					isEaster;
-	private static boolean					isEasterOverride;
+	private static boolean isEaster;
+	private static boolean isEasterOverride;
 
-	private static Calendar					checkedDate;
+	private static Calendar checkedDate;
 
 	//TODO: This should probably be externalized. I might want some form of event system.
 	@SideOnly(Side.CLIENT)
 	public static boolean drawSymbol(TextureManager renderEngine, float zLevel, IAgeSymbol symbol, float scale, float x, float y) {
-		if (!isEaster()) return false;
+		if (!isEaster())
+			return false;
 		GlStateManager.enableAlpha();
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -45,9 +46,12 @@ public class SeasonalManager {
 		//SEE http://stackoverflow.com/questions/43044/algorithm-to-randomly-generate-an-aesthetically-pleasing-color-palette
 		drawEggColors(renderEngine, zLevel, null, scale, x, y, 0xFF000000, getRandom(symbol.getRegistryName().toString()));
 		String[] words = symbol.getPoem();
-		if (words == null) { return true; }
+		if (words == null) {
+			return true;
+		}
 		for (int i = 0; i < 4; ++i) {
-			if (words.length > i) drawEggColors(renderEngine, zLevel, "easter_" + words[i], scale, x, y, 0xDA000000, getRandom(words[i]));
+			if (words.length > i)
+				drawEggColors(renderEngine, zLevel, "easter_" + words[i], scale, x, y, 0xDA000000, getRandom(words[i]));
 		}
 		//if (words.length > 1) drawEggColors(renderEngine, zLevel, words[1], scale, x, y, 0xA0000000);
 		//if (words.length > 2) drawEggColors(renderEngine, zLevel, words[2], scale, x, y, 0xA0000000);
@@ -57,7 +61,8 @@ public class SeasonalManager {
 	}
 
 	private static Random getRandom(String string) {
-		if (string != null) return new Random(string.hashCode());
+		if (string != null)
+			return new Random(string.hashCode());
 		return new Random();
 	}
 
@@ -72,10 +77,13 @@ public class SeasonalManager {
 			colors = word.colors();
 		}
 		renderEngine.bindTexture(imagesource);
-		if (components == null) components = new ArrayList<>();
+		if (components == null)
+			components = new ArrayList<>();
 		// No drawable -> the 0 component
-		if (components.size() == 0) components.add(0);
-		if (colors == null) colors = new ArrayList<>();
+		if (components.size() == 0)
+			components.add(0);
+		if (colors == null)
+			colors = new ArrayList<>();
 		for (int c = 0; c < components.size(); ++c) {
 			int color = 0;
 			if (c < colors.size()) {
@@ -103,10 +111,10 @@ public class SeasonalManager {
 		Tessellator tes = Tessellator.getInstance();
 		BufferBuilder vb = tes.getBuffer();
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		vb.pos(x + 0,         y + drawscale, zLevel).tex((iconX + 0)        * transform, (iconY + iconSize) * transform).endVertex();
+		vb.pos(x + 0, y + drawscale, zLevel).tex((iconX + 0) * transform, (iconY + iconSize) * transform).endVertex();
 		vb.pos(x + drawscale, y + drawscale, zLevel).tex((iconX + iconSize) * transform, (iconY + iconSize) * transform).endVertex();
-		vb.pos(x + drawscale, y + 0,         zLevel).tex((iconX + iconSize) * transform, (iconY + 0)        * transform).endVertex();
-		vb.pos(x + 0,         y + 0,         zLevel).tex((iconX + 0)        * transform, (iconY + 0)        * transform).endVertex();
+		vb.pos(x + drawscale, y + 0, zLevel).tex((iconX + iconSize) * transform, (iconY + 0) * transform).endVertex();
+		vb.pos(x + 0, y + 0, zLevel).tex((iconX + 0) * transform, (iconY + 0) * transform).endVertex();
 		tes.draw();
 	}
 
@@ -117,13 +125,15 @@ public class SeasonalManager {
 
 	//TODO: This is too slow a comparison to do many times a render frame. Make an updater.  Only needs to run on date changes, really.
 	private static void checkDateFlags() {
-		if (checkedDate != null) return;
+		if (checkedDate != null)
+			return;
 		GregorianCalendar now = new GregorianCalendar();
 		now.set(Calendar.HOUR_OF_DAY, 0);
 		now.set(Calendar.MINUTE, 0);
 		now.set(Calendar.SECOND, 0);
 		now.set(Calendar.MILLISECOND, 0);
-	    if (now.equals(checkedDate)) return;
+		if (now.equals(checkedDate))
+			return;
 		checkedDate = now;
 		isEaster = now.equals(findEasterDate(now.get(Calendar.YEAR)));
 	}
@@ -132,7 +142,9 @@ public class SeasonalManager {
 	 * Compute the day of the year that Easter falls on. Step names E1 E2 etc., are direct references to Knuth, Vol 1, p 155.
 	 */
 	public static final Calendar findEasterDate(int year) {
-		if (year <= 1582) { throw new IllegalArgumentException("Algorithm invalid before April 1583"); }
+		if (year <= 1582) {
+			throw new IllegalArgumentException("Algorithm invalid before April 1583");
+		}
 		int golden, century, x, z, d, epact, n;
 
 		golden = (year % 19) + 1; /* E1: metonic cycle */
@@ -141,7 +153,8 @@ public class SeasonalManager {
 		z = ((8 * century + 5) / 25) - 5; /* E3: sync with moon's orbit */
 		d = (5 * year / 4) - x - 10;
 		epact = (11 * golden + 20 + z - x) % 30; /* E5: epact */
-		if ((epact == 25 && golden > 11) || epact == 24) epact++;
+		if ((epact == 25 && golden > 11) || epact == 24)
+			epact++;
 		n = 44 - epact;
 		n += 30 * (n < 21 ? 1 : 0); /* E6: */
 		n += 7 - ((d + n) % 7);

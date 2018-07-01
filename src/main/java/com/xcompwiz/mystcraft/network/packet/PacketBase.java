@@ -35,7 +35,8 @@ public abstract class PacketBase<REQ extends IMessage, REPLY extends IMessage> i
 	protected void writeTag(ByteBuf data, NBTTagCompound tag) {
 		try {
 			CompressedStreamTools.writeCompressed(tag, new ByteBufOutputStream(data));
-		} catch (Exception ignored) {}
+		} catch (Exception ignored) {
+		}
 	}
 
 	protected String readString(ByteBuf data) {

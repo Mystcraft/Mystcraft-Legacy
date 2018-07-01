@@ -22,7 +22,6 @@ public class SymbolRemappings {
 		skyColorRemappings();
 		horizonColorRemappings();
 
-
 		addSymbolRemappingInternal("ModMat_tile.stone", "ModMat_minecraft:stone_0");
 		addSymbolRemappingInternal("ModMat_tile.lava", "ModMat_minecraft:flowing_lava_0");
 		addSymbolRemappingInternal("ModMat_tile.water", "ModMat_minecraft:flowing_water_0");
@@ -348,8 +347,10 @@ public class SymbolRemappings {
 
 	public static List<ItemStack> remap(ItemStack page) {
 		List<ItemStack> result = new ArrayList<>();
-		if (page == null) return result;
-		if (!(page.getItem() instanceof ItemPage)) return result;
+		if (page == null)
+			return result;
+		if (!(page.getItem() instanceof ItemPage))
+			return result;
 		ResourceLocation symbol = Page.getSymbol(page);
 		List<ResourceLocation> symbols = mappings.get(symbol);
 		if (symbols != null) {
@@ -370,9 +371,12 @@ public class SymbolRemappings {
 		for (int i = 0; i < collection.size();) {
 			T element = collection.remove(i);
 			List<T> mapping = null;
-			if (element instanceof ResourceLocation) mapping = (List<T>) SymbolRemappings.remap((ResourceLocation) element);
-			if (element instanceof ItemStack) mapping = (List<T>) SymbolRemappings.remap((ItemStack) element);
-			if (mapping == null) continue;
+			if (element instanceof ResourceLocation)
+				mapping = (List<T>) SymbolRemappings.remap((ResourceLocation) element);
+			if (element instanceof ItemStack)
+				mapping = (List<T>) SymbolRemappings.remap((ItemStack) element);
+			if (mapping == null)
+				continue;
 			collection.addAll(i, mapping);
 			if (mapping.size() > 0 && element.equals(mapping.get(0))) {
 				++i;

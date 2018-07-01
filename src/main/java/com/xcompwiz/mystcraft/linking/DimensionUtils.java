@@ -3,6 +3,8 @@ package com.xcompwiz.mystcraft.linking;
 import java.util.Random;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
@@ -14,14 +16,11 @@ import com.xcompwiz.mystcraft.world.storage.FileUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import javax.annotation.Nullable;
-
 public class DimensionUtils {
-	private static final String	PLAYER_DIM_UUID_TAG	= "myst.dimUUID";
+	private static final String PLAYER_DIM_UUID_TAG = "myst.dimUUID";
 
 	public static int getNewDimensionUID() {
 		return DimensionManager.getNextFreeDimId();
@@ -29,21 +28,25 @@ public class DimensionUtils {
 
 	public static Integer createAge() {
 		Integer dimid = recycleDimension();
-		if (dimid != null) return dimid;
+		if (dimid != null)
+			return dimid;
 		dimid = getNewDimensionUID();
 		createAge(dimid);
 		return dimid;
 	}
 
 	private static Integer recycleDimension() {
-		if (Mystcraft.deadDims == null || Mystcraft.deadDims.isEmpty()) return null;
+		if (Mystcraft.deadDims == null || Mystcraft.deadDims.isEmpty())
+			return null;
 		Integer dimid = null;
 		for (int i = 0; i < Mystcraft.deadDims.size(); ++i) {
-			if (DimensionManager.getWorld(Mystcraft.deadDims.get(i)) != null) continue;
+			if (DimensionManager.getWorld(Mystcraft.deadDims.get(i)) != null)
+				continue;
 			dimid = Mystcraft.deadDims.remove(i);
 			break;
 		}
-		if (dimid == null) return null;
+		if (dimid == null)
+			return null;
 		if (!FileUtils.deleteAgeChunkData(dimid)) {
 			Mystcraft.deadDims.add(dimid);
 			return null;
@@ -55,7 +58,8 @@ public class DimensionUtils {
 
 	public static AgeData createAge(int dimId) {
 		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-		if (server == null) throw new RuntimeException("Cannot create dimension client-side. Misuse of Mystcraft API.");
+		if (server == null)
+			throw new RuntimeException("Cannot create dimension client-side. Misuse of Mystcraft API.");
 		DimensionManager.registerDimension(dimId, Mystcraft.dimensionType);
 		Mystcraft.registeredDims.add(dimId);
 		MystcraftPacketHandler.CHANNEL.sendToAll(new MPacketDimensions(dimId));
@@ -64,28 +68,36 @@ public class DimensionUtils {
 	}
 
 	public static boolean markDimensionDead(int dimId) {
-		if (Mystcraft.homeDimension == dimId) return false; //TODO: !Throw exception on this case
-		if (!DimensionManager.isDimensionRegistered(dimId)) return false;
-		if (!Mystcraft.registeredDims.contains(dimId)) return false;
+		if (Mystcraft.homeDimension == dimId)
+			return false; //TODO: !Throw exception on this case
+		if (!DimensionManager.isDimensionRegistered(dimId))
+			return false;
+		if (!Mystcraft.registeredDims.contains(dimId))
+			return false;
 		AgeData.getAge(dimId, false).markDead();
 		Mystcraft.deadDims.add(dimId);
 		return true;
 	}
 
 	public static boolean isDimensionVisited(@Nullable Integer dimId) {
-		if (dimId == null) return false;
-		if (!DimensionManager.isDimensionRegistered(dimId)) return false;
+		if (dimId == null)
+			return false;
+		if (!DimensionManager.isDimensionRegistered(dimId))
+			return false;
 		return true;
 	}
 
 	public static boolean isDimensionDead(int dimId) {
-		if (!DimensionManager.isDimensionRegistered(dimId)) return true;
-		if (!Mystcraft.registeredDims.contains(dimId)) return false;
+		if (!DimensionManager.isDimensionRegistered(dimId))
+			return true;
+		if (!Mystcraft.registeredDims.contains(dimId))
+			return false;
 		return AgeData.getAge(dimId, false).isDead();
 	}
 
 	public static int getLinkColor(ILinkInfo info) {
-		if (info == null) return 0x000000;
+		if (info == null)
+			return 0x000000;
 		Random rand = new Random(info.getDisplayName().hashCode());
 		int color = 0;
 		color += (rand.nextInt(256));
@@ -95,16 +107,21 @@ public class DimensionUtils {
 	}
 
 	public static UUID getDimensionUUID(int dimId) {
-		if (!DimensionManager.isDimensionRegistered(dimId)) return null;
-		if (!Mystcraft.registeredDims.contains(dimId)) return new UUID(dimId, 0);
+		if (!DimensionManager.isDimensionRegistered(dimId))
+			return null;
+		if (!Mystcraft.registeredDims.contains(dimId))
+			return new UUID(dimId, 0);
 		return AgeData.getAge(dimId, false).getUUID();
 	}
 
 	public static boolean checkDimensionUUID(int dimid, UUID uuid) {
-		if (uuid == null) return true;
+		if (uuid == null)
+			return true;
 		UUID targetuuid = getDimensionUUID(dimid);
-		if (targetuuid == null) return true;
-		if (targetuuid.equals(uuid)) return true;
+		if (targetuuid == null)
+			return true;
+		if (targetuuid.equals(uuid))
+			return true;
 		return false;
 	}
 
@@ -132,7 +149,8 @@ public class DimensionUtils {
 	}
 
 	public static void ejectPlayerFromDimension(EntityPlayer player) {
-		if (isDimensionDead(Mystcraft.homeDimension)) throw new RuntimeException("The Mystcraft Home Dimension is flagged as dead. This is a serious problem...");
+		if (isDimensionDead(Mystcraft.homeDimension))
+			throw new RuntimeException("The Mystcraft Home Dimension is flagged as dead. This is a serious problem...");
 		ILinkInfo link = new LinkOptions(null);
 		link.setDimensionUID(Mystcraft.homeDimension);
 		link.setFlag(LinkPropertyAPI.FLAG_TPCOMMAND, true);

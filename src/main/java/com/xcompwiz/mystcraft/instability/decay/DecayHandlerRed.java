@@ -15,9 +15,10 @@ public class DecayHandlerRed extends DecayHandlerSpreading {
 
 	@Override
 	protected int getConversionDifficulty(World world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
-		if (state.getBlock().isAir(state, world, pos)) return 20;
-		float f = state.getBlock().getExplosionResistance(world, pos, null, null);
+		IBlockState blockstate = world.getBlockState(pos);
+		if (blockstate == Blocks.AIR)
+			return 20;
+		float f = blockstate.getBlock().getExplosionResistance(world, pos, null, null);
 		if (f < 0.0F) {
 			f = 1000.0F;
 		}

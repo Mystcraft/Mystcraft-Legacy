@@ -27,16 +27,14 @@ import javax.annotation.Nonnull;
 
 public class ModFluids {
 
-	public static Fluid	black_ink;
+	public static Fluid black_ink;
 
 	public static void loadConfigs(MystConfig config) {}
 
 	public static void init() {
 		Mystcraft.validInks = new HashSet<>();
 
-		black_ink = new FluidColorable(Fluids.black_ink,
-				new ResourceLocation("mystcraft:blocks/fluid"),
-				new ResourceLocation("mystcraft:blocks/fluid_flow"), 0xFF191919);
+		black_ink = new FluidColorable(Fluids.black_ink, new ResourceLocation("mystcraft:blocks/fluid"), new ResourceLocation("mystcraft:blocks/fluid_flow"), 0xFF191919);
 		FluidRegistry.registerFluid(black_ink);
 		black_ink.setBlock(ModBlocks.black_ink); //Hellfire> that's why blocks need to be initialized first.
 		Mystcraft.validInks.add(black_ink.getName());
@@ -49,7 +47,7 @@ public class ModFluids {
 	public static void registerModels() {
 		FluidStateMapper mapper = new FluidStateMapper(black_ink);
 		Block b = black_ink.getBlock();
-		if(b != null) { //Hellfire> Should be true at this point but... ehhh....
+		if (b != null) { //Hellfire> Should be true at this point but... ehhh....
 			Item item = Item.getItemFromBlock(b);
 			if (item != Items.AIR) {
 				ModelLoader.registerItemVariants(item);

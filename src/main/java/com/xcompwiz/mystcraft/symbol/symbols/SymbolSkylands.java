@@ -35,10 +35,10 @@ public class SymbolSkylands extends SymbolBase {
 
 	private static class TerrainAlteration implements ITerrainAlteration {
 
-		private static final double		factor		= 0.03125D;
+		private static final double factor = 0.03125D;
 
-		private double					skyNoise[]	= null;
-		private NoiseGeneratorOctaves	noiseGen;
+		private double skyNoise[] = null;
+		private NoiseGeneratorOctaves noiseGen;
 
 		public TerrainAlteration(NoiseGeneratorOctaves noise) {
 			noiseGen = noise;
@@ -74,13 +74,19 @@ public class SymbolSkylands extends SymbolBase {
 		}
 
 		private boolean isSupported(int x, int y, int z, int sky, ChunkPrimer primer) {
-			if (y < 1) return false;
-			if (y - 1 <= sky) return false;
+			if (y < 1)
+				return false;
+			if (y - 1 <= sky)
+				return false;
 			IBlockState block = primer.getBlockState(x, y - 1, z);
-			if (block.getBlock() == Blocks.COBBLESTONE) return false;
-			if (block.getBlock() == Blocks.AIR) return false;
-			if (block.getMaterial().isLiquid()) return false;
-			if (!block.getMaterial().isSolid()) return false;
+			if (block.getBlock() == Blocks.COBBLESTONE)
+				return false;
+			if (block.getBlock() == Blocks.AIR)
+				return false;
+			if (block.getMaterial().isLiquid())
+				return false;
+			if (!block.getMaterial().isSolid())
+				return false;
 			return true;
 		}
 	}

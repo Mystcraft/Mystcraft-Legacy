@@ -24,8 +24,8 @@ import net.minecraft.world.storage.MapData;
 
 public class RenderWritingDesk extends TileEntitySpecialRenderer<TileEntityDesk> {
 
-	private ModelBook			bookmodel;
-	private ModelWritingDesk	deskmodel;
+	private ModelBook bookmodel;
+	private ModelWritingDesk deskmodel;
 
 	public RenderWritingDesk() {
 		deskmodel = new ModelWritingDesk();
@@ -67,9 +67,9 @@ public class RenderWritingDesk extends TileEntitySpecialRenderer<TileEntityDesk>
 		ItemStack itemstack = desk.getDisplayItem();
 		if (!itemstack.isEmpty()) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-			    GlStateManager.pushMatrix();
-			    GlStateManager.translate(-0.15F, 1, 1);
-			    GlStateManager.rotate(90, 0, 0, 1);
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(-0.15F, 1, 1);
+				GlStateManager.rotate(90, 0, 0, 1);
 				if (itemstack.getItem() == ModItems.agebook) {
 					this.bindTexture(Entities.agebook);
 				} else if (itemstack.getItem() == ModItems.linkbook) {
@@ -77,7 +77,7 @@ public class RenderWritingDesk extends TileEntitySpecialRenderer<TileEntityDesk>
 				}
 				GlStateManager.scale(0.8, 0.8, 0.8);
 				bookmodel.render(null, 0.0f, 0.0f, 0.0f, 1.22f /* Open */, 0.0f, 0.0625F);
-                GlStateManager.popMatrix();
+				GlStateManager.popMatrix();
 				return;
 			}
 
@@ -90,19 +90,19 @@ public class RenderWritingDesk extends TileEntitySpecialRenderer<TileEntityDesk>
 			if (itemstack.getItem() == Items.FILLED_MAP) {
 				this.bindTexture(Vanilla.map_background);
 				Tessellator tes = Tessellator.getInstance();
-                BufferBuilder vb = tes.getBuffer();
+				BufferBuilder vb = tes.getBuffer();
 				GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
 				GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
 				GlStateManager.scale(0.006F, 0.006F, 0.006F);
 				GlStateManager.translate(-65.0F, -107.0F, -3.0F);
 				GlStateManager.glNormal3f(0.0F, 0.0F, -1.0F);
 				vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-                byte var5 = 7;
-                vb.pos((0 - var5),   (128 + var5), 0.0D).tex(0.0D, 1.0D).endVertex();
-                vb.pos((128 + var5), (128 + var5), 0.0D).tex(1.0D, 1.0D).endVertex();
-                vb.pos((128 + var5), (0 - var5),   0.0D).tex(1.0D, 0.0D).endVertex();
-                vb.pos((0 - var5),   (0 - var5),   0.0D).tex(0.0D, 0.0D).endVertex();
-                tes.draw();
+				byte var5 = 7;
+				vb.pos((0 - var5), (128 + var5), 0.0D).tex(0.0D, 1.0D).endVertex();
+				vb.pos((128 + var5), (128 + var5), 0.0D).tex(1.0D, 1.0D).endVertex();
+				vb.pos((128 + var5), (0 - var5), 0.0D).tex(1.0D, 0.0D).endVertex();
+				vb.pos((0 - var5), (0 - var5), 0.0D).tex(0.0D, 0.0D).endVertex();
+				tes.draw();
 				MapData mapdata = Items.FILLED_MAP.getMapData(itemstack, desk.getWorld());
 
 				if (mapdata != null) {
@@ -111,11 +111,11 @@ public class RenderWritingDesk extends TileEntitySpecialRenderer<TileEntityDesk>
 			} else {
 				GlStateManager.translate(0, 0.3, 0.02);
 				GlStateManager.scale(0.7F, 0.7F, 0.7F);
-                GlStateManager.pushAttrib();
-                RenderHelper.enableStandardItemLighting();
-                Minecraft.getMinecraft().getRenderItem().renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED);
-                RenderHelper.disableStandardItemLighting();
-                GlStateManager.popAttrib();
+				GlStateManager.pushAttrib();
+				RenderHelper.enableStandardItemLighting();
+				Minecraft.getMinecraft().getRenderItem().renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED);
+				RenderHelper.disableStandardItemLighting();
+				GlStateManager.popAttrib();
 			}
 
 			GlStateManager.popMatrix();

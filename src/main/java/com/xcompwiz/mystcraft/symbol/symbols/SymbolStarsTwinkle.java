@@ -43,17 +43,17 @@ public class SymbolStarsTwinkle extends SymbolBase {
 
 	private class SkyBackground extends CelestialBase {
 
-		private static final int	layerscount	= 10;
-		private Random				rand;
-		private int[]				starGLCallList;
-		private long[]				offsets;
-		private boolean				initialized;
+		private static final int layerscount = 10;
+		private Random rand;
+		private int[] starGLCallList;
+		private long[] offsets;
+		private boolean initialized;
 
-		private long				period;
-		private float				angle;
-		private float				offset		= 0;
-		private ColorGradient		gradient;
-		private AgeDirector		controller;
+		private long period;
+		private float angle;
+		private float offset = 0;
+		private ColorGradient gradient;
+		private AgeDirector controller;
 
 		SkyBackground(AgeDirector controller, long seed, Number period, Number angle, ColorGradient gradient) {
 			this.controller = controller;
@@ -74,26 +74,26 @@ public class SymbolStarsTwinkle extends SymbolBase {
 			if (!initialized) {
 				initialize();
 			}
-            // Draw Stars
-            float invertRain = 1.0F - world.getRainStrength(partial);
-            GlStateManager.disableTexture2D();
-            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-            GlStateManager.pushMatrix();
-            GlStateManager.rotate(angle, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(getCelestialPeriod(world.getWorldTime(), partial) * 360.0F, 1.0F, 0.0F, 0.0F);
+			// Draw Stars
+			float invertRain = 1.0F - world.getRainStrength(partial);
+			GlStateManager.disableTexture2D();
+			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+			GlStateManager.pushMatrix();
+			GlStateManager.rotate(angle, 0.0F, 1.0F, 0.0F);
+			GlStateManager.rotate(getCelestialPeriod(world.getWorldTime(), partial) * 360.0F, 1.0F, 0.0F, 0.0F);
 
-            float starbrightness = world.getStarBrightness(partial) * invertRain;
-            if (starbrightness > 0.0F) {
-                Color color = gradient.getColor(controller.getTime() / 12000F);
-                for (int i = 0; i < this.starGLCallList.length; ++i) {
-                    GlStateManager.color(color.r, color.g, color.b, starbrightness * getLayerBrightness(i, world, partial));
-                    GlStateManager.callList(this.starGLCallList[i]);
-                }
-            }
+			float starbrightness = world.getStarBrightness(partial) * invertRain;
+			if (starbrightness > 0.0F) {
+				Color color = gradient.getColor(controller.getTime() / 12000F);
+				for (int i = 0; i < this.starGLCallList.length; ++i) {
+					GlStateManager.color(color.r, color.g, color.b, starbrightness * getLayerBrightness(i, world, partial));
+					GlStateManager.callList(this.starGLCallList[i]);
+				}
+			}
 
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.disableBlend();
-            GlStateManager.popMatrix();
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+			GlStateManager.disableBlend();
+			GlStateManager.popMatrix();
 		}
 
 		private float getLayerBrightness(int i, World worldObj, float partial) {
@@ -113,12 +113,15 @@ public class SymbolStarsTwinkle extends SymbolBase {
 		}
 
 		public float getCelestialPeriod(long time, float partialTime) {
-			if (period == 0) return offset;
+			if (period == 0)
+				return offset;
 			int i = (int) (time % period);
 			float f = (i + partialTime) / period + offset;
 
-			if (f < 0.0F) ++f;
-			if (f > 1.0F) --f;
+			if (f < 0.0F)
+				++f;
+			if (f > 1.0F)
+				--f;
 
 			float f1 = f;
 			f = 1.0F - (float) ((Math.cos(f * Math.PI) + 1.0D) / 2D);

@@ -17,16 +17,17 @@ public class GuiElementPage extends GuiElement {
 
 	public interface IGuiPageProvider {
 
-		@Nonnull ItemStack getPageItemStack(GuiElementPage elem);
+		@Nonnull
+		ItemStack getPageItemStack(GuiElementPage elem);
 
 	}
 
-	private IGuiPageProvider	provider;
+	private IGuiPageProvider provider;
 
-	private List<String>		hovertext	= new ArrayList<>();
+	private List<String> hovertext = new ArrayList<>();
 
-	private float				xSizePage;
-	private float				ySizePage;
+	private float xSizePage;
+	private float ySizePage;
 
 	public GuiElementPage(IGuiPageProvider provider, int guiLeft, int guiTop, float xSize, float ySize) {
 		super(guiLeft, guiTop, (int) xSize, (int) ySize);

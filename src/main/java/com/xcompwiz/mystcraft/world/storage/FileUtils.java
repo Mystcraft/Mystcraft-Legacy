@@ -16,10 +16,10 @@ public class FileUtils {
 		HashSet<Integer> list = new HashSet<Integer>();
 		File[] var2 = dataDir.listFiles();
 		int var4 = var2.length;
-	
+
 		for (int var5 = 0; var5 < var4; ++var5) {
 			File var6 = var2[var5];
-	
+
 			if (var6.getName().startsWith("agedata_") && var6.getName().endsWith(".dat")) {
 				try {
 					String dimStr = var6.getName();
@@ -30,7 +30,7 @@ public class FileUtils {
 				}
 			}
 		}
-	
+
 		return list;
 	}
 
@@ -42,14 +42,16 @@ public class FileUtils {
 	public static boolean deleteAgeChunkData(Integer dimid) {
 		File rootdir = DimensionManager.getCurrentSaveRootDirectory();
 		File dimensionfolder = new File(rootdir, WorldProviderMyst.getSaveFolderName(dimid));
-		if (!dimensionfolder.exists()) return true;
+		if (!dimensionfolder.exists())
+			return true;
 		try {
 			org.apache.commons.io.FileUtils.deleteDirectory(dimensionfolder);
 		} catch (IOException e) {
 			LoggerUtils.error("Failed to delete dimension chunk data for dimension " + dimid);
 			return false;
 		}
-		if (!dimensionfolder.exists()) return true;
+		if (!dimensionfolder.exists())
+			return true;
 		return false;
 	}
 

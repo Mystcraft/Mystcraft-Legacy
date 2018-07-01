@@ -5,7 +5,7 @@ import net.minecraft.world.storage.WorldSavedData;
 
 public class NBTDataContainer extends WorldSavedData {
 
-	public NBTTagCompound	data	= new NBTTagCompound();
+	public NBTTagCompound data = new NBTTagCompound();
 
 	public NBTDataContainer(String id) {
 		super(id);

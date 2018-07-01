@@ -22,23 +22,25 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MystcraftFirstRun {
-	private static final String					SAVE_NAME	= "mystcraft_profiling";
+	private static final String SAVE_NAME = "mystcraft_profiling";
 
-	private static boolean						readyToPlay	= false;
-	private static InstabilityDataCalculator	instabilitycalculator;
+	private static boolean readyToPlay = false;
+	private static InstabilityDataCalculator instabilitycalculator;
 
-	private static MapStorage					storage;
-	private static GuiMystcraftProfiling		guiscreen;
+	private static MapStorage storage;
+	private static GuiMystcraftProfiling guiscreen;
 
 	@SideOnly(Side.CLIENT)
 	public static void enable() {
 		Minecraft mc = Minecraft.getMinecraft();
-		if (guiscreen == null) guiscreen = new GuiMystcraftProfiling(mc.currentScreen);
+		if (guiscreen == null)
+			guiscreen = new GuiMystcraftProfiling(mc.currentScreen);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public synchronized static void start() {
-		if (instabilitycalculator != null) return;
+		if (instabilitycalculator != null)
+			return;
 		Minecraft mc = Minecraft.getMinecraft();
 
 		ExternalSaveHandler savehandler = new ExternalSaveHandler(mc.mcDataDir, "mystcraft");
@@ -53,7 +55,8 @@ public class MystcraftFirstRun {
 			return;
 		}
 		// Display a gui to the user
-		if (guiscreen == null) guiscreen = new GuiMystcraftProfiling(mc.currentScreen);
+		if (guiscreen == null)
+			guiscreen = new GuiMystcraftProfiling(mc.currentScreen);
 		mc.displayGuiScreen(guiscreen);
 
 		// Spin up a server instance
@@ -70,7 +73,8 @@ public class MystcraftFirstRun {
 	}
 
 	public synchronized static void stop() {
-		if (storage == null || instabilitycalculator == null) return;
+		if (storage == null || instabilitycalculator == null)
+			return;
 		storage.saveAllData();
 		instabilitycalculator.shutdown();
 		MinecraftForge.EVENT_BUS.unregister(instabilitycalculator);
@@ -119,7 +123,8 @@ public class MystcraftFirstRun {
 	}
 
 	public static void onSaveEvent(Save event) {
-		if (storage != null) storage.saveAllData();
+		if (storage != null)
+			storage.saveAllData();
 	}
 
 	public static boolean isEnabled() {

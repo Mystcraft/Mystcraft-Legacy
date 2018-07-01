@@ -25,12 +25,12 @@ import java.io.IOException;
 
 public class GuiInkMixer extends GuiContainer {
 
-	private ContainerInkMixer	container;
-	private int					frame	= 0;
+	private ContainerInkMixer container;
+	private int frame = 0;
 
-	private static final int	basinR	= 900;
-	private static final int	basinX	= 88;
-	private static final int	basinY	= 49;
+	private static final int basinR = 900;
+	private static final int basinX = 88;
+	private static final int basinY = 49;
 
 	public GuiInkMixer(InventoryPlayer inventoryplayer, TileEntityInkMixer tileentity) {
 		super(new ContainerInkMixer(inventoryplayer, tileentity));
@@ -91,7 +91,8 @@ public class GuiInkMixer extends GuiContainer {
 		mc.renderEngine.bindTexture(GUIs.mixer);
 		GlStateManager.color(1F, 1F, 1F, 1F);
 		drawTexturedModalRect(guiLeft + 54, guiTop + 16, 179, 16, 66, 65);
-		if (container.hasInk()) renderTank(guiLeft + 54, guiTop + 16, 66, 65);
+		if (container.hasInk())
+			renderTank(guiLeft + 54, guiTop + 16, 66, 65);
 
 		mc.renderEngine.bindTexture(GUIs.mixer);
 		GlStateManager.color(1F, 1F, 1F, 1F);

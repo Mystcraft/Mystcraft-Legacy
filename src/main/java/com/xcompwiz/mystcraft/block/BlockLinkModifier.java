@@ -73,7 +73,8 @@ public class BlockLinkModifier extends BlockContainer {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (world.isRemote) return true;
+		if (world.isRemote)
+			return true;
 		playerIn.openGui(Mystcraft.instance, ModGUIs.LINK_MODIFIER.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
@@ -88,7 +89,7 @@ public class BlockLinkModifier extends BlockContainer {
 				if (itemstack.isEmpty()) {
 					continue;
 				}
-				float f =  world.rand.nextFloat() * 0.8F + 0.1F;
+				float f = world.rand.nextFloat() * 0.8F + 0.1F;
 				float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
 				float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
 				EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, itemstack);

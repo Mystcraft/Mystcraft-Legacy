@@ -15,18 +15,20 @@ public class MystcraftTickHandler {
 
 	@SubscribeEvent
 	public void onServerTick(TickEvent.ServerTickEvent event) {
-		if (event.phase == Phase.END) return;
+		if (event.phase == Phase.END)
+			return;
 		VillagerTradeSystem.onTick();
 	}
 
 	@SubscribeEvent
-    @SideOnly(Side.CLIENT)
-    public void onClientTick(TickEvent.ClientTickEvent event) {
-	    if(event.phase == Phase.END) return;
-        World world = Minecraft.getMinecraft().world;
-        if(world != null && world.provider != null && world.provider instanceof WorldProviderMyst) {
-            world.provider.updateWeather(); //Duh. USED to be called both sides.
-        }
-    }
+	@SideOnly(Side.CLIENT)
+	public void onClientTick(TickEvent.ClientTickEvent event) {
+		if (event.phase == Phase.END)
+			return;
+		World world = Minecraft.getMinecraft().world;
+		if (world != null && world.provider != null && world.provider instanceof WorldProviderMyst) {
+			world.provider.updateWeather(); //Duh. USED to be called both sides.
+		}
+	}
 
 }

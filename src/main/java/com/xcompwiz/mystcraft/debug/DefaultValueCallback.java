@@ -8,7 +8,7 @@ import net.minecraft.command.ICommandSender;
 public abstract class DefaultValueCallback implements DebugValueCallback {
 
 	public static class CallbackSetNotSupported extends CommandException {
-		private static final long	serialVersionUID	= 5894138465820317546L;
+		private static final long serialVersionUID = 5894138465820317546L;
 
 		public CallbackSetNotSupported() {
 			super("myst.debug.callback.set.unsupported");
@@ -16,7 +16,7 @@ public abstract class DefaultValueCallback implements DebugValueCallback {
 	}
 
 	public static class CallbackReadNotSupported extends CommandException {
-		private static final long	serialVersionUID	= 3593269422046054872L;
+		private static final long serialVersionUID = 3593269422046054872L;
 
 		public CallbackReadNotSupported() {
 			super("myst.debug.callback.read.unsupported");

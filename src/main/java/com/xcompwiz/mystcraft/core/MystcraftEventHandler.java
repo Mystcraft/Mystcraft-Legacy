@@ -44,25 +44,30 @@ public class MystcraftEventHandler {
 	@SubscribeEvent
 	public void bucketFix(FillBucketEvent event) {
 		RayTraceResult rtr = event.getTarget();
-		if (rtr == null || rtr.typeOfHit != RayTraceResult.Type.BLOCK) return;
+		if (rtr == null || rtr.typeOfHit != RayTraceResult.Type.BLOCK)
+			return;
 		BlockPos hit = rtr.getBlockPos();
-		if(event.getWorld().getBlockState(hit).getBlock().equals(ModBlocks.black_ink)) {
+		if (event.getWorld().getBlockState(hit).getBlock().equals(ModBlocks.black_ink)) {
 			event.setCanceled(true);
 		}
 	}
 
 	@SubscribeEvent
 	public void entityInteract(PlayerInteractEvent.EntityInteract event) {
-		if (VillagerTradeSystem.onVillagerInteraction(event)) event.setCanceled(true);
+		if (VillagerTradeSystem.onVillagerInteraction(event))
+			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
 	public void bottleFix(PlayerInteractEvent.RightClickItem event) {
 		ItemStack itemstack = event.getItemStack();
-		if (itemstack.isEmpty()) return;
-		if (!(itemstack.getItem() instanceof ItemGlassBottle)) return;
+		if (itemstack.isEmpty())
+			return;
+		if (!(itemstack.getItem() instanceof ItemGlassBottle))
+			return;
 		RayTraceResult rtr = EntityUtils.getMovingObjectPositionFromPlayer(event.getWorld(), event.getEntityPlayer(), true);
-		if (rtr == null || rtr.typeOfHit != RayTraceResult.Type.BLOCK) return;
+		if (rtr == null || rtr.typeOfHit != RayTraceResult.Type.BLOCK)
+			return;
 		BlockPos hit = rtr.getBlockPos();
 		if (event.getWorld().getBlockState(hit).getBlock().equals(ModBlocks.black_ink)) {
 			event.setResult(Event.Result.DENY);
@@ -88,7 +93,8 @@ public class MystcraftEventHandler {
 		WorldProvider provider = event.getWorld().provider;
 		if (provider instanceof WorldProviderMyst) {
 			((WorldProviderMyst) provider).setWorldInfo();
-			if (event.getWorld().isRemote) return;
+			if (event.getWorld().isRemote)
+				return;
 
 			DebugNode node = DebugUtils.getDebugNodeForAge(((WorldProviderMyst) provider).agedata);
 			((WorldProviderMyst) provider).getAgeController().registerDebugInfo(node);
@@ -99,7 +105,8 @@ public class MystcraftEventHandler {
 	public void handleWorldUnloadEvent(WorldEvent.Unload event) {
 		WorldProvider provider = event.getWorld().provider;
 		if (provider instanceof WorldProviderMyst) {
-			if (event.getWorld().isRemote) return;
+			if (event.getWorld().isRemote)
+				return;
 			DebugNode node = DebugUtils.getDebugNodeForAge(((WorldProviderMyst) provider).agedata);
 			node.parent.removeChild(node);
 		}

@@ -20,11 +20,12 @@ public class SymbolFactoryImpl {
 
 	public IAgeSymbol createSymbol(IBlockState blockstate, String thirdword, int rank, CategoryPair... pairs) {
 		BlockModifierContainerObject container = BlockModifierContainerObject.create(thirdword, rank, blockstate);
-		if (pairs != null) for (CategoryPair pair : pairs) {
-			BlockCategory cat = pair.category;
-			Integer c_rank = pair.rank;
-			container.add(cat, c_rank);
-		}
+		if (pairs != null)
+			for (CategoryPair pair : pairs) {
+				BlockCategory cat = pair.category;
+				Integer c_rank = pair.rank;
+				container.add(cat, c_rank);
+			}
 		return container.getSymbol();
 	}
 

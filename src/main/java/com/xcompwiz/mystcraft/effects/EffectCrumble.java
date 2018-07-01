@@ -15,11 +15,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 public class EffectCrumble implements IEnvironmentalEffect {
-	private int													updateLCG	= (new Random()).nextInt();
-	private static HashMap<IBlockState, IBlockState>	map;
+	private int updateLCG = (new Random()).nextInt();
+	private static HashMap<IBlockState, IBlockState> map;
 
 	public static void initMappings() {
-		if (map != null) return;
+		if (map != null)
+			return;
 		map = new HashMap<>();
 		registerMapping(Blocks.COAL_ORE, Blocks.STONE);
 		registerMapping(Blocks.IRON_ORE, Blocks.STONE);
@@ -73,17 +74,19 @@ public class EffectCrumble implements IEnvironmentalEffect {
 	public static boolean registerMapping(Block block, Block block2) {
 		return registerMapping(block, block2.getDefaultState());
 	}
-	
+
 	public static boolean registerMapping(Block block, IBlockState block2) {
-		if (map == null) return false;
+		if (map == null)
+			return false;
 		ImmutableList<IBlockState> blockstates = block.getBlockState().getValidStates();
 		for (IBlockState blockstate : blockstates)
 			registerMapping(blockstate, block2);
 		return true;
 	}
-	
+
 	public static boolean registerMapping(IBlockState block, IBlockState block2) {
-		if (map == null) return false;
+		if (map == null)
+			return false;
 		map.put(block, block2);
 		return true;
 	}

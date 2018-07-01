@@ -30,15 +30,15 @@ public class SymbolStarsEndSky extends SymbolBase {
 		controller.setDrawVoid(false);
 	}
 
-    @Override
-    public boolean generatesConfigOption() {
-        return true;
-    }
+	@Override
+	public boolean generatesConfigOption() {
+		return true;
+	}
 
 	private static class SkyBackground extends CelestialBase {
 
-		private ColorGradient	gradient;
-		private AgeDirector		controller;
+		private ColorGradient gradient;
+		private AgeDirector controller;
 
 		SkyBackground(AgeDirector controller, long seed, ColorGradient gradient) {
 			this.controller = controller;
@@ -51,51 +51,51 @@ public class SymbolStarsEndSky extends SymbolBase {
 			BufferBuilder vb = tes.getBuffer();
 
 			Color color = gradient.getColor(controller.getTime() / 12000F);
-            java.awt.Color awt = color.toAWT();
+			java.awt.Color awt = color.toAWT();
 
-            GlStateManager.disableFog();
-            GlStateManager.disableAlpha();
-            GlStateManager.enableBlend();
-            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-            RenderHelper.disableStandardItemLighting();
-            GlStateManager.depthMask(false);
-            textureManager.bindTexture(Vanilla.end_sky);
+			GlStateManager.disableFog();
+			GlStateManager.disableAlpha();
+			GlStateManager.enableBlend();
+			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+			RenderHelper.disableStandardItemLighting();
+			GlStateManager.depthMask(false);
+			textureManager.bindTexture(Vanilla.end_sky);
 
-            for (int i = 0; i < 6; ++i) {
-                GlStateManager.pushMatrix();
+			for (int i = 0; i < 6; ++i) {
+				GlStateManager.pushMatrix();
 
-                if (i == 1) {
-                    GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
-                }
+				if (i == 1) {
+					GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
+				}
 
-                if (i == 2) {
-                    GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
-                }
+				if (i == 2) {
+					GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
+				}
 
-                if (i == 3) {
-                    GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
-                }
+				if (i == 3) {
+					GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
+				}
 
-                if (i == 4) {
-                    GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
-                }
+				if (i == 4) {
+					GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+				}
 
-                if (i == 5) {
-                    GlStateManager.rotate(-90.0F, 0.0F, 0.0F, 1.0F);
-                }
+				if (i == 5) {
+					GlStateManager.rotate(-90.0F, 0.0F, 0.0F, 1.0F);
+				}
 
-                vb.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-                vb.pos(-100.0D, -100.0D, -100.0D).tex(0.0D, 0.0D).color(awt.getRed(), awt.getGreen(), awt.getBlue(), 255).endVertex();
-                vb.pos(-100.0D, -100.0D, 100.0D).tex(0.0D, 16.0D).color(awt.getRed(), awt.getGreen(), awt.getBlue(), 255).endVertex();
-                vb.pos(100.0D, -100.0D, 100.0D).tex(16.0D, 16.0D).color(awt.getRed(), awt.getGreen(), awt.getBlue(), 255).endVertex();
-                vb.pos(100.0D, -100.0D, -100.0D).tex(16.0D, 0.0D).color(awt.getRed(), awt.getGreen(), awt.getBlue(), 255).endVertex();
-                tes.draw();
-                GlStateManager.popMatrix();
-            }
+				vb.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+				vb.pos(-100.0D, -100.0D, -100.0D).tex(0.0D, 0.0D).color(awt.getRed(), awt.getGreen(), awt.getBlue(), 255).endVertex();
+				vb.pos(-100.0D, -100.0D, 100.0D).tex(0.0D, 16.0D).color(awt.getRed(), awt.getGreen(), awt.getBlue(), 255).endVertex();
+				vb.pos(100.0D, -100.0D, 100.0D).tex(16.0D, 16.0D).color(awt.getRed(), awt.getGreen(), awt.getBlue(), 255).endVertex();
+				vb.pos(100.0D, -100.0D, -100.0D).tex(16.0D, 0.0D).color(awt.getRed(), awt.getGreen(), awt.getBlue(), 255).endVertex();
+				tes.draw();
+				GlStateManager.popMatrix();
+			}
 
-            GlStateManager.depthMask(true);
-            GlStateManager.enableTexture2D();
-            GlStateManager.enableAlpha();
+			GlStateManager.depthMask(true);
+			GlStateManager.enableTexture2D();
+			GlStateManager.enableAlpha();
 		}
 	}
 }

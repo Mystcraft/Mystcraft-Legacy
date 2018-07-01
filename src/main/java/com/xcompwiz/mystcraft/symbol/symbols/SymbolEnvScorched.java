@@ -19,7 +19,8 @@ public class SymbolEnvScorched extends SymbolBase {
 
 	@Override
 	public int instabilityModifier(int count) {
-		if (count > 1) return 0;
+		if (count > 1)
+			return 0;
 		return InstabilityData.symbol.scorched;
 	}
 

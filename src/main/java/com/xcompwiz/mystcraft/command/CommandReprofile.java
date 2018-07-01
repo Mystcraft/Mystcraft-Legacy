@@ -31,7 +31,8 @@ public class CommandReprofile extends CommandBaseAdv {
 
 	@Override
 	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-		if (sender.getName().equals("XCompWiz")) return true;
+		if (sender.getName().equals("XCompWiz"))
+			return true;
 		return super.checkPermission(server, sender);
 	}
 
@@ -44,7 +45,9 @@ public class CommandReprofile extends CommandBaseAdv {
 			dimId = getSenderDimension(sender);
 		}
 
-		if (!Mystcraft.registeredDims.contains(dimId) || AgeData.getAge(dimId, false) == null) { throw new CommandException("Cannot (re)profile block instability for non-Mystcraft Dimensions", new Object[0]); }
+		if (!Mystcraft.registeredDims.contains(dimId) || AgeData.getAge(dimId, false) == null) {
+			throw new CommandException("Cannot (re)profile block instability for non-Mystcraft Dimensions", new Object[0]);
+		}
 
 		World worldObj = server.getWorld(dimId);
 		ChunkProfiler chunkprofiler = (ChunkProfiler) worldObj.getPerWorldStorage().getOrLoadData(ChunkProfiler.class, ChunkProfiler.ID);

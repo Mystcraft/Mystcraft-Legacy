@@ -11,7 +11,8 @@ public class IMCBlacklistSymbol implements IMCProcessor {
 
 	@Override
 	public void process(IMCMessage message) {
-		if (!message.isStringMessage()) return;
+		if (!message.isStringMessage())
+			return;
 		String identifier = message.getStringValue();
 		SymbolManager.blackListSymbol(new ResourceLocation(identifier));
 		LoggerUtils.info(String.format("Symbol blacklist request from [%s] successful on identifier %s", message.getSender(), identifier));

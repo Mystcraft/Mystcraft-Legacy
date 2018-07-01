@@ -17,8 +17,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class EffectLightning implements IEnvironmentalEffect {
 
-	private int				updateLCG	= (new Random()).nextInt();
-	private ColorGradient	gradient;
+	private int updateLCG = (new Random()).nextInt();
+	private ColorGradient gradient;
 
 	public EffectLightning() {}
 
@@ -28,7 +28,8 @@ public class EffectLightning implements IEnvironmentalEffect {
 
 	@Override
 	public void tick(World worldObj, Chunk chunk) {
-		if (worldObj.isRemote) return;
+		if (worldObj.isRemote)
+			return;
 		int chunkX = chunk.x * 16;
 		int chunkZ = chunk.z * 16;
 		int coords;
@@ -55,11 +56,11 @@ public class EffectLightning implements IEnvironmentalEffect {
 			bolt = new EntityLightningBoltAdv(worldObj, precip.getX(), precip.getY(), precip.getZ(), false);
 		}
 		if (bolt != null) {
-			if (gradient != null && gradient.getColorCount() > 0) bolt.setColor(gradient.getColor(worldObj.getTotalWorldTime() / 12000F));
+			if (gradient != null && gradient.getColorCount() > 0)
+				bolt.setColor(gradient.getColor(worldObj.getTotalWorldTime() / 12000F));
 			worldObj.weatherEffects.add(bolt);
 			if (worldObj instanceof WorldServer) {
-				MystcraftPacketHandler.CHANNEL.sendToAllAround(new MPacketSpawnLightningBolt(bolt),
-						new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(), bolt.posX, bolt.posY, bolt.posZ, 512.0D));
+				MystcraftPacketHandler.CHANNEL.sendToAllAround(new MPacketSpawnLightningBolt(bolt), new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(), bolt.posX, bolt.posY, bolt.posZ, 512.0D));
 			}
 		}
 	}

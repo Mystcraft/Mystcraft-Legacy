@@ -51,22 +51,22 @@ public class BlockBookReceptacle extends BlockContainer {
 		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 	}
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(ROTATION, EnumFacing.values()[meta]);
-    }
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(ROTATION, EnumFacing.values()[meta]);
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(ROTATION).ordinal();
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(ROTATION).ordinal();
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, ROTATION);
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, ROTATION);
+	}
 
-    @Override
+	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
@@ -88,31 +88,31 @@ public class BlockBookReceptacle extends BlockContainer {
 
 	@Override
 	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
-		if(side == EnumFacing.DOWN) {
+		if (side == EnumFacing.DOWN) {
 			return false;
 		}
-		if(!worldIn.getBlockState(pos.offset(side.getOpposite())).getBlock().equals(ModBlocks.crystal)) {
+		if (!worldIn.getBlockState(pos.offset(side.getOpposite())).getBlock().equals(ModBlocks.crystal)) {
 			return false;
 		}
 		return canPlaceBlockAt(worldIn, pos);
 	}
 
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        switch (state.getValue(ROTATION)) {
-            case UP:
-                return new AxisAlignedBB(0, 0, 0, 1, 0.375, 1);
-            case NORTH:
-                return new AxisAlignedBB(0, 0, 1 - 0.375, 1, 1, 1);
-            case SOUTH:
-                return new AxisAlignedBB(0, 0, 0, 1, 1, 0.375);
-            case WEST:
-                return new AxisAlignedBB(1 - 0.375, 0, 0, 1, 1, 1);
-            case EAST:
-                return new AxisAlignedBB(0, 0, 0, 0.375, 1, 1);
-        }
-        return FULL_BLOCK_AABB;
-    }
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		switch (state.getValue(ROTATION)) {
+		case UP:
+			return new AxisAlignedBB(0, 0, 0, 1, 0.375, 1);
+		case NORTH:
+			return new AxisAlignedBB(0, 0, 1 - 0.375, 1, 1, 1);
+		case SOUTH:
+			return new AxisAlignedBB(0, 0, 0, 1, 1, 0.375);
+		case WEST:
+			return new AxisAlignedBB(1 - 0.375, 0, 0, 1, 1, 1);
+		case EAST:
+			return new AxisAlignedBB(0, 0, 0, 0.375, 1, 1);
+		}
+		return FULL_BLOCK_AABB;
+	}
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
@@ -122,7 +122,7 @@ public class BlockBookReceptacle extends BlockContainer {
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		BlockPos receptable = PortalUtils.getReceptacleBase(pos, state.getValue(ROTATION));
-		if(!worldIn.getBlockState(receptable).getBlock().equals(ModBlocks.crystal)) {
+		if (!worldIn.getBlockState(receptable).getBlock().equals(ModBlocks.crystal)) {
 			dropBlockAsItem(worldIn, pos, state, 0);
 			worldIn.setBlockToAir(pos);
 		}
@@ -131,11 +131,11 @@ public class BlockBookReceptacle extends BlockContainer {
 
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		if(!worldIn.isRemote) {
+		if (!worldIn.isRemote) {
 			TileEntityBookReceptacle book = (TileEntityBookReceptacle) worldIn.getTileEntity(pos);
-			if(book != null) {
+			if (book != null) {
 				ItemStack in = book.getBook();
-				if(!in.isEmpty()) {
+				if (!in.isEmpty()) {
 					EntityItem i = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), in);
 					worldIn.spawnEntity(i);
 				}
@@ -147,21 +147,21 @@ public class BlockBookReceptacle extends BlockContainer {
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		TileEntityBookReceptacle book = (TileEntityBookReceptacle) worldIn.getTileEntity(pos);
-		if(book == null) {
+		if (book == null) {
 			return false;
 		}
 		ItemStack in = book.getBook();
-		if(in.isEmpty()) {
+		if (in.isEmpty()) {
 			in = playerIn.getHeldItem(hand);
-			if(!in.isEmpty() && in.getItem() instanceof IItemPortalActivator) {
-				if(!worldIn.isRemote) {
+			if (!in.isEmpty() && in.getItem() instanceof IItemPortalActivator) {
+				if (!worldIn.isRemote) {
 					playerIn.setHeldItem(hand, ItemStack.EMPTY);
 					book.setBook(in);
 				}
 				return true;
 			}
 		} else {
-			if(!worldIn.isRemote && playerIn.getHeldItem(hand).isEmpty()) {
+			if (!worldIn.isRemote && playerIn.getHeldItem(hand).isEmpty()) {
 				playerIn.setHeldItem(hand, in);
 				book.setBook(ItemStack.EMPTY);
 			}
@@ -195,9 +195,9 @@ public class BlockBookReceptacle extends BlockContainer {
 	@Override
 	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
 		TileEntity te = worldIn.getTileEntity(pos);
-		if(te != null) {
+		if (te != null) {
 			IItemHandler cap = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
-			if(cap != null && cap instanceof IOInventory) {
+			if (cap != null && cap instanceof IOInventory) {
 				return ((IOInventory) cap).calcRedstoneFromInventory();
 			}
 		}

@@ -37,16 +37,18 @@ public abstract class Page {
 	@Nullable
 	public static Integer getQuality(@Nonnull ItemStack page, String trait) {
 		NBTTagCompound data = getQualityStruct(page);
-		if (data.hasKey(trait)) return data.getInteger(trait);
+		if (data.hasKey(trait))
+			return data.getInteger(trait);
 		return null;
 	}
 
 	//Hellfire> NEEDS to be never null. otherwise we'd sometimes get an invalid model location from the page and we crash
 	@Nonnull
 	private static NBTTagCompound getData(@Nonnull ItemStack item) {
-		if (item.isEmpty()) return new NBTTagCompound();
+		if (item.isEmpty())
+			return new NBTTagCompound();
 		NBTTagCompound tag = item.getTagCompound();
-		if(tag == null) {
+		if (tag == null) {
 			tag = new NBTTagCompound();
 			item.setTagCompound(tag);
 		}
@@ -71,7 +73,8 @@ public abstract class Page {
 	}
 
 	public static void makeLinkPanel(@Nonnull ItemStack page) {
-		if(page.isEmpty()) return;
+		if (page.isEmpty())
+			return;
 
 		if (page.getTagCompound() == null) {
 			page.setTagCompound(createDefault());
@@ -83,7 +86,8 @@ public abstract class Page {
 	}
 
 	public static void addLinkProperty(@Nonnull ItemStack page, String linkproperty) {
-		if(page.isEmpty()) return;
+		if (page.isEmpty())
+			return;
 
 		if (page.getTagCompound() == null) {
 			page.setTagCompound(createDefault());
@@ -100,7 +104,7 @@ public abstract class Page {
 
 	@Nullable
 	public static Collection<String> getLinkProperties(@Nonnull ItemStack page) {
-		if(page.isEmpty() || page.getTagCompound() == null) {
+		if (page.isEmpty() || page.getTagCompound() == null) {
 			return null;
 		}
 		NBTTagCompound data = getData(page);
@@ -114,14 +118,15 @@ public abstract class Page {
 	//XXX: This is a weird way to do this now
 	public static void applyLinkPanel(@Nonnull ItemStack linkpanel, @Nonnull ItemStack linkingitem) {
 		Collection<String> properties = getLinkProperties(linkpanel);
-		if (properties == null) return;
+		if (properties == null)
+			return;
 		for (String property : properties) {
 			LinkOptions.setFlag(linkingitem.getTagCompound(), property, true);
 		}
 	}
 
 	public static void setSymbol(@Nonnull ItemStack page, ResourceLocation symbol) {
-		if(page.isEmpty() || page.getTagCompound() == null) {
+		if (page.isEmpty() || page.getTagCompound() == null) {
 			return;
 		}
 		NBTTagCompound data = getData(page);
@@ -134,7 +139,7 @@ public abstract class Page {
 
 	@Nullable
 	public static ResourceLocation getSymbol(@Nonnull ItemStack page) {
-		if(page.isEmpty() || page.getTagCompound() == null) {
+		if (page.isEmpty() || page.getTagCompound() == null) {
 			return null;
 		}
 		NBTTagCompound data = getData(page);

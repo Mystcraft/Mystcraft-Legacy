@@ -21,9 +21,9 @@ public class ItemMyGlasses extends ItemArmor {
 	@Nullable
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
-	    if(slot != EntityEquipmentSlot.HEAD) {
-	        return super.getArmorTexture(stack, entity, slot, type);
-        }
+		if (slot != EntityEquipmentSlot.HEAD) {
+			return super.getArmorTexture(stack, entity, slot, type);
+		}
 		return "mystcraft:textures/models/glasses.png";
 	}
 
@@ -43,7 +43,8 @@ public class ItemMyGlasses extends ItemArmor {
 
 	@Override
 	public void onUpdate(ItemStack itemstack, World worldObj, Entity entity, int slot, boolean isCurrent) {
-		if (entity == null || !(entity instanceof EntityPlayer)) return;
+		if (entity == null || !(entity instanceof EntityPlayer))
+			return;
 		if (!entity.getName().equals("XCompWiz")) {
 			EntityPlayer player = (EntityPlayer) entity;
 			player.inventory.setInventorySlotContents(slot, ItemStack.EMPTY);

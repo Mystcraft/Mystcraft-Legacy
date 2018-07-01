@@ -17,7 +17,7 @@ public class SymbolRules {
 	public static void initialize() {
 		addRuleInternal("ModNorth", buildRule(1, GrammarData.ANGLE_BASIC, asMyst("ModNorth")));
 		addRuleInternal("ModSouth", buildRule(1, GrammarData.ANGLE_BASIC, asMyst("ModSouth")));
-		addRuleInternal("ModEast",	buildRule(1, GrammarData.ANGLE_BASIC, asMyst("ModEast")));
+		addRuleInternal("ModEast", buildRule(1, GrammarData.ANGLE_BASIC, asMyst("ModEast")));
 		addRuleInternal("ModWest", buildRule(1, GrammarData.ANGLE_BASIC, asMyst("ModWest")));
 
 		addRuleInternal("ModRising", buildRule(1, GrammarData.PHASE_BASIC, asMyst("ModRising")));

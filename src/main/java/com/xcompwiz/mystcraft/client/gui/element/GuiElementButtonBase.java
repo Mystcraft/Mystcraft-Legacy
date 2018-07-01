@@ -10,12 +10,12 @@ import com.xcompwiz.mystcraft.client.gui.element.data.IGuiIcon;
 
 public abstract class GuiElementButtonBase extends GuiElement {
 
-	private IGuiIcon			icon;
-	private String				text;
-	private List<String>		tooltip;
+	private IGuiIcon icon;
+	private String text;
+	private List<String> tooltip;
 
-	private boolean				clicked;
-	private boolean				hovered			= false;
+	private boolean clicked;
+	private boolean hovered = false;
 
 	public GuiElementButtonBase(int guiLeft, int guiTop, int width, int height) {
 		super(guiLeft, guiTop, width, height);
@@ -62,7 +62,9 @@ public abstract class GuiElementButtonBase extends GuiElement {
 
 	@Override
 	public List<String> _getTooltipInfo() {
-		if (this.hovered) { return this.tooltip; }
+		if (this.hovered) {
+			return this.tooltip;
+		}
 		return super._getTooltipInfo();
 	}
 
@@ -90,9 +92,9 @@ public abstract class GuiElementButtonBase extends GuiElement {
 			}
 			int innercolor = 0xFF8b8b8b;
 			drawRect(guiLeft, guiTop, guiLeft + this.xSize, guiTop + ySize, innercolor);
-			drawRect(guiLeft, guiTop, guiLeft + this.xSize-1, guiTop + ySize-1, color2);
-			drawRect(guiLeft+1, guiTop+1, guiLeft + this.xSize, guiTop + ySize, color1);
-			drawRect(guiLeft+1, guiTop+1, guiLeft + this.xSize-1, guiTop + ySize-1, innercolor);
+			drawRect(guiLeft, guiTop, guiLeft + this.xSize - 1, guiTop + ySize - 1, color2);
+			drawRect(guiLeft + 1, guiTop + 1, guiLeft + this.xSize, guiTop + ySize, color1);
+			drawRect(guiLeft + 1, guiTop + 1, guiLeft + this.xSize - 1, guiTop + ySize - 1, innercolor);
 		} else {
 			if (isDepressed()) {
 				GuiUtils.drawSprite(guiLeft, guiTop, xSize, ySize, 0, 0, this.getZLevel());

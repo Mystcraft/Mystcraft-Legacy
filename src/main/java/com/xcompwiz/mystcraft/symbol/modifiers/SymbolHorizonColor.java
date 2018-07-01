@@ -8,7 +8,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import net.minecraft.util.ResourceLocation;
 
 public class SymbolHorizonColor extends SymbolBase {
-	
+
 	public SymbolHorizonColor(ResourceLocation identifier) {
 		super(identifier);
 	}
@@ -21,7 +21,8 @@ public class SymbolHorizonColor extends SymbolBase {
 	@Override
 	public void registerLogic(AgeDirector controller, long seed) {
 		ColorGradient sunset = controller.popModifier(ModifierUtils.SUNSET).asGradient();
-		if (sunset == null) sunset = new ColorGradient(); // Create sunset gradient if invalid
+		if (sunset == null)
+			sunset = new ColorGradient(); // Create sunset gradient if invalid
 		ColorGradient gradient = ModifierUtils.popGradient(controller);
 		sunset.appendGradient(gradient); // Append gradient to sunset
 		controller.setModifier(ModifierUtils.SUNSET, new Modifier(sunset, 0));

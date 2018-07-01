@@ -12,8 +12,8 @@ import net.minecraft.world.World;
 
 public class WorldGenMystCrystalFormation extends WorldGeneratorAdv {
 
-	static final byte	otherCoordPairs[]	= { 2, 0, 0, 1, 2, 1 };
-	private World		worldObj;
+	static final byte otherCoordPairs[] = { 2, 0, 0, 1, 2, 1 };
+	private World worldObj;
 	private IBlockState block;
 	private BlockPos crystalPos;
 
@@ -28,18 +28,11 @@ public class WorldGenMystCrystalFormation extends WorldGeneratorAdv {
 	private void generateLine(Random rand) {
 		float angle1 = (rand.nextFloat() * 140.0F + 15.0F);
 		int length = rand.nextInt(7) + 6;
-		int[] end = new int[] {
-                crystalPos.getX() + (int) (length * Math.cos(angle1 * Math.PI / 180)),
-                crystalPos.getY() + (int) (length * Math.cos(angle1 * Math.PI / 180)),
-                crystalPos.getZ() + rand.nextInt(7) - 3
-        };
-		int[] start = new int[] {
-		        crystalPos.getX(),
-		        crystalPos.getY(),
-                crystalPos.getZ()
-        };
+		int[] end = new int[] { crystalPos.getX() + (int) (length * Math.cos(angle1 * Math.PI / 180)), crystalPos.getY() + (int) (length * Math.cos(angle1 * Math.PI / 180)), crystalPos.getZ() + rand.nextInt(7) - 3 };
+		int[] start = new int[] { crystalPos.getX(), crystalPos.getY(), crystalPos.getZ() };
 		placeBlockLine(start, end, block);
 	}
+
 	private void placeBlockLine(int ai[], int ai1[], IBlockState state) {
 		int ai2[] = { 0, 0, 0 };
 		byte byte0 = 0;
@@ -51,7 +44,9 @@ public class WorldGenMystCrystalFormation extends WorldGeneratorAdv {
 			}
 		}
 
-		if (ai2[j] == 0) { return; }
+		if (ai2[j] == 0) {
+			return;
+		}
 		byte byte1 = otherCoordPairs[j];
 		byte byte2 = otherCoordPairs[j + 3];
 		byte byte3;
@@ -80,7 +75,7 @@ public class WorldGenMystCrystalFormation extends WorldGeneratorAdv {
 	}
 
 	private void setBlock(BlockPos pos, IBlockState state) {
-		if(worldObj.getBlockState(pos).getBlock().equals(Blocks.BEDROCK)) {
+		if (worldObj.getBlockState(pos).getBlock().equals(Blocks.BEDROCK)) {
 			placeBlock(worldObj, pos, state, 3);
 		}
 	}
@@ -90,7 +85,8 @@ public class WorldGenMystCrystalFormation extends WorldGeneratorAdv {
 		worldObj = world;
 		crystalPos = new BlockPos(pos.getX(), 0, pos.getZ());
 
-		if (!validLocation()) return false;
+		if (!validLocation())
+			return false;
 		int count = rand.nextInt(3) + 1;
 		for (int i1 = 0; i1 < count; ++i1) {
 			generateLine(rand);
@@ -101,9 +97,9 @@ public class WorldGenMystCrystalFormation extends WorldGeneratorAdv {
 
 	private boolean validLocation() {
 		IBlockState state = worldObj.getBlockState(crystalPos);
-		if(state.getBlock().equals(Blocks.AIR)) {
+		if (state.getBlock().equals(Blocks.AIR)) {
 			crystalPos = crystalPos.up();
-			if(crystalPos.getY() > worldObj.getHeight()) {
+			if (crystalPos.getY() > worldObj.getHeight()) {
 				return false;
 			}
 			state = worldObj.getBlockState(crystalPos);

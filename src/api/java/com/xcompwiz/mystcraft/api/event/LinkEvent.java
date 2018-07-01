@@ -16,13 +16,13 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 public abstract class LinkEvent extends Event {
 
 	/** The world the entity is leaving. May be null. */
-	public final World		origin;
+	public final World origin;
 	/** The destination world. May be null. */
-	public final World		destination;
+	public final World destination;
 	/** The entity being linked */
-	public final Entity		entity;
+	public final Entity entity;
 	/** The link descriptor. You should not modify this object in any way */
-	public final ILinkInfo	info;
+	public final ILinkInfo info;
 
 	public LinkEvent(World origin, World destination, Entity entity, ILinkInfo info) {
 		this.origin = origin;
@@ -48,7 +48,7 @@ public abstract class LinkEvent extends Event {
 		/** Set this to alter the link (null until set) */
 		public BlockPos spawn;
 		/** Set this to alter the link (null until set) */
-		public Float			rotationYaw;
+		public Float rotationYaw;
 
 		public LinkEventAlter(World origin, World destination, Entity entity, ILinkInfo info) {
 			super(origin, destination, entity, info);

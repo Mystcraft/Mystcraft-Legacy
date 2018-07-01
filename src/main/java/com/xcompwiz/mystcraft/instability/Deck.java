@@ -7,8 +7,8 @@ import java.util.Random;
 
 public class Deck {
 
-	private final String		name;
-	private LinkedList<String>	cards;
+	private final String name;
+	private LinkedList<String> cards;
 
 	public Deck(String name, Collection<String> cards) {
 		this.name = name;

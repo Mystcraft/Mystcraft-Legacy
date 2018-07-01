@@ -17,9 +17,8 @@ import net.minecraftforge.event.RegistryEvent;
 public interface SymbolFactory {
 
 	/**
-	 * Deprecated. The ownerModid isn't used any longer, preferably use the method that doesn't require it as parameter.
-	 *
-	 * Creates a block modifier symbol from a specified block. Remember to register the symbol via {@link RegistryEvent.Register<IAgeSymbol>}.
+	 * Deprecated. The ownerModid isn't used any longer, preferably use the method that doesn't require it as parameter. Creates a block modifier symbol from a
+	 * specified block. Remember to register the symbol via {@link RegistryEvent.Register<IAgeSymbol>}.
 	 * @param ownerModid the modid of the mod owning/registering this symbol
 	 * @param blockState The block to use
 	 * @param thirdword The third word in the Narayan poem (symbol rendering)

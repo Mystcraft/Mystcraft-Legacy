@@ -6,9 +6,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.world.biome.Biome;
 
 public interface IDynamicColorProvider {
-	public final static String	CLOUD	= "cloud";
-	public final static String	FOG		= "fog";
-	public final static String	SKY		= "sky";
+	public final static String CLOUD = "cloud";
+	public final static String FOG = "fog";
+	public final static String SKY = "sky";
 
 	/**
 	 * Returns a color based on the provided information. Note that the produced color is dynamic, so this type of element can use gradients. Returning null has

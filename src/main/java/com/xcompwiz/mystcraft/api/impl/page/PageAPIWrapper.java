@@ -37,7 +37,7 @@ public class PageAPIWrapper extends APIWrapper implements PageAPI {
 
 	@Override
 	public void setPageSymbol(ItemStack page, ResourceLocation symbol) {
-		InternalAPI.page.setPageSymbol(page, symbol);		
+		InternalAPI.page.setPageSymbol(page, symbol);
 	}
 
 }

@@ -92,10 +92,12 @@ public class InstabilityController implements InstabilityDirector {
 	private void reconstruct() {
 		providerlevels.clear();
 		effects.clear();
-		if (!enabled) return;
+		if (!enabled)
+			return;
 		for (Deck deck : decks) {
 			Collection<String> providernames = getProviders(deck);
-			if (providernames == null) continue;
+			if (providernames == null)
+				continue;
 			for (String name : providernames) {
 				addProviderLevel(name);
 			}
@@ -106,12 +108,14 @@ public class InstabilityController implements InstabilityDirector {
 	private Collection<String> getProviders(Deck deck) {
 		int instabilityScore = getInstabilityScore();
 		instabilityScore -= InstabilityManager.getDeckCost(deck.getName());
-		if (instabilityScore < 0) return null;
+		if (instabilityScore < 0)
+			return null;
 		Collection<String> providers = new ArrayList<String>();
 		for (String card : deck.getCards()) {
 			int cost = InstabilityManager.getCardCost(card);
 			instabilityScore -= cost;
-			if (instabilityScore < 0) break;
+			if (instabilityScore < 0)
+				break;
 			providers.add(card);
 		}
 		return providers;
@@ -119,7 +123,8 @@ public class InstabilityController implements InstabilityDirector {
 
 	private void addProviderLevel(String provider) {
 		Integer level = providerlevels.get(provider);
-		if (level == null) level = 0;
+		if (level == null)
+			level = 0;
 		this.providerlevels.put(provider, level + 1);
 	}
 
@@ -136,7 +141,8 @@ public class InstabilityController implements InstabilityDirector {
 
 	public void tick(World world, Chunk chunk) {
 		validate();
-		if (!enabled) return;
+		if (!enabled)
+			return;
 		if (effects != null && effects.size() > 0) {
 			for (IEnvironmentalEffect effect : effects) {
 				effect.tick(world, chunk);

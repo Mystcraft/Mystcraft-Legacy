@@ -11,11 +11,14 @@ public class WorldInfoUtils {
 		target = Math.abs(target);
 		long time = world.getWorldTime();
 		float lastangle = world.provider.calculateCelestialAngle(time, 0);
-		if (lastangle < 0) return time;
+		if (lastangle < 0)
+			return time;
 		float angle = lastangle;
 		int steprate = 10;
 		for (int attempt = 0; attempt < 1000; ++attempt) {
-			if (Math.abs(angle - target) < 0.05) { return time; }
+			if (Math.abs(angle - target) < 0.05) {
+				return time;
+			}
 			time += steprate;
 			angle = world.provider.calculateCelestialAngle(time, 0);
 			if (Math.abs(angle - lastangle) < 0.01) {
@@ -38,7 +41,8 @@ public class WorldInfoUtils {
 	}
 
 	private static AgeData getWorldAgeData(World world) {
-		if (!(world.provider instanceof WorldProviderMyst)) return null;
+		if (!(world.provider instanceof WorldProviderMyst))
+			return null;
 		return ((WorldProviderMyst) world.provider).agedata;
 	}
 
@@ -48,7 +52,8 @@ public class WorldInfoUtils {
 
 	public static boolean isInstabilityEnabled(World world) {
 		AgeData data = getWorldAgeData(world);
-		if (data == null) return false;
+		if (data == null)
+			return false;
 		return data.isInstabilityEnabled();
 	}
 

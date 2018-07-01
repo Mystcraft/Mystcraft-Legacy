@@ -5,7 +5,7 @@ import net.minecraftforge.fluids.Fluid;
 
 public class FluidColorable extends Fluid {
 
-	private int	color;
+	private int color;
 
 	public FluidColorable(String fluidName, ResourceLocation resFluidStill, ResourceLocation resFluidFlow, int color) {
 		super(fluidName, resFluidStill, resFluidFlow);

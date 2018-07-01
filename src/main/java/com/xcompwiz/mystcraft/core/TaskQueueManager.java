@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class TaskQueueManager {
-	private static Collection<Runnable>	onServerShutdown	= new HashSet<Runnable>();
+	private static Collection<Runnable> onServerShutdown = new HashSet<Runnable>();
 
 	public static void runOnServerShutdown(Runnable runnable) {
 		onServerShutdown.add(runnable);

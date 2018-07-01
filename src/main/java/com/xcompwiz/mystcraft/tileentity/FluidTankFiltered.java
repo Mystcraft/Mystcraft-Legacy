@@ -8,7 +8,7 @@ import net.minecraftforge.fluids.FluidTank;
 
 public class FluidTankFiltered extends FluidTank {
 
-	private Set<String>	allowed;
+	private Set<String> allowed;
 
 	public FluidTankFiltered(int capacity) {
 		super(capacity);
@@ -24,8 +24,11 @@ public class FluidTankFiltered extends FluidTank {
 
 	@Override
 	public int fill(FluidStack resource, boolean doFill) {
-		if (resource == null) return 0;
-		if (isFluidPermitted(resource.getFluid())) { return super.fill(resource, doFill); }
+		if (resource == null)
+			return 0;
+		if (isFluidPermitted(resource.getFluid())) {
+			return super.fill(resource, doFill);
+		}
 		return 0;
 	}
 
@@ -34,8 +37,10 @@ public class FluidTankFiltered extends FluidTank {
 	}
 
 	public boolean isFluidPermitted(Fluid fluid) {
-		if (allowed == null) return true;
-		if (allowed.contains(fluid.getName())) return true;
+		if (allowed == null)
+			return true;
+		if (allowed.contains(fluid.getName()))
+			return true;
 		return false;
 	}
 

@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 
 public class BlockInkMixer extends BlockContainer {
 
-    public static final PropertyEnum<EnumFacing> ROTATION = PropertyEnum.create("facing", EnumFacing.class, EnumFacing.HORIZONTALS);
+	public static final PropertyEnum<EnumFacing> ROTATION = PropertyEnum.create("facing", EnumFacing.class, EnumFacing.HORIZONTALS);
 
 	public BlockInkMixer() {
 		super(Material.WOOD);
@@ -40,85 +40,85 @@ public class BlockInkMixer extends BlockContainer {
 		setResistance(2F);
 		setSoundType(SoundType.WOOD);
 		setUnlocalizedName("myst.inkmixer");
-        setCreativeTab(MystcraftCommonProxy.tabMystCommon);
+		setCreativeTab(MystcraftCommonProxy.tabMystCommon);
 	}
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(ROTATION, EnumFacing.getHorizontal(meta));
-    }
-
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(ROTATION).getHorizontalIndex();
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, ROTATION);
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        return getDefaultState().withProperty(ROTATION, placer.getHorizontalFacing());
-    }
-
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.MODEL;
-    }
-
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (worldIn.isRemote) {
-            return true;
-        }
-        playerIn.openGui(Mystcraft.instance, ModGUIs.INK_MIXER.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
-	    return true;
-    }
-
-    @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileEntity tileentity = world.getTileEntity(pos);
-        if (tileentity != null && tileentity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-            IItemHandler handle = tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-            for (int l = 0; l < handle.getSlots(); l++) {
-                ItemStack itemstack = handle.getStackInSlot(l);
-                if (itemstack.isEmpty()) {
-                    continue;
-                }
-                float f =  world.rand.nextFloat() * 0.8F + 0.1F;
-                float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
-                float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
-                EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, itemstack);
-                float f3 = 0.05F;
-                entityitem.motionX = (float) world.rand.nextGaussian() * f3;
-                entityitem.motionY = (float) world.rand.nextGaussian() * f3 + 0.2F;
-                entityitem.motionZ = (float) world.rand.nextGaussian() * f3;
-                world.spawnEntity(entityitem);
-            }
-        }
-        super.breakBlock(world, pos, state);
-    }
-
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityInkMixer();
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(ROTATION, EnumFacing.getHorizontal(meta));
 	}
 
-    //HellFire> obsolete. kept awkward legacy for edge cases.
-    @Override
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(ROTATION).getHorizontalIndex();
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, ROTATION);
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+		return getDefaultState().withProperty(ROTATION, placer.getHorizontalFacing());
+	}
+
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.MODEL;
+	}
+
+	@Override
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (worldIn.isRemote) {
+			return true;
+		}
+		playerIn.openGui(Mystcraft.instance, ModGUIs.INK_MIXER.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
+		return true;
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity tileentity = world.getTileEntity(pos);
+		if (tileentity != null && tileentity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
+			IItemHandler handle = tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			for (int l = 0; l < handle.getSlots(); l++) {
+				ItemStack itemstack = handle.getStackInSlot(l);
+				if (itemstack.isEmpty()) {
+					continue;
+				}
+				float f = world.rand.nextFloat() * 0.8F + 0.1F;
+				float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
+				float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
+				EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, itemstack);
+				float f3 = 0.05F;
+				entityitem.motionX = (float) world.rand.nextGaussian() * f3;
+				entityitem.motionY = (float) world.rand.nextGaussian() * f3 + 0.2F;
+				entityitem.motionZ = (float) world.rand.nextGaussian() * f3;
+				world.spawnEntity(entityitem);
+			}
+		}
+		super.breakBlock(world, pos, state);
+	}
+
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileEntityInkMixer();
+	}
+
+	//HellFire> obsolete. kept awkward legacy for edge cases.
+	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 		return new TileEntityInkMixer();
 	}

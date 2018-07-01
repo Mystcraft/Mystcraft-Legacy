@@ -8,7 +8,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public class ModelLinkModifier extends ModelBase {
-	Collection<ModelRenderer>	components	= new ArrayList<ModelRenderer>();
+	Collection<ModelRenderer> components = new ArrayList<ModelRenderer>();
 
 	public ModelLinkModifier() {
 		textureWidth = 128;

@@ -10,11 +10,11 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 public abstract class WorldGeneratorAdv extends WorldGenerator {
 
-	private boolean	profiling		= false;
-	private int		blockcount;
-	private int		blockcounttotal	= 0;
-	private int		callcount		= 0;
-	private int		fillcount		= 0;
+	private boolean profiling = false;
+	private int blockcount;
+	private int blockcounttotal = 0;
+	private int callcount = 0;
+	private int fillcount = 0;
 
 	public void setProfiling(boolean profiling) {
 		this.profiling = profiling;
@@ -32,7 +32,8 @@ public abstract class WorldGeneratorAdv extends WorldGenerator {
 		boolean flag = doGeneration(worldObj, rand, pos);
 
 		if (profiling) {
-			if (blockcount > 0) ++fillcount;
+			if (blockcount > 0)
+				++fillcount;
 			System.out.println(String.format("Using %s. AVG: [%f] / %d / %d TOT: [%d] GENFRQ: [%f:%f]", this.toString(), blockcounttotal / (float) fillcount, fillcount, callcount, blockcounttotal, fillcount / (float) callcount, blockcounttotal / (float) callcount));
 		}
 		return flag;

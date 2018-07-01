@@ -6,18 +6,18 @@ import net.minecraftforge.common.config.Configuration;
 
 public class MystConfig extends Configuration {
 
-	public static final String	CATEGORY_TEXTURE		= "texture";
-	public static final String	CATEGORY_ENTITY			= "entity";
-	public static final String	CATEGORY_DEBUG			= "debug";
-	public static final String	CATEGORY_SYMBOLS		= "symbol";
-	public static final String	CATEGORY_INSTABILITY	= "instability";
-	public static final String	CATEGORY_FLUIDS			= "fluids";
-	public static final String	CATEGORY_RENDER			= "render";
-	public static final String	CATEGORY_CLIENT			= "client";
-	public static final String	CATEGORY_SERVER			= "server";
-	public static final String	CATEGORY_BASELINING 	= "baselining";
+	public static final String CATEGORY_TEXTURE = "texture";
+	public static final String CATEGORY_ENTITY = "entity";
+	public static final String CATEGORY_DEBUG = "debug";
+	public static final String CATEGORY_SYMBOLS = "symbol";
+	public static final String CATEGORY_INSTABILITY = "instability";
+	public static final String CATEGORY_FLUIDS = "fluids";
+	public static final String CATEGORY_RENDER = "render";
+	public static final String CATEGORY_CLIENT = "client";
+	public static final String CATEGORY_SERVER = "server";
+	public static final String CATEGORY_BASELINING = "baselining";
 
-	private boolean				allowoptional			= true;
+	private boolean allowoptional = true;
 
 	public MystConfig(File configfile) {
 		super(configfile);
@@ -30,7 +30,8 @@ public class MystConfig extends Configuration {
 	public int getOptional(String category, String key, int val) {
 		if (allowoptional) {
 			String read = this.get(category, key, "").getString();
-			if (read == null || read.length() == 0) return val;
+			if (read == null || read.length() == 0)
+				return val;
 			try {
 				return Integer.parseInt(read);
 			} catch (NumberFormatException e) {
@@ -43,7 +44,8 @@ public class MystConfig extends Configuration {
 	public float getOptional(String category, String key, float val) {
 		if (allowoptional) {
 			String read = this.get(category, key, "").getString();
-			if (read == null || read.length() == 0) return val;
+			if (read == null || read.length() == 0)
+				return val;
 			try {
 				return Float.parseFloat(read);
 			} catch (NumberFormatException e) {
@@ -56,7 +58,8 @@ public class MystConfig extends Configuration {
 	public boolean getOptional(String category, String key, boolean val) {
 		if (allowoptional) {
 			String read = this.get(category, key, "").getString();
-			if (read == null || read.length() == 0) return val;
+			if (read == null || read.length() == 0)
+				return val;
 			try {
 				return Boolean.parseBoolean(read);
 			} catch (NumberFormatException e) {

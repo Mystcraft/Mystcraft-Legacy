@@ -15,9 +15,12 @@ import javax.annotation.Nonnull;
 
 public class MerchantRecipeProviderItem implements IMerchantRecipeProvider {
 
-	@Nonnull private ItemStack buy1;
-	@Nonnull private ItemStack buy2;
-	@Nonnull private ItemStack sell;
+	@Nonnull
+	private ItemStack buy1;
+	@Nonnull
+	private ItemStack buy2;
+	@Nonnull
+	private ItemStack sell;
 
 	public MerchantRecipeProviderItem(@Nonnull ItemStack buy1, @Nonnull ItemStack buy2, @Nonnull ItemStack sell) {
 		this.buy1 = buy1;

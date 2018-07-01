@@ -35,12 +35,12 @@ public class BlockDecay extends Block {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(DECAY_META, DecayType.values()[meta]);
+		return getDefaultState().withProperty(DECAY_META, DecayType.values()[meta]);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-        return state.getValue(DECAY_META).ordinal();
+		return state.getValue(DECAY_META).ordinal();
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class BlockDecay extends Block {
 
 	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-		if(!worldIn.isRemote) {
+		if (!worldIn.isRemote) {
 			getDecayHandler(state.getValue(DECAY_META)).updateTick(worldIn, pos, rand);
 		}
 	}
@@ -104,7 +104,8 @@ public class BlockDecay extends Block {
 
 	private DecayHandler getDecayHandler(DecayType decayType) {
 		DecayHandler handler = DecayHandler.getHandler(decayType);
-		if (handler == null) handler = DecayHandler.getHandler(DecayType.BLACK);
+		if (handler == null)
+			handler = DecayHandler.getHandler(DecayType.BLACK);
 		return handler;
 	}
 }

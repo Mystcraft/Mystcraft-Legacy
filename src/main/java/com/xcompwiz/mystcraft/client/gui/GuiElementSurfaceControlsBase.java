@@ -36,15 +36,15 @@ import javax.annotation.Nonnull;
 
 public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPagesProvider, IGuiOnClickHandler, IGuiStateProvider, IGuiTextProvider, IGuiOnTextChange {
 
-	private Minecraft				mc;
-	private float					xSize;
+	private Minecraft mc;
+	private float xSize;
 
 	@Nonnull
-	private ItemStack				cached_tabitem = ItemStack.EMPTY;
-	private List<PositionableItem>	arranged_pages;
-	private Comparator<ItemStack>	sorttype		= SortingUtils.ComparatorItemSymbolAlphabetical.instance;
-	private boolean					showall			= false;
-	private Collection<GuiElement>	surfaceelements	= new HashSet<>();
+	private ItemStack cached_tabitem = ItemStack.EMPTY;
+	private List<PositionableItem> arranged_pages;
+	private Comparator<ItemStack> sorttype = SortingUtils.ComparatorItemSymbolAlphabetical.instance;
+	private boolean showall = false;
+	private Collection<GuiElement> surfaceelements = new HashSet<>();
 
 	public GuiElementSurfaceControlsBase(Minecraft mc, int guiLeft, int guiTop, int width, int height) {
 		this.mc = mc;
@@ -93,10 +93,11 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 						String displayname = null;
 						if (Page.getSymbol(page) != null) {
 							IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
-							if (symbol != null) displayname = symbol.getLocalizedName();
+							if (symbol != null)
+								displayname = symbol.getLocalizedName();
 							if (displayname == null) {
 								ResourceLocation id = Page.getSymbol(page);
-								if(id != null) {
+								if (id != null) {
 									displayname = id.getResourcePath();
 								}
 							}
@@ -200,13 +201,15 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 
 	@Override
 	public boolean getState(String id) {
-		if (id.equals("AZ")) return sorttype == SortingUtils.ComparatorItemSymbolAlphabetical.instance;
-		if (id.equals("ALL")) return showall;
+		if (id.equals("AZ"))
+			return sorttype == SortingUtils.ComparatorItemSymbolAlphabetical.instance;
+		if (id.equals("ALL"))
+			return showall;
 		return false;
 	}
 
-	private List<IGuiOnTextChange>	listeners	= new ArrayList<>();
-	private String					searchtext	= null;
+	private List<IGuiOnTextChange> listeners = new ArrayList<>();
+	private String searchtext = null;
 
 	@Override
 	public String getText(GuiElementTextField caller) {

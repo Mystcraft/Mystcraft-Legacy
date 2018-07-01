@@ -127,8 +127,10 @@ public abstract class TerrainGeneratorBase implements ITerrainGenerator {
 			++chunkcount;
 			fillcounttotal += fillcount;
 			seacounttotal += seacount;
-			if (fillcount > 0) ++fillchunk;
-			if (seacount > 0) ++seachunk;
+			if (fillcount > 0)
+				++fillchunk;
+			if (seacount > 0)
+				++seachunk;
 			System.out.println(String.format("Using %s. AVG: [%f] [%f] / %d TOT: [%d] [%d] CNKFRQ: [%f:%f] [%f:%f]", this.toString(), fillcounttotal / (float) chunkcount, seacounttotal / (float) chunkcount, chunkcount, fillcounttotal, seacounttotal, fillchunk / (float) chunkcount, fillcounttotal / (float) fillchunk, seachunk / (float) chunkcount, seacounttotal / (float) seachunk));
 		}
 	}

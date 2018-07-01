@@ -11,7 +11,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.biome.Biome;
 
 public class SymbolColorFogNatural extends SymbolBase {
-	
+
 	public SymbolColorFogNatural(ResourceLocation identifier) {
 		super(identifier);
 	}

@@ -30,10 +30,10 @@ public class GuiElementSurfaceTabs extends GuiElement {
 
 	}
 
-	private IGuiSurfaceTabsHandler	listener;
-	private static final int		windowsizeY	= 166;	//XXX: (PageRender) Revise handling of gui textures so this isn't necessary
+	private IGuiSurfaceTabsHandler listener;
+	private static final int windowsizeY = 166;	//XXX: (PageRender) Revise handling of gui textures so this isn't necessary
 
-	private static final byte		tabCount	= 4;
+	private static final byte tabCount = 4;
 
 	public GuiElementSurfaceTabs(IGuiSurfaceTabsHandler eventhandler, int guiLeft, int guiTop, int width, int height) {
 		super(guiLeft, guiTop, width, height);
@@ -42,14 +42,16 @@ public class GuiElementSurfaceTabs extends GuiElement {
 
 	private void cycleTabUp() {
 		byte topslot = getTopSlot();
-		if (topslot == 0) return;
+		if (topslot == 0)
+			return;
 		--topslot;
 		listener.setTopTabSlot(topslot);
 	}
 
 	private void cycleTabDown() {
 		byte topslot = getTopSlot();
-		if (topslot == getMaxTabCount() - tabCount) return;
+		if (topslot == getMaxTabCount() - tabCount)
+			return;
 		++topslot;
 		listener.setTopTabSlot(topslot);
 	}
@@ -104,18 +106,18 @@ public class GuiElementSurfaceTabs extends GuiElement {
 		byte activeslot = getActiveTab();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		if (activeslot < topslot) {
-            GlStateManager.color(0.5F, 0.5F, 1.0F, 1.0F);
+			GlStateManager.color(0.5F, 0.5F, 1.0F, 1.0F);
 		}
 		if (topslot == 0) {
-            GlStateManager.color(0.4F, 0.4F, 0.4F, 1.0F);
+			GlStateManager.color(0.4F, 0.4F, 0.4F, 1.0F);
 		}
 		mc.renderEngine.bindTexture(GUIs.desk);
 		drawTexturedModalRect(guiLeft, tabY, 0, windowsizeY + ySizeTab, xSizeTab, 9);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		tabY += 9;
 		for (byte i = topslot; i < topslot + tabCount; ++i) {
 			if (i == activeslot) {
-                GlStateManager.color(0.5F, 0.5F, 1.0F, 1.0F);
+				GlStateManager.color(0.5F, 0.5F, 1.0F, 1.0F);
 			}
 			mc.renderEngine.bindTexture(GUIs.desk);
 			drawTexturedModalRect(guiLeft, tabY, 0, windowsizeY, xSizeTab, ySizeTab);
@@ -130,7 +132,7 @@ public class GuiElementSurfaceTabs extends GuiElement {
 					name = pagesource.getDisplayName();
 				}
 				if (name != null) {
-				    GlStateManager.pushMatrix();
+					GlStateManager.pushMatrix();
 					float scale = 1;
 					int j = mc.fontRenderer.getStringWidth(name) + 16;
 					if (j > xSizeTab) {
@@ -144,17 +146,17 @@ public class GuiElementSurfaceTabs extends GuiElement {
 			}
 
 			tabY += ySizeTab;
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		}
 		mc.renderEngine.bindTexture(GUIs.desk);
 		if (activeslot >= topslot + tabCount) {
-            GlStateManager.color(0.5F, 0.5F, 1.0F, 1.0F);
+			GlStateManager.color(0.5F, 0.5F, 1.0F, 1.0F);
 		}
 		if (topslot + tabCount == getMaxTabCount()) {
-            GlStateManager.color(0.4F, 0.4F, 0.4F, 1.0F);
+			GlStateManager.color(0.4F, 0.4F, 0.4F, 1.0F);
 		}
 		drawTexturedModalRect(guiLeft, tabY, 0, windowsizeY + ySizeTab + 9, xSizeTab, 9);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		// End surface slots
 	}
 

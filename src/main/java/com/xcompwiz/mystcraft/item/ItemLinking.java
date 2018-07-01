@@ -66,7 +66,7 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public void addInformation(@Nonnull ItemStack itemstack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if (itemstack.getTagCompound() != null) {
 			String name = LinkOptions.getDisplayName(itemstack.getTagCompound());
@@ -77,7 +77,8 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 	}
 
 	public void activate(@Nonnull ItemStack itemstack, World world, Entity entity) {
-		if (world.isRemote) return;
+		if (world.isRemote)
+			return;
 		if (itemstack.getTagCompound() == null) {
 			return;
 		}
@@ -93,7 +94,8 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 		if (entity instanceof EntityPlayer) {
 			EntityPlayer entityplayer = (EntityPlayer) entity;
 
-			if (entityplayer.inventory.getCurrentItem() != itemstack) return; //Hellfire> hard check?
+			if (entityplayer.inventory.getCurrentItem() != itemstack)
+				return; //Hellfire> hard check?
 
 			if (dropItemOnLink(itemstack)) {
 				// Add book to original world
@@ -145,7 +147,8 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 	@Nonnull
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn) {
 		ItemStack inHand = playerIn.getHeldItem(handIn);
-		if (worldIn.isRemote) return ActionResult.newResult(EnumActionResult.PASS, inHand);
+		if (worldIn.isRemote)
+			return ActionResult.newResult(EnumActionResult.PASS, inHand);
 		playerIn.openGui(Mystcraft.instance, ModGUIs.BOOK.ordinal(), worldIn, MathHelper.floor(playerIn.posX + 0.5D), MathHelper.floor(playerIn.posY + 0.5D), MathHelper.floor(playerIn.posZ + 0.5D));
 		return ActionResult.newResult(EnumActionResult.SUCCESS, inHand);
 	}
@@ -176,7 +179,8 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 	}
 
 	public static void setHealth(@Nonnull ItemStack book, float health) {
-		if (book.isEmpty()) return;
+		if (book.isEmpty())
+			return;
 		if (book.getTagCompound() == null) {
 			book.setTagCompound(new NBTTagCompound());
 		}
@@ -185,8 +189,10 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 
 	public static float getHealth(@Nonnull ItemStack book) {
 		float health = getMaxHealth(book);
-		if (book.isEmpty()) return health;
-		if (book.getTagCompound() == null) return health;
+		if (book.isEmpty())
+			return health;
+		if (book.getTagCompound() == null)
+			return health;
 		Float damage = book.getTagCompound().getFloat("damage");
 		health -= damage;
 		return health;
@@ -194,9 +200,12 @@ public abstract class ItemLinking extends Item implements IItemPortalActivator {
 
 	public static float getMaxHealth(@Nonnull ItemStack book) {
 		float health = 10;
-		if (book.isEmpty()) return health;
-		if (book.getTagCompound() == null) return health;
-		if (!book.getTagCompound().hasKey("MaxHealth")) book.getTagCompound().setFloat("MaxHealth", health);
+		if (book.isEmpty())
+			return health;
+		if (book.getTagCompound() == null)
+			return health;
+		if (!book.getTagCompound().hasKey("MaxHealth"))
+			book.getTagCompound().setFloat("MaxHealth", health);
 		health = book.getTagCompound().getFloat("MaxHealth");
 		return health;
 	}

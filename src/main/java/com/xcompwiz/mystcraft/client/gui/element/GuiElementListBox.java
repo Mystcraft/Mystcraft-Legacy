@@ -4,8 +4,8 @@ import java.util.Collection;
 
 public class GuiElementListBox extends GuiElement {
 
-	private GuiElementVSlider	scrollbar;
-	private GuiElementPanel		container;
+	private GuiElementVSlider scrollbar;
+	private GuiElementPanel container;
 
 	public GuiElementListBox(int guiLeft, int guiTop, int xSize, int ySize) {
 		super(guiLeft, guiTop, xSize, ySize);
@@ -48,12 +48,14 @@ public class GuiElementListBox extends GuiElement {
 		int maxScroll = -ySize;
 		int y = -scrollbar.getCurrentPos();
 		for (GuiElement elem : this.container.getElements()) {
-			if (!elem.isVisible()) continue;
+			if (!elem.isVisible())
+				continue;
 			maxScroll += elem.getHeight();
 			elem.setPosition(0, y);
 			y += elem.getHeight();
 		}
-		if (maxScroll < 0) maxScroll = 0;
+		if (maxScroll < 0)
+			maxScroll = 0;
 		scrollbar.setMaxScroll(maxScroll);
 	}
 }

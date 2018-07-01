@@ -31,10 +31,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 
-	private byte	inGroundTime;
-	private float	scale;
-	private int		penetration;
-	private boolean	updated	= false;
+	private byte inGroundTime;
+	private float scale;
+	private int penetration;
+	private boolean updated = false;
 
 	public EntityMeteor(World worldObj) {
 		super(worldObj);
@@ -195,25 +195,25 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 		int var7 = MathHelper.floor(par1AxisAlignedBB.maxZ + motionZ);
 		boolean brokeblocks = false;
 
-        BlockPos.PooledMutableBlockPos pool = BlockPos.PooledMutableBlockPos.retain();
-        try {
-            for (int xx = var2; xx <= var5; ++xx) {
-                for (int yy = var3; yy <= var6; ++yy) {
-                    for (int zz = var4; zz <= var7; ++zz) {
-                        pool.setPos(xx, yy, zz);
-                        if(!getEntityWorld().isAirBlock(pool)) {
-                            brokeblocks = true;
-                            getEntityWorld().setBlockToAir(pool);
-                        }
-                    }
-                }
-            }
-        } finally {
-            pool.release();
-        }
+		BlockPos.PooledMutableBlockPos pool = BlockPos.PooledMutableBlockPos.retain();
+		try {
+			for (int xx = var2; xx <= var5; ++xx) {
+				for (int yy = var3; yy <= var6; ++yy) {
+					for (int zz = var4; zz <= var7; ++zz) {
+						pool.setPos(xx, yy, zz);
+						if (!getEntityWorld().isAirBlock(pool)) {
+							brokeblocks = true;
+							getEntityWorld().setBlockToAir(pool);
+						}
+					}
+				}
+			}
+		} finally {
+			pool.release();
+		}
 
 		if (brokeblocks) {
-        	world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, posX, posY, posZ, 0, 0, 0);
+			world.spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, posX, posY, posZ, 0, 0, 0);
 		}
 
 		return brokeblocks;

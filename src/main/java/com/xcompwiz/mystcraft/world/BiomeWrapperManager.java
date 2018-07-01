@@ -11,8 +11,8 @@ import net.minecraft.world.chunk.Chunk;
 
 public class BiomeWrapperManager {
 
-	private WorldProviderMyst					provider;
-	private HashMap<ResourceLocation, BiomeWrapperMyst>	biomes	= new HashMap<ResourceLocation, BiomeWrapperMyst>();
+	private WorldProviderMyst provider;
+	private HashMap<ResourceLocation, BiomeWrapperMyst> biomes = new HashMap<ResourceLocation, BiomeWrapperMyst>();
 
 	public BiomeWrapperManager(WorldProviderMyst provider) {
 		this.provider = provider;

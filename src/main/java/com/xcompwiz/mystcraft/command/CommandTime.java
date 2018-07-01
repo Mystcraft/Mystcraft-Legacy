@@ -51,7 +51,9 @@ public class CommandTime extends CommandBaseAdv {
 			}
 			if (dimension != null) {
 				WorldServer world = DimensionManager.getWorld(dimension);
-				if (world == null) { throw new CommandException("commands.myst.time.fail.noworld"); }
+				if (world == null) {
+					throw new CommandException("commands.myst.time.fail.noworld");
+				}
 				daytime = WorldInfoUtils.getWorldNextDawnTime(world);
 				nighttime = WorldInfoUtils.getWorldNextDuskTime(world);
 			}
@@ -88,7 +90,9 @@ public class CommandTime extends CommandBaseAdv {
 			return getListOfStringsMatchingLastWord(par2ArrayOfStr, new String[] { "set", "add" });
 		} else if (par2ArrayOfStr.length == 2 && par2ArrayOfStr[0].equals("set")) {
 			return getListOfStringsMatchingLastWord(par2ArrayOfStr, new String[] { "day", "night" });
-		} else if (par2ArrayOfStr.length == 3) { return getListOfStringsMatchingLastWord(par2ArrayOfStr, new String[] { "all" }); }
+		} else if (par2ArrayOfStr.length == 3) {
+			return getListOfStringsMatchingLastWord(par2ArrayOfStr, new String[] { "all" });
+		}
 		return null;
 	}
 

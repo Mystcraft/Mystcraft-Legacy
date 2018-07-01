@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
 
 public class MerchantRecipeProviderSymbol implements IMerchantRecipeProvider {
 
-	private IAgeSymbol	symbol;
+	private IAgeSymbol symbol;
 
 	public MerchantRecipeProviderSymbol(IAgeSymbol symbol) {
 		this.symbol = symbol;

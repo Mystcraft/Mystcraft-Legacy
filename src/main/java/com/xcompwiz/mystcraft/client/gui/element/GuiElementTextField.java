@@ -32,45 +32,45 @@ public class GuiElementTextField extends GuiElement {
 	/**
 	 * Have the font renderer from GuiScreen to render the textbox text into the screen.
 	 */
-	private final FontRenderer	fontRenderer;
-	private IGuiOnTextChange	textchangehandler;
-	private IGuiTextProvider	textprovider;
-	private String				id;
+	private final FontRenderer fontRenderer;
+	private IGuiOnTextChange textchangehandler;
+	private IGuiTextProvider textprovider;
+	private String id;
 
 	/** Have the current text being edited on the textbox. */
-	private int					cursorCounter;
-	private int					maxLength				= 256;
-	private boolean				enableBackgroundDrawing	= true;
+	private int cursorCounter;
+	private int maxLength = 256;
+	private boolean enableBackgroundDrawing = true;
 
 	/**
 	 * if true the textbox can lose focus by clicking elsewhere on the screen.
 	 */
-	private boolean				canLoseFocus			= true;
+	private boolean canLoseFocus = true;
 
 	/**
 	 * If this value is true along isEnabled, keyTyped will process the keys.
 	 */
-	private boolean				isFocused				= false;
+	private boolean isFocused = false;
 
 	/**
 	 * Setting this value prevents the text from being edited.
 	 */
-	private boolean				readonly				= false;
+	private boolean readonly = false;
 
 	/**
 	 * The current character index that should be used as start of the rendered text.
 	 */
-	private int					lineScrollOffset;
-	private int					cursorPosition;
-	private String				override;
-	private long				lasttyped;
+	private int lineScrollOffset;
+	private int cursorPosition;
+	private String override;
+	private long lasttyped;
 
 	/** other selection position, maybe the same as the cursor */
-	private int					selectionEnd;
-	private int					enabledColor			= 0xFFE0E0E0;
-	private int					disabledColor			= 0xFF707070;
-	private int					borderColor				= 0xFFA0A0A0;
-	private int					backgroundColor			= 0xFF000000;
+	private int selectionEnd;
+	private int enabledColor = 0xFFE0E0E0;
+	private int disabledColor = 0xFF707070;
+	private int borderColor = 0xFFA0A0A0;
+	private int backgroundColor = 0xFF000000;
 
 	public GuiElementTextField(IGuiTextProvider textprovider, IGuiOnTextChange changehandler, String id, int guiLeft, int guiTop, int xSize, int ySize) {
 		super(guiLeft, guiTop, xSize, ySize);
@@ -115,7 +115,8 @@ public class GuiElementTextField extends GuiElement {
 	 * Sets the text of the textbox.
 	 */
 	private void setText(String text) {
-		if (this.isReadOnly()) return;
+		if (this.isReadOnly())
+			return;
 		if (text.length() > this.maxLength) {
 			text = text.substring(0, this.maxLength);
 		}
@@ -165,7 +166,8 @@ public class GuiElementTextField extends GuiElement {
 	 * replaces selected text, or inserts text at the position on the cursor
 	 */
 	public void writeText(String par1Str) {
-		if (this.isReadOnly()) return;
+		if (this.isReadOnly())
+			return;
 		String s1 = "";
 		String s2 = ChatAllowedCharacters.filterAllowedCharacters(par1Str);
 		int i = this.cursorPosition < this.selectionEnd ? this.cursorPosition : this.selectionEnd;
@@ -212,7 +214,8 @@ public class GuiElementTextField extends GuiElement {
 	 * @param par1 Number of characters to delete. Negative numbers delete to the left of the cursor.
 	 */
 	public void deleteFromCursor(int par1) {
-		if (this.isReadOnly()) return;
+		if (this.isReadOnly())
+			return;
 		if (this.getText().length() != 0) {
 			if (this.selectionEnd != this.cursorPosition) {
 				this.writeText("");
@@ -444,7 +447,8 @@ public class GuiElementTextField extends GuiElement {
 	 */
 	@Override
 	public void _renderBackground(float f, int mouseX, int mouseY) {
-		if (!this.isVisible()) return;
+		if (!this.isVisible())
+			return;
 		int guiLeft = getLeft();
 		int guiTop = getTop();
 
@@ -519,19 +523,19 @@ public class GuiElementTextField extends GuiElement {
 		}
 
 		Tessellator tes = Tessellator.getInstance();
-        BufferBuilder vb = tes.getBuffer();
-        GlStateManager.color(0, 0, 1, 1);
-        GlStateManager.disableTexture2D();
-        GlStateManager.enableColorLogic();
-        GlStateManager.colorLogicOp(GlStateManager.LogicOp.OR_REVERSE);
-        vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        vb.pos(par1, par4, 0.0D).endVertex();
-        vb.pos(par3, par4, 0.0D).endVertex();
-        vb.pos(par3, par2, 0.0D).endVertex();
-        vb.pos(par1, par2, 0.0D).endVertex();
-        tes.draw();
-        GlStateManager.disableColorLogic();
-        GlStateManager.enableTexture2D();
+		BufferBuilder vb = tes.getBuffer();
+		GlStateManager.color(0, 0, 1, 1);
+		GlStateManager.disableTexture2D();
+		GlStateManager.enableColorLogic();
+		GlStateManager.colorLogicOp(GlStateManager.LogicOp.OR_REVERSE);
+		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+		vb.pos(par1, par4, 0.0D).endVertex();
+		vb.pos(par3, par4, 0.0D).endVertex();
+		vb.pos(par3, par2, 0.0D).endVertex();
+		vb.pos(par1, par2, 0.0D).endVertex();
+		tes.draw();
+		GlStateManager.disableColorLogic();
+		GlStateManager.enableTexture2D();
 	}
 
 	/**

@@ -68,7 +68,8 @@ public class BlockBookBinder extends BlockContainer {
 
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(worldIn.isRemote) return true;
+		if (worldIn.isRemote)
+			return true;
 		playerIn.openGui(Mystcraft.instance, ModGUIs.BOOK_BINDER.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
@@ -77,13 +78,13 @@ public class BlockBookBinder extends BlockContainer {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity tileentity = world.getTileEntity(pos);
 		if (tileentity != null && tileentity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
-            IItemHandler handle = tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			IItemHandler handle = tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 			for (int l = 0; l < handle.getSlots(); l++) {
 				ItemStack itemstack = handle.getStackInSlot(l);
 				if (itemstack.isEmpty()) {
 					continue;
 				}
-				float f =  world.rand.nextFloat() * 0.8F + 0.1F;
+				float f = world.rand.nextFloat() * 0.8F + 0.1F;
 				float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
 				float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
 				EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, itemstack);
@@ -94,10 +95,11 @@ public class BlockBookBinder extends BlockContainer {
 				world.spawnEntity(entityitem);
 			}
 		}
-		if(tileentity != null && tileentity instanceof TileEntityBookBinder) {
+		if (tileentity != null && tileentity instanceof TileEntityBookBinder) {
 			for (ItemStack stack : ((TileEntityBookBinder) tileentity).getPageList()) {
-				if(stack.isEmpty()) continue;
-				float f =  world.rand.nextFloat() * 0.8F + 0.1F;
+				if (stack.isEmpty())
+					continue;
+				float f = world.rand.nextFloat() * 0.8F + 0.1F;
 				float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
 				float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
 				EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, stack);

@@ -38,7 +38,7 @@ public class MystcraftStartupChecker {
 
 	public static abstract class ErrorChecker {
 
-		private boolean	hasRun	= false;
+		private boolean hasRun = false;
 
 		public final boolean hasRun() {
 			return hasRun;
@@ -80,8 +80,8 @@ public class MystcraftStartupChecker {
 
 	public static class CheckSymbolLogicError extends ErrorChecker {
 
-		private Class	clazz;
-		private String	type;
+		private Class clazz;
+		private String type;
 
 		public CheckSymbolLogicError(Class clazz, String type) {
 			this.clazz = clazz;
@@ -103,10 +103,10 @@ public class MystcraftStartupChecker {
 		}
 	}
 
-	private HashSet<ErrorChecker>	checks		= new HashSet<ErrorChecker>();
-	HashSet<ErrorChecker>			completed	= new HashSet<ErrorChecker>();
+	private HashSet<ErrorChecker> checks = new HashSet<ErrorChecker>();
+	HashSet<ErrorChecker> completed = new HashSet<ErrorChecker>();
 
-	private GuiNotification			updateNotification;
+	private GuiNotification updateNotification;
 
 	public MystcraftStartupChecker() {
 		checks.add(new CheckSymbolLoadError());
@@ -118,30 +118,39 @@ public class MystcraftStartupChecker {
 
 	@SubscribeEvent
 	public void onWorldSave(WorldEvent.Save event) {
-		if (MystcraftFirstRun.isReady()) return;
+		if (MystcraftFirstRun.isReady())
+			return;
 		MystcraftFirstRun.onSaveEvent(event);
 	}
 
 	@SubscribeEvent
 	public void onClientTick(ClientTickEvent event) {
-		if (MystcraftFirstRun.isStopped() && MystcraftFirstRun.shouldRun()) MystcraftFirstRun.start();
+		if (MystcraftFirstRun.isStopped() && MystcraftFirstRun.shouldRun())
+			MystcraftFirstRun.start();
 	}
 
 	@SubscribeEvent
 	public void onClientInitGUI(InitGuiEvent.Post event) {
 		if (event.getGui() instanceof GuiMainMenu) {
-			if (checkForErrors() && !InstabilityDataCalculator.isPerSave() && !InstabilityDataCalculator.isDisabled()) MystcraftFirstRun.enable();
+			if (checkForErrors() && !InstabilityDataCalculator.isPerSave() && !InstabilityDataCalculator.isDisabled())
+				MystcraftFirstRun.enable();
 		}
 	}
 
 	@SubscribeEvent
 	public void onClientOpenGUI(GuiOpenEvent event) {
-		if (InstabilityDataCalculator.isPerSave()) return;
-		if (InstabilityDataCalculator.isDisabled()) return;
-		if (MystcraftFirstRun.isReady()) return;
-		if (!MystcraftFirstRun.isEnabled()) return;
-		if (event.getGui() instanceof GuiMystcraftProfiling) return;
-		if (MystcraftFirstRun.isStopped() && MystcraftFirstRun.shouldRun()) MystcraftFirstRun.start();
+		if (InstabilityDataCalculator.isPerSave())
+			return;
+		if (InstabilityDataCalculator.isDisabled())
+			return;
+		if (MystcraftFirstRun.isReady())
+			return;
+		if (!MystcraftFirstRun.isEnabled())
+			return;
+		if (event.getGui() instanceof GuiMystcraftProfiling)
+			return;
+		if (MystcraftFirstRun.isStopped() && MystcraftFirstRun.shouldRun())
+			MystcraftFirstRun.start();
 		if (event.getGui() instanceof GuiWorldSelection) {
 			if (MystcraftFirstRun.isStopped()) {
 				ArrayList<String> messages = new ArrayList<String>();
@@ -153,7 +162,8 @@ public class MystcraftStartupChecker {
 				event.setCanceled(true);
 			}
 		}
-		if (MystcraftFirstRun.isStopped()) return;
+		if (MystcraftFirstRun.isStopped())
+			return;
 		if (event.getGui() == null) {
 			MystcraftFirstRun.showProfilingGui();
 			event.setCanceled(true);
@@ -203,7 +213,8 @@ public class MystcraftStartupChecker {
 	}
 
 	public GuiNotification getNotificationGui() {
-		if (updateNotification == null) updateNotification = new GuiNotification();
+		if (updateNotification == null)
+			updateNotification = new GuiNotification();
 		return updateNotification;
 	}
 }

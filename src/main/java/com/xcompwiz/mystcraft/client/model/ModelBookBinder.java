@@ -6,14 +6,14 @@ import net.minecraft.entity.Entity;
 
 public class ModelBookBinder extends ModelBase {
 	//fields
-	ModelRenderer	right;
-	ModelRenderer	base;
-	ModelRenderer	bar1;
-	ModelRenderer	brace2;
-	ModelRenderer	bar2;
-	ModelRenderer	book;
-	ModelRenderer	left;
-	ModelRenderer	brace1;
+	ModelRenderer right;
+	ModelRenderer base;
+	ModelRenderer bar1;
+	ModelRenderer brace2;
+	ModelRenderer bar2;
+	ModelRenderer book;
+	ModelRenderer left;
+	ModelRenderer brace1;
 
 	public ModelBookBinder() {
 		textureWidth = 128;

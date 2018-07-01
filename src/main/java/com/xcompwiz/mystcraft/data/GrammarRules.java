@@ -10,52 +10,52 @@ import com.xcompwiz.util.CollectionUtils;
 import net.minecraft.util.ResourceLocation;
 
 public class GrammarRules {
-	public static final ResourceLocation	ROOT				= asMyst("Age");
+	public static final ResourceLocation ROOT = asMyst("Age");
 
-	private static final ResourceLocation	BIOME_GEN			= asMyst("BiomesAdv");
-	private static final ResourceLocation	BIOME_EXT			= asMyst("BiomesExt");
+	private static final ResourceLocation BIOME_GEN = asMyst("BiomesAdv");
+	private static final ResourceLocation BIOME_EXT = asMyst("BiomesExt");
 
-	private static final ResourceLocation	VISUAL_EFFECT_GEN	= asMyst("VisualsAdv");
-	private static final ResourceLocation	VISUAL_EFFECT_EXT	= asMyst("VisualsExt");
+	private static final ResourceLocation VISUAL_EFFECT_GEN = asMyst("VisualsAdv");
+	private static final ResourceLocation VISUAL_EFFECT_EXT = asMyst("VisualsExt");
 
-	private static final ResourceLocation	FEATURE_LARGE_GEN	= asMyst("FeatureLargeAdv");
-	public  static final ResourceLocation	FEATURE_LARGE_EXT	= asMyst("FeatureLargeExt");
+	private static final ResourceLocation FEATURE_LARGE_GEN = asMyst("FeatureLargeAdv");
+	public static final ResourceLocation FEATURE_LARGE_EXT = asMyst("FeatureLargeExt");
 
-	private static final ResourceLocation	FEATURE_MEDIUM_GEN	= asMyst("FeatureMediumAdv");
-	public  static final ResourceLocation	FEATURE_MEDIUM_EXT	= asMyst("FeatureMediumExt");
+	private static final ResourceLocation FEATURE_MEDIUM_GEN = asMyst("FeatureMediumAdv");
+	public static final ResourceLocation FEATURE_MEDIUM_EXT = asMyst("FeatureMediumExt");
 
-	private static final ResourceLocation	FEATURE_SMALL_GEN	= asMyst("FeatureSmallAdv");
-	public  static final ResourceLocation	FEATURE_SMALL_EXT	= asMyst("FeatureSmallExt");
+	private static final ResourceLocation FEATURE_SMALL_GEN = asMyst("FeatureSmallAdv");
+	public static final ResourceLocation FEATURE_SMALL_EXT = asMyst("FeatureSmallExt");
 
-	private static final ResourceLocation	EFFECT_GEN			= asMyst("EffectsAdv");
-	private static final ResourceLocation	EFFECT_EXT			= asMyst("EffectsExt");
+	private static final ResourceLocation EFFECT_GEN = asMyst("EffectsAdv");
+	private static final ResourceLocation EFFECT_EXT = asMyst("EffectsExt");
 
-	private static final ResourceLocation	SUN_GEN				= asMyst("SunsAdv");
-	private static final ResourceLocation	SUN_EXT				= asMyst("SunsExt");
+	private static final ResourceLocation SUN_GEN = asMyst("SunsAdv");
+	private static final ResourceLocation SUN_EXT = asMyst("SunsExt");
 
-	private static final ResourceLocation	MOON_GEN			= asMyst("MoonsAdv");
-	private static final ResourceLocation	MOON_EXT			= asMyst("MoonsExt");
+	private static final ResourceLocation MOON_GEN = asMyst("MoonsAdv");
+	private static final ResourceLocation MOON_EXT = asMyst("MoonsExt");
 
-	private static final ResourceLocation	STARFIELD_GEN		= asMyst("StarfieldsAdv");
-	private static final ResourceLocation	STARFIELD_EXT		= asMyst("StarfieldsExt");
+	private static final ResourceLocation STARFIELD_GEN = asMyst("StarfieldsAdv");
+	private static final ResourceLocation STARFIELD_EXT = asMyst("StarfieldsExt");
 
-	private static final ResourceLocation	DOODAD_GEN			= asMyst("DoodadsAdv");
-	private static final ResourceLocation	DOODAD_EXT			= asMyst("DoodadsExt");
+	private static final ResourceLocation DOODAD_GEN = asMyst("DoodadsAdv");
+	private static final ResourceLocation DOODAD_EXT = asMyst("DoodadsExt");
 
-	private static final ResourceLocation	ANGLE_GEN			= asMyst("AngleAdv");
-	private static final ResourceLocation	PERIOD_GEN			= asMyst("PeriodAdv");
-	private static final ResourceLocation	PHASE_GEN			= asMyst("PhaseAdv");
-	private static final ResourceLocation	COLOR_GEN			= asMyst("ColorAdv");
-	private static final ResourceLocation	GRADIENT_GEN		= asMyst("GradientAdv");
+	private static final ResourceLocation ANGLE_GEN = asMyst("AngleAdv");
+	private static final ResourceLocation PERIOD_GEN = asMyst("PeriodAdv");
+	private static final ResourceLocation PHASE_GEN = asMyst("PhaseAdv");
+	private static final ResourceLocation COLOR_GEN = asMyst("ColorAdv");
+	private static final ResourceLocation GRADIENT_GEN = asMyst("GradientAdv");
 
-	public static final ResourceLocation	ANGLE_EXT			= asMyst("Angle_Ext");
-	public static final ResourceLocation	PERIOD_EXT			= asMyst("Period_Ext");
-	public static final ResourceLocation	PHASE_EXT			= asMyst("Phase_Ext");
-	public static final ResourceLocation	COLOR_EXT			= asMyst("Color_Ext");
-	public static final ResourceLocation	GRADIENT_EXT		= asMyst("Gradient_Ext");
-	public static final ResourceLocation	SUNSET_EXT			= asMyst("Sunset_Ext");
+	public static final ResourceLocation ANGLE_EXT = asMyst("Angle_Ext");
+	public static final ResourceLocation PERIOD_EXT = asMyst("Period_Ext");
+	public static final ResourceLocation PHASE_EXT = asMyst("Phase_Ext");
+	public static final ResourceLocation COLOR_EXT = asMyst("Color_Ext");
+	public static final ResourceLocation GRADIENT_EXT = asMyst("Gradient_Ext");
+	public static final ResourceLocation SUNSET_EXT = asMyst("Sunset_Ext");
 
-	public static final ResourceLocation	BLOCK_NONSOLID		= asMyst("BLOCK_NONSOLID");
+	public static final ResourceLocation BLOCK_NONSOLID = asMyst("BLOCK_NONSOLID");
 
 	public static void initialize() {
 		registerRule(buildRule(0, ROOT, GrammarData.TERRAIN, GrammarData.BIOMECONTROLLER, GrammarData.WEATHER, GrammarData.LIGHTING, asMyst("Spawning0"), asMyst("Suns0"), asMyst("Moons0"), asMyst("Starfields0"), asMyst("Doodads0"), asMyst("Visuals0"), asMyst("FeatureSmalls0"), asMyst("FeatureMediums0"), asMyst("FeatureLarges0"), asMyst("Effects0")));

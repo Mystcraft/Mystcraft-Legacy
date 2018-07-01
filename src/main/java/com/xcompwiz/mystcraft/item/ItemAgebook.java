@@ -41,7 +41,7 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-		if(isInCreativeTab(tab)) {
+		if (isInCreativeTab(tab)) {
 			items.add(new ItemStack(this));
 		}
 	}
@@ -75,9 +75,11 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 	private Collection<ItemStack> getDefaultPages(@Nonnull ItemStack itemstack) {
 		Collection<ItemStack> collection = Collections.singleton(Page.createLinkPage());
 		Integer dimid = LinkOptions.getDimensionUID(itemstack.getTagCompound());
-		if (dimid == null) return collection;
+		if (dimid == null)
+			return collection;
 		AgeData data = AgeData.getAge(dimid, false); //TODO: We're always assuming we are the server when grabbing age data on Agebook load
-		if (data == null) return collection;
+		if (data == null)
+			return collection;
 		collection = data.getPages();
 		return collection;
 	}
@@ -88,16 +90,17 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		LinkOptions.setUUID(itemstack.getTagCompound(), agedata.getUUID());
 		LinkOptions.setDisplayName(itemstack.getTagCompound(), agedata.getAgeName());
 		LinkOptions.setFlag(itemstack.getTagCompound(), LinkPropertyAPI.FLAG_GENERATE_PLATFORM, true);
-		((ItemAgebook)itemstack.getItem()).addPages(itemstack, agedata.getPages());
+		((ItemAgebook) itemstack.getItem()).addPages(itemstack, agedata.getPages());
 	}
 
 	public static void create(@Nonnull ItemStack agebook, EntityPlayer player, List<ItemStack> pages, String pendingtitle) {
 		agebook.setTagCompound(new NBTTagCompound());
 
-		((ItemAgebook)agebook.getItem()).addPages(agebook, pages);
-		((ItemAgebook)agebook.getItem()).addAuthor(agebook, player);
-		((ItemAgebook)agebook.getItem()).setDisplayName(player, agebook, pendingtitle);
-		if (pages.isEmpty()) return;
+		((ItemAgebook) agebook.getItem()).addPages(agebook, pages);
+		((ItemAgebook) agebook.getItem()).addAuthor(agebook, player);
+		((ItemAgebook) agebook.getItem()).setDisplayName(player, agebook, pendingtitle);
+		if (pages.isEmpty())
+			return;
 
 		ItemStack linkpanel = pages.get(0);
 		if (Page.isLinkPanel(linkpanel)) {
@@ -106,26 +109,27 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 	}
 
 	public static boolean isNewAgebook(@Nonnull ItemStack itemstack) {
-        if (!(itemstack.getItem() instanceof ItemAgebook)) {
-            return false;
-        }
-        if (itemstack.getTagCompound() == null) {
-            return false;
-        }
-        Integer dimid = LinkOptions.getDimensionUID(itemstack.getTagCompound());
-        if (dimid != null) {
-            return false;
-        }
-        List<ItemStack> pages = ((ItemAgebook) itemstack.getItem()).getPageList(null, itemstack);
-        return !pages.isEmpty() && Page.isLinkPanel(pages.get(0));
-    }
+		if (!(itemstack.getItem() instanceof ItemAgebook)) {
+			return false;
+		}
+		if (itemstack.getTagCompound() == null) {
+			return false;
+		}
+		Integer dimid = LinkOptions.getDimensionUID(itemstack.getTagCompound());
+		if (dimid != null) {
+			return false;
+		}
+		List<ItemStack> pages = ((ItemAgebook) itemstack.getItem()).getPageList(null, itemstack);
+		return !pages.isEmpty() && Page.isLinkPanel(pages.get(0));
+	}
 
 	@Override
 	public void onCreated(@Nonnull ItemStack stack, World world, EntityPlayer player) {}
 
 	@Override
 	public void activate(@Nonnull ItemStack itemstack, World worldObj, Entity entity) {
-		if (worldObj.isRemote) return;
+		if (worldObj.isRemote)
+			return;
 
 		checkFirstLink(itemstack, worldObj, entity);
 
@@ -133,9 +137,11 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 	}
 
 	private void checkFirstLink(@Nonnull ItemStack itemstack, World worldObj, Entity entity) {
-		if (itemstack.getTagCompound() == null) return;
+		if (itemstack.getTagCompound() == null)
+			return;
 		Integer dimid = LinkOptions.getDimensionUID(itemstack.getTagCompound());
-		if (dimid != null) return;
+		if (dimid != null)
+			return;
 		dimid = DimensionUtils.createAge();
 		AgeData agedata = AgeData.getAge(dimid, false);
 		LinkOptions.setDimensionUID(itemstack.getTagCompound(), dimid);
@@ -174,11 +180,13 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 			LinkOptions.setProperty(itemstack.getTagCompound(), "Seed", Long.toString(seed));
 		}
 	}
-	
+
 	@Override
 	public boolean writeSymbol(EntityPlayer player, @Nonnull ItemStack itemstack, ResourceLocation symbol) {
-		if (isVisited(itemstack, player.world.isRemote)) return false;
-		if (itemstack.getTagCompound() == null) return false;
+		if (isVisited(itemstack, player.world.isRemote))
+			return false;
+		if (itemstack.getTagCompound() == null)
+			return false;
 		NBTTagCompound nbttagcompound = itemstack.getTagCompound();
 		Collection<ItemStack> list = NBTUtils.readItemStackCollection(nbttagcompound.getTagList("Pages", Constants.NBT.TAG_COMPOUND), new ArrayList<>());
 		for (ItemStack page : list) {
@@ -193,7 +201,8 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 	}
 
 	private void addPages(@Nonnull ItemStack itemstack, Collection<ItemStack> pages) {
-		if (itemstack.getTagCompound() == null) return;
+		if (itemstack.getTagCompound() == null)
+			return;
 		NBTTagCompound nbttagcompound = itemstack.getTagCompound();
 		Collection<ItemStack> list = NBTUtils.readItemStackCollection(nbttagcompound.getTagList("Pages", Constants.NBT.TAG_COMPOUND), new ArrayList<>());
 		list.addAll(pages);
@@ -202,13 +211,15 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 
 	@Override
 	public List<ItemStack> getPageList(@Nullable EntityPlayer player, @Nonnull ItemStack itemstack) {
-		if (itemstack.getTagCompound() == null) return Collections.emptyList();
+		if (itemstack.getTagCompound() == null)
+			return Collections.emptyList();
 		NBTTagCompound nbttagcompound = itemstack.getTagCompound();
 		return NBTUtils.readItemStackCollection(nbttagcompound.getTagList("Pages", Constants.NBT.TAG_COMPOUND), new ArrayList<>());
 	}
 
 	private void setPageList(@Nonnull ItemStack itemstack, List<ItemStack> pagelist) {
-		if (itemstack.getTagCompound() == null) return;
+		if (itemstack.getTagCompound() == null)
+			return;
 		NBTTagCompound nbttagcompound = itemstack.getTagCompound();
 		nbttagcompound.setTag("Pages", NBTUtils.writeItemStackCollection(new NBTTagList(), pagelist));
 	}
@@ -218,7 +229,8 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 	}
 
 	private void addAuthor(@Nonnull ItemStack itemstack, EntityPlayer player) {
-		if (itemstack.getTagCompound() == null) return;
+		if (itemstack.getTagCompound() == null)
+			return;
 		NBTTagCompound nbttagcompound = itemstack.getTagCompound();
 		Collection<String> list = NBTUtils.readStringCollection(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), new ArrayList<>());
 		list.add(player.getDisplayNameString());
@@ -227,16 +239,19 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 
 	@Override
 	public Collection<String> getAuthors(@Nonnull ItemStack itemstack) {
-		if (itemstack.getTagCompound() == null) return Collections.emptyList();
+		if (itemstack.getTagCompound() == null)
+			return Collections.emptyList();
 		NBTTagCompound nbttagcompound = itemstack.getTagCompound();
 		return NBTUtils.readStringCollection(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), new ArrayList<>());
 	}
 
 	@Nullable
 	private AgeData getAgeData(ItemStack itemstack, boolean isRemote) {
-		if (itemstack.getTagCompound() == null) return null;
+		if (itemstack.getTagCompound() == null)
+			return null;
 		Integer uid = LinkOptions.getDimensionUID(itemstack.getTagCompound());
-		if (uid == null) return null;
+		if (uid == null)
+			return null;
 		return AgeData.getAge(uid, isRemote);
 	}
 
@@ -251,7 +266,8 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 		updatePageList(itemstack);
 		this.initialize(null, itemstack, null);
 		this.validate(null, itemstack, null);
-		if (getPageList(null, itemstack).isEmpty()) addPages(itemstack, getDefaultPages(itemstack)); //TODO: Make this an "onItemEnteredPlayerInventory" call as well
+		if (getPageList(null, itemstack).isEmpty())
+			addPages(itemstack, getDefaultPages(itemstack)); //TODO: Make this an "onItemEnteredPlayerInventory" call as well
 		return itemstack;
 	}
 }

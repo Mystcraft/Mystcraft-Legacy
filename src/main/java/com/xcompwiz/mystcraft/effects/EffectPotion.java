@@ -15,10 +15,10 @@ import net.minecraft.world.chunk.Chunk;
 
 public class EffectPotion implements IEnvironmentalEffect {
 
-	private int		level;
-	private boolean	isGlobal;
+	private int level;
+	private boolean isGlobal;
 	private Potion potion;
-	private int		duration;
+	private int duration;
 
 	public EffectPotion(int level, Boolean global, Potion type, Integer duration) {
 		this.level = level - 1;

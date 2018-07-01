@@ -26,16 +26,19 @@ public class GrammarAPIDelegate {
 		// First, grab all the rules
 		List<Rule> rules = new ArrayList<Rule>();
 		List<Rule> tokenrules = GrammarGenerator.getAllRules(token);
-		if (tokenrules != null) rules.addAll(tokenrules);
+		if (tokenrules != null)
+			rules.addAll(tokenrules);
 
 		Set<IAgeSymbol> symbols = new HashSet<IAgeSymbol>();
 
 		// Get symbols
 		for (Rule rule : rules) {
 			for (ResourceLocation rule_token : rule.getValues()) {
-				if (!SymbolManager.hasBinding(rule_token)) continue;
+				if (!SymbolManager.hasBinding(rule_token))
+					continue;
 				IAgeSymbol symbol = SymbolManager.getAgeSymbol(rule_token);
-				if (symbol == null) continue;
+				if (symbol == null)
+					continue;
 				symbols.add(symbol);
 			}
 		}

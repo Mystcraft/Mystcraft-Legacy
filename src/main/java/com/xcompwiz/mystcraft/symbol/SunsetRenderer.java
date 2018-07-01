@@ -91,10 +91,10 @@ public class SunsetRenderer {
 			vb.pos(0.0D, 100.0D, 0.0D).color(horizonRed, horizonGreen, horizonBlue, horizoncolors[3]).endVertex();
 
 			for (int l = 0; l <= 16; ++l) {
-				float f21 = (float)l * ((float)Math.PI * 2F) / 16.0F;
+				float f21 = (float) l * ((float) Math.PI * 2F) / 16.0F;
 				float f12 = MathHelper.sin(f21);
 				float f13 = MathHelper.cos(f21);
-				vb.pos((double)(f12 * 120.0F), (double)(f13 * 120.0F), (double)(-f13 * 40.0F * horizoncolors[3])).color(horizonRed, horizonGreen, horizonBlue, 0.0F).endVertex();
+				vb.pos((double) (f12 * 120.0F), (double) (f13 * 120.0F), (double) (-f13 * 40.0F * horizoncolors[3])).color(horizonRed, horizonGreen, horizonBlue, 0.0F).endVertex();
 			}
 
 			tes.draw();

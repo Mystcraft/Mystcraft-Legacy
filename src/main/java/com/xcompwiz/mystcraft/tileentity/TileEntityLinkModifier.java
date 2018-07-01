@@ -31,7 +31,7 @@ public class TileEntityLinkModifier extends TileEntityBookRotateable {
 		ItemStack itemstack = getBook();
 		if (!itemstack.isEmpty()) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-				((ItemLinking)itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
+				((ItemLinking) itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
 				return "" + String.valueOf(LinkOptions.getDimensionUID(itemstack.getTagCompound()));
 			}
 		}
@@ -42,7 +42,7 @@ public class TileEntityLinkModifier extends TileEntityBookRotateable {
 		ItemStack itemstack = getBook();
 		if (!itemstack.isEmpty()) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-				((ItemLinking)itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
+				((ItemLinking) itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
 				return LinkOptions.getFlag(itemstack.getTagCompound(), name);
 			}
 		}
@@ -53,7 +53,7 @@ public class TileEntityLinkModifier extends TileEntityBookRotateable {
 		ItemStack itemstack = getBook();
 		if (!itemstack.isEmpty()) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-				((ItemLinking)itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
+				((ItemLinking) itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
 				LinkOptions.setFlag(itemstack.getTagCompound(), name, value);
 			}
 		}
@@ -64,7 +64,7 @@ public class TileEntityLinkModifier extends TileEntityBookRotateable {
 		ItemStack itemstack = getBook();
 		if (!itemstack.isEmpty()) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-				((ItemLinking)itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
+				((ItemLinking) itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
 				return LinkOptions.getProperty(itemstack.getTagCompound(), name);
 			}
 		}
@@ -75,7 +75,7 @@ public class TileEntityLinkModifier extends TileEntityBookRotateable {
 		ItemStack itemstack = getBook();
 		if (!itemstack.isEmpty()) {
 			if (itemstack.getItem() instanceof ItemLinking) {
-				((ItemLinking)itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
+				((ItemLinking) itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
 				LinkOptions.setProperty(itemstack.getTagCompound(), name, value);
 			}
 		}

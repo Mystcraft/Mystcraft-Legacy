@@ -72,7 +72,7 @@ public class GuiLinkModifier extends GuiContainerElements {
 		}
 	}
 
-	private ContainerLinkModifier	container;
+	private ContainerLinkModifier container;
 
 	private GuiElementTextField txt_seed;
 
@@ -80,7 +80,7 @@ public class GuiLinkModifier extends GuiContainerElements {
 		super(new ContainerLinkModifier(inventoryplayer, tileentity));
 		this.container = (ContainerLinkModifier) this.inventorySlots;
 	}
-	
+
 	@Override
 	public void updateScreen() {
 		super.updateScreen();

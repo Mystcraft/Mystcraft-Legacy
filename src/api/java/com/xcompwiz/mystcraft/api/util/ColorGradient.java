@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class ColorGradient {
-	private List<Color>	colors		= new ArrayList<Color>();
-	private List<Float>	intervals	= new ArrayList<Float>();
-	private float		length		= 0;
+	private List<Color> colors = new ArrayList<Color>();
+	private List<Float> intervals = new ArrayList<Float>();
+	private float length = 0;
 
 	/**
 	 * Gets the number of color points in the gradient
@@ -48,9 +48,12 @@ public final class ColorGradient {
 	 * @param interval How long it takes to transition to the next color
 	 */
 	public void pushColor(Color color, Float interval) {
-		if (color == null) return;
-		if (interval == null || interval <= 0) interval = 1.0F; // 12000L
-		if (interval < 0) interval = 0.0F;
+		if (color == null)
+			return;
+		if (interval == null || interval <= 0)
+			interval = 1.0F; // 12000L
+		if (interval < 0)
+			interval = 0.0F;
 		colors.add(color);
 		intervals.add((interval.floatValue()));
 		length += interval.floatValue();
@@ -63,12 +66,15 @@ public final class ColorGradient {
 	 */
 	public Color getColor(float value) {
 		// Case: No colors
-		if (colors.size() == 0) throw new RuntimeException("Whoops, empty gradient!");
+		if (colors.size() == 0)
+			throw new RuntimeException("Whoops, empty gradient!");
 
 		// Case: Only one color
-		if (colors.size() == 1) return colors.get(0);
+		if (colors.size() == 1)
+			return colors.get(0);
 
-		if (length <= 0) return colors.get(0);
+		if (length <= 0)
+			return colors.get(0);
 		value = value % length;
 
 		// Get first color

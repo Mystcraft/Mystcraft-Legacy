@@ -20,12 +20,12 @@ public class RenderAPIWrapper extends APIWrapper implements RenderAPI {
 
 	@Override
 	public void drawWord(float x, float y, float zLevel, float scale, String word) {
-		InternalAPI.render.drawWord(x, y, zLevel, scale, word);		
+		InternalAPI.render.drawWord(x, y, zLevel, scale, word);
 	}
 
 	@Override
 	public void drawColorEye(float x, float y, float zLevel, float radius, Color color) {
-		InternalAPI.render.drawColorEye(x, y, zLevel, radius, color);		
+		InternalAPI.render.drawColorEye(x, y, zLevel, radius, color);
 	}
 
 	@Override

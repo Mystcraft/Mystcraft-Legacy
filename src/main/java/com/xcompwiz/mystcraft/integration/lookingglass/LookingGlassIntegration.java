@@ -23,7 +23,8 @@ public class LookingGlassIntegration {
 	private static void getViewAPI(APIInstanceProvider provider) {
 		try {
 			Object apiinst = provider.getAPIInstance("view-2");
-			if (Mystcraft.sidedProxy.isClientSideAvailable()) LookingGlassIntegrationView2.onAPIGetClient(apiinst);
+			if (Mystcraft.sidedProxy.isClientSideAvailable())
+				LookingGlassIntegrationView2.onAPIGetClient(apiinst);
 			return;
 		} catch (APIUndefined e) {
 			LoggerUtils.warn("This version of Mystcraft is probably out of date. Please check for updates. LookingGlass integration failure.");
@@ -34,7 +35,8 @@ public class LookingGlassIntegration {
 		}
 		try {
 			Object apiinst = provider.getAPIInstance("view-1");
-			if (Mystcraft.sidedProxy.isClientSideAvailable()) LookingGlassIntegrationView1.onAPIGetClient(apiinst);
+			if (Mystcraft.sidedProxy.isClientSideAvailable())
+				LookingGlassIntegrationView1.onAPIGetClient(apiinst);
 		} catch (APIUndefined e) {
 			// The API we requested doesn't exist.  Give up with a nice log message.
 			LoggerUtils.warn("This version of Mystcraft is probably out of date. Please check for updates. LookingGlass integration failure.");

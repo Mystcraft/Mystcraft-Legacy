@@ -23,7 +23,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderLinkbook extends Render<EntityLinkbook> {
 
-	private ModelBook	bookmodel;
+	private ModelBook bookmodel;
 
 	public RenderLinkbook(RenderManager rm) {
 		super(rm);
@@ -33,7 +33,7 @@ public class RenderLinkbook extends Render<EntityLinkbook> {
 	@Override
 	public void doRender(EntityLinkbook entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		ItemStack book = entity.getBook();
-		if(book.getItem() == ModItems.agebook) {
+		if (book.getItem() == ModItems.agebook) {
 			this.renderManager.renderEngine.bindTexture(Entities.agebook);
 		} else {
 			this.renderManager.renderEngine.bindTexture(Entities.linkbook);
@@ -43,7 +43,7 @@ public class RenderLinkbook extends Render<EntityLinkbook> {
 		GlStateManager.rotate(entityYaw + 90, 0, -1, 0);
 		GlStateManager.rotate(90, 0, 0, 1);
 		GlStateManager.scale(0.8, 0.8, 0.8);
-		if(entity.hurtTime > 0) {
+		if (entity.hurtTime > 0) {
 			GlStateManager.disableTexture2D();
 			GlStateManager.disableAlpha();
 			GlStateManager.enableBlend();
@@ -93,9 +93,9 @@ public class RenderLinkbook extends Render<EntityLinkbook> {
 		int j = fontrenderer.getStringWidth(s) / 2;
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 		vb.pos(-j - 1, -1 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
-		vb.pos(-j - 1,  8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
-		vb.pos( j + 1,  8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
-		vb.pos( j + 1, -1 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+		vb.pos(-j - 1, 8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+		vb.pos(j + 1, 8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+		vb.pos(j + 1, -1 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
 		tes.draw();
 		GlStateManager.enableTexture2D();
 		fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0x20ffffff);
@@ -112,7 +112,6 @@ public class RenderLinkbook extends Render<EntityLinkbook> {
 	protected ResourceLocation getEntityTexture(EntityLinkbook entity) {
 		return Entities.linkbook;
 	}
-
 
 	public static class Factory implements IRenderFactory<EntityLinkbook> {
 

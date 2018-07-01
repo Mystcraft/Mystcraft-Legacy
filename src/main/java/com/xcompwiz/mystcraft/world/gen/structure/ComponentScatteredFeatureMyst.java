@@ -32,12 +32,12 @@ abstract class ComponentScatteredFeatureMyst extends StructureComponent {
 		setCoordBaseMode(EnumFacing.HORIZONTALS[par1Random.nextInt(EnumFacing.HORIZONTALS.length)]);
 
 		switch (getCoordBaseMode()) {
-            case NORTH:
-            case SOUTH:
-			    this.boundingBox = new StructureBoundingBox(x, y, z, x + sizeX - 1, y + sizeY - 1, z + sizeZ - 1);
-			    break;
-		    default:
-			    this.boundingBox = new StructureBoundingBox(x, y, z, x + sizeZ - 1, y + sizeY - 1, z + sizeX - 1);
+		case NORTH:
+		case SOUTH:
+			this.boundingBox = new StructureBoundingBox(x, y, z, x + sizeX - 1, y + sizeY - 1, z + sizeZ - 1);
+			break;
+		default:
+			this.boundingBox = new StructureBoundingBox(x, y, z, x + sizeZ - 1, y + sizeY - 1, z + sizeX - 1);
 		}
 	}
 
@@ -74,12 +74,15 @@ abstract class ComponentScatteredFeatureMyst extends StructureComponent {
 			}
 		}
 
-		if (j == 0) { return -1; }
+		if (j == 0) {
+			return -1;
+		}
 		return i / j;
 	}
 
 	protected boolean shouldBuildHere(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3) {
-		if (this.horizontalPos >= 0) return true;
+		if (this.horizontalPos >= 0)
+			return true;
 		int var4 = 0;
 		int var5 = 0;
 
@@ -92,7 +95,8 @@ abstract class ComponentScatteredFeatureMyst extends StructureComponent {
 			}
 		}
 
-		if (var5 == 0) return false;
+		if (var5 == 0)
+			return false;
 
 		this.horizontalPos = var4 / var5;
 		this.boundingBox.offset(0, this.horizontalPos - this.boundingBox.minY + par3, 0);

@@ -32,7 +32,8 @@ public class SymbolNetherFort extends SymbolBase {
 
 	@Override
 	public int instabilityModifier(int count) {
-		if (count > 3) return 100;
+		if (count > 3)
+			return 100;
 		return 0;
 	}
 
@@ -43,7 +44,7 @@ public class SymbolNetherFort extends SymbolBase {
 
 	private class Populator implements IPopulate {
 
-		private MapGenNetherBridge	generator;
+		private MapGenNetherBridge generator;
 
 		public Populator(MapGenNetherBridge gen) {
 			generator = gen;

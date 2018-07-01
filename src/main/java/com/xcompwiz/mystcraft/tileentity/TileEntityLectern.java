@@ -25,17 +25,18 @@ public class TileEntityLectern extends TileEntityBookRotateable implements ITick
 
 	@Override
 	public boolean canAcceptItem(int slot, @Nonnull ItemStack stack) {
-		if (stack.isEmpty()) return false;
+		if (stack.isEmpty())
+			return false;
 		return stack.getItem() instanceof ItemLinking || stack.getItem() == ModItems.page || stack.getItem() == Items.FILLED_MAP;
 	}
 
 	@Override
 	public void update() {
-		if(!world.isRemote){
+		if (!world.isRemote) {
 			ItemStack display = getDisplayItem();
-			if(!display.isEmpty() && display.getItem() instanceof ItemMap) {
+			if (!display.isEmpty() && display.getItem() instanceof ItemMap) {
 				MapData md = Items.FILLED_MAP.getMapData(display, world);
-				if(md != null) {
+				if (md != null) {
 					for (EntityPlayer playerEntity : world.playerEntities) {
 						EntityPlayerMP pl = (EntityPlayerMP) playerEntity;
 						md.getMapInfo(pl);

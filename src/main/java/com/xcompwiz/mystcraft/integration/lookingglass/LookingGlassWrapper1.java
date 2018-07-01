@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 
 @SuppressWarnings("deprecation")
 public class LookingGlassWrapper1 implements ILookingGlassWrapper {
-	private final IWorldViewAPI	apiinst;
+	private final IWorldViewAPI apiinst;
 
 	public LookingGlassWrapper1(IWorldViewAPI apiinst) {
 		this.apiinst = apiinst;
@@ -20,6 +20,6 @@ public class LookingGlassWrapper1 implements ILookingGlassWrapper {
 
 	@Override
 	public void release(Object activeview) {
-		((IWorldView)activeview).release();
+		((IWorldView) activeview).release();
 	}
 }

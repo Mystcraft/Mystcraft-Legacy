@@ -59,9 +59,12 @@ public class RenderRainbow {
 		}
 		int finalMin = (int) (val - sat);
 		int finalMax = (int) val;
-		if (finalMax < finalMin) finalMax = finalMin;
-		if (finalMin < 0) finalMin = 0;
-		if (finalMax > 255) finalMax = 255;
+		if (finalMax < finalMin)
+			finalMax = finalMin;
+		if (finalMin < 0)
+			finalMin = 0;
+		if (finalMax > 255)
+			finalMax = 255;
 		r = normalize(r, 0, 255, finalMin, finalMax);
 		g = normalize(g, 0, 255, finalMin, finalMax);
 		b = normalize(b, 0, 255, finalMin, finalMax);
@@ -72,8 +75,10 @@ public class RenderRainbow {
 		float val = ((float) (value - initMin)) / ((float) (initMax - initMin));
 		val *= (finalMax - finalMin);
 		val += finalMin;
-		if (val < finalMin) val = finalMin;
-		if (val > finalMax) val = finalMax;
+		if (val < finalMin)
+			val = finalMin;
+		if (val > finalMax)
+			val = finalMax;
 		return (int) val;
 	}
 
@@ -121,10 +126,10 @@ public class RenderRainbow {
 			for (float zPos = -resolution; zPos <= resolution; zPos += patchHeight) {
 				yHeight = quadratic(zPos / resolution) * resolution;
 				yHeight2 = quadratic((zPos - patchHeight) / resolution) * resolution;
-				vb.pos((line * stripWidth) - stripWidth - (rainbowWidth / 2f), yHeight2,    zPos)              .color(color[0] / 255f, color[1] / 255f, color[2] / 255f, 0.2f).endVertex();
-				vb.pos((line * stripWidth) + stripWidth - (rainbowWidth / 2f), yHeight2,    zPos)              .color(color[0] / 255f, color[1] / 255f, color[2] / 255f, 0.2f).endVertex();
-				vb.pos((line * stripWidth) + stripWidth - (rainbowWidth / 2f),  yHeight, zPos + patchHeight).color(color[0] / 255f, color[1] / 255f, color[2] / 255f, 0.2f).endVertex();
-				vb.pos((line * stripWidth) - stripWidth - (rainbowWidth / 2f),  yHeight, zPos + patchHeight).color(color[0] / 255f, color[1] / 255f, color[2] / 255f, 0.2f).endVertex();
+				vb.pos((line * stripWidth) - stripWidth - (rainbowWidth / 2f), yHeight2, zPos).color(color[0] / 255f, color[1] / 255f, color[2] / 255f, 0.2f).endVertex();
+				vb.pos((line * stripWidth) + stripWidth - (rainbowWidth / 2f), yHeight2, zPos).color(color[0] / 255f, color[1] / 255f, color[2] / 255f, 0.2f).endVertex();
+				vb.pos((line * stripWidth) + stripWidth - (rainbowWidth / 2f), yHeight, zPos + patchHeight).color(color[0] / 255f, color[1] / 255f, color[2] / 255f, 0.2f).endVertex();
+				vb.pos((line * stripWidth) - stripWidth - (rainbowWidth / 2f), yHeight, zPos + patchHeight).color(color[0] / 255f, color[1] / 255f, color[2] / 255f, 0.2f).endVertex();
 			}
 		}
 		tes.draw();

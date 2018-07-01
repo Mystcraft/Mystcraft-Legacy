@@ -1,7 +1,7 @@
 package com.xcompwiz.mystcraft.api.impl;
 
 public class APIWrapper {
-	private String	modname;
+	private String modname;
 
 	public APIWrapper(String modname) {
 		this.modname = modname;

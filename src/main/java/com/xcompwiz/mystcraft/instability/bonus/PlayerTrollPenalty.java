@@ -17,17 +17,17 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 
 public class PlayerTrollPenalty implements IInstabilityBonus, IOnEntityDeath, IOnPlayerChangedDimension, IOnPlayerLoggedIn, IOnPlayerLoggedOut {
 
-	private InstabilityBonusManager	bonusmanager;
-	private String					name;
+	private InstabilityBonusManager bonusmanager;
+	private String name;
 
-	private int						max;
-	private int						min;
-	private float					decayrate;
-	private float					current;
+	private int max;
+	private int min;
+	private float decayrate;
+	private float current;
 
-	private String					playername;
-	private int						dimensionid;
-	private boolean					playerisinworld;
+	private String playername;
+	private int dimensionid;
+	private boolean playerisinworld;
 
 	public PlayerTrollPenalty(InstabilityBonusManager bonusmanager, Integer dimensionId, String playername, Integer max, Float decayrate) {
 		this.bonusmanager = bonusmanager;
@@ -102,7 +102,8 @@ public class PlayerTrollPenalty implements IInstabilityBonus, IOnEntityDeath, IO
 	}
 
 	private void announce(String string, Object... args) {
-		if (!bonusmanager.isInstabilityEnabled()) return;
+		if (!bonusmanager.isInstabilityEnabled())
+			return;
 		ITextComponent cmp = new TextComponentTranslation(string, args);
 		NetworkUtils.sendMessageToPlayersInWorld(cmp, this.dimensionid);
 	}

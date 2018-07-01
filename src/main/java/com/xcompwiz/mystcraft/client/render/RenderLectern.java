@@ -30,8 +30,8 @@ import net.minecraft.world.storage.MapData;
 
 public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> {
 
-	private ModelBook		book;
-	private ModelLectern	lectern;
+	private ModelBook book;
+	private ModelLectern lectern;
 
 	public RenderLectern() {
 		lectern = new ModelLectern();
@@ -46,7 +46,8 @@ public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
 		EnumFacing teRotation = ModBlocks.lectern.getStateFromMeta(te.getBlockMetadata()).getValue(BlockLectern.ROTATION);
-		if(teRotation.getAxis() == EnumFacing.Axis.Z) teRotation = teRotation.getOpposite();
+		if (teRotation.getAxis() == EnumFacing.Axis.Z)
+			teRotation = teRotation.getOpposite();
 		GlStateManager.rotate(teRotation.getHorizontalAngle() + 90, 0, 1, 0);
 		lectern.render(null, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0625F);
 		GlStateManager.popMatrix();
@@ -57,7 +58,7 @@ public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> 
 		renderItem(te);
 		GlStateManager.popMatrix();
 
-		if(Mystcraft.renderlabels && Mystcraft.serverLabels && !te.getDisplayItem().isEmpty() && te.getDisplayItem().getItem() instanceof ItemLinking) {
+		if (Mystcraft.renderlabels && Mystcraft.serverLabels && !te.getDisplayItem().isEmpty() && te.getDisplayItem().getItem() instanceof ItemLinking) {
 			renderLabel(te, te.getBookTitle(), x, y + 1.25F, z, 25);
 		}
 	}
@@ -93,9 +94,9 @@ public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> 
 		int j = fontrenderer.getStringWidth(s) / 2;
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 		vb.pos(-j - 1, -1 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
-		vb.pos(-j - 1,  8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
-		vb.pos( j + 1,  8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
-		vb.pos( j + 1, -1 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+		vb.pos(-j - 1, 8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+		vb.pos(j + 1, 8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+		vb.pos(j + 1, -1 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
 		tes.draw();
 		GlStateManager.enableTexture2D();
 		fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0x20ffffff);
@@ -143,10 +144,10 @@ public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> 
 				GlStateManager.glNormal3f(0.0F, 0.0F, -1.0F);
 				byte var5 = 7;
 				vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-				vb.pos((0 - var5),   (128 + var5), 0.0D).tex(0.0D, 1.0D).endVertex();
+				vb.pos((0 - var5), (128 + var5), 0.0D).tex(0.0D, 1.0D).endVertex();
 				vb.pos((128 + var5), (128 + var5), 0.0D).tex(1.0D, 1.0D).endVertex();
-				vb.pos((128 + var5), (0 - var5),   0.0D).tex(1.0D, 0.0D).endVertex();
-				vb.pos((0 - var5),   (0 - var5),   0.0D).tex(0.0D, 0.0D).endVertex();
+				vb.pos((128 + var5), (0 - var5), 0.0D).tex(1.0D, 0.0D).endVertex();
+				vb.pos((0 - var5), (0 - var5), 0.0D).tex(0.0D, 0.0D).endVertex();
 				tes.draw();
 				MapData mapdata = Items.FILLED_MAP.getMapData(itemstack, lectern.getWorld());
 
@@ -154,7 +155,7 @@ public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> 
 					Minecraft.getMinecraft().entityRenderer.getMapItemRenderer().renderMap(mapdata, true);
 				}
 			} else {
-			    //Hellfire> compass *should* update its animation automatically since it's dynamically calculated upon model retrieval
+				//Hellfire> compass *should* update its animation automatically since it's dynamically calculated upon model retrieval
 				//if (itemstack.getItem().equals(Items.COMPASS)) {
 				//	TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
 				//	texturemanager.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);

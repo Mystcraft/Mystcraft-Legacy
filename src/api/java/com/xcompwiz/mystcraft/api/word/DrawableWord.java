@@ -17,11 +17,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public final class DrawableWord {
 
-	private ArrayList<Integer>				components		= new ArrayList<Integer>();
-	private ArrayList<Integer>				colors			= new ArrayList<Integer>();
-	private ResourceLocation				imageSource		= null;
+	private ArrayList<Integer> components = new ArrayList<Integer>();
+	private ArrayList<Integer> colors = new ArrayList<Integer>();
+	private ResourceLocation imageSource = null;
 	// Symbols
-	public static final ResourceLocation	word_components	= new ResourceLocation("mystcraft:textures/symbolcomponents.png");
+	public static final ResourceLocation word_components = new ResourceLocation("mystcraft:textures/symbolcomponents.png");
 
 	public DrawableWord() {}
 
@@ -70,7 +70,8 @@ public final class DrawableWord {
 
 	@SideOnly(Side.CLIENT)
 	public ResourceLocation imageSource() {
-		if (imageSource != null) return imageSource;
+		if (imageSource != null)
+			return imageSource;
 		return word_components;
 	}
 

@@ -32,7 +32,7 @@ public class SymbolRavines extends SymbolBase {
 
 	private class TerrainAlteration implements ITerrainAlteration {
 
-		private MapGenAdvanced	generator;
+		private MapGenAdvanced generator;
 
 		public TerrainAlteration(MapGenAdvanced gen) {
 			generator = gen;

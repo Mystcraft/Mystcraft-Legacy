@@ -24,7 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class RenderBookReceptacle extends TileEntitySpecialRenderer<TileEntityBookReceptacle> {
 
-	private ModelBook	bookmodel;
+	private ModelBook bookmodel;
 
 	public RenderBookReceptacle() {
 		bookmodel = new ModelBook();
@@ -35,7 +35,7 @@ public class RenderBookReceptacle extends TileEntitySpecialRenderer<TileEntityBo
 		x += 0.5;
 		z += 0.5;
 		ItemStack display = te.getDisplayItem();
-		if(display.isEmpty()) {
+		if (display.isEmpty()) {
 			return;
 		}
 		if (display.getItem() == ModItems.agebook) {
@@ -51,23 +51,23 @@ public class RenderBookReceptacle extends TileEntitySpecialRenderer<TileEntityBo
 		IBlockState state = ModBlocks.receptacle.getStateFromMeta(te.getBlockMetadata());
 		EnumFacing rotation = state.getValue(BlockBookReceptacle.ROTATION);
 		switch (rotation) {
-			case DOWN:
-				break;
-			case UP:
-				GlStateManager.rotate(-90, 1, 0, 0);
-				GlStateManager.rotate(90, 0, 1, 0);
-				break;
-			case NORTH:
-				GlStateManager.rotate(-90, 0, 1, 0);
-				break;
-			case SOUTH:
-				GlStateManager.rotate(90, 0, 1, 0);
-				break;
-			case WEST:
-				break;
-			case EAST:
-				GlStateManager.rotate(180, 0, 1, 0);
-				break;
+		case DOWN:
+			break;
+		case UP:
+			GlStateManager.rotate(-90, 1, 0, 0);
+			GlStateManager.rotate(90, 0, 1, 0);
+			break;
+		case NORTH:
+			GlStateManager.rotate(-90, 0, 1, 0);
+			break;
+		case SOUTH:
+			GlStateManager.rotate(90, 0, 1, 0);
+			break;
+		case WEST:
+			break;
+		case EAST:
+			GlStateManager.rotate(180, 0, 1, 0);
+			break;
 		}
 		GlStateManager.rotate(te.getPitch(), 1, 0, 0);
 		GlStateManager.rotate(te.getYaw(), 0, 1, 0);
@@ -110,9 +110,9 @@ public class RenderBookReceptacle extends TileEntitySpecialRenderer<TileEntityBo
 		int j = fontrenderer.getStringWidth(s) / 2;
 		vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 		vb.pos(-j - 1, -1 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
-		vb.pos(-j - 1,  8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
-		vb.pos( j + 1,  8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
-		vb.pos( j + 1, -1 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+		vb.pos(-j - 1, 8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+		vb.pos(j + 1, 8 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
+		vb.pos(j + 1, -1 + byte0, 0.0D).color(0, 0, 0, 0.25F).endVertex();
 		tes.draw();
 		GlStateManager.enableTexture2D();
 		fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, byte0, 0x20ffffff);

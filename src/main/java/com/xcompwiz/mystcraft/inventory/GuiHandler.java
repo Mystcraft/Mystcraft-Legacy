@@ -61,27 +61,37 @@ public class GuiHandler implements IGuiHandler {
 		if (id == ModGUIs.BOOK.ordinal()) {
 			int slot = player.inventory.currentItem;
 			ItemStack current = player.inventory.getCurrentItem();
-			if (!current.isEmpty() && current.getItem() instanceof ItemLinking) { return new ContainerBook(player.inventory, slot); }
+			if (!current.isEmpty() && current.getItem() instanceof ItemLinking) {
+				return new ContainerBook(player.inventory, slot);
+			}
 		}
 		if (id == ModGUIs.FOLDER.ordinal()) {
 			int slot = player.inventory.currentItem;
 			ItemStack current = player.inventory.getCurrentItem();
-			if (!current.isEmpty() && current.getItem() instanceof ItemFolder) { return new ContainerFolder(player.inventory, slot); }
+			if (!current.isEmpty() && current.getItem() instanceof ItemFolder) {
+				return new ContainerFolder(player.inventory, slot);
+			}
 		}
 		if (id == ModGUIs.PORTFOLIO.ordinal()) {
 			int slot = player.inventory.currentItem;
 			ItemStack current = player.inventory.getCurrentItem();
-			if (!current.isEmpty() && current.getItem() instanceof ItemPortfolio) { return new ContainerFolder(player.inventory, slot); }
+			if (!current.isEmpty() && current.getItem() instanceof ItemPortfolio) {
+				return new ContainerFolder(player.inventory, slot);
+			}
 		}
-		
+
 		// Entities
 		if (id == ModGUIs.BOOK_ENTITY.ordinal()) {
 			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.world, x);
-			if (entity != null && entity instanceof EntityLinkbook) { return new ContainerBook(player.inventory, (EntityLinkbook) entity); }
+			if (entity != null && entity instanceof EntityLinkbook) {
+				return new ContainerBook(player.inventory, (EntityLinkbook) entity);
+			}
 		}
 		if (id == ModGUIs.VILLAGER.ordinal()) {
 			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.world, x);
-			if (entity != null && entity instanceof EntityVillager) { return new ContainerVillagerShop(player, (EntityVillager) entity); }
+			if (entity != null && entity instanceof EntityVillager) {
+				return new ContainerVillagerShop(player, (EntityVillager) entity);
+			}
 		}
 		return null;
 	}
@@ -114,27 +124,37 @@ public class GuiHandler implements IGuiHandler {
 		if (id == ModGUIs.BOOK.ordinal()) {
 			int slot = player.inventory.currentItem;
 			ItemStack current = player.inventory.getCurrentItem();
-			if (!current.isEmpty() && current.getItem() instanceof ItemLinking) { return new GuiBook(player.inventory, slot); }
+			if (!current.isEmpty() && current.getItem() instanceof ItemLinking) {
+				return new GuiBook(player.inventory, slot);
+			}
 		}
 		if (id == ModGUIs.FOLDER.ordinal()) {
 			int slot = player.inventory.currentItem;
 			ItemStack current = player.inventory.getCurrentItem();
-			if (!current.isEmpty() && current.getItem() instanceof ItemFolder) { return new GuiInventoryFolder(player.inventory, slot); }
+			if (!current.isEmpty() && current.getItem() instanceof ItemFolder) {
+				return new GuiInventoryFolder(player.inventory, slot);
+			}
 		}
 		if (id == ModGUIs.PORTFOLIO.ordinal()) {
 			int slot = player.inventory.currentItem;
 			ItemStack current = player.inventory.getCurrentItem();
-			if (!current.isEmpty() && current.getItem() instanceof ItemPortfolio) { return new GuiInventoryFolder(player.inventory, slot); }
+			if (!current.isEmpty() && current.getItem() instanceof ItemPortfolio) {
+				return new GuiInventoryFolder(player.inventory, slot);
+			}
 		}
-		
+
 		// Entities
 		if (id == ModGUIs.BOOK_ENTITY.ordinal()) {
 			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.world, x);
-			if (entity != null && entity instanceof EntityLinkbook) { return new GuiBook(player.inventory, (EntityLinkbook) entity); }
+			if (entity != null && entity instanceof EntityLinkbook) {
+				return new GuiBook(player.inventory, (EntityLinkbook) entity);
+			}
 		}
 		if (id == ModGUIs.VILLAGER.ordinal()) {
 			Entity entity = Mystcraft.sidedProxy.getEntityByID(player.world, x);
-			if (entity != null && entity instanceof EntityVillager) { return new GuiVillagerShop(player, (EntityVillager) entity); }
+			if (entity != null && entity instanceof EntityVillager) {
+				return new GuiVillagerShop(player, (EntityVillager) entity);
+			}
 		}
 		return null;
 	}

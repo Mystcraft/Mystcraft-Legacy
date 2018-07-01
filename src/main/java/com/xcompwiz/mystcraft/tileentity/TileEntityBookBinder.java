@@ -29,34 +29,36 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 
 	private IOInventory inventory;
 
-	private List<ItemStack>	pages = new LinkedList<>();
-	private String			pendingtitle = null;
+	private List<ItemStack> pages = new LinkedList<>();
+	private String pendingtitle = null;
 
 	private static final int cover_slot = 0;
-	
+
 	public TileEntityBookBinder() {
 		this.inventory = buildInventory();
 	}
 
 	protected IOInventory buildInventory() {
-		return new IOInventory(this, new int[] { cover_slot }, new int[0], EnumFacing.VALUES)
-				.setMiscSlots(0)
-				.applyFilter(this, cover_slot);
+		return new IOInventory(this, new int[] { cover_slot }, new int[0], EnumFacing.VALUES).setMiscSlots(0).applyFilter(this, cover_slot);
 	}
 
 	@Override
 	public boolean canAcceptItem(int slot, @Nonnull ItemStack stack) {
-		if(stack.isEmpty()) return false;
+		if (stack.isEmpty())
+			return false;
 		if (slot == cover_slot) {
-			if(!isValidCover(stack)) return false;
+			if (!isValidCover(stack))
+				return false;
 		}
 		return true;
 	}
 
 	//XXX: (Crafting) Book binding/covers
 	private boolean isValidCover(ItemStack itemstack) {
-		if (itemstack.getItem().equals(Items.LEATHER)) return true;
-		if (itemstack.getItem() == ModItems.folder && InventoryFolder.getLargestSlotId(itemstack) == -1) return true; //XXX: This is slightly broken client-side (NBT might be stale)
+		if (itemstack.getItem().equals(Items.LEATHER))
+			return true;
+		if (itemstack.getItem() == ModItems.folder && InventoryFolder.getLargestSlotId(itemstack) == -1)
+			return true; //XXX: This is slightly broken client-side (NBT might be stale)
 		return false;
 	}
 
@@ -67,7 +69,7 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 		pages.clear();
 		NBTUtils.readItemStackCollection(compound.getTagList("pages", Constants.NBT.TAG_COMPOUND), pages);
 		SymbolRemappings.remap(pages);
-		if(compound.hasKey("title")) {
+		if (compound.hasKey("title")) {
 			pendingtitle = compound.getString("title");
 		} else {
 			pendingtitle = null;
@@ -81,7 +83,7 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 		NBTTagList list = new NBTTagList();
 		NBTUtils.writeItemStackCollection(list, pages);
 		compound.setTag("pages", list);
-		if(pendingtitle != null) {
+		if (pendingtitle != null) {
 			compound.setString("title", pendingtitle);
 		}
 	}
@@ -97,7 +99,8 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 
 	@Override
 	public void buildItem(@Nonnull ItemStack itemstack, @Nonnull EntityPlayer player) {
-		if (!canBuildItem()) return;
+		if (!canBuildItem())
+			return;
 		if (itemstack.getItem() instanceof ItemAgebook) {
 			ItemAgebook.create(itemstack, player, pages, pendingtitle);
 			pages.clear();
@@ -115,20 +118,27 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 	}
 
 	private boolean canBuildItem() {
-		if(inventory.getStackInSlot(cover_slot).isEmpty()) return false;
-		if(!isValidCover(inventory.getStackInSlot(cover_slot))) return false;
-		if (pages.size() == 0) return false;
-		if (!Page.isLinkPanel(pages.get(0))) return false;
-		if (pendingtitle == null || pendingtitle.equals("")) return false;
+		if (inventory.getStackInSlot(cover_slot).isEmpty())
+			return false;
+		if (!isValidCover(inventory.getStackInSlot(cover_slot)))
+			return false;
+		if (pages.size() == 0)
+			return false;
+		if (!Page.isLinkPanel(pages.get(0)))
+			return false;
+		if (pendingtitle == null || pendingtitle.equals(""))
+			return false;
 		for (int i = 1; i < pages.size(); ++i) {
-			if (Page.isLinkPanel(pages.get(i))) return false;
+			if (Page.isLinkPanel(pages.get(i)))
+				return false;
 		}
 		return true;
 	}
 
 	@Nonnull
 	public ItemStack getCraftedItem() {
-		if (!canBuildItem()) return ItemStack.EMPTY;
+		if (!canBuildItem())
+			return ItemStack.EMPTY;
 		return new ItemStack(ModItems.agebook);
 	}
 
@@ -144,7 +154,8 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 
 	@Nonnull
 	public ItemStack insertPage(@Nonnull ItemStack stack, int i) {
-		if (stack.isEmpty()) return ItemStack.EMPTY;
+		if (stack.isEmpty())
+			return ItemStack.EMPTY;
 		if (stack.getItem().equals(Items.PAPER)) {
 			while (stack.getCount() > 0) {
 				ItemStack clone = stack.copy();
@@ -175,7 +186,8 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 
 	@Nonnull
 	public ItemStack insertFromFolder(@Nonnull ItemStack folder, int index) {
-		if (folder.getItem() != ModItems.folder) return folder; //XXX: Make use an interface
+		if (folder.getItem() != ModItems.folder)
+			return folder; //XXX: Make use an interface
 		int size = InventoryFolder.getLargestSlotId(folder);
 		if (size == -1) {
 			for (ItemStack page : pages) {
@@ -185,9 +197,11 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 		} else {
 			for (int slot = 0; slot < size + 1; ++slot) {
 				ItemStack page = InventoryFolder.getItem(folder, slot);
-				if (page.isEmpty()) continue;
+				if (page.isEmpty())
+					continue;
 				page = insertPage(page, index);
-				if (page.isEmpty()) ++index;
+				if (page.isEmpty())
+					++index;
 				InventoryFolder.setItem(folder, slot, page);
 			}
 		}
@@ -197,7 +211,8 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 
 	@Nonnull
 	public ItemStack removePage(int i) {
-		if (i >= pages.size()) return ItemStack.EMPTY;
+		if (i >= pages.size())
+			return ItemStack.EMPTY;
 		ItemStack itemstack = pages.remove(i);
 		markForUpdate();
 		return itemstack;
@@ -211,7 +226,7 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return (T) this.inventory.getCapability(facing);
 		}
 		return null;

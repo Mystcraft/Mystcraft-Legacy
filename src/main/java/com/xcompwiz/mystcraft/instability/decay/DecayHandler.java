@@ -77,8 +77,8 @@ public abstract class DecayHandler {
 		return this.decayType;
 	}
 
-	protected int getMetadata() {
-		return this.metadata;
+	protected IBlockState getBlockState() {
+		return ModBlocks.decay.getDefaultState().withProperty(BlockDecay.DECAY_META, getDecayType());
 	}
 
 	public static DecayHandler getHandler(int meta) {

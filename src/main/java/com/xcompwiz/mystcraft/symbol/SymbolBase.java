@@ -17,8 +17,8 @@ import javax.annotation.Nullable;
 public abstract class SymbolBase implements IAgeSymbol {
 
 	protected final ResourceLocation registryName;
-	private ArrayList<Rule>	rules;
-	private String[]		words;
+	private ArrayList<Rule> rules;
+	private String[] words;
 
 	@SideOnly(Side.CLIENT)
 	private String localizedName;
@@ -32,7 +32,8 @@ public abstract class SymbolBase implements IAgeSymbol {
 	}
 
 	public IAgeSymbol setCardRank(Integer cardrank) {
-		if (cardrank == null) return this;
+		if (cardrank == null)
+			return this;
 		InternalAPI.symbolValues.setSymbolCardRank(this, cardrank);
 		return this;
 	}
@@ -40,7 +41,8 @@ public abstract class SymbolBase implements IAgeSymbol {
 	public final ArrayList<Rule> getRules() {
 		ArrayList<Rule> out = createRules();
 		if (rules != null) {
-			if (out == null) out = new ArrayList<Rule>();
+			if (out == null)
+				out = new ArrayList<Rule>();
 			out.addAll(rules);
 		}
 		return out;
@@ -51,7 +53,8 @@ public abstract class SymbolBase implements IAgeSymbol {
 	}
 
 	public void addRule(Rule rule) {
-		if (rules == null) rules = new ArrayList<Rule>();
+		if (rules == null)
+			rules = new ArrayList<Rule>();
 		rules.add(rule);
 	}
 

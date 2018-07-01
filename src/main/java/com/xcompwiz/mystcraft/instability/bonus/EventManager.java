@@ -28,23 +28,27 @@ public class EventManager {
 		void onPlayerLoggedOut(PlayerLoggedOutEvent event);
 	}
 
-	private static EventManager	instance;
+	private static EventManager instance;
 
 	public static EventManager get() {
-		if (instance == null) { throw new RuntimeException("Event Listener Manager for Instability Bonus System not registered."); }
+		if (instance == null) {
+			throw new RuntimeException("Event Listener Manager for Instability Bonus System not registered.");
+		}
 		return instance;
 	}
 
 	public static void set(EventManager newinstance) {
-		if (instance != null) { throw new RuntimeException("Event Listener Manager for Instability Bonus System registered multiple times."); }
+		if (instance != null) {
+			throw new RuntimeException("Event Listener Manager for Instability Bonus System registered multiple times.");
+		}
 		instance = newinstance;
 	}
 
 	//TODO: Clean this up to use a more generic registration method
-	private static ConcurrentMap<IOnEntityDeath, Boolean>				entitydeathlisteners	= new MapMaker().weakKeys().weakValues().<IOnEntityDeath, Boolean> makeMap();
-	private static ConcurrentMap<IOnPlayerChangedDimension, Boolean>	dimchangelisteners		= new MapMaker().weakKeys().weakValues().<IOnPlayerChangedDimension, Boolean> makeMap();
-	private static ConcurrentMap<IOnPlayerLoggedIn, Boolean>			loggedinlisteners		= new MapMaker().weakKeys().weakValues().<IOnPlayerLoggedIn, Boolean> makeMap();
-	private static ConcurrentMap<IOnPlayerLoggedOut, Boolean>			loggedoutlisteners		= new MapMaker().weakKeys().weakValues().<IOnPlayerLoggedOut, Boolean> makeMap();
+	private static ConcurrentMap<IOnEntityDeath, Boolean> entitydeathlisteners = new MapMaker().weakKeys().weakValues().<IOnEntityDeath, Boolean> makeMap();
+	private static ConcurrentMap<IOnPlayerChangedDimension, Boolean> dimchangelisteners = new MapMaker().weakKeys().weakValues().<IOnPlayerChangedDimension, Boolean> makeMap();
+	private static ConcurrentMap<IOnPlayerLoggedIn, Boolean> loggedinlisteners = new MapMaker().weakKeys().weakValues().<IOnPlayerLoggedIn, Boolean> makeMap();
+	private static ConcurrentMap<IOnPlayerLoggedOut, Boolean> loggedoutlisteners = new MapMaker().weakKeys().weakValues().<IOnPlayerLoggedOut, Boolean> makeMap();
 
 	public void register(IOnEntityDeath listener) {
 		entitydeathlisteners.put(listener, true);

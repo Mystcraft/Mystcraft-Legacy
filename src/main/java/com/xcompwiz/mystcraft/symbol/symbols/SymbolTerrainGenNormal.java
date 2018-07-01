@@ -42,22 +42,22 @@ public class SymbolTerrainGenNormal extends SymbolBase {
 
 	public static class TerrainGeneratorNormal extends TerrainGeneratorBase {
 
-		private final boolean			amplified;
+		private final boolean amplified;
 
-		private Random					rand;
-		private NoiseGeneratorOctaves	noiseGen1;
-		private NoiseGeneratorOctaves	noiseGen2;
-		private NoiseGeneratorOctaves	noiseGen3;
-		private NoiseGeneratorOctaves	noiseGen4;
-		private NoiseGeneratorOctaves	noiseGen5;
+		private Random rand;
+		private NoiseGeneratorOctaves noiseGen1;
+		private NoiseGeneratorOctaves noiseGen2;
+		private NoiseGeneratorOctaves noiseGen3;
+		private NoiseGeneratorOctaves noiseGen4;
+		private NoiseGeneratorOctaves noiseGen5;
 
-		private double					noiseData1[];
-		private double					noiseData2[];
-		private double					noiseData3[];
-		private double					noiseData4[];
-		private double					noiseData5[];
-		private float					parabolicField[];
-		protected Biome			biomesForGeneration[];
+		private double noiseData1[];
+		private double noiseData2[];
+		private double noiseData3[];
+		private double noiseData4[];
+		private double noiseData5[];
+		private float parabolicField[];
+		protected Biome biomesForGeneration[];
 
 		public TerrainGeneratorNormal(AgeDirector controller, boolean amplified) {
 			super(controller);

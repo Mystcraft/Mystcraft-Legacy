@@ -40,8 +40,8 @@ public class SymbolLakesDeep extends SymbolBase {
 	}
 
 	private class Populator implements IPopulate {
-		private AgeDirector		controller;
-		private WorldGeneratorAdv	gen;
+		private AgeDirector controller;
+		private WorldGeneratorAdv gen;
 
 		public Populator(AgeDirector controller, WorldGeneratorAdv generator) {
 			this.controller = controller;

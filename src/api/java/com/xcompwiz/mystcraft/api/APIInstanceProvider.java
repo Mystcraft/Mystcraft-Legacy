@@ -16,7 +16,7 @@ public interface APIInstanceProvider {
 	public interface EntryPoint {
 		public APIInstanceProvider getProviderInstance();
 	}
-	
+
 	/**
 	 * Returns a constructed version of the requested API. If the API requested doesn't exist then an exception will be thrown. Be wary when attempting to cast
 	 * the returned instance, as, if you try using an interface not included in the class path, you may get missing definition crashes. It is wiser to, after

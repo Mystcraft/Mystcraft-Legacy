@@ -11,7 +11,7 @@ import net.minecraft.world.chunk.Chunk;
 
 public class EffectScorched implements IEnvironmentalEffect {
 
-	int	level;
+	int level;
 
 	public EffectScorched(Integer level) {
 		this.level = level;
@@ -19,7 +19,8 @@ public class EffectScorched implements IEnvironmentalEffect {
 
 	@Override
 	public void tick(World worldObj, Chunk chunk) {
-		if (worldObj.rand.nextInt(10) != 0) return;
+		if (worldObj.rand.nextInt(10) != 0)
+			return;
 		ClassInheritanceMultiMap<Entity>[] entityLists = chunk.getEntityLists();
 		int i = worldObj.rand.nextInt(entityLists.length);
 		ClassInheritanceMultiMap<Entity> list = entityLists[i];

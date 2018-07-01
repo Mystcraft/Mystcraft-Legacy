@@ -22,8 +22,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 public class ModSymbolsFluids {
-	private static MystConfig	config;
-	private static MystConfig	refconfig;
+	private static MystConfig config;
+	private static MystConfig refconfig;
 
 	public static void setConfig(MystConfig mystconfig) {
 		config = mystconfig;
@@ -41,24 +41,26 @@ public class ModSymbolsFluids {
 		Map<String, Fluid> map = FluidRegistry.getRegisteredFluids();
 		for (Entry<String, Fluid> entry : map.entrySet()) {
 			Fluid fluid = entry.getValue();
-			if (blacklist.contains(fluid)) continue;
+			if (blacklist.contains(fluid))
+				continue;
 			Block block = fluid.getBlock();
-			if (block == null) continue;
-			if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) continue;
-			if (block == Blocks.LAVA || block == Blocks.FLOWING_LAVA) continue;
+			if (block == null)
+				continue;
+			if (block == Blocks.WATER || block == Blocks.FLOWING_WATER)
+				continue;
+			if (block == Blocks.LAVA || block == Blocks.FLOWING_LAVA)
+				continue;
 
 			byte meta = 0;
 			if (block instanceof BlockFluidBase) {
 				meta = (byte) ((BlockFluidBase) block).getMaxRenderHeightMeta();
 			}
 			IBlockState blockState = block.getStateFromMeta(meta);
-			if (blockState == null)
-			{
+			if (blockState == null) {
 				LoggerUtils.warn("Fluid block %s gives max meta of %d with no matching BlockState", block.getUnlocalizedName(), meta);
 				continue;
 			}
-			if (blockState.getBlock() == null || blockState.getBlock().getRegistryName() == null)
-			{
+			if (blockState.getBlock() == null || blockState.getBlock().getRegistryName() == null) {
 				LoggerUtils.warn("Fluid block %s gives max meta of %d with weird BlockState", block.getUnlocalizedName(), meta);
 				continue;
 			}
@@ -68,23 +70,26 @@ public class ModSymbolsFluids {
 			if (fluid.isGaseous()) {
 				container.add(BlockCategory.GAS, grammarRank(fluidkey));
 			} else {
-				if (!isBannedSea(fluidkey)) container.add(BlockCategory.SEA, grammarRank(fluidkey));
+				if (!isBannedSea(fluidkey))
+					container.add(BlockCategory.SEA, grammarRank(fluidkey));
 				container.add(BlockCategory.FLUID, grammarRank(fluidkey));
 			}
 			if (container.getSymbol() != null) {
 				SymbolManager.tryAddSymbol(container.getSymbol());
 			}
 		}
-		if (config != null && config.hasChanged()) config.save();
-		if (refconfig != null && refconfig.hasChanged()) refconfig.save();
+		if (config != null && config.hasChanged())
+			config.save();
+		if (refconfig != null && refconfig.hasChanged())
+			refconfig.save();
 	}
 
 	public static class FluidData {
-		public boolean	seabanned	= false;
-		public int		grammar		= 4;
-		public int		cardrank	= 4;
-		public float	factor1		= 1.00F;
-		public float	factor2		= 0.25F;
+		public boolean seabanned = false;
+		public int grammar = 4;
+		public int cardrank = 4;
+		public float factor1 = 1.00F;
+		public float factor2 = 0.25F;
 
 		public FluidData setBannedSea(boolean b) {
 			this.seabanned = b;
@@ -112,15 +117,15 @@ public class ModSymbolsFluids {
 		}
 	}
 
-	private static Collection<Fluid>		blacklist			= new HashSet<Fluid>();
-	private static Map<String, FluidData>	defaults			= new HashMap<String, ModSymbolsFluids.FluidData>();
-	private static FluidData				defaultfluidvals	= new FluidData();
+	private static Collection<Fluid> blacklist = new HashSet<Fluid>();
+	private static Map<String, FluidData> defaults = new HashMap<String, ModSymbolsFluids.FluidData>();
+	private static FluidData defaultfluidvals = new FluidData();
 
-	private static Map<String, Boolean>		bannedsea			= new HashMap<String, Boolean>();
-	private static Map<String, Integer>		cardranks			= new HashMap<String, Integer>();
-	private static Map<String, Integer>		grammarranks		= new HashMap<String, Integer>();
-	private static Map<String, Float>		factor1s			= new HashMap<String, Float>();
-	private static Map<String, Float>		factor2s			= new HashMap<String, Float>();
+	private static Map<String, Boolean> bannedsea = new HashMap<String, Boolean>();
+	private static Map<String, Integer> cardranks = new HashMap<String, Integer>();
+	private static Map<String, Integer> grammarranks = new HashMap<String, Integer>();
+	private static Map<String, Float> factor1s = new HashMap<String, Float>();
+	private static Map<String, Float> factor2s = new HashMap<String, Float>();
 
 	public static void blacklist(Fluid fluid) {
 		blacklist.add(fluid);
@@ -137,52 +142,69 @@ public class ModSymbolsFluids {
 
 	private static FluidData getDefaultValue(String fluidkey) {
 		FluidData data = defaults.get(fluidkey);
-		if (data != null) { return data; }
+		if (data != null) {
+			return data;
+		}
 		return defaultfluidvals;
 	}
 
 	private static boolean isBannedSea(String fluidkey) {
 		Boolean value = bannedsea.get(fluidkey);
-		if (value != null) return value;
+		if (value != null)
+			return value;
 		boolean val = getDefaultValue(fluidkey).seabanned;
-		if (refconfig != null) refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".seabanned", val).set(val);
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".seabanned", val);
+		if (refconfig != null)
+			refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".seabanned", val).set(val);
+		if (config != null)
+			return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".seabanned", val);
 		return val;
 	}
 
 	private static Integer symbolCardRank(String fluidkey) {
 		Integer value = cardranks.get(fluidkey);
-		if (value != null) return value;
+		if (value != null)
+			return value;
 		int val = getDefaultValue(fluidkey).cardrank;
-		if (refconfig != null) refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".cardrank", val).set(val);
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".cardrank", val);
+		if (refconfig != null)
+			refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".cardrank", val).set(val);
+		if (config != null)
+			return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".cardrank", val);
 		return val;
 	}
 
 	private static Integer grammarRank(String fluidkey) {
 		Integer value = grammarranks.get(fluidkey);
-		if (value != null) return value;
+		if (value != null)
+			return value;
 		int val = getDefaultValue(fluidkey).grammar;
-		if (refconfig != null) refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".grammar", val).set(val);
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".grammar", val);
+		if (refconfig != null)
+			refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".grammar", val).set(val);
+		if (config != null)
+			return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".grammar", val);
 		return val;
 	}
 
 	private static float factor1(String fluidkey) {
 		Float value = factor1s.get(fluidkey);
-		if (value != null) return value;
+		if (value != null)
+			return value;
 		float val = getDefaultValue(fluidkey).factor1;
-		if (refconfig != null) refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".instability.factor_accessibility", val).set(val);
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".instability.factor_accessibility", val);
+		if (refconfig != null)
+			refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".instability.factor_accessibility", val).set(val);
+		if (config != null)
+			return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".instability.factor_accessibility", val);
 		return val;
 	}
 
 	private static float factor2(String fluidkey) {
 		Float value = factor2s.get(fluidkey);
-		if (value != null) return value;
+		if (value != null)
+			return value;
 		float val = getDefaultValue(fluidkey).factor2;
-		if (refconfig != null) refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".instability.factor_flat", val).set(val);
-		if (config != null) return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".instability.factor_flat", val);
+		if (refconfig != null)
+			refconfig.get(MystConfig.CATEGORY_FLUIDS, fluidkey + ".instability.factor_flat", val).set(val);
+		if (config != null)
+			return config.getOptional(MystConfig.CATEGORY_FLUIDS, fluidkey + ".instability.factor_flat", val);
 		return val;
 	}
 

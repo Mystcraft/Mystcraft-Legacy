@@ -36,12 +36,11 @@ public class LinkingAPIDelegate {
 		LinkOptions link = new LinkOptions(null);
 		link.setDimensionUID(world.provider.getDimension());
 		link.setTargetUUID(DimensionUtils.getDimensionUUID(world.provider.getDimension()));
-		if (location != null)
-		{
+		if (location != null) {
 			link.setSpawn(new BlockPos(location));
 			link.setSpawnYaw(location.rotationYaw);
 		}
-		if(world.provider instanceof WorldProviderMyst) {
+		if (world.provider instanceof WorldProviderMyst) {
 			link.setDisplayName(((WorldProviderMyst) world.provider).getDimensionName());
 		} else {
 			link.setDisplayName(world.provider.getDimensionType().getName());
@@ -65,8 +64,8 @@ public class LinkingAPIDelegate {
 		return InkEffects.getPropertyColor(identifier);
 	}
 
-	private static final Color	defaultColor	= new Color(1, 1, 1);
-	private static final Color	emptyColor		= new Color(0, 0, 0);
+	private static final Color defaultColor = new Color(1, 1, 1);
+	private static final Color emptyColor = new Color(0, 0, 0);
 
 	public ColorGradient getPropertiesGradient(Map<String, Float> properties) {
 		ColorGradient gradient = new ColorGradient();
@@ -74,8 +73,10 @@ public class LinkingAPIDelegate {
 		float total = 0;
 		for (Entry<String, Float> entry : properties.entrySet()) {
 			Color color = InkEffects.getPropertyColor(entry.getKey());
-			if (entry.getValue() < 0.001F) continue;
-			if (color == null) color = defaultColor;
+			if (entry.getValue() < 0.001F)
+				continue;
+			if (color == null)
+				color = defaultColor;
 			float interval = entry.getValue() * max;
 			total += interval;
 			if (interval > 0.3F) {

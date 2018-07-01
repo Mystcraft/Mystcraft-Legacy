@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 public class MapGenRavineMyst extends MapGenAdvanced {
-	private float[]	field_75046_d	= new float[1024];
+	private float[] field_75046_d = new float[1024];
 
 	public MapGenRavineMyst(long seed, Block block) {
 		this(seed, block.getDefaultState());
@@ -74,7 +74,9 @@ public class MapGenRavineMyst extends MapGenAdvanced {
 				double var38 = (par16 - par15);
 				double var40 = (par12 + 2.0F + 16.0F);
 
-				if (var34 * var34 + var36 * var36 - var38 * var38 > var40 * var40) { return; }
+				if (var34 * var34 + var36 * var36 - var38 * var38 > var40 * var40) {
+					return;
+				}
 
 				if (baseX >= chunkXmid - 16.0D - var53 * 2.0D && baseZ >= chunkZmid - 16.0D - var53 * 2.0D && baseX <= chunkXmid + 16.0D + var53 * 2.0D && baseZ <= chunkZmid + 16.0D + var53 * 2.0D) {
 					int minX = MathHelper.floor(baseX - var53) - chunkX * 16 - 1;
@@ -116,7 +118,7 @@ public class MapGenRavineMyst extends MapGenAdvanced {
 
 								if (localY >= 0 && localY < layers) {
 									IBlockState state = primer.getBlockState(localX, localY, localZ);
-									if(state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) {
+									if (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) {
 										foundwater = true;
 									}
 

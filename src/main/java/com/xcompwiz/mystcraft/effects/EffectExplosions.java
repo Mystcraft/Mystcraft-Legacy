@@ -10,7 +10,7 @@ import net.minecraft.world.chunk.Chunk;
 
 public class EffectExplosions implements IEnvironmentalEffect {
 
-	private int	updateLCG	= (new Random()).nextInt();
+	private int updateLCG = (new Random()).nextInt();
 
 	@Override
 	public void tick(World worldObj, Chunk chunk) {

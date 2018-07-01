@@ -8,17 +8,17 @@ import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 
 /**
- * The modifier object class This wraps the modifier objects registered to the {@link AgeDirector} during symbol logic initialization. See
- * {@link ModifierUtils} for more advanced modifier usages.
+ * The modifier object class This wraps the modifier objects registered to the {@link AgeDirector} during symbol logic initialization. See {@link ModifierUtils}
+ * for more advanced modifier usages.
  * @author xcompwiz
  */
 public final class Modifier {
-	private Object			value;
+	private Object value;
 
 	/** Amount of instability added if the modifier is left in the system */
-	public int				dangling;
+	public int dangling;
 
-	public static final int	dangling_default	= 100;
+	public static final int dangling_default = 100;
 
 	public Modifier() {
 		this(null);
@@ -50,7 +50,9 @@ public final class Modifier {
 	 * @return Returns the stored object as a Number or null
 	 */
 	public Number asNumber() {
-		if (value instanceof Number) { return (Number) value; }
+		if (value instanceof Number) {
+			return (Number) value;
+		}
 		return null;
 	}
 
@@ -59,7 +61,9 @@ public final class Modifier {
 	 * @return Returns the stored object as a Color or null
 	 */
 	public Color asColor() {
-		if (value instanceof Color) { return (Color) value; }
+		if (value instanceof Color) {
+			return (Color) value;
+		}
 		return null;
 	}
 
@@ -68,7 +72,9 @@ public final class Modifier {
 	 * @return Returns the stored object as a gradient or null
 	 */
 	public ColorGradient asGradient() {
-		if (value instanceof ColorGradient) { return (ColorGradient) value; }
+		if (value instanceof ColorGradient) {
+			return (ColorGradient) value;
+		}
 		return null;
 	}
 
@@ -79,7 +85,9 @@ public final class Modifier {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> List<T> asList() {
-		if (value instanceof List) { return (List<T>) value; }
+		if (value instanceof List) {
+			return (List<T>) value;
+		}
 		return null;
 	}
 }

@@ -13,11 +13,11 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  */
 public class PortalLinkEvent extends Event {
 	/** The world object where the link originates from */
-	public final World		worldObj;
+	public final World worldObj;
 	/** The Entity being linked */
-	public final Entity		entity;
+	public final Entity entity;
 	/** The link info describing the link about to take place */
-	public final ILinkInfo	info;
+	public final ILinkInfo info;
 
 	public PortalLinkEvent(World worldObj, Entity entity, ILinkInfo info) {
 		this.worldObj = worldObj;

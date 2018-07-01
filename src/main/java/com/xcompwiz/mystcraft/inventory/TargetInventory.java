@@ -8,10 +8,10 @@ import javax.annotation.Nonnull;
 
 public class TargetInventory implements ITargetInventory {
 
-	private IInventory	inventory;
-	private int			begin;
-	private int			end;
-	private boolean		reverse	= false;
+	private IInventory inventory;
+	private int begin;
+	private int end;
+	private boolean reverse = false;
 
 	public TargetInventory(InventoryPlayer inventory) {
 		this.inventory = inventory;
@@ -35,9 +35,7 @@ public class TargetInventory implements ITargetInventory {
 			while (itemstack.getCount() > 0 && (!reverse && slotId < end || reverse && slotId >= begin)) {
 				destStack = inventory.getStackInSlot(slotId);
 
-				if (!destStack.isEmpty() && destStack == itemstack &&
-						(!itemstack.getHasSubtypes() || itemstack.getItemDamage() == destStack.getItemDamage()) &&
-						ItemStack.areItemStackTagsEqual(itemstack, destStack)) {
+				if (!destStack.isEmpty() && destStack == itemstack && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == destStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, destStack)) {
 					int totalSize = destStack.getCount() + itemstack.getCount();
 
 					if (totalSize <= itemstack.getMaxStackSize()) {

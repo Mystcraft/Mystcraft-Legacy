@@ -91,13 +91,13 @@ public class BlockStarFissure extends BlockContainer {
 		return 0;
 	}
 
-    @Override
-    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
-        ILinkInfo info = defaultstarfissure.clone();
-        info.setSpawnYaw(entity.rotationYaw);
-        MinecraftForge.EVENT_BUS.post(new StarFissureLinkEvent(world, entity, info));
-        LinkController.travelEntity(world, entity, info);
-    }
+	@Override
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+		ILinkInfo info = defaultstarfissure.clone();
+		info.setSpawnYaw(entity.rotationYaw);
+		MinecraftForge.EVENT_BUS.post(new StarFissureLinkEvent(world, entity, info));
+		LinkController.travelEntity(world, entity, info);
+	}
 
 	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {}

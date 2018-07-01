@@ -88,9 +88,9 @@ public class BlockBookstand extends BlockBookDisplay {
 		double farthest = 0D;
 		for (int i = 0; i < hits.length; i++) {
 			RayTraceResult c = hits[i];
-			if(c != null) {
+			if (c != null) {
 				double dst = c.hitVec.squareDistanceTo(end);
-				if(dst > farthest) {
+				if (dst > farthest) {
 					hit = c;
 					farthest = dst;
 				}

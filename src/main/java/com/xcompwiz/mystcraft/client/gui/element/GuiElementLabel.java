@@ -16,12 +16,12 @@ public class GuiElementLabel extends GuiElement {
 
 	//TODO: Alignment options
 
-	private IGuiLabelDataProvider	provider;
-	private String					id;
-	private int						bkgdcolor;
-	private int						textcolor;
+	private IGuiLabelDataProvider provider;
+	private String id;
+	private int bkgdcolor;
+	private int textcolor;
 
-	private boolean					hovered	= false;
+	private boolean hovered = false;
 
 	public GuiElementLabel(IGuiLabelDataProvider provider, String id, int guiLeft, int guiTop, int width, int height, int bkgdcolor, int textcolor) {
 		super(guiLeft, guiTop, width, height);
@@ -37,7 +37,9 @@ public class GuiElementLabel extends GuiElement {
 
 	@Override
 	public List<String> _getTooltipInfo() {
-		if (this.hovered) { return provider.getTooltip(this); }
+		if (this.hovered) {
+			return provider.getTooltip(this);
+		}
 		return super._getTooltipInfo();
 	}
 

@@ -33,8 +33,8 @@ public class GuiBookBinder extends GuiContainerElements {
 
 	private class GuiElementMissingPanel extends GuiElementIcon {
 
-		private boolean	hovered;
-		private float	alpha = 1;
+		private boolean hovered;
+		private float alpha = 1;
 
 		public GuiElementMissingPanel(IGuiIcon icon, int guiLeft, int guiTop, int xSize, int ySize) {
 			super(icon, guiLeft, guiTop, xSize, ySize);
@@ -42,7 +42,9 @@ public class GuiBookBinder extends GuiContainerElements {
 
 		@Override
 		public List<String> _getTooltipInfo() {
-			if (this.hovered) { return panel_tooltip; }
+			if (this.hovered) {
+				return panel_tooltip;
+			}
 			return super._getTooltipInfo();
 		}
 
@@ -50,17 +52,21 @@ public class GuiBookBinder extends GuiContainerElements {
 		protected void _onTick() {
 			super._onTick();
 			long time = System.currentTimeMillis();
-			alpha = (time % 4000)/2000.F;
-			if (alpha > 1) alpha = 2 - alpha;
+			alpha = (time % 4000) / 2000.F;
+			if (alpha > 1)
+				alpha = 2 - alpha;
 			alpha += 0.3F;
 		}
 
 		@Override
 		public boolean isVisible() {
-			if (!super.isVisible()) return false;
+			if (!super.isVisible())
+				return false;
 			List<ItemStack> pagelist = container.getPageList();
-			if (pagelist.isEmpty()) return true;
-			if (Page.isLinkPanel(pagelist.get(0))) return false;
+			if (pagelist.isEmpty())
+				return true;
+			if (Page.isLinkPanel(pagelist.get(0)))
+				return false;
 			return true;
 		}
 
@@ -124,10 +130,10 @@ public class GuiBookBinder extends GuiContainerElements {
 
 	}
 
-	private ContainerBookBinder	container;
-	private GuiElementTextField	txtBookName;
-	private int	errorcolor = 0xFFFF0000;
-	private int	txtcolor = 0xFFA0A0A0;
+	private ContainerBookBinder container;
+	private GuiElementTextField txtBookName;
+	private int errorcolor = 0xFFFF0000;
+	private int txtcolor = 0xFFA0A0A0;
 
 	public GuiBookBinder(InventoryPlayer inventoryplayer, TileEntityBookBinder tileentity) {
 		super(new ContainerBookBinder(inventoryplayer, tileentity));

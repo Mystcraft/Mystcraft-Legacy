@@ -6,7 +6,7 @@ package com.xcompwiz.util;
  */
 public class MathBezier {
 
-	private static float[]	sinTable	= new float[65536];
+	private static float[] sinTable = new float[65536];
 
 	static {
 		for (int i = 0; i < 65536; ++i) {
@@ -89,14 +89,18 @@ public class MathBezier {
 	 * Gets a point on a bezier curve
 	 */
 	public static Vector bezier(Vector[] input, double t) {
-		if (input.length < 2) { throw new RuntimeException("Need more input points"); }
+		if (input.length < 2) {
+			throw new RuntimeException("Need more input points");
+		}
 		double d = (1.0D - t);
 		if (input.length == 2) {
 			Vector result = VectorPool.getFreeVector(0, 0, 0);
 			for (int i = 0; i < input.length; i++) {
 				Vector vec = input[i].clone();
-				if (i == 0) vec.multiply(t);
-				if (i == 1) vec.multiply(d);
+				if (i == 0)
+					vec.multiply(t);
+				if (i == 1)
+					vec.multiply(d);
 				result.add(vec);
 			}
 			return result;
@@ -105,9 +109,12 @@ public class MathBezier {
 			Vector result = VectorPool.getFreeVector(0, 0, 0);
 			for (int i = 0; i < input.length; i++) {
 				Vector vec = input[i].clone();
-				if (i == 0) vec.multiply(t * t);
-				if (i == 1) vec.multiply(d * t * 2.0D);
-				if (i == 2) vec.multiply(d * d);
+				if (i == 0)
+					vec.multiply(t * t);
+				if (i == 1)
+					vec.multiply(d * t * 2.0D);
+				if (i == 2)
+					vec.multiply(d * d);
 				result.add(vec);
 			}
 			return result;
@@ -116,10 +123,14 @@ public class MathBezier {
 			Vector result = VectorPool.getFreeVector(0, 0, 0);
 			for (int i = 0; i < input.length; i++) {
 				Vector vec = input[i].clone();
-				if (i == 0) vec.multiply(t * t * t);
-				if (i == 1) vec.multiply(d * t * t * 3.0D);
-				if (i == 2) vec.multiply(d * d * t * 3.0D);
-				if (i == 3) vec.multiply(d * d * d);
+				if (i == 0)
+					vec.multiply(t * t * t);
+				if (i == 1)
+					vec.multiply(d * t * t * 3.0D);
+				if (i == 2)
+					vec.multiply(d * d * t * 3.0D);
+				if (i == 3)
+					vec.multiply(d * d * d);
 				result.add(vec);
 			}
 			return result;

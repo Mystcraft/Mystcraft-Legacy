@@ -1,9 +1,9 @@
 package com.xcompwiz.mystcraft.api.util;
 
 public final class Color {
-	public final float	r;
-	public final float	g;
-	public final float	b;
+	public final float r;
+	public final float g;
+	public final float b;
 
 	public Color(float r, float g, float b) {
 		this.r = r;

@@ -33,23 +33,23 @@ public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandl
 
 	public static class Messages {
 
-		public static final String	SetSeed			= "SetSeed";
-		public static final String	SetInk			= "SetInk";
-		public static final String	SetProperties	= "SetProperties";
-		public static final String	Consume			= "Consume";
+		public static final String SetSeed = "SetSeed";
+		public static final String SetInk = "SetInk";
+		public static final String SetProperties = "SetProperties";
+		public static final String Consume = "Consume";
 	}
 
-	private static int				shift				= 0;
+	private static int shift = 0;
 
-	private InvWrapper				craftResult			= new InvWrapper(new InventoryCraftResult());
+	private InvWrapper craftResult = new InvWrapper(new InventoryCraftResult());
 
-	private TileEntityInkMixer		tileentity;
-	private boolean					cached_hasink		= false;
-	private long					cached_seed			= 0;
+	private TileEntityInkMixer tileentity;
+	private boolean cached_hasink = false;
+	private long cached_seed = 0;
 
-	private HashMap<String, Float>	properties			= new HashMap<>();
+	private HashMap<String, Float> properties = new HashMap<>();
 
-	private ColorGradient			propertyGradient	= null;
+	private ColorGradient propertyGradient = null;
 
 	public ContainerInkMixer(InventoryPlayer inventoryplayer, TileEntityInkMixer tileentity) {
 		this.tileentity = tileentity;
@@ -105,14 +105,14 @@ public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandl
 
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setBoolean(Messages.SetInk, cached_hasink);
-            packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
+			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 		}
 		if (cached_seed != tileentity.getNextSeed()) {
 			cached_seed = tileentity.getNextSeed();
 
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setLong(Messages.SetSeed, cached_seed);
-            packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
+			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 		}
 
 		Map<String, Float> ink_probs = tileentity.getInkProperties();
@@ -139,20 +139,20 @@ public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandl
 			nbttagcompound.setTag(Messages.SetProperties, probabilities);
 			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 		}
-        if (packets.size() > 0) {
-            for (IContainerListener listener : this.listeners) {
-                if(listener instanceof EntityPlayerMP) {
-                    for (IMessage message : packets) {
-                        MystcraftPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) listener);
-                    }
-                }
-            }
-        }
+		if (packets.size() > 0) {
+			for (IContainerListener listener : this.listeners) {
+				if (listener instanceof EntityPlayerMP) {
+					for (IMessage message : packets) {
+						MystcraftPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) listener);
+					}
+				}
+			}
+		}
 		this.updateCraftResult();
 	}
 
 	public void updateCraftResult() {
-	    this.craftResult.setStackInSlot(0, this.tileentity.getCraftedItem());
+		this.craftResult.setStackInSlot(0, this.tileentity.getCraftedItem());
 	}
 
 	@Override
@@ -182,12 +182,15 @@ public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandl
 			rebuildGradient();
 		}
 		if (data.hasKey(Messages.Consume)) {
-			if (player.inventory.getItemStack().isEmpty()) return;
-			if (!tileentity.getHasInk()) return;
+			if (player.inventory.getItemStack().isEmpty())
+				return;
+			if (!tileentity.getHasInk())
+				return;
 			ItemStack itemstack = player.inventory.getItemStack();
 
 			int amount = itemstack.getCount();
-			if (data.getBoolean("Single")) amount = 1;
+			if (data.getBoolean("Single"))
+				amount = 1;
 
 			player.inventory.setItemStack(this.tileentity.addItems(itemstack, amount));
 		}
@@ -197,10 +200,10 @@ public class ContainerInkMixer extends ContainerBase implements IGuiMessageHandl
 		this.propertyGradient = InternalAPI.linkProperties.getPropertiesGradient(properties);
 	}
 
-    @Override
-    public boolean canMergeSlot(@Nonnull ItemStack stack, Slot slot) {
-        return slot.inventory != this.craftResult && super.canMergeSlot(stack, slot);
-    }
+	@Override
+	public boolean canMergeSlot(@Nonnull ItemStack stack, Slot slot) {
+		return slot.inventory != this.craftResult && super.canMergeSlot(stack, slot);
+	}
 
 	public boolean hasInk() {
 		return cached_hasink;

@@ -46,13 +46,17 @@ public class CommandToggleWorldInstability extends CommandBaseAdv {
 			dimId = getSenderDimension(sender);
 		}
 
-		if (!Mystcraft.registeredDims.contains(dimId) || AgeData.getAge(dimId, false) == null) { throw new CommandException("Cannot toggle instability for non-Mystcraft Dimensions", new Object[0]); }
+		if (!Mystcraft.registeredDims.contains(dimId) || AgeData.getAge(dimId, false) == null) {
+			throw new CommandException("Cannot toggle instability for non-Mystcraft Dimensions", new Object[0]);
+		}
 
 		AgeData data = AgeData.getAge(dimId, false);
 		boolean setting = !data.isInstabilityEnabled();
 		if (args.length > 0) {
-			if (args[args.length - 1].equals("true")) setting = true;
-			if (args[args.length - 1].equals("false")) setting = false;
+			if (args[args.length - 1].equals("true"))
+				setting = true;
+			if (args[args.length - 1].equals("false"))
+				setting = false;
 		}
 		data.setInstabilityEnabled(setting);
 

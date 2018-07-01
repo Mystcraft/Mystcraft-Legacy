@@ -19,8 +19,8 @@ import net.minecraftforge.common.util.Constants;
 
 public class StorageInstabilityData extends WorldSavedData {
 
-	public static final String					ID		= "MystInstabilityData";
-	private HashMap<String, Collection<String>>	decks	= new HashMap<String, Collection<String>>();
+	public static final String ID = "MystInstabilityData";
+	private HashMap<String, Collection<String>> decks = new HashMap<String, Collection<String>>();
 
 	public StorageInstabilityData(String id) {
 		super(id);
@@ -28,7 +28,8 @@ public class StorageInstabilityData extends WorldSavedData {
 
 	public void setAgeData(AgeData data) {
 		NBTBase cruft = data.popCruft("instabilityeffects");
-		if (cruft == null) return;
+		if (cruft == null)
+			return;
 		Collection<String> cards = NBTUtils.readStringCollection((NBTTagList) cruft, new ArrayList<String>());
 		for (String deck : InstabilityManager.getDecks()) {
 			decks.put(deck, cards);
@@ -37,7 +38,8 @@ public class StorageInstabilityData extends WorldSavedData {
 
 	public Collection<String> getDeck(String deckname) {
 		Collection<String> cards = decks.get(deckname);
-		if (cards == null) return new ArrayList<String>();
+		if (cards == null)
+			return new ArrayList<String>();
 		return Collections.unmodifiableCollection(cards);
 	}
 

@@ -41,9 +41,9 @@ public class SymbolTerrainGenFlat extends SymbolBase {
 
 	private static class TerrainGenerator implements ITerrainGenerator {
 
-		private AgeDirector	controller;
-		private IBlockState fillblock	= Blocks.STONE.getDefaultState();
-		private IBlockState	seablock	= Blocks.WATER.getDefaultState();
+		private AgeDirector controller;
+		private IBlockState fillblock = Blocks.STONE.getDefaultState();
+		private IBlockState seablock = Blocks.WATER.getDefaultState();
 
 		public TerrainGenerator(AgeDirector controller) {
 			this.controller = controller;

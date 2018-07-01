@@ -82,7 +82,7 @@ public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClick
 
 		int slotleft = 28;
 		int padding = 3;
-		int shop_slot_width = (xSize-slotleft-padding-3)/3-1;
+		int shop_slot_width = (xSize - slotleft - padding - 3) / 3 - 1;
 		int shop_slot_height = shop_slot_width * 3 / 2;
 		int labelY = 10;
 		int labelX = 40;
@@ -124,8 +124,10 @@ public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClick
 	@Override
 	@Nonnull
 	public ItemStack getItemStack(GuiIconItemStack caller) {
-		if (caller.getId().equals("booster")) return new ItemStack(ModItems.booster, container.getBoosterCount());
-		if (caller.getId().equals("buybtnb")) return new ItemStack(Items.EMERALD, container.getBoosterCost());
+		if (caller.getId().equals("booster"))
+			return new ItemStack(ModItems.booster, container.getBoosterCount());
+		if (caller.getId().equals("buybtnb"))
+			return new ItemStack(Items.EMERALD, container.getBoosterCost());
 		return ItemStack.EMPTY;
 	}
 }

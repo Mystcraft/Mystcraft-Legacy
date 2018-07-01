@@ -11,13 +11,13 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  */
 public class DenseOresEvent extends Event {
 	/** The world in which we're generating */
-	public final World	worldObj;
+	public final World worldObj;
 	/** The random object to use when generating */
-	public final Random	random;
+	public final Random random;
 	/** The block position of the chunk (chunkX * 16) */
-	public final int	xPos;
+	public final int xPos;
 	/** The block position of the chunk (chunkZ * 16) */
-	public final int	zPos;
+	public final int zPos;
 
 	public DenseOresEvent(World worldObj, Random rand, int xPos, int zPos) {
 		this.worldObj = worldObj;

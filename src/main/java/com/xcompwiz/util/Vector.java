@@ -6,9 +6,9 @@ package com.xcompwiz.util;
  */
 public class Vector {
 
-	public double	posX;
-	public double	posY;
-	public double	posZ;
+	public double posX;
+	public double posY;
+	public double posZ;
 
 	Vector(double posX, double posY, double posZ) {
 		this.posX = posX;

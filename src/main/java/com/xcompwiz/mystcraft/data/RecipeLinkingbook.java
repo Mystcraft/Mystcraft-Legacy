@@ -44,8 +44,10 @@ public class RecipeLinkingbook implements IRecipe {
 				return false;
 			}
 		}
-		if (linkpanel.isEmpty()) return false;
-		if (covermat.isEmpty()) return false;
+		if (linkpanel.isEmpty())
+			return false;
+		if (covermat.isEmpty())
+			return false;
 		this.product = ItemLinkbookUnlinked.createItem(linkpanel, covermat);
 		return true;
 	}

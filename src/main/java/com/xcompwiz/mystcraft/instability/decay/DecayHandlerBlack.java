@@ -42,6 +42,11 @@ public class DecayHandlerBlack extends DecayHandler {
 				if (!WorldInfoUtils.isInstabilityEnabled(world)) {
 					return;
 				}
+				if (world.getBlockState(pos.down()) == this.getBlockState()) {
+					world.setBlockToAir(pos);
+					EntityFallingBlock.drop(world, pos);
+					return;
+				}
 				if (world.getBlockState(pos.up()) == this.getBlockState()) {
 					world.setBlockToAir(pos);
 					EntityFallingBlock.drop(world, pos.up());

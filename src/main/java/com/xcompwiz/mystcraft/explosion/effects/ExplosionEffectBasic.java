@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 public class ExplosionEffectBasic extends ExplosionEffect {
 
-	public static ExplosionEffect	instance	= new ExplosionEffectBasic();
+	public static ExplosionEffect instance = new ExplosionEffectBasic();
 
 	private ExplosionEffectBasic() {}
 

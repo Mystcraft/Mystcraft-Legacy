@@ -27,13 +27,16 @@ public abstract class CommandBaseAdv extends CommandBase {
 		if (entityplayermp == null) {
 			entityplayermp = server.getPlayerList().getPlayerByUsername(target);
 		}
-		if (entityplayermp == null) { throw new PlayerNotFoundException("commands.generic.player.unspecified"); }
+		if (entityplayermp == null) {
+			throw new PlayerNotFoundException("commands.generic.player.unspecified");
+		}
 		return entityplayermp;
 	}
 
 	public static Integer getSenderDimension(ICommandSender sender) throws CommandException {
 		World w = sender.getEntityWorld();
-		if (w == null) throw new CommandException("You must specify a dimension to use this command from the commandline");
+		if (w == null)
+			throw new CommandException("You must specify a dimension to use this command from the commandline");
 		return w.provider.getDimension();
 	}
 
@@ -58,7 +61,8 @@ public abstract class CommandBaseAdv extends CommandBase {
 	public static double handleRelativeNumber(ICommandSender par1ICommandSender, double origin, String arg, int min, int max) throws NumberInvalidException {
 		boolean relative = arg.startsWith("~");
 		boolean random = arg.startsWith("?");
-		if (random) relative = true;
+		if (random)
+			relative = true;
 		double d1 = relative ? origin : 0.0D;
 
 		if (!relative || arg.length() > 1) {
@@ -82,9 +86,13 @@ public abstract class CommandBaseAdv extends CommandBase {
 		}
 
 		if (min != 0 || max != 0) {
-			if (d1 < min) { throw new NumberInvalidException("commands.generic.double.tooSmall", new Object[] { Double.valueOf(d1), Integer.valueOf(min) }); }
+			if (d1 < min) {
+				throw new NumberInvalidException("commands.generic.double.tooSmall", new Object[] { Double.valueOf(d1), Integer.valueOf(min) });
+			}
 
-			if (d1 > max) { throw new NumberInvalidException("commands.generic.double.tooBig", new Object[] { Double.valueOf(d1), Integer.valueOf(max) }); }
+			if (d1 > max) {
+				throw new NumberInvalidException("commands.generic.double.tooBig", new Object[] { Double.valueOf(d1), Integer.valueOf(max) });
+			}
 		}
 
 		return d1;
@@ -95,7 +103,9 @@ public abstract class CommandBaseAdv extends CommandBase {
 	 */
 	public static Entity parsePlayerByName(MinecraftServer server, String name) throws PlayerNotFoundException {
 		EntityPlayerMP player = server.getPlayerList().getPlayerByUsername(name);
-		if (player != null) { return player; }
+		if (player != null) {
+			return player;
+		}
 		throw new PlayerNotFoundException("commands.myst.generic.player.notfound", new Object[] { name });
 	}
 

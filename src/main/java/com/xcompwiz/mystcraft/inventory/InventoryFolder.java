@@ -18,13 +18,17 @@ import javax.annotation.Nullable;
 
 public class InventoryFolder {
 
-    //TODO: Refactor me! I'm a mess! - Hellfire> don't mind me, just updating, not refactoring :^)
+	//TODO: Refactor me! I'm a mess! - Hellfire> don't mind me, just updating, not refactoring :^)
 
 	public static boolean isItemValid(@Nonnull ItemStack itemstack) {
-		if (itemstack.isEmpty()) return true;
-		if (itemstack.getCount() != 1) return false;
-		if (itemstack.getItem() == ModItems.page) return true;
-		if (itemstack.getItem() == Items.PAPER) return true;
+		if (itemstack.isEmpty())
+			return true;
+		if (itemstack.getCount() != 1)
+			return false;
+		if (itemstack.getItem() == ModItems.page)
+			return true;
+		if (itemstack.getItem() == Items.PAPER)
+			return true;
 		return false;
 	}
 
@@ -35,8 +39,10 @@ public class InventoryFolder {
 	}
 
 	public static void setName(@Nonnull ItemStack folder, String bookname) {
-		if (folder.isEmpty()) return;
-		if (!folder.getItem().equals(ModItems.folder)) return;
+		if (folder.isEmpty())
+			return;
+		if (!folder.getItem().equals(ModItems.folder))
+			return;
 		if (folder.getTagCompound() == null) {
 			initFolder(folder);
 		}
@@ -49,8 +55,10 @@ public class InventoryFolder {
 
 	@Nullable
 	public static String getName(@Nonnull ItemStack folder) {
-		if (folder.isEmpty()) return null;
-		if (!folder.getItem().equals(ModItems.folder)) return null;
+		if (folder.isEmpty())
+			return null;
+		if (!folder.getItem().equals(ModItems.folder))
+			return null;
 
 		if (folder.getTagCompound() == null) {
 			initFolder(folder);
@@ -63,8 +71,10 @@ public class InventoryFolder {
 
 	@Nullable
 	private static NBTTagCompound getInventoryCompound(@Nonnull ItemStack folder) {
-		if (folder.isEmpty()) return null;
-		if (!folder.getItem().equals(ModItems.folder)) return null;
+		if (folder.isEmpty())
+			return null;
+		if (!folder.getItem().equals(ModItems.folder))
+			return null;
 		if (folder.getTagCompound() == null) {
 			initFolder(folder);
 		}
@@ -75,14 +85,16 @@ public class InventoryFolder {
 	}
 
 	public static int getItemCount(@Nonnull ItemStack folder) {
-		if (getInventoryCompound(folder) == null) return 0;
+		if (getInventoryCompound(folder) == null)
+			return 0;
 		return getInventoryCompound(folder).getKeySet().size();
 	}
 
 	public static int getLargestSlotId(@Nonnull ItemStack folder) {
 		int largest = -1;
 		NBTTagCompound compound = getInventoryCompound(folder);
-		if (compound == null) return 0;
+		if (compound == null)
+			return 0;
 		for (String tagname : compound.getKeySet()) {
 			int slot = Integer.parseInt(tagname);
 			if (largest < slot) {
@@ -103,7 +115,8 @@ public class InventoryFolder {
 
 	@Nonnull
 	public static ItemStack setItem(@Nonnull ItemStack folder, int slot, @Nonnull ItemStack page) {
-		if (!isItemValid(page)) return page;
+		if (!isItemValid(page))
+			return page;
 		NBTTagCompound data = getInventoryCompound(folder);
 		if (data == null) {
 			return page;
@@ -131,7 +144,7 @@ public class InventoryFolder {
 		return itemstack;
 	}
 
-    @Nonnull
+	@Nonnull
 	public static ItemStack addItem(@Nonnull ItemStack folder, @Nonnull ItemStack page) {
 		if (!isItemValid(page)) {
 			return page;
@@ -184,9 +197,9 @@ public class InventoryFolder {
 		}
 
 		// Take a copy of the tag names to avoid concurrent modification issues (since we modify the set in the loop)
-        Collection<String> tagnames = new ArrayList<String>();
-        tagnames.addAll(compound.getKeySet());
-        for (String tagname : tagnames) {
+		Collection<String> tagnames = new ArrayList<String>();
+		tagnames.addAll(compound.getKeySet());
+		for (String tagname : tagnames) {
 			NBTTagCompound pagedata = compound.getCompoundTag(tagname);
 			ItemStack page = new ItemStack(pagedata);
 			List<ItemStack> results = SymbolRemappings.remap(page);
@@ -216,8 +229,10 @@ public class InventoryFolder {
 	public static boolean writeSymbol(@Nonnull ItemStack folder, ResourceLocation symbol) {
 		List<ItemStack> pages = getItems(folder);
 		for (ItemStack page : pages) {
-			if (page.isEmpty()) continue;
-			if (page.getItem() != ModItems.page) continue;
+			if (page.isEmpty())
+				continue;
+			if (page.getItem() != ModItems.page)
+				continue;
 			if (InternalAPI.page.isPageWritable(page)) {
 				InternalAPI.page.setPageSymbol(page, symbol);
 				return true;

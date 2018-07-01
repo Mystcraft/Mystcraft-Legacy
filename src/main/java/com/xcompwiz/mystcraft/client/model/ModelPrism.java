@@ -13,11 +13,11 @@ public class ModelPrism extends ModelElement {
 	/**
 	 * The (x,y,z) vertex positions and (u,v) texture coordinates for each of the 8 points on a cube
 	 */
-	private PositionTextureVertex[]	vertexPositions;
+	private PositionTextureVertex[] vertexPositions;
 
 	/** An array of 6 TexturedQuads, one for each face of a cube */
-	private TexturedQuad[]			quadList;
-	public String					name;
+	private TexturedQuad[] quadList;
+	public String name;
 
 	public ModelPrism(ModelRendererAdvanced modelRenderer, int textureX, int textureY, float x, float y, float z, int width, int height1, int height2, int depth, float scalar) {
 		this.vertexPositions = new PositionTextureVertex[8];

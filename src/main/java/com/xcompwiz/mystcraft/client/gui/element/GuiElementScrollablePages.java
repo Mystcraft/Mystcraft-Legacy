@@ -35,17 +35,17 @@ public class GuiElementScrollablePages extends GuiElement {
 
 	}
 
-	private IGuiPageListProvider		pagesprovider;
-	private IGuiScrollableClickHandler	listener;
+	private IGuiPageListProvider pagesprovider;
+	private IGuiScrollableClickHandler listener;
 
-	private int							firstElement;
-	private int							elementWidth;
-	private int							elementHeight;
-	private int							arrowWidth;
-	private int							hoverpage	= -1;
-	private int							clickedpage	= -1;
-	private List<String>				hovertext	= new ArrayList<String>();
-	private boolean						mouseOver;
+	private int firstElement;
+	private int elementWidth;
+	private int elementHeight;
+	private int arrowWidth;
+	private int hoverpage = -1;
+	private int clickedpage = -1;
+	private List<String> hovertext = new ArrayList<String>();
+	private boolean mouseOver;
 
 	public GuiElementScrollablePages(IGuiScrollableClickHandler handler, IGuiPageListProvider pagesprovider, Minecraft mc, int left, int top, int width, int height) {
 		super(left, top, width, height);
@@ -70,7 +70,8 @@ public class GuiElementScrollablePages extends GuiElement {
 		if (!this.isEnabled()) {
 			return;
 		}
-		if (!mouseOver) return;
+		if (!mouseOver)
+			return;
 		int input = Mouse.getEventDWheel();
 
 		if (input != 0) {
@@ -88,7 +89,8 @@ public class GuiElementScrollablePages extends GuiElement {
 			return false;
 		}
 		List<ItemStack> pageList = getPageList();
-		if (pageList == null) return false;
+		if (pageList == null)
+			return false;
 		int guiLeft = getLeft();
 		int guiTop = getTop();
 		if (i > guiLeft && i < guiLeft + xSize && j > guiTop && j < guiTop + ySize) {
@@ -102,7 +104,8 @@ public class GuiElementScrollablePages extends GuiElement {
 			}
 			if (!mc.player.inventory.getItemStack().isEmpty()) {
 				int index = hoverpage;
-				if (index == -1) index = pageList.size();
+				if (index == -1)
+					index = pageList.size();
 				listener.onItemPlace(this, index, k);
 				return true;
 			}
@@ -121,13 +124,16 @@ public class GuiElementScrollablePages extends GuiElement {
 	private void cycleRight() {
 		firstElement += 1;
 		int size = getPageList().size();
-		if (firstElement >= size) firstElement = size - 1;
-		if (firstElement < 0) firstElement = 0;
+		if (firstElement >= size)
+			firstElement = size - 1;
+		if (firstElement < 0)
+			firstElement = 0;
 	}
 
 	private void cycleLeft() {
 		firstElement -= 1;
-		if (firstElement < 0) firstElement = 0;
+		if (firstElement < 0)
+			firstElement = 0;
 	}
 
 	@Override
@@ -141,7 +147,9 @@ public class GuiElementScrollablePages extends GuiElement {
 
 	@Override
 	public List<String> _getTooltipInfo() {
-		if (hovertext != null && hovertext.size() > 0) { return hovertext; }
+		if (hovertext != null && hovertext.size() > 0) {
+			return hovertext;
+		}
 		return super._getTooltipInfo();
 	}
 
@@ -177,11 +185,13 @@ public class GuiElementScrollablePages extends GuiElement {
 					Page.getTooltip(page, hovertext);
 					if (Page.getSymbol(page) != null) {
 						IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
-						if (symbol != null) hovertext.add(symbol.getLocalizedName());
+						if (symbol != null)
+							hovertext.add(symbol.getLocalizedName());
 					}
 				}
 				x += pagexSize + 2;
-				if (x > xSize) break;
+				if (x > xSize)
+					break;
 			}
 		}
 		GuiUtils.endGlScissor();

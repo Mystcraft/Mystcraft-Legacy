@@ -25,17 +25,17 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 
 	public static class PositionableItem {
 
-		public int			slotId;
+		public int slotId;
 		@Nonnull
-		public ItemStack	itemstack = ItemStack.EMPTY;
-		public float		x;
-		public float		y;
+		public ItemStack itemstack = ItemStack.EMPTY;
+		public float x;
+		public float y;
 
-		public int			count	= 1;
+		public int count = 1;
 	}
 
-	public final static float	pagewidth	= 30;
-	public final static float	pageheight	= pagewidth * 4 / 3;
+	public final static float pagewidth = 30;
+	public final static float pageheight = pagewidth * 4 / 3;
 
 	public interface IGuiPositionedPagesProvider {
 
@@ -49,19 +49,19 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 
 	}
 
-	private IGuiPositionedPagesProvider	pagesProvider;
+	private IGuiPositionedPagesProvider pagesProvider;
 
-	private float						pageWidth;
-	private float						pageHeight;
+	private float pageWidth;
+	private float pageHeight;
 
-	private PositionableItem			hoverpage;
-	private List<String>				hovertext			= new ArrayList<String>();
+	private PositionableItem hoverpage;
+	private List<String> hovertext = new ArrayList<String>();
 
-	private GuiElementVSlider			scrollbar;
+	private GuiElementVSlider scrollbar;
 
-	private boolean						mousedown;
-	private String						searchtext;
-	private boolean						mouseOverPageArea	= false;
+	private boolean mousedown;
+	private String searchtext;
+	private boolean mouseOverPageArea = false;
 
 	public GuiElementPageSurface(IGuiPositionedPagesProvider pagesProvider, Minecraft mc, int left, int top, int width, int height) {
 		super(left, top, width, height);
@@ -79,17 +79,20 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	 */
 	@Override
 	public void _handleMouseInput() {
-		if (!mouseOverPageArea) return;
+		if (!mouseOverPageArea)
+			return;
 		scrollbar.handleMouseScroll();
 	}
 
 	@Override
 	public boolean _onMouseDown(int mouseX, int mouseY, int button) {
 		if (this.contains(mouseX, mouseY)) {
-			if (pagesProvider == null) return false;
+			if (pagesProvider == null)
+				return false;
 			if (!mc.player.inventory.getItemStack().isEmpty()) {
 				List<PositionableItem> pages = getPages();
-				if (pages == null) return false;
+				if (pages == null)
+					return false;
 				int index = pages.size();
 				if (hoverpage != null) {
 					index = hoverpage.slotId;
@@ -177,7 +180,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 					}
 					if (displayname == null) {
 						ResourceLocation res = Page.getSymbol(page);
-						if(res != null) {
+						if (res != null) {
 							displayname = res.getResourcePath();
 						}
 					}
@@ -202,7 +205,8 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 						hovertext.add(displayname);
 					} else if (Page.getSymbol(page) != null) {
 						IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
-						if (symbol != null) hovertext.add(symbol.getLocalizedName());
+						if (symbol != null)
+							hovertext.add(symbol.getLocalizedName());
 					}
 				}
 			}
@@ -215,7 +219,9 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	}
 
 	private List<PositionableItem> getPages() {
-		if (pagesProvider == null) { return null; }
+		if (pagesProvider == null) {
+			return null;
+		}
 		return this.pagesProvider.getPositionedPages();
 	}
 

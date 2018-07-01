@@ -6,8 +6,8 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import net.minecraft.util.ResourceLocation;
 
 public class SymbolAngle extends SymbolBase {
-	private final float		value;
-	private final String	display;
+	private final float value;
+	private final String display;
 
 	public SymbolAngle(ResourceLocation identifier, float value, String display) {
 		super(identifier);

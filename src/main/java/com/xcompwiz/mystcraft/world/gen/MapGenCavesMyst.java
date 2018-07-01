@@ -9,8 +9,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 public class MapGenCavesMyst extends MapGenAdvanced {
-	private int	rate	= 15;
-	private int	size	= 40;
+	private int rate = 15;
+	private int size = 40;
 
 	public MapGenCavesMyst(long seed, int rate, int size, Block block) {
 		this(seed, rate, size, block.getDefaultState());
@@ -92,7 +92,9 @@ public class MapGenCavesMyst extends MapGenAdvanced {
 			double zoffset = par16 - par15;
 			double d7 = par12 + 2.0F + 16F;
 
-			if ((xoffset * xoffset + yoffset * yoffset) - zoffset * zoffset > d7 * d7) { return; }
+			if ((xoffset * xoffset + yoffset * yoffset) - zoffset * zoffset > d7 * d7) {
+				return;
+			}
 
 			if (baseX < chunkXmid - 16D - d2 * 2D || baseZ < chunkZmid - 16D - d2 * 2D || baseX > chunkXmid + 16D + d2 * 2D || baseZ > chunkZmid + 16D + d2 * 2D) {
 				continue;

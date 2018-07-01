@@ -39,9 +39,11 @@ public class EffectExtraTicks implements IEnvironmentalEffect {
 					int x = bits & 15;
 					int z = bits >> 8 & 15;
 					int y = bits >> 16 & 15;
-					IBlockState state = storage.get(x, y, z);
-					if (this.block != null && this.block != state.getBlock()) continue;
-					if (this.metadata != null && this.metadata != state.getBlock().getMetaFromState(state)) continue;
+					IBlockState blockstate = storage.get(x, y, z);
+					if (blockstate == null)
+						continue;
+					if (this.blockstate != null && this.blockstate != blockstate)
+						continue;
 
 					if(state.getBlock().getTickRandomly()) {
 						state.getBlock().updateTick(worldObj, new BlockPos(x, y, z).add(xPos, storage.getYLocation(), zPos), state, worldObj.rand);

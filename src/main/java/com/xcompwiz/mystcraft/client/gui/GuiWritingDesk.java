@@ -68,7 +68,8 @@ public class GuiWritingDesk extends GuiContainerElements {
 
 		@Override
 		public void pickup(PositionableItem collectionelement) {
-			if (collectionelement.count <= 0) return;
+			if (collectionelement.count <= 0)
+				return;
 			boolean iscollection = getItemStack().getItem() instanceof IItemPageCollection;
 			if (iscollection) {
 				NBTTagCompound itemdata = new NBTTagCompound();
@@ -94,8 +95,10 @@ public class GuiWritingDesk extends GuiContainerElements {
 		@Override
 		public void copy(PositionableItem collectionelement) {
 			ResourceLocation symbol = Page.getSymbol(collectionelement.itemstack);
-			if (symbol == null) return;
-			if (collectionelement.count <= 0) return;
+			if (symbol == null)
+				return;
+			if (collectionelement.count <= 0)
+				return;
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setString(ContainerWritingDesk.Messages.WriteSymbol, symbol.toString());
 			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
@@ -108,9 +111,12 @@ public class GuiWritingDesk extends GuiContainerElements {
 		@Override
 		public List<ItemStack> getPageList() {
 			ItemStack target = container.getTarget();
-			if (target.isEmpty()) return null;
-			if (!container.getBook().isEmpty()) return null;
-			if (target.getItem() == ModItems.page) return null;
+			if (target.isEmpty())
+				return null;
+			if (!container.getBook().isEmpty())
+				return null;
+			if (target.getItem() == ModItems.page)
+				return null;
 			if (target.getItem() instanceof IItemWritable) {
 				return container.getBookPageList();
 			}
@@ -219,15 +225,15 @@ public class GuiWritingDesk extends GuiContainerElements {
 
 	}
 
-	private ContainerWritingDesk	container;
+	private ContainerWritingDesk container;
 
-	private int						mainTop;
-	private int						guiCenter;
+	private int mainTop;
+	private int guiCenter;
 
-	static final int				leftsize		= 228;
-	private static final int		windowsizeX		= 176;
-	private static final int		windowsizeY		= 166;
-	private static final int		buttonssizeY	= 18;
+	static final int leftsize = 228;
+	private static final int windowsizeX = 176;
+	private static final int windowsizeY = 166;
+	private static final int buttonssizeY = 18;
 
 	public GuiWritingDesk(InventoryPlayer inventoryplayer, TileEntityDesk tileentity) {
 		super(new ContainerWritingDesk(inventoryplayer, tileentity));

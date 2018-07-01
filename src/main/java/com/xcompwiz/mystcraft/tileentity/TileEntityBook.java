@@ -22,10 +22,7 @@ public class TileEntityBook extends TileEntityBase implements InventoryUpdateLis
 	}
 
 	protected IOInventory buildInventory() {
-		return new IOInventory(this, new int[] { 0 }, new int[] { 0 }, EnumFacing.VALUES)
-				.setListener(this)
-				.applyFilter(this, 0)
-				.setStackLimit(1, 0);
+		return new IOInventory(this, new int[] { 0 }, new int[] { 0 }, EnumFacing.VALUES).setListener(this).applyFilter(this, 0).setStackLimit(1, 0);
 	}
 
 	public void setBook(@Nonnull ItemStack itemstack) {
@@ -85,7 +82,7 @@ public class TileEntityBook extends TileEntityBase implements InventoryUpdateLis
 			ejectItem(this.inventory.getStackInSlot(slot));
 			this.inventory.setStackInSlot(slot, ItemStack.EMPTY);
 		}
-		if(world != null && !world.isRemote) {
+		if (world != null && !world.isRemote) {
 			markForUpdate();
 		}
 	}
@@ -113,7 +110,7 @@ public class TileEntityBook extends TileEntityBase implements InventoryUpdateLis
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return (T) this.inventory.getCapability(facing);
 		}
 		return null;

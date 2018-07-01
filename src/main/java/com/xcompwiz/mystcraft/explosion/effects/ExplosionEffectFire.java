@@ -17,7 +17,8 @@ public class ExplosionEffectFire extends ExplosionEffect {
 
 	@Override
 	public void apply(World worldObj, ExplosionAdvanced explosion, BlockPos pos, Random rand, boolean isClient) {
-		if (worldObj.isRemote) return;
+		if (worldObj.isRemote)
+			return;
 
 		IBlockState blockstate = worldObj.getBlockState(pos.down());
 		if (blockstate.isOpaqueCube() && rand.nextInt(3) == 0) {

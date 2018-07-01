@@ -12,16 +12,16 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 public abstract class WeatherControllerToggleable implements IWeatherController {
-	private StorageObject	infoObj;
-	private Random			random			= new Random();
-	private int				updateLCG		= random.nextInt();
+	private StorageObject infoObj;
+	private Random random = new Random();
+	private int updateLCG = random.nextInt();
 
-	protected double		rainingStrength;
-	protected double		thunderingStrength;
-	protected int			reset_cooldown	= 12000;
-	protected Float			fixedtemp		= null;
-	protected Boolean		snowEnabled		= null;
-	protected Boolean		rainEnabled		= null;
+	protected double rainingStrength;
+	protected double thunderingStrength;
+	protected int reset_cooldown = 12000;
+	protected Float fixedtemp = null;
+	protected Boolean snowEnabled = null;
+	protected Boolean rainEnabled = null;
 
 	@Override
 	public void setDataObject(StorageObject infoObj) {
@@ -91,7 +91,8 @@ public abstract class WeatherControllerToggleable implements IWeatherController 
 
 	@Override
 	public float getTemperature(float current, ResourceLocation biomeId) {
-		if (this.fixedtemp != null) return fixedtemp;
+		if (this.fixedtemp != null)
+			return fixedtemp;
 		return current;
 	}
 
@@ -117,13 +118,15 @@ public abstract class WeatherControllerToggleable implements IWeatherController 
 
 	@Override
 	public boolean getEnableSnow(boolean current, ResourceLocation biomeId) {
-		if (this.snowEnabled != null) return snowEnabled;
+		if (this.snowEnabled != null)
+			return snowEnabled;
 		return current;
 	}
 
 	@Override
 	public boolean getEnableRain(boolean current, ResourceLocation biomeId) {
-		if (this.rainEnabled != null) return rainEnabled;
+		if (this.rainEnabled != null)
+			return rainEnabled;
 		return current;
 	}
 

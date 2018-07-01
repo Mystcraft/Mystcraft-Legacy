@@ -31,8 +31,8 @@ public interface IAgeSymbol extends IForgeRegistryEntry<IAgeSymbol> {
 	public abstract int instabilityModifier(int count);
 
 	/**
-	 * Defines if the IAgeSymbol should generate a config entry in the Mystcraft config once the symbol is registered
-	 * The config entry generated defines if the symbol is enabled or not.
+	 * Defines if the IAgeSymbol should generate a config entry in the Mystcraft config once the symbol is registered The config entry generated defines if the
+	 * symbol is enabled or not.
 	 * @return true to generate the config entry and prevent registration
 	 */
 	public abstract boolean generatesConfigOption();

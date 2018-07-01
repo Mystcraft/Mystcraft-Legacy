@@ -13,21 +13,21 @@ import net.minecraft.world.chunk.Chunk;
 
 public abstract class WeatherControllerBase implements IWeatherController {
 
-	private Random			random		= new Random();
-	private int				updateLCG	= random.nextInt();
-	private StorageObject	infoObj;
+	private Random random = new Random();
+	private int updateLCG = random.nextInt();
+	private StorageObject infoObj;
 
-	private double			rainingStrength;
-	private double			thunderingStrength;
+	private double rainingStrength;
+	private double thunderingStrength;
 
-	protected int			rain_duration;
-	protected int			rain_duration_base;
-	protected int			rain_cooldown;
-	protected int			rain_cooldown_base;
-	protected int			thunder_duration;
-	protected int			thunder_duration_base;
-	protected int			thunder_cooldown;
-	protected int			thunder_cooldown_base;
+	protected int rain_duration;
+	protected int rain_duration_base;
+	protected int rain_cooldown;
+	protected int rain_cooldown_base;
+	protected int thunder_duration;
+	protected int thunder_duration_base;
+	protected int thunder_cooldown;
+	protected int thunder_cooldown_base;
 
 	@Override
 	public void setDataObject(StorageObject infoObj) {

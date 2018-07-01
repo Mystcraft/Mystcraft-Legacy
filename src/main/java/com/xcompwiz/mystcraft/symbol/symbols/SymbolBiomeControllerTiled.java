@@ -42,7 +42,7 @@ public class SymbolBiomeControllerTiled extends SymbolBase {
 	}
 
 	private class BiomeController implements IBiomeController {
-		private List<Biome>	biomes;
+		private List<Biome> biomes;
 
 		public BiomeController(List<Biome> biomes) {
 			this.biomes = biomes;
@@ -81,7 +81,9 @@ public class SymbolBiomeControllerTiled extends SymbolBase {
 			if (aBiome == null || aBiome.length < xSize * zSize) {
 				aBiome = new Biome[xSize * zSize];
 			}
-			if (flag && xSize == 16 && zSize == 16 && (x & 0xf) == 0 && (z & 0xf) == 0) { return createBiomeArray(aBiome, x, z, xSize, zSize); }
+			if (flag && xSize == 16 && zSize == 16 && (x & 0xf) == 0 && (z & 0xf) == 0) {
+				return createBiomeArray(aBiome, x, z, xSize, zSize);
+			}
 			for (int i = 0; i < xSize * zSize; i++) {
 				aBiome[i] = getBiomeAtCoords(x + i % xSize, z + i / xSize);
 			}

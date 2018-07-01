@@ -6,11 +6,11 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class NBTTagCompoundWrapper implements StorageObject {
 
-	private NBTTagCompound	compoundTag;
+	private NBTTagCompound compoundTag;
 	@SuppressWarnings("unused")
-	private Boolean			dirty;
+	private Boolean dirty;
 	@SuppressWarnings("unused")
-	private Boolean			needsResend;	// TODO: (AgeData) Use this
+	private Boolean needsResend;	// TODO: (AgeData) Use this
 
 	public NBTTagCompoundWrapper(NBTTagCompound compoundTag, Boolean sharedDirty, Boolean sharedResend) {
 		this.compoundTag = compoundTag;

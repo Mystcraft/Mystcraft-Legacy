@@ -21,21 +21,23 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class LinkListenerPermissions {
-	private static final String						data_file		= "mystcraft-linking-permissions";
+	private static final String data_file = "mystcraft-linking-permissions";
 
-	private static HashMap<String, Set<Integer>>	permitEntry		= new HashMap<String, Set<Integer>>();
-	private static HashMap<String, Set<Integer>>	restrictEntry	= new HashMap<String, Set<Integer>>();
+	private static HashMap<String, Set<Integer>> permitEntry = new HashMap<String, Set<Integer>>();
+	private static HashMap<String, Set<Integer>> restrictEntry = new HashMap<String, Set<Integer>>();
 
-	private static HashMap<String, Set<Integer>>	permitDepart	= new HashMap<String, Set<Integer>>();
-	private static HashMap<String, Set<Integer>>	restrictDepart	= new HashMap<String, Set<Integer>>();
+	private static HashMap<String, Set<Integer>> permitDepart = new HashMap<String, Set<Integer>>();
+	private static HashMap<String, Set<Integer>> restrictDepart = new HashMap<String, Set<Integer>>();
 
 	@SubscribeEvent
 	public void isLinkPermitted(LinkEventAllow event) {
-		if (CommandTPX.isOpTP(event.info)) return;
+		if (CommandTPX.isOpTP(event.info))
+			return;
 		if (event.entity instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.entity;
 			Integer dimid = event.info.getDimensionUID();
-			if (dimid == null) return;
+			if (dimid == null)
+				return;
 			if (!(canPlayerLeaveDimension(player, event.origin.provider.getDimension()) && canPlayerEnterDimension(player, dimid))) {
 				event.setCanceled(true);
 			}
@@ -51,18 +53,22 @@ public class LinkListenerPermissions {
 		// }
 		// }
 		Set<Integer> restricted = getRestrictedSet(player.getDisplayNameString());
-		if (restricted != null && restricted.contains(dim)) return false;
+		if (restricted != null && restricted.contains(dim))
+			return false;
 		Set<Integer> permitted = getPermittedSet(player.getDisplayNameString());
-		if (permitted != null && !permitted.contains(dim)) return false;
+		if (permitted != null && !permitted.contains(dim))
+			return false;
 
 		return true;
 	}
 
 	private boolean canPlayerLeaveDimension(EntityPlayer player, int dim) {
 		Set<Integer> restricted = restrictDepart.get(player.getDisplayNameString());
-		if (restricted != null && restricted.contains(dim)) return false;
+		if (restricted != null && restricted.contains(dim))
+			return false;
 		Set<Integer> permitted = permitDepart.get(player.getDisplayNameString());
-		if (permitted != null && !permitted.contains(dim)) return false;
+		if (permitted != null && !permitted.contains(dim))
+			return false;
 
 		return true;
 	}
@@ -82,7 +88,8 @@ public class LinkListenerPermissions {
 			permitEntry.put(playername, new HashSet<Integer>());
 		} else {
 			Set<Integer> permitted = getPermittedSet(playername);
-			if (permitted != null) permitted.remove(dim);
+			if (permitted != null)
+				permitted.remove(dim);
 			Set<Integer> restricted = getRestrictedSet(playername);
 			if (restricted == null) {
 				restricted = new HashSet<Integer>();
@@ -99,9 +106,11 @@ public class LinkListenerPermissions {
 			permitEntry.remove(playername);
 		} else {
 			Set<Integer> permitted = getPermittedSet(playername);
-			if (permitted != null) permitted.add(dim);
+			if (permitted != null)
+				permitted.add(dim);
 			Set<Integer> restricted = getRestrictedSet(playername);
-			if (restricted != null) restricted.remove(dim);
+			if (restricted != null)
+				restricted.remove(dim);
 		}
 		saveState();
 	}
@@ -112,9 +121,11 @@ public class LinkListenerPermissions {
 			permitDepart.remove(playername);
 		} else {
 			Set<Integer> permitted = permitDepart.get(playername);
-			if (permitted != null) permitted.add(dim);
+			if (permitted != null)
+				permitted.add(dim);
 			Set<Integer> restricted = restrictDepart.get(playername);
-			if (restricted != null) restricted.remove(dim);
+			if (restricted != null)
+				restricted.remove(dim);
 		}
 		saveState();
 	}
@@ -125,7 +136,8 @@ public class LinkListenerPermissions {
 			permitDepart.put(playername, new HashSet<Integer>());
 		} else {
 			Set<Integer> permitted = permitDepart.get(playername);
-			if (permitted != null) permitted.remove(dim);
+			if (permitted != null)
+				permitted.remove(dim);
 			Set<Integer> restricted = restrictDepart.get(playername);
 			if (restricted == null) {
 				restricted = new HashSet<Integer>();
@@ -138,7 +150,8 @@ public class LinkListenerPermissions {
 
 	public static void loadState() {
 		MinecraftServer mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-		if (mcServer == null) return;
+		if (mcServer == null)
+			return;
 		NBTDataContainer data = (NBTDataContainer) Mystcraft.getStorage(true).getOrLoadData(NBTDataContainer.class, data_file);
 		if (data == null) {
 			data = new NBTDataContainer("dummy");
@@ -151,7 +164,8 @@ public class LinkListenerPermissions {
 
 	private static void saveState() {
 		MinecraftServer mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-		if (mcServer == null) return;
+		if (mcServer == null)
+			return;
 		NBTDataContainer data = (NBTDataContainer) Mystcraft.getStorage(true).getOrLoadData(NBTDataContainer.class, data_file);
 		if (data == null) {
 			data = new NBTDataContainer(data_file);

@@ -44,7 +44,8 @@ public class CommandDebug extends CommandBaseAdv {
 
 	@Override
 	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-		if (sender.getName().equals("XCompWiz")) return true;
+		if (sender.getName().equals("XCompWiz"))
+			return true;
 		return super.checkPermission(server, sender);
 	}
 
@@ -53,15 +54,18 @@ public class CommandDebug extends CommandBaseAdv {
 	 */
 	@Override
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender par1ICommandSender, String[] args, @Nullable BlockPos targetPos) {
-		if (args.length < 2) return getListOfStringsMatchingLastWord(args, new String[] { "read", "set", "run" });
-		if (args.length >= 2 && (args[0].equals("read") || args[0].equals("set") || args[0].equals("run"))) return getListOfStringsMatchingLastWord(args, this.getKeys(args));
+		if (args.length < 2)
+			return getListOfStringsMatchingLastWord(args, new String[] { "read", "set", "run" });
+		if (args.length >= 2 && (args[0].equals("read") || args[0].equals("set") || args[0].equals("run")))
+			return getListOfStringsMatchingLastWord(args, this.getKeys(args));
 		return null;
 	}
 
 	protected String[] getKeys(String[] args) {
-		String address = getAddress(Arrays.copyOf(args, args.length-1));
+		String address = getAddress(Arrays.copyOf(args, args.length - 1));
 		IDebugElement elem = DebugUtils.getElement(address);
-		if (elem == null) elem = DebugHierarchy.root;
+		if (elem == null)
+			elem = DebugHierarchy.root;
 		Collection<String> allflags = Collections.emptyList();
 		if (elem instanceof DebugNode) {
 			allflags = ((DebugNode) elem).getChildren();
@@ -72,10 +76,12 @@ public class CommandDebug extends CommandBaseAdv {
 
 	//Helper
 	private String getAddress(String[] args) {
-		if (args.length == 0) return null;
+		if (args.length == 0)
+			return null;
 		StringBuilder str = new StringBuilder();
 		for (int i = 1; i < args.length; ++i) {
-			if (str.length() > 0) str.append(".");
+			if (str.length() > 0)
+				str.append(".");
 			str.append(args[i]);
 		}
 		return str.toString();
@@ -90,8 +96,8 @@ public class CommandDebug extends CommandBaseAdv {
 		if (args.length > 1) {
 			command = args[0];
 			if (command.equals("set")) {
-				setval = args[args.length-1];
-				args = Arrays.copyOf(args, args.length-1);
+				setval = args[args.length - 1];
+				args = Arrays.copyOf(args, args.length - 1);
 			}
 			address = getAddress(args);
 		} else {
@@ -114,7 +120,8 @@ public class CommandDebug extends CommandBaseAdv {
 			}
 		} else if (command.equals("set")) {
 			if (elem instanceof DebugValueCallback) {
-				if (args.length <= 2) throw new WrongUsageException("Could not parse command.");
+				if (args.length <= 2)
+					throw new WrongUsageException("Could not parse command.");
 				((DebugValueCallback) elem).set(agent, setval);
 			} else {
 				throw new CommandException("myst.debug.address.invalid");

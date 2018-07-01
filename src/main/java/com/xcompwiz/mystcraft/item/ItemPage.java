@@ -48,14 +48,15 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-		if(isInCreativeTab(tab)) {
+		if (isInCreativeTab(tab)) {
 			items.add(Page.createLinkPage());
 
 			ArrayList<String> linkproperties = new ArrayList<>();
 			linkproperties.addAll(InkEffects.getProperties());
 			Collections.sort(linkproperties);
 			for (String property : linkproperties) {
-				if(property.equals(LinkPropertyAPI.FLAG_RELATIVE)) continue;
+				if (property.equals(LinkPropertyAPI.FLAG_RELATIVE))
+					continue;
 				items.add(Page.createLinkPage(property));
 			}
 
@@ -72,11 +73,15 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 	@SideOnly(Side.CLIENT)
 	public String getItemStackDisplayName(@Nonnull ItemStack itemstack) {
 		if (itemstack.getTagCompound() != null) {
-			if (Page.isLinkPanel(itemstack)) return I18n.format(this.getUnlocalizedName(itemstack) + ".panel.name");
-			if (Page.isBlank(itemstack)) return I18n.format(this.getUnlocalizedName(itemstack) + ".blank.name");
+			if (Page.isLinkPanel(itemstack))
+				return I18n.format(this.getUnlocalizedName(itemstack) + ".panel.name");
+			if (Page.isBlank(itemstack))
+				return I18n.format(this.getUnlocalizedName(itemstack) + ".blank.name");
 			ResourceLocation symbolId = Page.getSymbol(itemstack);
 			IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolId);
-			if (symbol == null) { return I18n.format(this.getUnlocalizedName(itemstack) + ".symbol.name") + " (Unknown: " + symbolId + ")"; }
+			if (symbol == null) {
+				return I18n.format(this.getUnlocalizedName(itemstack) + ".symbol.name") + " (Unknown: " + symbolId + ")";
+			}
 			return I18n.format(this.getUnlocalizedName(itemstack) + ".symbol.name") + " (" + symbol.getLocalizedName() + ")";
 		}
 		return I18n.format(this.getUnlocalizedName(itemstack) + ".blank.name");
@@ -148,7 +153,8 @@ public class ItemPage extends Item implements IItemWritable, IItemPageProvider, 
 
 	@Override
 	public boolean writeSymbol(EntityPlayer player, @Nonnull ItemStack itemstack, ResourceLocation symbol) {
-		if (!Page.isBlank(itemstack)) return false;
+		if (!Page.isBlank(itemstack))
+			return false;
 		Page.setSymbol(itemstack, symbol);
 		return true;
 	}

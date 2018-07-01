@@ -12,21 +12,21 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class WorldGenMystBigTree extends WorldGenerator {
 
-	static final byte	otherCoordPairs[]	= { 2, 0, 0, 1, 2, 1 };
-	Random				rand;
-	World				worldObj;
-	int					basePos[]			= { 0, 0, 0 };
-	int					trueBase[]			= { 0, 0, 0 };
-	int					heightLimit;
-	int					height;
-	double				heightAttenuation;
-	double				scaleWidth;
-	double				leafDensity;
-	int					trunkSize;
-	int					heightLimitLimit;
-	int					leafDistanceLimit;
-	int					leafNodes[][];
-	static private int	max_height			= 50;
+	static final byte otherCoordPairs[] = { 2, 0, 0, 1, 2, 1 };
+	Random rand;
+	World worldObj;
+	int basePos[] = { 0, 0, 0 };
+	int trueBase[] = { 0, 0, 0 };
+	int heightLimit;
+	int height;
+	double heightAttenuation;
+	double scaleWidth;
+	double leafDensity;
+	int trunkSize;
+	int heightLimitLimit;
+	int leafDistanceLimit;
+	int leafNodes[][];
+	static private int max_height = 50;
 
 	public WorldGenMystBigTree(boolean flag) {
 		super(flag);
@@ -45,7 +45,9 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		if (height >= heightLimit) {
 			height = heightLimit - 1;
 		}
-		if (height < max_height / 2) { return; }
+		if (height < max_height / 2) {
+			return;
+		}
 		int i = 4;// (int)(1.0D + Math.pow((leafDensity * (double)heightLimit) / 13D, 2D));
 		if (i < 1) {
 			i = 1;
@@ -127,7 +129,9 @@ public class WorldGenMystBigTree extends WorldGenerator {
 	}
 
 	float layerSize(int i) {
-		if (i < heightLimit * 0.75D) { return -1.618F; }
+		if (i < heightLimit * 0.75D) {
+			return -1.618F;
+		}
 		float f = heightLimit * 0.5F;
 		float f1 = heightLimit * 0.5F - i;
 		float f2;
@@ -153,7 +157,9 @@ public class WorldGenMystBigTree extends WorldGenerator {
 	}
 
 	float leafSize(int i) {
-		if (i < 0 || i >= leafDistanceLimit) { return -1F; }
+		if (i < 0 || i >= leafDistanceLimit) {
+			return -1F;
+		}
 		return i != 0 && i != leafDistanceLimit - 1 ? 3F : 2.0F;
 	}
 
@@ -161,7 +167,8 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		int l = j;
 		for (int i1 = j + leafDistanceLimit; l < i1; l++) {
 			float f = leafSize(l - j);
-			if (f < 0) continue;
+			if (f < 0)
+				continue;
 			genTreeLayer(i, l, k, f, (byte) 1, Blocks.LEAVES.getDefaultState());
 		}
 	}
@@ -177,7 +184,9 @@ public class WorldGenMystBigTree extends WorldGenerator {
 			}
 		}
 
-		if (ai2[j] == 0) { return; }
+		if (ai2[j] == 0) {
+			return;
+		}
 		byte byte1 = otherCoordPairs[j];
 		byte byte2 = otherCoordPairs[j + 3];
 		byte byte3;
@@ -331,17 +340,24 @@ public class WorldGenMystBigTree extends WorldGenerator {
 			--basePos[1];
 			block = getBlock(basePos[0], basePos[1] - 1, basePos[2]);
 		}
-		if (block.getBlock() != Blocks.DIRT && block.getBlock() != Blocks.GRASS) { return false; }
+		if (block.getBlock() != Blocks.DIRT && block.getBlock() != Blocks.GRASS) {
+			return false;
+		}
 		int ai1[] = { basePos[0], (basePos[1] + heightLimit) - 1, basePos[2] };
 		int j = checkBlockLine(ai, ai1);
-		if (j == -1) { return true; }
-		if (j < max_height / 2) { return false; }
+		if (j == -1) {
+			return true;
+		}
+		if (j < max_height / 2) {
+			return false;
+		}
 		heightLimit = j;
 		return true;
 	}
 
 	private IBlockState getBlock(int i, int j, int k) {
-		if (i >> 4 != ((trueBase[0]) >> 4) || k >> 4 != ((trueBase[2]) >> 4)) return Blocks.AIR.getDefaultState();
+		if (i >> 4 != ((trueBase[0]) >> 4) || k >> 4 != ((trueBase[2]) >> 4))
+			return Blocks.AIR.getDefaultState();
 		return worldObj.getBlockState(new BlockPos(i, j, k));
 	}
 
@@ -379,11 +395,14 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		if (heightLimit == 0) {
 			heightLimit = 20 + rand.nextInt(heightLimitLimit);
 		}
-		if (!validTreeLocation()) { return false; }
+		if (!validTreeLocation()) {
+			return false;
+		}
 		trueBase[1] = basePos[1];
 		basePos[1] = Math.max(trueBase[1], 128 - heightLimit - rand.nextInt(16));
 		generateLeafNodeList();
-		if (height < max_height / 2) return false;
+		if (height < max_height / 2)
+			return false;
 		generateLeaves();
 		generateTrunk();
 		generateRoots();

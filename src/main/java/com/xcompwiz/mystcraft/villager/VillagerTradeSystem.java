@@ -18,18 +18,21 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public class VillagerTradeSystem {
 
-	private static ConcurrentMap<EntityVillager, InventoryVillager>	villagers			= new MapMaker().weakKeys().weakValues().makeMap();
-	private static long												tick_accumulator	= 0;																					;
+	private static ConcurrentMap<EntityVillager, InventoryVillager> villagers = new MapMaker().weakKeys().weakValues().makeMap();
+	private static long tick_accumulator = 0;;
 
 	public static boolean onVillagerInteraction(PlayerInteractEvent.EntityInteract event) {
-		if (event.getEntityPlayer().world.isRemote) return false;
-		if (!Mystcraft.archivistEnabled()) return false;
-		if (!(event.getTarget() instanceof EntityVillager)) return false;
+		if (event.getEntityPlayer().world.isRemote)
+			return false;
+		if (!Mystcraft.archivistEnabled())
+			return false;
+		if (!(event.getTarget() instanceof EntityVillager))
+			return false;
 		EntityVillager villager = (EntityVillager) event.getTarget();
 		if (!villager.getProfessionForge().equals(Mystcraft.instance.archivist)) {
 			return false;
 		}
-		
+
 		event.getEntityPlayer().openGui(Mystcraft.instance, ModGUIs.VILLAGER.ordinal(), event.getEntityPlayer().world, villager.getEntityId(), 0, 0);
 		return true;
 	}
@@ -44,7 +47,8 @@ public class VillagerTradeSystem {
 	}
 
 	public static InventoryVillager getVillagerInventory(EntityVillager villager) {
-		if (villager.world.isRemote) return new InventoryVillager(villager);
+		if (villager.world.isRemote)
+			return new InventoryVillager(villager);
 		InventoryVillager villagerinv = villagers.get(villager);
 		if (villagerinv == null) {
 			villagerinv = new InventoryVillager(villager);
@@ -63,10 +67,12 @@ public class VillagerTradeSystem {
 	}
 
 	public static int getCardCost(@Nonnull ItemStack itemstack) {
-		if (itemstack.isEmpty()) return 0;
+		if (itemstack.isEmpty())
+			return 0;
 		//TODO: Base cost of a symbol on scarcity
 		Integer rank = SymbolManager.getSymbolItemCardRank(Page.getSymbol(itemstack));
-		if (rank == null) return 100; //TODO: How to handle cards with missing ranks in price setting? (shouldn't come up)
+		if (rank == null)
+			return 100; //TODO: How to handle cards with missing ranks in price setting? (shouldn't come up)
 		return 4 * (1 + rank);
 	}
 }

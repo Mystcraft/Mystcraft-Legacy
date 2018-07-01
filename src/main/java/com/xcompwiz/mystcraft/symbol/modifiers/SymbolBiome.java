@@ -15,10 +15,10 @@ import net.minecraft.world.biome.Biome;
 
 public class SymbolBiome extends SymbolBase {
 
-	public static ArrayList<Biome>	selectables	= new ArrayList<Biome>();
+	public static ArrayList<Biome> selectables = new ArrayList<Biome>();
 
-	private Biome					biome;
-	private String					unlocalizedBiomeName;
+	private Biome biome;
+	private String unlocalizedBiomeName;
 
 	public static ResourceLocation getBiomeSymbolId(String ownerModid, Biome biome) {
 		return new ResourceLocation(ownerModid, "Biome" + Biome.getIdForBiome(biome));
@@ -41,7 +41,8 @@ public class SymbolBiome extends SymbolBase {
 		String regex = "([A-Z][a-z]+)";
 		String replacement = "$1 ";
 		String name = ReflectionUtil.getBiomeName(biome).replaceAll(regex, replacement).replaceAll("([A-Z][a-z]+)  ", replacement).trim();
-		if (name.endsWith("Biome")) name = name.substring(0, name.length() - "Biome".length()).trim();
+		if (name.endsWith("Biome"))
+			name = name.substring(0, name.length() - "Biome".length()).trim();
 		return name;
 	}
 

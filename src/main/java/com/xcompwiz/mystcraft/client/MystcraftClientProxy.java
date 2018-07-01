@@ -54,7 +54,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class MystcraftClientProxy extends MystcraftCommonProxy {
 
-	private MystcraftStartupChecker	startupchecker;
+	private MystcraftStartupChecker startupchecker;
 
 	@Override
 	public boolean isClientSideAvailable() {
@@ -63,7 +63,8 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 
 	@Override
 	public Entity getEntityByID(World worldObj, int id) {
-		if (worldObj instanceof WorldClient) return worldObj.getEntityByID(id);
+		if (worldObj instanceof WorldClient)
+			return worldObj.getEntityByID(id);
 		return super.getEntityByID(worldObj, id);
 	}
 
@@ -75,14 +76,14 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 	public void preinit() {
 		OBJLoader.INSTANCE.addDomain(MystObjects.MystcraftModId);
 
-        startupchecker = new MystcraftStartupChecker();
-        MinecraftForge.EVENT_BUS.register(startupchecker);
+		startupchecker = new MystcraftStartupChecker();
+		MinecraftForge.EVENT_BUS.register(startupchecker);
 		MinecraftForge.EVENT_BUS.register(new PageBuilder());
 		MinecraftForge.EVENT_BUS.register(this); //Placed in here to keep rendering registration in 1 place
 
-        ModFluids.registerModels();
+		ModFluids.registerModels();
 		registerEntityRenderers();
-    }
+	}
 
 	@Override
 	public void init() {
@@ -111,13 +112,13 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 	}
 
 	private void registerTileEntityRenderers() {
-	    ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDesk.class, new RenderWritingDesk());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityStarFissure.class, new RenderStarFissure());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBookReceptacle.class, new RenderBookReceptacle());
-        //Just for the pages on it since i can't do that much detailing on the blockmodel
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInkMixer.class, new RenderModel<>(new ModelInkMixer(), Entities.inkmixer));
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBookstand.class, new RenderBookstand());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLectern.class, new RenderLectern());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDesk.class, new RenderWritingDesk());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityStarFissure.class, new RenderStarFissure());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBookReceptacle.class, new RenderBookReceptacle());
+		//Just for the pages on it since i can't do that much detailing on the blockmodel
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInkMixer.class, new RenderModel<>(new ModelInkMixer(), Entities.inkmixer));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBookstand.class, new RenderBookstand());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLectern.class, new RenderLectern());
 	}
 
 	@Override
@@ -132,11 +133,13 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 
 	@Override
 	public void startBaselineProfiling(MinecraftServer mcserver) {
-		if (InstabilityDataCalculator.isPerSave()) super.startBaselineProfiling(mcserver);
+		if (InstabilityDataCalculator.isPerSave())
+			super.startBaselineProfiling(mcserver);
 	}
 
 	@Override
 	public void stopBaselineProfiling() {
-		if (InstabilityDataCalculator.isPerSave()) super.stopBaselineProfiling();		
+		if (InstabilityDataCalculator.isPerSave())
+			super.stopBaselineProfiling();
 	}
 }

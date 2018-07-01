@@ -47,18 +47,18 @@ public class SymbolTerrainGenEnd extends SymbolBase {
 	}
 
 	private static class TerrainGenerator extends TerrainGeneratorBase {
-		private Random					rand;
-		private NoiseGeneratorOctaves	noiseGen1;
-		private NoiseGeneratorOctaves	noiseGen2;
-		private NoiseGeneratorOctaves	noiseGen3;
-		private NoiseGeneratorOctaves	noiseGen4;
-		private NoiseGeneratorOctaves	noiseGen5;
+		private Random rand;
+		private NoiseGeneratorOctaves noiseGen1;
+		private NoiseGeneratorOctaves noiseGen2;
+		private NoiseGeneratorOctaves noiseGen3;
+		private NoiseGeneratorOctaves noiseGen4;
+		private NoiseGeneratorOctaves noiseGen5;
 
-		private double					noiseData1[];
-		private double					noiseData2[];
-		private double					noiseData3[];
-		private double					noiseData4[];
-		private double					noiseData5[];
+		private double noiseData1[];
+		private double noiseData2[];
+		private double noiseData3[];
+		private double noiseData4[];
+		private double noiseData5[];
 
 		public TerrainGenerator(AgeDirector controller) {
 			super(controller);

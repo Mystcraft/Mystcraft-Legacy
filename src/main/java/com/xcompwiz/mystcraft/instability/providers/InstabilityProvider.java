@@ -11,11 +11,11 @@ import net.minecraft.potion.Potion;
 
 public class InstabilityProvider implements IInstabilityProvider {
 
-	private Class<? extends IEnvironmentalEffect>		effectclass;
-	private Object[]									itemCtorArgs;
-	private boolean										uselevel;
+	private Class<? extends IEnvironmentalEffect> effectclass;
+	private Object[] itemCtorArgs;
+	private boolean uselevel;
 
-	private Constructor<? extends IEnvironmentalEffect>	itemCtor;
+	private Constructor<? extends IEnvironmentalEffect> itemCtor;
 
 	public InstabilityProvider(boolean uselevel, Class<? extends IEnvironmentalEffect> effectclass, Object... itemCtorArgs) {
 		this.effectclass = effectclass;
@@ -34,7 +34,7 @@ public class InstabilityProvider implements IInstabilityProvider {
 		//Constructor search uses exact classes. subclasses cause it to fail..
 		for (int i = 0; i < ctorArgClasses.length; i++) {
 			Class<?> ctorArgs = ctorArgClasses[i];
-			if(Potion.class.isAssignableFrom(ctorArgs)) {
+			if (Potion.class.isAssignableFrom(ctorArgs)) {
 				ctorArgClasses[i] = Potion.class;
 			}
 		}
@@ -53,7 +53,8 @@ public class InstabilityProvider implements IInstabilityProvider {
 	public void addEffects(InstabilityDirector controller, Integer level) {
 		try {
 			Object[] args = itemCtorArgs;
-			if (uselevel) args = ObjectArrays.concat(level, itemCtorArgs);
+			if (uselevel)
+				args = ObjectArrays.concat(level, itemCtorArgs);
 			for (int i = 0; i < (uselevel ? 1 : level); ++i) {
 				IEnvironmentalEffect effect = itemCtor.newInstance(args);
 				controller.registerEffect(effect);

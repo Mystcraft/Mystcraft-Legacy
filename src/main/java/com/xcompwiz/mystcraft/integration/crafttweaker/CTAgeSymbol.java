@@ -12,16 +12,16 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenRegister
 public class CTAgeSymbol {
 
-    //For words check com.xcompwiz.mystcraft.api.word.WordData in the API for informations and valid entries.
-    @ZenMethod
-    public static CTBlockSymbol createBlockSymbol(String word, IBlockState ctBlockState, int cardRank) {
-        Object internal = ctBlockState.getInternal();
-        if (internal == null || !(internal instanceof net.minecraft.block.state.IBlockState)) {
-            CraftTweakerAPI.logError("[MystCraft] Tried to register new SymbolBlock with invalid/missing BlockState!");
-            return null;
-        }
-        net.minecraft.block.state.IBlockState mcState = (net.minecraft.block.state.IBlockState) internal;
-        return new CTBlockSymbol(ModSymbolsModifiers.BlockModifierContainerObject.create(word, cardRank, mcState));
-    }
+	//For words check com.xcompwiz.mystcraft.api.word.WordData in the API for informations and valid entries.
+	@ZenMethod
+	public static CTBlockSymbol createBlockSymbol(String word, IBlockState ctBlockState, int cardRank) {
+		Object internal = ctBlockState.getInternal();
+		if (internal == null || !(internal instanceof net.minecraft.block.state.IBlockState)) {
+			CraftTweakerAPI.logError("[MystCraft] Tried to register new SymbolBlock with invalid/missing BlockState!");
+			return null;
+		}
+		net.minecraft.block.state.IBlockState mcState = (net.minecraft.block.state.IBlockState) internal;
+		return new CTBlockSymbol(ModSymbolsModifiers.BlockModifierContainerObject.create(word, cardRank, mcState));
+	}
 
 }

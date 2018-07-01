@@ -41,44 +41,44 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 
 	public static class Messages {
 
-		public static final String	LinkPermitted				= "LinkPermitted";
-		public static final String	SetCurrentPage				= "SetCurrentPage";
-		public static final String	SetTitle					= "SetTitle";
-		public static final String	Link						= "Link";
-		public static final String	RemoveFromCollection		= "RemoveFromCollection";
-		public static final String	RemoveFromOrderedCollection	= "RemoveFromOrderedCollection";
-		public static final String	AddToTab				= "AddToCollection";
-		public static final String	AddToSurface				= "AddToSurface";
-		public static final String	WriteSymbol					= "WriteSymbol";
-		public static final String	SetActiveNotebook			= "SetActiveNotebook";
-		public static final String	SetFirstNotebook			= "SetFirstNotebook";
-		public static final String	TakeFromSlider				= "TakeFromSlider";
-		public static final String	InsertHeldAt				= "InsertHeldAt";
+		public static final String LinkPermitted = "LinkPermitted";
+		public static final String SetCurrentPage = "SetCurrentPage";
+		public static final String SetTitle = "SetTitle";
+		public static final String Link = "Link";
+		public static final String RemoveFromCollection = "RemoveFromCollection";
+		public static final String RemoveFromOrderedCollection = "RemoveFromOrderedCollection";
+		public static final String AddToTab = "AddToCollection";
+		public static final String AddToSurface = "AddToSurface";
+		public static final String WriteSymbol = "WriteSymbol";
+		public static final String SetActiveNotebook = "SetActiveNotebook";
+		public static final String SetFirstNotebook = "SetFirstNotebook";
+		public static final String TakeFromSlider = "TakeFromSlider";
+		public static final String InsertHeldAt = "InsertHeldAt";
 
 	}
 
-	private static final int	xShift				= 228 + 5;
-	private static final int	yShift				= 20;
-	private static final int	tabslots			= 4;
+	private static final int xShift = 228 + 5;
+	private static final int yShift = 20;
+	private static final int tabslots = 4;
 
 	//XXX: Remove activeslot from container
-	private byte				activeslot;
-	private byte				firstslot;
+	private byte activeslot;
+	private byte firstslot;
 
-	private TileEntityDesk		tileentity;
-	private FluidStack			fluid;
+	private TileEntityDesk tileentity;
+	private FluidStack fluid;
 
 	@Nonnull
-	private ItemStack			currentpage = ItemStack.EMPTY;
-	private int					currentpageIndex;
-	private int					pagecount;
-	private ILinkInfo			cached_linkinfo;
-	private boolean				cached_permitted;
+	private ItemStack currentpage = ItemStack.EMPTY;
+	private int currentpageIndex;
+	private int pagecount;
+	private ILinkInfo cached_linkinfo;
+	private boolean cached_permitted;
 	@Nonnull
-	private String				cached_title = "";
+	private String cached_title = "";
 
-	private EntityPlayer		player;
-	private FluidTankProvider	fluidDataContainer	= new FluidTankProvider();
+	private EntityPlayer player;
+	private FluidTankProvider fluidDataContainer = new FluidTankProvider();
 
 	public ContainerWritingDesk(InventoryPlayer inventoryplayer, TileEntityDesk te) {
 		this.tileentity = te;
@@ -89,7 +89,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		this.player = inventoryplayer.player;
 
 		fluidDataContainer.setTank(te.getInkwell());
-        IOInventory inventory = te.getContainerItemHandler();
+		IOInventory inventory = te.getContainerItemHandler();
 
 		for (int i = 0; i < tabslots; ++i) {
 			SlotFiltered slot = new SlotFiltered(inventory, tileentity, i + tileentity.getMainInventorySize(), 37, 14 + i * 37 + yShift);
@@ -114,9 +114,9 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			addSlotToContainer(new Slot(inventoryplayer, j, 8 + j * 18 + xShift, 142 + yShift));
 		}
 
-        SlotCollection internal = new SlotCollection(this, 0, tabslots + 4);
-        SlotCollection maininv = new SlotCollection(this, tabslots + 4, tabslots + 4 + 27);
-        SlotCollection hotbar = new SlotCollection(this, tabslots + 4 + 27, tabslots + 4 + 27 + 9);
+		SlotCollection internal = new SlotCollection(this, 0, tabslots + 4);
+		SlotCollection maininv = new SlotCollection(this, tabslots + 4, tabslots + 4 + 27);
+		SlotCollection hotbar = new SlotCollection(this, tabslots + 4 + 27, tabslots + 4 + 27 + 9);
 
 		ITargetInventory pagecollectionreceiver = new PageCollectionPageReceiver(this, player);
 
@@ -147,7 +147,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 
 	@Override
 	public void detectAndSendChanges() {
-	    super.detectAndSendChanges();
+		super.detectAndSendChanges();
 		List<IMessage> packets = new ArrayList<>();
 		ItemStack actual = this.inventorySlots.get(tabslots).getStack();
 		ItemStack stored = this.inventoryItemStacks.get(tabslots);
@@ -167,8 +167,8 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 				this.inventoryItemStacks.set(slotId, stored);
 
 				for (IContainerListener listener : this.listeners) {
-				    listener.sendSlotContents(this, slotId, stored);
-                }
+					listener.sendSlotContents(this, slotId, stored);
+				}
 			}
 		}
 		boolean perm = checkLinkPermitted();
@@ -187,21 +187,25 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 		}
 		if (packets.size() > 0) {
-            for (IContainerListener listener : this.listeners) {
-                if(listener instanceof EntityPlayerMP) {
-                    for (IMessage message : packets) {
-                        MystcraftPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) listener);
-                    }
-                }
-            }
+			for (IContainerListener listener : this.listeners) {
+				if (listener instanceof EntityPlayerMP) {
+					for (IMessage message : packets) {
+						MystcraftPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) listener);
+					}
+				}
+			}
 		}
 	}
 
 	private boolean hasFluidChanged(FluidStack fluid, FluidStack temp) {
-		if (fluid == null && temp == null) return false;
-		if (fluid == null && temp != null) return true;
-		if (fluid != null && temp == null) return true;
-		if (!fluid.isFluidStackIdentical(temp)) return true;
+		if (fluid == null && temp == null)
+			return false;
+		if (fluid == null && temp != null)
+			return true;
+		if (fluid != null && temp == null)
+			return true;
+		if (!fluid.isFluidStackIdentical(temp))
+			return true;
 		return false;
 	}
 
@@ -220,33 +224,39 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			}
 		}
 		if (data.hasKey(Messages.RemoveFromCollection)) {
-			if (!player.inventory.getItemStack().isEmpty()) return;
+			if (!player.inventory.getItemStack().isEmpty())
+				return;
 			ItemStack page = new ItemStack(data.getCompoundTag(Messages.RemoveFromCollection));
 			ItemStack itemstack = tileentity.removePageFromSurface(player, this.getTabSlot(this.activeslot), page);
 			player.inventory.setItemStack(itemstack);
 		}
 		if (data.hasKey(Messages.RemoveFromOrderedCollection)) {
-			if (!player.inventory.getItemStack().isEmpty()) return;
+			if (!player.inventory.getItemStack().isEmpty())
+				return;
 			int index = data.getInteger(Messages.RemoveFromOrderedCollection);
 			player.inventory.setItemStack(tileentity.removePageFromSurface(player, this.getTabSlot(this.activeslot), index));
 		}
 		if (data.hasKey(Messages.AddToTab)) {
-			if (player.inventory.getItemStack().isEmpty()) return;
+			if (player.inventory.getItemStack().isEmpty())
+				return;
 			byte slot = data.getByte(Messages.AddToTab);
-			if (tileentity.getTabItem(slot).isEmpty()) return;
+			if (tileentity.getTabItem(slot).isEmpty())
+				return;
 			boolean single = data.getBoolean("Single");
 			if (single) {
 				ItemStack stack = player.inventory.getItemStack();
 				ItemStack one = stack.copy();
 				one.setCount(1);
 				ItemStack ret = tileentity.addPageToTab(player, tileentity.getTabItem(slot), one.copy());
-				if (ItemStack.areItemStackTagsEqual(ret, one) && ItemStack.areItemStacksEqual(ret, one)) return;
+				if (ItemStack.areItemStackTagsEqual(ret, one) && ItemStack.areItemStacksEqual(ret, one))
+					return;
 				stack.shrink(1);
 				if (stack.getCount() <= 0) {
 					stack = ItemStack.EMPTY;
 				}
 				player.inventory.setItemStack(stack);
-				if (ret.isEmpty()) return;
+				if (ret.isEmpty())
+					return;
 				if (stack.isEmpty()) {
 					player.inventory.setItemStack(ret);
 					return;
@@ -262,10 +272,13 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			}
 		}
 		if (data.hasKey(Messages.AddToSurface)) {
-			if (player.inventory.getItemStack().isEmpty()) return;
-			if (!data.hasKey("Index")) return;
+			if (player.inventory.getItemStack().isEmpty())
+				return;
+			if (!data.hasKey("Index"))
+				return;
 			byte slot = data.getByte(Messages.AddToSurface);
-			if (tileentity.getTabItem(slot).isEmpty()) return;
+			if (tileentity.getTabItem(slot).isEmpty())
+				return;
 			boolean single = data.getBoolean("Single");
 			int index = data.getInteger("Index");
 			if (single) {
@@ -295,8 +308,10 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		}
 		if (data.hasKey(Messages.SetFirstNotebook)) {
 			this.firstslot = data.getByte(Messages.SetFirstNotebook);
-			if (firstslot < 0) firstslot = 0;
-			if (firstslot >= tileentity.getMaxSurfaceTabCount()) firstslot = 0;
+			if (firstslot < 0)
+				firstslot = 0;
+			if (firstslot >= tileentity.getMaxSurfaceTabCount())
+				firstslot = 0;
 			updateSurfaceTabSlots();
 		}
 		if (data.hasKey(Messages.SetCurrentPage)) {
@@ -307,20 +322,27 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		}
 		if (data.hasKey(Messages.TakeFromSlider)) {
 			ItemStack target = tileentity.getTarget();
-			if (target.isEmpty()) return;
-			if (!player.inventory.getItemStack().isEmpty()) return;
-			if (!(target.getItem() instanceof IItemOrderablePageProvider)) return;
+			if (target.isEmpty())
+				return;
+			if (!player.inventory.getItemStack().isEmpty())
+				return;
+			if (!(target.getItem() instanceof IItemOrderablePageProvider))
+				return;
 			IItemOrderablePageProvider itemdat = (IItemOrderablePageProvider) target.getItem();
 			int index = data.getInteger(Messages.TakeFromSlider);
 			player.inventory.setItemStack(itemdat.removePage(player, target, index));
 		}
 		if (data.hasKey(Messages.InsertHeldAt)) {
 			ItemStack target = tileentity.getTarget();
-			if (target.isEmpty()) return;
+			if (target.isEmpty())
+				return;
 			ItemStack stack = player.inventory.getItemStack();
-			if (stack.isEmpty()) return;
-			if (stack.getCount() > 1) return;
-			if (!(target.getItem() instanceof IItemOrderablePageProvider)) return;
+			if (stack.isEmpty())
+				return;
+			if (stack.getCount() > 1)
+				return;
+			if (!(target.getItem() instanceof IItemOrderablePageProvider))
+				return;
 			IItemOrderablePageProvider itemdat = (IItemOrderablePageProvider) target.getItem();
 			int index = data.getInteger(Messages.InsertHeldAt);
 			player.inventory.setItemStack(itemdat.setPage(player, target, stack, index));
@@ -347,7 +369,8 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 
 	private List<ItemStack> getPageList() {
 		ItemStack book = getBook();
-		if (book.isEmpty()) return null;
+		if (book.isEmpty())
+			return null;
 		if (book.getItem() instanceof IItemPageProvider) {
 			return ((IItemPageProvider) book.getItem()).getPageList(this.player, book);
 		}
@@ -358,7 +381,8 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	public void setCurrentPageIndex(int index) {
 		currentpage = ItemStack.EMPTY;
 		currentpageIndex = 0;
-		if (index < 0) index = 0;
+		if (index < 0)
+			index = 0;
 		List<ItemStack> pagelist = getPageList();
 		if (pagelist == null) {
 			index = 0;
@@ -409,7 +433,8 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	public ItemStack getBook() {
 		if (tileentity != null) {
 			ItemStack itemstack = tileentity.getTarget();
-			if (itemstack.isEmpty()) return ItemStack.EMPTY;
+			if (itemstack.isEmpty())
+				return ItemStack.EMPTY;
 			if (itemstack.getItem() instanceof ItemLinking) {
 				return itemstack;
 			}
@@ -429,7 +454,8 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	@Override
 	public ILinkInfo getLinkInfo() {
 		ItemStack book = getBook();
-		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking)) return null;
+		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking))
+			return null;
 		if (cached_linkinfo == null) {
 			cached_linkinfo = ((ItemLinking) book.getItem()).getLinkInfo(book);
 		}
@@ -459,14 +485,16 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	@Override
 	public String getBookTitle() {
 		ItemStack book = getBook();
-		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking)) return "";
+		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking))
+			return "";
 		return ((ItemLinking) book.getItem()).getTitle(book);
 	}
 
 	@Override
 	public Collection<String> getBookAuthors() {
 		ItemStack book = getBook();
-		if (book.isEmpty()) return Collections.emptySet();
+		if (book.isEmpty())
+			return Collections.emptySet();
 		return ((ItemLinking) book.getItem()).getAuthors(book);
 	}
 

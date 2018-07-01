@@ -19,13 +19,16 @@ public class MystWorldGenerator implements IWorldGenerator {
 
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World worldObj, IChunkGenerator chunkGenerator, IChunkProvider ichunkprovider) {
-		if (!(worldObj.provider instanceof WorldProviderMyst)) return;
+		if (!(worldObj.provider instanceof WorldProviderMyst))
+			return;
 		AgeController controller = ((WorldProviderMyst) worldObj.provider).getAgeController();
 
 		BlockPos spawn = worldObj.getSpawnPoint();
 		ChunkPos spawnChunk = null;
-		if (spawn != null) spawnChunk = new ChunkPos(spawn);
-		if (spawnChunk != null && spawnChunk.x == chunkX && spawnChunk.z == chunkZ) generatePlatform(worldObj, spawn.getX(), spawn.getY() - 1, spawn.getZ(), Blocks.COBBLESTONE);
+		if (spawn != null)
+			spawnChunk = new ChunkPos(spawn);
+		if (spawnChunk != null && spawnChunk.x == chunkX && spawnChunk.z == chunkZ)
+			generatePlatform(worldObj, spawn.getX(), spawn.getY() - 1, spawn.getZ(), Blocks.COBBLESTONE);
 
 		ChunkProfiler profiler = controller.getChunkProfiler();
 		profileCompletedChunks(profiler, chunkX, chunkZ, ichunkprovider);
@@ -36,7 +39,8 @@ public class MystWorldGenerator implements IWorldGenerator {
 		//Check nearby chunks if we've completed them without generating any other chunks. 
 		for (int i = chunkX - 1; i <= chunkX + 1; ++i) {
 			for (int k = chunkZ - 1; k <= chunkZ + 1; ++k) {
-				if (!ichunkprovider.isChunkGeneratedAt(i, k)) continue;
+				if (!ichunkprovider.isChunkGeneratedAt(i, k))
+					continue;
 				Chunk chunk = ichunkprovider.provideChunk(i, k);
 				if (checkForCompletion(ichunkprovider, chunk, i, k)) {
 					ChunkProfilerManager.addChunk(profiler, chunk);
@@ -46,24 +50,41 @@ public class MystWorldGenerator implements IWorldGenerator {
 	}
 
 	private boolean checkForCompletion(IChunkProvider ichunkprovider, Chunk chunk, int chunkX, int chunkZ) {
-		if (!chunk.isTerrainPopulated()) return false;
-		if (!ichunkprovider.isChunkGeneratedAt(chunkX - 1, chunkZ - 1)) return false;
-		if (!ichunkprovider.isChunkGeneratedAt(chunkX, chunkZ - 1)) return false;
-		if (!ichunkprovider.isChunkGeneratedAt(chunkX + 1, chunkZ - 1)) return false;
-		if (!ichunkprovider.isChunkGeneratedAt(chunkX - 1, chunkZ)) return false;
-		if (!ichunkprovider.isChunkGeneratedAt(chunkX + 1, chunkZ)) return false;
-		if (!ichunkprovider.isChunkGeneratedAt(chunkX - 1, chunkZ + 1)) return false;
-		if (!ichunkprovider.isChunkGeneratedAt(chunkX, chunkZ + 1)) return false;
-		if (!ichunkprovider.isChunkGeneratedAt(chunkX + 1, chunkZ + 1)) return false;
+		if (!chunk.isTerrainPopulated())
+			return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX - 1, chunkZ - 1))
+			return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX, chunkZ - 1))
+			return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX + 1, chunkZ - 1))
+			return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX - 1, chunkZ))
+			return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX + 1, chunkZ))
+			return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX - 1, chunkZ + 1))
+			return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX, chunkZ + 1))
+			return false;
+		if (!ichunkprovider.isChunkGeneratedAt(chunkX + 1, chunkZ + 1))
+			return false;
 
-		if (!ichunkprovider.provideChunk(chunkX - 1, chunkZ - 1).isTerrainPopulated()) return false;
-		if (!ichunkprovider.provideChunk(chunkX, chunkZ - 1).isTerrainPopulated()) return false;
-		if (!ichunkprovider.provideChunk(chunkX + 1, chunkZ - 1).isTerrainPopulated()) return false;
-		if (!ichunkprovider.provideChunk(chunkX - 1, chunkZ).isTerrainPopulated()) return false;
-		if (!ichunkprovider.provideChunk(chunkX + 1, chunkZ).isTerrainPopulated()) return false;
-		if (!ichunkprovider.provideChunk(chunkX - 1, chunkZ + 1).isTerrainPopulated()) return false;
-		if (!ichunkprovider.provideChunk(chunkX, chunkZ + 1).isTerrainPopulated()) return false;
-		if (!ichunkprovider.provideChunk(chunkX + 1, chunkZ + 1).isTerrainPopulated()) return false;
+		if (!ichunkprovider.provideChunk(chunkX - 1, chunkZ - 1).isTerrainPopulated())
+			return false;
+		if (!ichunkprovider.provideChunk(chunkX, chunkZ - 1).isTerrainPopulated())
+			return false;
+		if (!ichunkprovider.provideChunk(chunkX + 1, chunkZ - 1).isTerrainPopulated())
+			return false;
+		if (!ichunkprovider.provideChunk(chunkX - 1, chunkZ).isTerrainPopulated())
+			return false;
+		if (!ichunkprovider.provideChunk(chunkX + 1, chunkZ).isTerrainPopulated())
+			return false;
+		if (!ichunkprovider.provideChunk(chunkX - 1, chunkZ + 1).isTerrainPopulated())
+			return false;
+		if (!ichunkprovider.provideChunk(chunkX, chunkZ + 1).isTerrainPopulated())
+			return false;
+		if (!ichunkprovider.provideChunk(chunkX + 1, chunkZ + 1).isTerrainPopulated())
+			return false;
 		return true;
 	}
 

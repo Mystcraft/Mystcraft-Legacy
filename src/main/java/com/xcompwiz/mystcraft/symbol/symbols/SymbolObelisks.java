@@ -69,12 +69,10 @@ public class SymbolObelisks extends SymbolBase {
 				foundBase = true;
 				for (int z = 0; z < width; ++z) {
 					for (int x = 0; x < width; ++x) {
-					    BlockPos posAt = new BlockPos(base.getX() + x, y, base.getZ() + z);
-					    worldObj.setBlockState(posAt, state, 2);
+						BlockPos posAt = new BlockPos(base.getX() + x, y, base.getZ() + z);
+						worldObj.setBlockState(posAt, state, 2);
 						Material material = worldObj.getBlockState(posAt.down()).getMaterial();
-						if (worldObj.isAirBlock(posAt.down()) ||
-                                worldObj.getBlockState(posAt.down()).getBlock().equals(Blocks.SNOW) ||
-								material == Material.WATER || material == Material.LAVA) {
+						if (worldObj.isAirBlock(posAt.down()) || worldObj.getBlockState(posAt.down()).getBlock().equals(Blocks.SNOW) || material == Material.WATER || material == Material.LAVA) {
 							foundBase = false;
 						}
 					}
@@ -82,12 +80,12 @@ public class SymbolObelisks extends SymbolBase {
 			}
 
 			// Second layer
-            base = base.add(1, 0, 1);
+			base = base.add(1, 0, 1);
 			width = 2;
 			for (int y = 0; y < height; ++y) {
 				for (int z = 0; z < width; ++z) {
 					for (int x = 0; x < width; ++x) {
-					    worldObj.setBlockState(base.add(x, y, z), state, 2);
+						worldObj.setBlockState(base.add(x, y, z), state, 2);
 					}
 				}
 			}

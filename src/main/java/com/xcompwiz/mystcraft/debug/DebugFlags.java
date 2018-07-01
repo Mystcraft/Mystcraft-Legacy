@@ -13,9 +13,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 
 public final class DebugFlags {
-	public static boolean	instability	= false;
-	public static boolean	grammar		= false;
-
+	public static boolean instability = false;
+	public static boolean grammar = false;
 
 //	if (DebugFlags.instability) DebugDataTracker.register(worldprovider.getDimensionName() + ".effects", new DefaultCallback(providerlevels));
 

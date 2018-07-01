@@ -11,8 +11,10 @@ public class LinkItemUtils {
 
 	@Nullable
 	public static Integer getTargetDimension(@Nonnull ItemStack book) {
-		if (book.isEmpty()) return null;
-		if (book.getTagCompound() == null) return null;
+		if (book.isEmpty())
+			return null;
+		if (book.getTagCompound() == null)
+			return null;
 		if (book.getItem() instanceof ItemLinking) {
 			return LinkOptions.getDimensionUID(book.getTagCompound());
 		}

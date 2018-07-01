@@ -156,8 +156,8 @@ public interface AgeDirector {
 	public void registerInterface(IWeatherController reg);
 
 	/**
-	 * Registers a new {@link ICelestial} interface An age wants at least the minimum number of suns specified by the suns controller, and no more than the maximum
-	 * specified
+	 * Registers a new {@link ICelestial} interface An age wants at least the minimum number of suns specified by the suns controller, and no more than the
+	 * maximum specified
 	 */
 	public void registerInterface(ICelestial reg);
 

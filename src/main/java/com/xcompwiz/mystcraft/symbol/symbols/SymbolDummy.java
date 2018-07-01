@@ -6,7 +6,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class SymbolDummy extends SymbolBase {
 
-	private int	instability;
+	private int instability;
 
 	public SymbolDummy(ResourceLocation identifier) {
 		super(identifier);

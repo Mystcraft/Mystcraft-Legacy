@@ -25,11 +25,13 @@ public final class CollectionUtils {
 
 	public static <T> ArrayList<T> buildList(List<T> prefix, List<T> suffix, T... args) {
 		ArrayList<T> list = new ArrayList<T>();
-		if (prefix != null) list.addAll(prefix);
+		if (prefix != null)
+			list.addAll(prefix);
 		for (T arg : args) {
 			list.add(arg);
 		}
-		if (suffix != null) list.addAll(suffix);
+		if (suffix != null)
+			list.addAll(suffix);
 		return list;
 	}
 

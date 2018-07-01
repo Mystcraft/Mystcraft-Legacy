@@ -30,8 +30,8 @@ public class SymbolWeatherStorm extends SymbolBase {
 
 	private static class WeatherController extends WeatherControllerToggleable {
 
-		private Random	random		= new Random();
-		private int		updateLCG	= (random).nextInt();
+		private Random random = new Random();
+		private int updateLCG = (random).nextInt();
 
 		@Override
 		protected void onEnable() {
@@ -56,7 +56,7 @@ public class SymbolWeatherStorm extends SymbolBase {
 				int coords = updateLCG >> 2;
 				int x = xBase + (coords & 15);
 				int z = zBase + (coords >> 8 & 15);
-				BlockPos precip = worldObj.getPrecipitationHeight(new BlockPos(x,0,z));
+				BlockPos precip = worldObj.getPrecipitationHeight(new BlockPos(x, 0, z));
 
 				if (canLightningStrikeAt(worldObj, precip)) {
 					worldObj.addWeatherEffect(new EntityLightningBolt(worldObj, precip.getX(), precip.getY(), precip.getZ(), false));
@@ -66,7 +66,8 @@ public class SymbolWeatherStorm extends SymbolBase {
 
 		@Override
 		public float getTemperature(float current, ResourceLocation biomeId) {
-			if (current < 0.20F) return 0.20F;
+			if (current < 0.20F)
+				return 0.20F;
 			return current;
 		}
 
@@ -76,7 +77,8 @@ public class SymbolWeatherStorm extends SymbolBase {
 			} else if (!worldObj.canSeeSky(pos)) {
 				return false;
 			} else if (worldObj.getPrecipitationHeight(pos).getY() > pos.getY()) {
-				return false; }
+				return false;
+			}
 			return true;
 		}
 	}

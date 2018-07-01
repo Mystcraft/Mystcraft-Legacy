@@ -13,7 +13,7 @@ public interface ICelestial {
 
 	/**
 	 * This is used to indicate if the object is a "solar" object or not. If set to true, the object will provide as much light as a sun at the reported
-	 * celestial angle.   Only read once on registration, do not treat as a dynamic field.
+	 * celestial angle. Only read once on registration, do not treat as a dynamic field.
 	 * @return True if it should be treated as a sun object.
 	 */
 	public abstract boolean providesLight();

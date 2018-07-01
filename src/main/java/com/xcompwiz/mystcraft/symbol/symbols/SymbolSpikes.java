@@ -40,7 +40,7 @@ public class SymbolSpikes extends SymbolBase {
 	}
 
 	private static class Populator implements IPopulate {
-		private WorldGeneratorAdv	generator;
+		private WorldGeneratorAdv generator;
 
 		public Populator(WorldGeneratorAdv generator) {
 			this.generator = generator;

@@ -44,9 +44,11 @@ public class ItemFactoryImpl {
 		// First, grab all the rules
 		HashSet<Rule> rules = new HashSet<>();
 		for (ResourceLocation token : tokens) {
-			if (token == null) continue;
+			if (token == null)
+				continue;
 			List<Rule> tokenrules = GrammarGenerator.getAllRules(token);
-			if (tokenrules != null) rules.addAll(tokenrules);
+			if (tokenrules != null)
+				rules.addAll(tokenrules);
 		}
 
 		HashSet<IAgeSymbol> symbolsSet = new HashSet<>();
@@ -54,9 +56,11 @@ public class ItemFactoryImpl {
 		// Get symbols
 		for (Rule rule : rules) {
 			for (ResourceLocation tok : rule.getValues()) {
-				if (!SymbolManager.hasBinding(tok)) continue;
+				if (!SymbolManager.hasBinding(tok))
+					continue;
 				IAgeSymbol symbol = SymbolManager.getAgeSymbol(tok);
-				if (symbol == null) continue;
+				if (symbol == null)
+					continue;
 				symbolsSet.add(symbol);
 			}
 		}
@@ -79,8 +83,10 @@ public class ItemFactoryImpl {
 		item.setDisplayName(null, itemstack, name);
 
 		for (ItemStack page : pages) {
-			if (page.isEmpty()) continue;
-			if (!(page.getItem() instanceof ItemPage)) continue;
+			if (page.isEmpty())
+				continue;
+			if (!(page.getItem() instanceof ItemPage))
+				continue;
 			item.addPage(null, itemstack, page.copy());
 		}
 		return itemstack;

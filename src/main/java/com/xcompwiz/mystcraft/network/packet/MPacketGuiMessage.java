@@ -45,29 +45,29 @@ public class MPacketGuiMessage extends PacketBase<MPacketGuiMessage, MPacketGuiM
 	@Override
 	public MPacketGuiMessage onMessage(MPacketGuiMessage message, MessageContext ctx) {
 		EntityPlayer thePlayer;
-		if(ctx.side.isClient()) {
+		if (ctx.side.isClient()) {
 			thePlayer = clientPlayer();
 		} else {
 			thePlayer = ctx.getServerHandler().player;
 		}
 
 		IThreadListener itl;
-		if(ctx.side.isClient()) {
+		if (ctx.side.isClient()) {
 			itl = clientListener();
 		} else {
 			itl = thePlayer.world.getMinecraftServer();
 		}
-		
+
 		// We should process all of the container checks, etc later, so we can be sure they are set (avoid race conditions)
 		itl.addScheduledTask(() -> {
-			if(thePlayer.openContainer == null || thePlayer.openContainer.windowId != message.windowId) {
+			if (thePlayer.openContainer == null || thePlayer.openContainer.windowId != message.windowId) {
 				LoggerUtils.info("%b %s == %d", thePlayer.openContainer == null, (thePlayer.openContainer == null ? "null" : "" + thePlayer.openContainer.windowId), message.windowId);
 				return;
 			}
-			if(!thePlayer.openContainer.getCanCraft(thePlayer)) { //!thePlayer.openContainer.playerList.contains(player);
+			if (!thePlayer.openContainer.getCanCraft(thePlayer)) { //!thePlayer.openContainer.playerList.contains(player);
 				return;
 			}
-			if(thePlayer.openContainer instanceof IGuiMessageHandler) {
+			if (thePlayer.openContainer instanceof IGuiMessageHandler) {
 				((IGuiMessageHandler) thePlayer.openContainer).processMessage(thePlayer, message.tag);
 			}
 		});

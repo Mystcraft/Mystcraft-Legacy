@@ -30,7 +30,7 @@ public class SymbolColorGrass extends SymbolBase {
 
 	public class StaticColorProvider implements IStaticColorProvider {
 
-		private Color	color;
+		private Color color;
 
 		public StaticColorProvider(Color color) {
 			this.color = color;

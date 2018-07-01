@@ -14,7 +14,7 @@ public class SlotCraftCustom extends SlotItemHandler {
 
 	private final IItemBuilder builderTile;
 	private EntityPlayer thePlayer;
-	private int	amountCrafted;
+	private int amountCrafted;
 
 	public SlotCraftCustom(EntityPlayer player, IItemBuilder builder, IItemHandlerModifiable inventory, int index, int guiPosX, int guiPosY) {
 		super(inventory, index, guiPosX, guiPosY);

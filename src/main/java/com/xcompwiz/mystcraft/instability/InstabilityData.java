@@ -22,74 +22,74 @@ import net.minecraft.init.MobEffects;
 
 public class InstabilityData {
 	private static class deckcost {
-		public static int	basic		= 0;
-		public static int	harsh		= 2500;
-		public static int	destructive	= 10000;
-		public static int	eating		= 15000;
-		public static int	death		= 20000;
+		public static int basic = 0;
+		public static int harsh = 2500;
+		public static int destructive = 10000;
+		public static int eating = 15000;
+		public static int death = 20000;
 	}
 
 	@SuppressWarnings("unused")
 	private static class stability {
-		public static int	blindness			= 1000;
-		public static int	blindness_global	= 1500;
-		public static int	burning				= 500;
-		public static int	burning_global		= 1000;
-		public static int	crumble				= 2000;
-		public static int	crumblebedrock		= 5000;
-		public static int	decayBlack			= 5000;
-		public static int	decayBlue			= 2000;
-		public static int	decayPurple			= 2000;
-		public static int	decayRed			= 2000;
-		public static int	decayWhite			= 5000;
-		public static int	enemyregen_global	= 1000;
-		public static int	enemyresist_global	= 1000;
-		public static int	erosion				= 2000;
-		public static int	explosions			= 1000;
-		public static int	fatigue				= 500;
-		public static int	fatigue_global		= 1000;
-		public static int	hunger				= 500;
-		public static int	hunger_global		= 1000;
-		public static int	lightning			= 1000;
-		public static int	meteors				= 1000;
-		public static int	nausea				= 1000;
-		public static int	nausea_global		= 1500;
-		public static int	poison				= 500;
-		public static int	poison_global		= 1000;
-		public static int	slow				= 500;
-		public static int	slow_global			= 1000;
-		public static int	weakness			= 500;
-		public static int	weakness_global		= 1000;
-		public static int	wither				= 1000;
-		public static int	wither_global		= 2000;
+		public static int blindness = 1000;
+		public static int blindness_global = 1500;
+		public static int burning = 500;
+		public static int burning_global = 1000;
+		public static int crumble = 2000;
+		public static int crumblebedrock = 5000;
+		public static int decayBlack = 5000;
+		public static int decayBlue = 2000;
+		public static int decayPurple = 2000;
+		public static int decayRed = 2000;
+		public static int decayWhite = 5000;
+		public static int enemyregen_global = 1000;
+		public static int enemyresist_global = 1000;
+		public static int erosion = 2000;
+		public static int explosions = 1000;
+		public static int fatigue = 500;
+		public static int fatigue_global = 1000;
+		public static int hunger = 500;
+		public static int hunger_global = 1000;
+		public static int lightning = 1000;
+		public static int meteors = 1000;
+		public static int nausea = 1000;
+		public static int nausea_global = 1500;
+		public static int poison = 500;
+		public static int poison_global = 1000;
+		public static int slow = 500;
+		public static int slow_global = 1000;
+		public static int weakness = 500;
+		public static int weakness_global = 1000;
+		public static int wither = 1000;
+		public static int wither_global = 2000;
 	}
 
 	public static class missing {
-		public static int	controller	= 0;
+		public static int controller = 0;
 	}
 
 	public static class extra {
-		public static int	controller	= 500;
+		public static int controller = 500;
 	}
 
 	public static class symbol {
-		public static int	accelerated			= 1000;
-		public static int	bright				= 500;
-		public static int	charged				= -500;
-		public static int	meteors				= -1000;
-		public static int	explosion			= -500;
-		public static int	scorched			= -500;
-		public static int	dummyFeatureLarge	= 0;
-		public static int	dummyFeatureMedium	= 1000;
-		public static int	dummyFeatureSmall	= 2000;
+		public static int accelerated = 1000;
+		public static int bright = 500;
+		public static int charged = -500;
+		public static int meteors = -1000;
+		public static int explosion = -500;
+		public static int scorched = -500;
+		public static int dummyFeatureLarge = 0;
+		public static int dummyFeatureMedium = 1000;
+		public static int dummyFeatureSmall = 2000;
 	}
 
-	public static float	clearPercentage	= 0.20F;
+	public static float clearPercentage = 0.20F;
 
 	private static class InstabilityProviderContainerObject {
 
-		private String	identifier;
-		private boolean	registered;
+		private String identifier;
+		private boolean registered;
 
 		private InstabilityProviderContainerObject(String identifier, IInstabilityProvider provider, int activationcost) {
 			this.identifier = identifier;
@@ -97,7 +97,8 @@ public class InstabilityData {
 		}
 
 		public InstabilityProviderContainerObject add(String deck, int count) {
-			if (registered) InternalAPI.instability.addCards(deck, identifier, count);
+			if (registered)
+				InternalAPI.instability.addCards(deck, identifier, count);
 			return this;
 		}
 

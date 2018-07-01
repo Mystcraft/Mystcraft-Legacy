@@ -30,8 +30,8 @@ public class SymbolColorSky extends SymbolBase {
 	}
 
 	private class Colorizer implements IDynamicColorProvider {
-		ColorGradient		gradient;
-		private AgeDirector	controller;
+		ColorGradient gradient;
+		private AgeDirector controller;
 
 		public Colorizer(AgeDirector controller, ColorGradient gradient) {
 			this.controller = controller;
@@ -42,8 +42,10 @@ public class SymbolColorSky extends SymbolBase {
 		public Color getColor(Entity entity, Biome biome, float time, float celestial_angle, float partialtick) {
 			float alpha = MathHelper.cos(celestial_angle * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
 
-			if (alpha < 0.0F) alpha = 0.0F;
-			if (alpha > 1.0F) alpha = 1.0F;
+			if (alpha < 0.0F)
+				alpha = 0.0F;
+			if (alpha > 1.0F)
+				alpha = 1.0F;
 
 			Color color = gradient.getColor(controller.getTime() / 12000F);
 			color = new Color(color.r * alpha, color.g * alpha, color.b * alpha);

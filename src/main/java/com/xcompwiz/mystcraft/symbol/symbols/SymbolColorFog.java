@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 
 public class SymbolColorFog extends SymbolBase {
-	
+
 	public SymbolColorFog(ResourceLocation identifier) {
 		super(identifier);
 	}
@@ -29,9 +29,9 @@ public class SymbolColorFog extends SymbolBase {
 	}
 
 	private static class FogColorizer implements IDynamicColorProvider {
-		private static final Color	black	= new Color(0.0001F, 0.0001F, 0.0001F);
+		private static final Color black = new Color(0.0001F, 0.0001F, 0.0001F);
 
-		ColorGradient				gradient;
+		ColorGradient gradient;
 
 		public FogColorizer(ColorGradient gradient) {
 			this.gradient = gradient;

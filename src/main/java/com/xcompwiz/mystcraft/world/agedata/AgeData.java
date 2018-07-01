@@ -29,43 +29,43 @@ import net.minecraftforge.common.DimensionManager;
 // Symbol states (ex. weather)
 public class AgeData extends WorldSavedData {
 	public static class AgeDataData {
-		public String				agename;
-		public Set<String>			authors	= new HashSet<String>();
-		public long					seed;
-		public UUID					uuid;
-		public short				instability;
-		public boolean				instabilityEnabled;
-		public BlockPos				spawn;
-		public List<ItemStack>		pages	= new ArrayList<>();
+		public String agename;
+		public Set<String> authors = new HashSet<String>();
+		public long seed;
+		public UUID uuid;
+		public short instability;
+		public boolean instabilityEnabled;
+		public BlockPos spawn;
+		public List<ItemStack> pages = new ArrayList<>();
 		public List<ResourceLocation> symbols = new ArrayList<>();
-		public boolean				visited;
-		public boolean				dead;
-		public NBTTagCompound		datacompound;
-		public long					worldtime;
-		public String				version;
-		public Map<String, NBTBase>	cruft	= new HashMap<String, NBTBase>();
+		public boolean visited;
+		public boolean dead;
+		public NBTTagCompound datacompound;
+		public long worldtime;
+		public String version;
+		public Map<String, NBTBase> cruft = new HashMap<String, NBTBase>();
 	}
 
-	private String				agename;
-	private Set<String>			authors;
-	private long				seed;
-	private UUID				uuid;
-	private short				instability;
-	private boolean				instabilityEnabled;
-	private long				worldtime;
-	private BlockPos			spawn;
-	private List<ItemStack>		pages			= new ArrayList<>();
+	private String agename;
+	private Set<String> authors;
+	private long seed;
+	private UUID uuid;
+	private short instability;
+	private boolean instabilityEnabled;
+	private long worldtime;
+	private BlockPos spawn;
+	private List<ItemStack> pages = new ArrayList<>();
 	private List<ResourceLocation> symbols = new ArrayList<>();
-	private boolean				visited;
-	private boolean				dead;
-	private NBTTagCompound		datacompound;
+	private boolean visited;
+	private boolean dead;
+	private NBTTagCompound datacompound;
 
-	public Map<String, NBTBase>	cruft			= new HashMap<>();
+	public Map<String, NBTBase> cruft = new HashMap<>();
 
-	private boolean				updated;
-	private Boolean				sharedDirty		= Boolean.FALSE;
-	private boolean				needsResend;
-	private Boolean				sharedResend	= Boolean.FALSE;
+	private boolean updated;
+	private Boolean sharedDirty = Boolean.FALSE;
+	private boolean needsResend;
+	private Boolean sharedResend = Boolean.FALSE;
 
 	public AgeData(String s) {
 		super(s);
@@ -77,7 +77,8 @@ public class AgeData extends WorldSavedData {
 	 */
 	@Override
 	public boolean isDirty() {
-		if (sharedDirty) return true;
+		if (sharedDirty)
+			return true;
 		return super.isDirty();
 	}
 
@@ -90,7 +91,8 @@ public class AgeData extends WorldSavedData {
 	}
 
 	public boolean needsResend() {
-		if (sharedResend) return true;
+		if (sharedResend)
+			return true;
 		return needsResend;
 	}
 
@@ -112,7 +114,8 @@ public class AgeData extends WorldSavedData {
 	}
 
 	public void markVisited() {
-		if (!visited) this.markDirty();
+		if (!visited)
+			this.markDirty();
 		visited = true;
 		updated = false;
 	}
@@ -142,17 +145,20 @@ public class AgeData extends WorldSavedData {
 	}
 
 	public Set<String> getAuthors() {
-		if (authors == null) return Collections.emptySet();
+		if (authors == null)
+			return Collections.emptySet();
 		return Collections.unmodifiableSet(authors);
 	}
 
 	public void addAuthor(String name) {
-		if (authors == null) authors = new HashSet<String>();
+		if (authors == null)
+			authors = new HashSet<String>();
 		authors.add(name);
 	}
-	
+
 	public void setSeed(long seed) {
-		if (this.visited) return;
+		if (this.visited)
+			return;
 		this.seed = seed;
 	}
 
@@ -308,7 +314,8 @@ public class AgeData extends WorldSavedData {
 			collapsedName.add(rl.toString());
 		}
 		nbttagcompound.setTag("Symbols", NBTUtils.writeStringCollection(new NBTTagList(), collapsedName));
-		if (authors != null) nbttagcompound.setTag("Authors", NBTUtils.writeStringCollection(new NBTTagList(), authors));
+		if (authors != null)
+			nbttagcompound.setTag("Authors", NBTUtils.writeStringCollection(new NBTTagList(), authors));
 
 		if (cruft != null && cruft.size() > 0) {
 			NBTTagCompound cruftnbt = new NBTTagCompound();
@@ -323,7 +330,8 @@ public class AgeData extends WorldSavedData {
 	public static AgeData getMPAgeData(int uid) {
 		MapStorage storage = Mystcraft.getStorage(false);
 		String s = getStringID(uid);
-		if (storage == null) throw new RuntimeException("Mystcraft could not retrieve the agedata file.  The storage object is null.");
+		if (storage == null)
+			throw new RuntimeException("Mystcraft could not retrieve the agedata file.  The storage object is null.");
 		AgeData age = (AgeData) storage.getOrLoadData(AgeData.class, s);
 		if (age == null) {
 			age = new AgeData(s);
@@ -342,9 +350,12 @@ public class AgeData extends WorldSavedData {
 	}
 
 	public static AgeData getAge(int uid, MapStorage storage) {
-		if (!DimensionManager.isDimensionRegistered(uid)) return null;
-		if (DimensionManager.getProviderType(uid) != Mystcraft.dimensionType) return null;
-		if (storage == null) throw new RuntimeException("Mystcraft could not load the agedata file.  The storage object is null.)");
+		if (!DimensionManager.isDimensionRegistered(uid))
+			return null;
+		if (DimensionManager.getProviderType(uid) != Mystcraft.dimensionType)
+			return null;
+		if (storage == null)
+			throw new RuntimeException("Mystcraft could not load the agedata file.  The storage object is null.)");
 		String s = getStringID(uid);
 		AgeData age = (AgeData) storage.getOrLoadData(AgeData.class, s);
 		if (age == null) {
@@ -378,7 +389,8 @@ public class AgeData extends WorldSavedData {
 		this.updated = false;
 		this.pages.clear();
 		this.symbols.clear();
-		if (authors != null) this.authors.clear();
+		if (authors != null)
+			this.authors.clear();
 		this.datacompound = new NBTTagCompound();
 		this.markDirty();
 	}
@@ -405,7 +417,8 @@ public class AgeData extends WorldSavedData {
 	}
 
 	public NBTBase popCruft(String string) {
-		if (cruft == null) return null;
+		if (cruft == null)
+			return null;
 		return cruft.remove(string);
 	}
 }

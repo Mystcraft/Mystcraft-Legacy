@@ -28,10 +28,14 @@ public class CommandMystPermissions extends CommandBaseAdv {
 	 */
 	@Override
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender par1ICommandSender, String[] args, @Nullable BlockPos targetPos) {
-		if (args.length == 1) return getListOfStringsMatchingLastWord(args, this.getPlayers(server));
-		if (args.length == 2) return getListOfStringsMatchingLastWord(args, "restrict", "permit");
-		if (args.length == 3) return getListOfStringsMatchingLastWord(args, "entry", "depart");
-		if (args.length == 4) return getListOfStringsMatchingLastWord(args, "all");
+		if (args.length == 1)
+			return getListOfStringsMatchingLastWord(args, this.getPlayers(server));
+		if (args.length == 2)
+			return getListOfStringsMatchingLastWord(args, "restrict", "permit");
+		if (args.length == 3)
+			return getListOfStringsMatchingLastWord(args, "entry", "depart");
+		if (args.length == 4)
+			return getListOfStringsMatchingLastWord(args, "all");
 		return null;
 	}
 
@@ -42,7 +46,9 @@ public class CommandMystPermissions extends CommandBaseAdv {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws WrongUsageException, NumberInvalidException {
 		Integer dim = null;
-		if (args.length < 4) { throw new WrongUsageException("commands.myst.permissions.usage"); }
+		if (args.length < 4) {
+			throw new WrongUsageException("commands.myst.permissions.usage");
+		}
 		String playername = args[0];
 		String command = args[1];
 		String direction = args[2];

@@ -167,7 +167,8 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 	//We build a fake dimension setup using our own controller and a predefined agedata setup
 	// NOTE: The reason why we do this and not just profile the Overworld is mostly biome distribution:
 	//     If we profiled the Overworld we'd be biased towards whatever regions are generated in that dimension. ex. Emeralds could be super valuable.
-	@Override protected void init() {
+	@Override
+	protected void init() {
 		chunkX = chunkX_min;
 		chunkZ = chunkZ_min;
 		agedata = new AgeData("CONTROL");
@@ -224,7 +225,7 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 	public static List<Biome> getAndPrepareBiomeList() {
 		if (biomeList != null)
 			return biomeList;
-		
+
 		List<Biome> biomeList = new ArrayList<>();
 
 		// Use only Overworld biomes. See {GenLayerBiome}.
@@ -283,7 +284,8 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 	}
 
 	public void replaceChunkProvider() {
-		if (chunkproviderreplaced) return;
+		if (chunkproviderreplaced)
+			return;
 		chunkproviderreplaced = true;
 		WorldServer world = (WorldServer) this.world;
 		ChunkProviderServerDummy theChunkProviderServer = new ChunkProviderServerDummy(world, new AnvilChunkLoaderDummy(((AnvilChunkLoader) world.getChunkProvider().chunkLoader).chunkSaveLocation), this.createChunkGenerator());

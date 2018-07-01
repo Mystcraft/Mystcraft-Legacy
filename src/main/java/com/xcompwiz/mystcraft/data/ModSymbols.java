@@ -105,7 +105,8 @@ import net.minecraft.world.biome.Biome;
 public class ModSymbols {
 
 	public static void registerSymbol(SymbolBase symbol, Integer cardrank, String... poem) {
-		if (poem.length != 4) LoggerUtils.warn("Weird poem length (%d) when registering %s", poem.length, symbol.getRegistryName().toString());
+		if (poem.length != 4)
+			LoggerUtils.warn("Weird poem length (%d) when registering %s", poem.length, symbol.getRegistryName().toString());
 		symbol.setWords(poem);
 		symbol.setCardRank(cardrank);
 		SymbolManager.tryAddSymbol(symbol);
@@ -116,7 +117,8 @@ public class ModSymbols {
 		Iterator<Biome> iterator = Biome.REGISTRY.iterator();
 		while (iterator.hasNext()) {
 			Biome biome = iterator.next();
-			if (biome == null) continue;
+			if (biome == null)
+				continue;
 			ResourceLocation biomeID = biome.getRegistryName();
 			//if (biome.getBiomeName() == null) { //If it is null, we have bigger problems..
 			//	LoggerUtils.warn("Biome (id " + biomeID.toString() + ") has null name, could not build symbol");
@@ -131,8 +133,7 @@ public class ModSymbols {
 				} else {
 					symbol.setCardRank(2);
 				}
-				GrammarGenerator.registerRule(new Rule(GrammarData.BIOME,
-						CollectionUtils.buildList(symbol.getRegistryName()), rank));
+				GrammarGenerator.registerRule(new Rule(GrammarData.BIOME, CollectionUtils.buildList(symbol.getRegistryName()), rank));
 				InternalAPI.symbolValues.setSymbolTradeItem(symbol, new ItemStack(Items.EMERALD, 1));
 				SymbolBiome.selectables.add(biome);
 			}

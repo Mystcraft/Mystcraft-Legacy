@@ -10,10 +10,10 @@ import net.minecraft.world.World;
 
 public class ExplosionEffectBreakBlocks extends ExplosionEffect {
 
-	public static ExplosionEffect	noDrop		= new ExplosionEffectBreakBlocks(false);
-	public static ExplosionEffect	dropItems	= new ExplosionEffectBreakBlocks(true);
+	public static ExplosionEffect noDrop = new ExplosionEffectBreakBlocks(false);
+	public static ExplosionEffect dropItems = new ExplosionEffectBreakBlocks(true);
 
-	private boolean					dropitems;
+	private boolean dropitems;
 
 	private ExplosionEffectBreakBlocks(boolean b) {
 		dropitems = b;
@@ -21,7 +21,8 @@ public class ExplosionEffectBreakBlocks extends ExplosionEffect {
 
 	@Override
 	public void apply(World worldObj, ExplosionAdvanced explosion, BlockPos pos, Random rand, boolean isClient) {
-		if (worldObj.isRemote) return;
+		if (worldObj.isRemote)
+			return;
 		IBlockState blockstate = worldObj.getBlockState(pos);
 
 		if (dropitems && blockstate.getBlock().canDropFromExplosion(explosion.toExplosion())) {

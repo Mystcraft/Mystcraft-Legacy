@@ -15,7 +15,7 @@ import com.xcompwiz.util.VectorPool;
  */
 public class DniColorRenderer {
 
-	static Vector[]	points	= new Vector[4];
+	static Vector[] points = new Vector[4];
 
 	public static void render(Color color, Vector center, double radius) {
 		GL11.glDisable(GL11.GL_TEXTURE_2D);

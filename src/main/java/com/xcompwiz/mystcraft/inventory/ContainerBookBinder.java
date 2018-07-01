@@ -32,25 +32,25 @@ import javax.annotation.Nullable;
 public class ContainerBookBinder extends ContainerBase implements IGuiMessageHandler {
 	public static class Messages {
 
-		public static final String	InsertHeldAt	= "InsertHeldAt";
-		public static final String	TakeFromSlider	= "TakeFromSlider";
-		public static final String	SetTitle		= "SetTitle";
+		public static final String InsertHeldAt = "InsertHeldAt";
+		public static final String TakeFromSlider = "TakeFromSlider";
+		public static final String SetTitle = "SetTitle";
 		//public static final String	CSetPage		= "CSetPage";
 		//public static final String	CSetPageCount	= "CSetPageCount";
 		//public static final String	CSetHeldItem	= "CSetHeldItem";
 		//public static final String	CClearHeldItem	= "CClearHeldItem";
 	}
 
-	private static int				shift			= 0;
+	private static int shift = 0;
 
 	// private InventoryCrafting craftMatrix = new InventoryCrafting(this, 2, 2);
-	private IItemHandlerModifiable craftResult		= new InvWrapper(new InventoryCraftResult());
+	private IItemHandlerModifiable craftResult = new InvWrapper(new InventoryCraftResult());
 
-    public TileEntityBookBinder	tileentity;
-	public InventoryPlayer			inventoryplayer;
+	public TileEntityBookBinder tileentity;
+	public InventoryPlayer inventoryplayer;
 
 	// Server/Client caching for communication
-	private String					cached_title	= "";
+	private String cached_title = "";
 	//private NonNullList<ItemStack>	page_list		= NonNullList.create();
 	//@Nonnull
 	//private ItemStack				cached_helditem = ItemStack.EMPTY;
@@ -72,10 +72,10 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 
 		this.addSlotToContainer(new SlotCraftCustom(inventoryplayer.player, tileentity, this.craftResult, 0, 152 + shift, 27));
 
-        SlotCollection internal = new SlotCollection(this, 0, 1);
-        SlotCollection maininv = new SlotCollection(this, 1, 28);
-        SlotCollection hotbar = new SlotCollection(this, 28, 28 + 9);
-        ITargetInventory pages = new BinderPageReceiver(tileentity);
+		SlotCollection internal = new SlotCollection(this, 0, 1);
+		SlotCollection maininv = new SlotCollection(this, 1, 28);
+		SlotCollection hotbar = new SlotCollection(this, 28, 28 + 9);
+		ITargetInventory pages = new BinderPageReceiver(tileentity);
 
 		internal.pushTargetFront(maininv);
 		internal.pushTargetFront(hotbar);
@@ -146,14 +146,14 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 		//	nbttagcompound.setInteger(Messages.CSetPageCount, templist.size());
 		//	packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 
-        //    NonNullList<ItemStack> list = NonNullList.create();
-        //    List<ItemStack> subList = page_list.subList(0, templist.size());
-        //    list.addAll(subList);
-        //    page_list = list;
+		//    NonNullList<ItemStack> list = NonNullList.create();
+		//    List<ItemStack> subList = page_list.subList(0, templist.size());
+		//    list.addAll(subList);
+		//    page_list = list;
 		//}
 		if (packets.size() > 0) {
 			for (IContainerListener listener : this.listeners) {
-				if(listener instanceof EntityPlayerMP) {
+				if (listener instanceof EntityPlayerMP) {
 					for (IMessage message : packets) {
 						MystcraftPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) listener);
 					}
@@ -164,7 +164,7 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 	}
 
 	public void updateCraftResult() {
-	    this.craftResult.setStackInSlot(0, this.tileentity.getCraftedItem());
+		this.craftResult.setStackInSlot(0, this.tileentity.getCraftedItem());
 	}
 
 	@Override
@@ -212,13 +212,15 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 			this.tileentity.markForUpdate();
 		}
 		if (data.hasKey(Messages.TakeFromSlider)) {
-			if (!player.inventory.getItemStack().isEmpty()) return;
+			if (!player.inventory.getItemStack().isEmpty())
+				return;
 			int index = data.getInteger(Messages.TakeFromSlider);
 			player.inventory.setItemStack(tileentity.removePage(index));
 			player.inventory.markDirty();
 		}
 		if (data.hasKey(Messages.InsertHeldAt)) {
-			if (player.inventory.getItemStack().isEmpty()) return;
+			if (player.inventory.getItemStack().isEmpty())
+				return;
 			int index = data.getInteger(Messages.InsertHeldAt);
 			if (player.inventory.getItemStack().getItem() == ModItems.folder) { //XXX: Change to using an interface
 				tileentity.insertFromFolder(player.inventory.getItemStack(), index);

@@ -13,32 +13,33 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenRegister
 public class CTBlockSymbol extends CTAgeSymbol {
 
-    private ModSymbolsModifiers.BlockModifierContainerObject container;
-    private boolean registered = false;
+	private ModSymbolsModifiers.BlockModifierContainerObject container;
+	private boolean registered = false;
 
-    CTBlockSymbol(ModSymbolsModifiers.BlockModifierContainerObject container) {
-        this.container = container;
-    }
+	CTBlockSymbol(ModSymbolsModifiers.BlockModifierContainerObject container) {
+		this.container = container;
+	}
 
-    //For categories, all myst default ones have modidCategory "mystcraft"
-    //Categories are listed in com.xcompwiz.mystcraft.api.symbol.BlockCategory. Refer to the API for further information
-    @ZenMethod
-    public void addCategory(String modidCategory, String category, int categoryRank) {
-        if(registered) return;
-        BlockCategory cat = BlockCategory.getBlockCategory(new ResourceLocation(modidCategory, category));
-        if(cat == null) {
-            CraftTweakerAPI.logError("[Mystcraft] Unknown block category: '" + modidCategory + ":" + category + "'");
-            return;
-        }
-        container.add(cat, categoryRank);
-    }
+	//For categories, all myst default ones have modidCategory "mystcraft"
+	//Categories are listed in com.xcompwiz.mystcraft.api.symbol.BlockCategory. Refer to the API for further information
+	@ZenMethod
+	public void addCategory(String modidCategory, String category, int categoryRank) {
+		if (registered)
+			return;
+		BlockCategory cat = BlockCategory.getBlockCategory(new ResourceLocation(modidCategory, category));
+		if (cat == null) {
+			CraftTweakerAPI.logError("[Mystcraft] Unknown block category: '" + modidCategory + ":" + category + "'");
+			return;
+		}
+		container.add(cat, categoryRank);
+	}
 
-    @ZenMethod
-    public void register() {
-        if(container.getSymbol() != null && !registered) {
-            registered = true;
-            SymbolManager.tryAddSymbol(container.getSymbol());
-        }
-    }
+	@ZenMethod
+	public void register() {
+		if (container.getSymbol() != null && !registered) {
+			registered = true;
+			SymbolManager.tryAddSymbol(container.getSymbol());
+		}
+	}
 
 }

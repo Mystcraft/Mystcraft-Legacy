@@ -17,8 +17,8 @@ public class PageCollectionPageReceiver implements ITargetInventory {
 
 	}
 
-	private IItemProvider	provider;
-	private EntityPlayer	player;
+	private IItemProvider provider;
+	private EntityPlayer player;
 
 	public PageCollectionPageReceiver(IItemProvider provider, EntityPlayer player) {
 		this.provider = provider;
@@ -28,7 +28,8 @@ public class PageCollectionPageReceiver implements ITargetInventory {
 	@Override
 	public boolean merge(@Nonnull ItemStack itemstack) {
 		boolean success = false;
-		if (itemstack.getItem() != ModItems.page) return false;
+		if (itemstack.getItem() != ModItems.page)
+			return false;
 
 		ItemStack collection = provider.getPageCollection();
 		if (!collection.isEmpty() && collection.getItem() instanceof IItemPageCollection) {

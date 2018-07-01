@@ -35,16 +35,16 @@ import javax.annotation.Nullable;
 
 public class ChunkProviderMyst implements IChunkGenerator {
 
-	private AgeController				controller;
-	private Random						rand;
-	private NoiseGeneratorPerlin		stoneNoiseGen;
-	private World						worldObj;
-	private AgeData						agedata;
-	private double						stoneNoise[];
-	private Biome				biomesForGeneration[];
+	private AgeController controller;
+	private Random rand;
+	private NoiseGeneratorPerlin stoneNoiseGen;
+	private World worldObj;
+	private AgeData agedata;
+	private double stoneNoise[];
+	private Biome biomesForGeneration[];
 
-	private MapGenScatteredFeatureMyst	scatteredFeatureGenerator	= new MapGenScatteredFeatureMyst();
-	private WorldGenMinable				worldgenminablequartz		= new WorldGenMinable(Blocks.QUARTZ_ORE.getDefaultState(), 13, BlockMatcher.forBlock(Blocks.NETHERRACK));
+	private MapGenScatteredFeatureMyst scatteredFeatureGenerator = new MapGenScatteredFeatureMyst();
+	private WorldGenMinable worldgenminablequartz = new WorldGenMinable(Blocks.QUARTZ_ORE.getDefaultState(), 13, BlockMatcher.forBlock(Blocks.NETHERRACK));
 
 	public ChunkProviderMyst(AgeController ageController, World world, AgeData age) {
 		controller = ageController;
@@ -62,7 +62,7 @@ public class ChunkProviderMyst implements IChunkGenerator {
 			//TODO: Vanilla is now using a different noise generation system for stone noise
 			double noisefactor = 0.03125D;
 			this.stoneNoise = stoneNoiseGen.getRegion(this.stoneNoise, chunkX * 16, chunkZ * 16, 16, 16, noisefactor * 2.0D, noisefactor * 2.0D, 1.0D);
-	
+
 			for (int xoff = 0; xoff < 16; ++xoff) {
 				for (int zoff = 0; zoff < 16; ++zoff) {
 					Biome b = aBiome[zoff + xoff * 16];
@@ -73,14 +73,14 @@ public class ChunkProviderMyst implements IChunkGenerator {
 	}
 
 	@Override
-    @Nonnull
+	@Nonnull
 	public Chunk generateChunk(int chunkX, int chunkZ) {
 		rand.setSeed(chunkX * 0x4f9939f508L + chunkZ * 0x1ef1565bd5L);
 		ChunkPrimerMyst primer = new ChunkPrimerMyst();
 
 		// Base terrain generation
 		controller.generateTerrain(chunkX, chunkZ, primer);
-		
+
 		// Get list of biomes in chunk
 		biomesForGeneration = worldObj.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, chunkX * 16, chunkZ * 16, 16, 16);
 
@@ -88,26 +88,26 @@ public class ChunkProviderMyst implements IChunkGenerator {
 		primer.inBiomeDecoration = true;
 		replaceBlocksForBiome(chunkX, chunkZ, primer, biomesForGeneration);
 		primer.inBiomeDecoration = false;
-		
+
 		// Perform terrain modification pass (ex. caves, skylands)
 		controller.modifyTerrain(chunkX, chunkZ, primer);
-		
+
 		// generate features like witch huts, etc //TODO: more such features; world specific control; etc 
 		this.scatteredFeatureGenerator.generate(worldObj, chunkX, chunkZ, primer);
-		
+
 		// make chunk
 		Chunk chunk = new Chunk(worldObj, primer, chunkX, chunkZ);
-		
+
 		// lighting calcs
 		chunk.generateSkylightMap();
 		for (int x = 0; x < 16; ++x) {
 			for (int z = 0; z < 16; ++z) {
 				for (int y = 0; y < 128; ++y) {
-				    chunk.setLightFor(EnumSkyBlock.BLOCK, new BlockPos(x, y, z), 0);
+					chunk.setLightFor(EnumSkyBlock.BLOCK, new BlockPos(x, y, z), 0);
 				}
 			}
 		}
-		
+
 		// Final logic pass through chunk (ex. Floating Island biome replacement) 
 		controller.finalizeChunk(chunk, chunkX, chunkZ);
 		return chunk;
@@ -151,7 +151,7 @@ public class ChunkProviderMyst implements IChunkGenerator {
 			worldgenminablequartz.generate(this.worldObj, this.rand, new BlockPos(gx, gy, gz));
 		}
 
-		if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.worldObj, this.rand, chunkX, chunkZ, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE))  {
+		if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.worldObj, this.rand, chunkX, chunkZ, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE)) {
 			for (int k2 = 0; k2 < 16; ++k2) {
 				for (int j3 = 0; j3 < 16; ++j3) {
 					BlockPos blockpos1 = this.worldObj.getPrecipitationHeight(blockpos.add(k2, 0, j3));

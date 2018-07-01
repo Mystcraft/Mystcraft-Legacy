@@ -38,42 +38,42 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class ContainerBook extends ContainerBase implements IGuiMessageHandler, IBookContainer {
-    
+
 	public static class Messages {
 
-		public static final String	LinkPermitted	= "LinkPermitted";
-		public static final String	SetCurrentPage	= "SetCurrentPage";
-		public static final String	Link			= "Link";
+		public static final String LinkPermitted = "LinkPermitted";
+		public static final String SetCurrentPage = "SetCurrentPage";
+		public static final String Link = "Link";
 
 	}
 
 	private EntityLinkbook linkbook;
 	private TileEntityBookRotateable bookTile;
-	private Integer			slot;
+	private Integer slot;
 
-    private InventoryPlayer	inventoryplayer;
+	private InventoryPlayer inventoryplayer;
 
 	@Nonnull
-	private ItemStack		currentpage			= ItemStack.EMPTY;
-	private int				pagecount			= 0;
-	private int				currentpageIndex	= 0;
+	private ItemStack currentpage = ItemStack.EMPTY;
+	private int pagecount = 0;
+	private int currentpageIndex = 0;
 
-	private ILinkInfo		cached_linkinfo;
-	private Boolean			cached_permitted;
+	private ILinkInfo cached_linkinfo;
+	private Boolean cached_permitted;
 
 	//Container originates from entity
 	public ContainerBook(InventoryPlayer inventoryplayer, EntityLinkbook linkbook) {
-	    this.linkbook = linkbook;
+		this.linkbook = linkbook;
 		this.inventoryplayer = inventoryplayer;
 		updateSlots();
 	}
 
 	//Container originates from Tileentity
-    public ContainerBook(InventoryPlayer inventoryplayer, TileEntityBookRotateable tile) {
-	    this.bookTile = tile;
-        this.inventoryplayer = inventoryplayer;
-        updateSlots();
-    }
+	public ContainerBook(InventoryPlayer inventoryplayer, TileEntityBookRotateable tile) {
+		this.bookTile = tile;
+		this.inventoryplayer = inventoryplayer;
+		updateSlots();
+	}
 
 	//Container originates from player inventory
 	public ContainerBook(InventoryPlayer inventoryplayer, int slot) {
@@ -86,15 +86,15 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	@Nonnull
 	public ItemStack getBook() {
 		if (linkbook != null) {
-            ItemStack itemstack = linkbook.getBook();
-            if (!itemstack.isEmpty() && itemstack.getItem() instanceof ItemLinking) {
-                return itemstack;
-            }
-        } else if (bookTile != null) {
-		    ItemStack book = bookTile.getBook();
-		    if(!book.isEmpty() && book.getItem() instanceof ItemLinking) {
-		        return book;
-            }
+			ItemStack itemstack = linkbook.getBook();
+			if (!itemstack.isEmpty() && itemstack.getItem() instanceof ItemLinking) {
+				return itemstack;
+			}
+		} else if (bookTile != null) {
+			ItemStack book = bookTile.getBook();
+			if (!book.isEmpty() && book.getItem() instanceof ItemLinking) {
+				return book;
+			}
 		} else if (slot != null) {
 			ItemStack itemstack = inventoryplayer.getStackInSlot(slot);
 			if (!itemstack.isEmpty() && itemstack.getItem() instanceof ItemLinking) {
@@ -108,7 +108,8 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	public void setCurrentPageIndex(int index) {
 		currentpage = ItemStack.EMPTY;
 		currentpageIndex = 0;
-		if (index < 0) index = 0;
+		if (index < 0)
+			index = 0;
 		List<ItemStack> pagelist = getPageList();
 		if (pagelist != null && index >= pagelist.size()) {
 			index = pagelist.size();
@@ -137,7 +138,8 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	@Nullable
 	private List<ItemStack> getPageList() {
 		ItemStack book = getBook();
-		if (book.isEmpty()) return null;
+		if (book.isEmpty())
+			return null;
 		if (book.getItem() instanceof IItemPageProvider) {
 			return ((IItemPageProvider) book.getItem()).getPageList(this.inventoryplayer.player, book);
 		}
@@ -160,18 +162,19 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	}
 
 	public int getInventorySize() {
-	    if(linkbook != null && !linkbook.isDead) {
-	        return 1;
-        } else if(bookTile != null) {
-	        return 1;
-        }
-        return 0;
+		if (linkbook != null && !linkbook.isDead) {
+			return 1;
+		} else if (bookTile != null) {
+			return 1;
+		}
+		return 0;
 	}
 
 	@Override
 	@Nonnull
 	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
-		if(slotId >= this.inventorySlots.size()) return ItemStack.EMPTY;
+		if (slotId >= this.inventorySlots.size())
+			return ItemStack.EMPTY;
 		return super.slotClick(slotId, dragType, clickTypeIn, player);
 	}
 
@@ -184,13 +187,13 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 			} else if (!book.isEmpty() && this.inventorySlots.size() != 1) {
 				this.inventorySlots.clear();
 				this.inventoryItemStacks.clear();
-                IItemHandlerModifiable other = getCurrentOtherInventory();
+				IItemHandlerModifiable other = getCurrentOtherInventory();
 				addSlotToContainer(new SlotFiltered(other, other instanceof InventoryFilter ? (InventoryFilter) other : null, 0, 41, 21));
 			} else if ((book.isEmpty() && getCurrentOtherInventorySize() == 1 && this.inventorySlots.size() != 37)) {
 				this.inventorySlots.clear();
 				this.inventoryItemStacks.clear();
 				addInventorySlots();
-                IItemHandlerModifiable other = getCurrentOtherInventory();
+				IItemHandlerModifiable other = getCurrentOtherInventory();
 				addSlotToContainer(new SlotFiltered(other, other instanceof InventoryFilter ? (InventoryFilter) other : bookTile, 0, 80, 35));
 			} else if ((book.isEmpty() && getCurrentOtherInventorySize() == 0 && this.inventorySlots.size() != 36)) {
 				this.inventorySlots.clear();
@@ -246,7 +249,7 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 		}
 		if (packets.size() > 0) {
 			for (IContainerListener listener : this.listeners) {
-				if(listener instanceof EntityPlayerMP) {
+				if (listener instanceof EntityPlayerMP) {
 					for (IMessage message : packets) {
 						MystcraftPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) listener);
 					}
@@ -280,8 +283,10 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 
 	@Override
 	public Slot getSlot(int par1) {
-		if (par1 >= this.inventorySlots.size()) par1 = 0;
-		if (par1 < this.inventorySlots.size()) return this.inventorySlots.get(par1);
+		if (par1 >= this.inventorySlots.size())
+			par1 = 0;
+		if (par1 < this.inventorySlots.size())
+			return this.inventorySlots.get(par1);
 		return new Slot(inventoryplayer, inventoryplayer.currentItem, 0, 0);
 	}
 
@@ -294,10 +299,10 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 			this.setCurrentPageIndex(data.getInteger(Messages.SetCurrentPage));
 		}
 		if (data.hasKey(Messages.Link)) {
-		    if(bookTile != null) {
-		        bookTile.link(player);
-            } else if(linkbook != null) {
-		        linkbook.linkEntity(player);
+			if (bookTile != null) {
+				bookTile.link(player);
+			} else if (linkbook != null) {
+				linkbook.linkEntity(player);
 			} else if (slot != null) {
 				ItemStack itemstack = inventoryplayer.getStackInSlot(slot);
 				if (itemstack.getItem() instanceof ItemLinking) {
@@ -326,7 +331,8 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 		if (linkinfo == null) {
 			cached_permitted = null;
 		}
-		if (cached_permitted == null) return false;
+		if (cached_permitted == null)
+			return false;
 		return cached_permitted;
 	}
 
@@ -343,27 +349,27 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 
 	@Nullable
 	private IItemHandlerModifiable getCurrentOtherInventory() {
-	    if(linkbook != null && !linkbook.isDead) {
-	        return linkbook.createBookWrapper();
-        }
-        if(bookTile != null) {
-	        return (IItemHandlerModifiable) bookTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
-        }
-        return null;
-    }
+		if (linkbook != null && !linkbook.isDead) {
+			return linkbook.createBookWrapper();
+		}
+		if (bookTile != null) {
+			return (IItemHandlerModifiable) bookTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+		}
+		return null;
+	}
 
 	private int getCurrentOtherInventorySize() {
-	    if(linkbook != null && !linkbook.isDead) {
-	        return 1;
-        }
-        if(bookTile != null) {
-            IOInventory inv = (IOInventory) bookTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
-            if(inv != null && inv.getSlots() > 0) {
-                return 1;
-            }
-        }
-        return 0;
-    }
+		if (linkbook != null && !linkbook.isDead) {
+			return 1;
+		}
+		if (bookTile != null) {
+			IOInventory inv = (IOInventory) bookTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+			if (inv != null && inv.getSlots() > 0) {
+				return 1;
+			}
+		}
+		return 0;
+	}
 
 	@Override
 	@Nonnull
@@ -379,20 +385,20 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 			SlotCollection maininv;
 			SlotCollection hotbar;
 			ItemStack book = getBook();
-			if(!book.isEmpty()) {
-			    if(linkbook != null && !linkbook.isDead) {
-			        internal = new SlotCollection(this, 0, 1);
-			        internal.pushTargetFront(new TargetInventory(inventoryplayer));
-			        collections.add(internal);
-                } else if(bookTile != null) {
-                    IOInventory inv = (IOInventory) bookTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
-                    if(inv != null && inv.getSlots() > 0) {
-                        internal = new SlotCollection(this, inv.getSlots() - 1, inv.getSlots());
-                        internal.pushTargetFront(new TargetInventory(inventoryplayer));
-                        collections.add(internal);
-                    }
-                }
-            }
+			if (!book.isEmpty()) {
+				if (linkbook != null && !linkbook.isDead) {
+					internal = new SlotCollection(this, 0, 1);
+					internal.pushTargetFront(new TargetInventory(inventoryplayer));
+					collections.add(internal);
+				} else if (bookTile != null) {
+					IOInventory inv = (IOInventory) bookTile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
+					if (inv != null && inv.getSlots() > 0) {
+						internal = new SlotCollection(this, inv.getSlots() - 1, inv.getSlots());
+						internal.pushTargetFront(new TargetInventory(inventoryplayer));
+						collections.add(internal);
+					}
+				}
+			}
 			if (book.isEmpty()) {
 				maininv = new SlotCollection(this, 0, 27);
 				hotbar = new SlotCollection(this, 27, 27 + 9);
@@ -409,7 +415,8 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 			}
 
 			for (SlotCollection collection : collections) {
-				if (!collection.contains(i)) continue;
+				if (!collection.contains(i))
+					continue;
 				collection.onShiftClick(original);
 				break;
 			}
@@ -431,14 +438,16 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 	@Override
 	public String getBookTitle() {
 		ItemStack book = getBook();
-		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking)) return "";
+		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking))
+			return "";
 		return ((ItemLinking) book.getItem()).getTitle(book);
 	}
 
 	@Override
 	public Collection<String> getBookAuthors() {
 		ItemStack book = getBook();
-		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking)) return Collections.emptySet();
+		if (book.isEmpty() || !(book.getItem() instanceof ItemLinking))
+			return Collections.emptySet();
 		return ((ItemLinking) book.getItem()).getAuthors(book);
 	}
 }

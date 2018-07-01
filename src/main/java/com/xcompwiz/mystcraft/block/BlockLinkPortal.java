@@ -33,7 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockLinkPortal extends BlockBreakable {
 
-    public static final PropertyEnum<EnumFacing> SOURCE_DIRECTION = PropertyEnum.create("source", EnumFacing.class);
+	public static final PropertyEnum<EnumFacing> SOURCE_DIRECTION = PropertyEnum.create("source", EnumFacing.class);
 	public static final PropertyBool IS_PART_OF_PORTAL = PropertyBool.create("active");
 
 	public static final PropertyEnum<EnumFacing.Axis> RENDER_ROTATION = PropertyEnum.create("renderface", EnumFacing.Axis.class); //If, render specific facing
@@ -46,148 +46,146 @@ public class BlockLinkPortal extends BlockBreakable {
 		setSoundType(SoundType.GLASS);
 		setLightLevel(0.75F);
 		setUnlocalizedName("myst.linkportal");
-		setDefaultState(this.blockState.getBaseState()
-                .withProperty(HAS_ROTATION, false).withProperty(RENDER_ROTATION, EnumFacing.Axis.X) //Doesn't matter normally, but is required.
-                .withProperty(IS_PART_OF_PORTAL, false).withProperty(SOURCE_DIRECTION, EnumFacing.DOWN));
+		setDefaultState(this.blockState.getBaseState().withProperty(HAS_ROTATION, false).withProperty(RENDER_ROTATION, EnumFacing.Axis.X) //Doesn't matter normally, but is required.
+				.withProperty(IS_PART_OF_PORTAL, false).withProperty(SOURCE_DIRECTION, EnumFacing.DOWN));
 	}
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-		if(meta == 0) {
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		if (meta == 0) {
 			return getDefaultState();
 		} else {
 			int sh = meta - 1;
 			return getDefaultState().withProperty(IS_PART_OF_PORTAL, true).withProperty(SOURCE_DIRECTION, EnumFacing.values()[sh]);
 		}
-    }
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
+	@Override
+	public int getMetaFromState(IBlockState state) {
 		int side = state.getValue(SOURCE_DIRECTION).ordinal();
 		return state.getValue(IS_PART_OF_PORTAL) ? side + 1 : 0;
-    }
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this,
-                SOURCE_DIRECTION, IS_PART_OF_PORTAL, HAS_ROTATION, RENDER_ROTATION);
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, SOURCE_DIRECTION, IS_PART_OF_PORTAL, HAS_ROTATION, RENDER_ROTATION);
+	}
 
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        List<EnumFacing.Axis> validAxis = Lists.newArrayList();
+		List<EnumFacing.Axis> validAxis = Lists.newArrayList();
 
-        boolean has = true;
-        EnumFacing offset = EnumFacing.NORTH;
-        EnumFacing.Axis axis = EnumFacing.Axis.X;
-        for (int i = 0; i < 4; i++) {
-            offset = offset.rotateAround(axis);
-            if(!isPortalBlock(worldIn.getBlockState(pos.offset(offset)))) {
-                has = false;
-                break;
-            }
-        }
-        if(has) {
-            validAxis.add(axis);
-        }
+		boolean has = true;
+		EnumFacing offset = EnumFacing.NORTH;
+		EnumFacing.Axis axis = EnumFacing.Axis.X;
+		for (int i = 0; i < 4; i++) {
+			offset = offset.rotateAround(axis);
+			if (!isPortalBlock(worldIn.getBlockState(pos.offset(offset)))) {
+				has = false;
+				break;
+			}
+		}
+		if (has) {
+			validAxis.add(axis);
+		}
 
-        has = true;
-        offset = EnumFacing.NORTH;
-        axis = EnumFacing.Axis.Y;
-        for (int i = 0; i < 4; i++) {
-            offset = offset.rotateAround(axis);
-            if(!isPortalBlock(worldIn.getBlockState(pos.offset(offset)))) {
-                has = false;
-                break;
-            }
-        }
-        if(has) {
-            validAxis.add(axis);
-        }
+		has = true;
+		offset = EnumFacing.NORTH;
+		axis = EnumFacing.Axis.Y;
+		for (int i = 0; i < 4; i++) {
+			offset = offset.rotateAround(axis);
+			if (!isPortalBlock(worldIn.getBlockState(pos.offset(offset)))) {
+				has = false;
+				break;
+			}
+		}
+		if (has) {
+			validAxis.add(axis);
+		}
 
-        has = true;
-        offset = EnumFacing.UP;
-        axis = EnumFacing.Axis.Z;
-        for (int i = 0; i < 4; i++) {
-            offset = offset.rotateAround(axis);
-            if(!isPortalBlock(worldIn.getBlockState(pos.offset(offset)))) {
-                has = false;
-                break;
-            }
-        }
-        if(has) {
-            validAxis.add(axis);
-        }
-        state = state.withProperty(HAS_ROTATION, validAxis.size() == 1);
-        if(validAxis.size() == 1) {
-            state = state.withProperty(RENDER_ROTATION, validAxis.get(0));
-        }
+		has = true;
+		offset = EnumFacing.UP;
+		axis = EnumFacing.Axis.Z;
+		for (int i = 0; i < 4; i++) {
+			offset = offset.rotateAround(axis);
+			if (!isPortalBlock(worldIn.getBlockState(pos.offset(offset)))) {
+				has = false;
+				break;
+			}
+		}
+		if (has) {
+			validAxis.add(axis);
+		}
+		state = state.withProperty(HAS_ROTATION, validAxis.size() == 1);
+		if (validAxis.size() == 1) {
+			state = state.withProperty(RENDER_ROTATION, validAxis.get(0));
+		}
 		return state;
 	}
 
 	private boolean isPortalBlock(IBlockState state) {
-	    return state.getBlock().equals(ModBlocks.portal) || state.getBlock().equals(ModBlocks.crystal);
-    }
+		return state.getBlock().equals(ModBlocks.portal) || state.getBlock().equals(ModBlocks.crystal);
+	}
 
 	@Nullable
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-        return NULL_AABB;
-    }
+	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		return NULL_AABB;
+	}
 
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        float xmin = 0.25F;
-        float xmax = 0.75F;
-        float ymin = 0.25F;
-        float ymax = 0.75F;
-        float zmin = 0.25F;
-        float zmax = 0.75F;
-        if (PortalUtils.isValidLinkPortalBlock(source.getBlockState(pos.offset(EnumFacing.WEST))) > 0) {
-            xmin = 0;
-        }
-        if (PortalUtils.isValidLinkPortalBlock(source.getBlockState(pos.offset(EnumFacing.EAST))) > 0) {
-            xmax = 1;
-        }
-        if (PortalUtils.isValidLinkPortalBlock(source.getBlockState(pos.offset(EnumFacing.DOWN))) > 0) {
-            ymin = 0;
-        }
-        if (PortalUtils.isValidLinkPortalBlock(source.getBlockState(pos.offset(EnumFacing.UP))) > 0) {
-            ymax = 1;
-        }
-        if (PortalUtils.isValidLinkPortalBlock(source.getBlockState(pos.offset(EnumFacing.NORTH))) > 0) {
-            zmin = 0;
-        }
-        if (PortalUtils.isValidLinkPortalBlock(source.getBlockState(pos.offset(EnumFacing.SOUTH))) > 0) {
-            zmax = 1;
-        }
-        return new AxisAlignedBB(xmin, ymin, zmin, xmax, ymax, zmax);
-    }
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		float xmin = 0.25F;
+		float xmax = 0.75F;
+		float ymin = 0.25F;
+		float ymax = 0.75F;
+		float zmin = 0.25F;
+		float zmax = 0.75F;
+		if (PortalUtils.isValidLinkPortalBlock(source.getBlockState(pos.offset(EnumFacing.WEST))) > 0) {
+			xmin = 0;
+		}
+		if (PortalUtils.isValidLinkPortalBlock(source.getBlockState(pos.offset(EnumFacing.EAST))) > 0) {
+			xmax = 1;
+		}
+		if (PortalUtils.isValidLinkPortalBlock(source.getBlockState(pos.offset(EnumFacing.DOWN))) > 0) {
+			ymin = 0;
+		}
+		if (PortalUtils.isValidLinkPortalBlock(source.getBlockState(pos.offset(EnumFacing.UP))) > 0) {
+			ymax = 1;
+		}
+		if (PortalUtils.isValidLinkPortalBlock(source.getBlockState(pos.offset(EnumFacing.NORTH))) > 0) {
+			zmin = 0;
+		}
+		if (PortalUtils.isValidLinkPortalBlock(source.getBlockState(pos.offset(EnumFacing.SOUTH))) > 0) {
+			zmax = 1;
+		}
+		return new AxisAlignedBB(xmin, ymin, zmin, xmax, ymax, zmax);
+	}
 
-    @Override
+	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
 	}
 
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-	    if(!blockState.getValue(HAS_ROTATION)) {
-	        IBlockState offset = blockAccess.getBlockState(pos.offset(side));
-	        offset = offset.getActualState(blockAccess, pos.offset(side));
-	        if(isPortalBlock(offset) && (offset.getBlock().equals(ModBlocks.crystal) || !offset.getValue(HAS_ROTATION))) {
-	            return false;
-            }
-            return true;
-        }
-        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-    }
+	@Override
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		if (!blockState.getValue(HAS_ROTATION)) {
+			IBlockState offset = blockAccess.getBlockState(pos.offset(side));
+			offset = offset.getActualState(blockAccess, pos.offset(side));
+			if (isPortalBlock(offset) && (offset.getBlock().equals(ModBlocks.crystal) || !offset.getValue(HAS_ROTATION))) {
+				return false;
+			}
+			return true;
+		}
+		return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+	}
 
-    //Hellfire> referenced now from ModBlocks -> custom IBlockColor implementation
+	//Hellfire> referenced now from ModBlocks -> custom IBlockColor implementation
 	@SideOnly(Side.CLIENT)
 	public static int colorMultiplier(IBlockAccess blockAccess, BlockPos pos) {
 		TileEntity entity = PortalUtils.getTileEntity(blockAccess, pos);
@@ -200,7 +198,8 @@ public class BlockLinkPortal extends BlockBreakable {
 
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if (worldIn.isRemote) return;
+		if (worldIn.isRemote)
+			return;
 		PortalUtils.validatePortal(worldIn, pos);
 	}
 
@@ -216,42 +215,45 @@ public class BlockLinkPortal extends BlockBreakable {
 
 	@Override
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-		if(worldIn.isRemote) return;
+		if (worldIn.isRemote)
+			return;
 		TileEntity te = PortalUtils.getTileEntity(worldIn, pos);
-		if(te == null || !(te instanceof TileEntityBookReceptacle)) {
+		if (te == null || !(te instanceof TileEntityBookReceptacle)) {
 			worldIn.setBlockToAir(pos);
 			return;
 		}
 		TileEntityBookReceptacle container = (TileEntityBookReceptacle) te;
-		if(container.getBook().isEmpty()) {
+		if (container.getBook().isEmpty()) {
 			worldIn.setBlockToAir(pos);
 			return;
 		}
 		ItemStack book = container.getBook();
-		if(book.getItem() instanceof IItemPortalActivator) {
+		if (book.getItem() instanceof IItemPortalActivator) {
 			((IItemPortalActivator) book.getItem()).onPortalCollision(book, worldIn, entityIn, pos);
 		}
 	}
 
 	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-		if (worldIn.isRemote) return;
+		if (worldIn.isRemote)
+			return;
 		PortalUtils.validatePortal(worldIn, pos);
 	}
 
 	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
 		super.onBlockAdded(worldIn, pos, state);
-		if(worldIn.isRemote) return;
+		if (worldIn.isRemote)
+			return;
 		//Hellfire> wtf are we doing here.
 	}
 
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        super.breakBlock(worldIn, pos, state);
-        // if(world.isRemote) return;
-        // validate(world, pos);
-    }
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		super.breakBlock(worldIn, pos, state);
+		// if(world.isRemote) return;
+		// validate(world, pos);
+	}
 
 	//	/**
 	//	 * A randomly called display update to be able to add particles or other items for display

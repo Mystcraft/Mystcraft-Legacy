@@ -17,14 +17,14 @@ import net.minecraft.world.chunk.Chunk;
 
 public class EffectDecayBasic implements IEnvironmentalEffect {
 
-	private InstabilityDirector	controller;
-	private int						updateLCG;
+	private InstabilityDirector controller;
+	private int updateLCG;
 
-	private int						maxscore	= 1000000;
+	private int maxscore = 1000000;
 	private DecayHandler.DecayType decayType;
-	private int						min;
-	private Integer					max;
-	private Set<Material>			bannedmats	= new HashSet<Material>();
+	private int min;
+	private Integer max;
+	private Set<Material> bannedmats = new HashSet<Material>();
 
 	public EffectDecayBasic(InstabilityDirector controller, DecayHandler.DecayType type, int min, Integer max) {
 		this.controller = controller;
@@ -42,9 +42,11 @@ public class EffectDecayBasic implements IEnvironmentalEffect {
 	protected void placeBlock(World world, BlockPos pos, int minY, Integer maxY, DecayHandler.DecayType type) {
 		if (maxY == null) {
 			maxY = world.getHeight(pos.getX(), pos.getZ());
-			if (maxY <= minY) maxY = world.provider.getAverageGroundLevel();
+			if (maxY <= minY)
+				maxY = world.provider.getAverageGroundLevel();
 		}
-		if (maxY < minY) return;
+		if (maxY < minY)
+			return;
 		if (maxY == minY) {
 			pos = new BlockPos(pos.getX(), minY, pos.getZ());
 		} else {

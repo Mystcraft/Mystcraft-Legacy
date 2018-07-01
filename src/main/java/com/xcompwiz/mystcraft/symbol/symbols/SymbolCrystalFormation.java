@@ -41,8 +41,8 @@ public class SymbolCrystalFormation extends SymbolBase {
 
 	private static class Populator implements IPopulate {
 
-		private WorldGeneratorAdv	gen;
-		private int					rate;
+		private WorldGeneratorAdv gen;
+		private int rate;
 
 		Populator(WorldGeneratorAdv gen) {
 			this.gen = gen;

@@ -10,8 +10,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderModel<T extends TileEntity> extends TileEntitySpecialRenderer<T> {
 
-	private ModelBase			model;
-	private ResourceLocation	texture;
+	private ModelBase model;
+	private ResourceLocation texture;
 
 	public RenderModel(ModelBase model, ResourceLocation texture) {
 		this.model = model;

@@ -4,7 +4,7 @@ import com.xcompwiz.mystcraft.client.gui.element.data.IGuiIcon;
 
 public class GuiElementIcon extends GuiElement {
 
-	private IGuiIcon			icon;
+	private IGuiIcon icon;
 
 	public GuiElementIcon(IGuiIcon icon, int guiLeft, int guiTop, int xSize, int ySize) {
 		super(guiLeft, guiTop, xSize, ySize);

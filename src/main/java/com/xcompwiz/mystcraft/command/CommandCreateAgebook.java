@@ -40,7 +40,9 @@ public class CommandCreateAgebook extends CommandBaseAdv {
 			dimId = player.dimension;
 		}
 
-		if (!Mystcraft.registeredDims.contains(dimId) || AgeData.getAge(dimId, false) == null) { throw new CommandException("Cannot create Descriptive Books for non-Mystcraft Dimensions", new Object[0]); }
+		if (!Mystcraft.registeredDims.contains(dimId) || AgeData.getAge(dimId, false) == null) {
+			throw new CommandException("Cannot create Descriptive Books for non-Mystcraft Dimensions", new Object[0]);
+		}
 		ItemStack itemstack = new ItemStack(ModItems.agebook);
 		ItemAgebook.initializeCompound(itemstack, dimId, AgeData.getAge(dimId, false));
 		if (player.inventory.addItemStackToInventory(itemstack)) {

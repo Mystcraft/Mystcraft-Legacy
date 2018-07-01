@@ -26,7 +26,7 @@ public class MPacketSpawnLightningBolt extends PacketBase<MPacketSpawnLightningB
 		this.y = adv.posY;
 		this.z = adv.posZ;
 		Color c = adv.getColor();
-		if(c != null) {
+		if (c != null) {
 			colored = true;
 			r = c.r;
 			g = c.g;
@@ -43,7 +43,7 @@ public class MPacketSpawnLightningBolt extends PacketBase<MPacketSpawnLightningB
 		this.y = buf.readDouble();
 		this.z = buf.readDouble();
 		this.colored = buf.readBoolean();
-		if(this.colored) {
+		if (this.colored) {
 			this.r = buf.readFloat();
 			this.g = buf.readFloat();
 			this.b = buf.readFloat();
@@ -57,7 +57,7 @@ public class MPacketSpawnLightningBolt extends PacketBase<MPacketSpawnLightningB
 		buf.writeDouble(this.y);
 		buf.writeDouble(this.z);
 		buf.writeBoolean(this.colored);
-		if(this.colored) {
+		if (this.colored) {
 			buf.writeFloat(this.r);
 			buf.writeFloat(this.g);
 			buf.writeFloat(this.b);

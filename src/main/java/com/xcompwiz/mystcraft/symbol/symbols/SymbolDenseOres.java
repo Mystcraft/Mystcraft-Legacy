@@ -34,14 +34,14 @@ public class SymbolDenseOres extends SymbolBase {
 
 	private class Populator implements IPopulate {
 
-		WorldGenerator	coalGen			= new WorldGenMinable(Blocks.COAL_ORE.getDefaultState(),     16);
-		WorldGenerator	ironGen			= new WorldGenMinable(Blocks.IRON_ORE.getDefaultState(),     8);
-		WorldGenerator	goldGen			= new WorldGenMinable(Blocks.GOLD_ORE.getDefaultState(),     8);
-		WorldGenerator	redstoneGen		= new WorldGenMinable(Blocks.REDSTONE_ORE.getDefaultState(), 7);
-		WorldGenerator	diamondGen		= new WorldGenMinable(Blocks.DIAMOND_ORE.getDefaultState(),  7);
-		WorldGenerator	lapisGen		= new WorldGenMinable(Blocks.LAPIS_ORE.getDefaultState(),    6);
-		WorldGenerator	emeraldGen		= new WorldGenMinable(Blocks.EMERALD_ORE.getDefaultState(),  1);
-		WorldGenerator	netherQuartzGen	= new WorldGenMinable(Blocks.QUARTZ_ORE.getDefaultState(),   13, BlockMatcher.forBlock(Blocks.NETHERRACK));
+		WorldGenerator coalGen = new WorldGenMinable(Blocks.COAL_ORE.getDefaultState(), 16);
+		WorldGenerator ironGen = new WorldGenMinable(Blocks.IRON_ORE.getDefaultState(), 8);
+		WorldGenerator goldGen = new WorldGenMinable(Blocks.GOLD_ORE.getDefaultState(), 8);
+		WorldGenerator redstoneGen = new WorldGenMinable(Blocks.REDSTONE_ORE.getDefaultState(), 7);
+		WorldGenerator diamondGen = new WorldGenMinable(Blocks.DIAMOND_ORE.getDefaultState(), 7);
+		WorldGenerator lapisGen = new WorldGenMinable(Blocks.LAPIS_ORE.getDefaultState(), 6);
+		WorldGenerator emeraldGen = new WorldGenMinable(Blocks.EMERALD_ORE.getDefaultState(), 1);
+		WorldGenerator netherQuartzGen = new WorldGenMinable(Blocks.QUARTZ_ORE.getDefaultState(), 13, BlockMatcher.forBlock(Blocks.NETHERRACK));
 
 		@Override
 		public boolean populate(World worldObj, Random rand, int xPos, int zPos, boolean flag) {

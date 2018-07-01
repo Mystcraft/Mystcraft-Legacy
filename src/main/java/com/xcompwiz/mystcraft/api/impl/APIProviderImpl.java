@@ -22,7 +22,7 @@ import com.xcompwiz.mystcraft.api.impl.word.WordAPIWrapper;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 
 public class APIProviderImpl implements APIInstanceProvider {
-	private String	modname;
+	private String modname;
 
 	public APIProviderImpl(String modname) {
 		this.modname = modname;
@@ -32,14 +32,16 @@ public class APIProviderImpl implements APIInstanceProvider {
 		return modname;
 	}
 
-	private HashMap<String, Object>	instances	= new HashMap<String, Object>();
+	private HashMap<String, Object> instances = new HashMap<String, Object>();
 
 	@Override
 	public synchronized Object getAPIInstance(String api) throws APIUndefined, APIVersionUndefined, APIVersionRemoved {
 		Object ret = instances.get(api);
-		if (ret != null) return ret;
+		if (ret != null)
+			return ret;
 		String[] splitName = api.split("-");
-		if (splitName.length != 2) throw new APIUndefined(api);
+		if (splitName.length != 2)
+			throw new APIUndefined(api);
 		String apiname = splitName[0];
 		int version = Integer.parseInt(splitName[1]);
 		ret = constructAPIWrapper(modname, apiname, version);
@@ -47,10 +49,11 @@ public class APIProviderImpl implements APIInstanceProvider {
 		return ret;
 	}
 
-	private static HashMap<String, HashMap<Integer, WrapperBuilder>>	apiCtors;
+	private static HashMap<String, HashMap<Integer, WrapperBuilder>> apiCtors;
 
 	public static void init() {
-		if (apiCtors != null) return;
+		if (apiCtors != null)
+			return;
 		apiCtors = new HashMap<String, HashMap<Integer, WrapperBuilder>>();
 
 		getCtors("dimension").put(1, new WrapperBuilder(DimensionAPIWrapper.class));
@@ -78,12 +81,16 @@ public class APIProviderImpl implements APIInstanceProvider {
 	}
 
 	private static Object constructAPIWrapper(String owner, String apiname, int version) throws APIUndefined, APIVersionUndefined, APIVersionRemoved {
-		if (apiCtors == null) throw new RuntimeException("Something is broken. The Mystcraft API Provider hasn't constructed properly.");
+		if (apiCtors == null)
+			throw new RuntimeException("Something is broken. The Mystcraft API Provider hasn't constructed properly.");
 		HashMap<Integer, WrapperBuilder> ctors = apiCtors.get(apiname);
-		if (ctors == null) throw new APIUndefined(apiname);
-		if (!ctors.containsKey(version)) throw new APIVersionUndefined(apiname + "-" + version);
+		if (ctors == null)
+			throw new APIUndefined(apiname);
+		if (!ctors.containsKey(version))
+			throw new APIVersionUndefined(apiname + "-" + version);
 		WrapperBuilder ctor = ctors.get(version);
-		if (ctor == null) throw new APIVersionRemoved(apiname + "-" + version);
+		if (ctor == null)
+			throw new APIVersionRemoved(apiname + "-" + version);
 		try {
 			return ctor.newInstance(owner);
 		} catch (Exception e) {

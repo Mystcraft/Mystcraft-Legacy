@@ -19,14 +19,14 @@ public class ContainerFolder extends ContainerBase implements IGuiMessageHandler
 
 	public static class Messages {
 
-		public static final String	AddToSurface				= "AddToSurface";
-		public static final String	RemoveFromOrderedCollection	= "RemoveFromOrderedCollection";
-		public static final String	RemoveFromCollection		= "RemoveFromCollection";
+		public static final String AddToSurface = "AddToSurface";
+		public static final String RemoveFromOrderedCollection = "RemoveFromOrderedCollection";
+		public static final String RemoveFromCollection = "RemoveFromCollection";
 
 	}
 
-	private InventoryPlayer	playerinv;
-	private int				slot;
+	private InventoryPlayer playerinv;
+	private int slot;
 
 	public ContainerFolder(InventoryPlayer inventoryplayer, int slot) {
 		this.playerinv = inventoryplayer;
@@ -42,8 +42,8 @@ public class ContainerFolder extends ContainerBase implements IGuiMessageHandler
 			if (slot == j) {
 				addSlotToContainer(new SlotBanned(inventoryplayer, j, 8 + j * 18, 135 + 58));
 			} else {
-                addSlotToContainer(new Slot(inventoryplayer, j, 8 + j * 18, 135 + 58));
-            }
+				addSlotToContainer(new Slot(inventoryplayer, j, 8 + j * 18, 135 + 58));
+			}
 		}
 
 		SlotCollection maininv = new SlotCollection(this, 0, 27);
@@ -61,7 +61,7 @@ public class ContainerFolder extends ContainerBase implements IGuiMessageHandler
 	}
 
 	@Override
-    @Nonnull
+	@Nonnull
 	public ItemStack getPageCollection() {
 		return getInventoryItem();
 	}
@@ -74,8 +74,10 @@ public class ContainerFolder extends ContainerBase implements IGuiMessageHandler
 	@Nullable
 	public String getTabItemName() {
 		ItemStack itemstack = getInventoryItem();
-		if (itemstack.isEmpty()) return null;
-		if (itemstack.getItem() instanceof IItemRenameable) return ((IItemRenameable) itemstack.getItem()).getDisplayName(playerinv.player, itemstack);
+		if (itemstack.isEmpty())
+			return null;
+		if (itemstack.getItem() instanceof IItemRenameable)
+			return ((IItemRenameable) itemstack.getItem()).getDisplayName(playerinv.player, itemstack);
 		return null;
 	}
 
@@ -87,20 +89,25 @@ public class ContainerFolder extends ContainerBase implements IGuiMessageHandler
 	@Override
 	public void processMessage(@Nonnull EntityPlayer player, @Nonnull NBTTagCompound data) {
 		if (data.hasKey(Messages.RemoveFromCollection)) {
-			if (!player.inventory.getItemStack().isEmpty()) return;
+			if (!player.inventory.getItemStack().isEmpty())
+				return;
 			ItemStack page = new ItemStack(data.getCompoundTag(Messages.RemoveFromCollection));
 			ItemStack itemstack = removePageFromSurface(player, this.getInventoryItem(), page);
 			player.inventory.setItemStack(itemstack);
 		}
 		if (data.hasKey(Messages.RemoveFromOrderedCollection)) {
-			if (!player.inventory.getItemStack().isEmpty()) return;
+			if (!player.inventory.getItemStack().isEmpty())
+				return;
 			int index = data.getInteger(Messages.RemoveFromOrderedCollection);
 			player.inventory.setItemStack(removePageFromSurface(player, this.getInventoryItem(), index));
 		}
 		if (data.hasKey(Messages.AddToSurface)) {
-			if (player.inventory.getItemStack().isEmpty()) return;
-			if (!data.hasKey("Index")) return;
-			if (this.getInventoryItem().isEmpty()) return;
+			if (player.inventory.getItemStack().isEmpty())
+				return;
+			if (!data.hasKey("Index"))
+				return;
+			if (this.getInventoryItem().isEmpty())
+				return;
 			boolean single = data.getBoolean("Single");
 			int index = data.getInteger("Index");
 			if (single) {
@@ -109,10 +116,10 @@ public class ContainerFolder extends ContainerBase implements IGuiMessageHandler
 				clone.setCount(1);
 				ItemStack returned = placePageOnSurface(player, this.getInventoryItem(), clone, index);
 				if (returned.isEmpty() || stack.getCount() == 1) {
-				    stack.shrink(1);
+					stack.shrink(1);
 					if (stack.getCount() <= 0) {
-					    stack = returned;
-                    }
+						stack = returned;
+					}
 					player.inventory.setItemStack(stack);
 				} else {
 					placePageOnSurface(player, this.getInventoryItem(), returned, index);
@@ -124,31 +131,41 @@ public class ContainerFolder extends ContainerBase implements IGuiMessageHandler
 	}
 
 	//XXX: These functions are identical to the ones in TileEntityDesk
-    @Nonnull
+	@Nonnull
 	private ItemStack placePageOnSurface(EntityPlayer player, @Nonnull ItemStack itemstack, @Nonnull ItemStack page, int index) {
-		if (itemstack.isEmpty()) return page;
+		if (itemstack.isEmpty())
+			return page;
 		ItemStack result = page;
-		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).addPage(player, itemstack, page);
-		if (itemstack.getItem() instanceof IItemOrderablePageProvider) result = ((IItemOrderablePageProvider) itemstack.getItem()).setPage(player, itemstack, page, index);
-		if (result == page) return result;
+		if (itemstack.getItem() instanceof IItemPageCollection)
+			result = ((IItemPageCollection) itemstack.getItem()).addPage(player, itemstack, page);
+		if (itemstack.getItem() instanceof IItemOrderablePageProvider)
+			result = ((IItemOrderablePageProvider) itemstack.getItem()).setPage(player, itemstack, page, index);
+		if (result == page)
+			return result;
 		return result;
 	}
 
-    @Nonnull
+	@Nonnull
 	private ItemStack removePageFromSurface(EntityPlayer player, @Nonnull ItemStack itemstack, int index) {
-		if (itemstack.isEmpty()) return ItemStack.EMPTY;
+		if (itemstack.isEmpty())
+			return ItemStack.EMPTY;
 		ItemStack result = ItemStack.EMPTY;
-		if (itemstack.getItem() instanceof IItemOrderablePageProvider) result = ((IItemOrderablePageProvider) itemstack.getItem()).removePage(player, itemstack, index);
-		if (result.isEmpty()) return result;
+		if (itemstack.getItem() instanceof IItemOrderablePageProvider)
+			result = ((IItemOrderablePageProvider) itemstack.getItem()).removePage(player, itemstack, index);
+		if (result.isEmpty())
+			return result;
 		return result;
 	}
 
-    @Nonnull
+	@Nonnull
 	private ItemStack removePageFromSurface(EntityPlayer player, @Nonnull ItemStack itemstack, @Nonnull ItemStack page) {
-		if (itemstack.isEmpty()) return ItemStack.EMPTY;
+		if (itemstack.isEmpty())
+			return ItemStack.EMPTY;
 		ItemStack result = ItemStack.EMPTY;
-		if (itemstack.getItem() instanceof IItemPageCollection) result = ((IItemPageCollection) itemstack.getItem()).remove(player, itemstack, page);
-		if (result.isEmpty()) return result;
+		if (itemstack.getItem() instanceof IItemPageCollection)
+			result = ((IItemPageCollection) itemstack.getItem()).remove(player, itemstack, page);
+		if (result.isEmpty())
+			return result;
 		return result;
 	}
 }

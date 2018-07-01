@@ -12,10 +12,10 @@ import net.minecraft.entity.Entity;
 
 public class ModelBookstand extends ModelBase {
 	// fields
-	ModelRenderer	leftarm;
-	ModelRenderer	post;
-	ModelRenderer	base;
-	ModelRenderer	rightarm;
+	ModelRenderer leftarm;
+	ModelRenderer post;
+	ModelRenderer base;
+	ModelRenderer rightarm;
 
 	public ModelBookstand() {
 		textureWidth = 64;

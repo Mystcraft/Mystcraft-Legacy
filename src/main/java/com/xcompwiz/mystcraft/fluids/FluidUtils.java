@@ -11,7 +11,8 @@ public final class FluidUtils {
 
 	@Nonnull
 	public static ItemStack emptyContainer(@Nonnull ItemStack container) {
-		if (container.isEmpty()) return ItemStack.EMPTY;
+		if (container.isEmpty())
+			return ItemStack.EMPTY;
 		if (container.getCount() > 1) {
 			container.splitStack(1);
 		}

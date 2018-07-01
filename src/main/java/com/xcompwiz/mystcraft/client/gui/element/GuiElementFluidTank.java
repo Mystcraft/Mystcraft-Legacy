@@ -18,10 +18,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiElementFluidTank extends GuiElement {
 
-	private List<String>		hovertext	= new ArrayList<>();
-	private boolean				mouseOver;
+	private List<String> hovertext = new ArrayList<>();
+	private boolean mouseOver;
 
-	private IFluidTankProvider	fluidprovider;
+	private IFluidTankProvider fluidprovider;
 
 	public GuiElementFluidTank(IGuiMessageHandler handler, Minecraft mc, int left, int top, int width, int height, IFluidTankProvider fluidprovider) {
 		super(left, top, width, height);
@@ -64,9 +64,11 @@ public class GuiElementFluidTank extends GuiElement {
 	private void renderTank(FluidStack fluidstack, int left, int top, int width, int height) {
 		drawGradientRect(left, top, left + width, top + height, 0x99000000, 0x99000000);
 		drawGradientRect(left + 1, top + 1, left + width - 1, top + height - 1, 0xFFCCCCEE, 0xFF666699);
-		if (fluidstack == null) return;
+		if (fluidstack == null)
+			return;
 		float filled = fluidstack.amount / 1000.0F;
-		if (filled > 1.0F) filled = 1;
+		if (filled > 1.0F)
+			filled = 1;
 		int ltop = top + height - 1;
 		int lheight = (int) ((height - 2) * (filled));
 		GuiUtils.drawFluid(mc.renderEngine, fluidstack, left + 1, ltop - lheight, width - 2, lheight, this.getZLevel());

@@ -16,7 +16,7 @@ public class TileEntityBookstand extends TileEntityBookRotateable {
 	@Override
 	public void readCustomNBT(NBTTagCompound compound) {
 		super.readCustomNBT(compound);
-		if(compound.hasKey("Rotation")) {
+		if (compound.hasKey("Rotation")) {
 			this.setYaw(compound.getInteger("Rotation") + 270);
 		}
 	}

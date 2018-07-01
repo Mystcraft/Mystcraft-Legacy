@@ -31,18 +31,18 @@ public class InstabilityBonusManager {
 
 	}
 
-	public static final InstabilityBonusManager		ZERO			= new InstabilityBonusManager();
+	public static final InstabilityBonusManager ZERO = new InstabilityBonusManager();
 
-	private static Set<IInstabilityBonusProvider>	bonusproviders	= new HashSet<IInstabilityBonusProvider>();
+	private static Set<IInstabilityBonusProvider> bonusproviders = new HashSet<IInstabilityBonusProvider>();
 
 	public static void registerBonusProvider(IInstabilityBonusProvider provider) {
 		bonusproviders.add(provider);
 	}
 
-	private Set<IInstabilityBonus>	bonuses	= new HashSet<IInstabilityBonus>();
-	private int						total;
+	private Set<IInstabilityBonus> bonuses = new HashSet<IInstabilityBonus>();
+	private int total;
 
-	private AgeController			controller;
+	private AgeController controller;
 
 	public InstabilityBonusManager() {}
 

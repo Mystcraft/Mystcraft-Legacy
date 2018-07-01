@@ -7,7 +7,7 @@ import net.minecraft.client.particle.Particle;
 
 public final class ParticleUtils {
 
-	private static HashMap<String, ParticleProvider>	particlemappings	= new HashMap<>();
+	private static HashMap<String, ParticleProvider> particlemappings = new HashMap<>();
 
 	public static void registerParticle(String identifier, ParticleProvider provider) {
 		particlemappings.put(identifier, provider);
@@ -26,7 +26,8 @@ public final class ParticleUtils {
 			}
 
 			ParticleProvider provider = particlemappings.get(particle);
-			if (provider == null) return;
+			if (provider == null)
+				return;
 
 			double lx = mc.getRenderViewEntity().posX - x;
 			double ly = mc.getRenderViewEntity().posY - y;

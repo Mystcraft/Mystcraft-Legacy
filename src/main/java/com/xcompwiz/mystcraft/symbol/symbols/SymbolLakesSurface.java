@@ -40,7 +40,7 @@ public class SymbolLakesSurface extends SymbolBase {
 	}
 
 	private class Populator implements IPopulate {
-		private WorldGenerator	generator;
+		private WorldGenerator generator;
 
 		public Populator(WorldGenerator generator) {
 			this.generator = generator;

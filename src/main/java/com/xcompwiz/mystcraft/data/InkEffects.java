@@ -23,24 +23,34 @@ public class InkEffects {
 
 		@Override
 		public int compare(ItemStack paramT1, ItemStack paramT2) {
-			if (paramT1 == paramT2) return 0;
-			if (ItemStack.areItemStacksEqual(paramT1, paramT2)) return 0;
-			if (Item.getIdFromItem(paramT1.getItem()) < Item.getIdFromItem(paramT2.getItem())) return -1;
-			if (Item.getIdFromItem(paramT1.getItem()) > Item.getIdFromItem(paramT2.getItem())) return 1;
-			if (paramT1.getItemDamage() < paramT2.getItemDamage()) return -1;
-			if (paramT1.getItemDamage() > paramT2.getItemDamage()) return 1;
-			if (paramT1.getCount() < paramT2.getCount()) return -1;
-			if (paramT1.getCount() > paramT2.getCount()) return 1;
-			if (!paramT1.hasTagCompound()) return -1;
-			if (!paramT2.hasTagCompound()) return 1;
+			if (paramT1 == paramT2)
+				return 0;
+			if (ItemStack.areItemStacksEqual(paramT1, paramT2))
+				return 0;
+			if (Item.getIdFromItem(paramT1.getItem()) < Item.getIdFromItem(paramT2.getItem()))
+				return -1;
+			if (Item.getIdFromItem(paramT1.getItem()) > Item.getIdFromItem(paramT2.getItem()))
+				return 1;
+			if (paramT1.getItemDamage() < paramT2.getItemDamage())
+				return -1;
+			if (paramT1.getItemDamage() > paramT2.getItemDamage())
+				return 1;
+			if (paramT1.getCount() < paramT2.getCount())
+				return -1;
+			if (paramT1.getCount() > paramT2.getCount())
+				return 1;
+			if (!paramT1.hasTagCompound())
+				return -1;
+			if (!paramT2.hasTagCompound())
+				return 1;
 			return paramT1.toString().compareTo(paramT2.toString());
 		}
 	}
 
-	private static final HashMap<String, Color>			colormap			= new HashMap<String, Color>();
-	private static Map<ItemStack, Map<String, Float>>	itemstack_bindings	= new TreeMap<ItemStack, Map<String, Float>>(new CompareItemStack());
-	private static Map<String, Map<String, Float>>		oredict_bindings	= new HashMap<String, Map<String, Float>>();
-	private static Map<Item, Map<String, Float>>		itemId_bindings		= new HashMap<Item, Map<String, Float>>();
+	private static final HashMap<String, Color> colormap = new HashMap<String, Color>();
+	private static Map<ItemStack, Map<String, Float>> itemstack_bindings = new TreeMap<ItemStack, Map<String, Float>>(new CompareItemStack());
+	private static Map<String, Map<String, Float>> oredict_bindings = new HashMap<String, Map<String, Float>>();
+	private static Map<Item, Map<String, Float>> itemId_bindings = new HashMap<Item, Map<String, Float>>();
 
 	public static Set<String> getProperties() {
 		return colormap.keySet();
@@ -68,16 +78,20 @@ public class InkEffects {
 		Map<String, Float> map = itemstack_bindings.get(clone);
 		int[] ids = OreDictionary.getOreIDs(itemstack);
 		for (int id : ids) {
-			if (map == null) map = oredict_bindings.get(OreDictionary.getOreName(id));
+			if (map == null)
+				map = oredict_bindings.get(OreDictionary.getOreName(id));
 		}
-		if (map == null) map = itemId_bindings.get(itemstack.getItem());
-		if (map == null) return null;
+		if (map == null)
+			map = itemId_bindings.get(itemstack.getItem());
+		if (map == null)
+			return null;
 		return Collections.unmodifiableMap(map);
 	}
 
 	private static void addPropertyToMap(Map<String, Float> itemmap, String property, float probability) {
 		Float f = itemmap.get(property);
-		if (f != null) probability += f;
+		if (f != null)
+			probability += f;
 		itemmap.put(property, probability);
 
 		// Sanity checking
@@ -85,7 +99,9 @@ public class InkEffects {
 		for (Entry<String, Float> entry : itemmap.entrySet()) {
 			total += entry.getValue();
 		}
-		if (total > 1) { throw new RuntimeException("ERROR: Total of all ink property probabilities from an item cannot exceed 1!"); }
+		if (total > 1) {
+			throw new RuntimeException("ERROR: Total of all ink property probabilities from an item cannot exceed 1!");
+		}
 	}
 
 	public static void addPropertyToItem(ItemStack itemstack, String property, float probability) {

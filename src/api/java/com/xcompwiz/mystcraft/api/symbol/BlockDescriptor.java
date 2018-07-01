@@ -38,8 +38,10 @@ public final class BlockDescriptor {
 	 * @param flag Whether it is valid or not
 	 */
 	public void setUsable(BlockCategory key, boolean flag) {
-		if (key == null) return;
-		if (key == BlockCategory.ANY) return;
+		if (key == null)
+			return;
+		if (key == BlockCategory.ANY)
+			return;
 		this.useable.put(key.getName(), flag);
 	}
 
@@ -50,9 +52,12 @@ public final class BlockDescriptor {
 	 * @return True is valid, false otherwise
 	 */
 	public boolean isUsable(BlockCategory key) {
-		if (key == null) return true;
-		if (key == BlockCategory.ANY) return true;
-		if (!this.useable.containsKey(key.getName())) return false;
+		if (key == null)
+			return true;
+		if (key == BlockCategory.ANY)
+			return true;
+		if (!this.useable.containsKey(key.getName()))
+			return false;
 		return this.useable.get(key.getName());
 	}
 }

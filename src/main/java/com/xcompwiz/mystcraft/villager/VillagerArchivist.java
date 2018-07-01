@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 
 public class VillagerArchivist extends VillagerRegistry.VillagerProfession implements EntityVillager.ITradeList {
 
-	private List<IMerchantRecipeProvider> items	= new ArrayList<>();
+	private List<IMerchantRecipeProvider> items = new ArrayList<>();
 
 	private final ArchivistCareer career;
 
@@ -22,11 +22,9 @@ public class VillagerArchivist extends VillagerRegistry.VillagerProfession imple
 	public VillagerArchivist() {
 		//This constructor is deprecated cause its zombie-villager textures will default out to the minecraft one.
 		//Unless we wanna do a custom one, this is fine for now.
-		super(MystObjects.MystcraftModId + ":archivist",
-				"mystcraft:textures/villager/archivist.png",
-				"minecraft:textures/entity/zombie_villager/zombie_villager.png");
+		super(MystObjects.MystcraftModId + ":archivist", "mystcraft:textures/villager/archivist.png", "minecraft:textures/entity/zombie_villager/zombie_villager.png");
 
-        //Also hard-registers the career onto the profession. thus we only call it once.
+		//Also hard-registers the career onto the profession. thus we only call it once.
 		this.career = new ArchivistCareer(this, "archivist");
 	}
 
@@ -42,23 +40,23 @@ public class VillagerArchivist extends VillagerRegistry.VillagerProfession imple
 	}
 
 	@Override
-    //Select recipes to add to the villager trades (the recipeList param)
+	//Select recipes to add to the villager trades (the recipeList param)
 	public void addMerchantRecipe(IMerchant merchant, MerchantRecipeList recipeList, Random random) {
-	    for (IMerchantRecipeProvider provider : items) {
-	        recipeList.addAll(provider.createNewMerchantRecipes(merchant, random));
-        }
+		for (IMerchantRecipeProvider provider : items) {
+			recipeList.addAll(provider.createNewMerchantRecipes(merchant, random));
+		}
 
-        Iterator<MerchantRecipe> iterator = recipeList.iterator();
-	    List<MerchantRecipeMyst> toadd = new LinkedList<>();
-        while (iterator.hasNext()) {
-            MerchantRecipe recipe = iterator.next();
-            if (!(recipe instanceof MerchantRecipeMyst)) {
-                iterator.remove();
-                toadd.add(new MerchantRecipeMyst(recipe)); //Wrap and add later to avoid CMEs
-            }
-        }
-        recipeList.addAll(toadd);
-    }
+		Iterator<MerchantRecipe> iterator = recipeList.iterator();
+		List<MerchantRecipeMyst> toadd = new LinkedList<>();
+		while (iterator.hasNext()) {
+			MerchantRecipe recipe = iterator.next();
+			if (!(recipe instanceof MerchantRecipeMyst)) {
+				iterator.remove();
+				toadd.add(new MerchantRecipeMyst(recipe)); //Wrap and add later to avoid CMEs
+			}
+		}
+		recipeList.addAll(toadd);
+	}
 
 	public void registerRecipe(IMerchantRecipeProvider recipe) {
 		items.add(recipe);
@@ -66,9 +64,9 @@ public class VillagerArchivist extends VillagerRegistry.VillagerProfession imple
 
 	public static class ArchivistCareer extends VillagerRegistry.VillagerCareer {
 
-	    private final VillagerArchivist parent;
+		private final VillagerArchivist parent;
 
-        private ArchivistCareer(VillagerArchivist parent, String name) {
+		private ArchivistCareer(VillagerArchivist parent, String name) {
 			super(parent, name);
 			this.parent = parent;
 		}

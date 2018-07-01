@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelMeteor extends ModelBase {
-	ModelRenderer[]	parts	= new ModelRenderer[15];
+	ModelRenderer[] parts = new ModelRenderer[15];
 
 	public ModelMeteor() {
 		int step = 1;

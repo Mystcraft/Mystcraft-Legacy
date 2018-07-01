@@ -81,14 +81,14 @@ public class GuiInventoryFolder extends GuiContainerElements {
 		public void copy(PositionableItem collectionelement) {}
 	}
 
-	private ContainerFolder		container;
+	private ContainerFolder container;
 
-	private int					mainTop;
+	private int mainTop;
 
-	private static final int	surfaceY	= 132;
-	private static final int	buttonssize	= 18;
-	private static final int	invsizeX	= 176;
-	private static final int	invsizeY	= 80;
+	private static final int surfaceY = 132;
+	private static final int buttonssize = 18;
+	private static final int invsizeX = 176;
+	private static final int invsizeY = 80;
 
 	public GuiInventoryFolder(InventoryPlayer inventoryplayer, int slot) {
 		super(new ContainerFolder(inventoryplayer, slot));

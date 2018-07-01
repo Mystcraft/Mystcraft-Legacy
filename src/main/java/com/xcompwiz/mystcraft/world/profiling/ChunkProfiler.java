@@ -29,12 +29,12 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.storage.WorldSavedData;
 
 public class ChunkProfiler extends WorldSavedData {
-	public static final String	ID			= "MystChunkProfile";
-	private static final int	MAP_LENGTH	= 256 * 256;
+	public static final String ID = "MystChunkProfile";
+	private static final int MAP_LENGTH = 256 * 256;
 
 	public static class ChunkProfileData {
-		public int[]	data	= new int[MAP_LENGTH];
-		public int		count	= 0;
+		public int[] data = new int[MAP_LENGTH];
+		public int count = 0;
 
 		public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 			nbt.setInteger("count", count);
@@ -52,25 +52,25 @@ public class ChunkProfiler extends WorldSavedData {
 		}
 	}
 
-	private int								count;
-	private ChunkProfileData				solidmap;
-	private Map<String, ChunkProfileData>	blockmaps;
-	private static boolean					outputfiles		= false;
+	private int count;
+	private ChunkProfileData solidmap;
+	private Map<String, ChunkProfileData> blockmaps;
+	private static boolean outputfiles = false;
 
-	private HashMap<String, Float>			lastsplitcalc;
+	private HashMap<String, Float> lastsplitcalc;
 
-	private float							accessibility[]	= null;
-	private float							averages[]		= null;
-	private float							filtered[]		= null;
-	private boolean							nonzero[]		= null;
-	private boolean							solid[]			= null;
-	private float							rounded[]		= null;
-	private float							maximum			= 0;
-	private float							minimum			= 1;
-	private float							groundsum		= 0;
-	private int								groundcount		= 0;
+	private float accessibility[] = null;
+	private float averages[] = null;
+	private float filtered[] = null;
+	private boolean nonzero[] = null;
+	private boolean solid[] = null;
+	private float rounded[] = null;
+	private float maximum = 0;
+	private float minimum = 1;
+	private float groundsum = 0;
+	private int groundcount = 0;
 
-	private Semaphore						semaphore		= new Semaphore(1, true);
+	private Semaphore semaphore = new Semaphore(1, true);
 
 	static {
 		DebugUtils.register("global.profiler.file_output", new DebugValueCallback() {
@@ -105,8 +105,10 @@ public class ChunkProfiler extends WorldSavedData {
 	}
 
 	public int calculateInstability() {
-		if (outputfiles) outputFiles();
-		if (!InstabilityBlockManager.isBaselineConstructed()) return 0;
+		if (outputfiles)
+			outputFiles();
+		if (!InstabilityBlockManager.isBaselineConstructed())
+			return 0;
 		HashMap<String, Float> split = calculateSplitInstability();
 		float instability = 0;
 		for (Entry<String, Float> entry : split.entrySet()) {
@@ -131,12 +133,18 @@ public class ChunkProfiler extends WorldSavedData {
 		minimum = 1;
 		groundsum = 0;
 		groundcount = 0;
-		if (accessibility == null || accessibility.length < layers) accessibility = new float[layers];
-		if (averages == null || averages.length < layers) averages = new float[layers];
-		if (filtered == null || filtered.length < layers) filtered = new float[layers];
-		if (rounded == null || rounded.length < layers) rounded = new float[layers];
-		if (nonzero == null || nonzero.length < layers) nonzero = new boolean[layers];
-		if (solid == null || solid.length < layers) solid = new boolean[layers];
+		if (accessibility == null || accessibility.length < layers)
+			accessibility = new float[layers];
+		if (averages == null || averages.length < layers)
+			averages = new float[layers];
+		if (filtered == null || filtered.length < layers)
+			filtered = new float[layers];
+		if (rounded == null || rounded.length < layers)
+			rounded = new float[layers];
+		if (nonzero == null || nonzero.length < layers)
+			nonzero = new boolean[layers];
+		if (solid == null || solid.length < layers)
+			solid = new boolean[layers];
 		for (int y = 0; y < layers; ++y) {
 			averages[y] = 0;
 			for (int z = 0; z < 16; ++z) {
@@ -146,12 +154,15 @@ public class ChunkProfiler extends WorldSavedData {
 				}
 			}
 			averages[y] /= 256;
-			if (minimum > averages[y]) minimum = averages[y];
-			if (maximum < averages[y]) maximum = averages[y];
+			if (minimum > averages[y])
+				minimum = averages[y];
+			if (maximum < averages[y])
+				maximum = averages[y];
 		}
 		for (int y = 0; y < layers; ++y) {
 			filtered[y] = averages[y] - minimum;
-			if (filtered[y] < 0) filtered[y] = 0;
+			if (filtered[y] < 0)
+				filtered[y] = 0;
 			nonzero[y] = filtered[y] > 0;
 			rounded[y] = Math.round(100 * filtered[y]) / 100F;
 			if (rounded[y] > 0) {
@@ -173,7 +184,8 @@ public class ChunkProfiler extends WorldSavedData {
 					float availability = accessibility[y];
 					for (String blockkey : InstabilityBlockManager.getWatchedBlocks()) {
 						ChunkProfileData map = blockmaps.get(blockkey);
-						if (map.count < 100) continue;
+						if (map.count < 100)
+							continue;
 						float factor1 = InstabilityBlockManager.ro_factor1s.get(blockkey);
 						float factor2 = InstabilityBlockManager.ro_factor2s.get(blockkey);
 						float val = map.data[coords] / (float) map.count;
@@ -211,7 +223,8 @@ public class ChunkProfiler extends WorldSavedData {
 		int layers = solidmap.length / 256;
 		for (int y = 0; y < layers; ++y) {
 			int storagei = y >> 4;
-			if (storageArrays[storagei] == null) continue;
+			if (storageArrays[storagei] == null)
+				continue;
 			for (int z = 0; z < 16; ++z) {
 				for (int x = 0; x < 16; ++x) {
 					int coords = y << 8 | z << 4 | x;
@@ -236,7 +249,8 @@ public class ChunkProfiler extends WorldSavedData {
 						if (blockstate.getBlock().isAir(blockstate, chunk.getWorld(), pos)) {
 							accessibility = 0;
 						}
-					} catch (Exception ignored) {} //For blockstate change shenanigans
+					} catch (Exception ignored) {
+					} //For blockstate change shenanigans
 					solidmap[coords] += accessibility;
 				}
 			}
@@ -254,7 +268,8 @@ public class ChunkProfiler extends WorldSavedData {
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		ChunkProfilerManager.ensureSafeSave();
 		nbt.setTag("solid", solidmap.writeToNBT(new NBTTagCompound()));
-		if (blockmaps == null) return nbt;
+		if (blockmaps == null)
+			return nbt;
 		for (Map.Entry<String, ChunkProfileData> entry : blockmaps.entrySet()) {
 			String blockkey = entry.getKey();
 			ChunkProfileData map = entry.getValue();
@@ -272,12 +287,14 @@ public class ChunkProfiler extends WorldSavedData {
 			nbt.setTag("tile.myst.fluid.myst.ink.black", nbt.getTag("tile.myst.fluid"));
 		}
 
-		if (blockmaps == null) return;
+		if (blockmaps == null)
+			return;
 		for (String blockkey : blockmaps.keySet()) {
 			ChunkProfileData map = new ChunkProfileData();
 			map.readFromNBT(nbt.getCompoundTag(blockkey));
 			blockmaps.put(blockkey, map);
-			if (map.count < count) count = map.count;
+			if (map.count < count)
+				count = map.count;
 		}
 	}
 
@@ -361,15 +378,17 @@ public class ChunkProfiler extends WorldSavedData {
 	public void registerDebugInfo(DebugNode node) {
 		for (final String blockkey : InstabilityBlockManager.getWatchedBlocks()) {
 			node.addChild(blockkey.replaceAll("\\.", "_"), new DefaultValueCallback() {
-				private ChunkProfiler	profiler;
-				private String			blockkey;
+				private ChunkProfiler profiler;
+				private String blockkey;
 
 				@Override
 				public String get(ICommandSender agent) {
 					HashMap<String, Float> split = profiler.lastsplitcalc;
-					if (split == null) return "N/A";
+					if (split == null)
+						return "N/A";
 					Float val = split.get(blockkey);
-					if (val == null) return "None";
+					if (val == null)
+						return "None";
 					return "" + val;
 				}
 

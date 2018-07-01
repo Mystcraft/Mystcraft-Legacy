@@ -31,8 +31,8 @@ public class GuiElementShopItem extends GuiElement implements IGuiOnClickHandler
 
 	}
 
-	private IGuiShopHandler	shop;
-	private int				id;
+	private IGuiShopHandler shop;
+	private int id;
 
 	public GuiElementShopItem(IGuiShopHandler shop, int id, int guiLeft, int guiTop, int xSize, int ySize) {
 		super(guiLeft, guiTop, xSize, ySize);
@@ -79,12 +79,14 @@ public class GuiElementShopItem extends GuiElement implements IGuiOnClickHandler
 			return shop.getPriceText(this);
 		} else if (caller.getId().equals("name")) {
 			ItemStack itemstack = shop.getItemstack(this);
-			if (itemstack.isEmpty()) return "";
+			if (itemstack.isEmpty())
+				return "";
 			if (itemstack.getItem() instanceof ItemPage) {
 				ResourceLocation symbolId = Page.getSymbol(itemstack);
 				IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolId);
-				if (symbol == null) return "Unknown: " + symbolId;
-				return I18n.format(symbol.displayName());
+				if (symbol == null)
+					return "Unknown: " + symbolId;
+				return symbol.getLocalizedName();
 			}
 			return itemstack.getDisplayName();
 		}

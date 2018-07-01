@@ -42,15 +42,15 @@ import javax.annotation.Nullable;
 
 public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawnData {
 
-    protected static final DataParameter<BlockPos> ORIGIN = EntityDataManager.<BlockPos>createKey(net.minecraft.entity.item.EntityFallingBlock.class, DataSerializers.BLOCK_POS);
+	protected static final DataParameter<BlockPos> ORIGIN = EntityDataManager.<BlockPos> createKey(net.minecraft.entity.item.EntityFallingBlock.class, DataSerializers.BLOCK_POS);
 
-	private static final String	NBT_Drops				= "Drops";
-	private static final String	NBT_TE					= "TE";
+	private static final String NBT_Drops = "Drops";
+	private static final String NBT_TE = "TE";
 
-	public IBlockState          falltile;
-	public int					fallTime;
-	private NBTTagCompound		data;
-	private ArrayList			collidingBoundingBoxes	= new ArrayList();
+	public IBlockState falltile;
+	public int fallTime;
+	private NBTTagCompound data;
+	private ArrayList collidingBoundingBoxes = new ArrayList();
 
 	public EntityFallingBlock(World world) {
 		super(world);
@@ -71,29 +71,29 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 		prevPosY = d1;
 		prevPosZ = d2;
 		this.data = data;
-        this.setOrigin(new BlockPos(this));
+		this.setOrigin(new BlockPos(this));
 	}
 
-    public void setOrigin(BlockPos pos) {
-        this.dataManager.set(ORIGIN, pos);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public BlockPos getOrigin() {
-        return this.dataManager.get(ORIGIN);
-    }
-
-    @Override
-    protected void entityInit() {
-        this.dataManager.register(ORIGIN, BlockPos.ORIGIN);
+	public void setOrigin(BlockPos pos) {
+		this.dataManager.set(ORIGIN, pos);
 	}
 
-    protected boolean canTriggerWalking() {
-        return false;
-    }
+	@SideOnly(Side.CLIENT)
+	public BlockPos getOrigin() {
+		return this.dataManager.get(ORIGIN);
+	}
+
+	@Override
+	protected void entityInit() {
+		this.dataManager.register(ORIGIN, BlockPos.ORIGIN);
+	}
+
+	protected boolean canTriggerWalking() {
+		return false;
+	}
 
 	public static void cascade(World world, BlockPos pos) {
-		if(world.getBlockState(pos).getBlock().isLeaves(world.getBlockState(pos), world, pos)) {
+		if (world.getBlockState(pos).getBlock().isLeaves(world.getBlockState(pos), world, pos)) {
 			drop(world, pos);
 		}
 	}
@@ -114,9 +114,12 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 			world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
 			return;
 		}
-		if (flag) return;
-		if (world.isAirBlock(pos)) return;
-		if (!world.isAirBlock(pos.down())) return;
+		if (flag)
+			return;
+		if (world.isAirBlock(pos))
+			return;
+		if (!world.isAirBlock(pos.down()))
+			return;
 
 		NBTTagCompound data = new NBTTagCompound();
 
@@ -162,7 +165,8 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 		int y = MathHelper.floor(posY);
 		int z = MathHelper.floor(posZ);
 		if (onGround) {
-			if (world.isRemote) return;
+			if (world.isRemote)
+				return;
 			setDead();
 			place(new BlockPos(x, y, z));
 			return;
@@ -175,7 +179,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 				cascade(world, getPosition().offset(face));
 			}
 			for (EnumFacing face : EnumFacing.VALUES) {
-				if(face != EnumFacing.DOWN) {
+				if (face != EnumFacing.DOWN) {
 					//drop(world, getPosition().offset(face));
 				}
 			}
@@ -192,9 +196,9 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 				tileentity.setInteger("y", pos.getY());
 				tileentity.setInteger("z", pos.getZ());
 				if (world.getTileEntity(pos) != null) {
-                    world.getTileEntity(pos).readFromNBT(tileentity);
+					world.getTileEntity(pos).readFromNBT(tileentity);
 				} else {
-				    world.setTileEntity(pos, TileEntity.create(world, tileentity));
+					world.setTileEntity(pos, TileEntity.create(world, tileentity));
 				}
 			}
 		}
@@ -202,120 +206,119 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 
 	@Override
 	public void move(MoverType type, double x, double y, double z) {
-        if (this.noClip) {
-            this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, y, z));
-            this.resetPositionToBB();
-        } else {
-            this.world.profiler.startSection("move");
-            double d10 = this.posX;
-            double d11 = this.posY;
-            double d1 = this.posZ;
+		if (this.noClip) {
+			this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, y, z));
+			this.resetPositionToBB();
+		} else {
+			this.world.profiler.startSection("move");
+			double d10 = this.posX;
+			double d11 = this.posY;
+			double d1 = this.posZ;
 
-            if (this.isInWeb)
-            {
-                this.isInWeb = false;
-                x *= 0.25D;
-                y *= 0.05000000074505806D;
-                z *= 0.25D;
-                this.motionX = 0.0D;
-                this.motionY = 0.0D;
-                this.motionZ = 0.0D;
-            }
+			if (this.isInWeb) {
+				this.isInWeb = false;
+				x *= 0.25D;
+				y *= 0.05000000074505806D;
+				z *= 0.25D;
+				this.motionX = 0.0D;
+				this.motionY = 0.0D;
+				this.motionZ = 0.0D;
+			}
 
-            double d2 = x;
-            double d3 = y;
-            double d4 = z;
+			double d2 = x;
+			double d3 = y;
+			double d4 = z;
 
 			AxisAlignedBB box = this.getEntityBoundingBox();
 			box = addCoord(x, y, z, box);
-            List<AxisAlignedBB> list1 = this.world.getCollisionBoxes(this, box);
+			List<AxisAlignedBB> list1 = this.world.getCollisionBoxes(this, box);
 
-            if (y != 0.0D) {
-                int k = 0;
+			if (y != 0.0D) {
+				int k = 0;
 
-                for (int l = list1.size(); k < l; ++k) {
-                    y = list1.get(k).calculateYOffset(this.getEntityBoundingBox(), y);
-                }
+				for (int l = list1.size(); k < l; ++k) {
+					y = list1.get(k).calculateYOffset(this.getEntityBoundingBox(), y);
+				}
 
-                this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, y, 0.0D));
-            }
+				this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, y, 0.0D));
+			}
 
-            if (x != 0.0D) {
-                int j5 = 0;
+			if (x != 0.0D) {
+				int j5 = 0;
 
-                for (int l5 = list1.size(); j5 < l5; ++j5) {
-                    x = list1.get(j5).calculateXOffset(this.getEntityBoundingBox(), x);
-                }
+				for (int l5 = list1.size(); j5 < l5; ++j5) {
+					x = list1.get(j5).calculateXOffset(this.getEntityBoundingBox(), x);
+				}
 
-                if (x != 0.0D) {
-                    this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, 0.0D, 0.0D));
-                }
-            }
+				if (x != 0.0D) {
+					this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, 0.0D, 0.0D));
+				}
+			}
 
-            if (z != 0.0D) {
-                int k5 = 0;
+			if (z != 0.0D) {
+				int k5 = 0;
 
-                for (int i6 = list1.size(); k5 < i6; ++k5) {
-                    z = list1.get(k5).calculateZOffset(this.getEntityBoundingBox(), z);
-                }
+				for (int i6 = list1.size(); k5 < i6; ++k5) {
+					z = list1.get(k5).calculateZOffset(this.getEntityBoundingBox(), z);
+				}
 
-                if (z != 0.0D) {
-                    this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, 0.0D, z));
-                }
-            }
+				if (z != 0.0D) {
+					this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, 0.0D, z));
+				}
+			}
 
-            boolean flag = this.onGround || d3 != y && d3 < 0.0D;
-            this.world.profiler.endSection();
-            this.world.profiler.startSection("rest");
-            this.resetPositionToBB();
-            this.collidedHorizontally = d2 != x || d4 != z;
-            this.collidedVertically = d3 != y;
-            this.onGround = this.collidedVertically && d3 < 0.0D;
-            this.collided = this.collidedHorizontally || this.collidedVertically;
-            int j6 = MathHelper.floor(this.posX);
-            int i1 = MathHelper.floor(this.posY - 0.20000000298023224D);
-            int k6 = MathHelper.floor(this.posZ);
-            BlockPos blockpos = new BlockPos(j6, i1, k6);
-            IBlockState iblockstate = this.world.getBlockState(blockpos);
+			boolean flag = this.onGround || d3 != y && d3 < 0.0D;
+			this.world.profiler.endSection();
+			this.world.profiler.startSection("rest");
+			this.resetPositionToBB();
+			this.collidedHorizontally = d2 != x || d4 != z;
+			this.collidedVertically = d3 != y;
+			this.onGround = this.collidedVertically && d3 < 0.0D;
+			this.collided = this.collidedHorizontally || this.collidedVertically;
+			int j6 = MathHelper.floor(this.posX);
+			int i1 = MathHelper.floor(this.posY - 0.20000000298023224D);
+			int k6 = MathHelper.floor(this.posZ);
+			BlockPos blockpos = new BlockPos(j6, i1, k6);
+			IBlockState iblockstate = this.world.getBlockState(blockpos);
 
-            if (iblockstate.getMaterial() == Material.AIR) {
-                BlockPos blockpos1 = blockpos.down();
-                IBlockState iblockstate1 = this.world.getBlockState(blockpos1);
-                Block block1 = iblockstate1.getBlock();
+			if (iblockstate.getMaterial() == Material.AIR) {
+				BlockPos blockpos1 = blockpos.down();
+				IBlockState iblockstate1 = this.world.getBlockState(blockpos1);
+				Block block1 = iblockstate1.getBlock();
 
-                if (block1 instanceof BlockFence || block1 instanceof BlockWall || block1 instanceof BlockFenceGate) {
-                    iblockstate = iblockstate1;
-                    blockpos = blockpos1;
-                }
-            }
+				if (block1 instanceof BlockFence || block1 instanceof BlockWall || block1 instanceof BlockFenceGate) {
+					iblockstate = iblockstate1;
+					blockpos = blockpos1;
+				}
+			}
 
-            this.updateFallState(y, this.onGround, iblockstate, blockpos);
+			this.updateFallState(y, this.onGround, iblockstate, blockpos);
 
-            if (d2 != x) {
-                this.motionX = 0.0D;
-            }
+			if (d2 != x) {
+				this.motionX = 0.0D;
+			}
 
-            if (d4 != z) {
-                this.motionZ = 0.0D;
-            }
+			if (d4 != z) {
+				this.motionZ = 0.0D;
+			}
 
-            Block block = iblockstate.getBlock();
+			Block block = iblockstate.getBlock();
 
-            if (d3 != y) {
-                block.onLanded(this.world, this);
-            }
+			if (d3 != y) {
+				block.onLanded(this.world, this);
+			}
 
-            try {
-                this.doBlockCollisions();
-            } catch (Throwable throwable) {
-                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Checking entity block collision");
-                CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being checked for collision");
-                this.addEntityCrashInfo(crashreportcategory);
-                throw new ReportedException(crashreport);
-            }
+			try {
+				this.doBlockCollisions();
+			} catch (Throwable throwable) {
+				CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Checking entity block collision");
+				CrashReportCategory crashreportcategory = crashreport.makeCategory("Entity being checked for collision");
+				this.addEntityCrashInfo(crashreportcategory);
+				throw new ReportedException(crashreport);
+			}
 
-            this.world.profiler.endSection();
-        }
+			this.world.profiler.endSection();
+		}
 	}
 
 	private void handleDrops() {
@@ -328,65 +331,65 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
-        Block block = this.falltile != null ? this.falltile.getBlock() : Blocks.AIR;
-        ResourceLocation resourcelocation = Block.REGISTRY.getNameForObject(block);
-        compound.setString("Block", resourcelocation == null ? "" : resourcelocation.toString());
-        compound.setByte("Data", (byte) block.getMetaFromState(this.falltile));
-        compound.setInteger("Time", this.fallTime);
-        if (this.data != null) {
-            compound.setTag("TileEntityData", this.data);
-        }
+		Block block = this.falltile != null ? this.falltile.getBlock() : Blocks.AIR;
+		ResourceLocation resourcelocation = Block.REGISTRY.getNameForObject(block);
+		compound.setString("Block", resourcelocation == null ? "" : resourcelocation.toString());
+		compound.setByte("Data", (byte) block.getMetaFromState(this.falltile));
+		compound.setInteger("Time", this.fallTime);
+		if (this.data != null) {
+			compound.setTag("TileEntityData", this.data);
+		}
 	}
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
-        int i = compound.getByte("Data") & 255;
+		int i = compound.getByte("Data") & 255;
 
-        this.falltile = null; //Reset
-        if (compound.hasKey("Block", 8)) {
-            Block b = Block.getBlockFromName(compound.getString("Block"));
-            if(b != null) {
-                this.falltile = b.getStateFromMeta(i);
-            }
-        }
+		this.falltile = null; //Reset
+		if (compound.hasKey("Block", 8)) {
+			Block b = Block.getBlockFromName(compound.getString("Block"));
+			if (b != null) {
+				this.falltile = b.getStateFromMeta(i);
+			}
+		}
 
-        this.fallTime = compound.getInteger("Time");
+		this.fallTime = compound.getInteger("Time");
 
-        if (compound.hasKey("TileEntityData", 10)) {
-            this.data = compound.getCompoundTag("TileEntityData");
-        }
+		if (compound.hasKey("TileEntityData", 10)) {
+			this.data = compound.getCompoundTag("TileEntityData");
+		}
 
-        if (falltile == null || falltile.getMaterial() == Material.AIR) {
-            this.falltile = Blocks.SAND.getDefaultState();
-        }
+		if (falltile == null || falltile.getMaterial() == Material.AIR) {
+			this.falltile = Blocks.SAND.getDefaultState();
+		}
 	}
 
 	@SideOnly(Side.CLIENT)
-    public boolean canRenderOnFire() {
-        return false;
-    }
+	public boolean canRenderOnFire() {
+		return false;
+	}
 
-    @Nullable
-    public IBlockState getBlock() {
-        return this.falltile;
-    }
+	@Nullable
+	public IBlockState getBlock() {
+		return this.falltile;
+	}
 
-    public boolean ignoreItemEntityData() {
-        return true;
-    }
+	public boolean ignoreItemEntityData() {
+		return true;
+	}
 
-    public World getWorld() {
-	    return world;
-    }
+	public World getWorld() {
+		return world;
+	}
 
 	@Override
 	public void writeSpawnData(ByteBuf data) {
-	    data.writeInt(Block.getStateId(this.falltile));
+		data.writeInt(Block.getStateId(this.falltile));
 	}
 
 	@Override
 	public void readSpawnData(ByteBuf data) {
-	    falltile = Block.getStateById(data.readInt());
+		falltile = Block.getStateById(data.readInt());
 	}
 
 	//Doesn't exist anymore in AABB

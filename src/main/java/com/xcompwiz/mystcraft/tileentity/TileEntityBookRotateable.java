@@ -48,9 +48,11 @@ public class TileEntityBookRotateable extends TileEntityBook implements ITileEnt
 
 	public void link(Entity player) {
 		ItemStack book = getBook();
-		if (book.isEmpty()) return;
-		if (!(book.getItem() instanceof ItemLinking)) return;
+		if (book.isEmpty())
+			return;
+		if (!(book.getItem() instanceof ItemLinking))
+			return;
 		((ItemLinking) book.getItem()).activate(book, world, player);
 	}
-	
+
 }

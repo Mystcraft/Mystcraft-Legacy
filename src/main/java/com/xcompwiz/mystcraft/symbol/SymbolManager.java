@@ -48,7 +48,8 @@ public class SymbolManager {
 	}
 
 	public static void buildRegistry() {
-		if (SYMBOL_REGISTRY != null) return;
+		if (SYMBOL_REGISTRY != null)
+			return;
 
 		RegistryBuilder<IAgeSymbol> builder = new RegistryBuilder<>();
 		builder.setName(SYMBOL_REGISTRY_NAME).disableSaving();
@@ -85,8 +86,7 @@ public class SymbolManager {
 		//	LoggerUtils.error(String.format("Attempting to bind symbol with null or zero length identifier."));
 		//	return false;
 		//}
-		if (config != null && symbol.generatesConfigOption() &&
-				!config.get(MystConfig.CATEGORY_SYMBOLS + "." + symbol.getRegistryName().getResourceDomain(), symbol.getRegistryName().getResourcePath().toLowerCase().replace(' ', '_') + ".enabled", enabled).getBoolean(enabled)) {
+		if (config != null && symbol.generatesConfigOption() && !config.get(MystConfig.CATEGORY_SYMBOLS + "." + symbol.getRegistryName().getResourceDomain(), symbol.getRegistryName().getResourcePath().toLowerCase().replace(' ', '_') + ".enabled", enabled).getBoolean(enabled)) {
 			return false;
 		}
 		if (SymbolRemappings.hasRemapping(symbol.getRegistryName())) {
@@ -159,7 +159,8 @@ public class SymbolManager {
 	public static ArrayList<IAgeSymbol> getAgeSymbols() {
 		ArrayList<IAgeSymbol> symbols = new ArrayList<IAgeSymbol>();
 		for (IAgeSymbol s : SYMBOL_REGISTRY.getValues()) {
-			if (blacklist.contains(s.getRegistryName())) continue;
+			if (blacklist.contains(s.getRegistryName()))
+				continue;
 			symbols.add(s);
 		}
 		return symbols;
@@ -189,12 +190,16 @@ public class SymbolManager {
 		Collection<IAgeSymbol> set = new ArrayList<IAgeSymbol>();
 		Collection<ResourceLocation> symbolIds = SYMBOL_REGISTRY.getKeys();
 		for (ResourceLocation symbolId : symbolIds) {
-			if (blacklist.contains(symbolId)) continue;
+			if (blacklist.contains(symbolId))
+				continue;
 
 			Integer rank = getSymbolItemCardRank(symbolId);
-			if (rank == null) continue;
-			if (min != null && min > rank) continue;
-			if (max != null && max < rank) continue;
+			if (rank == null)
+				continue;
+			if (min != null && min > rank)
+				continue;
+			if (max != null && max < rank)
+				continue;
 			set.add(SYMBOL_REGISTRY.getValue(symbolId));
 		}
 		return set;
@@ -214,9 +219,11 @@ public class SymbolManager {
 
 	// ----------------------------- Rarities and Settings ----------------------------- //
 	public static int getSymbolItemWeight(ResourceLocation identifier) {
-		if (!cardranks.containsKey(identifier)) return 0;
+		if (!cardranks.containsKey(identifier))
+			return 0;
 		Integer rank = cardranks.get(identifier);
-		if (rank == null) return 0;
+		if (rank == null)
+			return 0;
 		if (cardrankweights == null) {
 			throw new RuntimeException("Cannot obtain symbol treasure weight: Card ranking system not built");
 		}
@@ -241,10 +248,13 @@ public class SymbolManager {
 	public static int getSymbolTreasureMaxStack(IAgeSymbol symbol) {
 		Integer rank = getSymbolItemCardRank(symbol.getRegistryName());
 		Integer dfault = defaultMaxStacks.get(rank);
-		if (dfault == null) dfault = 1;
-		if (!maxTreasureStackOverrides.containsKey(symbol.getRegistryName())) return dfault;
+		if (dfault == null)
+			dfault = 1;
+		if (!maxTreasureStackOverrides.containsKey(symbol.getRegistryName()))
+			return dfault;
 		Integer override = maxTreasureStackOverrides.get(symbol.getRegistryName());
-		if (override == null) return dfault;
+		if (override == null)
+			return dfault;
 		return override;
 	}
 
@@ -254,9 +264,11 @@ public class SymbolManager {
 
 	public static boolean isSymbolTradable(ResourceLocation identifier) {
 		boolean dfault = getSymbolItemWeight(identifier) > 0;
-		if (!tradeableOverrides.containsKey(identifier)) return dfault;
+		if (!tradeableOverrides.containsKey(identifier))
+			return dfault;
 		Boolean override = tradeableOverrides.get(identifier);
-		if (override == null) return dfault;
+		if (override == null)
+			return dfault;
 		return override;
 	}
 
@@ -266,9 +278,11 @@ public class SymbolManager {
 
 	public static List<ItemStack> getSymbolTradeItems(ResourceLocation identifier) {
 		ItemStack dfault = new ItemStack(Items.EMERALD, Math.max(1, (int) (12F * getSymbolItemCardRank(identifier))));
-		if (!tradeItemOverrides.containsKey(identifier)) return Arrays.asList(dfault);
+		if (!tradeItemOverrides.containsKey(identifier))
+			return Arrays.asList(dfault);
 		List<ItemStack> override = tradeItemOverrides.get(identifier);
-		if (override == null) return Arrays.asList(dfault);
+		if (override == null)
+			return Arrays.asList(dfault);
 		return override;
 	}
 
@@ -308,7 +322,8 @@ public class SymbolManager {
 		for (IAgeSymbol symbol : symbols) {
 			if (symbol instanceof SymbolBase) {
 				ArrayList<Rule> rules = ((SymbolBase) symbol).getRules();
-				if (rules == null) continue;
+				if (rules == null)
+					continue;
 				for (Rule rule : rules) {
 					GrammarGenerator.registerRule(rule);
 				}

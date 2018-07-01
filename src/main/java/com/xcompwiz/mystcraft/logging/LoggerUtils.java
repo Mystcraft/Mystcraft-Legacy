@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public final class LoggerUtils {
-	private static Logger	log	= null;
+	private static Logger log = null;
 
 	/**
 	 * Configure the logger

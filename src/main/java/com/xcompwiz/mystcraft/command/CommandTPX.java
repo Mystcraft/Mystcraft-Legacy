@@ -43,8 +43,10 @@ public class CommandTPX extends CommandBaseAdv {
 	 */
 	@Override
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender par1ICommandSender, String[] args, @Nullable BlockPos targetPos) {
-		if (args.length == 1) return getListOfStringsMatchingLastWord(args, this.getPlayers(server));
-		if (args.length == 2) return getListOfStringsMatchingLastWord(args, this.getPlayers(server));
+		if (args.length == 1)
+			return getListOfStringsMatchingLastWord(args, this.getPlayers(server));
+		if (args.length == 2)
+			return getListOfStringsMatchingLastWord(args, this.getPlayers(server));
 		return null;
 	}
 
@@ -69,7 +71,8 @@ public class CommandTPX extends CommandBaseAdv {
 		String sX = null, sY = null, sZ = null;
 
 		if (args.length > 3) {
-			if (args.length > 4) sSubject = args[args.length - 5];
+			if (args.length > 4)
+				sSubject = args[args.length - 5];
 			sTarget = args[args.length - 4];
 			sX = args[args.length - 3];
 			sY = args[args.length - 2];
@@ -88,7 +91,9 @@ public class CommandTPX extends CommandBaseAdv {
 		} else {
 			subject = getTargetPlayer(server, sender, sSubject);
 		}
-		if (subject == null) { throw new WrongUsageException("commands.myst.tpx.fail.nosubject"); }
+		if (subject == null) {
+			throw new WrongUsageException("commands.myst.tpx.fail.nosubject");
+		}
 
 		link = getLinkInfoForTarget(server, sender, subject, sTarget, sX, sY, sZ);
 
@@ -107,7 +112,9 @@ public class CommandTPX extends CommandBaseAdv {
 		if (link == null) {
 			link = new LinkOptions(null);
 			int dim = (int) (handleRelativeNumber(sender, subject.dimension, sTarget, 0, 0) - 0.5D);
-			if (server.getWorld(dim) == null) { throw new CommandException("commands.myst.tpx.fail.noworld", new Object[] { dim }); }
+			if (server.getWorld(dim) == null) {
+				throw new CommandException("commands.myst.tpx.fail.noworld", new Object[] { dim });
+			}
 			link.setDimensionUID(dim);
 			if (sX != null && sY != null && sZ != null) {
 				int x = (int) handleRelativeNumber(sender, subject.posX, sX);

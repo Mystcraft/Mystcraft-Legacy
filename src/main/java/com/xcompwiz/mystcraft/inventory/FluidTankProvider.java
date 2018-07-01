@@ -10,11 +10,11 @@ public class FluidTankProvider implements IFluidTankProvider {
 	private FluidTank provided;
 
 	public void setTank(FluidTank tank) {
-	    this.provided = tank;
+		this.provided = tank;
 	}
 
 	@Override
-    @Nullable
+	@Nullable
 	public FluidStack getFluid() {
 		return provided.getFluid();
 	}

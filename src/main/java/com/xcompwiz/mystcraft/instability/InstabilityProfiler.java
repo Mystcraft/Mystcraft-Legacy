@@ -5,15 +5,17 @@ import com.xcompwiz.mystcraft.api.instability.InstabilityDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
 public class InstabilityProfiler implements InstabilityDirector {
-	private IInstabilityProvider	agent	= null;
+	private IInstabilityProvider agent = null;
 
 	public void startProfiling(IInstabilityProvider symbol) {
-		if (this.agent != null) throw new RuntimeException("Attempting to profile multiple InstabilityProviders at once!");
+		if (this.agent != null)
+			throw new RuntimeException("Attempting to profile multiple InstabilityProviders at once!");
 		this.agent = symbol;
 	}
 
 	public void endProfiling(IInstabilityProvider symbol) {
-		if (this.agent != symbol) throw new RuntimeException("Mismatch in instability profiler termination!");
+		if (this.agent != symbol)
+			throw new RuntimeException("Mismatch in instability profiler termination!");
 		this.agent = null;
 	}
 

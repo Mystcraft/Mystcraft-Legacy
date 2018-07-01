@@ -9,11 +9,11 @@ import com.xcompwiz.mystcraft.data.Assets;
 import net.minecraft.client.gui.Gui;
 
 public class GuiElementVSlider extends GuiElement {
-	private int		currentScroll;
-	private int		maxScroll;
-	private boolean	wasClicking;
-	private boolean	isScrolling;
-	private boolean	mouseOver;
+	private int currentScroll;
+	private int maxScroll;
+	private boolean wasClicking;
+	private boolean isScrolling;
+	private boolean mouseOver;
 
 	public GuiElementVSlider(int guiLeft, int guiTop, int xSize, int ySize) {
 		super(guiLeft, guiTop, xSize, ySize);
@@ -35,7 +35,8 @@ public class GuiElementVSlider extends GuiElement {
 	 */
 	@Override
 	public void _handleMouseInput() {
-		if (!mouseOver) return;
+		if (!mouseOver)
+			return;
 		handleMouseScroll();
 	}
 
@@ -78,8 +79,10 @@ public class GuiElementVSlider extends GuiElement {
 		} else {
 			sliderpos = currentScroll / (float) maxScroll;
 		}
-		if (sliderpos > 1) sliderpos = 1;
-		if (currentScroll == 0) sliderpos = 0;
+		if (sliderpos > 1)
+			sliderpos = 1;
+		if (currentScroll == 0)
+			sliderpos = 0;
 		if (!this.wasClicking && isClicking && mouseOver) {
 			this.isScrolling = true;
 		}

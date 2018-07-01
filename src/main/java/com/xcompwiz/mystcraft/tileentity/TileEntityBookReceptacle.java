@@ -12,10 +12,11 @@ public class TileEntityBookReceptacle extends TileEntityBookRotateable {
 
 	public int getPortalColor() {
 		ItemStack itemstack = getBook();
-		if (itemstack.isEmpty()) return 0xFFFFFF;
+		if (itemstack.isEmpty())
+			return 0xFFFFFF;
 		Item itemdata = itemstack.getItem();
 		if (itemdata instanceof IItemPortalActivator) {
-			return ((IItemPortalActivator)itemdata).getPortalColor(itemstack, world);
+			return ((IItemPortalActivator) itemdata).getPortalColor(itemstack, world);
 		}
 		return 0xFFFFFF;
 	}
@@ -28,11 +29,12 @@ public class TileEntityBookReceptacle extends TileEntityBookRotateable {
 	@Override
 	public void handleItemChange(int slot) {
 		super.handleItemChange(slot);
-		if (world == null || world.isRemote) return;
+		if (world == null || world.isRemote)
+			return;
 		PortalUtils.shutdownPortal(world, pos);
 		ItemStack book = getBook();
-        if (!book.isEmpty() && book.getItem() instanceof IItemPortalActivator) {
-            PortalUtils.firePortal(world, pos);
-        }
-    }
+		if (!book.isEmpty() && book.getItem() instanceof IItemPortalActivator) {
+			PortalUtils.firePortal(world, pos);
+		}
+	}
 }

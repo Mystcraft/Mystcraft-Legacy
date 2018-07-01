@@ -32,7 +32,8 @@ public class ModSymbolsModifiers {
 		private BlockModifierContainerObject() {}
 
 		public BlockModifierContainerObject add(BlockCategory cat, Integer rank) {
-			if (descriptor == null || symbol == null) return this;
+			if (descriptor == null || symbol == null)
+				return this;
 			if (!descriptor.isUsable(cat)) {
 				descriptor.setUsable(cat, true);
 				this.symbol.addRule(new Rule(cat.getGrammarBinding(), CollectionUtils.buildList(symbol.getRegistryName()), rank));
@@ -73,9 +74,9 @@ public class ModSymbolsModifiers {
 	public static void initialize() {
 		BlockModifierContainerObject.createMyst(WordData.Terrain, 2, Blocks.DIRT, 0).register().add(BlockCategory.TERRAIN, 4).add(BlockCategory.STRUCTURE, 2).add(BlockCategory.SOLID, 1);
 		BlockModifierContainerObject.createMyst(WordData.Terrain, 2, Blocks.STONE, 0).register().add(BlockCategory.TERRAIN, 1).add(BlockCategory.STRUCTURE, 2).add(BlockCategory.SOLID, 1);
-		for (byte i = 1; i < 7; i+=2)
+		for (byte i = 1; i < 7; i += 2)
 			BlockModifierContainerObject.createMyst(WordData.Terrain, 2, Blocks.STONE, i).register().add(BlockCategory.TERRAIN, 2).add(BlockCategory.STRUCTURE, 2).add(BlockCategory.SOLID, 1);
-		for (byte i = 2; i < 7; i+=2)
+		for (byte i = 2; i < 7; i += 2)
 			BlockModifierContainerObject.createMyst(WordData.Structure, 2, Blocks.STONE, i).register().add(BlockCategory.TERRAIN, 4).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
 		BlockModifierContainerObject.createMyst(WordData.Terrain, 2, Blocks.SANDSTONE, 0).register().add(BlockCategory.TERRAIN, 2).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
 		BlockModifierContainerObject.createMyst(WordData.Terrain, 2, Blocks.NETHERRACK, 0).register().add(BlockCategory.TERRAIN, 3).add(BlockCategory.STRUCTURE, 2).add(BlockCategory.SOLID, 2);

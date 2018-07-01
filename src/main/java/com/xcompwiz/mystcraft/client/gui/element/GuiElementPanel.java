@@ -11,8 +11,8 @@ import net.minecraft.client.renderer.Tessellator;
 
 public class GuiElementPanel extends GuiElement {
 
-	private int	bgcolor1	= 0x00000000;
-	private int	bgcolor2	= 0x00000000;
+	private int bgcolor1 = 0x00000000;
+	private int bgcolor2 = 0x00000000;
 
 	public GuiElementPanel(int guiLeft, int guiTop, int xSize, int ySize) {
 		super(guiLeft, guiTop, xSize, ySize);
@@ -34,7 +34,8 @@ public class GuiElementPanel extends GuiElement {
 		int guiTop = this.getTop();
 		GlStateManager.pushMatrix();
 		GuiUtils.startGlScissor(guiLeft, guiTop, this.xSize, ySize);
-		if ((bgcolor1 | bgcolor2) == 0) return;
+		if ((bgcolor1 | bgcolor2) == 0)
+			return;
 		GlStateManager.enableBlend();
 		GlStateManager.disableAlpha();
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);

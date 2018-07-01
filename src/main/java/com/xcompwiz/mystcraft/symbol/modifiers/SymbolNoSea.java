@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class SymbolNoSea extends SymbolBase {
 
-	private BlockDescriptor	blockDescriptor;
+	private BlockDescriptor blockDescriptor;
 
 	public SymbolNoSea(ResourceLocation identifier) {
 		super(identifier);

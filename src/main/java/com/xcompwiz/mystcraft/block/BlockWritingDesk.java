@@ -85,7 +85,7 @@ public class BlockWritingDesk extends Block {
 		float ymax = 1.0F;
 		float zmin = 0.0F;
 		float zmax = 1.0F;
-		if(isBlockTop(state)) {
+		if (isBlockTop(state)) {
 			ymax = 0.75F;
 			int dirInt = getDirectionFromMetadata(state).getHorizontalIndex();
 			if (dirInt == 0) {
@@ -116,9 +116,9 @@ public class BlockWritingDesk extends Block {
 
 	@Override
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if(isBlockTop(state) && !isBlockFoot(state)) {
-			if(!worldIn.getBlockState(pos.down()).getBlock().equals(this)) {
-				if(!worldIn.isRemote) {
+		if (isBlockTop(state) && !isBlockFoot(state)) {
+			if (!worldIn.getBlockState(pos.down()).getBlock().equals(this)) {
+				if (!worldIn.isRemote) {
 					dropBlockAsItem(worldIn, pos, state, 0);
 				}
 				worldIn.setBlockToAir(pos);
@@ -127,10 +127,10 @@ public class BlockWritingDesk extends Block {
 		EnumFacing face = getDirectionFromMetadata(state);
 		int dirInt = face.getHorizontalIndex();
 		if (isBlockFoot(state)) {
-			if(!worldIn.getBlockState(pos.add(-headFootMap[dirInt][0], 0, -headFootMap[dirInt][1])).getBlock().equals(this)) {
+			if (!worldIn.getBlockState(pos.add(-headFootMap[dirInt][0], 0, -headFootMap[dirInt][1])).getBlock().equals(this)) {
 				worldIn.setBlockToAir(pos);
 			}
-		} else if(!worldIn.getBlockState(pos.add(headFootMap[dirInt][0], 0, headFootMap[dirInt][1])).getBlock().equals(this)) {
+		} else if (!worldIn.getBlockState(pos.add(headFootMap[dirInt][0], 0, headFootMap[dirInt][1])).getBlock().equals(this)) {
 			worldIn.setBlockToAir(pos);
 		}
 	}
@@ -154,8 +154,8 @@ public class BlockWritingDesk extends Block {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (world.isRemote) {
-		    return true;
-        }
+			return true;
+		}
 		playerIn.openGui(Mystcraft.instance, ModGUIs.WRITING_DESK.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
 		return true;
 	}
@@ -170,7 +170,7 @@ public class BlockWritingDesk extends Block {
 				if (itemstack.isEmpty()) {
 					continue;
 				}
-				float f =  world.rand.nextFloat() * 0.8F + 0.1F;
+				float f = world.rand.nextFloat() * 0.8F + 0.1F;
 				float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
 				float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
 				EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, itemstack);
@@ -197,7 +197,7 @@ public class BlockWritingDesk extends Block {
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		if(isBlockTop(state)) {
+		if (isBlockTop(state)) {
 			return new ItemStack(ModItems.desk, 1, 1);
 		}
 		return new ItemStack(ModItems.desk);
@@ -221,7 +221,8 @@ public class BlockWritingDesk extends Block {
 	}
 
 	public static EnumFacing getDirectionFromMetadata(IBlockState state) {
-		if(!state.getBlock().equals(ModBlocks.writingdesk)) return EnumFacing.NORTH; //Uh.....
+		if (!state.getBlock().equals(ModBlocks.writingdesk))
+			return EnumFacing.NORTH; //Uh.....
 		return state.getValue(ROTATION);
 	}
 
@@ -235,7 +236,9 @@ public class BlockWritingDesk extends Block {
 
 	public static TileEntityDesk getTileEntity(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
-		if (isBlockTop(state)) { return getTileEntity(world, pos.down()); }
+		if (isBlockTop(state)) {
+			return getTileEntity(world, pos.down());
+		}
 		if (isBlockFoot(state)) {
 			EnumFacing direction = getDirectionFromMetadata(state);
 			int dirInt = direction.getHorizontalIndex();
@@ -259,14 +262,15 @@ public class BlockWritingDesk extends Block {
 	@Override
 	public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
 		super.onBlockAdded(worldIn, pos, state);
-		if(hasTileEntity(state)) {
+		if (hasTileEntity(state)) {
 			worldIn.setTileEntity(pos, createTileEntity(worldIn, state));
 		}
 	}
 
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		if(!worldIn.getBlockState(pos).getBlock().equals(this)) return;
+		if (!worldIn.getBlockState(pos).getBlock().equals(this))
+			return;
 		EnumFacing face = placer.getHorizontalFacing(); //TODO Hellfire> Test if this actually still behaves the way it did.
 		int facing = face.getHorizontalIndex();
 
@@ -285,7 +289,7 @@ public class BlockWritingDesk extends Block {
 			xOffset = 1;
 		}
 		BlockPos offset = pos.add(xOffset, 0, zOffset);
-		if(worldIn.isAirBlock(offset)) {
+		if (worldIn.isAirBlock(offset)) {
 			worldIn.setBlockState(offset, getDefaultState().withProperty(ROTATION, face).withProperty(IS_FOOT, true));
 		} else {
 			worldIn.setBlockToAir(pos);
@@ -295,7 +299,7 @@ public class BlockWritingDesk extends Block {
 	@Override
 	public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param) {
 		TileEntity te = worldIn.getTileEntity(pos);
-		if(te != null) {
+		if (te != null) {
 			te.receiveClientEvent(id, param);
 		}
 		return false;

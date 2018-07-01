@@ -13,37 +13,37 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MPacketProfilingState extends PacketBase<MPacketProfilingState, MPacketProfilingState> {
 
-    private boolean running;
+	private boolean running;
 
 	public MPacketProfilingState() {}
 
 	public MPacketProfilingState(boolean running) {
-	    this.running = running;
-    }
+		this.running = running;
+	}
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        this.running = buf.readBoolean();
-    }
+	@Override
+	public void fromBytes(ByteBuf buf) {
+		this.running = buf.readBoolean();
+	}
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeBoolean(this.running);
-    }
+	@Override
+	public void toBytes(ByteBuf buf) {
+		buf.writeBoolean(this.running);
+	}
 
-    @Override
-    public MPacketProfilingState onMessage(MPacketProfilingState message, MessageContext ctx) {
-	    showMessage(message);
-        return null;
-    }
+	@Override
+	public MPacketProfilingState onMessage(MPacketProfilingState message, MessageContext ctx) {
+		showMessage(message);
+		return null;
+	}
 
-    @SideOnly(Side.CLIENT)
-    private void showMessage(MPacketProfilingState message) {
-        if (message.running) {
-            ((MystcraftClientProxy) Mystcraft.sidedProxy).getNotificationGui().post(I18n.format("myst.profiling.running.message"), I18n.format("myst.profiling.running"));
-        } else {
-            ((MystcraftClientProxy) Mystcraft.sidedProxy).getNotificationGui().post(I18n.format("myst.profiling.complete.message"), I18n.format("myst.profiling.complete"));
-        }
-    }
+	@SideOnly(Side.CLIENT)
+	private void showMessage(MPacketProfilingState message) {
+		if (message.running) {
+			((MystcraftClientProxy) Mystcraft.sidedProxy).getNotificationGui().post(I18n.format("myst.profiling.running.message"), I18n.format("myst.profiling.running"));
+		} else {
+			((MystcraftClientProxy) Mystcraft.sidedProxy).getNotificationGui().post(I18n.format("myst.profiling.complete.message"), I18n.format("myst.profiling.complete"));
+		}
+	}
 
 }

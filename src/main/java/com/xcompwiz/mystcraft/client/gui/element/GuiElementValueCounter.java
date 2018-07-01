@@ -14,12 +14,12 @@ public class GuiElementValueCounter extends GuiElement implements IGuiOnClickHan
 		public int getCounterValue(String key);
 	}
 
-	private String						key;
-	private IGuiOnValueChangeHandler	handler;
-	private IGuiValueProvider			valueprovider;
+	private String key;
+	private IGuiOnValueChangeHandler handler;
+	private IGuiValueProvider valueprovider;
 
-	private int							buttonWidth;
-	private int							buttonYPadding;
+	private int buttonWidth;
+	private int buttonYPadding;
 
 	public GuiElementValueCounter(IGuiOnValueChangeHandler handler, IGuiValueProvider valueprovider, String key, int guiLeft, int guiTop, int xSize, int ySize) {
 		super(guiLeft, guiTop, xSize, ySize);

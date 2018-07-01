@@ -11,7 +11,7 @@ public class ItemStackUtils {
 	public static ItemStack loadItemStackFromNBT(NBTTagCompound item) {
 		ItemStack itemstack = new ItemStack(item);
 		if (!itemstack.isEmpty() && itemstack.getItem() instanceof IItemOnLoadable) {
-			itemstack = ((IItemOnLoadable)itemstack.getItem()).onLoad(itemstack);
+			itemstack = ((IItemOnLoadable) itemstack.getItem()).onLoad(itemstack);
 		}
 		return itemstack;
 	}

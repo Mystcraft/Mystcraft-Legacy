@@ -12,7 +12,7 @@ import net.minecraft.client.resources.I18n;
 
 public class GuiNonCriticalError extends GuiYesNo {
 
-	private final List<String>	message;
+	private final List<String> message;
 
 	public GuiNonCriticalError(List<String> message) {
 		super(null, "", "", 0);

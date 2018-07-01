@@ -16,10 +16,13 @@ public abstract class InventoryUtils {
 	 * @return index if found, -1 if not found or empty itemstack
 	 */
 	public static int findInInventory(IItemHandler inventory, @Nonnull ItemStack stack) {
-		if (inventory == null) return -1;
-		if (stack.isEmpty()) return -1;
+		if (inventory == null)
+			return -1;
+		if (stack.isEmpty())
+			return -1;
 		for (int i = 0; i < inventory.getSlots(); ++i) {
-			if (inventory.getStackInSlot(i) == stack) return i;
+			if (inventory.getStackInSlot(i) == stack)
+				return i;
 		}
 		return -1;
 	}
@@ -32,10 +35,12 @@ public abstract class InventoryUtils {
 	 */
 	public static int countInInventory(IItemHandler inventory, @Nonnull ItemStack match) {
 		int count = 0;
-		if (inventory == null) return count;
+		if (inventory == null)
+			return count;
 		for (int i = 0; i < inventory.getSlots(); ++i) {
 			ItemStack itemstack = inventory.getStackInSlot(i);
-			if (itemstack.isEmpty()) continue;
+			if (itemstack.isEmpty())
+				continue;
 			if (match.isEmpty() || (itemstack.isItemEqual(match) && ItemStack.areItemStackTagsEqual(itemstack, match))) {
 				count += Math.max(0, itemstack.getCount());
 			}
@@ -44,15 +49,17 @@ public abstract class InventoryUtils {
 	}
 
 	public static int removeFromInventory(IItemHandlerModifiable inventory, @Nonnull ItemStack match, int amount) {
-		if (inventory == null) return amount;
+		if (inventory == null)
+			return amount;
 		for (int i = 0; i < inventory.getSlots() && amount > 0; ++i) {
 			ItemStack itemstack = inventory.getStackInSlot(i);
-			if (itemstack.isEmpty()) continue;
+			if (itemstack.isEmpty())
+				continue;
 			if (itemstack.isItemEqual(match) && ItemStack.areItemStackTagsEqual(itemstack, match)) {
 				int temp = Math.min(amount, itemstack.getCount());
 				amount -= temp;
 				itemstack.shrink(temp);
-				if(itemstack.getCount() <= 0) {
+				if (itemstack.getCount() <= 0) {
 					inventory.setStackInSlot(i, ItemStack.EMPTY);
 				} else {
 					inventory.setStackInSlot(i, itemstack); //update

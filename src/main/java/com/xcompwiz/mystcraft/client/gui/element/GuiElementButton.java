@@ -6,8 +6,8 @@ public class GuiElementButton extends GuiElementButtonBase {
 		void onClick(GuiElementButton caller);
 	}
 
-	private IGuiOnClickHandler	eventhandler;
-	private final String		id;
+	private IGuiOnClickHandler eventhandler;
+	private final String id;
 
 	public GuiElementButton(IGuiOnClickHandler eventhandler, String id, int guiLeft, int guiTop, int width, int height) {
 		super(guiLeft, guiTop, width, height);

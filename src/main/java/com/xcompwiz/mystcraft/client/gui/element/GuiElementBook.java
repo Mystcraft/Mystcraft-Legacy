@@ -32,11 +32,11 @@ public class GuiElementBook extends GuiElement {
 
 	}
 
-	private IBookContainer		bookcontainer;
-	private IGuiOnLinkHandler	linkhandler;
-	private List<String>		hovertext	= new ArrayList<String>();
-	private float				xScale;
-	private float				yScale;
+	private IBookContainer bookcontainer;
+	private IGuiOnLinkHandler linkhandler;
+	private List<String> hovertext = new ArrayList<String>();
+	private float xScale;
+	private float yScale;
 
 	public GuiElementBook(IBookContainer container, IGuiOnLinkHandler linkhandler, int left, int top, int width, int height) {
 		super(left, top, width, height);
@@ -101,7 +101,9 @@ public class GuiElementBook extends GuiElement {
 
 	@Override
 	public List<String> _getTooltipInfo() {
-		if (hovertext.size() > 0) { return hovertext; }
+		if (hovertext.size() > 0) {
+			return hovertext;
+		}
 		return null;
 	}
 
@@ -171,14 +173,15 @@ public class GuiElementBook extends GuiElement {
 			Collection<String> authors = bookcontainer.getBookAuthors();
 			mc.fontRenderer.drawString(bookcontainer.getBookTitle(), 40, 40, 0x000000);
 			int y = 50;
-			if (authors != null) for (String author : authors) {
-				GlStateManager.pushMatrix();
-				GlStateManager.translate(50, y, 0);
-				GlStateManager.scale(0.5, 0.5, 1);
-				mc.fontRenderer.drawString(author, 0, 0, 0x000000);
-				GlStateManager.popMatrix();
-				y += 5;
-			}
+			if (authors != null)
+				for (String author : authors) {
+					GlStateManager.pushMatrix();
+					GlStateManager.translate(50, y, 0);
+					GlStateManager.scale(0.5, 0.5, 1);
+					mc.fontRenderer.drawString(author, 0, 0, 0x000000);
+					GlStateManager.popMatrix();
+					y += 5;
+				}
 		}
 		String s = "" + (getCurrentPageIndex()) + "/" + (bookcontainer.getPageCount());
 		int j = mc.fontRenderer.getStringWidth(s) / 2;
@@ -214,13 +217,15 @@ public class GuiElementBook extends GuiElement {
 
 	private void pageLeft() {
 		int currentpage = getCurrentPageIndex() - 1;
-		if (currentpage < 0) currentpage = 0;
+		if (currentpage < 0)
+			currentpage = 0;
 		bookcontainer.setCurrentPageIndex(currentpage);
 	}
 
 	private void pageRight() {
 		int currentpage = getCurrentPageIndex() + 1;
-		if (currentpage > bookcontainer.getPageCount()) currentpage = bookcontainer.getPageCount();
+		if (currentpage > bookcontainer.getPageCount())
+			currentpage = bookcontainer.getPageCount();
 		bookcontainer.setCurrentPageIndex(currentpage);
 	}
 
@@ -239,9 +244,12 @@ public class GuiElementBook extends GuiElement {
 
 	private boolean isAgebook() {
 		ItemStack book = bookcontainer.getBook();
-		if (book.isEmpty()) return false;
-		if (!book.hasTagCompound()) return false;
-		if (book.getItem() == ModItems.agebook) return true;
+		if (book.isEmpty())
+			return false;
+		if (!book.hasTagCompound())
+			return false;
+		if (book.getItem() == ModItems.agebook)
+			return true;
 		return false;
 	}
 }

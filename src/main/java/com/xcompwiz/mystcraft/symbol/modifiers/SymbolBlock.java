@@ -29,16 +29,13 @@ public class SymbolBlock extends SymbolBase {
 	}
 
 	public static ResourceLocation getSymbolIdentifier(IBlockState blockstate) {
-		return new ResourceLocation(
-				blockstate.getBlock().getRegistryName().getResourceDomain(),
-				"ModMat_" + blockstate.getBlock().getRegistryName().getResourcePath() + "_" + blockstate.getBlock().getMetaFromState(blockstate));
+		return new ResourceLocation(blockstate.getBlock().getRegistryName().getResourceDomain(), "ModMat_" + blockstate.getBlock().getRegistryName().getResourcePath() + "_" + blockstate.getBlock().getMetaFromState(blockstate));
 	}
 
 	@Override
 	public boolean generatesConfigOption() {
 		return true;
 	}
-
 
 	//TODO: Make into a helper somewhere
 	private static String getUnlocalizedName(IBlockState blockstate) {
@@ -71,9 +68,9 @@ public class SymbolBlock extends SymbolBase {
 	@Override
 	public String generateLocalizedName() {
 		String blockName = I18n.format(unlocalizedBlockName + ".name");
-        if (blockName.endsWith(" Block")) {
-            blockName = blockName.substring(0, blockName.length() - " Block".length()).trim();
-        }
+		if (blockName.endsWith(" Block")) {
+			blockName = blockName.substring(0, blockName.length() - " Block".length()).trim();
+		}
 		return I18n.format("myst.symbol.block.wrapper", blockName);
 	}
 }

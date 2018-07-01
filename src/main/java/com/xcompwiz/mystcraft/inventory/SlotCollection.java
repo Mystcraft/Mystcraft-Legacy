@@ -10,12 +10,12 @@ import javax.annotation.Nonnull;
 
 public class SlotCollection implements ITargetInventory {
 
-	private int								begin;
-	private int								end;
-	private boolean							reverse		= false;
-	private Container						container;
+	private int begin;
+	private int end;
+	private boolean reverse = false;
+	private Container container;
 
-	private LinkedList<ITargetInventory>	targetList	= new LinkedList<>();
+	private LinkedList<ITargetInventory> targetList = new LinkedList<>();
 
 	public SlotCollection(Container container, int begin, int end) {
 		this.container = container;
@@ -28,14 +28,17 @@ public class SlotCollection implements ITargetInventory {
 	}
 
 	public boolean contains(int i) {
-		if (i < begin) return false;
-		if (i >= end) return false;
+		if (i < begin)
+			return false;
+		if (i >= end)
+			return false;
 		return true;
 	}
 
 	public boolean onShiftClick(@Nonnull ItemStack original) {
 		for (ITargetInventory target : targetList) {
-			if (target.merge(original)) return true;
+			if (target.merge(original))
+				return true;
 		}
 		return false;
 	}
@@ -58,9 +61,7 @@ public class SlotCollection implements ITargetInventory {
 				slot = container.inventorySlots.get(slotId);
 				destStack = slot.getStack();
 
-				if (!destStack.isEmpty() && destStack == itemstack &&
-						(!itemstack.getHasSubtypes() || itemstack.getItemDamage() == destStack.getItemDamage()) &&
-						ItemStack.areItemStackTagsEqual(itemstack, destStack)) {
+				if (!destStack.isEmpty() && destStack == itemstack && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == destStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, destStack)) {
 
 					int totalSize = destStack.getCount() + itemstack.getCount();
 					int maxdestsize = itemstack.getMaxStackSize();

@@ -25,7 +25,7 @@ public final class SortingUtils {
 	 * @author xcompwiz
 	 */
 	public static class ComparatorTagItemSymbolAlphabetical implements Comparator<NBTTagCompound> {
-		public static ComparatorTagItemSymbolAlphabetical	instance	= new ComparatorTagItemSymbolAlphabetical();
+		public static ComparatorTagItemSymbolAlphabetical instance = new ComparatorTagItemSymbolAlphabetical();
 
 		@Override
 		public int compare(NBTTagCompound itemdata1, NBTTagCompound itemdata2) {
@@ -42,15 +42,18 @@ public final class SortingUtils {
 	 * @author xcompwiz
 	 */
 	public static class ComparatorItemSymbolAlphabetical implements Comparator<ItemStack> {
-		public static ComparatorItemSymbolAlphabetical	instance	= new ComparatorItemSymbolAlphabetical();
+		public static ComparatorItemSymbolAlphabetical instance = new ComparatorItemSymbolAlphabetical();
 
 		@Override
 		public int compare(@Nonnull ItemStack itemstack1, @Nonnull ItemStack itemstack2) {
 			ResourceLocation id1 = InternalAPI.page.getPageSymbol(itemstack1);
 			ResourceLocation id2 = InternalAPI.page.getPageSymbol(itemstack2);
-			if (id1 == id2) return 0;
-			if (id1 == null) return -1;
-			if (id2 == null) return 1;
+			if (id1 == id2)
+				return 0;
+			if (id1 == null)
+				return -1;
+			if (id2 == null)
+				return 1;
 			IAgeSymbol symbol1 = InternalAPI.symbol.getSymbol(id1);
 			IAgeSymbol symbol2 = InternalAPI.symbol.getSymbol(id2);
 			return ComparatorSymbolAlphabetical.instance.compare(symbol1, symbol2);
@@ -62,21 +65,27 @@ public final class SortingUtils {
 	 * @author xcompwiz
 	 */
 	public static class ComparatorSymbolAlphabetical implements Comparator<IAgeSymbol> {
-		public static ComparatorSymbolAlphabetical	instance	= new ComparatorSymbolAlphabetical();
+		public static ComparatorSymbolAlphabetical instance = new ComparatorSymbolAlphabetical();
 
 		@Override
 		public int compare(IAgeSymbol symbol1, IAgeSymbol symbol2) {
-			if (symbol1 == symbol2) return 0;
-			if (symbol1 == null) return 1;
-			if (symbol2 == null) return -1;
-			if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+			if (symbol1 == symbol2)
+				return 0;
+			if (symbol1 == null)
+				return 1;
+			if (symbol2 == null)
+				return -1;
+			if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
 				return compareLocalized(symbol1, symbol2);
 			}
 			ResourceLocation rKey1 = symbol1.getRegistryName();
 			ResourceLocation rKey2 = symbol2.getRegistryName();
-			if (rKey1 == rKey2) return 0;
-			if (rKey1 == null) return 1;
-			if (rKey2 == null) return -1;
+			if (rKey1 == rKey2)
+				return 0;
+			if (rKey1 == null)
+				return 1;
+			if (rKey2 == null)
+				return -1;
 			return rKey1.toString().compareTo(rKey2.toString());
 		}
 

@@ -32,7 +32,7 @@ public class EntityLinkbook extends EntityLiving {
 	private static final DataParameter<ItemStack> BOOK = EntityDataManager.createKey(EntityLinkbook.class, DataSerializers.ITEM_STACK);
 	private static final DataParameter<String> AGE_NAME = EntityDataManager.createKey(EntityLinkbook.class, DataSerializers.STRING);
 
-	private int	decaytimer;
+	private int decaytimer;
 
 	public EntityLinkbook(World world) {
 		super(world);
@@ -82,8 +82,10 @@ public class EntityLinkbook extends EntityLiving {
 
 	public void linkEntity(Entity entity) {
 		ItemStack book = getBook();
-		if (book.isEmpty()) return;
-		if (!(book.getItem() instanceof ItemLinking)) return;
+		if (book.isEmpty())
+			return;
+		if (!(book.getItem() instanceof ItemLinking))
+			return;
 		((ItemLinking) book.getItem()).activate(book, world, entity);
 	}
 
@@ -101,7 +103,8 @@ public class EntityLinkbook extends EntityLiving {
 
 	@Override
 	public boolean attackEntityFrom(@Nonnull DamageSource damagesource, float i) {
-		if (damagesource == DamageSource.IN_WALL) return false;
+		if (damagesource == DamageSource.IN_WALL)
+			return false;
 		if (damagesource.isFireDamage()) {
 			i *= 2;
 			setFire((int) i);
@@ -117,8 +120,8 @@ public class EntityLinkbook extends EntityLiving {
 
 	private void updateBookHealth() {
 		if (getBook().isEmpty()) {
-		    return;
-        }
+			return;
+		}
 		ItemLinking.setHealth(getBook(), this.getHealth());
 	}
 
@@ -142,7 +145,7 @@ public class EntityLinkbook extends EntityLiving {
 
 		decaytimer = nbttagcompound.getInteger("DecayTimer");
 		ItemStack book = new ItemStack(nbttagcompound.getCompoundTag("Item"));
-		if(book.isEmpty()) {
+		if (book.isEmpty()) {
 			setDead();
 		}
 		dataManager.set(BOOK, book);
@@ -153,7 +156,8 @@ public class EntityLinkbook extends EntityLiving {
 	protected void collideWithEntity(Entity entity) {
 		if (entity instanceof EntityMinecartHopper && !world.isRemote) {
 			ItemStack book = getBook();
-			if(book.isEmpty()) return;
+			if (book.isEmpty())
+				return;
 			EntityMinecartHopper hoppercart = (EntityMinecartHopper) entity;
 			ItemStack itemstack = book.copy();
 			ItemStack itemstack1 = TileEntityHopper.putStackInInventoryAllSlots(null, hoppercart, itemstack, null);
@@ -170,8 +174,9 @@ public class EntityLinkbook extends EntityLiving {
 
 	@Override
 	protected boolean processInteract(EntityPlayer player, EnumHand hand) {
-		if(world.isRemote) return true;
-		if(player.isSneaking() && player.getHeldItem(hand).isEmpty()) {
+		if (world.isRemote)
+			return true;
+		if (player.isSneaking() && player.getHeldItem(hand).isEmpty()) {
 			player.setHeldItem(hand, getBook());
 			player.inventory.markDirty();
 			setDead();
@@ -187,7 +192,8 @@ public class EntityLinkbook extends EntityLiving {
 
 		super.onUpdate();
 
-		if (world.isRemote) return;
+		if (world.isRemote)
+			return;
 		++decaytimer;
 		if (decaytimer % 10000 == 0) {
 			attackEntityFrom(DamageSource.STARVE, 1);
@@ -267,7 +273,7 @@ public class EntityLinkbook extends EntityLiving {
 
 		@Override
 		public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
-			if(slot == 0) {
+			if (slot == 0) {
 				parent.setBook(stack);
 			}
 		}
@@ -280,7 +286,7 @@ public class EntityLinkbook extends EntityLiving {
 		@Nonnull
 		@Override
 		public ItemStack getStackInSlot(int slot) {
-			if(slot == 0) {
+			if (slot == 0) {
 				return parent.getBook();
 			}
 			return ItemStack.EMPTY;
@@ -289,7 +295,7 @@ public class EntityLinkbook extends EntityLiving {
 		@Nonnull
 		@Override
 		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-			if(!canAcceptItem(slot, stack)) {
+			if (!canAcceptItem(slot, stack)) {
 				return stack;
 			}
 			setStackInSlot(0, stack);
@@ -299,14 +305,14 @@ public class EntityLinkbook extends EntityLiving {
 		@Nonnull
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			if(slot == 0) {
+			if (slot == 0) {
 				ItemStack in = getStackInSlot(0); //Book, if present
-				if(!simulate) {
+				if (!simulate) {
 					setStackInSlot(0, ItemStack.EMPTY);
 				}
-				if(parent.getBook().isEmpty()) {
-				    parent.setDead();
-                }
+				if (parent.getBook().isEmpty()) {
+					parent.setDead();
+				}
 				return in;
 			}
 			return ItemStack.EMPTY;

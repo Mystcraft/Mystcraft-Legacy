@@ -16,7 +16,7 @@ public class IMCHandler {
 
 	}
 
-	private static Map<String, IMCProcessor>	processors	= new HashMap<String, IMCProcessor>();
+	private static Map<String, IMCProcessor> processors = new HashMap<String, IMCProcessor>();
 
 	static {
 		registerProcessor("blockinstability", new IMCBlockInstability());

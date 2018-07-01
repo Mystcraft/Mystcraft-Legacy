@@ -20,8 +20,8 @@ public abstract class DecayHandlerSpreading extends DecayHandler {
 	}
 
 	protected void spread(World world, BlockPos pos, Random rand) {
-		IBlockState state = world.getBlockState(pos);
-		if (state.getBlock().equals(ModBlocks.decay) && ModBlocks.decay.getMetaFromState(state) == this.getMetadata()) return;
+		if (world.getBlockState(pos) == this.getBlockState())
+			return;
 		if (rand.nextInt(getConversionDifficulty(world, pos)) == 0) {
 			world.setBlockState(pos, ModBlocks.decay.getDefaultState().withProperty(BlockDecay.DECAY_META, getMetadata()));
 			addInstability(world, 1);

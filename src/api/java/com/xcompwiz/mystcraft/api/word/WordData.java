@@ -2,7 +2,6 @@ package com.xcompwiz.mystcraft.api.word;
 
 import com.xcompwiz.mystcraft.api.hook.WordAPI;
 
-
 /**
  * Includes the word data for the symbol poems. You can, of course, create your own words, but it is recommended that you use this list for the most part and
  * only create words as necessary. If you use a string in a poem but do not define the draw components for the string as a word then the system will
@@ -13,90 +12,91 @@ import com.xcompwiz.mystcraft.api.hook.WordAPI;
 public final class WordData {
 
 	// Native Narayan Words
-	public static final String	Balance			= "Balance";
-	public static final String	Believe			= "Believe";
-	public static final String	Change			= "Change";
-	public static final String	Chaos			= "Chaos";
-	public static final String	Civilization	= "Civilization";
-	public static final String	Constraint		= "Constraint";
-	public static final String	Contradict		= "Contradict";
-	public static final String	Control			= "Control";
-	public static final String	Convey			= "Convey";
-	public static final String	Creativity		= "Creativity";
-	public static final String	Cycle			= "Cycle";
-	public static final String	Dependence		= "Dependence";
-	public static final String	Discover		= "Discover";
-	public static final String	Dynamic			= "Dynamic";
-	public static final String	Elevate			= "Elevate";
-	public static final String	Encourage		= "Encourage";
-	public static final String	Energy			= "Energy";
-	public static final String	Entropy			= "Entropy";
-	public static final String	Ethereal		= "Ethereal";
-	public static final String	Exist			= "Exist";
-	public static final String	Explore			= "Explore";
-	public static final String	Flow			= "Flow";
-	public static final String	Force			= "Force";
-	public static final String	Form			= "Form";
-	public static final String	Future			= "Future";
-	public static final String	Growth			= "Growth";
-	public static final String	Harmony			= "Harmony";
-	public static final String	Honor			= "Honor";
-	public static final String	Infinite		= "Infinite";
-	public static final String	Inhibit			= "Inhibit";
-	public static final String	Intelligence	= "Intelligence";
-	public static final String	Love			= "Love";
-	public static final String	Machine			= "Machine";
-	public static final String	Merge			= "Merge";
-	public static final String	Momentum		= "Momentum";
-	public static final String	Motion			= "Motion";
-	public static final String	Mutual			= "Mutual";
-	public static final String	Nature			= "Nature";
-	public static final String	Nurture			= "Nurture";
-	public static final String	Possibility		= "Possibility";
-	public static final String	Power			= "Power";
-	public static final String	Question		= "Question";
-	public static final String	Rebirth			= "Rebirth";
-	public static final String	Remember		= "Remember";
-	public static final String	Resilience		= "Resilience";
-	public static final String	Resurrect		= "Resurrect";
-	public static final String	Sacrifice		= "Sacrifice";
-	public static final String	Society			= "Society";
-	public static final String	Spur			= "Spur";
-	public static final String	Static			= "Static";
-	public static final String	Stimulate		= "Stimulate";
-	public static final String	Survival		= "Survival";
-	public static final String	Sustain			= "Sustain";
-	public static final String	System			= "System";
-	public static final String	Time			= "Time";
-	public static final String	Tradition		= "Tradition";
-	public static final String	Transform		= "Transform";
-	public static final String	Weave			= "Weave";
-	public static final String	Wisdom			= "Wisdom";
-	public static final String	Void			= "Void";
+	public static final String Balance = "Balance";
+	public static final String Believe = "Believe";
+	public static final String Change = "Change";
+	public static final String Chaos = "Chaos";
+	public static final String Civilization = "Civilization";
+	public static final String Constraint = "Constraint";
+	public static final String Contradict = "Contradict";
+	public static final String Control = "Control";
+	public static final String Convey = "Convey";
+	public static final String Creativity = "Creativity";
+	public static final String Cycle = "Cycle";
+	public static final String Dependence = "Dependence";
+	public static final String Discover = "Discover";
+	public static final String Dynamic = "Dynamic";
+	public static final String Elevate = "Elevate";
+	public static final String Encourage = "Encourage";
+	public static final String Energy = "Energy";
+	public static final String Entropy = "Entropy";
+	public static final String Ethereal = "Ethereal";
+	public static final String Exist = "Exist";
+	public static final String Explore = "Explore";
+	public static final String Flow = "Flow";
+	public static final String Force = "Force";
+	public static final String Form = "Form";
+	public static final String Future = "Future";
+	public static final String Growth = "Growth";
+	public static final String Harmony = "Harmony";
+	public static final String Honor = "Honor";
+	public static final String Infinite = "Infinite";
+	public static final String Inhibit = "Inhibit";
+	public static final String Intelligence = "Intelligence";
+	public static final String Love = "Love";
+	public static final String Machine = "Machine";
+	public static final String Merge = "Merge";
+	public static final String Momentum = "Momentum";
+	public static final String Motion = "Motion";
+	public static final String Mutual = "Mutual";
+	public static final String Nature = "Nature";
+	public static final String Nurture = "Nurture";
+	public static final String Possibility = "Possibility";
+	public static final String Power = "Power";
+	public static final String Question = "Question";
+	public static final String Rebirth = "Rebirth";
+	public static final String Remember = "Remember";
+	public static final String Resilience = "Resilience";
+	public static final String Resurrect = "Resurrect";
+	public static final String Sacrifice = "Sacrifice";
+	public static final String Society = "Society";
+	public static final String Spur = "Spur";
+	public static final String Static = "Static";
+	public static final String Stimulate = "Stimulate";
+	public static final String Survival = "Survival";
+	public static final String Sustain = "Sustain";
+	public static final String System = "System";
+	public static final String Time = "Time";
+	public static final String Tradition = "Tradition";
+	public static final String Transform = "Transform";
+	public static final String Weave = "Weave";
+	public static final String Wisdom = "Wisdom";
+	public static final String Void = "Void";
 
 	// Additional
-	public static final String	Chain			= "Chain";
-	public static final String	Celestial		= "Celestial";
-	public static final String	Image			= "Image";
-	public static final String	Terrain			= "Terrain";
-	public static final String	Order			= "Order";
+	public static final String Chain = "Chain";
+	public static final String Celestial = "Celestial";
+	public static final String Image = "Image";
+	public static final String Terrain = "Terrain";
+	public static final String Order = "Order";
 
 	// Suggested mappings
 
-	public static final String	Modifier		= Transform;
-	public static final String	Environment		= Survival;
+	public static final String Modifier = Transform;
+	public static final String Environment = Survival;
 
-	public static final String	Structure		= Static;
-	public static final String	Ore				= Machine;
-	public static final String	Sea				= Flow;
+	public static final String Structure = Static;
+	public static final String Ore = Machine;
+	public static final String Sea = Flow;
 
-	private static boolean		initialized		= false;
+	private static boolean initialized = false;
 
 	/**
 	 * Do not call this. This is called by Mystcraft itself.
 	 */
 	public static void init(WordAPI wordAPI) {
-		if (wordAPI == null || initialized) return;
+		if (wordAPI == null || initialized)
+			return;
 		initialized = true;
 		wordAPI.registerWord(Nature, new Integer[] { 5, 6, 8, 10, 11, 12, 15, 16, 17, 22 }); // Narayan - Nature
 		wordAPI.registerWord(Love, new Integer[] { 9, 10, 11, 14, 16, 17, 19, 20 }); // Narayan - Love

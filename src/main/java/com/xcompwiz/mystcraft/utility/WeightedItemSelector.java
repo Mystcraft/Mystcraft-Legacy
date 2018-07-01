@@ -20,13 +20,15 @@ public class WeightedItemSelector {
 	}
 
 	public static class WeightProviderDefault implements IWeightProvider {
-		public static WeightProviderDefault	instance	= new WeightProviderDefault();
+		public static WeightProviderDefault instance = new WeightProviderDefault();
 
 		private WeightProviderDefault() {};
 
 		@Override
 		public float getItemWeight(Object item) {
-			if (item instanceof IWeightedItem) { return ((IWeightedItem) item).getWeight(); }
+			if (item instanceof IWeightedItem) {
+				return ((IWeightedItem) item).getWeight();
+			}
 			return 1.0F;
 		}
 	}
@@ -48,16 +50,21 @@ public class WeightedItemSelector {
 	}
 
 	public static <T> T getRandomItem(Random rand, Collection<T> collection, IWeightProvider wgtprov) {
-		if (collection == null) return null;
+		if (collection == null)
+			return null;
 		float max = getTotalWeight(collection, wgtprov);
-		if (max <= 0) { return getRandomItemEvenly(rand, collection); }
+		if (max <= 0) {
+			return getRandomItemEvenly(rand, collection);
+		}
 		T last = null;
 		float selection = rand.nextFloat() * max;
 		for (T item : collection) {
 			float weight = wgtprov.getItemWeight(item);
 			selection -= weight;
 			if (weight > 0) {
-				if (selection <= 0) { return item; }
+				if (selection <= 0) {
+					return item;
+				}
 				last = item;
 			}
 		}
@@ -70,7 +77,9 @@ public class WeightedItemSelector {
 		float selection = rand.nextFloat() * collection.size();
 		for (T item : collection) {
 			selection -= 1;
-			if (selection <= 0) { return item; }
+			if (selection <= 0) {
+				return item;
+			}
 			last = item;
 		}
 		LoggerUtils.warn("Something odd happened when selecting a random item from an evenly weighted collection.");

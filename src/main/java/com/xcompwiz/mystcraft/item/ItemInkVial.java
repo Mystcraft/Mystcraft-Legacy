@@ -53,20 +53,21 @@ public class ItemInkVial extends Item {
 
 		@Nullable
 		Fluid getContainedFluid() {
-			if(container.isEmpty() || !container.getItem().equals(ModItems.inkvial)) return null;
+			if (container.isEmpty() || !container.getItem().equals(ModItems.inkvial))
+				return null;
 			return ModFluids.black_ink;
 		}
 
 		@Nullable
 		public FluidStack getFluid() {
-			if(getContainedFluid() == null) {
+			if (getContainedFluid() == null) {
 				return null;
 			}
 			return new FluidStack(getContainedFluid(), Fluid.BUCKET_VOLUME);
 		}
 
 		void setFluid(@Nullable Fluid f) {
-			if(f == null) {
+			if (f == null) {
 				container = new ItemStack(Items.GLASS_BOTTLE);
 			} else {
 				container = new ItemStack(ModItems.inkvial);
@@ -75,16 +76,12 @@ public class ItemInkVial extends Item {
 
 		@Override
 		public IFluidTankProperties[] getTankProperties() {
-			return new IFluidTankProperties[] {
-					new FluidTankProperties(getFluid(), Fluid.BUCKET_VOLUME)
-			};
+			return new IFluidTankProperties[] { new FluidTankProperties(getFluid(), Fluid.BUCKET_VOLUME) };
 		}
 
 		@Override
 		public int fill(FluidStack resource, boolean doFill) {
-			if (container.getCount() != 1 || resource == null ||
-					resource.amount < Fluid.BUCKET_VOLUME || container.getItem() instanceof ItemInkVial ||
-					getFluid() != null || resource.getFluid() != ModFluids.black_ink) {
+			if (container.getCount() != 1 || resource == null || resource.amount < Fluid.BUCKET_VOLUME || container.getItem() instanceof ItemInkVial || getFluid() != null || resource.getFluid() != ModFluids.black_ink) {
 				return 0;
 			}
 

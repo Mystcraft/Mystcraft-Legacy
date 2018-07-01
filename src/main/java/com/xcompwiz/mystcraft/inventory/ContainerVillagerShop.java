@@ -28,24 +28,24 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 
 	public static class Messages {
 
-		public static final String	UpdateVillagerCollection	= "UVC";
-		public static final String	PurchaseBooster				= "PB";
-		public static final String	PurchaseItem				= "PI";
+		public static final String UpdateVillagerCollection = "UVC";
+		public static final String PurchaseBooster = "PB";
+		public static final String PurchaseItem = "PI";
 
 	}
 
 	private IItemHandlerModifiable handlerPlayer;
 	private InventoryPlayer inventoryPlayer;
-	private EntityVillager		villager;
-	private InventoryVillager	villagerinv;
+	private EntityVillager villager;
+	private InventoryVillager villagerinv;
 
-	private long				villagerinv_timestamp;
-	private Integer				playerEmeralds;
-	private long				lastEmeraldsUpdate;
+	private long villagerinv_timestamp;
+	private Integer playerEmeralds;
+	private long lastEmeraldsUpdate;
 
 	public ContainerVillagerShop(EntityPlayer player, EntityVillager villager) {
-	    this.handlerPlayer = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN); //Get main
-        this.inventoryPlayer = player.inventory;
+		this.handlerPlayer = (IItemHandlerModifiable) player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN); //Get main
+		this.inventoryPlayer = player.inventory;
 		this.villager = villager;
 		this.villagerinv = VillagerTradeSystem.getVillagerInventory(villager);
 		updateSlots();
@@ -66,8 +66,8 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 		}
 
 		collections.clear();
-        SlotCollection maininv = new SlotCollection(this, 0, 0 + 27);
-        SlotCollection hotbar = new SlotCollection(this, 0 + 27, 0 + 27 + 9);
+		SlotCollection maininv = new SlotCollection(this, 0, 0 + 27);
+		SlotCollection hotbar = new SlotCollection(this, 0 + 27, 0 + 27 + 9);
 
 		maininv.pushTargetFront(hotbar);
 		hotbar.pushTargetFront(maininv);
@@ -88,8 +88,8 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 				this.inventoryItemStacks.set(slotId, stored);
 
 				for (IContainerListener listener : this.listeners) {
-				    listener.sendSlotContents(this, slotId, stored);
-                }
+					listener.sendSlotContents(this, slotId, stored);
+				}
 			}
 		}
 		if (this.villagerinv_timestamp != villagerinv.getLastChanged()) {
@@ -100,20 +100,21 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 			nbttagcompound.setTag(Messages.UpdateVillagerCollection, inventorynbt);
 			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
 		}
-        if (packets.size() > 0) {
-            for (IContainerListener listener : this.listeners) {
-                if(listener instanceof EntityPlayerMP) {
-                    for (IMessage message : packets) {
-                        MystcraftPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) listener);
-                    }
-                }
-            }
-        }
+		if (packets.size() > 0) {
+			for (IContainerListener listener : this.listeners) {
+				if (listener instanceof EntityPlayerMP) {
+					for (IMessage message : packets) {
+						MystcraftPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) listener);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer) {
-		if (villager.isDead) return false;
+		if (villager.isDead)
+			return false;
 		return entityplayer.getDistanceSq(villager.posX, villager.posY, villager.posZ) <= 64D;
 	}
 
@@ -126,13 +127,15 @@ public class ContainerVillagerShop extends ContainerBase implements IGuiMessageH
 			return;
 		}
 		if (data.hasKey(Messages.PurchaseBooster)) {
-			if (villagerinv.purchaseBooster(handlerPlayer, inventoryPlayer)) getPlayerEmeralds(true);
+			if (villagerinv.purchaseBooster(handlerPlayer, inventoryPlayer))
+				getPlayerEmeralds(true);
 			return;
 		}
 		if (data.hasKey(Messages.PurchaseItem)) {
 			int index = data.getInteger(Messages.PurchaseItem);
-			if (villagerinv.purchaseShopItem(handlerPlayer, inventoryPlayer, index)) getPlayerEmeralds(true);
-        }
+			if (villagerinv.purchaseShopItem(handlerPlayer, inventoryPlayer, index))
+				getPlayerEmeralds(true);
+		}
 	}
 
 	/**

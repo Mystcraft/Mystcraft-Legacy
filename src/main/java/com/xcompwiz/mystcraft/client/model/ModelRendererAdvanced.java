@@ -16,36 +16,36 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModelRendererAdvanced {
 	/** The size of the texture file's width in pixels. */
-	protected float						textureWidth;
+	protected float textureWidth;
 
 	/** The size of the texture file's height in pixels. */
-	protected float						textureHeight;
+	protected float textureHeight;
 
 	/** The X offset into the texture used for displaying this model */
-	protected int						textureOffsetX;
+	protected int textureOffsetX;
 
 	/** The Y offset into the texture used for displaying this model */
-	protected int						textureOffsetY;
+	protected int textureOffsetY;
 
-	public float						rotationPointX;
-	public float						rotationPointY;
-	public float						rotationPointZ;
-	public float						rotateAngleX;
-	public float						rotateAngleY;
-	public float						rotateAngleZ;
-	private boolean						compiled;
+	public float rotationPointX;
+	public float rotationPointY;
+	public float rotationPointZ;
+	public float rotateAngleX;
+	public float rotateAngleY;
+	public float rotateAngleZ;
+	private boolean compiled;
 
 	/** The GL display list rendered by the Tessellator for this model */
-	private int							displayList;
-	public boolean						mirror;
-	public boolean						showModel;
+	private int displayList;
+	public boolean mirror;
+	public boolean showModel;
 
 	/** Hides the model. */
-	public boolean						isHidden;
-	public List<ModelElement>			elementList;
-	public List<ModelRendererAdvanced>	childModels;
-	public final String					modelName;
-	protected ModelBase					baseModel;
+	public boolean isHidden;
+	public List<ModelElement> elementList;
+	public List<ModelRendererAdvanced> childModels;
+	public final String modelName;
+	protected ModelBase baseModel;
 
 	public ModelRendererAdvanced(ModelBase par1ModelBase, String par2Str) {
 		this.textureWidth = 64.0F;

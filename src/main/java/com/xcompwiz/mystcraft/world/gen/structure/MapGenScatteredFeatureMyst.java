@@ -21,15 +21,15 @@ import javax.annotation.Nullable;
 public class MapGenScatteredFeatureMyst extends MapGenStructure {
 
 	/** contains possible spawns for scattered features */
-	private List<SpawnListEntry>	scatteredFeatureSpawnList;
+	private List<SpawnListEntry> scatteredFeatureSpawnList;
 
 	/** the maximum distance between scattered features */
-	private int						maxDistanceBetweenScatteredFeatures;
+	private int maxDistanceBetweenScatteredFeatures;
 
 	/** the minimum distance between scattered features */
-	private int						minDistanceBetweenScatteredFeatures;
+	private int minDistanceBetweenScatteredFeatures;
 
-	public static String			stringId	= "MystLibrary";
+	public static String stringId = "MystLibrary";
 
 	public MapGenScatteredFeatureMyst() {
 		this.scatteredFeatureSpawnList = new ArrayList<SpawnListEntry>();
@@ -62,7 +62,7 @@ public class MapGenScatteredFeatureMyst extends MapGenStructure {
 		return null;
 	}
 
-    @Override
+	@Override
 	protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ) {
 		int var3 = chunkX;
 		int var4 = chunkZ;

@@ -18,9 +18,9 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 
-	private ContainerBook	container;
-	private boolean			widget = true;
-	private GuiElementBook	bookelem;
+	private ContainerBook container;
+	private boolean widget = true;
+	private GuiElementBook bookelem;
 
 	private GuiBook(ContainerBook container) {
 		super(container);
@@ -65,7 +65,8 @@ public class GuiBook extends GuiContainerElements implements IGuiOnLinkHandler {
 	}
 
 	private void recalcPosition() {
-		if (bookelem.isVisible() == widget) return;
+		if (bookelem.isVisible() == widget)
+			return;
 		widget = bookelem.isVisible();
 		xSize = 176;
 		ySize = 166;

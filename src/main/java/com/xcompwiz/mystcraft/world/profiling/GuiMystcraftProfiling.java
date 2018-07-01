@@ -13,18 +13,18 @@ import net.minecraft.client.resources.I18n;
 
 public class GuiMystcraftProfiling extends GuiScreen implements IMystcraftProfilingCallback {
 
-	private GuiScreen			parentscreen;
-	private final List<String>	message;
-	private String				buttonText;
-	private int					valTotal;
-	private int					valQueued;
-	private int					valComplete;
+	private GuiScreen parentscreen;
+	private final List<String> message;
+	private String buttonText;
+	private int valTotal;
+	private int valQueued;
+	private int valComplete;
 
-	private int					borderColor		= 0xFFA0A0A0;
-	private int					backgroundColor	= 0xFF000000;
-	private int					fillColor		= 0xFF50EE50;
-	private int					fillColor2		= 0xFF80CCC0;
-	private boolean				finished		= false;
+	private int borderColor = 0xFFA0A0A0;
+	private int backgroundColor = 0xFF000000;
+	private int fillColor = 0xFF50EE50;
+	private int fillColor2 = 0xFF80CCC0;
+	private boolean finished = false;
 
 	public GuiMystcraftProfiling(GuiScreen parentscreen) {
 		this.parentscreen = parentscreen;
@@ -60,7 +60,8 @@ public class GuiMystcraftProfiling extends GuiScreen implements IMystcraftProfil
 	public void drawScreen(int par1, int par2, float par3) {
 		if (finished) {
 			MystcraftFirstRun.end();
-			if (Minecraft.getMinecraft().currentScreen == this) Minecraft.getMinecraft().displayGuiScreen(parentscreen);
+			if (Minecraft.getMinecraft().currentScreen == this)
+				Minecraft.getMinecraft().displayGuiScreen(parentscreen);
 			return;
 		}
 		super.drawScreen(par1, par2, par3);

@@ -50,18 +50,18 @@ import java.util.Map;
 
 public class ModBlocks {
 
-	public static Block	inkmixer;
-	public static Block	bookbinder;
-	public static Block	receptacle;
-	public static Block	bookstand;
-	public static Block	lectern;
-	public static Block	decay;
-	public static Block	linkmodifier;
-	public static Block	crystal;
-	public static Block	portal;
-	public static Block	writingdesk;
-	public static Block	starfissure;
-	public static Block	black_ink;
+	public static Block inkmixer;
+	public static Block bookbinder;
+	public static Block receptacle;
+	public static Block bookstand;
+	public static Block lectern;
+	public static Block decay;
+	public static Block linkmodifier;
+	public static Block crystal;
+	public static Block portal;
+	public static Block writingdesk;
+	public static Block starfissure;
+	public static Block black_ink;
 
 	public static void loadConfigs(MystConfig config) {}
 
@@ -96,57 +96,57 @@ public class ModBlocks {
 		ModRegistryPrimer.queueForRegistration(inkmixer);
 		registerItemBlock(inkmixer);
 		ModRegistryPrimer.queueForRegistration(bookbinder);
-        registerItemBlock(bookbinder);
+		registerItemBlock(bookbinder);
 		ModRegistryPrimer.queueForRegistration(receptacle);
-        registerItemBlock(receptacle);
+		registerItemBlock(receptacle);
 		ModRegistryPrimer.queueForRegistration(bookstand);
-        registerItemBlock(bookstand);
+		registerItemBlock(bookstand);
 		ModRegistryPrimer.queueForRegistration(lectern);
-        registerItemBlock(lectern);
+		registerItemBlock(lectern);
 		ModRegistryPrimer.queueForRegistration(decay);
-        ItemBlock ib = new ItemDecayBlock(decay);
-        ib.setRegistryName(decay.getRegistryName());
-        ModRegistryPrimer.queueForRegistration(ib);
+		ItemBlock ib = new ItemDecayBlock(decay);
+		ib.setRegistryName(decay.getRegistryName());
+		ModRegistryPrimer.queueForRegistration(ib);
 		ModRegistryPrimer.queueForRegistration(linkmodifier);
-        registerItemBlock(linkmodifier);
+		registerItemBlock(linkmodifier);
 		ModRegistryPrimer.queueForRegistration(crystal);
-        registerItemBlock(crystal);
+		registerItemBlock(crystal);
 		ModRegistryPrimer.queueForRegistration(portal);
-        registerItemBlock(portal);
+		registerItemBlock(portal);
 		ModRegistryPrimer.queueForRegistration(writingdesk);
-        //registerItemBlock(writingdesk);
+		//registerItemBlock(writingdesk);
 		ModRegistryPrimer.queueForRegistration(starfissure);
-        registerItemBlock(starfissure);
+		registerItemBlock(starfissure);
 		ModRegistryPrimer.queueForRegistration(black_ink);
 		//GameRegistry.register(new ItemBlockFluid(black_ink)); Hellfire> it's not necessary to add a fluid itemblock.. I'd suggest we don't atm.
 
 		// Set mining difficulties/tools
-		decay.setHarvestLevel("pickaxe",   0, decay.getStateFromMeta(DecayHandler.DecayType.BLUE.getIndex()));
-		decay.setHarvestLevel("shovel",    0, decay.getStateFromMeta(DecayHandler.DecayType.RED.getIndex()));
-		decay.setHarvestLevel("pickaxe",   0, decay.getStateFromMeta(DecayHandler.DecayType.PURPLE.getIndex()));
-		decay.setHarvestLevel("pickaxe",   2, decay.getStateFromMeta(DecayHandler.DecayType.WHITE.getIndex()));
-		decay.setHarvestLevel("shovel",    0, decay.getStateFromMeta(DecayHandler.DecayType.BLACK.getIndex()));
+		decay.setHarvestLevel("pickaxe", 0, decay.getStateFromMeta(DecayHandler.DecayType.BLUE.getIndex()));
+		decay.setHarvestLevel("shovel", 0, decay.getStateFromMeta(DecayHandler.DecayType.RED.getIndex()));
+		decay.setHarvestLevel("pickaxe", 0, decay.getStateFromMeta(DecayHandler.DecayType.PURPLE.getIndex()));
+		decay.setHarvestLevel("pickaxe", 2, decay.getStateFromMeta(DecayHandler.DecayType.WHITE.getIndex()));
+		decay.setHarvestLevel("shovel", 0, decay.getStateFromMeta(DecayHandler.DecayType.BLACK.getIndex()));
 		crystal.setHarvestLevel("pickaxe", 0);
 	}
 
 	private static void registerItemBlock(Block b) {
-        ItemBlock ib = new ItemBlock(b);
-        ib.setRegistryName(b.getRegistryName());
-        ModRegistryPrimer.queueForRegistration(ib);
+		ItemBlock ib = new ItemBlock(b);
+		ib.setRegistryName(b.getRegistryName());
+		ModRegistryPrimer.queueForRegistration(ib);
 	}
 
 	@SideOnly(Side.CLIENT)
 	public static void registerModelColors() {
 		BlockColors colors = Minecraft.getMinecraft().getBlockColors();
 		colors.registerBlockColorHandler((state, world, pos, tint) -> {
-			if(world instanceof World) {
+			if (world instanceof World) {
 				return ModFluids.black_ink.getColor((World) world, pos);
 			} else {
 				return ModFluids.black_ink.getColor();
 			}
 		}, black_ink);
 		colors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
-			if(worldIn == null || pos == null) {
+			if (worldIn == null || pos == null) {
 				return 0x3333FF;
 			}
 			return BlockLinkPortal.colorMultiplier(worldIn, pos);
@@ -165,18 +165,11 @@ public class ModBlocks {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(portal), 0, mrlItemBlockModel("linkportal"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(starfissure), 0, mrlItemBlockModel("blockstarfissure"));
 
-        ModelBakery.registerItemVariants(Item.getItemFromBlock(decay),
-                new ResourceLocation(MystObjects.MystcraftModId, "decay_black"),
-                new ResourceLocation(MystObjects.MystcraftModId, "decay_red"),
-                new ResourceLocation(MystObjects.MystcraftModId, "decay_green"),
-                new ResourceLocation(MystObjects.MystcraftModId, "decay_blue"),
-                new ResourceLocation(MystObjects.MystcraftModId, "decay_purple"),
-                new ResourceLocation(MystObjects.MystcraftModId, "decay_yellow"),
-                new ResourceLocation(MystObjects.MystcraftModId, "decay_white"));
+		ModelBakery.registerItemVariants(Item.getItemFromBlock(decay), new ResourceLocation(MystObjects.MystcraftModId, "decay_black"), new ResourceLocation(MystObjects.MystcraftModId, "decay_red"), new ResourceLocation(MystObjects.MystcraftModId, "decay_green"), new ResourceLocation(MystObjects.MystcraftModId, "decay_blue"), new ResourceLocation(MystObjects.MystcraftModId, "decay_purple"), new ResourceLocation(MystObjects.MystcraftModId, "decay_yellow"), new ResourceLocation(MystObjects.MystcraftModId, "decay_white"));
 		ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(decay), (stack) -> {
-            DecayHandler.DecayType dt = DecayHandler.DecayType.values()[MathHelper.clamp(stack.getItemDamage(), 0, DecayHandler.DecayType.values().length - 1)];
-            return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "decay_" + dt.getName()), "inventory");
-        });
+			DecayHandler.DecayType dt = DecayHandler.DecayType.values()[MathHelper.clamp(stack.getItemDamage(), 0, DecayHandler.DecayType.values().length - 1)];
+			return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "decay_" + dt.getName()), "inventory");
+		});
 	}
 
 	@SideOnly(Side.CLIENT)

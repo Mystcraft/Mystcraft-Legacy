@@ -43,11 +43,11 @@ public class SymbolMoonNormal extends SymbolBase {
 	}
 
 	private static class CelestialObject extends SunsetRenderer implements ICelestial {
-		private Random	rand;
+		private Random rand;
 
-		private long	period;
-		private float	angle;
-		private float	offset;
+		private long period;
+		private float angle;
+		private float offset;
 
 		CelestialObject(AgeDirector controller, long seed, Number period, Number angle, Number offset, ColorGradient gradient) {
 			super(controller, gradient);
@@ -65,7 +65,8 @@ public class SymbolMoonNormal extends SymbolBase {
 			}
 			if (offset == null) {
 				offset = rand.nextFloat();
-				if (this.period == 0) offset = offset.floatValue() / 2 + 0.25F;
+				if (this.period == 0)
+					offset = offset.floatValue() / 2 + 0.25F;
 			}
 			this.offset = offset.floatValue() - 0.5F;
 		}
@@ -79,44 +80,47 @@ public class SymbolMoonNormal extends SymbolBase {
 
 			float invertRain = 1.0F - worldObj.getRainStrength(partial);
 			float celestial_period = getAltitudeAngle(worldObj.getWorldTime(), partial);
-            GlStateManager.enableTexture2D();
-            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-            GlStateManager.color(1F, 1F, 1F, invertRain);
-            GlStateManager.pushMatrix();
-            GlStateManager.rotate(angle, 0, 1, 0);
-            GlStateManager.rotate(celestial_period * 360F, 1, 0, 0);
+			GlStateManager.enableTexture2D();
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+			GlStateManager.color(1F, 1F, 1F, invertRain);
+			GlStateManager.pushMatrix();
+			GlStateManager.rotate(angle, 0, 1, 0);
+			GlStateManager.rotate(celestial_period * 360F, 1, 0, 0);
 
 			float size = 20.0F;
 			int moonphase = getMoonPhase(worldObj.getWorldTime(), partial);
-            int k = moonphase % 4;
-            int i1 = moonphase / 4 % 2;
-            float f22 = (float)  (k + 0) / 4.0F;
-            float f23 = (float) (i1 + 0) / 2.0F;
-            float f24 = (float)  (k + 1) / 4.0F;
-            float f14 = (float) (i1 + 1) / 2.0F;
+			int k = moonphase % 4;
+			int i1 = moonphase / 4 % 2;
+			float f22 = (float) (k + 0) / 4.0F;
+			float f23 = (float) (i1 + 0) / 2.0F;
+			float f24 = (float) (k + 1) / 4.0F;
+			float f14 = (float) (i1 + 1) / 2.0F;
 			eng.bindTexture(Vanilla.normal_moon);
-            vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-            vb.pos((double)(-size), -100.0D, (double)  size) .tex((double)f24, (double)f14).endVertex();
-            vb.pos((double)  size,  -100.0D, (double)  size) .tex((double)f22, (double)f14).endVertex();
-            vb.pos((double)  size,  -100.0D, (double)(-size)).tex((double)f22, (double)f23).endVertex();
-            vb.pos((double)(-size), -100.0D, (double)(-size)).tex((double)f24, (double)f23).endVertex();
-            tes.draw();
+			vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+			vb.pos((double) (-size), -100.0D, (double) size).tex((double) f24, (double) f14).endVertex();
+			vb.pos((double) size, -100.0D, (double) size).tex((double) f22, (double) f14).endVertex();
+			vb.pos((double) size, -100.0D, (double) (-size)).tex((double) f22, (double) f23).endVertex();
+			vb.pos((double) (-size), -100.0D, (double) (-size)).tex((double) f24, (double) f23).endVertex();
+			tes.draw();
 
-            GlStateManager.color(1F, 1F, 1F, 1F);
-            GlStateManager.popMatrix();
+			GlStateManager.color(1F, 1F, 1F, 1F);
+			GlStateManager.popMatrix();
 			if (this.gradient != null) {
-			    this.renderHorizon(eng, worldObj, celestial_period, angle, partial, 0.3F);
-            }
+				this.renderHorizon(eng, worldObj, celestial_period, angle, partial, 0.3F);
+			}
 		}
 
 		@Override
 		public float getAltitudeAngle(long time, float partialTime) {
-			if (period == 0) return offset;
+			if (period == 0)
+				return offset;
 			int i = (int) (time % period);
 			float f = (i + partialTime) / period + offset;
 
-			if (f < 0.0F) ++f;
-			if (f > 1.0F) --f;
+			if (f < 0.0F)
+				++f;
+			if (f > 1.0F)
+				--f;
 
 			float f1 = f;
 			f = 1.0F - (float) ((Math.cos(f * Math.PI) + 1.0D) / 2D);
@@ -125,7 +129,8 @@ public class SymbolMoonNormal extends SymbolBase {
 		}
 
 		public int getMoonPhase(long time, float partialTime) {
-			if (period == 0) return 0;
+			if (period == 0)
+				return 0;
 			return (int) (time / period) % 8;
 		}
 

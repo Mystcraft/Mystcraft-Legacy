@@ -9,14 +9,14 @@ import com.xcompwiz.mystcraft.debug.DefaultValueCallback.CallbackSetNotSupported
 import net.minecraft.command.ICommandSender;
 
 public abstract class DebugHierarchy {
-	public static final DebugNode	root	= new DebugNode();
+	public static final DebugNode root = new DebugNode();
 
 	public interface IDebugElement {}
 
 	public static class DebugNode implements IDebugElement {
-		public final DebugNode					parent;
-		private HashMap<String, IDebugElement>	children	= new HashMap<String, IDebugElement>();
-		private HashMap<IDebugElement, String>	keymap		= new HashMap<IDebugElement, String>();
+		public final DebugNode parent;
+		private HashMap<String, IDebugElement> children = new HashMap<String, IDebugElement>();
+		private HashMap<IDebugElement, String> keymap = new HashMap<IDebugElement, String>();
 
 		private DebugNode() {
 			this.parent = null;
@@ -27,8 +27,10 @@ public abstract class DebugHierarchy {
 		}
 
 		public void addChild(String id, IDebugElement elem) {
-			if (elem instanceof DebugNode) throw new RuntimeException("Cannot register nodes as children. Use DebugNode.createNode instead.");
-			if (id.contains(".")) throw new RuntimeException("Cannot register elements with '.' in id.");
+			if (elem instanceof DebugNode)
+				throw new RuntimeException("Cannot register nodes as children. Use DebugNode.createNode instead.");
+			if (id.contains("."))
+				throw new RuntimeException("Cannot register elements with '.' in id.");
 			String key = id.replaceAll(" ", "_");
 			if (children.containsKey(key)) {
 				keymap.remove(children.remove(key));
@@ -38,11 +40,13 @@ public abstract class DebugHierarchy {
 		}
 
 		public DebugNode getOrCreateNode(String id) {
-			if (id.contains(".")) throw new RuntimeException("Cannot register elements with '.' in id.");
+			if (id.contains("."))
+				throw new RuntimeException("Cannot register elements with '.' in id.");
 			String key = id.replaceAll(" ", "_");
 			if (children.containsKey(key)) {
 				IDebugElement node = children.get(key);
-				if (node instanceof DebugNode) return (DebugNode) node;
+				if (node instanceof DebugNode)
+					return (DebugNode) node;
 				throw new RuntimeException("Address already registered to non-node element.");
 			}
 			DebugNode elem = new DebugNode(this);
@@ -53,12 +57,14 @@ public abstract class DebugHierarchy {
 
 		public void removeChild(IDebugElement elem) {
 			String key = keymap.remove(elem);
-			if (key != null) children.remove(key);
+			if (key != null)
+				children.remove(key);
 		}
 
 		public void removeChild(String key) {
 			IDebugElement elem = children.remove(key);
-			if (elem != null) keymap.remove(elem);
+			if (elem != null)
+				keymap.remove(elem);
 		}
 
 		public Collection<String> getChildren() {

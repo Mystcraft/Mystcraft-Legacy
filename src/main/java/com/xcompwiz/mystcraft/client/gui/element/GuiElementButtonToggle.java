@@ -6,7 +6,7 @@ public class GuiElementButtonToggle extends GuiElementButton {
 		public boolean getState(String id);
 	}
 
-	private IGuiStateProvider	stateprovider;
+	private IGuiStateProvider stateprovider;
 
 	public GuiElementButtonToggle(IGuiOnClickHandler eventhandler, IGuiStateProvider stateprovider, String id, int guiLeft, int guiTop, int width, int height) {
 		super(eventhandler, id, guiLeft, guiTop, width, height);

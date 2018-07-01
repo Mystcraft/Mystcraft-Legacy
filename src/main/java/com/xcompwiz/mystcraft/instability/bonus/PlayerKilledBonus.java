@@ -16,16 +16,16 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOnPlayerChangedDimension, IOnPlayerLoggedIn {
 
-	private InstabilityBonusManager	bonusmanager;
-	private String					name;
+	private InstabilityBonusManager bonusmanager;
+	private String name;
 
-	private int						max;
-	private int						min;
-	private float					decayrate;
-	private float					current;
+	private int max;
+	private int min;
+	private float decayrate;
+	private float current;
 
-	private String					playername;
-	private int						dimensionid;
+	private String playername;
+	private int dimensionid;
 
 	public PlayerKilledBonus(InstabilityBonusManager bonusmanager, Integer dimensionid, String playername, Integer max, Float decayrate) {
 		this.bonusmanager = bonusmanager;
@@ -86,7 +86,8 @@ public class PlayerKilledBonus implements IInstabilityBonus, IOnEntityDeath, IOn
 	}
 
 	private void announce(String string, Object... args) {
-		if (!bonusmanager.isInstabilityEnabled()) return;
+		if (!bonusmanager.isInstabilityEnabled())
+			return;
 		ITextComponent chatcomponent = new TextComponentTranslation(string, args);
 		NetworkUtils.sendMessageToPlayersInWorld(chatcomponent, this.dimensionid);
 	}

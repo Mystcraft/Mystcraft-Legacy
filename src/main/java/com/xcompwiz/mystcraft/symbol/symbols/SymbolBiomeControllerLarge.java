@@ -50,17 +50,17 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 
 	static class BiomeController implements IBiomeController {
 
-		private Biome		allowedBiomes[];
+		private Biome allowedBiomes[];
 		/** A list of biomes that the player can spawn in. */
-		private List<Biome>	biomesToSpawnIn;
+		private List<Biome> biomesToSpawnIn;
 
-		private GenLayer			genBiomes;
+		private GenLayer genBiomes;
 		/** A GenLayer containing the indices into Biome.biomeList[] */
-		private GenLayer			biomeIndexLayer;
+		private GenLayer biomeIndexLayer;
 		/** The BiomeCache object for this world. */
-		private BiomeCache			biomeCache;
+		private BiomeCache biomeCache;
 
-		private int					zoomscale;
+		private int zoomscale;
 
 		protected BiomeController(AgeDirector controller, int zoom, List<Biome> biomes) {
 			this.zoomscale = zoom;

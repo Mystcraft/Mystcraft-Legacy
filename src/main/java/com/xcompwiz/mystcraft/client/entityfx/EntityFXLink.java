@@ -9,8 +9,8 @@ import net.minecraft.world.World;
 
 public class EntityFXLink extends Particle {
 
-	Random			rand;
-	private float	tempParticleScale;
+	Random rand;
+	private float tempParticleScale;
 
 	public EntityFXLink(World worldObj, double x, double y, double z, double motionX, double motionY, double motionZ) {
 		super(worldObj, x, y, z, motionX, motionY, motionZ);
@@ -59,7 +59,7 @@ public class EntityFXLink extends Particle {
 		this.prevPosZ = this.posZ;
 
 		if (this.particleAge++ >= this.particleMaxAge) {
-		    setExpired();
+			setExpired();
 		}
 
 		this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);

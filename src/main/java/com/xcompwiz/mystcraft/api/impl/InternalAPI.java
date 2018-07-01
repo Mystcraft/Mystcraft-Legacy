@@ -22,20 +22,20 @@ import net.minecraftforge.fml.common.ModContainer;
 
 public class InternalAPI {
 
-	public static DimensionAPIDelegate		dimension;
-	public static LinkingAPIDelegate		linking;
-	public static LinkingAPIDelegate		linkProperties;
-	public static InstabilityAPIDelegate	instability;
-	public static SymbolAPIDelegate			symbol;
-	public static SymbolAPIDelegate			word;
-	public static SymbolAPIDelegate			symbolValues;
-	public static GrammarAPIDelegate		grammar;
-	public static PageAPIDelegate			page;
-	public static RenderAPIDelegate			render;
+	public static DimensionAPIDelegate dimension;
+	public static LinkingAPIDelegate linking;
+	public static LinkingAPIDelegate linkProperties;
+	public static InstabilityAPIDelegate instability;
+	public static SymbolAPIDelegate symbol;
+	public static SymbolAPIDelegate word;
+	public static SymbolAPIDelegate symbolValues;
+	public static GrammarAPIDelegate grammar;
+	public static PageAPIDelegate page;
+	public static RenderAPIDelegate render;
 
-	public static InstabilityFactoryImpl	instabilityFact;
-	public static SymbolFactoryImpl			symbolFact;
-	public static ItemFactoryImpl			itemFact;
+	public static InstabilityFactoryImpl instabilityFact;
+	public static SymbolFactoryImpl symbolFact;
+	public static ItemFactoryImpl itemFact;
 
 	public static class ProviderGiver implements APIInstanceProvider.EntryPoint {
 
@@ -43,9 +43,9 @@ public class InternalAPI {
 		public APIInstanceProvider getProviderInstance() {
 			return InternalAPI.getAPIProviderInstance();
 		}
-		
+
 	}
-	
+
 	public static void initAPI() {
 		LinkingAPIDelegate linking_delegate = new LinkingAPIDelegate();
 		dimension = new DimensionAPIDelegate();
@@ -69,13 +69,13 @@ public class InternalAPI {
 
 		//TODO: Why do I do this?
 		ComparatorItemSymbolAlphabetical.instance.compare(ItemStack.EMPTY, ItemStack.EMPTY);
-		
+
 		MystObjects.entryPoint = new ProviderGiver();
 
 		APIProviderImpl.init();
 	}
 
-	private static HashMap<String, APIInstanceProvider>	instances	= new HashMap<String, APIInstanceProvider>();
+	private static HashMap<String, APIInstanceProvider> instances = new HashMap<String, APIInstanceProvider>();
 
 	public synchronized static APIInstanceProvider getAPIProviderInstance() {
 		String modId = "ERROR:Unknown";

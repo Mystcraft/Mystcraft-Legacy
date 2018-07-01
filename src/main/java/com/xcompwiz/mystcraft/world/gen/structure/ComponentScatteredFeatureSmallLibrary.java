@@ -24,12 +24,12 @@ import net.minecraft.world.storage.loot.LootTable;
 
 public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFeatureMyst {
 
-	private int						averageGroundLevel	= -1; //Used to track the library generation height
-	private boolean					hasMadeChest;
+	private int averageGroundLevel = -1; //Used to track the library generation height
+	private boolean hasMadeChest;
 
-	private boolean[]				lecternGenned	= new boolean[5];
-	private static final int[][]	lecternCoords	= new int[][] { { 6, 2, 2 }, { 8, 2, 4 }, { 8, 2, 5 }, { 8, 2, 6 }, { 6, 2, 8 } };
-	private static final int[][]	lecternTargs	= new int[][] { { 6, 3 }, { 7, 4 }, { 7, 5 }, { 7, 6 }, { 6, 7 } };
+	private boolean[] lecternGenned = new boolean[5];
+	private static final int[][] lecternCoords = new int[][] { { 6, 2, 2 }, { 8, 2, 4 }, { 8, 2, 5 }, { 8, 2, 6 }, { 6, 2, 8 } };
+	private static final int[][] lecternTargs = new int[][] { { 6, 3 }, { 7, 4 }, { 7, 5 }, { 7, 6 }, { 6, 7 } };
 
 	public ComponentScatteredFeatureSmallLibrary() {}
 
@@ -52,7 +52,8 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 		super.readStructureFromNBT(tagCompound, p_143011_2_);
 		this.hasMadeChest = tagCompound.getBoolean("Chest");
 		for (int i = 0; i < lecternGenned.length; ++i) {
-			if (!tagCompound.hasKey("hasPlacedLectern" + i)) continue;
+			if (!tagCompound.hasKey("hasPlacedLectern" + i))
+				continue;
 			lecternGenned[i] = tagCompound.getBoolean("hasPlacedLectern" + i);
 		}
 		this.averageGroundLevel = tagCompound.getInteger("YPos");
@@ -65,7 +66,9 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 	public boolean addComponentParts(World worldObj, Random rand, StructureBoundingBox boundingbox) {
 		if (this.averageGroundLevel < 0) {
 			this.averageGroundLevel = this.getAverageGroundLevel(worldObj, boundingbox);
-			if (this.averageGroundLevel < 0) { return false; }
+			if (this.averageGroundLevel < 0) {
+				return false;
+			}
 			this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 10, 0);
 		}
 
@@ -730,14 +733,14 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 8, 7, 10, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 9, 7, 10, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH).withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.TOP), 10, 7, 10, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_SLAB.getStateFromMeta(3),  1, 4, 4, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_SLAB.getStateFromMeta(3),  1, 4, 5, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_SLAB.getStateFromMeta(3),  1, 4, 6, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_SLAB.getStateFromMeta(3), 1, 4, 4, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_SLAB.getStateFromMeta(3), 1, 4, 5, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_SLAB.getStateFromMeta(3), 1, 4, 6, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_SLAB.getStateFromMeta(11), 1, 5, 5, boundingbox);
 		setBlockState(worldObj, Blocks.STONE_SLAB.getStateFromMeta(11), 3, 3, 5, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_SLAB.getStateFromMeta(3),  5, 10, 5, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_SLAB.getStateFromMeta(3),  6, 10, 5, boundingbox);
-		setBlockState(worldObj, Blocks.STONE_SLAB.getStateFromMeta(3),  7, 10, 5, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_SLAB.getStateFromMeta(3), 5, 10, 5, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_SLAB.getStateFromMeta(3), 6, 10, 5, boundingbox);
+		setBlockState(worldObj, Blocks.STONE_SLAB.getStateFromMeta(3), 7, 10, 5, boundingbox);
 		setBlockState(worldObj, Blocks.WEB.getDefaultState(), 4, 5, 2, boundingbox);
 		setBlockState(worldObj, Blocks.WEB.getDefaultState(), 4, 6, 2, boundingbox);
 		setBlockState(worldObj, Blocks.WEB.getDefaultState(), 4, 6, 3, boundingbox);
@@ -809,12 +812,12 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 					//This is gonna be stupid, but we have to roll in advance otherwise we can't render it until you "open" the lectern
 					//which is awkward aswell... so whatever.. generating..
 					LootTable lootTable = worldObj.getLootTableManager().getLootTableFromLocation(LootTableHandler.MYST_TREASURE);
-					LootContext lootContext = new LootContext.Builder((WorldServer)worldObj).build();
+					LootContext lootContext = new LootContext.Builder((WorldServer) worldObj).build();
 					List<ItemStack> result = lootTable.generateLootForPools(rand, lootContext);
 					Collections.shuffle(result, rand);
 
 					for (ItemStack stack : result) {
-						if(lectern.canAcceptItem(0, stack)) {
+						if (lectern.canAcceptItem(0, stack)) {
 							lectern.setBook(stack);
 							break;
 						}
@@ -830,8 +833,10 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 	public static int getRotation(int i, int k, int i2, int k2) {
 		int deltaX = i2 - i;
 		int deltaZ = -(k2 - k);
-		if (deltaZ == 0) return (deltaX < 0 ? 180 : 0);
-		if (deltaX == 0) return (deltaZ < 0 ? 270 : 90);
+		if (deltaZ == 0)
+			return (deltaX < 0 ? 180 : 0);
+		if (deltaX == 0)
+			return (deltaZ < 0 ? 270 : 90);
 		float f = (float) deltaZ / (float) deltaX;
 		return (int) (Math.atan(f) * 180 / Math.PI);
 	}

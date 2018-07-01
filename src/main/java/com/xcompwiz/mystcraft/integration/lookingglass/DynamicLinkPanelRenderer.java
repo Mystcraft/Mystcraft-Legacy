@@ -28,28 +28,28 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 @SideOnly(Side.CLIENT)
 public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
-	private final ILookingGlassWrapper	apiinst;
-	private Random						rand;
+	private final ILookingGlassWrapper apiinst;
+	private Random rand;
 
-	public static int					shaderARB;
-	public static int					vertexARB;
-	public static int					fragmentARB;
+	public static int shaderARB;
+	public static int vertexARB;
+	public static int fragmentARB;
 
-	public static int					textureLoc;
-	public static int					damageLoc;
-	public static int					resLoc;
-	public static int					timeLoc;
-	public static int					waveScaleLoc;
-	public static int					colorScaleLoc;
-	public static int					linkColorLoc;
+	public static int textureLoc;
+	public static int damageLoc;
+	public static int resLoc;
+	public static int timeLoc;
+	public static int waveScaleLoc;
+	public static int colorScaleLoc;
+	public static int linkColorLoc;
 
-	private Integer						activeDim;
-	private BlockPos					activeCoords;
-	private IWorldView					activeview;
-	public float						colorScale	= 0.5f;
-	public float						waveScale	= 0.5f;
-	private long						readyTime;
-	private boolean						ready;
+	private Integer activeDim;
+	private BlockPos activeCoords;
+	private IWorldView activeview;
+	public float colorScale = 0.5f;
+	public float waveScale = 0.5f;
+	private long readyTime;
+	private boolean ready;
 
 	public DynamicLinkPanelRenderer(ILookingGlassWrapper apiinst) {
 		this.apiinst = apiinst;
@@ -87,7 +87,8 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 			return;
 
 		float bookDamage = 0;
-		if (bookclone != null) bookDamage = ((float) bookclone.getItemDamage()) / bookclone.getMaxDamage();
+		if (bookclone != null)
+			bookDamage = ((float) bookclone.getItemDamage()) / bookclone.getMaxDamage();
 
 		boolean useshaders = OpenGlHelper.shadersSupported;
 		if (useshaders) {
@@ -105,11 +106,15 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 			float linkColorB = (color & 255) / 255F;
 
 			waveScale += (rand.nextDouble() - 0.5d) / 10;
-			if (waveScale > 1) waveScale = 1;
-			if (waveScale < 0) waveScale = 0;
+			if (waveScale > 1)
+				waveScale = 1;
+			if (waveScale < 0)
+				waveScale = 0;
 			colorScale += (rand.nextDouble() - 0.5d) / 10;
-			if (colorScale > 1) colorScale = 1;
-			if (colorScale < 0.5F) colorScale = 0.5F;
+			if (colorScale > 1)
+				colorScale = 1;
+			if (colorScale < 0.5F)
+				colorScale = 0.5F;
 
 			ARBShaderObjects.glUseProgramObjectARB(shaderARB);
 
@@ -155,7 +160,8 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 	}
 
 	private boolean detectLinkInfoChange(ILinkInfo linkinfo) {
-		if (this.activeDim == null && linkinfo == null) return false;
+		if (this.activeDim == null && linkinfo == null)
+			return false;
 		if (this.activeDim != null && linkinfo == null) {
 			this.activeDim = null;
 			this.activeCoords = null;
@@ -170,8 +176,10 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 	}
 
 	private boolean compareCoords(BlockPos coords, BlockPos spawn) {
-		if (coords == spawn) return true;
-		if (coords == null && spawn != null) return false;
+		if (coords == spawn)
+			return true;
+		if (coords == null && spawn != null)
+			return false;
 		return coords.equals(spawn);
 	}
 

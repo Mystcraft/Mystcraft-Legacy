@@ -9,18 +9,12 @@ import com.xcompwiz.mystcraft.network.packet.MPacketDimensions;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.storage.SaveDataMemoryStorage;
-import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
@@ -31,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MystcraftConnectionHandler {
 
-	private static boolean	connected	= false;
+	private static boolean connected = false;
 
 	@SubscribeEvent
 	public void playerRespawn(PlayerRespawnEvent event) {
@@ -48,9 +42,7 @@ public class MystcraftConnectionHandler {
 	public void playerLoggedIn(PlayerLoggedInEvent event) {
 		EntityPlayer player = event.player;
 		UUID checkUUID = DimensionUtils.getPlayerDimensionUUID(player);
-		if ((checkUUID == null && Mystcraft.requireUUID) ||
-				(DimensionUtils.isDimensionDead(player.world.provider.getDimension())) ||
-				(checkUUID != null && !DimensionUtils.checkDimensionUUID(player.world.provider.getDimension(), checkUUID))) {
+		if ((checkUUID == null && Mystcraft.requireUUID) || (DimensionUtils.isDimensionDead(player.world.provider.getDimension())) || (checkUUID != null && !DimensionUtils.checkDimensionUUID(player.world.provider.getDimension(), checkUUID))) {
 			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
@@ -89,7 +81,7 @@ public class MystcraftConnectionHandler {
 
 	@SubscribeEvent
 	public void onPlJoin(PlayerLoggedInEvent event) {
-		if(!event.player.world.isRemote) { //Just double-checking :V
+		if (!event.player.world.isRemote) { //Just double-checking :V
 			MystcraftPacketHandler.CHANNEL.sendTo(new MPacketDimensions(Mystcraft.registeredDims), (EntityPlayerMP) event.player);
 			MystcraftPacketHandler.CHANNEL.sendTo(MPacketConfigs.createPacket(), (EntityPlayerMP) event.player);
 		}

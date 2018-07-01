@@ -112,49 +112,45 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
-@Mod(modid = MystObjects.MystcraftModId,
-		version = "@VERSION@",
-		name = "Mystcraft",
-		dependencies = "required-after:forge@[14.23.3.2676,)",
-		acceptedMinecraftVersions = "[1.12]")
+@Mod(modid = MystObjects.MystcraftModId, version = "@VERSION@", name = "Mystcraft", dependencies = "required-after:forge@[14.23.3.2676,)", acceptedMinecraftVersions = "[1.12]")
 public class Mystcraft {
 
 	@Instance(MystObjects.MystcraftModId)
-	public static Mystcraft				instance;
+	public static Mystcraft instance;
 
 	@SidedProxy(clientSide = "com.xcompwiz.mystcraft.client.MystcraftClientProxy", serverSide = "com.xcompwiz.mystcraft.core.MystcraftCommonProxy")
-	public static MystcraftCommonProxy	sidedProxy;
+	public static MystcraftCommonProxy sidedProxy;
 
-	public static int					difficulty			= 2;
+	public static int difficulty = 2;
 
-	public static boolean				instabilityEnabled	= true;
-	public static boolean				renderlabels		= false;
-	public static boolean				fastRainbows		= true;
-	private static boolean				spawnmeteorEnabled	= false;
-	public static boolean				respawnInAges		= true;
-	public static boolean				villageDeskGen		= true;
+	public static boolean instabilityEnabled = true;
+	public static boolean renderlabels = false;
+	public static boolean fastRainbows = true;
+	private static boolean spawnmeteorEnabled = false;
+	public static boolean respawnInAges = true;
+	public static boolean villageDeskGen = true;
 
-	public static boolean				serverLabels;
+	public static boolean serverLabels;
 
-	public static int					providerId;
-	public static DimensionType			dimensionType;
-	public static Collection<Integer>	registeredDims;
-	public static LinkedList<Integer>	deadDims;
+	public static int providerId;
+	public static DimensionType dimensionType;
+	public static Collection<Integer> registeredDims;
+	public static LinkedList<Integer> deadDims;
 
-	public static boolean               archivistEnabled;
-    public VillagerArchivist			archivist;
+	public static boolean archivistEnabled;
+	public VillagerArchivist archivist;
 
-	private ChunkProfilerManager		profilingThread;
+	private ChunkProfilerManager profilingThread;
 
-	public static int					inkcost				= 50;
-	public static Set<String>			validInks;
+	public static int inkcost = 50;
+	public static Set<String> validInks;
 
-	public static MapStorage			clientStorage		= null;
+	public static MapStorage clientStorage = null;
 
 	/** Forces the Dimension UUID check on login */
-	public static boolean				requireUUID			= false;
+	public static boolean requireUUID = false;
 
-	public static int					homeDimension		= 0;
+	public static int homeDimension = 0;
 
 	@EventHandler
 	public void load(FMLPreInitializationEvent event) {
@@ -184,7 +180,8 @@ public class Mystcraft {
 		File oldconfigfile = new File(configroot, "Mystcraft.txt");
 		if (oldconfigfile.exists()) {
 			configfile.getParentFile().mkdirs();
-			if (!configfile.exists()) oldconfigfile.renameTo(configfile);
+			if (!configfile.exists())
+				oldconfigfile.renameTo(configfile);
 		}
 
 		MystConfig config = new MystConfig(configfile);
@@ -266,10 +263,9 @@ public class Mystcraft {
 		// Init Advancement triggers
 		ModAchievements.init();
 
-        ModSounds.init();
+		ModSounds.init();
 
 		sidedProxy.preinit();
-
 
 		// Init Symbol System
 		ModSymbols.initialize();
@@ -292,7 +288,6 @@ public class Mystcraft {
 		tagRegisterDimensionTypes.setTag("types", types);
 		FMLInterModComms.sendMessage("reccomplex", "registerDimension", tagRegisterDimensionTypes);
 
-
 		// Register the GUI Handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
@@ -307,9 +302,9 @@ public class Mystcraft {
 		GameRegistry.registerTileEntity(TileEntityInkMixer.class, MystObjects.MystcraftModId + ":inkmixer");
 
 		// Init Entities
-        EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.book"), EntityLinkbook.class, "myst.book", 0, instance, 64, 1, true);
-        EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.block"), EntityFallingBlock.class, "myst.block", 1, instance, 16, 10, false);
-        EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.meteor"), EntityMeteor.class, "myst.meteor", 2, instance, 192, 2, false);
+		EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.book"), EntityLinkbook.class, "myst.book", 0, instance, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.block"), EntityFallingBlock.class, "myst.block", 1, instance, 16, 10, false);
+		EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.meteor"), EntityMeteor.class, "myst.meteor", 2, instance, 192, 2, false);
 
 		//// Init Symbol System
 		//HellFire> Moved to preinit
@@ -319,8 +314,8 @@ public class Mystcraft {
 		////register instability data
 		//InstabilityData.initialize();
 
-        LootTableHandler.init();
-        MinecraftForge.EVENT_BUS.register(LootTableHandler.EVENT_INSTANCE);
+		LootTableHandler.init();
+		MinecraftForge.EVENT_BUS.register(LootTableHandler.EVENT_INSTANCE);
 
 		// Init Archivist
 		if (archivistEnabled()) {
@@ -354,10 +349,9 @@ public class Mystcraft {
 
 		InstabilityDataCalculator.loadBalanceData();
 
-		if(archivist != null) {
-		    archivist.registerRecipe(
-		            new MerchantRecipeProviderItem(new ItemStack(Items.EMERALD, 25), ItemStack.EMPTY, new ItemStack(ModItems.booster)));
-        }
+		if (archivist != null) {
+			archivist.registerRecipe(new MerchantRecipeProviderItem(new ItemStack(Items.EMERALD, 25), ItemStack.EMPTY, new ItemStack(ModItems.booster)));
+		}
 	}
 
 	@EventHandler
@@ -412,16 +406,20 @@ public class Mystcraft {
 	}
 
 	public static long getLevelSeed(MapStorage storage) {
-		if (clientStorage == storage) return 0;
+		if (clientStorage == storage)
+			return 0;
 		MinecraftServer mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-		if (mcServer == null) return 0;
-		if (DimensionManager.getWorld(0) == null) return 0;
+		if (mcServer == null)
+			return 0;
+		if (DimensionManager.getWorld(0) == null)
+			return 0;
 		return DimensionManager.getWorld(0).getSeed();
 	}
 
 	public static void unregisterDimensions() {
 		deadDims = null;
-		if (registeredDims == null) return;
+		if (registeredDims == null)
+			return;
 		for (Integer dimId : registeredDims) {
 			DimensionManager.unregisterDimension(dimId);
 		}
@@ -435,7 +433,8 @@ public class Mystcraft {
 		for (Integer dimId : registeredDims) {
 			DimensionManager.registerDimension(dimId, dimensionType);
 			AgeData data = AgeData.getAge(dimId, tempstorage);
-			if (data.isDead()) deadDims.add(dimId);
+			if (data.isDead())
+				deadDims.add(dimId);
 		}
 	}
 

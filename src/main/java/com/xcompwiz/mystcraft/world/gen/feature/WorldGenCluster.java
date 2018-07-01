@@ -16,7 +16,7 @@ public class WorldGenCluster extends WorldGenerator {
 	private IBlockState state;
 
 	/** The number of blocks to generate. */
-	private int		numberOfBlocks;
+	private int numberOfBlocks;
 
 	public WorldGenCluster(IBlockState state, int count) {
 		this.state = state;

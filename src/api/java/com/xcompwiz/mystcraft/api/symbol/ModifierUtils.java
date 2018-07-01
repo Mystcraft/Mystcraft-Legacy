@@ -18,21 +18,21 @@ import net.minecraft.world.biome.Biome;
 public final class ModifierUtils {
 
 	/** A N/S/E/W angle. Useful for rotating things around the Y axis. */
-	public static final String	ANGLE		= "angle";
+	public static final String ANGLE = "angle";
 	/** A point in a cycle. Ranges [0,1). */
-	public static final String	PHASE		= "phase";
+	public static final String PHASE = "phase";
 	/** A factor (length). */
-	public static final String	FACTOR		= "wavelength";
+	public static final String FACTOR = "wavelength";
 
 	/** Used for color objects. See {@link Modifier}.asColor(). */
-	public static final String	COLOR		= "color";
+	public static final String COLOR = "color";
 	/** Used for gradient objects. See {@link Modifier}.asGradient(). */
-	public static final String	GRADIENT	= "gradient";
+	public static final String GRADIENT = "gradient";
 	/**
 	 * A secondary gradient object, used for sunsets. The sunset color modifier sets this (appends) from an existing gradient or builds one if necessary. See
 	 * ModifierUtils.popGradient()
 	 */
-	public static final String	SUNSET		= "sunset";
+	public static final String SUNSET = "sunset";
 
 	public static float averageLengths(float l, float r) {
 		return (l + r) / 2;
@@ -63,7 +63,8 @@ public final class ModifierUtils {
 			third = first + 180;
 		}
 		float average = (first + third) / 2;
-		if (average >= 360) average -= 360;
+		if (average >= 360)
+			average -= 360;
 		return average;
 	}
 
@@ -96,16 +97,18 @@ public final class ModifierUtils {
 	 */
 	public static ColorGradient popGradient(AgeDirector controller) {
 		ColorGradient gradient = controller.popModifier(GRADIENT).asGradient();
-		if (gradient == null) gradient = new ColorGradient();
-		if (gradient.getColorCount() == 0) gradient.pushColor(controller.popModifier(COLOR).asColor());
+		if (gradient == null)
+			gradient = new ColorGradient();
+		if (gradient.getColorCount() == 0)
+			gradient.pushColor(controller.popModifier(COLOR).asColor());
 		return gradient;
 	}
 
 	/**
-	 * Returns a gradient from the current modifiers. This will always return a gradient. If there isn't a gradient object in the modifier system then a gradient
-	 * will be built. If the gradient is empty then the system will attempt to use an existing color modifier. If both modifiers are unset then the provided
-	 * default color will be added to the gradient. If the gradient modifier exists and is not empty, then any color modifiers will be ignored. If a gradient
-	 * modifier is set but is empty then the color modifier will still be popped
+	 * Returns a gradient from the current modifiers. This will always return a gradient. If there isn't a gradient object in the modifier system then a
+	 * gradient will be built. If the gradient is empty then the system will attempt to use an existing color modifier. If both modifiers are unset then the
+	 * provided default color will be added to the gradient. If the gradient modifier exists and is not empty, then any color modifiers will be ignored. If a
+	 * gradient modifier is set but is empty then the color modifier will still be popped
 	 * @param controller The controller passed to the symbol during logic registration
 	 * @param r The default color value to use (red component)
 	 * @param g The default color value to use (green component)
@@ -114,7 +117,8 @@ public final class ModifierUtils {
 	 */
 	public static ColorGradient popGradient(AgeDirector controller, float r, float g, float b) {
 		ColorGradient gradient = popGradient(controller);
-		if (gradient.getColorCount() == 0) gradient.pushColor(new Color(r, g, b));
+		if (gradient.getColorCount() == 0)
+			gradient.pushColor(new Color(r, g, b));
 		return gradient;
 	}
 
@@ -139,7 +143,8 @@ public final class ModifierUtils {
 	public static BlockDescriptor popBlockMatching(AgeDirector controller, BlockCategory... types) {
 		Modifier modifier = controller.popModifier("blocklist");
 		List<BlockDescriptor> list = modifier.asList();
-		if (list == null) return null;
+		if (list == null)
+			return null;
 		controller.setModifier("blocklist", modifier);
 		for (int i = 0; i < list.size(); ++i) {
 			BlockDescriptor block = list.get(i);
@@ -186,13 +191,14 @@ public final class ModifierUtils {
 	public static Biome popBiome(AgeDirector controller) {
 		Modifier modifier = controller.popModifier("biomelist");
 		List<Biome> list = modifier.asList();
-		if (list == null || list.size() == 0) return null;
+		if (list == null || list.size() == 0)
+			return null;
 		controller.setModifier("biomelist", modifier);
 		Biome biome = list.remove(list.size() - 1);
 		modifier.dangling -= dangling_biome;
 		return biome;
 	}
 
-	public static final int	dangling_block	= 50;
-	public static final int	dangling_biome	= 100;
+	public static final int dangling_block = 50;
+	public static final int dangling_biome = 100;
 }

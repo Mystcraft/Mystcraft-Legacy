@@ -49,7 +49,8 @@ public class ExplosionAdvanced {
 	private static byte nextId = 0;
 
 	public static void registerEffect(ExplosionEffect effect) {
-		if (effectmap.containsKey(nextId)) throw new RuntimeException("Mystcraft has run out of explosion effect IDs!  Contact XCompWiz and ask for more!");
+		if (effectmap.containsKey(nextId))
+			throw new RuntimeException("Mystcraft has run out of explosion effect IDs!  Contact XCompWiz and ask for more!");
 		effectmap.put(nextId, effect);
 		effectid.put(effect, nextId++);
 	}
@@ -127,7 +128,7 @@ public class ExplosionAdvanced {
 		this.blocks.addAll(blocks);
 		if (mcExplosionDummy != null)
 			mcExplosionDummy.getAffectedBlockPositions().addAll(blocks);
-		
+
 		explosionSize *= 2.0F;
 		int minX = MathHelper.floor(this.explosionX - explosionSize - 1.0D);
 		int maxX = MathHelper.floor(this.explosionX + explosionSize + 1.0D);

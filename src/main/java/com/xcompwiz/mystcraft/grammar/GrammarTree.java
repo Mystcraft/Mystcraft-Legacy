@@ -15,13 +15,13 @@ import net.minecraft.util.ResourceLocation;
 public class GrammarTree {
 
 	private static class GrammarNode {
-		public final ResourceLocation 	token;
-		public final boolean			isTerminal;
-		public Rule						selected	= null;
-		private GrammarNode				parent;
-		private List<GrammarNode>		children	= new ArrayList<GrammarNode>();
-		private Integer					leftPos;
-		private Integer					rightPos;
+		public final ResourceLocation token;
+		public final boolean isTerminal;
+		public Rule selected = null;
+		private GrammarNode parent;
+		private List<GrammarNode> children = new ArrayList<GrammarNode>();
+		private Integer leftPos;
+		private Integer rightPos;
 
 		public GrammarNode(ResourceLocation token) {
 			this.token = token;
@@ -38,15 +38,18 @@ public class GrammarTree {
 		}
 
 		public Integer getLeftPosition() {
-			if (leftPos != null) return leftPos;
+			if (leftPos != null)
+				return leftPos;
 			for (int i = 0; i < children.size(); ++i) {
 				Integer pos = children.get(i).getLeftPosition();
-				if (pos == null) continue;
+				if (pos == null)
+					continue;
 				if (this.leftPos == null || this.leftPos > pos) {
 					this.leftPos = pos;
 				}
 			}
-			if (leftPos != null) return leftPos;
+			if (leftPos != null)
+				return leftPos;
 			if (this.parent != null) {
 				for (int i = 0; i < parent.children.size(); ++i) {
 					if (parent.children.get(i).equals(this)) {
@@ -61,15 +64,18 @@ public class GrammarTree {
 		}
 
 		public Integer getRightPosition() {
-			if (rightPos != null) return rightPos;
+			if (rightPos != null)
+				return rightPos;
 			for (int i = 0; i < children.size(); ++i) {
 				Integer pos = children.get(i).getRightPosition();
-				if (pos == null) continue;
+				if (pos == null)
+					continue;
 				if (this.rightPos == null || this.rightPos < pos) {
 					this.rightPos = pos;
 				}
 			}
-			if (rightPos != null) return rightPos;
+			if (rightPos != null)
+				return rightPos;
 			if (this.parent != null) {
 				for (int i = parent.children.size() - 1; i >= 0; --i) {
 					if (parent.children.get(i).equals(this)) {
@@ -95,8 +101,8 @@ public class GrammarTree {
 		}
 
 		private static class NodePair {
-			public GrammarNode	original;
-			public GrammarNode	clone;
+			public GrammarNode original;
+			public GrammarNode clone;
 
 			public NodePair(GrammarNode o, GrammarNode c) {
 				this.original = o;
@@ -140,14 +146,14 @@ public class GrammarTree {
 	}
 
 	/** The root node of the tree */
-	private GrammarNode					root;
+	private GrammarNode root;
 	/** The currently unexpanded nodes in the tree, with more recently added nodes on the "top" */
-	private List<GrammarNode>			unexplored	= new LinkedList<>();
+	private List<GrammarNode> unexplored = new LinkedList<>();
 	/** The roots of orphaned subtrees */
-	private List<GrammarNode>			subroots	= new ArrayList<>();
+	private List<GrammarNode> subroots = new ArrayList<>();
 
 	/** The symbol list before parsing */
-	private List<ResourceLocation>		terminals;
+	private List<ResourceLocation> terminals;
 
 	public GrammarTree(ResourceLocation root) {
 		this.root = new GrammarNode(root);
@@ -180,7 +186,8 @@ public class GrammarTree {
 
 		//If root node is unexplored, add it to the list.
 		this.unexplored.clear();
-		if (this.root.selected == null) this.unexplored.add(this.root);
+		if (this.root.selected == null)
+			this.unexplored.add(this.root);
 		//Expand unexplored nodes while they only have one rule
 		for (int i = 0; i < unexplored.size(); ++i) {
 			List<Rule> rules = GrammarGenerator.getAllRules(unexplored.get(i).token);
@@ -295,7 +302,8 @@ public class GrammarTree {
 		}
 		List<Rule> rules = GrammarGenerator.getParentRules(subroot.token);
 		while (rules != null && rules.size() == 1) {
-			if (rules.get(0).getParent().equals(this.root.token)) break; //Force no expansion to root (don't want to connect prematurely)
+			if (rules.get(0).getParent().equals(this.root.token))
+				break; //Force no expansion to root (don't want to connect prematurely)
 			subroot = reverseExpand(subroot, rules.get(0));
 			rules = GrammarGenerator.getParentRules(subroot.token);
 		}
@@ -312,7 +320,8 @@ public class GrammarTree {
 	 */
 	private List<Rule> getShortestPath(GrammarNode subroot, GrammarNode node, Random rand) {
 		List<List<Rule>> paths = GrammarGenerator.getShortestPaths(subroot.token, node.token);
-		if (paths == null || paths.size() == 0) return null;
+		if (paths == null || paths.size() == 0)
+			return null;
 		return WeightedItemSelector.getRandomItem(rand, paths);
 	}
 
@@ -331,7 +340,8 @@ public class GrammarTree {
 	//XXX: (re)move connectSubtreeRandomly
 	private boolean connectSubtreeRandomly(GrammarNode subroot, Random rand) {
 		List<Rule> rules = GrammarGenerator.getParentRules(subroot.token);
-		if (rules == null || rules.size() == 0) return false;
+		if (rules == null || rules.size() == 0)
+			return false;
 		for (GrammarNode node : unexplored) {
 			if (node.token.equals(subroot.token)) {
 				replaceNodeWithTree(node, subroot);
@@ -353,10 +363,12 @@ public class GrammarTree {
 		HashMap<GrammarNode, GrammarNode> connections = new HashMap<GrammarNode, GrammarNode>();
 
 		for (Rule rule : rules) {
-			if (!checkForLoop(rule.getParent(), subroot)) producePaths(connections, reverseExpand(subroot.clone(), rule), rand);
+			if (!checkForLoop(rule.getParent(), subroot))
+				producePaths(connections, reverseExpand(subroot.clone(), rule), rand);
 		}
 
-		if (connections.size() == 0) return false;
+		if (connections.size() == 0)
+			return false;
 		int selected = rand.nextInt(connections.size());
 		for (Entry<GrammarNode, GrammarNode> pair : connections.entrySet()) {
 			if (selected == 0) {
@@ -380,7 +392,8 @@ public class GrammarTree {
 	 */
 	private boolean connectSubtreeShortest(GrammarNode subroot, Random rand) {
 		List<Rule> rules = GrammarGenerator.getParentRules(subroot.token);
-		if (rules == null || rules.size() == 0) return false;
+		if (rules == null || rules.size() == 0)
+			return false;
 		for (GrammarNode node : unexplored) {
 			if (node.token.equals(subroot.token)) {
 				replaceNodeWithTree(node, subroot);
@@ -420,7 +433,8 @@ public class GrammarTree {
 		nodes.add(subroot);
 		while (nodes.size() > 0) {
 			GrammarNode node = nodes.remove(0);
-			if (node.token.equals(parent)) return true;
+			if (node.token.equals(parent))
+				return true;
 			nodes.addAll(node.children);
 		}
 		return false;
@@ -436,7 +450,8 @@ public class GrammarTree {
 	 */
 	private void producePaths(HashMap<GrammarNode, GrammarNode> connections, GrammarNode subroot, Random rand) {
 		List<Rule> rules = GrammarGenerator.getParentRules(subroot.token);
-		if (rules == null || rules.size() == 0) return;
+		if (rules == null || rules.size() == 0)
+			return;
 		for (GrammarNode node : unexplored) {
 			List<Rule> options = new ArrayList<Rule>();
 			for (Rule rule : rules) {
@@ -451,7 +466,8 @@ public class GrammarTree {
 			}
 		}
 		for (Rule rule : rules) {
-			if (!checkForLoop(rule.getParent(), subroot)) producePaths(connections, reverseExpand(subroot.clone(), rule), rand);
+			if (!checkForLoop(rule.getParent(), subroot))
+				producePaths(connections, reverseExpand(subroot.clone(), rule), rand);
 		}
 	}
 

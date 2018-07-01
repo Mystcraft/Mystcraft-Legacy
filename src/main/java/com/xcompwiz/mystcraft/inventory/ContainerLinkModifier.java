@@ -28,17 +28,17 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 
 	public static class Messages {
 
-		public static final String	SetTitle	= "SetTitle";
-		public static final String	SetFlag		= "SetFlag";
-		public static final String	SetSeed 	= "SetSeed";
+		public static final String SetTitle = "SetTitle";
+		public static final String SetFlag = "SetFlag";
+		public static final String SetSeed = "SetSeed";
 
 	}
 
-	private TileEntityLinkModifier	tileentity		= null;
-	private InventoryPlayer			inventoryplayer;
+	private TileEntityLinkModifier tileentity = null;
+	private InventoryPlayer inventoryplayer;
 
 	@Nonnull
-	private String					cached_title	= "";
+	private String cached_title = "";
 
 	public ContainerLinkModifier(InventoryPlayer inventoryplayer, TileEntityLinkModifier tileentity) {
 		this.tileentity = tileentity;
@@ -95,11 +95,12 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 			Long seed = null;
 			if (seedstr.isEmpty()) {
 				//XXX: Hardcoded string reference Agebook "Seed"
-				 tileentity.setLinkProperty("Seed", null);
+				tileentity.setLinkProperty("Seed", null);
 			} else {
 				try {
 					seed = Long.parseLong(seedstr);
-				} catch (Exception ignored) {}
+				} catch (Exception ignored) {
+				}
 			}
 			if (seed != null) {
 				//XXX: This isn't particularly generalized, but only this kind of item supports a seed atm.
@@ -118,7 +119,7 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 
 	public String getBookTitle() {
 		String title = tileentity.getBookTitle();
-		if(title == null) {
+		if (title == null) {
 			title = "";
 		}
 		return title;

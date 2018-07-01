@@ -16,14 +16,14 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 		void passModified(int chunkX, int chunkZ, boolean[] modified, Biome biome);
 	}
 
-	private int						rate	= 192;
+	private int rate = 192;
 
-	private NoiseGeneratorOctaves	noiseGen4;
-	private double					stoneNoise[];
+	private NoiseGeneratorOctaves noiseGen4;
+	private double stoneNoise[];
 
-	private Biome			biome;
+	private Biome biome;
 
-	private IModifiedHandler		callback;
+	private IModifiedHandler callback;
 
 	public MapGenFloatingIslands(long seed, Biome biome, IModifiedHandler callback, IBlockState state) {
 		super(seed, state);
@@ -98,7 +98,9 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 			double zoffset = maxLoops - loopc;
 			double d7 = scalar + 2.0F + 16F;
 
-			if ((xoffset * xoffset + yoffset * yoffset) - zoffset * zoffset > d7 * d7) { return; }
+			if ((xoffset * xoffset + yoffset * yoffset) - zoffset * zoffset > d7 * d7) {
+				return;
+			}
 
 			if (baseX < chunkXmid - 16D - d2 * 2D || baseZ < chunkZmid - 16D - d2 * 2D || baseX > chunkXmid + 16D + d2 * 2D || baseZ > chunkZmid + 16D + d2 * 2D) {
 				continue;
@@ -174,7 +176,8 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
-				if (!modified[x + z * 16]) continue;
+				if (!modified[x + z * 16])
+					continue;
 
 				int stone_noise_val = (int) (stoneNoise[z + x * 16] / 3D + 3D + rand.nextDouble() * 0.25D);
 				int counter = -1;
@@ -220,7 +223,9 @@ public class MapGenFloatingIslands extends MapGenAdvanced {
 	 */
 	@Override
 	protected void recursiveGenerate(World worldObj, int x, int z, int chunkX, int chunkZ, ChunkPrimer primer) {
-		if (rand.nextInt(rate) != 0) { return; }
+		if (rand.nextInt(rate) != 0) {
+			return;
+		}
 		boolean[] modified = new boolean[256];
 
 		double dx = x * 16 + rand.nextInt(16);

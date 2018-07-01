@@ -29,8 +29,8 @@ public class SymbolColorCloud extends SymbolBase {
 	}
 
 	private class CloudColorizer implements IDynamicColorProvider {
-		ColorGradient			gradient;
-		private AgeDirector	controller;
+		ColorGradient gradient;
+		private AgeDirector controller;
 
 		public CloudColorizer(AgeDirector controller, ColorGradient gradient) {
 			this.controller = controller;

@@ -39,7 +39,9 @@ public class LinkListenerBasic {
 		Entity entity = event.entity;
 		World world = event.origin;
 		ILinkInfo info = event.info;
-		if (world.isRemote) { return; }
+		if (world.isRemote) {
+			return;
+		}
 
 		Integer dimid = info.getDimensionUID();
 		if (dimid == null) {
@@ -93,16 +95,16 @@ public class LinkListenerBasic {
 				ejectInventory(entity.world, (IInventory) entity, entity.posX, entity.posY, entity.posZ);
 			}
 			if (entity instanceof AbstractHorse) {
-                ContainerHorseChest chest = ObfuscationReflectionHelper.getPrivateValue(AbstractHorse.class, (AbstractHorse) entity, "horseChest", "field_110296_bG");
-                if(chest != null) {
-                    for (int i = 0; i < chest.getSizeInventory(); ++i) {
-                        ItemStack itemstack = chest.getStackInSlot(i);
-                        if (!itemstack.isEmpty()) {
-                            entity.entityDropItem(itemstack, 0.0F);
-                            chest.setInventorySlotContents(i, ItemStack.EMPTY);
-                        }
-                    }
-                }
+				ContainerHorseChest chest = ObfuscationReflectionHelper.getPrivateValue(AbstractHorse.class, (AbstractHorse) entity, "horseChest", "field_110296_bG");
+				if (chest != null) {
+					for (int i = 0; i < chest.getSizeInventory(); ++i) {
+						ItemStack itemstack = chest.getStackInSlot(i);
+						if (!itemstack.isEmpty()) {
+							entity.entityDropItem(itemstack, 0.0F);
+							chest.setInventorySlotContents(i, ItemStack.EMPTY);
+						}
+					}
+				}
 			}
 			if (entity instanceof EntityLiving) {
 				dropEquipment((EntityLiving) entity, new Random());
@@ -124,7 +126,7 @@ public class LinkListenerBasic {
 		World world = event.destination;
 
 		if (world.provider instanceof WorldProviderMyst && entity instanceof EntityPlayer) {
-			if(!(entity instanceof EntityPlayerMP))
+			if (!(entity instanceof EntityPlayerMP))
 				return;
 			EntityPlayerMP player = (EntityPlayerMP) entity;
 			for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
@@ -144,7 +146,7 @@ public class LinkListenerBasic {
 
 		BlockPos spawn = info.getSpawn();
 		if (spawn != null && info.getFlag(LinkPropertyAPI.FLAG_GENERATE_PLATFORM) && world.isAirBlock(spawn.down()) && world.isAirBlock(spawn.down(2))) {
-		    world.setBlockState(spawn.down(), Blocks.STONE.getDefaultState());
+			world.setBlockState(spawn.down(), Blocks.STONE.getDefaultState());
 		}
 		if (entity instanceof EntityMinecart) {
 			entity.motionX = 0;
@@ -224,33 +226,33 @@ public class LinkListenerBasic {
 	private static void dropEquipment(EntityLiving entity, Random rand) {
 		//entity.dropEquipment(false, 0);
 		//float[] equipmentDropChances = ObfuscationReflectionHelper.getPrivateValue(EntityLiving.class, entity, "equipmentDropChances", "field" + "_82174_bp");
-        float[] handChances = ObfuscationReflectionHelper.getPrivateValue(EntityLiving.class, entity, "inventoryHandsDropChances", "field_82174_bp");
-        float[] armorChances = ObfuscationReflectionHelper.getPrivateValue(EntityLiving.class, entity, "inventoryArmorDropChances", "field_184655_bs");
-        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
-            ItemStack stack = entity.getItemStackFromSlot(slot);
-            entity.setItemStackToSlot(slot, ItemStack.EMPTY);
-            float chance = 0;
-            switch (slot.getSlotType()) {
-                case HAND:
-                    chance = handChances[slot.getIndex()];
-                    break;
-                case ARMOR:
-                    chance = armorChances[slot.getIndex()];
-            }
-            if(!stack.isEmpty() && chance > 1F && rand.nextFloat() < chance) {
-                if(chance <= 1F && stack.isItemStackDamageable()) {
-                    int k = Math.max(stack.getMaxDamage() - 25, 1);
-                    int l = stack.getMaxDamage() - rand.nextInt(rand.nextInt(k) + 1);
-                    if (l > k) {
-                        l = k;
-                    }
-                    if (l < 1) {
-                        l = 1;
-                    }
-                    stack.setItemDamage(l);
-                }
-                entity.entityDropItem(stack, 0.0F);
-            }
-        }
+		float[] handChances = ObfuscationReflectionHelper.getPrivateValue(EntityLiving.class, entity, "inventoryHandsDropChances", "field_82174_bp");
+		float[] armorChances = ObfuscationReflectionHelper.getPrivateValue(EntityLiving.class, entity, "inventoryArmorDropChances", "field_184655_bs");
+		for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+			ItemStack stack = entity.getItemStackFromSlot(slot);
+			entity.setItemStackToSlot(slot, ItemStack.EMPTY);
+			float chance = 0;
+			switch (slot.getSlotType()) {
+			case HAND:
+				chance = handChances[slot.getIndex()];
+				break;
+			case ARMOR:
+				chance = armorChances[slot.getIndex()];
+			}
+			if (!stack.isEmpty() && chance > 1F && rand.nextFloat() < chance) {
+				if (chance <= 1F && stack.isItemStackDamageable()) {
+					int k = Math.max(stack.getMaxDamage() - 25, 1);
+					int l = stack.getMaxDamage() - rand.nextInt(rand.nextInt(k) + 1);
+					if (l > k) {
+						l = k;
+					}
+					if (l < 1) {
+						l = 1;
+					}
+					stack.setItemDamage(l);
+				}
+				entity.entityDropItem(stack, 0.0F);
+			}
+		}
 	}
 }

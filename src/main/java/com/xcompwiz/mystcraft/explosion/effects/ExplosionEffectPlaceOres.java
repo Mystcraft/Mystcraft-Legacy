@@ -50,7 +50,8 @@ public class ExplosionEffectPlaceOres extends ExplosionEffect {
 
 	@Override
 	public void apply(World worldObj, ExplosionAdvanced explosion, BlockPos pos, Random rand, boolean isClient) {
-		if (isClient) return;
+		if (isClient)
+			return;
 		IBlockState supporting = worldObj.getBlockState(pos.down());
 
 		if (rand.nextInt(20) == 0 && worldObj.isAirBlock(pos) && supporting.isOpaqueCube()) {

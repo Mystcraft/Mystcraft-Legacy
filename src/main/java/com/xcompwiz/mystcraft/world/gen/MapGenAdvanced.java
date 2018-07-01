@@ -11,20 +11,20 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 public class MapGenAdvanced {
 	/** The number of Chunks to gen-check in any given direction. */
-	protected int		range			= 8;
+	protected int range = 8;
 
 	/** The RNG used by the MapGen classes. */
-	protected Random	rand			= new Random();
+	protected Random rand = new Random();
 
-	private long		seed;
+	private long seed;
 
-	private IBlockState	state;
+	private IBlockState state;
 
-	private boolean		profiling		= false;
-	private int			blockcount;
-	private int			blockcounttotal	= 0;
-	private int			callcount		= 0;
-	private int			fillcount		= 0;
+	private boolean profiling = false;
+	private int blockcount;
+	private int blockcounttotal = 0;
+	private int callcount = 0;
+	private int fillcount = 0;
 
 	public MapGenAdvanced(long seed, IBlockState state) {
 		this.seed = seed;
@@ -49,7 +49,8 @@ public class MapGenAdvanced {
 			}
 		}
 		if (profiling) {
-			if (blockcount > 0) ++fillcount;
+			if (blockcount > 0)
+				++fillcount;
 			System.out.println(String.format("Using %s. AVG: [%f] / %d / %d TOT: [%d] GENFRQ: [%f:%f]", this.toString(), blockcounttotal / (float) fillcount, fillcount, callcount, blockcounttotal, fillcount / (float) callcount, blockcounttotal / (float) callcount));
 		}
 	}

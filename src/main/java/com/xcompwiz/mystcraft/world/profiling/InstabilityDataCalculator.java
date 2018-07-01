@@ -73,7 +73,8 @@ public class InstabilityDataCalculator {
 		useconfigs = config.get(MystConfig.CATEGORY_BASELINING, "useconfigs", useconfigs, "If true, the baseline calculations won't run and instead a config file will be read.").getBoolean(useconfigs);
 		disconnectclients = config.get(MystConfig.CATEGORY_BASELINING, "server.disconnectclients", disconnectclients, "If set to true this will prevent clients from connecting while baseline profiling is ongoing (Only works on dedicated servers)").getBoolean(disconnectclients);
 		tickrate = config.get(MystConfig.CATEGORY_BASELINING, "tickrate.minimum", tickrate, "This controls the minimum number of ticks to wait before a new chunk will be generated when doing the baseline profiling in the background.").getInt(tickrate);
-		if (!persave) tickrate = 1;
+		if (!persave)
+			tickrate = 1;
 	}
 
 	public static void loadBalanceData() {
@@ -106,12 +107,14 @@ public class InstabilityDataCalculator {
 			freevals.put(key, val);
 		}
 		InstabilityBlockManager.setBaselineStability(freevals);
-		if (config != null && config.hasChanged()) config.save();
+		if (config != null && config.hasChanged())
+			config.save();
 	}
 
 	private static int getBaselineVanillaDefault(String key) {
 		Number def = defaults.get(key);
-		if (def == null) return 0;
+		if (def == null)
+			return 0;
 		return def.intValue();
 	}
 
@@ -156,9 +159,11 @@ public class InstabilityDataCalculator {
 				@Override
 				public String get(ICommandSender agent) {
 					HashMap<String, Number> split = calculator.freevals;
-					if (split == null) return "N/A";
+					if (split == null)
+						return "N/A";
 					Number val = split.get(blockkey);
-					if (val == null) return "None";
+					if (val == null)
+						return "None";
 					return "" + val;
 				}
 
@@ -173,24 +178,33 @@ public class InstabilityDataCalculator {
 
 	@SubscribeEvent
 	public void onServerTick(ServerTickEvent event) {
-		if (event.phase == Phase.START) return;
-		if (mcserver == null) return;
+		if (event.phase == Phase.START)
+			return;
+		if (mcserver == null)
+			return;
 		ChunkProfiler profiler = getChunkProfiler(storage);
 		int chunksremaining = getChunksRemaining(profiler);
-		if (callback != null) callback.setCompleted(profiler.getCount());
-		if (callback != null) callback.setRemaining(chunksremaining);
-		if (callback != null) callback.setQueued(ChunkProfilerManager.getSize());
-		if (++tickAccumulator < tickrate) return;
+		if (callback != null)
+			callback.setCompleted(profiler.getCount());
+		if (callback != null)
+			callback.setRemaining(chunksremaining);
+		if (callback != null)
+			callback.setQueued(ChunkProfilerManager.getSize());
+		if (++tickAccumulator < tickrate)
+			return;
 		tickAccumulator = 0;
 		if (chunksremaining > 0) {
 			// We check to see if the profiling queue is backed up (might be enough chunks generated.
-			if (ChunkProfilerManager.getSize() < chunksremaining) stepChunkGeneration(profiler);
+			if (ChunkProfilerManager.getSize() < chunksremaining)
+				stepChunkGeneration(profiler);
 		} else {
-			if (world != null) LoggerUtils.info("Baseline Profiling for Instability completed.");
+			if (world != null)
+				LoggerUtils.info("Baseline Profiling for Instability completed.");
 			cleanup();
 			freevals = updateInstabilityData(profiler);
 			mcserver = null;
-			if (callback != null) callback.onFinished();
+			if (callback != null)
+				callback.onFinished();
 		}
 	}
 
@@ -209,8 +223,9 @@ public class InstabilityDataCalculator {
 
 	public static int getChunksRemaining(ChunkProfiler profiler) {
 		if (minimumchunks == 0) {
-			int factor = (int)Math.ceil(500D / WorldProviderMystDummy.getAndPrepareBiomeList().size());
-			if (factor < 10) factor = 10;
+			int factor = (int) Math.ceil(500D / WorldProviderMystDummy.getAndPrepareBiomeList().size());
+			if (factor < 10)
+				factor = 10;
 			minimumchunks = WorldProviderMystDummy.getAndPrepareBiomeList().size() * factor;
 		}
 		return minimumchunks - profiler.getCount();
@@ -219,7 +234,8 @@ public class InstabilityDataCalculator {
 	public void shutdown() {
 		this.cleanup();
 		mcserver = null;
-		if (persave) InstabilityBlockManager.clearBaselineStability();
+		if (persave)
+			InstabilityBlockManager.clearBaselineStability();
 
 		DebugNode node = getDebugNode();
 		node.parent.removeChild(node);
@@ -246,7 +262,8 @@ public class InstabilityDataCalculator {
 
 	@SubscribeEvent
 	public void onWorldUnload(WorldEvent.Unload event) {
-		if (dimId == null || event.getWorld().provider.getDimension() != dimId) return;
+		if (dimId == null || event.getWorld().provider.getDimension() != dimId)
+			return;
 		if (event.getWorld() != world) {
 			LoggerUtils.error("World with matching dim id to profiling dim unloaded!");
 			return;
@@ -257,9 +274,8 @@ public class InstabilityDataCalculator {
 			return;
 		}
 		LoggerUtils.info("Baseline Profiling world unloading.");
-		if (dimId != null) {
+		if (dimId != null)
 			DimensionManager.unregisterDimension(dimId);
-		}
 		dimId = null;
 		if (providerId != null) {
 			DimensionManager.unregisterProviderType(providerId);
@@ -273,7 +289,8 @@ public class InstabilityDataCalculator {
 
 	@SubscribeEvent
 	public void isLinkPermitted(LinkEventAllow event) {
-		if (dimId != null && dimId.equals(event.info.getDimensionUID())) event.setCanceled(true);
+		if (dimId != null && dimId.equals(event.info.getDimensionUID()))
+			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
@@ -364,7 +381,8 @@ public class InstabilityDataCalculator {
 					minimumchunks + 2, -1, 2);
 			//Finally we obtain a world instance and set the chunk profiler for it.
 			world = mcserver.getWorld(dimId);
-			if (world == null) throw new RuntimeException("Could not create Instability Comparison Dimension");
+			if (world == null)
+				throw new RuntimeException("Could not create Instability Comparison Dimension");
 		}
 
 		((WorldProviderMystDummy) world.provider).generateNextChunk();

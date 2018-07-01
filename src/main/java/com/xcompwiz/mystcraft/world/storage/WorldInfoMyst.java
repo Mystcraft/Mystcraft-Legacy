@@ -16,9 +16,9 @@ import net.minecraft.world.storage.WorldInfo;
 
 public class WorldInfoMyst extends DerivedWorldInfo {
 
-	private final WorldProviderMyst	provider;
+	private final WorldProviderMyst provider;
 
-	private long					tickcounter;
+	private long tickcounter;
 
 	public WorldInfoMyst(WorldProviderMyst provider, WorldInfo worldInfo) {
 		super(worldInfo);
@@ -31,12 +31,14 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 
 	@Override
 	public void setWorldTotalTime(long par1) {
-		if (provider.getWorld().isRemote) tickcounter = par1;
+		if (provider.getWorld().isRemote)
+			tickcounter = par1;
 	}
 
 	@Override
 	public long getWorldTotalTime() {
-		if (provider.getWorld().isRemote) return tickcounter;
+		if (provider.getWorld().isRemote)
+			return tickcounter;
 		return super.getWorldTotalTime();
 	}
 
@@ -62,7 +64,8 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	@Override
 	public int getSpawnX() {
 		BlockPos spawn = this.provider.agedata.getSpawn();
-		if (spawn == null) return 0;
+		if (spawn == null)
+			return 0;
 		return spawn.getX();
 	}
 
@@ -72,7 +75,8 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	@Override
 	public int getSpawnY() {
 		BlockPos spawn = this.provider.agedata.getSpawn();
-		if (spawn == null) return 64;
+		if (spawn == null)
+			return 64;
 		return spawn.getY();
 	}
 
@@ -82,7 +86,8 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	@Override
 	public int getSpawnZ() {
 		BlockPos spawn = this.provider.agedata.getSpawn();
-		if (spawn == null) return 0;
+		if (spawn == null)
+			return 0;
 		return spawn.getZ();
 	}
 
