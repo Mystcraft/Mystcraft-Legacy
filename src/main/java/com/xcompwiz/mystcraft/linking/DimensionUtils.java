@@ -112,7 +112,8 @@ public class DimensionUtils {
 	public static UUID getPlayerDimensionUUID(EntityPlayer player) {
 		NBTTagCompound nbt = player.getEntityData();
 		nbt = nbt.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
-		if (nbt.hasKey(PLAYER_DIM_UUID_TAG)) return UUID.fromString(nbt.getString(PLAYER_DIM_UUID_TAG));
+		if (nbt.hasKey(PLAYER_DIM_UUID_TAG))
+			return UUID.fromString(nbt.getString(PLAYER_DIM_UUID_TAG));
 		return null;
 	}
 

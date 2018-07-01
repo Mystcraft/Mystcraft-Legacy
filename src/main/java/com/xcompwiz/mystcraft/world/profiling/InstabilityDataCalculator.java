@@ -16,15 +16,15 @@ import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketProfilingState;
-import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 
-import net.minecraft.command.CommandServerKick;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.DimensionManager;
@@ -278,11 +278,17 @@ public class InstabilityDataCalculator {
 
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event) {
-		if(running) {
+		if (running) {
 			MystcraftPacketHandler.CHANNEL.sendTo(new MPacketProfilingState(running), (EntityPlayerMP) event.player);
 		}
+		// detect player entered dimension and queue them to teleport again next tick
 		if (dimId != null && event.player.dimension == dimId) {
-			DimensionUtils.ejectPlayerFromDimension(event.player);
+			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+				@Override
+				public void run() {
+					DimensionUtils.ejectPlayerFromDimension(event.player);
+				}
+			});
 		}
 	}
 
@@ -310,10 +316,15 @@ public class InstabilityDataCalculator {
 	@SubscribeEvent
 	public void onPlayerChangedDimension(PlayerChangedDimensionEvent event) {
 		//TODO: We should probably try and prohibit teleportation to this dimension...
-		//Alternatively, detect player changed dimension and queue them to teleport again next tick
+
+		// detect player changed dimension and queue them to teleport again next tick
 		if (dimId != null && event.toDim == dimId) {
-			//FIXME: I worry about this causing other mods issues in processing this event, as we'll create another PlayerChangedDimensionEvent event within this one... Mods may process the earlier one after the new one due to immediate sending.
-			DimensionUtils.ejectPlayerFromDimension(event.player);
+			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+				@Override
+				public void run() {
+					DimensionUtils.ejectPlayerFromDimension(event.player);
+				}
+			});
 		}
 	}
 

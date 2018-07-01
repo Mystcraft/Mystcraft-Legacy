@@ -51,9 +51,13 @@ public class MystcraftConnectionHandler {
 		if ((checkUUID == null && Mystcraft.requireUUID) ||
 				(DimensionUtils.isDimensionDead(player.world.provider.getDimension())) ||
 				(checkUUID != null && !DimensionUtils.checkDimensionUUID(player.world.provider.getDimension(), checkUUID))) {
-			DimensionUtils.ejectPlayerFromDimension(event.player);
-		}
-		if (player.world.provider instanceof WorldProviderMyst) {
+			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+				@Override
+				public void run() {
+					DimensionUtils.ejectPlayerFromDimension(event.player);
+				}
+			});
+		} else if (player.world.provider instanceof WorldProviderMyst) {
 			NetworkUtils.sendAgeData(player, player.dimension); // Sends age data
 		}
 	}
@@ -62,8 +66,12 @@ public class MystcraftConnectionHandler {
 	public void onPlayerChangedDimension(PlayerChangedDimensionEvent event) {
 		EntityPlayer player = event.player;
 		if (DimensionUtils.isDimensionDead(event.toDim)) {
-			//FIXME: I worry about this causing other mods issues in processing this event, as we'll create another PlayerChangedDimensionEvent event within this one... Mods may process the earlier one after the new one due to immediate sending.
-			DimensionUtils.ejectPlayerFromDimension(event.player);
+			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+				@Override
+				public void run() {
+					DimensionUtils.ejectPlayerFromDimension(event.player);
+				}
+			});
 			return;
 		}
 		DimensionUtils.setPlayerDimensionUUID(event.player, DimensionUtils.getDimensionUUID(event.toDim));
