@@ -8,7 +8,6 @@ import com.xcompwiz.mystcraft.network.packet.MPacketConfigs;
 import com.xcompwiz.mystcraft.network.packet.MPacketDimensions;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -43,12 +42,7 @@ public class MystcraftConnectionHandler {
 		EntityPlayer player = event.player;
 		UUID checkUUID = DimensionUtils.getPlayerDimensionUUID(player);
 		if ((checkUUID == null && Mystcraft.requireUUID) || (DimensionUtils.isDimensionDead(player.world.provider.getDimension())) || (checkUUID != null && !DimensionUtils.checkDimensionUUID(player.world.provider.getDimension(), checkUUID))) {
-			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-				@Override
-				public void run() {
-					DimensionUtils.ejectPlayerFromDimension(event.player);
-				}
-			});
+			DimensionUtils.scheduleEjectPlayerFromDimension(event.player);
 		} else if (player.world.provider instanceof WorldProviderMyst) {
 			NetworkUtils.sendAgeData(player, player.dimension); // Sends age data
 		}
@@ -58,12 +52,7 @@ public class MystcraftConnectionHandler {
 	public void onPlayerChangedDimension(PlayerChangedDimensionEvent event) {
 		EntityPlayer player = event.player;
 		if (DimensionUtils.isDimensionDead(event.toDim)) {
-			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-				@Override
-				public void run() {
-					DimensionUtils.ejectPlayerFromDimension(event.player);
-				}
-			});
+			DimensionUtils.scheduleEjectPlayerFromDimension(event.player);
 			return;
 		}
 		DimensionUtils.setPlayerDimensionUUID(event.player, DimensionUtils.getDimensionUUID(event.toDim));

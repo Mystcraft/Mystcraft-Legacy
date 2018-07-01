@@ -17,7 +17,6 @@ import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketProfilingState;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -300,12 +299,7 @@ public class InstabilityDataCalculator {
 		}
 		// detect player entered dimension and queue them to teleport again next tick
 		if (dimId != null && event.player.dimension == dimId) {
-			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-				@Override
-				public void run() {
-					DimensionUtils.ejectPlayerFromDimension(event.player);
-				}
-			});
+			DimensionUtils.scheduleEjectPlayerFromDimension(event.player);
 		}
 	}
 
@@ -336,12 +330,7 @@ public class InstabilityDataCalculator {
 
 		// detect player changed dimension and queue them to teleport again next tick
 		if (dimId != null && event.toDim == dimId) {
-			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
-				@Override
-				public void run() {
-					DimensionUtils.ejectPlayerFromDimension(event.player);
-				}
-			});
+			DimensionUtils.scheduleEjectPlayerFromDimension(event.player);
 		}
 	}
 
