@@ -6,19 +6,17 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.xcompwiz.mystcraft.api.MystObjects;
-import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.api.word.WordData;
 import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.data.ModSymbolsModifiers.BlockModifierContainerObject;
 import com.xcompwiz.mystcraft.instability.InstabilityBlockManager;
-
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -53,8 +51,19 @@ public class ModSymbolsFluids {
 			if (block instanceof BlockFluidBase) {
 				meta = (byte) ((BlockFluidBase) block).getMaxRenderHeightMeta();
 			}
+			IBlockState blockState = block.getStateFromMeta(meta);
+			if (blockState == null)
+			{
+				LoggerUtils.warn("Fluid block %s gives max meta of %d with no matching BlockState", block.getUnlocalizedName(), meta);
+				continue;
+			}
+			if (blockState.getBlock() == null || blockState.getBlock().getRegistryName() == null)
+			{
+				LoggerUtils.warn("Fluid block %s gives max meta of %d with weird BlockState", block.getUnlocalizedName(), meta);
+				continue;
+			}
 			String fluidkey = getFluidKey(fluid);
-			BlockModifierContainerObject container = BlockModifierContainerObject.create(WordData.Sea, symbolCardRank(fluidkey), block, meta);
+			BlockModifierContainerObject container = BlockModifierContainerObject.create(WordData.Sea, symbolCardRank(fluidkey), blockState);
 			InstabilityBlockManager.setInstabilityFactors(block, factor1(fluidkey), factor2(fluidkey));
 			if (fluid.isGaseous()) {
 				container.add(BlockCategory.GAS, grammarRank(fluidkey));

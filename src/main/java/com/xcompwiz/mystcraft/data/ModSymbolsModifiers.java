@@ -51,12 +51,11 @@ public class ModSymbolsModifiers {
 			return new BlockModifierContainerObject(descriptor, symbol);
 		}
 
-		public static BlockModifierContainerObject create(String word, int cardrank, Block block, int metadata) {
-			return BlockModifierContainerObject.create(word, cardrank, block.getStateFromMeta(metadata));
-		}
-
-		public static BlockModifierContainerObject createMyst(String word, int cardrank, Block block, int metadata) {
-			return BlockModifierContainerObject.create(word, cardrank, block.getStateFromMeta(metadata));
+		private static BlockModifierContainerObject createMyst(String word, int cardrank, Block block, int metadata) {
+			IBlockState state = block.getStateFromMeta(metadata);
+			if (state == null)
+				return null;
+			return BlockModifierContainerObject.create(word, cardrank, state);
 		}
 
 		public IAgeSymbol getSymbol() {
