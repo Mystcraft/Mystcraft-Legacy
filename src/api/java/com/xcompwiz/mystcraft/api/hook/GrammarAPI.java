@@ -34,7 +34,7 @@ public interface GrammarAPI {
 	Collection<IAgeSymbol> getSymbolsExpandingToken(ResourceLocation token);
 
 	/**
-	 * Produces a list of all the tokens which have rules that produce the provided token
+	 * Produces a list of all the tokens which have rules that produce the provided token (immediate parent tokens)
 	 * @param token The token produced
 	 * @return A collection of all the parents of rules producing the given token
 	 */
