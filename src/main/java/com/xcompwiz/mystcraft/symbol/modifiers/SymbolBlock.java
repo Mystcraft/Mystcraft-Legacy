@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 
 public class SymbolBlock extends SymbolBase {
 
-	private BlockDescriptor blockDescriptor;
+	public final BlockDescriptor blockDescriptor;
 	private String unlocalizedBlockName;
 
 	public SymbolBlock(BlockDescriptor block, String word) {
