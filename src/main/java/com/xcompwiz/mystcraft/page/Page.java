@@ -65,7 +65,7 @@ public abstract class Page {
 	}
 
 	public static boolean isBlank(@Nonnull ItemStack page) {
-		return !isLinkPanel(page) && getSymbol(page) == null;
+		return !isLinkPanel(page) && !getData(page).hasKey("symbol");
 	}
 
 	public static boolean isLinkPanel(@Nonnull ItemStack page) {
