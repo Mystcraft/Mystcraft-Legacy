@@ -9,7 +9,9 @@ import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -46,14 +48,19 @@ public class GuiElementPage extends GuiElement {
 	public void _renderBackground(float f, int mouseX, int mouseY) {
 		int guiLeft = getLeft();
 		int guiTop = getTop();
-		hovertext.clear();
 		ItemStack target = provider.getPageItemStack(this);
+		ResourceLocation symbolRes = Page.getSymbol(target);
 		GuiUtils.drawPage(mc.renderEngine, getZLevel(), target, xSizePage, ySizePage, guiLeft, guiTop);
-		if (GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize, ySize) && Page.getSymbol(target) != null) {
-			IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(target));
-			if (symbol != null) {
-				hovertext.add(GuiUtils.getHoverText(symbol));
+		if (GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize, ySize) && symbolRes != null) {
+			if (hovertext.isEmpty()) {
+				IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolRes);
+				if (symbol != null) {
+					hovertext.add(symbol.getLocalizedName());
+					net.minecraftforge.event.ForgeEventFactory.onItemTooltip(target, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
+				}
 			}
+		} else {
+			hovertext.clear();
 		}
 	}
 

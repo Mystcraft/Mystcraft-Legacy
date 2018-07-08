@@ -143,14 +143,6 @@ public final class GuiUtils {
 		tes.draw();
 	}
 
-	//XXX: This doesn't really belong here
-	public static String getHoverText(IAgeSymbol symbol) {
-		if (symbol != null) {
-			return symbol.getLocalizedName();
-		}
-		return "?";
-	}
-
 	/**
 	 * Draws a textured rectangle at the stored z-value. Args: x, y, u, v, width, height
 	 * @param xSize

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
@@ -19,7 +17,10 @@ import com.xcompwiz.mystcraft.inventory.IBookContainer;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -114,10 +115,11 @@ public class GuiElementBook extends GuiElement {
 		}
 		int guiLeft = getLeft();
 		int guiTop = getTop();
+		
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(guiLeft, guiTop, 0);
 		GlStateManager.scale(xScale, yScale, 1);
-		hovertext.clear();
+
 		//TODO: (PageRender) When redoing book/link item renders, might want to consider restructuring the texture sheets used for drawing here
 		mc.renderEngine.bindTexture(GUIs.book_cover); // book backing
 		GlStateManager.color(1F, 1F, 1F, 1F);
@@ -125,6 +127,7 @@ public class GuiElementBook extends GuiElement {
 		drawTexturedModalRect(34, 7, 49, 0, 103, 192); // Left panel
 		drawTexturedModalRect(137, 7, 45, 0, 4, 192); // Left panel
 		drawTexturedModalRect(141, 7, 0, 0, 186, 192); // Spine + right
+
 		if (isAgebook()) { // XXX: (PageRender) Better gui spine colorization handling
 			drawTexturedModalRect(0, 7, 186, 0, 34, 192); // Gold border
 			drawTexturedModalRect(293, 7, 186, 0, 34, 192); // Gold border
@@ -154,16 +157,24 @@ public class GuiElementBook extends GuiElement {
 			mc.renderEngine.bindTexture(GUIs.book_page_right_solid); // Full Right Page
 			drawTexturedModalRect(163, 0, 0, 0, 156, 195);
 
-			if (Page.getSymbol(page) != null) {
+			boolean hovered = false;
+			ResourceLocation symbolRes = Page.getSymbol(page);
+			if (symbolRes != null) {
 				int x = 171;
 				int y = 25;
 				int scale = 140;
-				IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
+				IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolRes);
 				GuiUtils.drawSymbol(mc.renderEngine, getZLevel(), symbol, scale, x, y);
 				if (GuiUtils.contains(mouseX, mouseY, (int) (x * xScale) + guiLeft, (int) (y * yScale) + guiTop, (int) (scale * xScale), (int) (scale * yScale))) {
-					hovertext.add(GuiUtils.getHoverText(symbol));
+					hovered = true;
+					if (hovertext.isEmpty()) {
+						hovertext.add(symbol.getLocalizedName());
+						net.minecraftforge.event.ForgeEventFactory.onItemTooltip(page, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
+					}
 				}
 			}
+			if (!hovered)
+				hovertext.clear();
 		}
 		GlStateManager.disableDepth();
 		if (getCurrentPageIndex() == 0) {

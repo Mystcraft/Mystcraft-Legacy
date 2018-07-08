@@ -3,10 +3,8 @@ package com.xcompwiz.mystcraft.client.gui.element;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
@@ -14,6 +12,8 @@ import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -170,7 +170,8 @@ public class GuiElementScrollablePages extends GuiElement {
 		// Render pages
 		GlStateManager.pushMatrix();
 		GuiUtils.startGlScissor(guiLeft + 1, guiTop, xSize - 2, ySize);
-		hoverpage = -1;
+
+		boolean noHover = true;
 		List<ItemStack> pageList = getPageList();
 		if (pageList != null) {
 			float x = 2;
@@ -181,12 +182,18 @@ public class GuiElementScrollablePages extends GuiElement {
 				ItemStack page = pageList.get(i);
 				GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), page, pagexSize, pageySize, x, y);
 				if (GuiUtils.contains(mouseX, mouseY, (int) x, (int) y, (int) pagexSize, (int) pageySize)) {
-					hoverpage = i;
-					Page.getTooltip(page, hovertext);
-					if (Page.getSymbol(page) != null) {
-						IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
-						if (symbol != null)
-							hovertext.add(symbol.getLocalizedName());
+					noHover = false;
+					if (hoverpage != i) {
+						hoverpage = i;
+						hovertext.clear();
+
+						Page.getTooltip(page, hovertext);
+						if (Page.getSymbol(page) != null) {
+							IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
+							if (symbol != null)
+								hovertext.add(symbol.getLocalizedName());
+						}
+						net.minecraftforge.event.ForgeEventFactory.onItemTooltip(page, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
 					}
 				}
 				x += pagexSize + 2;
@@ -194,6 +201,11 @@ public class GuiElementScrollablePages extends GuiElement {
 					break;
 			}
 		}
+		if (noHover) {
+			hoverpage = -1;
+			hovertext.clear();
+		}
+		
 		GuiUtils.endGlScissor();
 		GlStateManager.popMatrix();
 		if (firstElement == 0) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -139,8 +140,6 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		int guiTop = getTop();
 		mouseOverPageArea = GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize - 20, ySize);
 
-		hovertext.clear();
-		hoverpage = null;
 		int color = 0xAA000000;
 		drawRect(guiLeft, guiTop, guiLeft + xSize - 20, guiTop + ySize, color); // Back
 
@@ -150,9 +149,12 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		GuiUtils.startGlScissor(guiLeft, guiTop, xSize, ySize - 1);
 		this.setZLevel(1.0F);
 		GlStateManager.pushMatrix();
+		
+		boolean noHover = true;
 		int currentScroll = -scrollbar.getCurrentPos();
 		List<PositionableItem> pages = getPages();
 		int maxScroll = 0;
+		
 		//XXX: (PageRender) If these were rendered as individual sub-elements, we could do some fancy things, like making them appear to move on sort (animated sort)
 		if (pages != null) {
 			float x = guiLeft;
@@ -172,19 +174,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 				if (y + pageY > guiTop + ySize) {
 					continue;
 				}
-				String displayname = null;
-				if (Page.getSymbol(page) != null) {
-					IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
-					if (symbol != null) {
-						displayname = symbol.getLocalizedName();
-					}
-					if (displayname == null) {
-						ResourceLocation res = Page.getSymbol(page);
-						if (res != null) {
-							displayname = res.getResourcePath();
-						}
-					}
-				}
+				String displayname = getDisplayName(page);
 				if (displayname != null && searchtext != null && searchtext.length() > 0) {
 					if (!displayname.toLowerCase().contains(searchtext.toLowerCase())) {
 						page = ItemStack.EMPTY;
@@ -198,24 +188,51 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 				if (positionable.count > 1) {
 					GuiUtils.drawScaledText("" + positionable.count, (int) (x + pageX), (int) (y + pageY + pageHeight - 7), 20, 10, 0xFFFFFF);
 				}
-				if (mouseOverPageArea && GuiUtils.contains(mouseX, mouseY, (int) (x + pageX), (int) (y + pageY), (int) pagexSize, (int) pageySize)) {
-					hoverpage = positionable;
-					Page.getTooltip(page, hovertext);
-					if (displayname != null) {
-						hovertext.add(displayname);
-					} else if (Page.getSymbol(page) != null) {
-						IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
-						if (symbol != null)
-							hovertext.add(symbol.getLocalizedName());
-					}
+				if (mouseOverPageArea) {
+					if (testMouseOver(positionable, page, displayname, mouseX, mouseY, (int) (x + pageX), (int) (y + pageY), (int) pagexSize, (int) pageySize))
+						noHover = false;
 				}
 			}
 		}
+		if (noHover) {
+			hoverpage = null;
+			hovertext.clear();
+		}
+		
 		scrollbar.setMaxScroll(maxScroll);
+
 		GlStateManager.popMatrix();
 		GlStateManager.depthFunc(GL11.GL_LEQUAL);
 		this.setZLevel(2.0F);
 		GuiUtils.endGlScissor();
+	}
+
+	private String getDisplayName(ItemStack page) {
+		ResourceLocation symbolRes = Page.getSymbol(page);
+		if (symbolRes == null)
+			return null;
+
+		IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolRes);
+		if (symbol != null) {
+			return symbol.getLocalizedName();
+		}
+		return symbolRes.getResourcePath();
+	}
+
+	private boolean testMouseOver(PositionableItem positionable, ItemStack page, String displayname, int mouseX, int mouseY, int i, int j, int pagexSize, int pageySize) {
+		if (!GuiUtils.contains(mouseX, mouseY, i, j, (int) pagexSize, (int) pageySize))
+			return false;
+		if (hoverpage == positionable)
+			return true;
+
+		hoverpage = positionable;
+		hovertext.clear();
+
+		Page.getTooltip(page, hovertext);
+		if (displayname != null)
+			hovertext.add(displayname);
+		net.minecraftforge.event.ForgeEventFactory.onItemTooltip(page, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
+		return true;
 	}
 
 	private List<PositionableItem> getPages() {
