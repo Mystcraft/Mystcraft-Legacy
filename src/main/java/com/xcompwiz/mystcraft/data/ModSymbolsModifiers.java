@@ -77,7 +77,7 @@ public class ModSymbolsModifiers {
 		for (byte i = 1; i < 7; i += 2)
 			BlockModifierContainerObject.createMyst(WordData.Terrain, 2, Blocks.STONE, i).register().add(BlockCategory.TERRAIN, 2).add(BlockCategory.STRUCTURE, 2).add(BlockCategory.SOLID, 1);
 		for (byte i = 2; i < 7; i += 2)
-			BlockModifierContainerObject.createMyst(WordData.Structure, 2, Blocks.STONE, i).register().add(BlockCategory.TERRAIN, 4).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
+			BlockModifierContainerObject.createMyst(WordData.Structure, 2, Blocks.STONE, i).register().add(BlockCategory.TERRAIN, 5).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
 		BlockModifierContainerObject.createMyst(WordData.Terrain, 2, Blocks.SANDSTONE, 0).register().add(BlockCategory.TERRAIN, 2).add(BlockCategory.STRUCTURE, 1).add(BlockCategory.SOLID, 1);
 		BlockModifierContainerObject.createMyst(WordData.Terrain, 2, Blocks.NETHERRACK, 0).register().add(BlockCategory.TERRAIN, 3).add(BlockCategory.STRUCTURE, 2).add(BlockCategory.SOLID, 2);
 		BlockModifierContainerObject.createMyst(WordData.Terrain, 3, Blocks.END_STONE, 0).register().add(BlockCategory.TERRAIN, 4).add(BlockCategory.STRUCTURE, 3).add(BlockCategory.SOLID, 3);
