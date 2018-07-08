@@ -3,9 +3,7 @@ package com.xcompwiz.mystcraft.client.gui;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
+import javax.annotation.Nonnull;
 
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
 import com.xcompwiz.mystcraft.api.item.IItemWritable;
@@ -37,11 +35,11 @@ import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
-import javax.annotation.Nonnull;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiWritingDesk extends GuiContainerElements {
 

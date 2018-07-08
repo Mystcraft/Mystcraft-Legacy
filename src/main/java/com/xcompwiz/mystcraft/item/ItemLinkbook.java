@@ -4,10 +4,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.item.IItemRenameable;
-import com.xcompwiz.mystcraft.data.ModAchievements;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 import com.xcompwiz.mystcraft.page.Page;
 
@@ -17,8 +18,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-
-import javax.annotation.Nonnull;
 
 public class ItemLinkbook extends ItemLinking implements IItemRenameable, IItemPageProvider {
 

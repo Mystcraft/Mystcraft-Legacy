@@ -2,6 +2,9 @@ package com.xcompwiz.mystcraft.item;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
 import com.xcompwiz.mystcraft.api.item.IItemWritable;
@@ -10,20 +13,19 @@ import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.inventory.InventoryFolder;
 
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class ItemFolder extends Item implements IItemOrderablePageProvider, IItemWritable, IItemOnLoadable {
 

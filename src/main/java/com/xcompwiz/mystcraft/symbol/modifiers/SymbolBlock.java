@@ -14,8 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 
-import javax.annotation.Nullable;
-
 public class SymbolBlock extends SymbolBase {
 
 	public final BlockDescriptor blockDescriptor;

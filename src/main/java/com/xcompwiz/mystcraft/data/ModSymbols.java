@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.data;
 
 import java.util.Iterator;
-import java.util.stream.Collectors;
 
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.grammar.GrammarData;

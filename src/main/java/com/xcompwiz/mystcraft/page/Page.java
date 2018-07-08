@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.data.InkEffects;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
@@ -15,9 +18,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public abstract class Page {
 
