@@ -7,6 +7,7 @@ import java.util.List;
 
 public final class CollectionUtils {
 
+	@SafeVarargs
 	public static <T> HashSet<T> buildSet(T... args) {
 		HashSet<T> set = new HashSet<T>();
 		for (T arg : args) {
@@ -15,6 +16,7 @@ public final class CollectionUtils {
 		return set;
 	}
 
+	@SafeVarargs
 	public static <T> ArrayList<T> buildList(T... args) {
 		ArrayList<T> list = new ArrayList<T>();
 		for (T arg : args) {
@@ -23,6 +25,7 @@ public final class CollectionUtils {
 		return list;
 	}
 
+	@SafeVarargs
 	public static <T> ArrayList<T> buildList(List<T> prefix, List<T> suffix, T... args) {
 		ArrayList<T> list = new ArrayList<T>();
 		if (prefix != null)
