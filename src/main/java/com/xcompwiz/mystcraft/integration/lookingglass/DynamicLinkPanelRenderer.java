@@ -6,8 +6,6 @@ import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import com.xcompwiz.lookingglass.api.animator.CameraAnimatorPivot;
-import com.xcompwiz.lookingglass.api.view.IWorldView;
 import com.xcompwiz.mystcraft.api.client.ILinkPanelEffect;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
@@ -45,7 +43,7 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 
 	private Integer activeDim;
 	private BlockPos activeCoords;
-	private IWorldView activeview;
+	private IWorldViewWrapper activeview;
 	public float colorScale = 0.5f;
 	public float waveScale = 0.5f;
 	private long readyTime;
@@ -71,7 +69,7 @@ public class DynamicLinkPanelRenderer implements ILinkPanelEffect {
 			BlockPos spawn = linkinfo.getSpawn();
 			activeview = apiinst.createWorldView(dimid, spawn, 132, 83);
 			if (activeview != null) {
-				activeview.setAnimator(new CameraAnimatorPivot(activeview.getCamera()));
+				activeview.setAnimator();
 				this.activeDim = dimid;
 				this.activeCoords = linkinfo.getSpawn();
 			}

@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.integration.lookingglass;
 
 import com.xcompwiz.lookingglass.api.hook.WorldViewAPI2;
-import com.xcompwiz.lookingglass.api.view.IWorldView;
 
 import net.minecraft.util.math.BlockPos;
 
@@ -13,12 +12,12 @@ public class LookingGlassWrapper2 implements ILookingGlassWrapper {
 	}
 
 	@Override
-	public IWorldView createWorldView(Integer dimid, BlockPos spawn, int i, int j) {
-		return apiinst.createWorldView(dimid, spawn, 132, 83);
+	public IWorldViewWrapper createWorldView(Integer dimid, BlockPos spawn, int i, int j) {
+		return new WorldViewWrapper(apiinst.createWorldView(dimid, spawn, 132, 83));
 	}
 
 	@Override
-	public void release(Object activeview) {
-		apiinst.cleanupWorldView((IWorldView) activeview);
+	public void release(IWorldViewWrapper activeview) {
+		apiinst.cleanupWorldView(((WorldViewWrapper)activeview).view);
 	}
 }
