@@ -87,15 +87,15 @@ public class SymbolSunNormal extends SymbolBase {
 			GlStateManager.pushMatrix();
 			float f16 = 1.0F - world.getRainStrength(partial);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, f16);
-			GlStateManager.rotate(-90.0F, 0.0F, 1.0F, 0.0F);
-			GlStateManager.rotate(world.getCelestialAngle(partial) * 360.0F, 1.0F, 0.0F, 0.0F);
-			float f17 = 30.0F;
+			GlStateManager.rotate(angle, 0.0F, 1.0F, 0.0F);
+			GlStateManager.rotate(celestial_period * 360.0F, 1.0F, 0.0F, 0.0F);
+			float size = 30.0F;
 			eng.bindTexture(Vanilla.normal_sun);
 			vb.begin(7, DefaultVertexFormats.POSITION_TEX);
-			vb.pos((double) (-f17), 100.0D, (double) (-f17)).tex(0.0D, 0.0D).endVertex();
-			vb.pos((double) f17, 100.0D, (double) (-f17)).tex(1.0D, 0.0D).endVertex();
-			vb.pos((double) f17, 100.0D, (double) f17).tex(1.0D, 1.0D).endVertex();
-			vb.pos((double) (-f17), 100.0D, (double) f17).tex(0.0D, 1.0D).endVertex();
+			vb.pos((double) (-size), 100.0D, (double) (-size)).tex(0.0D, 0.0D).endVertex();
+			vb.pos((double) size, 100.0D, (double) (-size)).tex(1.0D, 0.0D).endVertex();
+			vb.pos((double) size, 100.0D, (double) size).tex(1.0D, 1.0D).endVertex();
+			vb.pos((double) (-size), 100.0D, (double) size).tex(0.0D, 1.0D).endVertex();
 			tes.draw();
 			GlStateManager.popMatrix();
 
