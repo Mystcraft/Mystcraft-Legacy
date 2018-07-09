@@ -328,7 +328,7 @@ types.eachWithIndex { type, index ->
 		srcJar.version = "${project.minecraft.version}-${project.version}"
 		project.tasks.sourceMainJava.replace "@VERSION@", project.version
 		uploadArchives.repositories.mavenDeployer.pom.version = project.version
-		discord.requestBody = [content: "${project.nameCased} " + "${-> project.version}" + " is uploading to CurseForge\n```" + project.publishChangelog.text + " ```"]
+		discord.requestBody = [content: project.nameCased + " " + project.version + " is uploading to CurseForge\n```" + project.publishChangelog.text + " ```"]
 	}
 
 	task("deploy-$type") {
@@ -372,8 +372,8 @@ curseforge {
 
 task discord(type: org._10ne.gradle.rest.RestTask) {
 	httpMethod = 'post'
-	uri = pass.discordWebhookTest
-	requestBody = [content: "${project.nameCased} " + "${-> project.version}" + " is uploading to CurseForge\n```" + project.publishChangelog.text + " ```"]
+	uri = pass.discordWebhook
+	requestBody = [content: project.nameCased + " " + project.version + " is uploading to CurseForge\n```" + project.publishChangelog.text + " ```"]
 	contentType = groovyx.net.http.ContentType.JSON
 }
 
