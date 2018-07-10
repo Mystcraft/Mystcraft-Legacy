@@ -66,25 +66,39 @@ public class PageBuilder {
 			ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
 			tm.setTextureEntry(new PageSprite(unwrapped, symbol));
 		}
-		ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(null);
-		ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
-		tm.setTextureEntry(new LinkingPageSprite(unwrapped));
+		{
+			ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(null);
+			ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
+			tm.setTextureEntry(new PageSprite(unwrapped, null));
+		}
+		{
+			ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForLinkPanel();
+			ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
+			tm.setTextureEntry(new BasicPageSprite(unwrapped, true));
+		}
+		{
+			ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForBlankPage();
+			ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
+			tm.setTextureEntry(new BasicPageSprite(unwrapped, false));
+		}
 	}
-
+	
 	@SubscribeEvent
 	public void onModelBake(ModelBakeEvent event) {
 		for (IAgeSymbol symbol : SymbolManager.getAgeSymbols()) {
-			ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(symbol);
-			ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
-			IBakedModel model = (new ItemLayerModel(ImmutableList.of(unwrapped))).bake(HELD_ITEM_TRANSFORMS, DefaultVertexFormats.ITEM, location -> Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(unwrapped.toString()));
-			event.getModelRegistry().putObject(mrl, model);
+			bake(event, ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(symbol));
 		}
-		ModelResourceLocation mrl = ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(null);
-		ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
-		IBakedModel emptyModel = new ItemLayerModel(ImmutableList.of(unwrapped)).bake(HELD_ITEM_TRANSFORMS, DefaultVertexFormats.ITEM, location -> Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(unwrapped.toString()));
-		event.getModelRegistry().putObject(mrl, emptyModel);
+		bake(event, ModItems.PageMeshDefinition.instance.getModelLocationForSymbol(null));
+		bake(event, ModItems.PageMeshDefinition.instance.getModelLocationForLinkPanel());
+		bake(event, ModItems.PageMeshDefinition.instance.getModelLocationForBlankPage());
 	}
 
+	private void bake(ModelBakeEvent event, ModelResourceLocation mrl) {
+		ResourceLocation unwrapped = new ResourceLocation(mrl.getResourceDomain(), mrl.getResourcePath());
+		IBakedModel model = (new ItemLayerModel(ImmutableList.of(unwrapped))).bake(HELD_ITEM_TRANSFORMS, DefaultVertexFormats.ITEM, location -> Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(unwrapped.toString()));
+		event.getModelRegistry().putObject(mrl, model);
+	}
+	
 	private static BufferedImage buildSymbolImage(ResourceLocation src) {
 		if (customSymbolSources.containsKey(src)) {
 			return customSymbolSources.get(src);
@@ -131,12 +145,15 @@ public class PageBuilder {
 		customSymbolSources.clear();
 	}
 
-	public static class LinkingPageSprite extends TextureAtlasSprite {
+	public static class BasicPageSprite extends TextureAtlasSprite {
 
-		private LinkingPageSprite(ResourceLocation res) {
+		private final boolean isPanel;
+		
+		private BasicPageSprite(ResourceLocation res, boolean panel) {
 			super(res.toString());
 			this.width = 128;
 			this.height = 128;
+			this.isPanel = panel;
 		}
 
 		@Override
@@ -153,14 +170,17 @@ public class PageBuilder {
 			//160x160 here
 			BufferedImage copy = new BufferedImage(cm, pageImage.copyData(null), cm.isAlphaPremultiplied(), null);
 
-			int width = 110;
-			int height = 45;
-			int startX = 25;
-			int startZ = 30;
-
-			for (int xx = startX; xx <= startX + width; xx++) {
-				for (int zz = startZ; zz <= startZ + height; zz++) {
-					copy.setRGB(xx, zz, 0xFF000000); //Black
+			if (isPanel)
+			{
+				int width = 110;
+				int height = 45;
+				int startX = 25;
+				int startZ = 30;
+	
+				for (int xx = startX; xx <= startX + width; xx++) {
+					for (int zz = startZ; zz <= startZ + height; zz++) {
+						copy.setRGB(xx, zz, 0xFF000000); //Black
+					}
 				}
 			}
 
@@ -202,7 +222,9 @@ public class PageBuilder {
 			//160x160 here
 			BufferedImage copy = new BufferedImage(cm, pageImage.copyData(null), cm.isAlphaPremultiplied(), null);
 
-			if (symbol != null) {
+			if (symbol == null) {
+				stitchWord(copy, null, -1, buildSymbolImage(DrawableWord.word_components));
+			} else {
 				String[] words = symbol.getPoem();
 				if (words == null) {
 					stitchWord(copy, null, -1, buildSymbolImage(DrawableWord.word_components));

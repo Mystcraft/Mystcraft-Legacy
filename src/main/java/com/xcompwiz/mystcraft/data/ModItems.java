@@ -130,25 +130,25 @@ public class ModItems {
 
 		@SideOnly(Side.CLIENT)
 		public String pathForSymbol(@Nullable IAgeSymbol symbol) {
-			if (symbol == null) {
-				return "page_no_symbol";
-			}
+			if (symbol == null)
+				return "page_err_symbol";
+
 			return "page_" + symbol.getRegistryName().getResourcePath();
 		}
 
 		@SideOnly(Side.CLIENT)
-		public String pathForSymbol(@Nonnull ItemStack stack) {
+		public String getSubPath(@Nonnull ItemStack stack) {
+			if (Page.isBlank(stack))
+				return "page_blank";
+			
+			if (Page.isLinkPanel(stack))
+				return "page_linkpanel";
+			
 			ResourceLocation symbolUniqueId = Page.getSymbol(stack);
-			if (symbolUniqueId == null) {
-				return "page_no_symbol";
-			} else {
-				IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolUniqueId);
-				if (symbol != null) {
-					return "page_" + symbol.getRegistryName().getResourcePath();
-				} else {
-					return "page_no_symbol";
-				}
-			}
+			if (symbolUniqueId == null)
+				return "page_err_symbol";
+			
+			return pathForSymbol(SymbolManager.getAgeSymbol(symbolUniqueId));
 		}
 
 		@Nonnull
@@ -156,10 +156,20 @@ public class ModItems {
 			return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, pathForSymbol(symbol)), "inventory");
 		}
 
+		@Nonnull
+		public ModelResourceLocation getModelLocationForLinkPanel() {
+			return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "page_linkpanel"), "inventory");
+		}
+
+		@Nonnull
+		public ModelResourceLocation getModelLocationForBlankPage() {
+			return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "page_blank"), "inventory");
+		}
+
 		@Override
 		@Nonnull
 		public ModelResourceLocation getModelLocation(@Nonnull ItemStack stack) {
-			return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, pathForSymbol(stack)), "inventory");
+			return new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, getSubPath(stack)), "inventory");
 		}
 	}
 
