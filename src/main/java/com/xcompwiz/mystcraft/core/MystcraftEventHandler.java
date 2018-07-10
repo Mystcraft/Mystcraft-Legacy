@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.core;
 
 import com.xcompwiz.mystcraft.data.ModBlocks;
-import com.xcompwiz.mystcraft.data.ModFluids;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
 import com.xcompwiz.mystcraft.debug.DebugUtils;
 import com.xcompwiz.mystcraft.effects.EffectCrumble;
@@ -18,15 +17,12 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.WorldProvider;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 public class MystcraftEventHandler {
