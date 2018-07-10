@@ -25,10 +25,13 @@ import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.word.DrawableWord;
 import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.item.ItemPage;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -36,9 +39,11 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.RenderItemInFrameEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ItemLayerModel;
 import net.minecraftforge.common.model.IModelPart;
@@ -56,6 +61,22 @@ public class PageBuilder {
 	private static BufferedImage pageImage = null;
 	private static Map<ResourceLocation, BufferedImage> customSymbolSources = new HashMap<>();
 
+	@SubscribeEvent
+	public void renderItemFrameEvent(RenderItemInFrameEvent event) {
+		ItemStack itemstack = event.getItem();
+		if (!(itemstack.getItem() instanceof ItemPage))
+			return;
+		event.setCanceled(true);
+		
+        GlStateManager.scale(1F, 1F, 1F);
+        GlStateManager.rotate(180.f, 0.0F, 1.0F, 0.0F);
+        GlStateManager.pushAttrib();
+        RenderHelper.enableStandardItemLighting();
+        Minecraft.getMinecraft().getRenderItem().renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED);
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.popAttrib();		
+	}
+	
 	@SubscribeEvent
 	public void onTextureStitch(TextureStitchEvent.Pre event) {
 		TextureMap tm = event.getMap();
