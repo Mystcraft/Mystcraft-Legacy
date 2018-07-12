@@ -38,9 +38,9 @@ public class SymbolBiome extends SymbolBase {
 
 	//TODO: Make into a helper somewhere
 	private static String formatted(Biome biome) {
-		String regex = "([A-Z][a-z]+)";
+		String regex = "([A-Z][a-z]+_*)";
 		String replacement = "$1 ";
-		String name = ReflectionUtil.getBiomeName(biome).replaceAll(regex, replacement).replaceAll("([A-Z][a-z]+)  ", replacement).trim();
+		String name = ReflectionUtil.getBiomeName(biome).replaceAll(regex, replacement).replaceAll("([A-Z][a-z]+) +", replacement).trim();
 		if (name.endsWith("Biome"))
 			name = name.substring(0, name.length() - "Biome".length()).trim();
 		return name;
