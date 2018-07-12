@@ -79,6 +79,13 @@ dependencies {
 	deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.2.404"
 }
 
+if (!project.smallChangelog.exists()) {
+	smallChangelog.write ""
+}
+if (!project.releaseChangelog.exists()) {
+	releaseChangelog.write ""
+}
+
 if (file('locations.gradle').exists()) {
 	apply from: 'locations.gradle'
 }
