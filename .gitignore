@@ -31,3 +31,4 @@ post.txt
 *.ipr
 *.iws
 .idea/
+eclipse/.metadata/.plugins/
