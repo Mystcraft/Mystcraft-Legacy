@@ -35,6 +35,8 @@ public class BlockDecay extends Block {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
+		if (meta >= DecayHandler.DecayType.values().length)
+			meta = 0;
 		return getDefaultState().withProperty(DECAY_META, DecayType.values()[meta]);
 	}
 
