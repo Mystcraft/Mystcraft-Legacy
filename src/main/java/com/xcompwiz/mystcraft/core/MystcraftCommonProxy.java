@@ -88,4 +88,8 @@ public class MystcraftCommonProxy {
 			instabilitycalculator = null;
 		}
 	}
+
+	public void addScheduledTask(Runnable runnable) {
+		getMCServer().addScheduledTask(runnable);
+	}
 }

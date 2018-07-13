@@ -13,7 +13,6 @@ import com.xcompwiz.mystcraft.network.packet.MPacketDimensions;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.mystcraft.world.storage.FileUtils;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -150,7 +149,7 @@ public class DimensionUtils {
 	}
 
 	public static void scheduleEjectPlayerFromDimension(EntityPlayer player) {
-		Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+		Mystcraft.sidedProxy.addScheduledTask(new Runnable() {
 			@Override
 			public void run() {
 				ejectPlayerFromDimension(player);

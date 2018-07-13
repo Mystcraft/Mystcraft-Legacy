@@ -38,6 +38,7 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 import com.xcompwiz.mystcraft.tileentity.TileEntityStarFissure;
 import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
@@ -141,5 +142,10 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 	public void stopBaselineProfiling() {
 		if (InstabilityDataCalculator.isPerSave())
 			super.stopBaselineProfiling();
+	}
+	
+	@Override
+	public void addScheduledTask(Runnable runnable) {
+		Minecraft.getMinecraft().addScheduledTask(runnable);
 	}
 }
