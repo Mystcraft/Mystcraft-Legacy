@@ -1,11 +1,13 @@
 package com.xcompwiz.mystcraft.core;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.data.InkEffects;
 import com.xcompwiz.mystcraft.data.ModLinkEffects;
 import com.xcompwiz.mystcraft.error.MystcraftStartupChecker;
 import com.xcompwiz.mystcraft.inventory.CreativeTabMyst;
-import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
 
 import net.minecraft.entity.Entity;
@@ -14,9 +16,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class MystcraftCommonProxy {
 
