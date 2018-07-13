@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 
-import com.google.common.io.ByteStreams;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.item.ItemStackUtils;
 
 import io.netty.buffer.ByteBuf;
@@ -23,9 +25,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.nbt.NBTTagString;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public final class NBTUtils {
 

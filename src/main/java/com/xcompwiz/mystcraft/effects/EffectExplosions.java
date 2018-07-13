@@ -4,7 +4,6 @@ import java.util.Random;
 
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 

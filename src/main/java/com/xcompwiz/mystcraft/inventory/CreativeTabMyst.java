@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.inventory;
 
+import javax.annotation.Nonnull;
+
 import com.xcompwiz.mystcraft.api.grammar.GrammarData;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.data.ModPageCollections;
@@ -12,8 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
 
 public class CreativeTabMyst extends CreativeTabs {
 

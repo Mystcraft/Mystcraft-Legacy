@@ -13,6 +13,7 @@ import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.grammar.GrammarTree;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.util.CollectionUtils;
+
 import net.minecraft.util.ResourceLocation;
 
 public class GrammarAPIDelegate {

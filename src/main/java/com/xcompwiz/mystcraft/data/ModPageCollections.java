@@ -3,6 +3,8 @@ package com.xcompwiz.mystcraft.data;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.annotation.Nonnull;
+
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
@@ -13,8 +15,6 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nonnull;
 
 public class ModPageCollections {
 

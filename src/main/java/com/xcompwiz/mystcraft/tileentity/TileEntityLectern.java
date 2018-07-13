@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.tileentity;
 
+import javax.annotation.Nonnull;
+
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 
@@ -8,12 +10,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.storage.MapData;
-
-import javax.annotation.Nonnull;
 
 public class TileEntityLectern extends TileEntityBookRotateable implements ITickable {
 

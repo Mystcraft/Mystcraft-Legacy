@@ -1,12 +1,12 @@
 package com.xcompwiz.mystcraft.tileentity;
 
+import javax.annotation.Nonnull;
+
 import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
 import com.xcompwiz.mystcraft.portal.PortalUtils;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nonnull;
 
 public class TileEntityBookReceptacle extends TileEntityBookRotateable {
 

@@ -41,7 +41,6 @@ import com.xcompwiz.mystcraft.world.profiling.ChunkProfiler;
 import com.xcompwiz.mystcraft.world.profiling.ChunkProfilerManager;
 import com.xcompwiz.util.SpiralOutwardIterator;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;

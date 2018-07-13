@@ -1,13 +1,15 @@
 package com.xcompwiz.mystcraft.network.packet;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class MPacketDimensions extends PacketBase<MPacketDimensions, MPacketDimensions> {

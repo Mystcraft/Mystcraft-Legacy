@@ -1,9 +1,10 @@
 package com.xcompwiz.mystcraft.api.impl.item;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import com.xcompwiz.mystcraft.api.item.IItemPageCollection;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
@@ -17,8 +18,6 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nonnull;
 
 public class ItemFactoryImpl {
 

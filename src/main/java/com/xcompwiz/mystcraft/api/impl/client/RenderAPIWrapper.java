@@ -5,6 +5,7 @@ import com.xcompwiz.mystcraft.api.hook.RenderAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.util.Color;
+
 import net.minecraft.util.ResourceLocation;
 
 public class RenderAPIWrapper extends APIWrapper implements RenderAPI {

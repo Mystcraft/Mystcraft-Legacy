@@ -9,8 +9,8 @@ import com.xcompwiz.mystcraft.block.BlockLectern;
 import com.xcompwiz.mystcraft.block.BlockWritingDesk;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
-
 import com.xcompwiz.mystcraft.treasure.LootTableHandler;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.init.Blocks;

@@ -8,7 +8,6 @@ import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
 import com.xcompwiz.mystcraft.world.storage.ExternalSaveHandler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.GameType;
 import net.minecraft.world.WorldSettings;
@@ -17,7 +16,6 @@ import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent.Save;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

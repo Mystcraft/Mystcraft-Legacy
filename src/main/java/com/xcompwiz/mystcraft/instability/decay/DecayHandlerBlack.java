@@ -7,9 +7,6 @@ import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.entity.EntityFallingBlock;
 import com.xcompwiz.mystcraft.world.WorldInfoUtils;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 

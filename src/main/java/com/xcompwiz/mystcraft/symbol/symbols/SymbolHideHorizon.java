@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+
 import net.minecraft.util.ResourceLocation;
 
 public class SymbolHideHorizon extends SymbolBase {

@@ -1,10 +1,10 @@
 package com.xcompwiz.mystcraft.inventory;
 
+import javax.annotation.Nonnull;
+
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
 
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nonnull;
 
 public class BinderPageReceiver implements ITargetInventory {
 

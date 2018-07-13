@@ -1,12 +1,12 @@
 package com.xcompwiz.mystcraft.item;
 
+import javax.annotation.Nonnull;
+
 import com.xcompwiz.mystcraft.instability.decay.DecayHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nonnull;
 
 public class ItemDecayBlock extends ItemBlock {
 

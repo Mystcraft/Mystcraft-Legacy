@@ -2,11 +2,11 @@ package com.xcompwiz.mystcraft.inventory;
 
 import java.util.LinkedList;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nonnull;
 
 public class SlotCollection implements ITargetInventory {
 

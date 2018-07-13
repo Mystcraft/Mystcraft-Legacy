@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.network.packet;
 
+import java.nio.charset.Charset;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
@@ -9,8 +11,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-
-import java.nio.charset.Charset;
 
 public abstract class PacketBase<REQ extends IMessage, REPLY extends IMessage> implements IMessage, IMessageHandler<REQ, REPLY> {
 

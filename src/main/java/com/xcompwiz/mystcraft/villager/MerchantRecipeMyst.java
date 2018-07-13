@@ -1,9 +1,9 @@
 package com.xcompwiz.mystcraft.villager;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
-
-import javax.annotation.Nonnull;
 
 public class MerchantRecipeMyst extends MerchantRecipe {
 

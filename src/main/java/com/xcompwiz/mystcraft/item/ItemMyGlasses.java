@@ -1,13 +1,13 @@
 package com.xcompwiz.mystcraft.item;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
 
 public class ItemMyGlasses extends ItemArmor {
 

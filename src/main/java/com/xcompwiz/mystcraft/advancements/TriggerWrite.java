@@ -1,19 +1,20 @@
 package com.xcompwiz.mystcraft.advancements;
 
+import java.util.Map;
+import java.util.Set;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.xcompwiz.mystcraft.api.MystObjects;
+
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.advancements.critereon.AbstractCriterionInstance;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
-
-import java.util.Map;
-import java.util.Set;
 
 public class TriggerWrite implements ICriterionTrigger<TriggerWrite.Instance> {
 

@@ -3,6 +3,9 @@ package com.xcompwiz.mystcraft.world;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.mystcraft.world.chunk.ChunkPrimerMyst;
 import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
@@ -29,9 +32,6 @@ import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.fml.common.eventhandler.Event;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class ChunkProviderMyst implements IChunkGenerator {
 

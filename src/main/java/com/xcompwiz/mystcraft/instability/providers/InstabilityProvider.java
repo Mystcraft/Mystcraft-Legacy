@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.api.instability.IInstabilityProvider;
 import com.xcompwiz.mystcraft.api.instability.InstabilityDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
+
 import net.minecraft.potion.Potion;
 
 public class InstabilityProvider implements IInstabilityProvider {

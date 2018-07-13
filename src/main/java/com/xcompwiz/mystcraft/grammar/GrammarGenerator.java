@@ -12,6 +12,7 @@ import java.util.Random;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector.IWeightedItem;
 import com.xcompwiz.util.CollectionUtils;
+
 import net.minecraft.util.ResourceLocation;
 
 public class GrammarGenerator {

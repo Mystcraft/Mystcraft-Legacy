@@ -1,11 +1,26 @@
 package com.xcompwiz.mystcraft.data;
 
+import static com.xcompwiz.mystcraft.data.Sounds.KEY_NAME_DISARM;
+import static com.xcompwiz.mystcraft.data.Sounds.KEY_NAME_FISSURELINK;
+import static com.xcompwiz.mystcraft.data.Sounds.KEY_NAME_FOLLOWING;
+import static com.xcompwiz.mystcraft.data.Sounds.KEY_NAME_INTRA_AGE;
+import static com.xcompwiz.mystcraft.data.Sounds.KEY_NAME_LINK;
+import static com.xcompwiz.mystcraft.data.Sounds.KEY_NAME_METEOR_ROAR;
+import static com.xcompwiz.mystcraft.data.Sounds.KEY_NAME_POP;
+import static com.xcompwiz.mystcraft.data.Sounds.KEY_NAME_PORTALLINK;
+import static com.xcompwiz.mystcraft.data.Sounds.SOUND_LINK_DISARM;
+import static com.xcompwiz.mystcraft.data.Sounds.SOUND_LINK_FISSURE;
+import static com.xcompwiz.mystcraft.data.Sounds.SOUND_LINK_FOLLOWING;
+import static com.xcompwiz.mystcraft.data.Sounds.SOUND_LINK_INTRA_LINK;
+import static com.xcompwiz.mystcraft.data.Sounds.SOUND_LINK_LINK;
+import static com.xcompwiz.mystcraft.data.Sounds.SOUND_LINK_POP;
+import static com.xcompwiz.mystcraft.data.Sounds.SOUND_LINK_PORTAL;
+import static com.xcompwiz.mystcraft.data.Sounds.SOUND_METEOR_ROAR;
+
 import com.xcompwiz.mystcraft.api.MystObjects;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import static com.xcompwiz.mystcraft.data.Sounds.*;
 
 public class ModSounds {
 

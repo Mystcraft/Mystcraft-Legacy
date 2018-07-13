@@ -3,11 +3,10 @@ package com.xcompwiz.mystcraft.villager;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.entity.IMerchant;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.village.MerchantRecipe;
-
 import javax.annotation.Nonnull;
+
+import net.minecraft.entity.IMerchant;
+import net.minecraft.village.MerchantRecipe;
 
 public interface IMerchantRecipeProvider {
 

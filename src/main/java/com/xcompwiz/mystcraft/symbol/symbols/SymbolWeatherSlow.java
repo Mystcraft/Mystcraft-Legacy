@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.symbol.symbols;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.WeatherControllerBase;
+
 import net.minecraft.util.ResourceLocation;
 
 public class SymbolWeatherSlow extends SymbolBase {

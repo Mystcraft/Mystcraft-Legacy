@@ -1,9 +1,9 @@
 package com.xcompwiz.mystcraft.network;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-
-import javax.annotation.Nonnull;
 
 public interface IGuiMessageHandler {
 

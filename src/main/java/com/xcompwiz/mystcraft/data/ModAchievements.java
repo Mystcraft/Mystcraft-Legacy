@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.data;
 
+import java.util.Map;
+
 import com.xcompwiz.mystcraft.advancements.TriggerEnterMystDimension;
 import com.xcompwiz.mystcraft.advancements.TriggerWrite;
 
@@ -7,8 +9,6 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-
-import java.util.Map;
 
 public class ModAchievements {
 

@@ -8,6 +8,7 @@ import com.xcompwiz.mystcraft.api.hook.GrammarAPI;
 import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+
 import net.minecraft.util.ResourceLocation;
 
 public class GrammarAPIWrapper extends APIWrapper implements GrammarAPI {

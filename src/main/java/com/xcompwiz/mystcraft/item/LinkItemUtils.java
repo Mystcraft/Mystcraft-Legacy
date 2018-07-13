@@ -1,11 +1,11 @@
 package com.xcompwiz.mystcraft.item;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class LinkItemUtils {
 

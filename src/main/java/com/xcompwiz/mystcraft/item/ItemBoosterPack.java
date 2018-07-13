@@ -3,6 +3,8 @@ package com.xcompwiz.mystcraft.item;
 import java.util.Collection;
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+
 import com.xcompwiz.mystcraft.api.item.IItemPageAcceptor;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
@@ -13,7 +15,6 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.treasure.WeightProviderSymbolItem;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,8 +24,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
-import javax.annotation.Nonnull;
 
 public class ItemBoosterPack extends Item {
 

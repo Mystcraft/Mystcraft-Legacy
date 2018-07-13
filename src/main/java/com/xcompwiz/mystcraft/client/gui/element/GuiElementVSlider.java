@@ -1,12 +1,11 @@
 package com.xcompwiz.mystcraft.client.gui.element;
 
-import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.data.Assets;
 
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class GuiElementVSlider extends GuiElement {
 	private int currentScroll;

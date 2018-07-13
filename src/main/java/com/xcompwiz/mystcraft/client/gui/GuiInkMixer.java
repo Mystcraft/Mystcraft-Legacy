@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.client.gui;
 
-import net.minecraft.client.renderer.GlStateManager;
-import org.lwjgl.opengl.GL11;
+import java.io.IOException;
 
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
@@ -16,12 +15,11 @@ import com.xcompwiz.util.Vector;
 import com.xcompwiz.util.VectorPool;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
-
-import java.io.IOException;
 
 public class GuiInkMixer extends GuiContainer {
 

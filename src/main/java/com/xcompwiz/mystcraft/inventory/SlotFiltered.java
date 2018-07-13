@@ -1,16 +1,16 @@
 package com.xcompwiz.mystcraft.inventory;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.tileentity.IOInventory;
 import com.xcompwiz.mystcraft.tileentity.InventoryFilter;
+
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class SlotFiltered extends SlotItemHandler {
 

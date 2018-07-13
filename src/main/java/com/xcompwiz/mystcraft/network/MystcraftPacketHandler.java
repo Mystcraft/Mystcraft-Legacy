@@ -1,6 +1,13 @@
 package com.xcompwiz.mystcraft.network;
 
-import com.xcompwiz.mystcraft.network.packet.*;
+import com.xcompwiz.mystcraft.network.packet.MPacketAgeData;
+import com.xcompwiz.mystcraft.network.packet.MPacketConfigs;
+import com.xcompwiz.mystcraft.network.packet.MPacketDimensions;
+import com.xcompwiz.mystcraft.network.packet.MPacketExplosion;
+import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
+import com.xcompwiz.mystcraft.network.packet.MPacketParticles;
+import com.xcompwiz.mystcraft.network.packet.MPacketProfilingState;
+import com.xcompwiz.mystcraft.network.packet.MPacketSpawnLightningBolt;
 
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;

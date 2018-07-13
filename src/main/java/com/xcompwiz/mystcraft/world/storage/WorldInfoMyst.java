@@ -7,7 +7,6 @@ import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameType;
 import net.minecraft.world.WorldType;

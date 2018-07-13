@@ -2,12 +2,12 @@ package com.xcompwiz.mystcraft.api.impl.page;
 
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
+
 import com.xcompwiz.mystcraft.page.Page;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nonnull;
 
 public class PageAPIDelegate {
 

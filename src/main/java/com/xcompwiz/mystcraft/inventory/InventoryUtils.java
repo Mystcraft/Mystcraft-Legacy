@@ -1,11 +1,10 @@
 package com.xcompwiz.mystcraft.inventory;
 
-import net.minecraft.inventory.IInventory;
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
-
-import javax.annotation.Nonnull;
 
 public abstract class InventoryUtils {
 

@@ -1,16 +1,21 @@
 package com.xcompwiz.mystcraft.villager;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 import com.xcompwiz.mystcraft.api.MystObjects;
+
 import net.minecraft.entity.IMerchant;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
-
-import javax.annotation.Nullable;
 
 public class VillagerArchivist extends VillagerRegistry.VillagerProfession implements EntityVillager.ITradeList {
 

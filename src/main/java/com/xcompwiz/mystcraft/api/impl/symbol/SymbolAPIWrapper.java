@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.api.impl.APIWrapper;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
+
 import net.minecraft.util.ResourceLocation;
 
 public class SymbolAPIWrapper extends APIWrapper implements SymbolAPI {

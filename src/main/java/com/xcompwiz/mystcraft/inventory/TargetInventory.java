@@ -1,10 +1,10 @@
 package com.xcompwiz.mystcraft.inventory;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nonnull;
 
 public class TargetInventory implements ITargetInventory {
 

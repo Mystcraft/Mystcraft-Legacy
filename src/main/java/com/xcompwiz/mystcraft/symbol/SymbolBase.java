@@ -2,6 +2,8 @@ package com.xcompwiz.mystcraft.symbol;
 
 import java.util.ArrayList;
 
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
@@ -11,8 +13,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
 
 public abstract class SymbolBase implements IAgeSymbol {
 

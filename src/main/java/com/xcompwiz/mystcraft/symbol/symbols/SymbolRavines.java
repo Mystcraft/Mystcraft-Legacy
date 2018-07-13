@@ -6,8 +6,6 @@ import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.world.gen.MapGenAdvanced;
 import com.xcompwiz.mystcraft.world.gen.MapGenRavineMyst;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;

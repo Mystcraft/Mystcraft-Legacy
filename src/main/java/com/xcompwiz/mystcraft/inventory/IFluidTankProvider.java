@@ -1,8 +1,8 @@
 package com.xcompwiz.mystcraft.inventory;
 
-import net.minecraftforge.fluids.FluidStack;
-
 import javax.annotation.Nullable;
+
+import net.minecraftforge.fluids.FluidStack;
 
 public interface IFluidTankProvider {
 

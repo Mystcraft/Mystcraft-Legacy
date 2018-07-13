@@ -5,6 +5,7 @@ import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
+
 import net.minecraft.util.ResourceLocation;
 
 public class SymbolHorizonColor extends SymbolBase {

@@ -8,7 +8,6 @@ import com.xcompwiz.mystcraft.entity.EntityLightningBoltAdv;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketSpawnLightningBolt;
 
-import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;

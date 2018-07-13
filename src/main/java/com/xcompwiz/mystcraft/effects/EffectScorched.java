@@ -5,7 +5,6 @@ import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ClassInheritanceMultiMap;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 

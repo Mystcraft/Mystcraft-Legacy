@@ -1,16 +1,15 @@
 package com.xcompwiz.mystcraft.client.gui.element.data;
 
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.text.TextFormatting;
+import javax.annotation.Nonnull;
 
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
-
-import javax.annotation.Nonnull;
+import net.minecraft.util.text.TextFormatting;
 
 public class GuiIconItemStack implements IGuiIcon {
 

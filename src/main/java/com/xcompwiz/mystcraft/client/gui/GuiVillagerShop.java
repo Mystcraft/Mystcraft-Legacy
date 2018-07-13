@@ -2,8 +2,8 @@ package com.xcompwiz.mystcraft.client.gui;
 
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.items.IItemHandlerModifiable;
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton;
@@ -22,12 +22,10 @@ import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
-import javax.annotation.Nonnull;
 
 public class GuiVillagerShop extends GuiContainerElements implements IGuiOnClickHandler, IItemStackProvider {
 

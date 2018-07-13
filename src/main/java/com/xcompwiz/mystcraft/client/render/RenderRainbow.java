@@ -1,12 +1,11 @@
 package com.xcompwiz.mystcraft.client.render;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import org.lwjgl.opengl.GLSync;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 // A huge thank you to Briman0094 for writing this code!
 // Minor edits by XCompWiz

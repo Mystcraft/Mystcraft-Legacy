@@ -2,14 +2,13 @@ package com.xcompwiz.mystcraft.linking;
 
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class LinkOptions implements ILinkInfo {
 

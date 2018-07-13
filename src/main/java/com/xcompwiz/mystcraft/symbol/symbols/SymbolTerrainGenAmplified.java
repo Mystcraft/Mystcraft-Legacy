@@ -6,6 +6,7 @@ import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.symbols.SymbolTerrainGenNormal.TerrainGeneratorNormal;
+
 import net.minecraft.util.ResourceLocation;
 
 public class SymbolTerrainGenAmplified extends SymbolBase {

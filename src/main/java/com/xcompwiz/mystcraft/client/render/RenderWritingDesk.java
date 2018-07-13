@@ -1,8 +1,5 @@
 package com.xcompwiz.mystcraft.client.render;
 
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.client.model.ModelWritingDesk;
@@ -14,12 +11,15 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBook;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.storage.MapData;
 
 public class RenderWritingDesk extends TileEntitySpecialRenderer<TileEntityDesk> {

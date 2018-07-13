@@ -2,12 +2,13 @@ package com.xcompwiz.mystcraft.block;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.api.item.IItemPortalActivator;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.portal.PortalUtils;
 import com.xcompwiz.mystcraft.tileentity.IOInventory;
-import com.xcompwiz.mystcraft.tileentity.TileEntityBook;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookReceptacle;
 
 import net.minecraft.block.Block;
@@ -17,12 +18,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -34,8 +32,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-
-import javax.annotation.Nullable;
 
 public class BlockBookReceptacle extends BlockContainer {
 

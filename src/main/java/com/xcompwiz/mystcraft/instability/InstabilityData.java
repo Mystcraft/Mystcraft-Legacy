@@ -7,7 +7,6 @@ import com.xcompwiz.mystcraft.effects.EffectCrumble;
 import com.xcompwiz.mystcraft.effects.EffectPotion;
 import com.xcompwiz.mystcraft.effects.EffectPotionEnemy;
 import com.xcompwiz.mystcraft.instability.providers.InstabilityProvider;
-import com.xcompwiz.mystcraft.instability.providers.ProviderDecayBlack;
 import com.xcompwiz.mystcraft.instability.providers.ProviderDecayBlue;
 import com.xcompwiz.mystcraft.instability.providers.ProviderDecayPurple;
 import com.xcompwiz.mystcraft.instability.providers.ProviderDecayRed;

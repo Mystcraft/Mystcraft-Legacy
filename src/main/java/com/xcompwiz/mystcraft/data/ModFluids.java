@@ -2,6 +2,8 @@ package com.xcompwiz.mystcraft.data;
 
 import java.util.HashSet;
 
+import javax.annotation.Nonnull;
+
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.MystObjects.Fluids;
@@ -22,8 +24,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
 
 public class ModFluids {
 

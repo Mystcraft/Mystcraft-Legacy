@@ -4,14 +4,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import com.xcompwiz.util.CollectionUtils;
+import javax.annotation.Nonnull;
 
 import net.minecraft.entity.IMerchant;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
-
-import javax.annotation.Nonnull;
 
 public class MerchantRecipeProviderItem implements IMerchantRecipeProvider {
 

@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.api.grammar.GrammarData;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.util.CollectionUtils;
+
 import net.minecraft.util.ResourceLocation;
 
 public class GrammarRules {

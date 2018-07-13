@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.integration.crafttweaker;
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
 import com.xcompwiz.mystcraft.data.ModSymbolsModifiers;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
+
 import crafttweaker.CraftTweakerAPI;
 import crafttweaker.annotations.ZenRegister;
 import net.minecraft.util.ResourceLocation;

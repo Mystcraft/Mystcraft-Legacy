@@ -3,6 +3,8 @@ package com.xcompwiz.mystcraft.inventory;
 import java.util.Arrays;
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
@@ -22,8 +24,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.IItemHandlerModifiable;
-
-import javax.annotation.Nonnull;
 
 public class InventoryVillager {
 

@@ -16,6 +16,7 @@ import com.xcompwiz.mystcraft.api.impl.symbol.SymbolAPIDelegate;
 import com.xcompwiz.mystcraft.api.impl.symbol.SymbolFactoryImpl;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.page.SortingUtils.ComparatorItemSymbolAlphabetical;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;

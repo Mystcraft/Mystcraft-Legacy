@@ -3,6 +3,9 @@ package com.xcompwiz.mystcraft.tileentity;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.inventory.IItemBuilder;
 import com.xcompwiz.mystcraft.inventory.InventoryFolder;
@@ -21,9 +24,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.CapabilityItemHandler;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder, InventoryFilter {
 

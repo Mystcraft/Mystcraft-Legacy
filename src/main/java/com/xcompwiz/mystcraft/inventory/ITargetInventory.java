@@ -1,8 +1,8 @@
 package com.xcompwiz.mystcraft.inventory;
 
-import net.minecraft.item.ItemStack;
-
 import javax.annotation.Nonnull;
+
+import net.minecraft.item.ItemStack;
 
 public interface ITargetInventory {
 

@@ -2,6 +2,8 @@ package com.xcompwiz.mystcraft.page;
 
 import java.util.Comparator;
 
+import javax.annotation.Nonnull;
+
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
@@ -11,8 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
 
 /**
  * Provides helper methods and classes for sorting items, pages, and symbols

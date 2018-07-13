@@ -10,6 +10,7 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.util.CollectionUtils;
+
 import net.minecraft.util.ResourceLocation;
 
 public class SymbolColor extends SymbolBase {

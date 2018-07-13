@@ -2,11 +2,10 @@ package com.xcompwiz.mystcraft.client.gui.element;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.GlStateManager;
-import org.lwjgl.opengl.GL11;
-
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
 import com.xcompwiz.mystcraft.client.gui.element.data.IGuiIcon;
+
+import net.minecraft.client.renderer.GlStateManager;
 
 public abstract class GuiElementButtonBase extends GuiElement {
 

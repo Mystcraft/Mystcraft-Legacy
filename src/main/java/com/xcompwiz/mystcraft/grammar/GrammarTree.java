@@ -10,6 +10,7 @@ import java.util.Random;
 
 import com.xcompwiz.mystcraft.grammar.GrammarGenerator.Rule;
 import com.xcompwiz.mystcraft.utility.WeightedItemSelector;
+
 import net.minecraft.util.ResourceLocation;
 
 public class GrammarTree {

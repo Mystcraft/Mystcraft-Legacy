@@ -1,10 +1,10 @@
 package com.xcompwiz.mystcraft.utility;
 
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class ReflectionUtil {
 

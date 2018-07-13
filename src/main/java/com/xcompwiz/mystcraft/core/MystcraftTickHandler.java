@@ -1,8 +1,8 @@
 package com.xcompwiz.mystcraft.core;
 
 import com.xcompwiz.mystcraft.villager.VillagerTradeSystem;
-
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

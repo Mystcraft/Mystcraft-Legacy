@@ -1,12 +1,12 @@
 package com.xcompwiz.mystcraft.tileentity;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-
-import javax.annotation.Nonnull;
 
 public abstract class TileEntityBase extends TileEntity {
 

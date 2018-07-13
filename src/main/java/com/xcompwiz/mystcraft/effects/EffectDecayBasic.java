@@ -8,8 +8,8 @@ import com.xcompwiz.mystcraft.api.instability.InstabilityDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IEnvironmentalEffect;
 import com.xcompwiz.mystcraft.block.BlockDecay;
 import com.xcompwiz.mystcraft.data.ModBlocks;
-
 import com.xcompwiz.mystcraft.instability.decay.DecayHandler;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

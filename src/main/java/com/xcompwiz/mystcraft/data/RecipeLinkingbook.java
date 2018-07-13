@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.data;
 
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.item.ItemLinkbookUnlinked;
 import com.xcompwiz.mystcraft.page.Page;
@@ -12,8 +14,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
-
-import javax.annotation.Nullable;
 
 public class RecipeLinkingbook implements IRecipe {
 

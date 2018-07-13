@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.Sets;
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.debug.DebugHierarchy.DebugNode;
@@ -31,8 +33,6 @@ import net.minecraft.world.chunk.storage.IChunkLoader;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-
-import javax.annotation.Nullable;
 
 public class WorldProviderMystDummy extends WorldProviderMyst {
 
