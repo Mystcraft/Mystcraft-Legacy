@@ -47,6 +47,10 @@ tile.myst.linkportal.name=Verbindungsportal
 tile.myst.starfissure.name=Sternenkluft
 tile.myst.writing_desk.name=Schreibtisch
 
+tile.myst.ink.black.name=Schwarze Tinte
+
+fluid.myst.ink.black=Schwarze Tinte
+
 item.myst.agebook.name=Beschreibungsbuch
 item.myst.linkbook.name=Verbindungsbuch
 item.myst.folder.name=Sortierordner
@@ -78,9 +82,6 @@ myst.creative.notebook.features=Welt-Features
 myst.creative.notebook.terrain=Welt-Landschaften
 myst.creative.notebook.visuals=Visuelles
 myst.creative.notebook.weather=Wetter
-
-fluid.myst.ink.black=Schwarze Tinte
-tile.myst.fluid.myst.ink.black.name=Schwarze Tinte
 
 achievement.myst.symbol=Ein kleiner Schritt auf der Reise
 achievement.myst.symbol.desc=Finde ein Symbol

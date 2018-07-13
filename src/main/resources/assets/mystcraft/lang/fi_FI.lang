@@ -36,6 +36,10 @@ tile.myst.linkportal.name=Linkkiportaali
 tile.myst.starfissure.name=Tähtihalkeama
 tile.myst.writing_desk.name=Kirjoituspöytä
 
+tile.myst.ink.black.name=Muste
+
+fluid.myst.ink.black=Muste
+
 item.myst.agebook.name=Kuvaileva kirja
 item.myst.linkbook.name=Linkkikirja
 item.myst.notebook.name=Muistikirja
@@ -49,9 +53,6 @@ item.myst.vial.name=Mustepullo
 
 itemGroup.mystcraft.common=Mystcraft
 itemGroup.mystcraft.pages=Mystcraftin sivut
-
-fluid.myst.ink.black=Muste
-tile.myst.fluid.myst.ink.black.name=Muste
 
 achievement.myst.symbol=Matkan pieni askel
 achievement.myst.symbol.desc=Löydä symboli

@@ -45,6 +45,10 @@ tile.myst.linkportal.name=Связующий портал
 tile.myst.starfissure.name=Звёздная трещина
 tile.myst.writing_desk.name=Письменный стол
 
+tile.myst.ink.black.name=Чёрные чернила
+
+fluid.myst.ink.black=Чёрные чернила
+
 item.myst.agebook.name=Описывающая книга
 item.myst.linkbook.name=Связующая книга
 item.myst.folder.name=Папка сопоставления
@@ -77,9 +81,6 @@ myst.creative.notebook.terrainalts=Изменения местности
 myst.creative.notebook.terrain=Пейзажи мира
 myst.creative.notebook.visuals=Виды
 myst.creative.notebook.weather=Погода
-
-fluid.myst.ink.black=Чёрные чернила
-tile.myst.fluid.myst.ink.black.name=Чёрные чернила
 
 achievement.myst.symbol=Малый шаг в путешествии
 achievement.myst.symbol.desc=Найдите символ

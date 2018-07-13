@@ -36,6 +36,10 @@ tile.myst.linkportal.name=傳送門
 tile.myst.starfissure.name=星之裂痕
 tile.myst.writing_desk.name=寫字臺
 
+tile.myst.ink.black.name=墨水
+
+fluid.myst.ink.black=墨水
+
 item.myst.agebook.name=時代書
 item.myst.linkbook.name=鏈接書
 item.myst.notebook.name=筆記本
@@ -43,9 +47,6 @@ item.myst.page.name=書頁
 item.myst.unlinkedbook.name=未鏈接的書
 item.myst.writingdesk.name=抄寫臺
 item.myst.vial.name=墨瓶
-
-fluid.myst.ink.black=墨水
-tile.myst.fluid.myst.ink.black.name=墨水
 
 achievement.myst.symbol=千裏之旅始於跬步
 achievement.myst.symbol.desc=尋找到徽記

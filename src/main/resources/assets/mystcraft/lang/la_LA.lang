@@ -48,6 +48,10 @@ tile.myst.linkportal.name=Nexus Porta
 tile.myst.starfissure.name=Foramen Stellarum
 tile.myst.writing_desk.name=Mensa Scriptoria
 
+tile.myst.ink.black.name=Atramentum Atrum
+
+fluid.myst.ink.black=Atramentum Atrum
+
 item.myst.agebook.name=Liber Descriptivus
 item.myst.linkbook.name=Liber Nexus
 item.myst.folder.name=Collectorium
@@ -80,9 +84,6 @@ myst.creative.notebook.terrainalts=Agri Alternationes
 myst.creative.notebook.terrain=Agri
 myst.creative.notebook.visuals=Species
 myst.creative.notebook.weather=Caelum
-
-fluid.myst.ink.black=Atramentum Atrum
-tile.myst.fluid.myst.ink.black.name=Atramentum Atrum
 
 achievement.myst.symbol=Paulus Ascensus in Itineris
 achievement.myst.symbol.desc=Reperi Signum

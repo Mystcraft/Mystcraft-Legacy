@@ -36,6 +36,10 @@ tile.myst.linkportal.name=Link Portal
 tile.myst.starfissure.name=Fairies' Pit
 tile.myst.writing_desk.name=Scribblen' Table
 
+tile.myst.ink.black.name=Kraken's Blood
+
+fluid.myst.ink.black=Kraken's Blood
+
 item.myst.agebook.name=Descriptive Book
 item.myst.linkbook.name=Return t' Port
 item.myst.notebook.name=Scribblen' Book
@@ -43,9 +47,6 @@ item.myst.page.name=Magic Paper
 item.myst.unlinkedbook.name=Unlinked Link Book
 item.myst.writingdesk.name=Writing Desk
 item.myst.vial.name=Bottle o' Kraken Blood
-
-fluid.myst.ink.black=Kraken's Blood
-tile.myst.fluid.myst.ink.black.name=Kraken's Blood
 
 achievement.myst.symbol=Sailin' On a Pond
 achievement.myst.symbol.desc=Find Some Fool's Notes

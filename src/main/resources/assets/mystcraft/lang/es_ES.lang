@@ -36,6 +36,10 @@ tile.myst.linkportal.name=Portal de enlace
 tile.myst.starfissure.name=Fisura estelar
 tile.myst.writing_desk.name=Mesa de escritura
 
+tile.myst.ink.black.name=Tinta negra
+
+fluid.myst.ink.black=Tinta negra
+
 item.myst.agebook.name=Libro descriptivo
 item.myst.linkbook.name=Libro de enlace
 item.myst.notebook.name=Cuaderno
@@ -43,9 +47,6 @@ item.myst.page.name=Página
 item.myst.unlinkedbook.name=Libro sin enlazar
 item.myst.writingdesk.name=Mesa de escritura
 item.myst.vial.name=Frasco de tinta
-
-fluid.myst.ink.black=Tinta negra
-tile.myst.fluid.myst.ink.black.name=Tinta negra
 
 achievement.myst.symbol=Pequeño paso del camino
 achievement.myst.symbol.desc=Encuentra un símbolo

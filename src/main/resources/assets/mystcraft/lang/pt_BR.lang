@@ -36,6 +36,10 @@ tile.myst.linkportal.name=Portal de Ligação
 tile.myst.starfissure.name=Fissura Estelar
 tile.myst.writing_desk.name=Escrivaninha
 
+tile.myst.ink.black.name=Tinta Preta
+
+fluid.myst.ink.black=Tinta Preta
+
 item.myst.agebook.name=Livro Descritivo
 item.myst.linkbook.name=Livro de Ligação
 item.myst.notebook.name=Caderno
@@ -43,9 +47,6 @@ item.myst.page.name=Página
 item.myst.unlinkedbook.name=Livro de Ligação Desvinculado
 item.myst.writingdesk.name=Escrivaninha
 item.myst.vial.name=Frasco de Tinta
-
-fluid.myst.ink.black=Tinta Preta
-tile.myst.fluid.myst.ink.black.name=Tinta Preta
 
 achievement.myst.symbol=Um Pequeno Passo da Jornada
 achievement.myst.symbol.desc=Encontre um símbolo

@@ -36,6 +36,10 @@ tile.myst.linkportal.name=Verbindingsportaal
 tile.myst.starfissure.name=Sterrenkloof
 tile.myst.writing_desk.name=Schrijftafel
 
+tile.myst.ink.black.name=Zwarte Inkt
+
+fluid.myst.ink.black=Zwarte Inkt
+
 item.myst.agebook.name=Beschrijvend Boek
 item.myst.linkbook.name=Verbindingsboek
 item.myst.notebook.name=Notitieboek
@@ -49,9 +53,6 @@ item.myst.vial.name=Inktflesje
 
 itemGroup.mystcraft.common=Mystcraft
 itemGroup.mystcraft.pages=Mystcraft-pagina's
-
-fluid.myst.ink.black=Zwarte Inkt
-tile.myst.fluid.myst.ink.black.name=Zwarte Inkt
 
 achievement.myst.symbol=Kleine Stap van de Reis
 achievement.myst.symbol.desc=Vind een symbool

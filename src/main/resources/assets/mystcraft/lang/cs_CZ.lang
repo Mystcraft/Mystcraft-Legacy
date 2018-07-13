@@ -36,6 +36,10 @@ tile.myst.linkportal.name=Odkazový portál
 tile.myst.starfissure.name=Hvězdná trhlina
 tile.myst.writing_desk.name=Psací stůl
 
+tile.myst.ink.black.name=Černý inkoust
+
+fluid.myst.ink.black=Černý inkoust
+
 item.myst.agebook.name=Popisná kniha
 item.myst.linkbook.name=Odkazová kniha
 item.myst.notebook.name=Poznámkový blok
@@ -49,9 +53,6 @@ item.myst.vial.name=Kalamář
 
 itemGroup.mystcraft.common=Mystcraft
 itemGroup.mystcraft.pages=Mystcraftové stránky
-
-fluid.myst.ink.black=Černý inkoust
-tile.myst.fluid.myst.ink.black.name=Černý inkoust
 
 achievement.myst.symbol=Malý krůček na velké cestě
 achievement.myst.symbol.desc=Najdi symbol

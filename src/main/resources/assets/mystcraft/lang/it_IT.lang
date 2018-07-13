@@ -47,6 +47,10 @@ tile.myst.linkportal.name=Portale di collegamento
 tile.myst.starfissure.name=Fessura nelle stelle
 tile.myst.writing_desk.name=Scrivania
 
+tile.myst.ink.black.name=Inchiostro nero
+
+fluid.myst.ink.black=Inchiostro nero
+
 item.myst.agebook.name=Libro descrittivo
 item.myst.linkbook.name=Libro collegante
 item.myst.folder.name=Cartella per collazione
@@ -79,9 +83,6 @@ myst.creative.notebook.terrainalts=Alterazioni terreno
 myst.creative.notebook.terrain=Paesaggio del mondo
 myst.creative.notebook.visuals=Visuali
 myst.creative.notebook.weather=Tempo atmosferico
-
-fluid.myst.ink.black=Inchiostro nero
-tile.myst.fluid.myst.ink.black.name=Inchiostro nero
 
 achievement.myst.symbol=Un piccolo passo del viaggio
 achievement.myst.symbol.desc=Trova un simbolo

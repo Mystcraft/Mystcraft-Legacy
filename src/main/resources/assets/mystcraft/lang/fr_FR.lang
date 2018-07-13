@@ -36,6 +36,10 @@ tile.myst.linkportal.name=Portail
 tile.myst.starfissure.name=Fracture Stellaire
 tile.myst.writing_desk.name=Bureau d'Écriture
 
+tile.myst.ink.black.name=Encre Noire
+
+fluid.myst.ink.black=Encre Noire
+
 item.myst.agebook.name=Livre Descriptif
 item.myst.linkbook.name=Livre de lien
 item.myst.notebook.name=Cahier
@@ -43,9 +47,6 @@ item.myst.page.name=Page
 item.myst.unlinkedbook.name=Livre de lien vierge
 item.myst.writingdesk.name=Bureau d'Écriture
 item.myst.vial.name=Fiole d'encre
-
-fluid.myst.ink.black=Encre Noire
-tile.myst.fluid.myst.ink.black.name=Encre Noire
 
 achievement.myst.symbol=Première étape du Voyage
 achievement.myst.symbol.desc=Trouver un Symbole
