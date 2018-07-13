@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.block.BlockBookReceptacle;
 import com.xcompwiz.mystcraft.block.BlockBookstand;
 import com.xcompwiz.mystcraft.block.BlockCrystal;
 import com.xcompwiz.mystcraft.block.BlockDecay;
+import com.xcompwiz.mystcraft.block.BlockFluidInk;
 import com.xcompwiz.mystcraft.block.BlockInkMixer;
 import com.xcompwiz.mystcraft.block.BlockLectern;
 import com.xcompwiz.mystcraft.block.BlockLinkModifier;
@@ -63,7 +64,8 @@ public class ModBlocks {
 		portal = new BlockLinkPortal();
 		writingdesk = new BlockWritingDesk();
 		starfissure = new BlockStarFissure();
-		black_ink = new BlockFluidClassic(ModFluids.black_ink, new MaterialLiquid(MapColor.WATER));//).setUnlocalizedName("myst.fluid");
+		black_ink = new BlockFluidInk(ModFluids.black_ink, new MaterialLiquid(MapColor.WATER));//).setUnlocalizedName("myst.fluid");
+
 
 		inkmixer.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.inkmixer));
 		bookbinder.setRegistryName(new ResourceLocation(MystObjects.MystcraftModId, Blocks.bookbinder));
