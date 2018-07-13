@@ -137,6 +137,7 @@ public class GuiElementBook extends GuiElement {
 			drawTexturedModalRect(7, 0, 0, 0, 156, 195);
 		}
 
+		boolean hovered = false;
 		//XXX: (PageRender) Revise how pages are rendered to improve plugability and clean this up
 		ItemStack page = bookcontainer.getCurrentPage();
 		if (!page.isEmpty() && Page.isLinkPanel(page)) { // Render link panel
@@ -157,7 +158,6 @@ public class GuiElementBook extends GuiElement {
 			mc.renderEngine.bindTexture(GUIs.book_page_right_solid); // Full Right Page
 			drawTexturedModalRect(163, 0, 0, 0, 156, 195);
 
-			boolean hovered = false;
 			ResourceLocation symbolRes = Page.getSymbol(page);
 			if (symbolRes != null) {
 				int x = 171;
@@ -173,9 +173,9 @@ public class GuiElementBook extends GuiElement {
 					}
 				}
 			}
-			if (!hovered)
-				hovertext.clear();
 		}
+		if (!hovered)
+			hovertext.clear();
 		GlStateManager.disableDepth();
 		if (getCurrentPageIndex() == 0) {
 			if (isSlotVisible()) { // Draw slot
@@ -227,6 +227,7 @@ public class GuiElementBook extends GuiElement {
 	}
 
 	private void pageLeft() {
+		hovertext.clear();
 		int currentpage = getCurrentPageIndex() - 1;
 		if (currentpage < 0)
 			currentpage = 0;
@@ -234,6 +235,7 @@ public class GuiElementBook extends GuiElement {
 	}
 
 	private void pageRight() {
+		hovertext.clear();
 		int currentpage = getCurrentPageIndex() + 1;
 		if (currentpage > bookcontainer.getPageCount())
 			currentpage = bookcontainer.getPageCount();
