@@ -217,7 +217,7 @@ public class WorldProviderMyst extends WorldProvider {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public double getVoidFogYFactor() {
-		return 0;
+		return 0.03125D;
 	}
 
 	@Override
