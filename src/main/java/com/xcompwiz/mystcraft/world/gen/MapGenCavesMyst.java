@@ -160,7 +160,7 @@ public class MapGenCavesMyst extends MapGenAdvanced {
 	 * Recursively called by generate() (generate) and optionally by itself.
 	 */
 	@Override
-	protected void recursiveGenerate(World worldObj, int x, int y, int chunkX, int chunkZ, ChunkPrimer primer) {
+	protected void recursiveGenerate(World worldObj, int x, int z, int chunkX, int chunkZ, ChunkPrimer primer) {
 		int maxNodes = rand.nextInt(rand.nextInt(rand.nextInt(size) + 1) + 1);
 
 		if (rand.nextInt(rate) != 0) {
@@ -170,7 +170,7 @@ public class MapGenCavesMyst extends MapGenAdvanced {
 		for (int j = 0; j < maxNodes; ++j) {
 			double d = x * 16 + rand.nextInt(16);
 			double d1 = rand.nextInt(rand.nextInt(120) + 8);
-			double d2 = y * 16 + rand.nextInt(16);
+			double d2 = z * 16 + rand.nextInt(16);
 			int k = 1;
 
 			if (rand.nextInt(4) == 0) {
