@@ -1,18 +1,18 @@
 package com.xcompwiz.mystcraft.world.gen.feature;
 
-import java.util.Random;
+import com.xcompwiz.mystcraft.world.gen.MapGenAdvanced;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.chunk.ChunkPrimer;
 
-public class WorldGenMystBigTree extends WorldGenerator {
+public class WorldGenMystBigTree extends MapGenAdvanced {
 
 	static final byte otherCoordPairs[] = { 2, 0, 0, 1, 2, 1 };
-	Random rand;
+	static final int coordMaximums[] = { 16, 255, 16 };
+
 	World worldObj;
 	int basePos[] = { 0, 0, 0 };
 	int trueBase[] = { 0, 0, 0 };
@@ -27,9 +27,9 @@ public class WorldGenMystBigTree extends WorldGenerator {
 	int leafNodes[][];
 	static private int max_height = 50;
 
-	public WorldGenMystBigTree(boolean flag) {
-		super(flag);
-		rand = new Random();
+	public WorldGenMystBigTree(long seed) {
+		super(seed, Blocks.LOG.getDefaultState());
+
 		heightLimit = 0;
 		heightAttenuation = 0.9D;
 		scaleWidth = 0.2D;
@@ -39,7 +39,7 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		leafDistanceLimit = 3;
 	}
 
-	void generateLeafNodeList() {
+	void generateLeafNodeList(ChunkPrimer primer) {
 		height = (int) (heightLimit * heightAttenuation);
 		if (height >= heightLimit) {
 			height = heightLimit - 1;
@@ -103,25 +103,28 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		System.arraycopy(ai, 0, leafNodes, 0, k);
 	}
 
-	void genTreeLayer(int i, int j, int k, float f, byte byte0, IBlockState block) {
-		int i1 = (int) (f + 0.61799999999999999D);
+	void genTreeLayer(ChunkPrimer primer, int x, int y, int z, float f, byte axis0, IBlockState block) {
+		int radius = (int) (f + 0.61799999999999999D);
 		float f2 = f * f;
-		byte byte1 = otherCoordPairs[byte0];
-		byte byte2 = otherCoordPairs[byte0 + 3];
-		int ai[] = { i, j, k };
-		int ai1[] = { 0, 0, 0 };
-		ai1[byte0] = ai[byte0];
-		for (int j1 = -i1; j1 <= i1; ++j1) {
-			ai1[byte1] = ai[byte1] + j1;
-			for (int l1 = -i1; l1 <= i1; ++l1) {
-				if (Math.pow(j1 + 0.5D, 2D) + Math.pow(l1 + 0.5D, 2D) < f2) {
-					// } else {
-					ai1[byte2] = ai[byte2] + l1;
-					// int i2 = getBlockId(ai1[0], ai1[1], ai1[2]);
-					// if (i2 != 0 && i2 != 18) {
-					// } else {
-					setBlockAndNotifyAdequately(worldObj, new BlockPos(ai1[0], ai1[1], ai1[2]), block);
-					// }
+		byte axis1 = otherCoordPairs[axis0];
+		byte axis2 = otherCoordPairs[axis0 + 3];
+		int basePos[] = { x, y, z };
+		int localPos[] = { 0, 0, 0 };
+		
+		localPos[axis0] = basePos[axis0];
+		if (localPos[axis0] < 0 || localPos[axis0] >= coordMaximums[axis0])
+			return;
+
+		for (int axis1Offset = -radius; axis1Offset <= radius; ++axis1Offset) {
+			localPos[axis1] = basePos[axis1] + axis1Offset;
+			if (localPos[axis1] < 0 || localPos[axis1] >= coordMaximums[axis1])
+				continue;
+			for (int axis2Offset = -radius; axis2Offset <= radius; ++axis2Offset) {
+				localPos[axis2] = basePos[axis2] + axis2Offset;
+				if (localPos[axis2] < 0 || localPos[axis2] >= coordMaximums[axis2])
+					continue;
+				if (Math.pow(axis1Offset + 0.5D, 2D) + Math.pow(axis2Offset + 0.5D, 2D) < f2) {
+					placeBlock(primer, localPos[0], localPos[1], localPos[2], block);
 				}
 			}
 		}
@@ -162,22 +165,22 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		return i != 0 && i != leafDistanceLimit - 1 ? 3F : 2.0F;
 	}
 
-	void generateLeafNode(int i, int j, int k) {
+	void generateLeafNode(ChunkPrimer primer, int i, int j, int k) {
 		int l = j;
 		for (int i1 = j + leafDistanceLimit; l < i1; l++) {
 			float f = leafSize(l - j);
 			if (f < 0)
 				continue;
-			genTreeLayer(i, l, k, f, (byte) 1, Blocks.LEAVES.getDefaultState());
+			genTreeLayer(primer, i, l, k, f, (byte) 1, Blocks.LEAVES.getDefaultState());
 		}
 	}
 
-	void placeBlockLine(int ai[], int ai1[], IBlockState i) {
+	void placeBlockLine(ChunkPrimer primer, int startPoint[], int endPoint[], IBlockState i) {
 		int ai2[] = { 0, 0, 0 };
 		byte byte0 = 0;
 		int j = 0;
 		for (; byte0 < 3; ++byte0) {
-			ai2[byte0] = ai1[byte0] - ai[byte0];
+			ai2[byte0] = endPoint[byte0] - startPoint[byte0];
 			if (Math.abs(ai2[byte0]) > Math.abs(ai2[j])) {
 				j = byte0;
 			}
@@ -196,22 +199,28 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		}
 		double d = (double) ai2[byte1] / (double) ai2[j];
 		double d1 = (double) ai2[byte2] / (double) ai2[j];
-		int ai3[] = { 0, 0, 0 };
+		int localPos[] = { 0, 0, 0 };
 		int k = 0;
 		for (int l = ai2[j] + byte3; k != l; k += byte3) {
-			ai3[j] = MathHelper.floor((ai[j] + k) + 0.5D);
-			ai3[byte1] = MathHelper.floor(ai[byte1] + k * d + 0.5D);
-			ai3[byte2] = MathHelper.floor(ai[byte2] + k * d1 + 0.5D);
-			setBlockAndNotifyAdequately(worldObj, new BlockPos(ai3[0], ai3[1], ai3[2]), i);
+			localPos[j] = MathHelper.floor((startPoint[j] + k) + 0.5D);
+			localPos[byte1] = MathHelper.floor(startPoint[byte1] + k * d + 0.5D);
+			localPos[byte2] = MathHelper.floor(startPoint[byte2] + k * d1 + 0.5D);
+			if (localPos[0] < 0 || localPos[0] >= 16)
+				continue;
+			if (localPos[1] < 0 || localPos[1] >= 255)
+				continue;
+			if (localPos[2] < 0 || localPos[2] >= 16)
+				continue;
+			placeBlock(primer, localPos[0], localPos[1], localPos[2], i);
 		}
 	}
 
-	void generateLeaves() {
+	void generateLeaves(ChunkPrimer primer) {
 		for (int i = 0; i < leafNodes.length; ++i) {
 			int k = leafNodes[i][0];
 			int l = leafNodes[i][1];
 			int i1 = leafNodes[i][2];
-			generateLeafNode(k, l, i1);
+			generateLeafNode(primer, k, l, i1);
 		}
 	}
 
@@ -219,28 +228,28 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		return i >= heightLimit * 0.20000000000000001D;
 	}
 
-	void generateTrunk() {
+	void generateTrunk(ChunkPrimer primer) {
 		int i = trueBase[0];
 		int j = trueBase[1];
 		int k = basePos[1] + height;
 		int l = trueBase[2];
 		int ai[] = { i, j, l };
 		int ai1[] = { i, k, l };
-		placeBlockLine(ai, ai1, Blocks.LOG.getDefaultState());
+		placeBlockLine(primer, ai, ai1, Blocks.LOG.getDefaultState());
 		if (trunkSize == 2) {
 			ai[0]++;
 			ai1[0]++;
-			placeBlockLine(ai, ai1, Blocks.LOG.getDefaultState());
+			placeBlockLine(primer, ai, ai1, Blocks.LOG.getDefaultState());
 			ai[2]++;
 			ai1[2]++;
-			placeBlockLine(ai, ai1, Blocks.LOG.getDefaultState());
+			placeBlockLine(primer, ai, ai1, Blocks.LOG.getDefaultState());
 			ai[0]--;
 			ai1[0]--;
-			placeBlockLine(ai, ai1, Blocks.LOG.getDefaultState());
+			placeBlockLine(primer, ai, ai1, Blocks.LOG.getDefaultState());
 		}
 	}
 
-	void generateRoots() {
+	void generateRoots(ChunkPrimer primer) {
 		int i = trueBase[0];
 		int j = trueBase[1];
 		int k = trueBase[2];
@@ -253,11 +262,11 @@ public class WorldGenMystBigTree extends WorldGenerator {
 			ai1[0] = i + rand.nextInt(9) - 4;
 			ai1[1] = j - rand.nextInt(range + 1) - 3;
 			ai1[2] = k + rand.nextInt(9) - 4;
-			placeBlockLine(ai, ai1, Blocks.LOG.getDefaultState());
+			placeBlockLine(primer, ai, ai1, Blocks.LOG.getDefaultState());
 		}
 	}
 
-	void generateLeafNodeBases() {
+	void generateLeafNodeBases(ChunkPrimer primer) {
 		int i = 0;
 		int j = leafNodes.length;
 		int ai[] = { basePos[0], basePos[1], basePos[2] };
@@ -267,7 +276,7 @@ public class WorldGenMystBigTree extends WorldGenerator {
 			ai[1] = ai1[3];
 			int k = ai[1] - basePos[1];
 			if (leafNodeNeedsBase(k)) {
-				placeBlockLine(ai, ai2, Blocks.LOG.getDefaultState());
+				placeBlockLine(primer, ai, ai2, Blocks.LOG.getDefaultState());
 			}
 		}
 	}
@@ -332,12 +341,12 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		// }
 	}
 
-	boolean validTreeLocation() {
+	boolean validTreeLocation(ChunkPrimer primer) {
 		int ai[] = { basePos[0], basePos[1], basePos[2] };
-		IBlockState block = getBlock(basePos[0], basePos[1] - 1, basePos[2]);
+		IBlockState block = primer.getBlockState(basePos[0], basePos[1] - 1, basePos[2]);
 		while (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
 			--basePos[1];
-			block = getBlock(basePos[0], basePos[1] - 1, basePos[2]);
+			block = primer.getBlockState(basePos[0], basePos[1] - 1, basePos[2]);
 		}
 		if (block.getBlock() != Blocks.DIRT && block.getBlock() != Blocks.GRASS) {
 			return false;
@@ -354,58 +363,32 @@ public class WorldGenMystBigTree extends WorldGenerator {
 		return true;
 	}
 
-	private IBlockState getBlock(int i, int j, int k) {
-		if (i >> 4 != ((trueBase[0]) >> 4) || k >> 4 != ((trueBase[2]) >> 4))
-			return Blocks.AIR.getDefaultState();
-		return worldObj.getBlockState(new BlockPos(i, j, k));
-	}
-
-	// protected void setBlockAndMetadata(World world, int i, int j, int k, int blockId, int meta)
-	// {
-	// boolean populated = true;
-	// if (i>>4 != trueBase[0]>>4 || k>>4 != trueBase[2]>>4) {
-	// populated = world.getChunkFromBlockCoords(i, k).isTerrainPopulated;
-	// world.getChunkFromBlockCoords(i, k).isTerrainPopulated = true;
-	// }
-	// world.setBlockAndMetadata(i, j, k, blockId, meta);
-	// if (populated == false) {
-	// world.getChunkFromBlockCoords(i, k).isTerrainPopulated = false;
-	// }
-	// }
-
-	//@Override
-	//public void setScale(double d, double d1, double d2) {
-	//	heightLimitLimit = (int) (d * max_height);
-	//	if (d > 0.5D) {
-	//		leafDistanceLimit = 4;
-	//	}
-	//	scaleWidth = d1;
-	//	leafDensity = d2;
-	//}
-
+	/**
+	 * Recursively called by generate() (generate) and optionally by itself.
+	 */
 	@Override
-	public boolean generate(World world, Random random, BlockPos pos) {
-		worldObj = world;
-		long l = random.nextLong();
-		rand.setSeed(l);
-		trueBase[0] = basePos[0] = pos.getX();
-		basePos[1] = pos.getY();
-		trueBase[2] = basePos[2] = pos.getZ();
+	protected void recursiveGenerate(World worldObj, int x, int z, int chunkX, int chunkZ, ChunkPrimer primer) {
+		int pX = x * 16 + rand.nextInt(16) - chunkX * 16;
+		int pY = rand.nextInt(16);
+		int pZ = z * 16 + rand.nextInt(16) - chunkZ * 16;
+
+		trueBase[0] = basePos[0] = pX;
+		basePos[1] = pY;
+		trueBase[2] = basePos[2] = pZ;
 		if (heightLimit == 0) {
 			heightLimit = 20 + rand.nextInt(heightLimitLimit);
 		}
-		if (!validTreeLocation()) {
-			return false;
-		}
+//		if (!validTreeLocation(primer)) {
+//			return;
+//		}
 		trueBase[1] = basePos[1];
 		basePos[1] = Math.max(trueBase[1], 128 - heightLimit - rand.nextInt(16));
-		generateLeafNodeList();
+		generateLeafNodeList(primer);
 		if (height < max_height / 2)
-			return false;
-		generateLeaves();
-		generateTrunk();
-		generateRoots();
-		generateLeafNodeBases();
-		return true;
+			return;
+		generateLeaves(primer);
+		generateTrunk(primer);
+		generateRoots(primer);
+		generateLeafNodeBases(primer);
 	}
 }

@@ -60,6 +60,10 @@ public class MapGenAdvanced {
 	protected void recursiveGenerate(World worldObj, int x, int z, int chunkX, int chunkZ, ChunkPrimer primer) {}
 
 	protected boolean placeBlock(ChunkPrimer primer, int x, int y, int z) {
+		return placeBlock(primer, x, y, z, this.state);
+	}
+	
+	protected boolean placeBlock(ChunkPrimer primer, int x, int y, int z, IBlockState newState) {
 		IBlockState state = primer.getBlockState(x, y, z);
 
 		if (this.state == null || (state.getMaterial().isLiquid())) {
@@ -71,7 +75,7 @@ public class MapGenAdvanced {
 		++blockcounttotal;
 		++blockcount;
 
-		primer.setBlockState(x, y, z, this.state);
+		primer.setBlockState(x, y, z, newState);
 		return true;
 	}
 
