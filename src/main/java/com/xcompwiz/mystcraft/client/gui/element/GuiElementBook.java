@@ -167,7 +167,7 @@ public class GuiElementBook extends GuiElement {
 				GuiUtils.drawSymbol(mc.renderEngine, getZLevel(), symbol, scale, x, y);
 				if (GuiUtils.contains(mouseX, mouseY, (int) (x * xScale) + guiLeft, (int) (y * yScale) + guiTop, (int) (scale * xScale), (int) (scale * yScale))) {
 					hovered = true;
-					if (hovertext.isEmpty()) {
+					if (hovertext.isEmpty() && symbol != null) {
 						hovertext.add(symbol.getLocalizedName());
 						net.minecraftforge.event.ForgeEventFactory.onItemTooltip(page, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
 					}
