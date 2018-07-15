@@ -2,7 +2,6 @@ package com.xcompwiz.mystcraft.client.render;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -120,7 +119,7 @@ public class PageBuilder {
 		event.getModelRegistry().putObject(mrl, model);
 	}
 	
-	private static BufferedImage buildSymbolImage(ResourceLocation src) {
+	public static BufferedImage buildSymbolImage(ResourceLocation src) {
 		if (customSymbolSources.containsKey(src)) {
 			return customSymbolSources.get(src);
 		}
@@ -141,21 +140,10 @@ public class PageBuilder {
 			//The size for each symbol is 64x64 by default.
 			//Original is 32x32 - We scale it up to 160x160 so we can fit the symbols properly. we scale it back to 128x128 for stitching later
 			BufferedImage image = ImageIO.read(is);
-			return scale(image, 5D, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+			return RenderUtils.scale(image, 5D, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
 		} catch (IOException exc) {
 			throw new RuntimeException("Couldn't find or open the page background image.", exc);
 		}
-	}
-
-	private static BufferedImage scale(BufferedImage in, double scale, int scaleOperation) {
-		int w = in.getWidth();
-		int h = in.getHeight();
-		//Take faith that the user knows to only multiply with stuff that results in well defined whole integer numbers
-		BufferedImage after = new BufferedImage((int) (w * scale), (int) (h * scale), BufferedImage.TYPE_INT_ARGB);
-		AffineTransform at = new AffineTransform();
-		at.scale(scale, scale);
-		AffineTransformOp scaleOp = new AffineTransformOp(at, scaleOperation);
-		return scaleOp.filter(in, after);
 	}
 
 	@SubscribeEvent
@@ -206,7 +194,7 @@ public class PageBuilder {
 			}
 
 			//128x128 here
-			BufferedImage down = scale(copy, 0.8, AffineTransformOp.TYPE_BILINEAR);
+			BufferedImage down = RenderUtils.scale(copy, 0.8, AffineTransformOp.TYPE_BILINEAR);
 			int[][] pixels = new int[Minecraft.getMinecraft().gameSettings.mipmapLevels + 1][];
 			pixels[0] = new int[down.getWidth() * down.getHeight()];
 			down.getRGB(0, 0, down.getWidth(), down.getHeight(), pixels[0], 0, down.getWidth());
@@ -244,35 +232,35 @@ public class PageBuilder {
 			BufferedImage copy = new BufferedImage(cm, pageImage.copyData(null), cm.isAlphaPremultiplied(), null);
 
 			if (symbol == null) {
-				stitchWord(copy, null, -1, buildSymbolImage(DrawableWord.word_components));
+				stitchWord(copy, null, getPageTarget(-1), buildSymbolImage(DrawableWord.word_components));
 			} else {
 				String[] words = symbol.getPoem();
 				if (words == null) {
-					stitchWord(copy, null, -1, buildSymbolImage(DrawableWord.word_components));
+					stitchWord(copy, null, getPageTarget(-1), buildSymbolImage(DrawableWord.word_components));
 				} else {
 					DrawableWord word;
 					BufferedImage source = buildSymbolImage(DrawableWord.word_components);
 					if (words.length > 0) {
 						word = DrawableWordManager.getDrawableWord(words[0]);
-						stitchWord(copy, word, 0, source);
+						stitchWord(copy, word, getPageTarget(0), source);
 					}
 					if (words.length > 1) {
 						word = DrawableWordManager.getDrawableWord(words[1]);
-						stitchWord(copy, word, 1, source);
+						stitchWord(copy, word, getPageTarget(1), source);
 					}
 					if (words.length > 2) {
 						word = DrawableWordManager.getDrawableWord(words[2]);
-						stitchWord(copy, word, 2, source);
+						stitchWord(copy, word, getPageTarget(2), source);
 					}
 					if (words.length > 3) {
 						word = DrawableWordManager.getDrawableWord(words[3]);
-						stitchWord(copy, word, 3, source);
+						stitchWord(copy, word, getPageTarget(3), source);
 					}
 				}
 			}
 
 			//128x128 here
-			BufferedImage down = scale(copy, 0.8, AffineTransformOp.TYPE_BILINEAR);
+			BufferedImage down = RenderUtils.scale(copy, 0.8, AffineTransformOp.TYPE_BILINEAR);
 			int[][] pixels = new int[Minecraft.getMinecraft().gameSettings.mipmapLevels + 1][];
 			pixels[0] = new int[down.getWidth() * down.getHeight()];
 			down.getRGB(0, 0, down.getWidth(), down.getHeight(), pixels[0], 0, down.getWidth());
@@ -281,7 +269,7 @@ public class PageBuilder {
 			return false; //false = stitch onto atlas
 		}
 
-		private void stitchWord(BufferedImage targetImage, DrawableWord word, int index, BufferedImage source) {
+		public static void stitchWord(BufferedImage targetImage, DrawableWord word, Rectangle targetRct, BufferedImage source) {
 			List<Integer> components = null;
 			List<Integer> colors = null;
 			if (word != null) {
@@ -308,7 +296,6 @@ public class PageBuilder {
 				int iconX = (component % 8) * 64;
 				int iconY = (component / 8) * 64;
 
-				Rectangle targetRct = getPageTarget(index);
 				for (int x = 0; x < 64; x++) {
 					for (int y = 0; y < 64; y++) {
 						int argb = source.getRGB(iconX + x, iconY + y);
@@ -326,7 +313,7 @@ public class PageBuilder {
 		//In order: what we want ideally (white + fully opaque -> this color),
 		//          what the symbol image currently has (to be fair, we only care about the alpha value)
 		//          what the target image currently has
-		private int blend(int targetInitialColor, int currentColor, int targetColor) {
+		private static int blend(int targetInitialColor, int currentColor, int targetColor) {
 			// Source/Goal part
 			float srcAlpha = (currentColor >> 24 & 0xFF) / 255F;
 
@@ -355,7 +342,7 @@ public class PageBuilder {
 		//1 = right
 		//2 = down
 		//3 = left
-		private Rectangle getPageTarget(int index) {
+		private static Rectangle getPageTarget(int index) {
 			switch (index) {
 			case 3:
 				return new Rectangle(0, 48, 64, 64);
