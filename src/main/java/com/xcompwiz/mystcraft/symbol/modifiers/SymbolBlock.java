@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.symbol.modifiers;
 
+import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.symbol.BlockDescriptor;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.word.WordData;
@@ -27,7 +28,10 @@ public class SymbolBlock extends SymbolBase {
 	}
 
 	public static ResourceLocation getSymbolIdentifier(IBlockState blockstate) {
-		return new ResourceLocation(blockstate.getBlock().getRegistryName().getResourceDomain(), "ModMat_" + blockstate.getBlock().getRegistryName().getResourcePath() + "_" + blockstate.getBlock().getMetaFromState(blockstate));
+		String domain = blockstate.getBlock().getRegistryName().getResourceDomain();
+		if (domain.equals("minecraft"))
+			domain = MystObjects.MystcraftModId;
+		return new ResourceLocation(domain, "ModMat_" + blockstate.getBlock().getRegistryName().getResourcePath() + "_" + blockstate.getBlock().getMetaFromState(blockstate));
 	}
 
 	@Override

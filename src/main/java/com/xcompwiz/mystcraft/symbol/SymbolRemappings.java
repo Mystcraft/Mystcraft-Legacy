@@ -333,10 +333,23 @@ public class SymbolRemappings {
 	}
 
 	public static boolean hasRemapping(ResourceLocation symbol) {
+		if (symbol.getResourceDomain().startsWith("modmat_"))
+			return true;
+		if (symbol.getResourceDomain().equals("minecraft"))
+			return true;
 		return mappings.get(symbol) != null;
 	}
 
 	public static List<ResourceLocation> remap(ResourceLocation symbol) {
+		if (symbol == null)
+			return null;
+
+		if (symbol.getResourceDomain().startsWith("modmat_"))
+			symbol = new ResourceLocation(symbol.getResourceDomain().replace("modmat_", ""), "modmat_" + symbol.getResourcePath());
+
+		if (symbol.getResourceDomain().equals("minecraft"))
+			symbol = new ResourceLocation(MystObjects.MystcraftModId, symbol.getResourcePath());
+
 		List<ResourceLocation> symbols = mappings.get(symbol);
 		if (symbols == null) {
 			symbols = new ArrayList<>();
@@ -352,7 +365,7 @@ public class SymbolRemappings {
 		if (!(page.getItem() instanceof ItemPage))
 			return result;
 		ResourceLocation symbol = Page.getSymbol(page);
-		List<ResourceLocation> symbols = mappings.get(symbol);
+		List<ResourceLocation> symbols = remap(symbol);
 		if (symbols != null) {
 			for (ResourceLocation mapping : symbols) {
 				result.add(Page.createSymbolPage(mapping));
@@ -378,9 +391,7 @@ public class SymbolRemappings {
 			if (mapping == null)
 				continue;
 			collection.addAll(i, mapping);
-			if (mapping.size() > 0 && element.equals(mapping.get(0))) {
-				++i;
-			}
+			++i;
 		}
 		return collection;
 	}
