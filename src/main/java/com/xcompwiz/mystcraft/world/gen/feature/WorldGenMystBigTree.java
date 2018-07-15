@@ -219,13 +219,16 @@ public class WorldGenMystBigTree extends MapGenAdvanced {
 		if (trunkSize == 2) {
 			ai[0]++;
 			ai1[0]++;
-			placeBlockLine(primer, ai, ai1, Blocks.LOG.getDefaultState());
+			if (ai[0] >= 0 && ai[0] < coordMaximums[0] && ai[2] >= 0 && ai[2] < coordMaximums[2])
+				placeBlockLine(primer, ai, ai1, Blocks.LOG.getDefaultState());
 			ai[2]++;
 			ai1[2]++;
-			placeBlockLine(primer, ai, ai1, Blocks.LOG.getDefaultState());
+			if (ai[0] >= 0 && ai[0] < coordMaximums[0] && ai[2] >= 0 && ai[2] < coordMaximums[2])
+				placeBlockLine(primer, ai, ai1, Blocks.LOG.getDefaultState());
 			ai[0]--;
 			ai1[0]--;
-			placeBlockLine(primer, ai, ai1, Blocks.LOG.getDefaultState());
+			if (ai[0] >= 0 && ai[0] < coordMaximums[0] && ai[2] >= 0 && ai[2] < coordMaximums[2])
+				placeBlockLine(primer, ai, ai1, Blocks.LOG.getDefaultState());
 		}
 	}
 
