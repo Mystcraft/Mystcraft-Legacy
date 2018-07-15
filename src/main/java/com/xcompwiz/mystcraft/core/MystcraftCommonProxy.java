@@ -7,9 +7,11 @@ import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.data.InkEffects;
 import com.xcompwiz.mystcraft.data.ModLinkEffects;
 import com.xcompwiz.mystcraft.error.MystcraftStartupChecker;
+import com.xcompwiz.mystcraft.inventory.CreativeTabBanners;
 import com.xcompwiz.mystcraft.inventory.CreativeTabMyst;
 import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
@@ -21,6 +23,7 @@ public class MystcraftCommonProxy {
 
 	public static CreativeTabMyst tabMystCommon = null;
 	public static CreativeTabMyst tabMystPages = null;
+	public static CreativeTabs tabMystBanners = null;
 
 	public Entity getEntityByID(World worldObj, int id) {
 		if (worldObj instanceof WorldServer)
@@ -46,6 +49,8 @@ public class MystcraftCommonProxy {
 		tabMystPages = new CreativeTabMyst("mystcraft.pages");
 		tabMystPages.setHasSearchBar(true);
 		tabMystPages.setBackgroundImageName("item_search.png");
+
+		tabMystBanners = new CreativeTabBanners("mystcraft.banners");
 
 		ArrayList<String> linkproperties = new ArrayList<>();
 		linkproperties.addAll(InkEffects.getProperties());

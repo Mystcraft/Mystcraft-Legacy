@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.client;
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
 import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
+import com.xcompwiz.mystcraft.banners.BannerGeneration;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleProviderLink;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleUtils;
 import com.xcompwiz.mystcraft.client.gui.overlay.GuiNotification;
@@ -86,6 +87,7 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 		startupchecker = new MystcraftStartupChecker();
 		MinecraftForge.EVENT_BUS.register(startupchecker);
 		MinecraftForge.EVENT_BUS.register(new PageBuilder());
+		MinecraftForge.EVENT_BUS.register(new BannerGeneration());
 		MinecraftForge.EVENT_BUS.register(this); //Placed in here to keep rendering registration in 1 place
 
 		ModFluids.registerModels();
