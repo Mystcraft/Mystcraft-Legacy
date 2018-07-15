@@ -96,7 +96,7 @@ public class GuiElementScrollablePages extends GuiElement {
 	}
 
 	@Override
-	public boolean _onMouseDown(int i, int j, int k) {
+	public boolean _onMouseDown(int mouseX, int mouseY, int button) {
 		if (!this.isEnabled()) {
 			return false;
 		}
@@ -105,12 +105,12 @@ public class GuiElementScrollablePages extends GuiElement {
 			return false;
 		int guiLeft = getLeft();
 		int guiTop = getTop();
-		if (i > guiLeft && i < guiLeft + xSize && j > guiTop && j < guiTop + ySize) {
-			if (i > guiLeft && i < guiLeft + arrowWidth && j > guiTop && j < guiTop + ySize) {
+		if (mouseX > guiLeft && mouseX < guiLeft + xSize && mouseY > guiTop && mouseY < guiTop + ySize) {
+			if (mouseX > guiLeft && mouseX < guiLeft + arrowWidth && mouseY > guiTop && mouseY < guiTop + ySize) {
 				cycleLeft();
 				return true;
 			}
-			if (i > guiLeft + xSize - arrowWidth && i < guiLeft + xSize && j > guiTop && j < guiTop + ySize) {
+			if (mouseX > guiLeft + xSize - arrowWidth && mouseX < guiLeft + xSize && mouseY > guiTop && mouseY < guiTop + ySize) {
 				cycleRight();
 				return true;
 			}
@@ -118,7 +118,7 @@ public class GuiElementScrollablePages extends GuiElement {
 				int index = hoverpage;
 				if (index == -1)
 					index = pageList.size();
-				listener.onItemPlace(this, index, k);
+				listener.onItemPlace(this, index, button);
 				return true;
 			}
 			if (hoverpage != -1) {
