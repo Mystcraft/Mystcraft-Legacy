@@ -335,8 +335,6 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			ItemStack stack = player.inventory.getItemStack();
 			if (stack.isEmpty())
 				return;
-			if (stack.getCount() > 1)
-				return;
 			if (!(target.getItem() instanceof IItemOrderablePageProvider))
 				return;
 			IItemOrderablePageProvider itemdat = (IItemOrderablePageProvider) target.getItem();

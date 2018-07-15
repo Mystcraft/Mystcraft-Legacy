@@ -115,15 +115,28 @@ public class InventoryFolder {
 
 	@Nonnull
 	public static ItemStack setItem(@Nonnull ItemStack folder, int slot, @Nonnull ItemStack page) {
-		if (!isItemValid(page))
-			return page;
 		NBTTagCompound data = getInventoryCompound(folder);
 		if (data == null) {
 			return page;
 		}
+
+		ItemStack split = page.splitStack(1);
+		if (!isItemValid(split)) {
+			page.grow(1);
+			return page;
+		}
+
 		ItemStack previous = removeItem(folder, slot);
-		if (!page.isEmpty() && page.getCount() > 0) {
-			data.setTag(String.valueOf(slot), page.writeToNBT(new NBTTagCompound()));
+		if (page.getCount() > 0) {
+			if (!previous.isEmpty()) {
+				page.grow(1);
+				return page;
+			}
+			previous = page;
+		}
+			
+		if (!split.isEmpty() && split.getCount() > 0) {
+			data.setTag(String.valueOf(slot), split.writeToNBT(new NBTTagCompound()));
 		} else {
 			data.removeTag(String.valueOf(slot));
 		}
