@@ -15,7 +15,9 @@ import com.xcompwiz.mystcraft.api.item.IItemRenameable;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.inventory.InventoryFolder;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
+import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
@@ -34,7 +36,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemPortfolio extends Item implements IItemPageCollection, IItemRenameable {
+public class ItemPortfolio extends Item implements IItemPageCollection, IItemRenameable, IItemOnLoadable {
 
 	public ItemPortfolio() {
 		setMaxStackSize(1);
@@ -195,5 +197,33 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 			items.add(page);
 		}
 		return items;
+	}
+
+	@Override
+	@Nonnull
+	public ItemStack onLoad(@Nonnull ItemStack itemstack) {
+		updatePages(itemstack);
+		return itemstack;
+	}
+	
+	/**
+	 * Performs some basic housekeeping. Handles symbol remappings
+	 */
+	public static void updatePages(@Nonnull ItemStack itemstack) {
+		Collection<NBTTagCompound> compounds = NBTUtils.readTagCompoundCollection(itemstack.getTagCompound().getTagList("Collection", Constants.NBT.TAG_COMPOUND), new LinkedList<>());
+		List<ItemStack> items = new ArrayList<>();
+		for (NBTTagCompound nbt : compounds) {
+			ItemStack page = new ItemStack(nbt);
+			List<ItemStack> results = SymbolRemappings.remap(page);
+			items.addAll(results);
+		}
+		
+		compounds.clear();
+		for (ItemStack page : items) {
+			NBTTagCompound nbt = new NBTTagCompound();
+			page.writeToNBT(nbt);
+			compounds.add(nbt);
+		}
+		itemstack.getTagCompound().setTag("Collection", NBTUtils.writeTagCompoundCollection(new NBTTagList(), compounds));
 	}
 }
