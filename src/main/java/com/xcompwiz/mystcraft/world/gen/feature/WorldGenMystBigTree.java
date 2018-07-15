@@ -39,7 +39,7 @@ public class WorldGenMystBigTree extends MapGenAdvanced {
 		int ai[][] = new int[i * blobHeight][4];
 		int j = (blobPos[1] + blobHeight) - leafDistanceLimit;
 		int k = 1;
-		int l = blobPos[1] + blobHeight;
+		int l = (int) (blobPos[1] + blobHeight * 0.9D);
 		int i1 = j - blobPos[1];
 		ai[0][0] = blobPos[0];
 		ai[0][1] = j;
@@ -211,7 +211,7 @@ public class WorldGenMystBigTree extends MapGenAdvanced {
 	void generateTrunk(ChunkPrimer primer) {
 		int i = rootPos[0];
 		int j = rootPos[1];
-		int k = blobPos[1] + blobHeight - 5;
+		int k = (int) (blobPos[1] + blobHeight * 0.9D);
 		int l = rootPos[2];
 		int ai[] = { i, j, l };
 		int ai1[] = { i, k, l };
@@ -235,13 +235,14 @@ public class WorldGenMystBigTree extends MapGenAdvanced {
 		int k = rootPos[2];
 		int ai[] = { i, j + 1, k };
 		int ai1[] = { i, j, k };
-		int range = blobHeight >> 2;
-		for (int c = 0; c < range; ++c) {
+		int range = rootPos[1];
+		int count = blobHeight >> 2;
+		for (int c = 0; c < count; ++c) {
 			ai[0] = i + c % 2;
 			ai[2] = k + (c > 2 ? 1 : 0);
-			ai1[0] = i + rand.nextInt(9) - 4;
+			ai1[0] = i + rand.nextInt(13) - 6;
 			ai1[1] = j - rand.nextInt(range + 1) - 3;
-			ai1[2] = k + rand.nextInt(9) - 4;
+			ai1[2] = k + rand.nextInt(13) - 6;
 			placeBlockLine(primer, ai, ai1, Blocks.LOG.getDefaultState());
 		}
 	}
@@ -266,8 +267,10 @@ public class WorldGenMystBigTree extends MapGenAdvanced {
 	 */
 	@Override
 	protected void recursiveGenerate(World worldObj, int x, int z, int chunkX, int chunkZ, ChunkPrimer primer) {
+		if (rand.nextInt(2) != 0)
+			return;
 		int pX = x * 16 + rand.nextInt(16) - chunkX * 16;
-		int pY = rand.nextInt(16);
+		int pY = rand.nextInt(8) + 4;
 		int pZ = z * 16 + rand.nextInt(16) - chunkZ * 16;
 
 		rootPos[0] = blobPos[0] = pX;
