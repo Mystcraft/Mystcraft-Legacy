@@ -209,7 +209,7 @@ task("updateChangelog") {
 		def small = project.smallChangelog
 		def release = project.releaseChangelog
 
-		release.text = "[${project.version}]\n${small.text}\n${release.text}"
+		release.text = "[${project.version}]\n${small.text}\n${release.text}\n"
 		small.text = ""
 	}
 }
