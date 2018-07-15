@@ -84,6 +84,18 @@ public class GuiElementScrollablePages extends GuiElement {
 	}
 
 	@Override
+	public boolean _onMouseUp(int mouseX, int mouseY, int button) {
+		pickupHoveredPage();
+		return false;
+	}
+
+	@Override
+	public boolean _onMouseDrag(int mouseX, int mouseY, int clicked_id, long lastclick) {
+		pickupHoveredPage();
+		return false;
+	}
+
+	@Override
 	public boolean _onMouseDown(int i, int j, int k) {
 		if (!this.isEnabled()) {
 			return false;
@@ -136,13 +148,11 @@ public class GuiElementScrollablePages extends GuiElement {
 			firstElement = 0;
 	}
 
-	@Override
-	public boolean _onMouseUp(int i, int j, int k) {
+	private void pickupHoveredPage() {
 		if (clickedpage != -1 && hoverpage == clickedpage) {
 			listener.onItemRemove(this, clickedpage);
 		}
 		clickedpage = -1;
-		return false;
 	}
 
 	@Override
