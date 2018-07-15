@@ -158,7 +158,6 @@ public class GuiElementScrollablePages extends GuiElement {
 		int guiLeft = getLeft();
 		int guiTop = getTop();
 		mouseOver = this.contains(mouseX, mouseY);
-		hovertext.clear();
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(guiLeft, guiTop, 0);
 		mouseX -= guiLeft;
