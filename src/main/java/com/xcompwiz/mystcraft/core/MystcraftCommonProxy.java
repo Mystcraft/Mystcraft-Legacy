@@ -45,6 +45,7 @@ public class MystcraftCommonProxy {
 
 		tabMystPages = new CreativeTabMyst("mystcraft.pages");
 		tabMystPages.setHasSearchBar(true);
+		tabMystPages.setBackgroundImageName("item_search.png");
 
 		ArrayList<String> linkproperties = new ArrayList<>();
 		linkproperties.addAll(InkEffects.getProperties());
