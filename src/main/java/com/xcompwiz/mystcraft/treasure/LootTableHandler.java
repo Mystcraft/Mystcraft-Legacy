@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.treasure;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 import com.google.common.collect.ImmutableSet;
@@ -9,8 +10,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
+import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
+import com.xcompwiz.mystcraft.tileentity.InventoryFilter;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -61,6 +64,35 @@ public class LootTableHandler {
 			LootPool mainPool = lt.getPool("main");
 			mainPool.addEntry(new TreasureGenWrapper(10, 0, "myst_treasure_hook"));
 		}
+	}
+
+	public static ItemStack generateLecternItem(InventoryFilter filter, Random rand, LootTable lootTable, LootContext lootContext) {
+		int failsafe = 0;
+		ItemStack item = null;
+		while (item == null && failsafe++ < 100) {
+			List<ItemStack> result = lootTable.generateLootForPools(rand, lootContext);
+
+			for (ItemStack stack : result) {
+				if (stack.getCount() > 0)
+					stack.setCount(1);
+
+				if (filter != null && !filter.canAcceptItem(0, stack))
+					continue;
+
+				if (stack.getItem() == ModItems.page) {
+					ResourceLocation symbolid = Page.getSymbol(stack);
+					if (symbolid == null)
+						continue;
+
+					Integer symbolRank = SymbolManager.getSymbolItemCardRank(symbolid);
+					if (symbolRank == null || symbolRank < 3)
+						continue;
+				}
+
+				return stack;
+			}
+		}
+		return null;
 	}
 
 }

@@ -1,7 +1,5 @@
 package com.xcompwiz.mystcraft.world.gen.structure;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import com.xcompwiz.mystcraft.block.BlockLectern;
@@ -785,14 +783,17 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 
 		this.hasMadeChest = this.generateChest(worldObj, boundingbox, rand, 4, 1, 2, LootTableHandler.MYST_TREASURE);
 
+		LootTable lootTable = worldObj.getLootTableManager().getLootTableFromLocation(LootTableHandler.MYST_TREASURE);
+		LootContext lootContext = new LootContext.Builder((WorldServer)worldObj).build();
+
 		for (int i = 0; i < this.lecternGenned.length; ++i) {
-			this.lecternGenned[i] = this.generateStructureLectern(worldObj, boundingbox, rand, lecternCoords[i][0], lecternCoords[i][1], lecternCoords[i][2], lecternTargs[i][0], lecternTargs[i][1]);
+			this.lecternGenned[i] = this.generateStructureLectern(worldObj, boundingbox, rand, lecternCoords[i][0], lecternCoords[i][1], lecternCoords[i][2], lecternTargs[i][0], lecternTargs[i][1], lootTable, lootContext);
 		}
 
 		return true;
 	}
 
-	protected boolean generateStructureLectern(World worldObj, StructureBoundingBox boundingbox, Random rand, int i, int j, int k, int i2, int k2) {
+	protected boolean generateStructureLectern(World worldObj, StructureBoundingBox boundingbox, Random rand, int i, int j, int k, int i2, int k2, LootTable lootTable, LootContext lootContext) {
 		int ti = this.getXWithOffset(i, k);
 		int tj = this.getYWithOffset(j);
 		int tk = this.getZWithOffset(i, k);
@@ -808,21 +809,9 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 
 			if (lectern != null) {
 				lectern.setYaw(360 - getRotation(ti, tk, ti2, tk2) + 90);
-				if (rand.nextFloat() < 0.6F) {
-					//This is gonna be stupid, but we have to roll in advance otherwise we can't render it until you "open" the lectern
-					//which is awkward aswell... so whatever.. generating..
-					LootTable lootTable = worldObj.getLootTableManager().getLootTableFromLocation(LootTableHandler.MYST_TREASURE);
-					LootContext lootContext = new LootContext.Builder((WorldServer) worldObj).build();
-					List<ItemStack> result = lootTable.generateLootForPools(rand, lootContext);
-					Collections.shuffle(result, rand);
-
-					for (ItemStack stack : result) {
-						if (lectern.canAcceptItem(0, stack)) {
-							lectern.setBook(stack);
-							break;
-						}
-					}
-				}
+				ItemStack item = LootTableHandler.generateLecternItem(lectern, rand, lootTable, lootContext);
+				if (item != null)
+					lectern.setBook(item);
 			}
 
 			return true;
