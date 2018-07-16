@@ -297,7 +297,11 @@ public class PageBuilder {
 				int iconY = (component / 8) * 64;
 
 				for (int x = 0; x < 64; x++) {
+					if (targetRct.x + x < 0)
+						continue;
 					for (int y = 0; y < 64; y++) {
+						if (targetRct.y + y < 0)
+							continue;
 						int argb = source.getRGB(iconX + x, iconY + y);
 						Color c = new Color(argb, true);
 						if (c.getAlpha() > 0) {
