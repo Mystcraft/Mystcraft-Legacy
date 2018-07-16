@@ -183,51 +183,6 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
 		return true;
 	}
 
-	//Duh. copied from 1.7.10 :^)
-	private EnumFacing getStairRotation(EnumFacing original) {
-		if (getCoordBaseMode() == null)
-			return original;
-		switch (getCoordBaseMode()) {
-		case NORTH:
-			if (original == EnumFacing.SOUTH) {
-				return EnumFacing.EAST;
-			}
-			if (original == EnumFacing.EAST) {
-				return EnumFacing.SOUTH;
-			}
-			break;
-		case WEST:
-			if (original == EnumFacing.NORTH) {
-				return EnumFacing.SOUTH;
-			}
-			if (original == EnumFacing.WEST) {
-				return EnumFacing.EAST;
-			}
-			if (original == EnumFacing.SOUTH) {
-				return EnumFacing.NORTH;
-			}
-			if (original == EnumFacing.EAST) {
-				return EnumFacing.WEST;
-			}
-			break;
-		case EAST:
-			if (original == EnumFacing.NORTH) {
-				return EnumFacing.SOUTH;
-			}
-			if (original == EnumFacing.WEST) {
-				return EnumFacing.EAST;
-			}
-			if (original == EnumFacing.SOUTH) {
-				return EnumFacing.WEST;
-			}
-			if (original == EnumFacing.EAST) {
-				return EnumFacing.NORTH;
-			}
-			break;
-		}
-		return original;
-	}
-
 	protected boolean generateStructureLectern(World worldObj, StructureBoundingBox boundingbox, Random rand, int i, int j, int k, int i2, int k2, LootTable lootTable, LootContext lootContext) {
 		int ti = this.getXWithOffset(i, k);
 		int tj = this.getYWithOffset(j);
