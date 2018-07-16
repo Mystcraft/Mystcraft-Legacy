@@ -232,7 +232,11 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 		for (net.minecraftforge.common.BiomeManager.BiomeType type : net.minecraftforge.common.BiomeManager.BiomeType.values()) {
 			com.google.common.collect.ImmutableList<net.minecraftforge.common.BiomeManager.BiomeEntry> biomesToAdd = net.minecraftforge.common.BiomeManager.getBiomes(type);
 
+			if (biomesToAdd == null)
+				continue;
 			for (net.minecraftforge.common.BiomeManager.BiomeEntry biomeentry : biomesToAdd) {
+				if (biomeentry == null)
+					continue;
 				biomeList.add(biomeentry.biome);
 			}
 		}
