@@ -99,7 +99,7 @@ public final class WordData {
 			return;
 		initialized = true;
 		wordAPI.registerWord(Nature, new Integer[] { 5, 6, 8, 10, 11, 12, 15, 16, 17, 22 }); // Narayan - Nature
-		wordAPI.registerWord(Love, new Integer[] { 9, 10, 11, 14, 16, 17, 19, 20 }); // Narayan - Love
+		wordAPI.registerWord(Love, new Integer[] { 4, 6, 9, 10, 11, 14, 16, 17, 19, 20 }); // Narayan - Love
 		wordAPI.registerWord(Force, new Integer[] { 4, 5, 8, 16, 17, 19 }); // Narayan - Force
 		wordAPI.registerWord(Transform, new Integer[] { 4, 5, 6, 8, 11, 14, 18, 20, 21 }); // Narayan - Transform
 		wordAPI.registerWord(Change, new Integer[] { 4, 7, 10, 11, 12, 16, 17, 18, 19, 21 }); // Narayan - Change
