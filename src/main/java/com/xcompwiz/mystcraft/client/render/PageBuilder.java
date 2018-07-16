@@ -66,16 +66,16 @@ public class PageBuilder {
 		if (!(itemstack.getItem() instanceof ItemPage))
 			return;
 		event.setCanceled(true);
-		
-        GlStateManager.scale(1F, 1F, 1F);
-        GlStateManager.rotate(180.f, 0.0F, 1.0F, 0.0F);
-        GlStateManager.pushAttrib();
-        RenderHelper.enableStandardItemLighting();
-        Minecraft.getMinecraft().getRenderItem().renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED);
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.popAttrib();		
+
+		GlStateManager.scale(1F, 1F, 1F);
+		GlStateManager.rotate(180.f, 0.0F, 1.0F, 0.0F);
+		GlStateManager.pushAttrib();
+		RenderHelper.enableStandardItemLighting();
+		Minecraft.getMinecraft().getRenderItem().renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED);
+		RenderHelper.disableStandardItemLighting();
+		GlStateManager.popAttrib();
 	}
-	
+
 	@SubscribeEvent
 	public void onTextureStitch(TextureStitchEvent.Pre event) {
 		TextureMap tm = event.getMap();
@@ -102,7 +102,7 @@ public class PageBuilder {
 			tm.setTextureEntry(new BasicPageSprite(unwrapped, false));
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onModelBake(ModelBakeEvent event) {
 		for (IAgeSymbol symbol : SymbolManager.getAgeSymbols()) {
@@ -118,7 +118,7 @@ public class PageBuilder {
 		IBakedModel model = (new ItemLayerModel(ImmutableList.of(unwrapped))).bake(HELD_ITEM_TRANSFORMS, DefaultVertexFormats.ITEM, location -> Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(unwrapped.toString()));
 		event.getModelRegistry().putObject(mrl, model);
 	}
-	
+
 	public static BufferedImage buildSymbolImage(ResourceLocation src) {
 		if (customSymbolSources.containsKey(src)) {
 			return customSymbolSources.get(src);
@@ -157,7 +157,7 @@ public class PageBuilder {
 	public static class BasicPageSprite extends TextureAtlasSprite {
 
 		private final boolean isPanel;
-		
+
 		private BasicPageSprite(ResourceLocation res, boolean panel) {
 			super(res.toString());
 			this.width = 128;
@@ -179,13 +179,12 @@ public class PageBuilder {
 			//160x160 here
 			BufferedImage copy = new BufferedImage(cm, pageImage.copyData(null), cm.isAlphaPremultiplied(), null);
 
-			if (isPanel)
-			{
+			if (isPanel) {
 				int width = 110;
 				int height = 45;
 				int startX = 25;
 				int startZ = 30;
-	
+
 				for (int xx = startX; xx <= startX + width; xx++) {
 					for (int zz = startZ; zz <= startZ + height; zz++) {
 						copy.setRGB(xx, zz, 0xFF000000); //Black
