@@ -232,8 +232,11 @@ public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPage
 			return;
 		NBTTagCompound nbttagcompound = itemstack.getTagCompound();
 		Collection<String> list = NBTUtils.readStringCollection(nbttagcompound.getTagList("Authors", Constants.NBT.TAG_STRING), new ArrayList<>());
-		list.add(player.getDisplayNameString());
-		nbttagcompound.setTag("Authors", NBTUtils.writeStringCollection(new NBTTagList(), list));
+		String playerName = player.getDisplayNameString();
+		if (!list.contains(playerName)) {
+			list.add(playerName);
+			nbttagcompound.setTag("Authors", NBTUtils.writeStringCollection(new NBTTagList(), list));
+		}
 	}
 
 	@Override
