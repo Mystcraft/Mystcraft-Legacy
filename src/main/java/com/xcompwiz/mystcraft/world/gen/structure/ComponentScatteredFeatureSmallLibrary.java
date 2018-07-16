@@ -767,12 +767,11 @@ public class ComponentScatteredFeatureSmallLibrary extends ComponentScatteredFea
 		setBlockState(worldObj, Blocks.WEB.getDefaultState(), 8, 6, 3, boundingbox);
 		setBlockState(worldObj, Blocks.WEB.getDefaultState(), 8, 6, 6, boundingbox);
 
-		for (int i = 0; i <= this.scatteredFeaturePosX; ++i) {
-			for (int j = 0; j <= this.scatteredFeaturePosZ; ++j) {
+		for (int i = 0; i <= this.width; ++i) {
+			for (int j = 0; j <= this.depth; ++j) {
 				this.replaceAirAndLiquidDownwards(worldObj, Blocks.COBBLESTONE.getDefaultState(), i, -1, j, boundingbox);
 			}
 		}
-		this.fillWithBlocks(worldObj, boundingbox, 0, -1, 0, scatteredFeaturePosX, -1, scatteredFeaturePosY, Blocks.COBBLESTONE.getDefaultState(), Blocks.COBBLESTONE.getDefaultState(), false);
 
 		setBlockState(worldObj, Blocks.COBBLESTONE_WALL.getDefaultState(), 1, 1, 4, boundingbox);
 		setBlockState(worldObj, Blocks.COBBLESTONE_WALL.getDefaultState(), 1, 1, 6, boundingbox);

@@ -14,11 +14,11 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 abstract class ComponentScatteredFeatureMyst extends StructureComponent {
 
 	/** The position of the bounding box for this feature in the X axis */
-	protected int scatteredFeaturePosX;
+	protected int width;
 	/** The position of the bounding box for this feature in the Y axis */
-	protected int scatteredFeaturePosY;
+	protected int height;
 	/** The position of the bounding box for this feature in the Z axis */
-	protected int scatteredFeaturePosZ;
+	protected int depth;
 
 	protected int horizontalPos = -1;
 
@@ -26,9 +26,9 @@ abstract class ComponentScatteredFeatureMyst extends StructureComponent {
 
 	protected ComponentScatteredFeatureMyst(Random par1Random, int x, int y, int z, int sizeX, int sizeY, int sizeZ) {
 		super(0);
-		this.scatteredFeaturePosX = x;
-		this.scatteredFeaturePosY = y;
-		this.scatteredFeaturePosZ = z;
+		this.width = sizeX;
+		this.height = sizeY;
+		this.depth = sizeZ;
 		setCoordBaseMode(EnumFacing.HORIZONTALS[par1Random.nextInt(EnumFacing.HORIZONTALS.length)]);
 
 		switch (getCoordBaseMode()) {
@@ -44,17 +44,17 @@ abstract class ComponentScatteredFeatureMyst extends StructureComponent {
 	//HellFire> who came up with the naming of these to be width, height, depth ??...
 	@Override
 	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
-		tagCompound.setInteger("Width", this.scatteredFeaturePosX);
-		tagCompound.setInteger("Height", this.scatteredFeaturePosY);
-		tagCompound.setInteger("Depth", this.scatteredFeaturePosZ);
+		tagCompound.setInteger("Width", this.width);
+		tagCompound.setInteger("Height", this.height);
+		tagCompound.setInteger("Depth", this.depth);
 		tagCompound.setInteger("HPos", this.horizontalPos);
 	}
 
 	@Override
 	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager p_143011_2_) {
-		this.scatteredFeaturePosX = tagCompound.getInteger("Width");
-		this.scatteredFeaturePosY = tagCompound.getInteger("Height");
-		this.scatteredFeaturePosZ = tagCompound.getInteger("Depth");
+		this.width = tagCompound.getInteger("Width");
+		this.height = tagCompound.getInteger("Height");
+		this.depth = tagCompound.getInteger("Depth");
 		this.horizontalPos = tagCompound.getInteger("HPos");
 	}
 
