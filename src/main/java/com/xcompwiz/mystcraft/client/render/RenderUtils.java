@@ -11,10 +11,13 @@ public class RenderUtils {
 
 	@SideOnly(Side.CLIENT)
 	public static BufferedImage scale(BufferedImage in, double scale, int scaleOperation) {
+		return scale(in, scale, scaleOperation, BufferedImage.TYPE_INT_ARGB);
+	}
+	public static BufferedImage scale(BufferedImage in, double scale, int scaleOperation, int scaleType) {
 		int w = in.getWidth();
 		int h = in.getHeight();
 		//Take faith that the user knows to only multiply with stuff that results in well defined whole integer numbers
-		BufferedImage after = new BufferedImage((int) (w * scale), (int) (h * scale), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage after = new BufferedImage((int) (w * scale), (int) (h * scale), scaleType);
 		AffineTransform at = new AffineTransform();
 		at.scale(scale, scale);
 		AffineTransformOp scaleOp = new AffineTransformOp(at, scaleOperation);
