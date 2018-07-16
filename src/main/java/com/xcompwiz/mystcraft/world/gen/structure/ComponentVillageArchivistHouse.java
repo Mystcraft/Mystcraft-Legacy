@@ -4,16 +4,13 @@ import java.util.List;
 import java.util.Random;
 
 import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.block.BlockLectern;
 import com.xcompwiz.mystcraft.block.BlockWritingDesk;
 import com.xcompwiz.mystcraft.data.ModBlocks;
-import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 import com.xcompwiz.mystcraft.treasure.LootTableHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -171,7 +168,9 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
 
 		for (int i = 0; i < this.lecternGenned.length; ++i) {
 			if (!this.lecternGenned[i]) {
-				this.lecternGenned[i] = this.generateStructureLectern(worldObj, boundingbox, rand, lecternCoords[i][0], lecternCoords[i][1], lecternCoords[i][2], lecternTargs[i][0], lecternTargs[i][1], lootTable, lootContext);
+				BlockPos pos = getMappedBlockPos(lecternCoords[i][0], lecternCoords[i][1], lecternCoords[i][2]);
+				BlockPos lookPos = getMappedBlockPos(lecternTargs[i][0], lecternCoords[i][1], lecternTargs[i][1]);
+				this.lecternGenned[i] = StructureGenerationUtils.generateLectern(worldObj, boundingbox, rand, pos, lookPos, lootTable, lootContext);
 			}
 		}
 		// =====================
@@ -183,41 +182,11 @@ public class ComponentVillageArchivistHouse extends StructureVillagePieces.Villa
 		return true;
 	}
 
-	protected boolean generateStructureLectern(World worldObj, StructureBoundingBox boundingbox, Random rand, int i, int j, int k, int i2, int k2, LootTable lootTable, LootContext lootContext) {
-		int ti = this.getXWithOffset(i, k);
-		int tj = this.getYWithOffset(j);
-		int tk = this.getZWithOffset(i, k);
-
-		int ti2 = this.getXWithOffset(i2, k2);
-		int tk2 = this.getZWithOffset(i2, k2);
-
-		BlockPos at = new BlockPos(ti, tj, tk);
-		if (boundingbox.isVecInside(at)) {
-			EnumFacing horizontal = EnumFacing.fromAngle(360 - getRotation(ti, tk, ti2, tk2) + 90); //todo Hellfire> check rotation of lecterns in villages
-			worldObj.setBlockState(at, ModBlocks.lectern.getDefaultState().withProperty(BlockLectern.ROTATION, horizontal));
-			TileEntityLectern lectern = (TileEntityLectern) worldObj.getTileEntity(at);
-
-			if (lectern != null) {
-				lectern.setYaw(360 - getRotation(ti, tk, ti2, tk2) + 90);
-				ItemStack item = LootTableHandler.generateLecternItem(lectern, rand, lootTable, lootContext);
-				if (item != null)
-					lectern.setBook(item);
-			}
-
-			return true;
-		}
-		return false;
-	}
-
-	public static int getRotation(int i, int k, int i2, int k2) {
-		int deltaX = i2 - i;
-		int deltaZ = -(k2 - k);
-		if (deltaZ == 0)
-			return (deltaX < 0 ? 180 : 0);
-		if (deltaX == 0)
-			return (deltaZ < 0 ? 270 : 90);
-		float f = (float) deltaZ / (float) deltaX;
-		return (int) (Math.atan(f) * 180 / Math.PI);
+	private BlockPos getMappedBlockPos(int localX, int localY, int localZ) {
+		int x = this.getXWithOffset(localX, localZ);
+		int y = this.getYWithOffset(localY);
+		int z = this.getZWithOffset(localX, localZ);
+		return new BlockPos(x, y, z);
 	}
 
 	private void placeDeskAt(World worldObj, int i, int j, int k, int i2, int k2, StructureBoundingBox boundingbox) {

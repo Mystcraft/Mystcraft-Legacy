@@ -57,6 +57,13 @@ abstract class ComponentScatteredFeatureMyst extends StructureComponent {
 		this.depth = tagCompound.getInteger("Depth");
 		this.horizontalPos = tagCompound.getInteger("HPos");
 	}
+	
+	public BlockPos getMappedBlockPos(int localX, int localY, int localZ) {
+		int x = this.getXWithOffset(localX, localZ);
+		int y = this.getYWithOffset(localY);
+		int z = this.getZWithOffset(localX, localZ);
+		return new BlockPos(x, y, z);
+	}
 
 	/**
 	 * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the levels in the BB's horizontal rectangle).
