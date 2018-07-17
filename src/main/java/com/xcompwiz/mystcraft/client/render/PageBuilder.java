@@ -146,12 +146,16 @@ public class PageBuilder {
 		}
 	}
 
-	@SubscribeEvent
-	public void onTextureStitchPost(TextureStitchEvent.Post event) {
+	public static void freeMemory() {
 		if (pageImage != null) {
-			pageImage = null; //Free memory.
+			pageImage = null;
 		}
 		customSymbolSources.clear();
+	}
+
+	@SubscribeEvent
+	public void onTextureStitchPost(TextureStitchEvent.Post event) {
+		freeMemory();
 	}
 
 	public static class BasicPageSprite extends TextureAtlasSprite {
@@ -172,8 +176,10 @@ public class PageBuilder {
 
 		@Override
 		public boolean load(IResourceManager manager, ResourceLocation location, Function<ResourceLocation, TextureAtlasSprite> textureGetter) {
+			boolean unloadAfter = false;
 			if (pageImage == null) {
-				throw new IllegalStateException("Called texture loading outside of TextureManager's loading cycle!");
+				pageImage = buildBackground();
+				unloadAfter = true;
 			}
 			ColorModel cm = pageImage.getColorModel();
 			//160x160 here
@@ -199,6 +205,10 @@ public class PageBuilder {
 			down.getRGB(0, 0, down.getWidth(), down.getHeight(), pixels[0], 0, down.getWidth());
 			clearFramesTextureData();
 			this.framesTextureData.add(pixels);
+			
+			if (unloadAfter)
+				freeMemory();
+
 			return false; //false = stitch onto atlas
 		}
 
@@ -223,8 +233,10 @@ public class PageBuilder {
 
 		@Override
 		public boolean load(IResourceManager manager, ResourceLocation location, Function<ResourceLocation, TextureAtlasSprite> textureGetter) {
+			boolean unloadAfter = false;
 			if (pageImage == null) {
-				throw new IllegalStateException("Called texture loading outside of TextureManager's loading cycle!");
+				pageImage = buildBackground();
+				unloadAfter = true;
 			}
 			ColorModel cm = pageImage.getColorModel();
 			//160x160 here
@@ -265,6 +277,10 @@ public class PageBuilder {
 			down.getRGB(0, 0, down.getWidth(), down.getHeight(), pixels[0], 0, down.getWidth());
 			clearFramesTextureData();
 			this.framesTextureData.add(pixels);
+			
+			if (unloadAfter)
+				freeMemory();
+
 			return false; //false = stitch onto atlas
 		}
 
