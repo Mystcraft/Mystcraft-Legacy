@@ -29,6 +29,7 @@ public class BiomeProviderMyst extends BiomeProvider {
 		return getBiome(pos, Biomes.PLAINS);
 	}
 
+	@Override
 	public Biome getBiome(BlockPos pos, Biome defaultBiome) {
 		Biome biome = controller.getBiomeController().getBiomeAtCoords(pos.getX(), pos.getZ());
 		controller.modifyBiomeAt(biome, pos.getX(), pos.getZ());
@@ -49,6 +50,7 @@ public class BiomeProviderMyst extends BiomeProvider {
 	/**
 	 * Gets biomes to use for the blocks and loads the other data like temperature and humidity onto the BiomeProvider.
 	 */
+	@Override
 	public Biome[] getBiomes(@Nullable Biome[] oldBiomeList, int x, int z, int width, int depth) {
 		return this.getBiomes(oldBiomeList, x, z, width, depth, true);
 	}
@@ -56,6 +58,7 @@ public class BiomeProviderMyst extends BiomeProvider {
 	/**
 	 * Gets a list of biomes for the specified blocks.
 	 */
+	@Override
 	public Biome[] getBiomes(@Nullable Biome[] listToReuse, int x, int z, int width, int length, boolean cacheFlag) {
 		IntCache.resetIntCache();
 		if (listToReuse == null || listToReuse.length < width * length) {

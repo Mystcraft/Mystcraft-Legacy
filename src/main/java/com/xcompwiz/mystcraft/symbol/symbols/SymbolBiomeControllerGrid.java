@@ -64,28 +64,28 @@ public class SymbolBiomeControllerGrid extends SymbolBase {
 		}
 
 		@Override
-		public Biome[] getBiomesForGeneration(Biome[] aBiome, int i, int j, int k, int l) {
-			if (aBiome == null || aBiome.length < k * l) {
-				aBiome = new Biome[k * l];
+		public Biome[] getBiomesForGeneration(Biome[] aBiome, int x, int z, int xSize, int zSize) {
+			if (aBiome == null || aBiome.length < xSize * zSize) {
+				aBiome = new Biome[xSize * zSize];
 			}
 
-			for (int var7 = 0; var7 < k * l; ++var7) {
-				aBiome[var7] = getBiomeAtCoords((i + var7 % k) * 4, (j + var7 / k) * 4);
+			for (int i = 0; i < xSize * zSize; ++i) {
+				aBiome[i] = getBiomeAtCoords((x + i % xSize) * 4, (z + i / xSize) * 4);
 			}
 
 			return aBiome;
 		}
 
 		@Override
-		public Biome[] getBiomesAtCoords(Biome[] aBiome, int i, int j, int k, int l, boolean flag) {
-			if (aBiome == null || aBiome.length < k * l) {
-				aBiome = new Biome[k * l];
+		public Biome[] getBiomesAtCoords(Biome[] aBiome, int x, int z, int xSize, int zSize, boolean flag) {
+			if (aBiome == null || aBiome.length < xSize * zSize) {
+				aBiome = new Biome[xSize * zSize];
 			}
-			if (flag && k == 16 && l == 16 && (i & 0xf) == 0 && (j & 0xf) == 0) {
-				return createBiomeArray(aBiome, i, j, k, l);
+			if (flag && xSize == 16 && zSize == 16 && (x & 0xf) == 0 && (z & 0xf) == 0) {
+				return createBiomeArray(aBiome, x, z, xSize, zSize);
 			}
-			for (int i1 = 0; i1 < k * l; i1++) {
-				aBiome[i1] = getBiomeAtCoords(i + i1 % k, j + i1 / k);
+			for (int i = 0; i < xSize * zSize; i++) {
+				aBiome[i] = getBiomeAtCoords(x + i % xSize, z + i / xSize);
 			}
 
 			return aBiome;

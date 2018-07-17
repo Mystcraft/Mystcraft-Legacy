@@ -60,8 +60,8 @@ public class SymbolBiomeControllerNative extends SymbolBase {
 		 * Returns an array of biomes for the location input.
 		 */
 		@Override
-		public Biome[] getBiomesForGeneration(Biome par1ArrayOfBiome[], int par2, int par3, int par4, int par5) {
-			return manager.getBiomesForGeneration(par1ArrayOfBiome, par2, par3, par4, par5);
+		public Biome[] getBiomesForGeneration(Biome reuseableArray[], int blockPosX, int blockPosZ, int xSize, int zSize) {
+			return manager.getBiomesForGeneration(reuseableArray, blockPosX, blockPosZ, xSize, zSize);
 		}
 
 		/**
@@ -69,8 +69,8 @@ public class SymbolBiomeControllerNative extends SymbolBase {
 		 * infinite loop in BiomeCacheBlock)
 		 */
 		@Override
-		public Biome[] getBiomesAtCoords(Biome[] par1ArrayOfBiome, int x, int y, int width, int length, boolean cacheFlag) {
-			return manager.getBiomes(par1ArrayOfBiome, x, y, width, length, cacheFlag);
+		public Biome[] getBiomesAtCoords(Biome[] reuseableArray, int x, int y, int width, int length, boolean cacheFlag) {
+			return manager.getBiomes(reuseableArray, x, y, width, length, cacheFlag);
 		}
 
 		/**
