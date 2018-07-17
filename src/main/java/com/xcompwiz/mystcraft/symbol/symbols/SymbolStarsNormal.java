@@ -87,7 +87,6 @@ public class SymbolStarsNormal extends SymbolBase {
 			}
 
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-			GlStateManager.disableBlend();
 			GlStateManager.popMatrix();
 		}
 
