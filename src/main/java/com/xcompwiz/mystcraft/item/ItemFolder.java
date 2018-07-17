@@ -36,6 +36,11 @@ public class ItemFolder extends Item implements IItemOrderablePageProvider, IIte
 	}
 
 	@Override
+	public int getItemStackLimit(ItemStack stack) {
+		return InventoryFolder.isEmpty(stack) ? 32 : 1;
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(@Nonnull ItemStack itemstack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		String name = InventoryFolder.getName(itemstack);

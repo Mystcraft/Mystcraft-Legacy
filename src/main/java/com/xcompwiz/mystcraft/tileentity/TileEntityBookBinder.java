@@ -57,7 +57,7 @@ public class TileEntityBookBinder extends TileEntityBase implements IItemBuilder
 	private boolean isValidCover(ItemStack itemstack) {
 		if (itemstack.getItem().equals(Items.LEATHER))
 			return true;
-		if (itemstack.getItem() == ModItems.folder && InventoryFolder.getLargestSlotId(itemstack) == -1)
+		if (itemstack.getItem() == ModItems.folder && InventoryFolder.isEmpty(itemstack))
 			return true; //XXX: This is slightly broken client-side (NBT might be stale)
 		return false;
 	}

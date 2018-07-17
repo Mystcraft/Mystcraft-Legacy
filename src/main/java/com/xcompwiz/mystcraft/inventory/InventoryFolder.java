@@ -253,4 +253,28 @@ public class InventoryFolder {
 		}
 		return false;
 	}
+
+	public static boolean isEmpty(ItemStack stack) {
+		if (stack.isEmpty())
+			return true;
+		if (!stack.getItem().equals(ModItems.folder))
+			return true;
+
+		if (stack.getTagCompound() == null) {
+			initFolder(stack);
+		}
+		if (stack.getTagCompound().hasKey("Name")) {
+			return false;
+		}
+
+		NBTTagCompound compound = getInventoryCompound(stack);
+		if (compound == null) {
+			return true;
+		}
+		
+		if (getItemCount(stack) > 0)
+			return false;
+
+		return true;
+	}
 }
