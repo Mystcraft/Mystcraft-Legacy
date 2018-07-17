@@ -118,7 +118,7 @@ version = "${config.version.super}.${config.version.major}.${config.version.mino
 // Java version
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
+	sourceCompatibility = targetCompatibility = '1.8'
 }
 
 // Setup the forge minecraft plugin data. Specify the preferred forge/minecraft version here
@@ -128,8 +128,8 @@ minecraft {
 
 	replace "@VERSION@", project.version
 
-    // Specify the mcp mappings to use
-    mappings = config.mcp_mappings_version
+	// Specify the mcp mappings to use
+	mappings = config.mcp_mappings_version
 }
 
 processResources
@@ -167,24 +167,24 @@ jar {
 
 // because the normal output has been made to be obfuscated
 task devJar(type: Jar) {
-    from sourceSets.main.output
-    from sourceSets.api.output
-    from sourceSets.api.allSource
-    classifier = 'dev'
+	from sourceSets.main.output
+	from sourceSets.api.output
+	from sourceSets.api.allSource
+	classifier = 'dev'
 	version = "${project.minecraft.version}-${project.version}"
 }
 
 task apiJar(type: Jar) {
-    from sourceSets.api.output
-    from sourceSets.api.allSource
-    classifier = 'api'
+	from sourceSets.api.output
+	from sourceSets.api.allSource
+	classifier = 'api'
 	version = "${project.minecraft.version}-${project.version}"
 }
 
 task srcJar(type: Jar) {
-    from sourceSets.main.java
-    from sourceSets.api.java
-    classifier = 'src'
+	from sourceSets.main.java
+	from sourceSets.api.java
+	classifier = 'src'
 	version = "${project.minecraft.version}-${project.version}"
 }
 
@@ -396,15 +396,15 @@ configurations { deployerJars }
 publishing {
 	tasks.publish.dependsOn 'build'
 	tasks.publish.mustRunAfter 'curseforge'
-    repositories {
-        maven {
+	repositories {
+		maven {
 			name 'upload maven'
-            url pass.mavenurl
+			url pass.mavenurl
 			credentials {
 				username pass.mavenuser
 				password pass.mavenpass
-            }
-        }
+			}
+		}
 	}
 	publications {
 		mavenJava(MavenPublication) {
