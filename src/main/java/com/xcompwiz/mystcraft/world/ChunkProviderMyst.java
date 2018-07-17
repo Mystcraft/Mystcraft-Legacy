@@ -41,7 +41,7 @@ public class ChunkProviderMyst implements IChunkGenerator {
 	private World worldObj;
 	private AgeData agedata;
 	private double stoneNoise[];
-	private Biome biomesForGeneration[];
+	private Biome tempBiomesArray[];
 
 	private MapGenScatteredFeatureMyst scatteredFeatureGenerator = new MapGenScatteredFeatureMyst();
 	private WorldGenMinable worldgenminablequartz = new WorldGenMinable(Blocks.QUARTZ_ORE.getDefaultState(), 13, BlockMatcher.forBlock(Blocks.NETHERRACK));
@@ -82,11 +82,11 @@ public class ChunkProviderMyst implements IChunkGenerator {
 		controller.generateTerrain(chunkX, chunkZ, primer);
 
 		// Get list of biomes in chunk
-		biomesForGeneration = worldObj.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, chunkX * 16, chunkZ * 16, 16, 16);
+		tempBiomesArray = worldObj.getBiomeProvider().getBiomes(tempBiomesArray, chunkX * 16, chunkZ * 16, 16, 16);
 
 		// perform biome decoration pass
 		primer.inBiomeDecoration = true;
-		replaceBlocksForBiome(chunkX, chunkZ, primer, biomesForGeneration);
+		replaceBlocksForBiome(chunkX, chunkZ, primer, tempBiomesArray);
 		primer.inBiomeDecoration = false;
 
 		// Perform terrain modification pass (ex. caves, skylands)
@@ -108,8 +108,14 @@ public class ChunkProviderMyst implements IChunkGenerator {
 			}
 		}
 
-		// Final logic pass through chunk (ex. Floating Island biome replacement) 
+        byte[] chunkBiomeArray = chunk.getBiomeArray();
+        for (int i = 0; i < chunkBiomeArray.length; ++i) {
+            chunkBiomeArray[i] = (byte)Biome.getIdForBiome(tempBiomesArray[i]);
+        }
+        
+        // Final logic pass through chunk (ex. Floating Island biome replacement) 
 		controller.finalizeChunk(chunk, chunkX, chunkZ);
+
 		return chunk;
 	}
 
