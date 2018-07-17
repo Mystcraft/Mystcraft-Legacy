@@ -53,6 +53,8 @@ buildscript {
 apply plugin: 'maven'
 apply plugin: 'com.matthewprenger.cursegradle'
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'org.tenne.rest'
+apply plugin: 'maven-publish'
 
 repositories {
 	mavenLocal()
@@ -334,7 +336,7 @@ types.eachWithIndex { type, index ->
 		apiJar.version = "${project.minecraft.version}-${project.version}"
 		srcJar.version = "${project.minecraft.version}-${project.version}"
 		project.tasks.sourceMainJava.replace "@VERSION@", project.version
-		uploadArchives.repositories.mavenDeployer.pom.version = project.version
+		publishing.publications.mavenJava.version = project.version
 		discord.requestBody = [content: project.nameCased + " " + project.version + " is uploading to CurseForge\n```" + project.publishChangelog.text + " ```"]
 	}
 
@@ -347,7 +349,7 @@ types.eachWithIndex { type, index ->
 	project.tasks.sourceMainJava.mustRunAfter incrementer
 	project.tasks.updateChangelog.mustRunAfter incrementer
 	project.tasks.deploy.mustRunAfter incrementer
-	project.tasks.uploadArchives.mustRunAfter incrementer
+	project.tasks.publish.mustRunAfter incrementer
 	project.tasks.processResources.mustRunAfter incrementer
 	project.tasks.compileApiJava.mustRunAfter incrementer
 }
@@ -391,41 +393,45 @@ project.tasks.curseforge.dependsOn discord
 
 configurations { deployerJars }
 
-dependencies { deployerJars "org.apache.maven.wagon:wagon-ssh:2.2" }
-
-uploadArchives {
+publishing {
+	tasks.publish.dependsOn 'build'
+	tasks.publish.mustRunAfter 'curseforge'
     repositories {
-        mavenDeployer {
-            configuration = configurations.deployerJars
-
-            repository(url: pass.mavenurl) {
-				authentication(userName: pass.mavenuser, password: pass.mavenpass)
-            }
-
-            pom {
-                groupId = project.group
-                version = "${-> project.version}"
-                artifactId = project.archivesBaseName
-                project {
-                    name project.archivesBaseName
-                    packaging 'jar'
-                    description project.nameCased
-                    //url project.url //'https://github.com/XCompWiz/...'
-
-                    developers {
-                        developer {
-                            id 'XCompWiz'
-                            name 'XCompWiz'
-                            roles { role 'developer' }
-                        }
-                        developer {
-                            id 'HellFirePvP'
-                            name 'HellFirePvP'
-                            roles { role 'developer' }
-                        }
-                    }
-                }
+        maven {
+			name 'upload maven'
+            url pass.mavenurl
+			credentials {
+				username pass.mavenuser
+				password pass.mavenpass
             }
         }
+	}
+	publications {
+		mavenJava(MavenPublication) {
+			pom {
+				description = project.nameCased
+				//url = project.url //'https://github.com/XCompWiz/...'
+
+/*				developers {
+					developer {
+						id = 'XCompWiz'
+						name = 'XCompWiz'
+					}
+					developer {
+						id = 'HellFirePvP'
+						name = 'HellFirePvP'
+					}
+				}*/
+			}
+
+			from components.java
+
+			groupId = project.group
+			version = "${-> project.version}"
+			artifactId = project.archivesBaseName
+
+			artifact devJar
+			artifact apiJar
+		}
 	}
 }
