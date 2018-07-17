@@ -257,6 +257,9 @@ public class TileEntityDesk extends TileEntityBase implements InventoryFilter, I
 				if (((IItemPageAcceptor) target.getItem()).addPage(player, target, page).isEmpty()) {
 					useink();
 					paperstack.shrink(1);
+					if (player instanceof EntityPlayerMP) {
+						ModAchievements.TRIGGER_WRITE.trigger((EntityPlayerMP) player);
+					}
 				}
 			}
 			if (this.inventoryStacks.getStackInSlot(slot_pap).getCount() <= 0) {
