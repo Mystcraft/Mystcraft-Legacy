@@ -86,10 +86,11 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		this.player = inventoryplayer.player;
 
 		fluidDataContainer.setTank(te.getInkwell());
-		IOInventory inventory = te.getContainerItemHandler();
+		IOInventory tabInv = te.getTabsItemHandler();
+		IOInventory inventory = te.getMainItemHandler();
 
 		for (int i = 0; i < tabslots; ++i) {
-			SlotFiltered slot = new SlotFiltered(inventory, tileentity, i + tileentity.getMainInventorySize(), 37, 14 + i * 37 + yShift);
+			SlotFiltered slot = new SlotFiltered(tabInv, tileentity, i, 37, 14 + i * 37 + yShift);
 			slot.setSlotStackLimit(1);
 			addSlotToContainer(slot);
 		}
@@ -138,7 +139,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 
 	private void updateSurfaceTabSlots() {
 		for (int i = 0; i < tabslots; ++i) {
-			((SlotFiltered) this.inventorySlots.get(i)).setSlotIndex(i + tileentity.getMainInventorySize() + firstslot);
+			((SlotFiltered) this.inventorySlots.get(i)).setSlotIndex(i + firstslot);
 		}
 	}
 

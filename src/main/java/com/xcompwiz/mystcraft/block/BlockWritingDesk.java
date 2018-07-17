@@ -9,6 +9,7 @@ import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.item.ItemStackUtils;
 import com.xcompwiz.mystcraft.tileentity.TileEntityDesk;
 
 import net.minecraft.block.Block;
@@ -19,7 +20,6 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -162,22 +162,10 @@ public class BlockWritingDesk extends Block {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity tileentity = world.getTileEntity(pos);
 		if (tileentity != null && tileentity instanceof TileEntityDesk) {
-			IItemHandler handle = ((TileEntityDesk) tileentity).getContainerItemHandler();
-			for (int l = 0; l < handle.getSlots(); l++) {
-				ItemStack itemstack = handle.getStackInSlot(l);
-				if (itemstack.isEmpty()) {
-					continue;
-				}
-				float f = world.rand.nextFloat() * 0.8F + 0.1F;
-				float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
-				float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
-				EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, itemstack);
-				float f3 = 0.05F;
-				entityitem.motionX = (float) world.rand.nextGaussian() * f3;
-				entityitem.motionY = (float) world.rand.nextGaussian() * f3 + 0.2F;
-				entityitem.motionZ = (float) world.rand.nextGaussian() * f3;
-				world.spawnEntity(entityitem);
-			}
+			IItemHandler handle = ((TileEntityDesk) tileentity).getMainItemHandler();
+			ItemStackUtils.spawnItems(handle, world, pos);
+			handle = ((TileEntityDesk) tileentity).getTabsItemHandler();
+			ItemStackUtils.spawnItems(handle, world, pos);
 		}
 		super.breakBlock(world, pos, state);
 	}

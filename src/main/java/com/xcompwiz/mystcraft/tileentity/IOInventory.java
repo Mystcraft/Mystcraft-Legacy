@@ -329,24 +329,6 @@ public class IOInventory implements IItemHandlerModifiable {
 
 	}
 
-	public static IOInventory mergeBuild(TileEntityBase tile, IOInventory... inventories) {
-		IOInventory merged = new IOInventory(tile);
-		int slotOffset = 0;
-		for (IOInventory inventory : inventories) {
-			for (Integer key : inventory.inventory.keySet()) {
-				merged.inventory.put(key + slotOffset, inventory.inventory.get(key));
-			}
-			for (Integer key : inventory.slotLimits.keySet()) {
-				merged.slotLimits.put(key + slotOffset, inventory.slotLimits.get(key));
-			}
-			for (Integer key : inventory.filteredSlots.keySet()) {
-				merged.filteredSlots.put(key + slotOffset, inventory.filteredSlots.get(key));
-			}
-			slotOffset += inventory.inventory.size();
-		}
-		return merged;
-	}
-
 	private static class SlotStackHolder {
 
 		private final int slotId;

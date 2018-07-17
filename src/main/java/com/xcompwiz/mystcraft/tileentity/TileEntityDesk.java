@@ -412,10 +412,11 @@ public class TileEntityDesk extends TileEntityBase implements InventoryFilter, I
 		((ItemLinking) book.getItem()).activate(book, world, player);
 	}
 
-	public IOInventory getContainerItemHandler() {
-		IOInventory inv = IOInventory.mergeBuild(this, inventoryStacks, inventoryTabItems);
-		inv.allowAnySlots = true;
-		return inv;
+	public IOInventory getMainItemHandler() {
+		return inventoryStacks;
+	}
+	public IOInventory getTabsItemHandler() {
+		return inventoryTabItems;
 	}
 
 	@Override

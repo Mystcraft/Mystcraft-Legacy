@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModGUIs;
+import com.xcompwiz.mystcraft.item.ItemStackUtils;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookBinder;
 
 import net.minecraft.block.BlockContainer;
@@ -77,21 +78,7 @@ public class BlockBookBinder extends BlockContainer {
 		TileEntity tileentity = world.getTileEntity(pos);
 		if (tileentity != null && tileentity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)) {
 			IItemHandler handle = tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			for (int l = 0; l < handle.getSlots(); l++) {
-				ItemStack itemstack = handle.getStackInSlot(l);
-				if (itemstack.isEmpty()) {
-					continue;
-				}
-				float f = world.rand.nextFloat() * 0.8F + 0.1F;
-				float f1 = world.rand.nextFloat() * 0.8F + 0.1F;
-				float f2 = world.rand.nextFloat() * 0.8F + 0.1F;
-				EntityItem entityitem = new EntityItem(world, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, itemstack);
-				float f3 = 0.05F;
-				entityitem.motionX = (float) world.rand.nextGaussian() * f3;
-				entityitem.motionY = (float) world.rand.nextGaussian() * f3 + 0.2F;
-				entityitem.motionZ = (float) world.rand.nextGaussian() * f3;
-				world.spawnEntity(entityitem);
-			}
+			ItemStackUtils.spawnItems(handle, world, pos);
 		}
 		if (tileentity != null && tileentity instanceof TileEntityBookBinder) {
 			for (ItemStack stack : ((TileEntityBookBinder) tileentity).getPageList()) {
