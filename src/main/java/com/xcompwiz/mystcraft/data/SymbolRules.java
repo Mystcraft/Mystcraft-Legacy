@@ -52,7 +52,7 @@ public class SymbolRules {
 		addRuleInternal("TerrainAmplified", buildRule(3, GrammarData.TERRAIN, GrammarData.BLOCK_TERRAIN, GrammarData.BLOCK_SEA, asMyst("TerrainAmplified")));
 		addRuleInternal("TerrainNether", buildRule(3, GrammarData.TERRAIN, GrammarData.BLOCK_TERRAIN, GrammarData.BLOCK_SEA, asMyst("TerrainNether")));
 		addRuleInternal("TerrainFlat", buildRule(2, GrammarData.TERRAIN, GrammarData.BLOCK_TERRAIN, GrammarData.BLOCK_SEA, asMyst("TerrainFlat")));
-		addRuleInternal("TerrainEnd", buildRule(3, GrammarData.TERRAIN, GrammarData.BLOCK_TERRAIN, GrammarData.BLOCK_SEA, asMyst("TerrainEndasMyst(")));
+		addRuleInternal("TerrainEnd", buildRule(3, GrammarData.TERRAIN, GrammarData.BLOCK_TERRAIN, GrammarData.BLOCK_SEA, asMyst("TerrainEnd")));
 
 		addRuleInternal("LightingNormal", buildRule(1, GrammarData.LIGHTING, asMyst("LightingNormal")));
 		addRuleInternal("LightingDark", buildRule(2, GrammarData.LIGHTING, asMyst("LightingDark")));
