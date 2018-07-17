@@ -434,7 +434,7 @@ public class WorldProviderMyst extends WorldProvider {
 
 	@Override
 	public Biome getBiomeForCoords(BlockPos pos) {
-		return biomeManager.getWrapper(pos.getX(), pos.getZ());
+		return biomeManager.getWrapper(pos);
 	}
 
 	private int getSkyColorByTemp(float par1) {

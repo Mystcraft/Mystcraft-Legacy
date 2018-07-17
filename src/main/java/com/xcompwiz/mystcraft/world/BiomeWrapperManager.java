@@ -18,8 +18,8 @@ public class BiomeWrapperManager {
 		this.provider = provider;
 	}
 
-	public Biome getWrapper(int x, int z) {
-		Biome biome = getBiomeForWorldCoords(x, z); // Biome Id at Chunk Coords
+	public Biome getWrapper(BlockPos pos) {
+		Biome biome = getBiomeForWorldCoords(pos);
 		return getBiomeWrapperForBiome(biome);
 	}
 
@@ -33,14 +33,12 @@ public class BiomeWrapperManager {
 		return wrapper;
 	}
 
-	private Biome getBiomeForWorldCoords(int x, int z) {
-		int lx = x & 15;
-		int lz = z & 15;
-		if (provider.getWorld().isBlockLoaded(new BlockPos(x, 0, z))) {
-			Chunk chunk = provider.getWorld().getChunkFromBlockCoords(new BlockPos(x, 0, z));
-			return chunk.getBiome(new BlockPos(lx, 0, lz), provider.getBiomeProvider());
+	private Biome getBiomeForWorldCoords(BlockPos pos) {
+		if (provider.getWorld().isBlockLoaded(pos)) {
+			Chunk chunk = provider.getWorld().getChunkFromBlockCoords(pos);
+			return chunk.getBiome(pos, provider.getBiomeProvider());
 		}
-		return this.provider.getBiomeProvider().getBiome(new BlockPos(x, 0, z));
+		return this.provider.getBiomeProvider().getBiome(pos);
 	}
 
 }
