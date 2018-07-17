@@ -48,6 +48,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		public static final String WriteSymbol = "WriteSymbol";
 		public static final String SetActiveNotebook = "SetActiveNotebook";
 		public static final String SetFirstNotebook = "SetFirstNotebook";
+		public static final String SetFluid = "SetFluid";
 		public static final String TakeFromSlider = "TakeFromSlider";
 		public static final String InsertHeldAt = "InsertHeldAt";
 
@@ -145,27 +146,17 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		List<IMessage> packets = new ArrayList<>();
-		ItemStack actual = this.inventorySlots.get(tabslots).getStack();
-		ItemStack stored = this.inventoryItemStacks.get(tabslots);
-		if (!ItemStack.areItemStacksEqual(actual, stored)) {
-			cached_linkinfo = null;
-			cached_permitted = false;
+		FluidStack temp = tileentity.getInk();
+		if (hasFluidChanged(fluid, temp)) {
+			if (temp != null)
+				temp = temp.copy();
+			fluid = temp;
 			NBTTagCompound nbttagcompound = new NBTTagCompound();
-			nbttagcompound.setInteger(Messages.SetCurrentPage, currentpageIndex);
+			NBTTagCompound fluidnbt = new NBTTagCompound();
+			if (fluid != null)
+				fluid.writeToNBT(fluidnbt);
+			nbttagcompound.setTag(Messages.SetFluid, fluidnbt);
 			packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
-		}
-		for (int slotId = 0; slotId < this.inventorySlots.size(); ++slotId) {
-			actual = this.inventorySlots.get(slotId).getStack();
-			stored = this.inventoryItemStacks.get(slotId);
-
-			if (!ItemStack.areItemStacksEqual(stored, actual)) {
-				stored = actual.isEmpty() ? ItemStack.EMPTY : actual.copy();
-				this.inventoryItemStacks.set(slotId, stored);
-
-				for (IContainerListener listener : this.listeners) {
-					listener.sendSlotContents(this, slotId, stored);
-				}
-			}
 		}
 		boolean perm = checkLinkPermitted();
 		if (cached_permitted != perm) {
@@ -309,6 +300,13 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 			if (firstslot >= tileentity.getMaxSurfaceTabCount())
 				firstslot = 0;
 			updateSurfaceTabSlots();
+		}
+		if (data.hasKey(Messages.SetFluid)) {
+			if (this.tileentity.getWorld().isRemote) {
+				this.tileentity.setInk(FluidStack.loadFluidStackFromNBT(data.getCompoundTag(Messages.SetFluid)));
+				this.fluid = this.tileentity.getInk();
+				fluidDataContainer.setFluid(fluid);
+			}
 		}
 		if (data.hasKey(Messages.SetCurrentPage)) {
 			if (this.tileentity.getWorld().isRemote) {

@@ -10,4 +10,6 @@ public interface IFluidTankProvider {
 	public FluidStack getFluid();
 
 	public int getMax();
+
+	void setFluid(FluidStack fluid);
 }

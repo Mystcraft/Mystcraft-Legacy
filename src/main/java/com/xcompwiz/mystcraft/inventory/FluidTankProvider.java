@@ -20,6 +20,12 @@ public class FluidTankProvider implements IFluidTankProvider {
 	}
 
 	@Override
+	@Nullable
+	public void setFluid(FluidStack fluid) {
+		provided.setFluid(fluid);
+	}
+
+	@Override
 	public int getMax() {
 		return this.provided.getCapacity();
 	}
