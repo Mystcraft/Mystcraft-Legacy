@@ -14,6 +14,7 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class SlotFiltered extends SlotItemHandler {
 
+	private int filterOffset;
 	private int slotIndex;
 	private InventoryFilter filter;
 	private Integer maxstack;
@@ -22,6 +23,11 @@ public class SlotFiltered extends SlotItemHandler {
 		super(inventory, slot, x, y);
 		this.filter = filter;
 		this.slotIndex = slot;
+	}
+
+	public SlotFiltered(IItemHandlerModifiable inventory, @Nullable InventoryFilter filter, int filterOffset, int slot, int x, int y) {
+		this(inventory, filter, slot, x, y);
+		this.filterOffset = filterOffset;
 	}
 
 	@Nonnull
@@ -103,7 +109,7 @@ public class SlotFiltered extends SlotItemHandler {
 
 	@Override
 	public boolean isItemValid(@Nonnull ItemStack itemstack) {
-		return filter == null || filter.canAcceptItem(this.slotIndex, itemstack);
+		return filter == null || filter.canAcceptItem(this.slotIndex + filterOffset, itemstack);
 	}
 
 	@Override

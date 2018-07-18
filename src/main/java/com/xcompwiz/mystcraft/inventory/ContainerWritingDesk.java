@@ -90,7 +90,7 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 		IOInventory inventory = te.getMainItemHandler();
 
 		for (int i = 0; i < tabslots; ++i) {
-			SlotFiltered slot = new SlotFiltered(tabInv, tileentity, i, 37, 14 + i * 37 + yShift);
+			SlotFiltered slot = new SlotFiltered(tabInv, tileentity, inventory.getSlots(), i, 37, 14 + i * 37 + yShift);
 			slot.setSlotStackLimit(1);
 			addSlotToContainer(slot);
 		}
