@@ -150,7 +150,7 @@ public class SymbolStarsTwinkle extends SymbolBase {
 		private void renderStars() {
 			Tessellator tes = Tessellator.getInstance();
 			BufferBuilder vb = tes.getBuffer();
-			vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+			vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
 			for (int i = 0; i < 100; ++i) {
 				double var4 = (rand.nextFloat() * 2.0F - 1.0F);
@@ -177,7 +177,6 @@ public class SymbolStarsTwinkle extends SymbolBase {
 					double var34 = Math.sin(var32);
 					double var36 = Math.cos(var32);
 
-					java.awt.Color c = getRandomColor();
 					for (int var38 = 0; var38 < 4; ++var38) {
 						double var39 = 0.0D;
 						double var41 = ((var38 & 2) - 1) * var10;
@@ -188,17 +187,12 @@ public class SymbolStarsTwinkle extends SymbolBase {
 						double var55 = var39 * var28 - var47 * var30;
 						double var57 = var55 * var22 - var49 * var24;
 						double var61 = var49 * var22 + var55 * var24;
-						vb.pos(var14 + var57, var16 + var53, var18 + var61).color(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha()).endVertex();
+						vb.pos(var14 + var57, var16 + var53, var18 + var61).endVertex();
 					}
 				}
 			}
 
 			tes.draw();
 		}
-
-		private java.awt.Color getRandomColor() {
-			return new java.awt.Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), rand.nextFloat() * 0.8F + 0.2F);
-		}
-
 	}
 }
