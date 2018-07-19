@@ -347,7 +347,6 @@ public class WorldProviderMyst extends WorldProvider {
 		if (world.areAllPlayersAsleep()) {
 			this.setWorldTime(this.getWorldTime() + timeToSunrise());
 		}
-		this.setWorldTime(this.getWorldTime() + 1L);
 		if (this.agedata.needsResend() && world.getTotalWorldTime() % 200 == 0) {
 			this.agedata.resent();
 			for (Object player : this.world.playerEntities) {
