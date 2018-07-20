@@ -26,7 +26,7 @@ public class BlockColorMyst implements IBlockColor {
 		World world = Minecraft.getMinecraft().world;
 		WorldProviderMyst provider = null;
 		Color color = null;
-		if (world.provider instanceof WorldProviderMyst)
+		if (world != null && world.provider != null && world.provider instanceof WorldProviderMyst)
 			provider = (WorldProviderMyst) world.provider;
 		if (provider != null) {
 			Biome biome = null;
@@ -34,8 +34,8 @@ public class BlockColorMyst implements IBlockColor {
 				worldIn.getBiome(pos);
 			color = provider.getStaticColor(colorTypeKey, biome, pos);
 		}
-		if (color == null)
-			return fallback.colorMultiplier(state, worldIn, pos, tintIndex);
-		return color.asInt(); //TODO: support mod biome color event?
+		if (color != null)
+			return color.asInt(); //TODO: support mod biome color event?
+		return fallback.colorMultiplier(state, worldIn, pos, tintIndex);
 	}
 }

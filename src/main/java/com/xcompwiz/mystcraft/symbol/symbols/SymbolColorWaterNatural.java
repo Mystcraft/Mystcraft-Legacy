@@ -5,6 +5,7 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
+import net.minecraft.init.Biomes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -30,6 +31,8 @@ public class SymbolColorWaterNatural extends SymbolBase {
 
 		@Override
 		public Color getStaticColor(World worldObj, Biome biome, BlockPos pos) {
+			if (biome == null)
+				biome = Biomes.PLAINS;
 			return new Color(biome.getWaterColorMultiplier());
 		}
 

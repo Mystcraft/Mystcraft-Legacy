@@ -5,6 +5,7 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 
+import net.minecraft.init.Biomes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -32,6 +33,10 @@ public class SymbolColorFoliageNatural extends SymbolBase {
 
 		@Override
 		public Color getStaticColor(World worldObj, Biome biome, BlockPos pos) {
+			if (biome == null)
+				biome = Biomes.PLAINS;
+			if (pos == null)
+				pos = BlockPos.ORIGIN;
 			double d0 = MathHelper.clamp(biome.getTemperature(pos), 0.0F, 1.0F);
 			double d1 = MathHelper.clamp(biome.getRainfall(), 0.0F, 1.0F);
 			return new Color(ColorizerFoliage.getFoliageColor(d0, d1));
