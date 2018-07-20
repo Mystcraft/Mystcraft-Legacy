@@ -204,11 +204,11 @@ public class LinkController {
 		int j1 = MathHelper.floor(axisalignedbb.maxZ + 1.0D);
 		for (int k1 = i; k1 < j; k1++) {
 			for (int l1 = i1; l1 < j1; l1++) {
-				if (!world.isBlockLoaded(new BlockPos(k1, 128 / 2, l1))) {
+				if (!world.isBlockLoaded(new BlockPos(k1, 64, l1))) {
 					continue;
 				}
 				for (int i2 = k - 1; i2 < l; i2++) {
-					BlockPos pos = new BlockPos(l1, i2, l1);
+					BlockPos pos = new BlockPos(k1, i2, l1);
 					IBlockState state = world.getBlockState(pos);
 					state.addCollisionBoxToList(world, pos, axisalignedbb, collidingBoundingBoxes, entity, true);
 				}
