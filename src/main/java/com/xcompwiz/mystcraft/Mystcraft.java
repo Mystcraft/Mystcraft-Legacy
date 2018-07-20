@@ -277,7 +277,7 @@ public class Mystcraft {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		FMLInterModComms.sendMessage("lookingglass", "API", "com.xcompwiz.mystcraft.integration.lookingglass.LookingGlassIntegration.register");
+		//FMLInterModComms.sendMessage("lookingglass", "API", "com.xcompwiz.mystcraft.integration.lookingglass.LookingGlassIntegration.register");
 
 		FMLInterModComms.sendMessage("reccomplex", "registerDimensionType", "MYSTCRAFT_PROFILING");
 
