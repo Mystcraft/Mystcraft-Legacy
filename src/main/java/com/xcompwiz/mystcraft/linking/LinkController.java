@@ -155,6 +155,7 @@ public class LinkController {
 		newworld.updateEntityWithOptionalForce(entity, false);
 		if (entity instanceof EntityPlayerMP && changingworlds) {
 			EntityPlayerMP player = (EntityPlayerMP) entity;
+			player.connection.setPlayerLocation(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch);
 			player.interactionManager.setWorld((WorldServer) newworld);
 			player.mcServer.getPlayerList().updateTimeAndWeatherForPlayer(player, (WorldServer) newworld);
 			player.mcServer.getPlayerList().syncPlayerInventory(player);
