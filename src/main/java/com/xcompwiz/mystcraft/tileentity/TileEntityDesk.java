@@ -124,9 +124,9 @@ public class TileEntityDesk extends TileEntityBase implements InventoryFilter, I
 	public boolean canAcceptItem(int slot, @Nonnull ItemStack stack) {
 		if (stack.isEmpty())
 			return false;
-		if (slot == slot_wrt && stack.getItem() instanceof IItemWritable)
+		if (slot == slot_wrt && stack.getCount() == 1 && stack.getItem() instanceof IItemWritable)
 			return true;
-		if (slot == slot_wrt && stack.getItem() instanceof IItemRenameable)
+		if (slot == slot_wrt && stack.getCount() == 1 && stack.getItem() instanceof IItemRenameable)
 			return true;
 		if (slot == slot_pap && stack.getItem().equals(Items.PAPER))
 			return true;
