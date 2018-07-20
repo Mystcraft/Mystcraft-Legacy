@@ -10,6 +10,7 @@ import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.storage.SaveDataMemoryStorage;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -19,6 +20,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerConnectionFromClientEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -69,11 +71,14 @@ public class MystcraftConnectionHandler {
 	}
 
 	@SubscribeEvent
-	public void onPlJoin(PlayerLoggedInEvent event) {
-		if (!event.player.world.isRemote) { //Just double-checking :V
-			MystcraftPacketHandler.CHANNEL.sendTo(new MPacketDimensions(Mystcraft.registeredDims), (EntityPlayerMP) event.player);
-			MystcraftPacketHandler.CHANNEL.sendTo(MPacketConfigs.createPacket(), (EntityPlayerMP) event.player);
-		}
+	public void onPlJoin(ServerConnectionFromClientEvent event) {
+		NetHandlerPlayServer handler = (NetHandlerPlayServer) event.getHandler();
+		EntityPlayerMP player = handler.player;
+		NetHandlerPlayServer temp = player.connection;
+		player.connection = handler; //XXX: This is a bit of a hack to ensure we have something to send through
+		MystcraftPacketHandler.CHANNEL.sendTo(new MPacketDimensions(Mystcraft.registeredDims), player);
+		MystcraftPacketHandler.CHANNEL.sendTo(MPacketConfigs.createPacket(), player);
+		player.connection = temp;
 	}
 
 	@SubscribeEvent
