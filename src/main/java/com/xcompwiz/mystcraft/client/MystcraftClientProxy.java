@@ -48,7 +48,10 @@ import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.BannerPattern;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -87,7 +90,6 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 		startupchecker = new MystcraftStartupChecker();
 		MinecraftForge.EVENT_BUS.register(startupchecker);
 		MinecraftForge.EVENT_BUS.register(new PageBuilder());
-		MinecraftForge.EVENT_BUS.register(new BannerGeneration());
 		MinecraftForge.EVENT_BUS.register(this); //Placed in here to keep rendering registration in 1 place
 
 		ModFluids.registerModels();
@@ -171,5 +173,17 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 	@Override
 	public void addScheduledTask(Runnable runnable) {
 		Minecraft.getMinecraft().addScheduledTask(runnable);
+	}
+
+	@Override
+	public void registerBannerPattern(String word, BannerPattern pattern) {
+		ResourceLocation location = new ResourceLocation("textures/entity/banner/" + pattern.getFileName() + ".png");
+		MinecraftForgeClient.registerBannerImageSupplier(location, () -> {
+			return BannerGeneration.createBufferedImage(word);
+		});
+		location = new ResourceLocation("textures/entity/shield/" + pattern.getFileName() + ".png");
+		MinecraftForgeClient.registerBannerImageSupplier(location, () -> {
+			return BannerGeneration.createBufferedImage(word);
+		});
 	}
 }

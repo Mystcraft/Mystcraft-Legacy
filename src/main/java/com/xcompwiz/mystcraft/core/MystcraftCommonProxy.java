@@ -14,6 +14,7 @@ import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.BannerPattern;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -96,5 +97,8 @@ public class MystcraftCommonProxy {
 
 	public void addScheduledTask(Runnable runnable) {
 		getMCServer().addScheduledTask(runnable);
+	}
+
+	public void registerBannerPattern(String word, BannerPattern pattern) {
 	}
 }

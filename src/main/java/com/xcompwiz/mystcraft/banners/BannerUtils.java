@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.banners;
 
+import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.MystObjects;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,7 +13,9 @@ public class BannerUtils {
     public static BannerPattern addBasicPattern(String name) {
         final Class<?>[] paramTypes = { String.class, String.class };
         final Object[] paramValues = { MystObjects.MystcraftModId + "_" + name, MystObjects.MystcraftModId + "." + name };
-        return EnumHelper.addEnum(BannerPattern.class, name.toUpperCase(), paramTypes, paramValues);
+        BannerPattern pattern = EnumHelper.addEnum(BannerPattern.class, name.toUpperCase(), paramTypes, paramValues);
+        Mystcraft.sidedProxy.registerBannerPattern(name, pattern);
+        return pattern;
     }
     
 	public static NBTTagList makePatternNBTList(BannerLayer... bannerLayers) {

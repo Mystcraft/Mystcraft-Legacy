@@ -3,7 +3,6 @@ package com.xcompwiz.mystcraft.banners;
 import java.awt.Rectangle;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -17,8 +16,6 @@ import com.xcompwiz.mystcraft.words.DrawableWordManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BannerTextures;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.BufferedImageLoadEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -37,31 +34,22 @@ public class BannerGeneration {
 		}
 	}
 
-	@SubscribeEvent
-	public void getBufferedImage(BufferedImageLoadEvent event) {
-		if (!event.getResourceLocation().contains("mystcraft_"))
-			return;
-
-		String word = event.getResourceLocation().substring(33).replace(".png", "");
+	public static BufferedImage createBufferedImage(String word) {
 		if (word == null || word.isEmpty())
-			return;
+			return null;
 
 		DrawableWord wordDef = DrawableWordManager.getDrawableWord(word);
 		if (wordDef == null)
-			return;
+			return null;
 
 		BufferedImage baseImage = buildBackground();
 		BufferedImage wordSource = PageBuilder.buildSymbolImage(DrawableWord.word_components);
 		if (baseImage == null) {
 			throw new IllegalStateException("Called texture loading outside of TextureManager's loading cycle!");
 		}
-		ColorModel cm = baseImage.getColorModel();
-		//160x160 here
-		BufferedImage copy = new BufferedImage(cm, baseImage.copyData(null), cm.isAlphaPremultiplied(), null);
+		PageBuilder.PageSprite.stitchWord(baseImage, wordDef, rectangle, wordSource);
 
-		PageBuilder.PageSprite.stitchWord(copy, wordDef, rectangle, wordSource);
-
-		BufferedImage down = RenderUtils.scale(copy, 0.3334D, AffineTransformOp.TYPE_BILINEAR);
+		BufferedImage down = RenderUtils.scale(baseImage, 0.3334D, AffineTransformOp.TYPE_BILINEAR, BufferedImage.TYPE_4BYTE_ABGR);
 
 		for (int y = 0; y < down.getHeight(); ++y) {
 			for (int x = 0; x < down.getWidth(); ++x) {
@@ -70,7 +58,7 @@ public class BannerGeneration {
 			}
 		}
 
-		event.setResultBufferedImage(down);
+		return down;
 	}
 
 }
