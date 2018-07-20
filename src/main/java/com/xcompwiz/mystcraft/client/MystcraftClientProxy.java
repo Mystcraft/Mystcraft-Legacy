@@ -106,7 +106,7 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 		InternalAPI.render.registerRenderEffect(new LinkRendererDisarm());
 
 		ParticleUtils.registerParticle("link", new ParticleProviderLink());
-		
+
 		initBlockColorizations();
 	}
 
@@ -169,7 +169,7 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 		if (InstabilityDataCalculator.isPerSave())
 			super.stopBaselineProfiling();
 	}
-	
+
 	@Override
 	public void addScheduledTask(Runnable runnable) {
 		Minecraft.getMinecraft().addScheduledTask(runnable);
