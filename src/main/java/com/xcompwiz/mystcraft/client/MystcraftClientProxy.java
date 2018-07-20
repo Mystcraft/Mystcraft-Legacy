@@ -2,6 +2,7 @@ package com.xcompwiz.mystcraft.client;
 
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.impl.InternalAPI;
+import com.xcompwiz.mystcraft.api.world.logic.IStaticColorProvider;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleProviderLink;
 import com.xcompwiz.mystcraft.client.entityfx.ParticleUtils;
 import com.xcompwiz.mystcraft.client.gui.overlay.GuiNotification;
@@ -38,9 +39,13 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 import com.xcompwiz.mystcraft.tileentity.TileEntityStarFissure;
 import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -48,6 +53,7 @@ import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -96,6 +102,22 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 		InternalAPI.render.registerRenderEffect(new LinkRendererDisarm());
 
 		ParticleUtils.registerParticle("link", new ParticleProviderLink());
+		
+		initBlockColorizations();
+	}
+
+	private void initBlockColorizations() {
+		BlockColors blockColors = Minecraft.getMinecraft().getBlockColors();
+		java.util.Map<net.minecraftforge.registries.IRegistryDelegate<Block>, IBlockColor> blockColorMap = ObfuscationReflectionHelper.getPrivateValue(BlockColors.class, blockColors, 0);
+		blockColors.registerBlockColorHandler(new BlockColorMyst(blockColorMap.get(Blocks.GRASS.delegate), IStaticColorProvider.GRASS), Blocks.GRASS);
+		blockColors.registerBlockColorHandler(new BlockColorMyst(blockColorMap.get(Blocks.TALLGRASS.delegate), IStaticColorProvider.GRASS), Blocks.TALLGRASS);
+		blockColors.registerBlockColorHandler(new BlockColorMyst(blockColorMap.get(Blocks.LEAVES.delegate), IStaticColorProvider.FOLIAGE), Blocks.LEAVES);
+		blockColors.registerBlockColorHandler(new BlockColorMyst(blockColorMap.get(Blocks.LEAVES2.delegate), IStaticColorProvider.FOLIAGE), Blocks.LEAVES2);
+		blockColors.registerBlockColorHandler(new BlockColorMyst(blockColorMap.get(Blocks.VINE.delegate), IStaticColorProvider.FOLIAGE), Blocks.VINE);
+		blockColors.registerBlockColorHandler(new BlockColorMyst(blockColorMap.get(Blocks.WATERLILY.delegate), IStaticColorProvider.FOLIAGE), Blocks.WATERLILY);
+		blockColors.registerBlockColorHandler(new BlockColorMyst(blockColorMap.get(Blocks.MELON_STEM.delegate), IStaticColorProvider.FOLIAGE), Blocks.MELON_STEM);
+		blockColors.registerBlockColorHandler(new BlockColorMyst(blockColorMap.get(Blocks.WATER.delegate), IStaticColorProvider.WATER), Blocks.WATER);
+		blockColors.registerBlockColorHandler(new BlockColorMyst(blockColorMap.get(Blocks.FLOWING_WATER.delegate), IStaticColorProvider.WATER), Blocks.FLOWING_WATER);
 	}
 
 	@SubscribeEvent
