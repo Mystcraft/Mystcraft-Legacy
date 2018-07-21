@@ -74,11 +74,11 @@ public class ItemFolder extends Item implements IItemOrderablePageProvider, IIte
 	@Override
 	@Nonnull
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		if (worldIn.isRemote) {
-			return ActionResult.newResult(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
+		ItemStack held = playerIn.getHeldItem(handIn);
+		if (!worldIn.isRemote && held.getCount() == 1) {
+			playerIn.openGui(Mystcraft.instance, ModGUIs.FOLDER.ordinal(), worldIn, MathHelper.floor(playerIn.posX + 0.5D), MathHelper.floor(playerIn.posY + 0.5D), MathHelper.floor(playerIn.posZ + 0.5D));
 		}
-		playerIn.openGui(Mystcraft.instance, ModGUIs.FOLDER.ordinal(), worldIn, MathHelper.floor(playerIn.posX + 0.5D), MathHelper.floor(playerIn.posY + 0.5D), MathHelper.floor(playerIn.posZ + 0.5D));
-		return ActionResult.newResult(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
+		return ActionResult.newResult(EnumActionResult.PASS, held);
 	}
 
 	private void initialize(World world, @Nonnull ItemStack itemstack, Entity entity) {}

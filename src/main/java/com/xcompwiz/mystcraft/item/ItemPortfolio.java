@@ -63,10 +63,9 @@ public class ItemPortfolio extends Item implements IItemPageCollection, IItemRen
 	@Nonnull
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, @Nonnull EnumHand handIn) {
 		ItemStack held = playerIn.getHeldItem(handIn);
-		if (worldIn.isRemote) {
-			return ActionResult.newResult(EnumActionResult.PASS, held);
+		if (!worldIn.isRemote && held.getCount() == 1) {
+			playerIn.openGui(Mystcraft.instance, ModGUIs.PORTFOLIO.ordinal(), worldIn, MathHelper.floor(playerIn.posX + 0.5D), MathHelper.floor(playerIn.posY + 0.5D), MathHelper.floor(playerIn.posZ + 0.5D));
 		}
-		playerIn.openGui(Mystcraft.instance, ModGUIs.PORTFOLIO.ordinal(), worldIn, MathHelper.floor(playerIn.posX + 0.5D), MathHelper.floor(playerIn.posY + 0.5D), MathHelper.floor(playerIn.posZ + 0.5D));
 		return ActionResult.newResult(EnumActionResult.PASS, held);
 	}
 
