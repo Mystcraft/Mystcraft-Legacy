@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.client.gui;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -215,6 +216,16 @@ public class GuiWritingDesk extends GuiContainerElements {
 
 	public class PageHandlerTarget implements IGuiPageProvider {
 
+		@Override
+		public void interact(GuiElementPage elem) {
+			try {
+				// click on the writing slot
+				mouseClicked(12 + ContainerWritingDesk.xShift + guiLeft, 66 + ContainerWritingDesk.yShift + guiTop, 0);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		@Override
 		@Nonnull
 		public ItemStack getPageItemStack(GuiElementPage elem) {

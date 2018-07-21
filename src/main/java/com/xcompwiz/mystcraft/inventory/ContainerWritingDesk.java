@@ -54,8 +54,8 @@ public class ContainerWritingDesk extends ContainerBase implements IGuiMessageHa
 
 	}
 
-	private static final int xShift = 228 + 5;
-	private static final int yShift = 20;
+	public static final int xShift = 228 + 5;
+	public static final int yShift = 20;
 	private static final int tabslots = 4;
 
 	//XXX: Remove activeslot from container

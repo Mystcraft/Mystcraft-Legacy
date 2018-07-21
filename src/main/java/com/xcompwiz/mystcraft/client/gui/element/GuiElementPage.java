@@ -22,6 +22,8 @@ public class GuiElementPage extends GuiElement {
 		@Nonnull
 		ItemStack getPageItemStack(GuiElementPage elem);
 
+		void interact(GuiElementPage elem);
+
 	}
 
 	private IGuiPageProvider provider;
@@ -42,6 +44,15 @@ public class GuiElementPage extends GuiElement {
 	public boolean isVisible() {
 		ItemStack target = provider.getPageItemStack(this);
 		return super.isVisible() && !target.isEmpty() && target.getItem() instanceof ItemPage;
+	}
+	
+	@Override
+	protected boolean _onMouseDown(int mouseX, int mouseY, int button) {
+		if (this.contains(mouseX, mouseY)) {
+			provider.interact(this);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
