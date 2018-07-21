@@ -87,20 +87,20 @@ public class SymbolMoonNormal extends SymbolBase {
 			GlStateManager.rotate(angle, 0, 1, 0);
 			GlStateManager.rotate(celestial_period * 360F, 1, 0, 0);
 
-			float size = 20.0F;
+			double size = 20.0F;
 			int moonphase = getMoonPhase(worldObj.getWorldTime(), partial);
-			int k = moonphase % 4;
-			int i1 = moonphase / 4 % 2;
-			float f22 = (float) (k + 0) / 4.0F;
-			float f23 = (float) (i1 + 0) / 2.0F;
-			float f24 = (float) (k + 1) / 4.0F;
-			float f14 = (float) (i1 + 1) / 2.0F;
+			int x = moonphase % 4;
+			int y = moonphase / 4 % 2;
+			double x1 = (double) (x + 0) / 4.0F;
+			double y1 = (double) (y + 0) / 2.0F;
+			double x2 = (double) (x + 1) / 4.0F;
+			double y2 = (double) (y + 1) / 2.0F;
 			eng.bindTexture(Vanilla.normal_moon);
 			vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-			vb.pos((double) (-size), -100.0D, (double) size).tex((double) f24, (double) f14).endVertex();
-			vb.pos((double) size, -100.0D, (double) size).tex((double) f22, (double) f14).endVertex();
-			vb.pos((double) size, -100.0D, (double) (-size)).tex((double) f22, (double) f23).endVertex();
-			vb.pos((double) (-size), -100.0D, (double) (-size)).tex((double) f24, (double) f23).endVertex();
+			vb.pos(-size, 100.0D, -size).tex(x2, y2).endVertex();
+			vb.pos(size, 100.0D, -size).tex(x1, y2).endVertex();
+			vb.pos(size, 100.0D, size).tex(x1, y1).endVertex();
+			vb.pos(-size, 100.0D, size).tex(x2, y1).endVertex();
 			tes.draw();
 
 			GlStateManager.color(1F, 1F, 1F, 1F);
