@@ -100,7 +100,7 @@ public class ModItems {
 
 	@SideOnly(Side.CLIENT)
 	public static void registerModels() {
-		ModelLoader.setCustomMeshDefinition(page, new PageMeshDefinition());
+		ModelLoader.setCustomMeshDefinition(page, PageMeshDefinition.instance);
 		ModelLoader.setCustomMeshDefinition(agebook, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "agebook"), "inventory"));
 		ModelLoader.setCustomMeshDefinition(linkbook, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "linkbook"), "inventory"));
 		ModelLoader.setCustomMeshDefinition(unlinked, (stack) -> new ModelResourceLocation(new ResourceLocation(MystObjects.MystcraftModId, "unlinkedbook"), "inventory"));
