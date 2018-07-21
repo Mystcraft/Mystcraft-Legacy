@@ -57,6 +57,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 
 	private PositionableItem hoverpage;
 	private List<String> hovertext = new ArrayList<String>();
+	private int hoverslot = 0;
 
 	private GuiElementVSlider scrollbar;
 
@@ -94,11 +95,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 				List<PositionableItem> pages = getPages();
 				if (pages == null)
 					return false;
-				int index = pages.size();
-				if (hoverpage != null) {
-					index = hoverpage.slotId;
-				}
-				pagesProvider.place(index, button == 1);
+				pagesProvider.place(hoverslot, button == 1);
 				return true;
 			}
 			if (hoverpage != null && button == 2) {
@@ -165,8 +162,8 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 				ItemStack page = positionable.itemstack;
 				float pageX = positionable.x;
 				float pageY = positionable.y;
-				if (pageY + pageHeight - ySize > maxScroll) {
-					maxScroll = (int) (pageY + pageHeight + 6 - ySize);
+				if (pageY + pageHeight * 2 - ySize > maxScroll) {
+					maxScroll = (int) (pageY + pageHeight * 2 + 6 - ySize);
 				}
 				if (y + pageY < guiTop - pageHeight) {
 					continue;
@@ -195,6 +192,9 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 			}
 		}
 		if (noHover) {
+			float x = mouseX - guiLeft;
+			float y = mouseY - currentScroll - guiTop;
+			hoverslot = (int)(x / pageWidth) + (int)(y / pageHeight) * 5;
 			hoverpage = null;
 			hovertext.clear();
 		}
@@ -226,6 +226,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 			return true;
 
 		hoverpage = positionable;
+		hoverslot = hoverpage.slotId;
 		hovertext.clear();
 
 		Page.getTooltip(page, hovertext);
