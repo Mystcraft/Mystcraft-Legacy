@@ -153,9 +153,9 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		int maxScroll = 0;
 		
 		//XXX: (PageRender) If these were rendered as individual sub-elements, we could do some fancy things, like making them appear to move on sort (animated sort)
+		float rootX = guiLeft;
+		float rootY = guiTop + currentScroll;
 		if (pages != null) {
-			float x = guiLeft;
-			float y = guiTop + currentScroll;
 			float pagexSize = pageWidth;
 			float pageySize = pageHeight;
 			for (PositionableItem positionable : pages) {
@@ -165,10 +165,10 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 				if (pageY + pageHeight * 2 - ySize > maxScroll) {
 					maxScroll = (int) (pageY + pageHeight * 2 + 6 - ySize);
 				}
-				if (y + pageY < guiTop - pageHeight) {
+				if (rootY + pageY < guiTop - pageHeight) {
 					continue;
 				}
-				if (y + pageY > guiTop + ySize) {
+				if (rootY + pageY > guiTop + ySize) {
 					continue;
 				}
 				String displayname = getDisplayName(page);
@@ -178,25 +178,41 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 					}
 				}
 				if (positionable.count > 0) {
-					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), page, pagexSize, pageySize, x + pageX, y + pageY);
+					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), page, pagexSize, pageySize, rootX + pageX, rootY + pageY);
 				} else {
-					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), ItemStack.EMPTY, pagexSize, pageySize, x + pageX, y + pageY);
+					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), ItemStack.EMPTY, pagexSize, pageySize, rootX + pageX, rootY + pageY);
 				}
 				if (positionable.count > 1) {
-					GuiUtils.drawScaledText("" + positionable.count, (int) (x + pageX), (int) (y + pageY + pageHeight - 7), 20, 10, 0xFFFFFF);
+					GuiUtils.drawScaledText("" + positionable.count, (int) (rootX + pageX), (int) (rootY + pageY + pageHeight - 7), 20, 10, 0xFFFFFF);
 				}
 				if (mouseOverPageArea) {
-					if (testMouseOver(positionable, page, displayname, mouseX, mouseY, (int) (x + pageX), (int) (y + pageY), (int) pagexSize, (int) pageySize))
+					if (testMouseOver(positionable, page, displayname, mouseX, mouseY, (int) (rootX + pageX), (int) (rootY + pageY), (int) pagexSize, (int) pageySize))
 						noHover = false;
 				}
 			}
 		}
 		if (noHover) {
-			float x = mouseX - guiLeft;
-			float y = mouseY - currentScroll - guiTop;
-			hoverslot = (int)(x / pageWidth) + (int)(y / pageHeight) * 5;
 			hoverpage = null;
 			hovertext.clear();
+
+			if (pages != null && mouseOverPageArea && !mc.player.inventory.getItemStack().isEmpty()) { //XXX: would be nice if the render only kicked in for things that could be accepted
+				int rowSize = (int)(xSize / pageWidth);
+				float x = mouseX - guiLeft;
+				float y = mouseY - currentScroll - guiTop;
+				hoverslot = (int)(x / pageWidth) + (int)(y / pageHeight) * rowSize;
+				int count = pages.size();
+	
+				float xStep = pageWidth + 1;
+				float yStep = pageHeight + 1;
+				for (int i = count; i <= hoverslot; ++i) {
+					float pageX = i % rowSize * xStep;
+					float pageY = i / rowSize * yStep;
+					if (pageY + pageHeight * 2 - ySize > maxScroll) {
+						maxScroll = (int) (pageY + pageHeight * 2 + 6 - ySize);
+					}
+					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), ItemStack.EMPTY, pageWidth, pageHeight, rootX + pageX, rootY + pageY);
+				}
+			}
 		}
 		
 		scrollbar.setMaxScroll(maxScroll);
