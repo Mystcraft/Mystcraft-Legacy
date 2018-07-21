@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameType;
 import net.minecraft.world.WorldType;
@@ -18,11 +19,13 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 	private final WorldProviderMyst provider;
 
 	private long tickcounter;
+	private WorldInfo delegate;
 
 	public WorldInfoMyst(WorldProviderMyst provider, WorldInfo worldInfo) {
 		super(worldInfo);
 		this.provider = provider;
 		this.tickcounter = 0;
+		this.delegate = worldInfo;
 		if (worldInfo instanceof WorldInfoMyst) {
 			throw new RuntimeException("Attempting to create a WorldInfoMyst instance pointed at a WorldInfoMyst instance");
 		}
@@ -222,4 +225,14 @@ public class WorldInfoMyst extends DerivedWorldInfo {
 		return super.getAdditionalProperty(additionalProperty);
 	}
 
+	public EnumDifficulty getDifficulty() {
+		return delegate.getDifficulty();
+		//XXX: We can return anything we want here, it won't affect saves, only current gameplay.
+		//return this.difficulty;
+	}
+
+	@Override
+	public void setDifficulty(EnumDifficulty newDifficulty) {
+		delegate.setDifficulty(newDifficulty);
+	}
 }
