@@ -59,19 +59,18 @@ public class GuiElementPage extends GuiElement {
 	public void _renderBackground(float f, int mouseX, int mouseY) {
 		int guiLeft = getLeft();
 		int guiTop = getTop();
+
+		hovertext.clear();
+
 		ItemStack target = provider.getPageItemStack(this);
 		ResourceLocation symbolRes = Page.getSymbol(target);
 		GuiUtils.drawPage(mc.renderEngine, getZLevel(), target, xSizePage, ySizePage, guiLeft, guiTop);
 		if (GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize, ySize) && symbolRes != null) {
-			if (hovertext.isEmpty()) {
-				IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolRes);
-				if (symbol != null) {
-					hovertext.add(symbol.getLocalizedName());
-					net.minecraftforge.event.ForgeEventFactory.onItemTooltip(target, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
-				}
+			IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolRes);
+			if (symbol != null) {
+				hovertext.add(symbol.getLocalizedName());
+				net.minecraftforge.event.ForgeEventFactory.onItemTooltip(target, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
 			}
-		} else {
-			hovertext.clear();
 		}
 	}
 

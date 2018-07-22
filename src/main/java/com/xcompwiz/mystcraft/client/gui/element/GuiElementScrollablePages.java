@@ -168,6 +168,9 @@ public class GuiElementScrollablePages extends GuiElement {
 		int guiLeft = getLeft();
 		int guiTop = getTop();
 		mouseOver = this.contains(mouseX, mouseY);
+		hoverpage = -1;
+		hovertext.clear();
+
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(guiLeft, guiTop, 0);
 		mouseX -= guiLeft;
@@ -180,7 +183,6 @@ public class GuiElementScrollablePages extends GuiElement {
 		GlStateManager.pushMatrix();
 		GuiUtils.startGlScissor(guiLeft + 1, guiTop, xSize - 2, ySize);
 
-		boolean noHover = true;
 		List<ItemStack> pageList = getPageList();
 		if (pageList != null) {
 			float x = 2;
@@ -191,28 +193,20 @@ public class GuiElementScrollablePages extends GuiElement {
 				ItemStack page = pageList.get(i);
 				GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), page, pagexSize, pageySize, x, y);
 				if (GuiUtils.contains(mouseX, mouseY, (int) x, (int) y, (int) pagexSize, (int) pageySize)) {
-					noHover = false;
-					if (hoverpage != i) {
-						hoverpage = i;
-						hovertext.clear();
+					hoverpage = i;
 
-						Page.getTooltip(page, hovertext);
-						if (Page.getSymbol(page) != null) {
-							IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
-							if (symbol != null)
-								hovertext.add(symbol.getLocalizedName());
-						}
-						net.minecraftforge.event.ForgeEventFactory.onItemTooltip(page, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
+					Page.getTooltip(page, hovertext);
+					if (Page.getSymbol(page) != null) {
+						IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
+						if (symbol != null)
+							hovertext.add(symbol.getLocalizedName());
 					}
+					net.minecraftforge.event.ForgeEventFactory.onItemTooltip(page, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
 				}
 				x += pagexSize + 2;
 				if (x > xSize)
 					break;
 			}
-		}
-		if (noHover) {
-			hoverpage = -1;
-			hovertext.clear();
 		}
 		
 		GuiUtils.endGlScissor();

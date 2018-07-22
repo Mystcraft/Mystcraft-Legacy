@@ -113,6 +113,9 @@ public class GuiElementBook extends GuiElement {
 		if (!this.isVisible()) {
 			return;
 		}
+
+		hovertext.clear();
+
 		int guiLeft = getLeft();
 		int guiTop = getTop();
 		
@@ -137,7 +140,6 @@ public class GuiElementBook extends GuiElement {
 			drawTexturedModalRect(7, 0, 0, 0, 156, 195);
 		}
 
-		boolean hovered = false;
 		//XXX: (PageRender) Revise how pages are rendered to improve plugability and clean this up
 		ItemStack page = bookcontainer.getCurrentPage();
 		if (!page.isEmpty() && Page.isLinkPanel(page)) { // Render link panel
@@ -166,16 +168,13 @@ public class GuiElementBook extends GuiElement {
 				IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolRes);
 				GuiUtils.drawSymbol(mc.renderEngine, getZLevel(), symbol, scale, x, y);
 				if (GuiUtils.contains(mouseX, mouseY, (int) (x * xScale) + guiLeft, (int) (y * yScale) + guiTop, (int) (scale * xScale), (int) (scale * yScale))) {
-					hovered = true;
-					if (hovertext.isEmpty() && symbol != null) {
+					if (symbol != null) {
 						hovertext.add(symbol.getLocalizedName());
 						net.minecraftforge.event.ForgeEventFactory.onItemTooltip(page, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
 					}
 				}
 			}
 		}
-		if (!hovered)
-			hovertext.clear();
 		GlStateManager.disableDepth();
 		if (getCurrentPageIndex() == 0) {
 			if (isSlotVisible()) { // Draw slot

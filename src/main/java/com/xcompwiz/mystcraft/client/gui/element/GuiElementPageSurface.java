@@ -137,6 +137,9 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		int guiTop = getTop();
 		mouseOverPageArea = GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize - 20, ySize);
 
+		hovertext.clear();
+		hoverpage = null;
+
 		int color = 0xAA000000;
 		drawRect(guiLeft, guiTop, guiLeft + xSize - 20, guiTop + ySize, color); // Back
 
@@ -147,7 +150,6 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		this.setZLevel(1.0F);
 		GlStateManager.pushMatrix();
 		
-		boolean noHover = true;
 		int currentScroll = -scrollbar.getCurrentPos();
 		List<PositionableItem> pages = getPages();
 		int maxScroll = 0;
@@ -186,15 +188,11 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 					GuiUtils.drawScaledText("" + positionable.count, (int) (rootX + pageX), (int) (rootY + pageY + pageHeight - 7), 20, 10, 0xFFFFFF);
 				}
 				if (mouseOverPageArea) {
-					if (testMouseOver(positionable, page, displayname, mouseX, mouseY, (int) (rootX + pageX), (int) (rootY + pageY), (int) pagexSize, (int) pageySize))
-						noHover = false;
+					testMouseOver(positionable, page, displayname, mouseX, mouseY, (int) (rootX + pageX), (int) (rootY + pageY), (int) pagexSize, (int) pageySize);
 				}
 			}
 		}
-		if (noHover) {
-			hoverpage = null;
-			hovertext.clear();
-
+		if (hoverpage == null) {
 			if (pages != null && mouseOverPageArea && !mc.player.inventory.getItemStack().isEmpty()) { //XXX: would be nice if the render only kicked in for things that could be accepted
 				int rowSize = (int)(xSize / pageWidth);
 				float x = mouseX - guiLeft;
@@ -238,8 +236,6 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	private boolean testMouseOver(PositionableItem positionable, ItemStack page, String displayname, int mouseX, int mouseY, int i, int j, int pagexSize, int pageySize) {
 		if (!GuiUtils.contains(mouseX, mouseY, i, j, (int) pagexSize, (int) pageySize))
 			return false;
-		if (hoverpage == positionable)
-			return true;
 
 		hoverpage = positionable;
 		hoverslot = hoverpage.slotId;
