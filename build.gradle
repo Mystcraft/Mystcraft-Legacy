@@ -71,14 +71,6 @@ repositories {
 		name 'MinecraftS3'
 		url 'http://s3.amazonaws.com/Minecraft.Download/libraries'
 	}
-	maven {
-		name 'Crafttweaker'
-		url "http://maven.blamejared.com/"
-	}
-}
-
-dependencies {
-	deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.2.404"
 }
 
 if (!project.smallChangelog.exists()) {

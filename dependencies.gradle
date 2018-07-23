@@ -11,7 +11,12 @@ repositories {
 		name = "chickenbones"
 		url "http://chickenbones.net/maven/"
 	}
+	maven {
+		name 'Crafttweaker'
+		url "http://maven.blamejared.com/"
+	}
 }
 dependencies {
     //compile "com.xcompwiz.lookingglass:lookingglass:0.2.0.01:dev"
+	deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.2.404"
 }
