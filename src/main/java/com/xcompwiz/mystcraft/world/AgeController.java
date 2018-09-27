@@ -268,7 +268,7 @@ public class AgeController implements AgeDirector {
 		node.addChild("profiled_chunks", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + profiler.getCount(); }});
 		node = node.getOrCreateNode("instability");
 		node.addChild("symbols", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + symbolinstability; }});
-		node.addChild("debug", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + debuginstability; } @Override public void set(ICommandSender agent, String value) { debuginstability = Integer.getInteger(value); }});
+		node.addChild("debug", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + debuginstability; } @Override public void set(ICommandSender agent, String value) { debuginstability = Integer.parseInt(value); }});
 		node.addChild("book", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + agedata.getBaseInstability(); }});
 		node.addChild("total", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + (symbolinstability + (blockinstability == null ? 0 : blockinstability) + agedata.getBaseInstability() + bonusmanager.getResult()); }});
 		node.addChild("bonus_total", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + bonusmanager.getResult(); }});
