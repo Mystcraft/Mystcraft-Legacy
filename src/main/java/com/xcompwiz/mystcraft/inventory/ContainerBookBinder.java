@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.xcompwiz.mystcraft.api.item.IItemPageAcceptor;
 import com.xcompwiz.mystcraft.data.ModItems;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
@@ -48,9 +49,7 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 
 	// Server/Client caching for communication
 	private String cached_title = "";
-	//private NonNullList<ItemStack>	page_list		= NonNullList.create();
-	//@Nonnull
-	//private ItemStack				cached_helditem = ItemStack.EMPTY;
+	private ItemStack cached_folder = null;
 
 	public ContainerBookBinder(InventoryPlayer inventoryplayer, TileEntityBookBinder tileentity) {
 		this.tileentity = tileentity;
@@ -214,10 +213,12 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 			int index = data.getInteger(Messages.TakeFromSlider);
 			player.inventory.setItemStack(tileentity.removePage(index));
 			player.inventory.markDirty();
+			cached_folder = null;
 		}
 		if (data.hasKey(Messages.InsertHeldAt)) {
 			if (player.inventory.getItemStack().isEmpty())
 				return;
+			cached_folder = null;
 			int index = data.getInteger(Messages.InsertHeldAt);
 			if (player.inventory.getItemStack().getItem() == ModItems.folder) { //XXX: Change to using an interface
 				tileentity.insertFromFolder(player.inventory.getItemStack(), index);
@@ -248,5 +249,18 @@ public class ContainerBookBinder extends ContainerBase implements IGuiMessageHan
 
 	public List<ItemStack> getPageList() {
 		return tileentity.getPageList();
+	}
+
+	public ItemStack getCachedFakeFolder() {
+		List<ItemStack> pageList = getPageList();
+		if (cached_folder == null) {
+			cached_folder = new ItemStack(ModItems.folder, 1, 0);
+			IItemPageAcceptor item = (IItemPageAcceptor) cached_folder.getItem();
+			for (int i = 0; i < pageList.size(); ++i) {
+				item.addPage(null, cached_folder, pageList.get(i));
+			}
+		}
+
+		return cached_folder;
 	}
 }

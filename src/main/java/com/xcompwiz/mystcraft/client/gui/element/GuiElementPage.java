@@ -69,7 +69,7 @@ public class GuiElementPage extends GuiElement {
 			IAgeSymbol symbol = SymbolManager.getAgeSymbol(symbolRes);
 			if (symbol != null) {
 				hovertext.add(symbol.getLocalizedName());
-				net.minecraftforge.event.ForgeEventFactory.onItemTooltip(target, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
+				GuiUtils.onItemTooltip(target, null, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
 			}
 		}
 	}

@@ -170,7 +170,7 @@ public class GuiElementBook extends GuiElement {
 				if (GuiUtils.contains(mouseX, mouseY, (int) (x * xScale) + guiLeft, (int) (y * yScale) + guiTop, (int) (scale * xScale), (int) (scale * yScale))) {
 					if (symbol != null) {
 						hovertext.add(symbol.getLocalizedName());
-						net.minecraftforge.event.ForgeEventFactory.onItemTooltip(page, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
+						GuiUtils.onItemTooltip(page, bookcontainer.getBook(), this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
 					}
 				}
 			}

@@ -33,6 +33,8 @@ public class GuiElementScrollablePages extends GuiElement {
 
 		List<ItemStack> getPageList();
 
+		ItemStack getItemStack();
+
 	}
 
 	private IGuiPageListProvider pagesprovider;
@@ -201,7 +203,7 @@ public class GuiElementScrollablePages extends GuiElement {
 						if (symbol != null)
 							hovertext.add(symbol.getLocalizedName());
 					}
-					net.minecraftforge.event.ForgeEventFactory.onItemTooltip(page, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
+					GuiUtils.onItemTooltip(page, pagesprovider == null ? null : pagesprovider.getItemStack(), this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
 				}
 				x += pagexSize + 2;
 				if (x > xSize)

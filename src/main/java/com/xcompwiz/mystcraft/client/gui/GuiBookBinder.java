@@ -111,6 +111,11 @@ public class GuiBookBinder extends GuiContainerElements {
 
 			container.inventoryplayer.setItemStack(container.tileentity.removePage(clickedpage));
 		}
+
+		@Override
+		public ItemStack getItemStack() {
+			return container.getCachedFakeFolder();
+		}
 	}
 
 	public class TextBoxHandler implements IGuiTextProvider, IGuiOnTextChange {

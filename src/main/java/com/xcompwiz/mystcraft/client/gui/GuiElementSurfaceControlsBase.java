@@ -50,6 +50,7 @@ public abstract class GuiElementSurfaceControlsBase implements IGuiPositionedPag
 		this.xSize = width;
 	}
 
+	@Override
 	@Nonnull
 	public abstract ItemStack getItemStack();
 

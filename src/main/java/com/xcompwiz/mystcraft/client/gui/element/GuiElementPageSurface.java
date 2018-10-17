@@ -39,6 +39,8 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	public final static float pageheight = pagewidth * 4 / 3;
 
 	public interface IGuiPositionedPagesProvider {
+		
+		ItemStack getItemStack();
 
 		List<PositionableItem> getPositionedPages();
 
@@ -244,7 +246,7 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		Page.getTooltip(page, hovertext);
 		if (displayname != null)
 			hovertext.add(displayname);
-		net.minecraftforge.event.ForgeEventFactory.onItemTooltip(page, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
+		GuiUtils.onItemTooltip(page, pagesProvider == null ? null : pagesProvider.getItemStack(), this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
 		return true;
 	}
 

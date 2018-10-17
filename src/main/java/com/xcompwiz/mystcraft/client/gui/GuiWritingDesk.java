@@ -139,6 +139,11 @@ public class GuiWritingDesk extends GuiContainerElements {
 			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
 			container.processMessage(mc.player, nbttagcompound);
 		}
+
+		@Override
+		public ItemStack getItemStack() {
+			return container.getTarget();
+		}
 	}
 
 	public class SurfaceTabsHandler implements IGuiSurfaceTabsHandler {

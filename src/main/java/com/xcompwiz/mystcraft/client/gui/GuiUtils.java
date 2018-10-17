@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
+import com.xcompwiz.mystcraft.api.event.ContainedItemTooltipEvent;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.api.word.DrawableWord;
 import com.xcompwiz.mystcraft.data.Assets.GUIs;
@@ -19,6 +20,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.words.DrawableWordManager;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -29,8 +31,11 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.util.ITooltipFlag.TooltipFlags;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -420,5 +425,15 @@ public final class GuiUtils {
 			GL11.glScissor(c[0], c[1], c[2], c[3]); //starts from lower left corner (Minecraft starts from upper left)
 		}
 
+	}
+
+	public static ItemTooltipEvent onItemTooltip(ItemStack target, ItemStack folder, EntityPlayerSP player, List<String> hovertext, TooltipFlags flags) {
+        ItemTooltipEvent event = null;
+        if (folder != null)
+        	event = new ContainedItemTooltipEvent(target, folder, player, hovertext, flags);
+        else
+        	event = new ItemTooltipEvent(target, player, hovertext, flags);
+        MinecraftForge.EVENT_BUS.post(event);
+        return event;
 	}
 }
