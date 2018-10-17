@@ -24,7 +24,7 @@ public class MystcraftCommonProxy {
 
 	public static CreativeTabMyst tabMystCommon = null;
 	public static CreativeTabMyst tabMystPages = null;
-	public static CreativeTabs tabMystBanners = null;
+	public static CreativeTabBanners tabMystBanners = null;
 
 	public Entity getEntityByID(World worldObj, int id) {
 		if (worldObj instanceof WorldServer)
@@ -100,5 +100,6 @@ public class MystcraftCommonProxy {
 	}
 
 	public void registerBannerPattern(String word, BannerPattern pattern) {
+		tabMystBanners.registerPattern(pattern);
 	}
 }

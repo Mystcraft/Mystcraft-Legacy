@@ -1,5 +1,7 @@
 package com.xcompwiz.mystcraft.inventory;
 
+import java.util.ArrayList;
+
 import com.xcompwiz.mystcraft.banners.BannerLayer;
 import com.xcompwiz.mystcraft.banners.BannerUtils;
 
@@ -13,6 +15,7 @@ import net.minecraft.util.NonNullList;
 public class CreativeTabBanners extends CreativeTabs {
 
     private static ItemStack DISPLAY = null;
+	private ArrayList<BannerPattern> patterns = new ArrayList<BannerPattern>();
 
     public CreativeTabBanners (String id) {
 
@@ -30,7 +33,7 @@ public class CreativeTabBanners extends CreativeTabs {
     public ItemStack getIconItemStack () {
 
         if (DISPLAY == null)
-            DISPLAY = ItemBanner.makeBanner(EnumDyeColor.WHITE, BannerUtils.makePatternNBTList(new BannerLayer(BannerPattern.CREEPER, EnumDyeColor.GREEN)));
+            DISPLAY = ItemBanner.makeBanner(EnumDyeColor.RED, BannerUtils.makePatternNBTList(new BannerLayer(patterns.get(0), EnumDyeColor.YELLOW)));
 
         return DISPLAY;
     }
@@ -44,7 +47,11 @@ public class CreativeTabBanners extends CreativeTabs {
     public void displayAllRelevantItems (NonNullList<ItemStack> itemList) {
         super.displayAllRelevantItems(itemList);
 
-        for (final BannerPattern pattern : BannerPattern.values())
+        for (final BannerPattern pattern : patterns)
         	itemList.add(ItemBanner.makeBanner(EnumDyeColor.RED, BannerUtils.makePatternNBTList(new BannerLayer(pattern, EnumDyeColor.YELLOW))));
     }
+
+	public void registerPattern(BannerPattern pattern) {
+		patterns.add(pattern);
+	}
 }
