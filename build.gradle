@@ -1,4 +1,4 @@
-ext.forgeversion     = "1.12.2-14.23.3.2676"
+ext.forgeversion     = "1.12.2-14.23.5.2770"
 group                = "com.xcompwiz.mystcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 ext.archivesBaseName = "mystcraft"
 ext.nameCased        = "Mystcraft"
