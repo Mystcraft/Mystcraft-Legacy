@@ -391,10 +391,14 @@ publishing {
 	repositories {
 		maven {
 			name 'upload maven'
-			url pass.mavenurl
-			credentials {
-				username pass.mavenuser
-				password pass.mavenpass
+			if (pass.hasProperty('mavenurl')) {
+				url pass.mavenurl
+				credentials {
+					username pass.mavenuser
+					password pass.mavenpass
+				}
+			} else {
+				mavenLocal()
 			}
 		}
 	}
