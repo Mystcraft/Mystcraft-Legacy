@@ -128,6 +128,8 @@ public class TileEntityDesk extends TileEntityBase implements InventoryFilter, I
 			return true;
 		if (slot == slot_wrt && stack.getCount() == 1 && stack.getItem() instanceof IItemRenameable)
 			return true;
+		if (slot == slot_wrt && stack.getCount() == 1 && stack.getItem() instanceof IItemPageAcceptor)
+			return true;
 		if (slot == slot_pap && stack.getItem().equals(Items.PAPER))
 			return true;
 		if (slot == slot_ctn) {
