@@ -178,11 +178,11 @@ public class MystcraftClientProxy extends MystcraftCommonProxy {
 	@Override
 	public void registerBannerPattern(String word, BannerPattern pattern) {
 		ResourceLocation location = new ResourceLocation("textures/entity/banner/" + pattern.getFileName() + ".png");
-		MinecraftForgeClient.registerBannerImageSupplier(location, () -> {
+		MinecraftForgeClient.registerImageLayerSupplier(location, () -> {
 			return BannerGeneration.createBufferedImage(word);
 		});
 		location = new ResourceLocation("textures/entity/shield/" + pattern.getFileName() + ".png");
-		MinecraftForgeClient.registerBannerImageSupplier(location, () -> {
+		MinecraftForgeClient.registerImageLayerSupplier(location, () -> {
 			return BannerGeneration.createBufferedImage(word);
 		});
 	}
