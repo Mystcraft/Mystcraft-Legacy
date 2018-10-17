@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
+import com.xcompwiz.mystcraft.api.item.IItemRenameable;
 import com.xcompwiz.mystcraft.api.item.IItemWritable;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModGUIs;
@@ -27,7 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemFolder extends Item implements IItemOrderablePageProvider, IItemWritable, IItemOnLoadable {
+public class ItemFolder extends Item implements IItemRenameable, IItemOrderablePageProvider, IItemWritable, IItemOnLoadable {
 
 	public ItemFolder() {
 		setMaxStackSize(1);

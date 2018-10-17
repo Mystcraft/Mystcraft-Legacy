@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
+import com.xcompwiz.mystcraft.api.item.IItemRenameable;
 import com.xcompwiz.mystcraft.api.item.IItemWritable;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
@@ -31,7 +32,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
-public class ItemAgebook extends ItemLinking implements IItemWritable, IItemPageProvider, IItemOnLoadable {
+public class ItemAgebook extends ItemLinking implements IItemRenameable, IItemWritable, IItemPageProvider, IItemOnLoadable {
 
 	public ItemAgebook() {
 		setUnlocalizedName("myst.agebook");

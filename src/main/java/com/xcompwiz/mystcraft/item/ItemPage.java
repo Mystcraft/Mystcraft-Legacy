@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.item.IItemOrderablePageProvider;
 import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
+import com.xcompwiz.mystcraft.api.item.IItemRenameable;
 import com.xcompwiz.mystcraft.api.item.IItemWritable;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
@@ -35,7 +36,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemPage extends Item implements IItemWritable, IItemPageProvider, IItemOnLoadable {
+public class ItemPage extends Item implements IItemRenameable, IItemWritable, IItemPageProvider, IItemOnLoadable {
 
 	public ItemPage() {
 		setMaxStackSize(64);
