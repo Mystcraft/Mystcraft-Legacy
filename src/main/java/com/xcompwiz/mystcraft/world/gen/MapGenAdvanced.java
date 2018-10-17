@@ -64,12 +64,15 @@ public class MapGenAdvanced {
 	}
 	
 	protected boolean placeBlock(ChunkPrimer primer, int x, int y, int z, IBlockState newState) {
-		IBlockState state = primer.getBlockState(x, y, z);
-
-		if (this.state == null || (state.getMaterial().isLiquid())) {
+		if (this.state == null) {
 			return false;
 		}
-		if (state.getBlock().equals(Blocks.BEDROCK)) {
+
+		IBlockState current = primer.getBlockState(x, y, z);
+		if (current.getBlock().equals(Blocks.BEDROCK)) {
+			return false;
+		}
+		if (!this.state.getMaterial().isSolid() && current.getMaterial().isLiquid()) {
 			return false;
 		}
 		++blockcounttotal;
