@@ -108,8 +108,8 @@ public class ModSymbolsModifiers {
 
 		BlockModifierContainerObject.createMyst(WordData.Chain, 3, ModBlocks.crystal, 0).register().add(BlockCategory.SOLID, 4).add(BlockCategory.STRUCTURE, 4).add(BlockCategory.CRYSTAL, 4);
 
-		BlockModifierContainerObject.createMyst(WordData.Sea, 2, Blocks.FLOWING_WATER, 0).register().add(BlockCategory.FLUID, 1).add(BlockCategory.SEA, 1);
-		BlockModifierContainerObject.createMyst(WordData.Sea, 3, Blocks.FLOWING_LAVA, 0).register().add(BlockCategory.FLUID, 2).add(BlockCategory.SEA, 2);
+		BlockModifierContainerObject.createMyst(WordData.Sea, 2, Blocks.WATER, 0).register().add(BlockCategory.FLUID, 1).add(BlockCategory.SEA, 1);
+		BlockModifierContainerObject.createMyst(WordData.Sea, 3, Blocks.LAVA, 0).register().add(BlockCategory.FLUID, 2).add(BlockCategory.SEA, 2);
 
 		// color
 		registerSymbol((new SymbolColor(0.50F, 0.00F, 0.00F, new ResourceLocation(MystObjects.MystcraftModId, "ModColorMaroon"))));

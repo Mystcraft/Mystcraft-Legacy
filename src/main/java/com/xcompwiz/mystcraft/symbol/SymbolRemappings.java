@@ -25,6 +25,7 @@ public class SymbolRemappings {
 		addSymbolRemappingInternal("ModMat_tile.stone", "ModMat_minecraft:stone_0");
 		addSymbolRemappingInternal("ModMat_tile.lava", "ModMat_minecraft:flowing_lava_0");
 		addSymbolRemappingInternal("ModMat_tile.water", "ModMat_minecraft:flowing_water_0");
+		addSymbolRemappingInternal("modmat_flowing_water_0", "modmat_water_0");
 
 		addSymbolRemappingInternal("ModMaroon", "ModColorMaroon");
 		addSymbolRemappingInternal("ModRed", "ModColorRed");

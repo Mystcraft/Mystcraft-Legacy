@@ -180,14 +180,14 @@ public class WorldProviderMystDummy extends WorldProviderMyst {
 
 		agedata.addSymbol(forMyst("BioConGrid"), 0);
 		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.STONE.getDefaultState()), 0);
-		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.FLOWING_WATER.getDefaultState()), 0);
+		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.WATER.getDefaultState()), 0);
 		agedata.addSymbol(forMyst("TerrainNormal"), 0);
 
 		//Lakes
-		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.FLOWING_WATER.getDefaultState()), 0);
+		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.WATER.getDefaultState()), 0);
 		agedata.addSymbol(forMyst("LakesSurface"), 0);
 
-		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.FLOWING_LAVA.getDefaultState()), 0);
+		agedata.addSymbol(SymbolBlock.getSymbolIdentifier(Blocks.LAVA.getDefaultState()), 0);
 		agedata.addSymbol(forMyst("LakesDeep"), 0);
 
 		//Caves
