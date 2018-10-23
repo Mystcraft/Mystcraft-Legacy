@@ -224,6 +224,11 @@ public class WorldProviderMyst extends WorldProvider {
 	public boolean isSkyColored() {
 		return false;
 	}
+	
+	@Override
+	public boolean shouldClientCheckLighting() {
+		return false;
+	}
 
 	@Override
 	public float getCloudHeight() {
