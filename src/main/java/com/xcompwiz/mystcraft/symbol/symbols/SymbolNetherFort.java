@@ -80,7 +80,7 @@ public class SymbolNetherFort extends SymbolBase {
 
 		@Override
 		public BlockPos locate(World world, String s, BlockPos pos, boolean genChunks) {
-			if ("Nether Fortress".equals(s) && generator != null) {
+			if ("Fortress".equals(s) && generator != null) {
 				return generator.getNearestStructurePos(world, pos, genChunks);
 			}
 			return null;
@@ -88,7 +88,7 @@ public class SymbolNetherFort extends SymbolBase {
 
 		@Override
 		public boolean isInsideFeature(World world, String identifier, BlockPos pos) {
-			if ("Nether Fortress".equals(identifier) && generator != null) {
+			if ("Fortress".equals(identifier) && generator != null) {
 				return generator.isPositionInStructure(world, pos);
 			}
 			return false;
