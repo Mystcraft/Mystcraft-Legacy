@@ -1,17 +1,25 @@
 package com.xcompwiz.mystcraft.inventory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
+import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
+import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLinkModifier;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -22,6 +30,8 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 		public static final String SetTitle = "SetTitle";
 		public static final String SetFlag = "SetFlag";
 		public static final String SetSeed = "SetSeed";
+		public static final String RecycleDim = "RecycleDim";
+		public static final String LinkDead = "LinkDead";
 
 	}
 
@@ -30,6 +40,7 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 
 	@Nonnull
 	private String cached_title = "";
+	private Boolean cached_deadlink = null;
 
 	public ContainerLinkModifier(InventoryPlayer inventoryplayer, TileEntityLinkModifier tileentity) {
 		this.tileentity = tileentity;
@@ -75,9 +86,51 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 	public boolean canInteractWith(@Nonnull EntityPlayer entityplayer) {
 		return true;
 	}
+	
+	@Override
+	public void detectAndSendChanges() {
+		for (int slotId = 0; slotId < this.inventorySlots.size(); ++slotId) {
+			ItemStack actual = this.inventorySlots.get(slotId).getStack();
+			ItemStack stored = this.inventoryItemStacks.get(slotId);
+
+			if (!ItemStack.areItemStacksEqual(stored, actual)) {
+				if (slotId == 0) {
+					cached_deadlink = null;
+				}
+			}
+		}
+
+		super.detectAndSendChanges();
+
+		List<IMessage> packets = new ArrayList<>();
+		if (cached_deadlink == null) {
+			cached_deadlink = checkLinkDead();
+			if (cached_deadlink != null) {
+				NBTTagCompound nbttagcompound = new NBTTagCompound();
+				nbttagcompound.setBoolean(Messages.LinkDead, cached_deadlink);
+				packets.add(new MPacketGuiMessage(this.windowId, nbttagcompound));
+			}
+		}
+		if (packets.size() > 0) {
+			for (IContainerListener listener : this.listeners) {
+				if (listener instanceof EntityPlayerMP) {
+					for (IMessage message : packets) {
+						MystcraftPacketHandler.CHANNEL.sendTo(message, (EntityPlayerMP) listener);
+					}
+				}
+			}
+		}
+	}
 
 	@Override
 	public void processMessage(@Nonnull EntityPlayer player, @Nonnull NBTTagCompound data) {
+		if (data.hasKey(Messages.LinkDead)) {
+			cached_deadlink = data.getBoolean(Messages.LinkDead);
+		}
+		if (data.hasKey(Messages.RecycleDim)) {
+			tileentity.recycleDimension();
+			cached_deadlink = null;
+		}
 		if (data.hasKey(Messages.SetFlag)) {
 			tileentity.setLinkOption(data.getString(Messages.SetFlag), data.getBoolean("Value"));
 		}
@@ -127,6 +180,20 @@ public class ContainerLinkModifier extends ContainerBase implements IGuiMessageH
 	public String getItemSeed() {
 		//XXX: Hardcoded string reference Agebook "Seed"
 		return tileentity.getLinkProperty("Seed");
+	}
+	
+	public boolean isLinkDead() {
+		ItemStack book = tileentity.getBook();
+		if (book == null) {
+			cached_deadlink = null;
+		}
+		if (cached_deadlink == null)
+			return false;
+		return cached_deadlink;
+	}
+
+	private boolean checkLinkDead() {
+		return tileentity.isLinkDimensionDead();
 	}
 
 	public boolean hasItemSeed() {

@@ -1,8 +1,8 @@
 package com.xcompwiz.mystcraft.client.gui;
 
+import java.awt.Color;
 import java.util.List;
 
-import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButton.IGuiOnClickHandler;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementButtonToggle;
@@ -23,7 +23,33 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class GuiLinkModifier extends GuiContainerElements {
-	private class ButtonHandler implements IGuiOnClickHandler, IGuiStateProvider {
+	private class MarkDeadButtonHandler implements IGuiOnClickHandler, IGuiStateProvider {
+		@Override
+		public boolean getState(String id) {
+			return container.isLinkDead();
+		}
+
+		@Override
+		public void onClick(GuiElementButton guiElementButton) {
+			NBTTagCompound nbttagcompound = new NBTTagCompound();
+			nbttagcompound.setString(ContainerLinkModifier.Messages.RecycleDim, "");
+			MystcraftPacketHandler.CHANNEL.sendToServer(new MPacketGuiMessage(mc.player.openContainer.windowId, nbttagcompound));
+		}
+	}
+
+	private class MarkDeadArmButtonHandler implements IGuiOnClickHandler, IGuiStateProvider {
+		@Override
+		public boolean getState(String id) {
+			return false;
+		}
+
+		@Override
+		public void onClick(GuiElementButton guiElementButton) {
+			isArmed = true;
+		}
+	}
+
+	private class FlagButtonHandler implements IGuiOnClickHandler, IGuiStateProvider {
 		@Override
 		public boolean getState(String id) {
 			return container.getLinkFlag(id);
@@ -73,6 +99,10 @@ public class GuiLinkModifier extends GuiContainerElements {
 	private ContainerLinkModifier container;
 
 	private GuiElementTextField txt_seed;
+	private GuiElementButtonToggle deadarm_btn;
+	private GuiElementButtonToggle dead_btn;
+	
+	boolean isArmed = false;
 
 	public GuiLinkModifier(InventoryPlayer inventoryplayer, TileEntityLinkModifier tileentity) {
 		super(new ContainerLinkModifier(inventoryplayer, tileentity));
@@ -82,8 +112,16 @@ public class GuiLinkModifier extends GuiContainerElements {
 	@Override
 	public void updateScreen() {
 		super.updateScreen();
+		boolean hasSeed = container.hasItemSeed();
+		boolean isDead = container.isLinkDead();
 		if (txt_seed != null) {
-			txt_seed.setVisible(container.hasItemSeed());
+			txt_seed.setVisible(hasSeed);
+		}
+		if (deadarm_btn != null) {
+			deadarm_btn.setVisible(hasSeed && !isArmed && !isDead);
+		}
+		if (dead_btn != null) {
+			dead_btn.setVisible(hasSeed && (isArmed || isDead));
 		}
 	}
 
@@ -97,7 +135,7 @@ public class GuiLinkModifier extends GuiContainerElements {
 		txt_box.setMaxLength(21);
 		addElement(txt_box);
 
-		ButtonHandler buttonhandler = new ButtonHandler();
+		FlagButtonHandler buttonhandler = new FlagButtonHandler();
 		int x = 5, y = 10;
 		int scale = 18;
 		for (String prop : InkEffects.getProperties()) {
@@ -108,9 +146,18 @@ public class GuiLinkModifier extends GuiContainerElements {
 				x += scale + 2;
 			}
 		}
+		MarkDeadButtonHandler killbuttonhandler = new MarkDeadButtonHandler();
+		dead_btn = createButton(killbuttonhandler, "confirmkill", CollectionUtils.buildList("Confirm mark book as dead. (NO UNDO!)"), 140, 32, scale);
+		dead_btn.color = Color.RED;
+		addElement(dead_btn);
+		dead_btn.setVisible(false);
+
+		MarkDeadArmButtonHandler armkillbuttonhandler = new MarkDeadArmButtonHandler();
+		deadarm_btn = createButton(armkillbuttonhandler, "kill", CollectionUtils.buildList("Mark book as dead. (NO UNDO!)"), 120, 32, scale);
+		addElement(deadarm_btn);
 	}
 
-	private <T extends IGuiOnClickHandler & IGuiStateProvider> GuiElement createButton(T buttonhandler, String id, List<String> tooltip, int x, int y, int size) {
+	private <T extends IGuiOnClickHandler & IGuiStateProvider> GuiElementButtonToggle createButton(T buttonhandler, String id, List<String> tooltip, int x, int y, int size) {
 		GuiElementButtonToggle button = new GuiElementButtonToggle(buttonhandler, buttonhandler, id, x, y, size, size);
 		button.setTooltip(tooltip);
 		return button;

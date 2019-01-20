@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.xcompwiz.mystcraft.api.item.IItemRenameable;
 import com.xcompwiz.mystcraft.entity.EntityDummy;
 import com.xcompwiz.mystcraft.item.ItemLinking;
+import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkOptions;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,15 +26,48 @@ public class TileEntityLinkModifier extends TileEntityBookRotateable {
 			((IItemRenameable) itemstack.getItem()).setDisplayName(player, itemstack, text);
 		}
 	}
+	
+	public boolean isLinkDimensionDead() {
+		ItemStack itemstack = getBook();
+		if (itemstack.isEmpty())
+			return false;
+			
+		if (!(itemstack.getItem() instanceof ItemLinking))
+			return false;
 
-	@Nonnull
-	public String getLinkDimensionUID() {
+		((ItemLinking) itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
+
+		Integer dimId = LinkOptions.getDimensionUID(itemstack.getTagCompound());
+
+		if (dimId != null)
+			return DimensionUtils.isDimensionDead(dimId) || !DimensionUtils.checkDimensionUUID(dimId, LinkOptions.getUUID(itemstack.getTagCompound()));
+		
+		return false;
+	}
+
+	public void recycleDimension() {
+		Integer dimId = getLinkDimensionID();
+		if (dimId != null)
+			DimensionUtils.markDimensionDead(dimId);
+	}
+
+	@Nullable
+	public Integer getLinkDimensionID() {
 		ItemStack itemstack = getBook();
 		if (!itemstack.isEmpty()) {
 			if (itemstack.getItem() instanceof ItemLinking) {
 				((ItemLinking) itemstack.getItem()).validate(world, itemstack, new EntityDummy(world, pos.getX(), pos.getY(), pos.getZ(), 0, 0));
-				return "" + String.valueOf(LinkOptions.getDimensionUID(itemstack.getTagCompound()));
+				return LinkOptions.getDimensionUID(itemstack.getTagCompound());
 			}
+		}
+		return null;
+	}
+
+	@Nonnull
+	public String getLinkDimensionUID() {
+		Integer dimId = getLinkDimensionID();
+		if (dimId != null) {
+			return "" + String.valueOf(dimId);
 		}
 		return "";
 	}
