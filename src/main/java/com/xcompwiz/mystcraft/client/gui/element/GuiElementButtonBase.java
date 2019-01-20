@@ -1,5 +1,6 @@
 package com.xcompwiz.mystcraft.client.gui.element;
 
+import java.awt.Color;
 import java.util.List;
 
 import com.xcompwiz.mystcraft.client.gui.GuiUtils;
@@ -15,6 +16,8 @@ public abstract class GuiElementButtonBase extends GuiElement {
 
 	private boolean clicked;
 	private boolean hovered = false;
+
+	public Color color = Color.WHITE;
 
 	public GuiElementButtonBase(int guiLeft, int guiTop, int width, int height) {
 		super(guiLeft, guiTop, width, height);
@@ -73,13 +76,14 @@ public abstract class GuiElementButtonBase extends GuiElement {
 		int guiLeft = getLeft();
 		int guiTop = getTop();
 		int fontcolor;
+		float colorFactor = 1.0f;
 		if (!isEnabled()) {
 			fontcolor = 0xFF333333;
-			GlStateManager.color(0.5F, 0.5F, 0.5F, 1F);
+			colorFactor = 0.5f;
 		} else {
 			fontcolor = 0xFF000000;
-			GlStateManager.color(1, 1, 1, 1);
 		}
+		GlStateManager.color(colorFactor * color.getRed(), colorFactor * color.getBlue(), colorFactor * color.getGreen(), color.getAlpha());
 		// Render button
 		if (xSize != ySize) {
 			int color1 = 0xFF373737;
