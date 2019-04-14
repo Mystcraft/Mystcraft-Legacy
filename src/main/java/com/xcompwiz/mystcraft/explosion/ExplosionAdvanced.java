@@ -190,8 +190,10 @@ public class ExplosionAdvanced {
 	}
 
 	public Explosion toExplosion() {
-		if (mcExplosionDummy == null)
-			mcExplosionDummy = new Explosion(worldObj, exploder, explosionX, explosionY, explosionZ, explosionSize, blocks);
+		if (mcExplosionDummy == null) {
+			mcExplosionDummy = new Explosion(worldObj, exploder, explosionX, explosionY, explosionZ, explosionSize, false, true);
+			mcExplosionDummy.getAffectedBlockPositions().addAll(blocks);
+		}
 		return mcExplosionDummy;
 	}
 }
