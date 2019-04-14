@@ -161,6 +161,7 @@ public class LinkController {
 			player.interactionManager.setWorld((WorldServer) newworld);
 			player.mcServer.getPlayerList().updateTimeAndWeatherForPlayer(player, (WorldServer) newworld);
 			player.mcServer.getPlayerList().syncPlayerInventory(player);
+			player.mcServer.getPlayerList().updatePermissionLevel(player);
 			Iterator<PotionEffect> iter = player.getActivePotionEffects().iterator();
 
 			while (iter.hasNext()) {
