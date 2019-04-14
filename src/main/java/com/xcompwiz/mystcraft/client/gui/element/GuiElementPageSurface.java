@@ -3,8 +3,9 @@ package com.xcompwiz.mystcraft.client.gui.element;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
@@ -14,12 +15,11 @@ import com.xcompwiz.mystcraft.page.Page;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 @SideOnly(Side.CLIENT)
 public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChange {
@@ -39,8 +39,6 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	public final static float pageheight = pagewidth * 4 / 3;
 
 	public interface IGuiPositionedPagesProvider {
-		
-		ItemStack getItemStack();
 
 		List<PositionableItem> getPositionedPages();
 
@@ -59,7 +57,6 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 
 	private PositionableItem hoverpage;
 	private List<String> hovertext = new ArrayList<String>();
-	private int hoverslot = 0;
 
 	private GuiElementVSlider scrollbar;
 
@@ -97,7 +94,11 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 				List<PositionableItem> pages = getPages();
 				if (pages == null)
 					return false;
-				pagesProvider.place(hoverslot, button == 1);
+				int index = pages.size();
+				if (hoverpage != null) {
+					index = hoverpage.slotId;
+				}
+				pagesProvider.place(index, button == 1);
 				return true;
 			}
 			if (hoverpage != null && button == 2) {
@@ -139,9 +140,6 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		int guiTop = getTop();
 		mouseOverPageArea = GuiUtils.contains(mouseX, mouseY, guiLeft, guiTop, xSize - 20, ySize);
 
-		hovertext.clear();
-		hoverpage = null;
-
 		int color = 0xAA000000;
 		drawRect(guiLeft, guiTop, guiLeft + xSize - 20, guiTop + ySize, color); // Back
 
@@ -152,27 +150,28 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 		this.setZLevel(1.0F);
 		GlStateManager.pushMatrix();
 		
+		boolean noHover = true;
 		int currentScroll = -scrollbar.getCurrentPos();
 		List<PositionableItem> pages = getPages();
 		int maxScroll = 0;
 		
 		//XXX: (PageRender) If these were rendered as individual sub-elements, we could do some fancy things, like making them appear to move on sort (animated sort)
-		float rootX = guiLeft;
-		float rootY = guiTop + currentScroll;
 		if (pages != null) {
+			float x = guiLeft;
+			float y = guiTop + currentScroll;
 			float pagexSize = pageWidth;
 			float pageySize = pageHeight;
 			for (PositionableItem positionable : pages) {
 				ItemStack page = positionable.itemstack;
 				float pageX = positionable.x;
 				float pageY = positionable.y;
-				if (pageY + pageHeight * 2 - ySize > maxScroll) {
-					maxScroll = (int) (pageY + pageHeight * 2 + 6 - ySize);
+				if (pageY + pageHeight - ySize > maxScroll) {
+					maxScroll = (int) (pageY + pageHeight + 6 - ySize);
 				}
-				if (rootY + pageY < guiTop - pageHeight) {
+				if (y + pageY < guiTop - pageHeight) {
 					continue;
 				}
-				if (rootY + pageY > guiTop + ySize) {
+				if (y + pageY > guiTop + ySize) {
 					continue;
 				}
 				String displayname = getDisplayName(page);
@@ -182,37 +181,22 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 					}
 				}
 				if (positionable.count > 0) {
-					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), page, pagexSize, pageySize, rootX + pageX, rootY + pageY);
+					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), page, pagexSize, pageySize, x + pageX, y + pageY);
 				} else {
-					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), ItemStack.EMPTY, pagexSize, pageySize, rootX + pageX, rootY + pageY);
+					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), ItemStack.EMPTY, pagexSize, pageySize, x + pageX, y + pageY);
 				}
 				if (positionable.count > 1) {
-					GuiUtils.drawScaledText("" + positionable.count, (int) (rootX + pageX), (int) (rootY + pageY + pageHeight - 7), 20, 10, 0xFFFFFF);
+					GuiUtils.drawScaledText("" + positionable.count, (int) (x + pageX), (int) (y + pageY + pageHeight - 7), 20, 10, 0xFFFFFF);
 				}
 				if (mouseOverPageArea) {
-					testMouseOver(positionable, page, displayname, mouseX, mouseY, (int) (rootX + pageX), (int) (rootY + pageY), (int) pagexSize, (int) pageySize);
+					if (testMouseOver(positionable, page, displayname, mouseX, mouseY, (int) (x + pageX), (int) (y + pageY), (int) pagexSize, (int) pageySize))
+						noHover = false;
 				}
 			}
 		}
-		if (hoverpage == null) {
-			if (pages != null && mouseOverPageArea && !mc.player.inventory.getItemStack().isEmpty()) { //XXX: would be nice if the render only kicked in for things that could be accepted
-				int rowSize = (int)(xSize / pageWidth);
-				float x = mouseX - guiLeft;
-				float y = mouseY - currentScroll - guiTop;
-				hoverslot = (int)(x / pageWidth) + (int)(y / pageHeight) * rowSize;
-				int count = pages.size();
-	
-				float xStep = pageWidth + 1;
-				float yStep = pageHeight + 1;
-				for (int i = count; i <= hoverslot; ++i) {
-					float pageX = i % rowSize * xStep;
-					float pageY = i / rowSize * yStep;
-					if (pageY + pageHeight * 2 - ySize > maxScroll) {
-						maxScroll = (int) (pageY + pageHeight * 2 + 6 - ySize);
-					}
-					GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), ItemStack.EMPTY, pageWidth, pageHeight, rootX + pageX, rootY + pageY);
-				}
-			}
+		if (noHover) {
+			hoverpage = null;
+			hovertext.clear();
 		}
 		
 		scrollbar.setMaxScroll(maxScroll);
@@ -238,15 +222,18 @@ public class GuiElementPageSurface extends GuiElement implements IGuiOnTextChang
 	private boolean testMouseOver(PositionableItem positionable, ItemStack page, String displayname, int mouseX, int mouseY, int i, int j, int pagexSize, int pageySize) {
 		if (!GuiUtils.contains(mouseX, mouseY, i, j, (int) pagexSize, (int) pageySize))
 			return false;
+		if (hoverpage == positionable)
+			return true;
+		if (page.isEmpty())
+			return true;
 
 		hoverpage = positionable;
-		hoverslot = hoverpage.slotId;
 		hovertext.clear();
 
 		Page.getTooltip(page, hovertext);
 		if (displayname != null)
 			hovertext.add(displayname);
-		GuiUtils.onItemTooltip(page, pagesProvider == null ? null : pagesProvider.getItemStack(), this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
+		net.minecraftforge.event.ForgeEventFactory.onItemTooltip(page, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
 		return true;
 	}
 
