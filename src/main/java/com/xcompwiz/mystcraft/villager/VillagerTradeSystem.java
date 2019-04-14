@@ -32,6 +32,8 @@ public class VillagerTradeSystem {
 		if (!villager.getProfessionForge().equals(Mystcraft.instance.archivist)) {
 			return false;
 		}
+		if (event.getEntityPlayer().isSneaking())
+			return false;
 
 		event.getEntityPlayer().openGui(Mystcraft.instance, ModGUIs.VILLAGER.ordinal(), event.getEntityPlayer().world, villager.getEntityId(), 0, 0);
 		return true;
