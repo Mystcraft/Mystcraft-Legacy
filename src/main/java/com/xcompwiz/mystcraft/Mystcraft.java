@@ -112,7 +112,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
-@Mod(modid = MystObjects.MystcraftModId, version = "@VERSION@", name = "Mystcraft", dependencies = "required-after:forge@[14.23.5.2770,)", acceptedMinecraftVersions = "[1.12]")
+@Mod(modid = MystObjects.MystcraftModId, version = "@VERSION@", name = "Mystcraft", dependencies = "required-after:forge@[14.23.3.2768,)", acceptedMinecraftVersions = "[1.12]")
 public class Mystcraft {
 
 	@Instance(MystObjects.MystcraftModId)
@@ -277,7 +277,7 @@ public class Mystcraft {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		//FMLInterModComms.sendMessage("lookingglass", "API", "com.xcompwiz.mystcraft.integration.lookingglass.LookingGlassIntegration.register");
+		FMLInterModComms.sendMessage("lookingglass", "API", "com.xcompwiz.mystcraft.integration.lookingglass.LookingGlassIntegration.register");
 
 		FMLInterModComms.sendMessage("reccomplex", "registerDimensionType", "MYSTCRAFT_PROFILING");
 
