@@ -33,8 +33,6 @@ public class GuiElementScrollablePages extends GuiElement {
 
 		List<ItemStack> getPageList();
 
-		ItemStack getItemStack();
-
 	}
 
 	private IGuiPageListProvider pagesprovider;
@@ -86,19 +84,7 @@ public class GuiElementScrollablePages extends GuiElement {
 	}
 
 	@Override
-	public boolean _onMouseUp(int mouseX, int mouseY, int button) {
-		pickupHoveredPage();
-		return false;
-	}
-
-	@Override
-	public boolean _onMouseDrag(int mouseX, int mouseY, int clicked_id, long lastclick) {
-		pickupHoveredPage();
-		return false;
-	}
-
-	@Override
-	public boolean _onMouseDown(int mouseX, int mouseY, int button) {
+	public boolean _onMouseDown(int i, int j, int k) {
 		if (!this.isEnabled()) {
 			return false;
 		}
@@ -107,12 +93,12 @@ public class GuiElementScrollablePages extends GuiElement {
 			return false;
 		int guiLeft = getLeft();
 		int guiTop = getTop();
-		if (mouseX > guiLeft && mouseX < guiLeft + xSize && mouseY > guiTop && mouseY < guiTop + ySize) {
-			if (mouseX > guiLeft && mouseX < guiLeft + arrowWidth && mouseY > guiTop && mouseY < guiTop + ySize) {
+		if (i > guiLeft && i < guiLeft + xSize && j > guiTop && j < guiTop + ySize) {
+			if (i > guiLeft && i < guiLeft + arrowWidth && j > guiTop && j < guiTop + ySize) {
 				cycleLeft();
 				return true;
 			}
-			if (mouseX > guiLeft + xSize - arrowWidth && mouseX < guiLeft + xSize && mouseY > guiTop && mouseY < guiTop + ySize) {
+			if (i > guiLeft + xSize - arrowWidth && i < guiLeft + xSize && j > guiTop && j < guiTop + ySize) {
 				cycleRight();
 				return true;
 			}
@@ -120,7 +106,7 @@ public class GuiElementScrollablePages extends GuiElement {
 				int index = hoverpage;
 				if (index == -1)
 					index = pageList.size();
-				listener.onItemPlace(this, index, button);
+				listener.onItemPlace(this, index, k);
 				return true;
 			}
 			if (hoverpage != -1) {
@@ -150,11 +136,13 @@ public class GuiElementScrollablePages extends GuiElement {
 			firstElement = 0;
 	}
 
-	private void pickupHoveredPage() {
+	@Override
+	public boolean _onMouseUp(int i, int j, int k) {
 		if (clickedpage != -1 && hoverpage == clickedpage) {
 			listener.onItemRemove(this, clickedpage);
 		}
 		clickedpage = -1;
+		return false;
 	}
 
 	@Override
@@ -170,9 +158,6 @@ public class GuiElementScrollablePages extends GuiElement {
 		int guiLeft = getLeft();
 		int guiTop = getTop();
 		mouseOver = this.contains(mouseX, mouseY);
-		hoverpage = -1;
-		hovertext.clear();
-
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(guiLeft, guiTop, 0);
 		mouseX -= guiLeft;
@@ -185,6 +170,7 @@ public class GuiElementScrollablePages extends GuiElement {
 		GlStateManager.pushMatrix();
 		GuiUtils.startGlScissor(guiLeft + 1, guiTop, xSize - 2, ySize);
 
+		boolean noHover = true;
 		List<ItemStack> pageList = getPageList();
 		if (pageList != null) {
 			float x = 2;
@@ -195,20 +181,28 @@ public class GuiElementScrollablePages extends GuiElement {
 				ItemStack page = pageList.get(i);
 				GuiUtils.drawPage(mc.renderEngine, this.getZLevel(), page, pagexSize, pageySize, x, y);
 				if (GuiUtils.contains(mouseX, mouseY, (int) x, (int) y, (int) pagexSize, (int) pageySize)) {
-					hoverpage = i;
+					noHover = false;
+					if (hoverpage != i) {
+						hoverpage = i;
+						hovertext.clear();
 
-					Page.getTooltip(page, hovertext);
-					if (Page.getSymbol(page) != null) {
-						IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
-						if (symbol != null)
-							hovertext.add(symbol.getLocalizedName());
+						Page.getTooltip(page, hovertext);
+						if (Page.getSymbol(page) != null) {
+							IAgeSymbol symbol = SymbolManager.getAgeSymbol(Page.getSymbol(page));
+							if (symbol != null)
+								hovertext.add(symbol.getLocalizedName());
+						}
+						net.minecraftforge.event.ForgeEventFactory.onItemTooltip(page, this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
 					}
-					GuiUtils.onItemTooltip(page, pagesprovider == null ? null : pagesprovider.getItemStack(), this.mc.player, hovertext, ITooltipFlag.TooltipFlags.NORMAL);
 				}
 				x += pagexSize + 2;
 				if (x > xSize)
 					break;
 			}
+		}
+		if (noHover) {
+			hoverpage = -1;
+			hovertext.clear();
 		}
 		
 		GuiUtils.endGlScissor();
