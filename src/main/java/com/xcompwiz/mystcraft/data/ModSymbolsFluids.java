@@ -41,6 +41,12 @@ public class ModSymbolsFluids {
 		Map<String, Fluid> map = FluidRegistry.getRegisteredFluids();
 		for (Entry<String, Fluid> entry : map.entrySet()) {
 			Fluid fluid = entry.getValue();
+
+			//HellFire: Prevent gaseous fluid symbols -> guaranteed source of massive performance issues for very unlikely gain.
+			if (fluid.isGaseous() || fluid.getDensity() < 0) {
+				continue;
+			}
+
 			if (blacklist.contains(fluid))
 				continue;
 			Block block = fluid.getBlock();
