@@ -14,97 +14,51 @@ public class GenLayerZoomMyst extends GenLayer {
 	 * particular GenLayer subclass. int areaX, int areaY, int areaWidth, int areaHeight
 	 */
 	@Override
-	public int[] getInts(int par1, int par2, int par3, int par4) {
-		int var5 = par1 >> 1;
-		int var6 = par2 >> 1;
-		int var7 = (par3 >> 1) + 3;
-		int var8 = (par4 >> 1) + 3;
-		int[] var9 = this.parent.getInts(var5, var6, var7, var8);
-		int[] var10 = IntCache.getIntCache(var7 * 2 * var8 * 2);
-		int var11 = var7 << 1;
+	public int[] getInts(int areaX, int areaY, int areaWidth, int areaHeight) {
+		int biomeTileOffsetX = areaX >> 1;
+		int biomeTileOffsetY = areaY >> 1;
+		int biomeTileWidth  = (areaWidth  >> 1) + 3;
+		int biomeTileHeight = (areaHeight >> 1) + 3;
+		int[] var9 = this.parent.getInts(biomeTileOffsetX, biomeTileOffsetY, biomeTileWidth, biomeTileHeight);
+		int[] var10 = IntCache.getIntCache(biomeTileWidth * 2 * biomeTileHeight * 2);
+		int var11 = biomeTileWidth << 1;
 		int var13;
 
-		for (int var12 = 0; var12 < var8 - 1; ++var12) {
-			var13 = var12 << 1;
+		for (int stepX = 0; stepX < biomeTileHeight - 1; ++stepX) {
+			var13 = stepX << 1;
 			int var14 = var13 * var11;
-			int var15 = var9[0 + (var12 + 0) * var7];
-			int var16 = var9[0 + (var12 + 1) * var7];
+			int var15 = var9[0 + (stepX + 0) * biomeTileWidth];
+			int var16 = var9[0 + (stepX + 1) * biomeTileWidth];
 
-			for (int var17 = 0; var17 < var7 - 1; ++var17) {
-				this.initChunkSeed((var17 + var5 << 1), (var12 + var6 << 1));
-				int var18 = var9[var17 + 1 + (var12 + 0) * var7];
-				int var19 = var9[var17 + 1 + (var12 + 1) * var7];
+			for (int var17 = 0; var17 < biomeTileWidth - 1; ++var17) {
+				this.initChunkSeed((var17 + biomeTileOffsetX << 1), (stepX + biomeTileOffsetY << 1));
+				int var18 = var9[var17 + 1 + (stepX + 0) * biomeTileWidth];
+				int var19 = var9[var17 + 1 + (stepX + 1) * biomeTileWidth];
 				var10[var14] = var15;
-				var10[var14++ + var11] = this.choose(var15, var16);
-				var10[var14] = this.choose(var15, var18);
-				var10[var14++ + var11] = this.func_35514_b(var15, var18, var16, var19);
+				var10[var14++ + var11] = this.selectRandom(var15, var16);
+				var10[var14] = this.selectRandom(var15, var18);
+				var10[var14++ + var11] = this.selectModeOrRandom(var15, var18, var16, var19);
 				var15 = var18;
 				var16 = var19;
 			}
 		}
 
-		int[] var20 = IntCache.getIntCache(par3 * par4);
+		int[] var20 = IntCache.getIntCache(areaWidth * areaHeight);
 
-		for (var13 = 0; var13 < par4; ++var13) {
-			System.arraycopy(var10, (var13 + (par2 & 1)) * (var7 << 1) + (par1 & 1), var20, var13 * par3, par3);
+		for (var13 = 0; var13 < areaHeight; ++var13) {
+			System.arraycopy(var10, (var13 + (areaY & 1)) * (biomeTileWidth << 1) + (areaX & 1), var20, var13 * areaWidth, areaWidth);
 		}
 
 		return var20;
 	}
 
-	/**
-	 * Chooses one of the two inputs randomly.
-	 */
-	protected int choose(int par1, int par2) {
-		return this.nextInt(2) == 0 ? par1 : par2;
-	}
+	public static GenLayer magnify(long seedShift, GenLayer parent, int magnificationCount) {
+		GenLayer layer = parent;
 
-	protected int func_35514_b(int par1, int par2, int par3, int par4) {
-		if (par2 == par3 && par3 == par4) {
-			return par2;
-		} else if (par1 == par2 && par1 == par3) {
-			return par1;
-		} else if (par1 == par2 && par1 == par4) {
-			return par1;
-		} else if (par1 == par3 && par1 == par4) {
-			return par1;
-		} else if (par1 == par2 && par3 != par4) {
-			return par1;
-		} else if (par1 == par3 && par2 != par4) {
-			return par1;
-		} else if (par1 == par4 && par2 != par3) {
-			return par1;
-		} else if (par2 == par1 && par3 != par4) {
-			return par2;
-		} else if (par2 == par3 && par1 != par4) {
-			return par2;
-		} else if (par2 == par4 && par1 != par3) {
-			return par2;
-		} else if (par3 == par1 && par2 != par4) {
-			return par3;
-		} else if (par3 == par2 && par1 != par4) {
-			return par3;
-		} else if (par3 == par4 && par1 != par2) {
-			return par3;
-		} else if (par4 == par1 && par2 != par3) {
-			return par3;
-		} else if (par4 == par2 && par1 != par3) {
-			return par3;
-		} else if (par4 == par3 && par1 != par2) {
-			return par3;
-		} else {
-			int var5 = this.nextInt(4);
-			return var5 == 0 ? par1 : (var5 == 1 ? par2 : (var5 == 2 ? par3 : par4));
-		}
-	}
-
-	public static GenLayer func_35515_a(long par0, GenLayer par2GenLayer, int par3) {
-		Object var4 = par2GenLayer;
-
-		for (int var5 = 0; var5 < par3; ++var5) {
-			var4 = new GenLayerZoomMyst(par0 + var5, (GenLayer) var4);
+		for (int i = 0; i < magnificationCount; ++i) {
+			layer = new GenLayerZoomMyst(seedShift + i, layer);
 		}
 
-		return (GenLayer) var4;
+		return layer;
 	}
 }

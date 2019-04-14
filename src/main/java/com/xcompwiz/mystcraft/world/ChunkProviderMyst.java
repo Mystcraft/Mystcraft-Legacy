@@ -3,9 +3,6 @@ package com.xcompwiz.mystcraft.world;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.mystcraft.world.chunk.ChunkPrimerMyst;
 import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
@@ -33,6 +30,9 @@ import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 public class ChunkProviderMyst implements IChunkGenerator {
 
 	private AgeController controller;
@@ -41,7 +41,7 @@ public class ChunkProviderMyst implements IChunkGenerator {
 	private World worldObj;
 	private AgeData agedata;
 	private double stoneNoise[];
-	private Biome tempBiomesArray[];
+	private Biome biomesForGeneration[];
 
 	private MapGenScatteredFeatureMyst scatteredFeatureGenerator = new MapGenScatteredFeatureMyst();
 	private WorldGenMinable worldgenminablequartz = new WorldGenMinable(Blocks.QUARTZ_ORE.getDefaultState(), 13, BlockMatcher.forBlock(Blocks.NETHERRACK));
@@ -78,15 +78,18 @@ public class ChunkProviderMyst implements IChunkGenerator {
 		rand.setSeed(chunkX * 0x4f9939f508L + chunkZ * 0x1ef1565bd5L);
 		ChunkPrimerMyst primer = new ChunkPrimerMyst();
 
+		// Add filters
+		controller.getTerrainFilters(primer, chunkX, chunkZ).forEach(primer::addFilter);
+
 		// Base terrain generation
 		controller.generateTerrain(chunkX, chunkZ, primer);
 
 		// Get list of biomes in chunk
-		tempBiomesArray = worldObj.getBiomeProvider().getBiomes(tempBiomesArray, chunkX * 16, chunkZ * 16, 16, 16);
+		biomesForGeneration = worldObj.getBiomeProvider().getBiomesForGeneration(biomesForGeneration, chunkX * 16, chunkZ * 16, 16, 16);
 
 		// perform biome decoration pass
 		primer.inBiomeDecoration = true;
-		replaceBlocksForBiome(chunkX, chunkZ, primer, tempBiomesArray);
+		replaceBlocksForBiome(chunkX, chunkZ, primer, biomesForGeneration);
 		primer.inBiomeDecoration = false;
 
 		// Perform terrain modification pass (ex. caves, skylands)
@@ -108,14 +111,8 @@ public class ChunkProviderMyst implements IChunkGenerator {
 			}
 		}
 
-        byte[] chunkBiomeArray = chunk.getBiomeArray();
-        for (int i = 0; i < chunkBiomeArray.length; ++i) {
-            chunkBiomeArray[i] = (byte)Biome.getIdForBiome(tempBiomesArray[i]);
-        }
-        
-        // Final logic pass through chunk (ex. Floating Island biome replacement) 
+		// Final logic pass through chunk (ex. Floating Island biome replacement) 
 		controller.finalizeChunk(chunk, chunkX, chunkZ);
-
 		return chunk;
 	}
 

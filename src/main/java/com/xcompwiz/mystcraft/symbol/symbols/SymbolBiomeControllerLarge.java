@@ -161,15 +161,15 @@ public class SymbolBiomeControllerLarge extends SymbolBase {
 			GenLayer obj = new GenLayerIsland(1L);
 			obj = new GenLayerFuzzyZoom(2000L, (obj));
 			GenLayer obj1 = obj;
-			obj1 = GenLayerZoomMyst.func_35515_a(1000L, (obj1), 0);
+			obj1 = GenLayerZoomMyst.magnify(1000L, (obj1), 0);
 			// obj1 = new GenLayerRiverInit(100L, ((GenLayer)(obj1)));
-			obj1 = GenLayerZoomMyst.func_35515_a(1000L, (obj1), zoomscale + 1);
+			obj1 = GenLayerZoomMyst.magnify(1000L, (obj1), zoomscale + 1);
 			// obj1 = new GenLayerRiver(1L, ((GenLayer)(obj1)));
 			obj1 = new GenLayerSmooth(1000L, (obj1));
 			GenLayer obj2 = obj;
-			obj2 = GenLayerZoomMyst.func_35515_a(1000L, (obj2), 0);
+			obj2 = GenLayerZoomMyst.magnify(1000L, (obj2), 0);
 			obj2 = new GenLayerBiomeMyst(200L, (obj2), par2WorldType, allowedBiomes);
-			obj2 = GenLayerZoomMyst.func_35515_a(1000L, (obj2), 2);
+			obj2 = GenLayerZoomMyst.magnify(1000L, (obj2), 2);
 
 			for (int i = 0; i < zoomscale; i++) {
 				obj2 = new GenLayerZoomMyst(1000 + i, (obj2));

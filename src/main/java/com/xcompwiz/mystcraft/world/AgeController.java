@@ -1,9 +1,6 @@
 package com.xcompwiz.mystcraft.world;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import com.xcompwiz.mystcraft.Mystcraft;
@@ -37,6 +34,7 @@ import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
+import com.xcompwiz.mystcraft.api.world.logic.IPrimerFilter;
 import com.xcompwiz.mystcraft.world.profiling.ChunkProfiler;
 import com.xcompwiz.mystcraft.world.profiling.ChunkProfilerManager;
 import com.xcompwiz.util.SpiralOutwardIterator;
@@ -268,7 +266,7 @@ public class AgeController implements AgeDirector {
 		node.addChild("profiled_chunks", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + profiler.getCount(); }});
 		node = node.getOrCreateNode("instability");
 		node.addChild("symbols", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + symbolinstability; }});
-		node.addChild("debug", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + debuginstability; } @Override public void set(ICommandSender agent, String value) { debuginstability = Integer.parseInt(value); }});
+		node.addChild("debug", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + debuginstability; } @Override public void set(ICommandSender agent, String value) { debuginstability = Integer.getInteger(value); }});
 		node.addChild("book", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + agedata.getBaseInstability(); }});
 		node.addChild("total", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + (symbolinstability + (blockinstability == null ? 0 : blockinstability) + agedata.getBaseInstability() + bonusmanager.getResult()); }});
 		node.addChild("bonus_total", new DefaultValueCallback() { @Override public String get(ICommandSender agent) { return "" + bonusmanager.getResult(); }});
@@ -559,6 +557,20 @@ public class AgeController implements AgeDirector {
 	public void generateTerrain(int chunkX, int chunkZ, ChunkPrimer primer) {
 		validate();
 		getTerrainGenerator().generateTerrain(chunkX, chunkZ, primer);
+	}
+
+	public Set<IPrimerFilter> getTerrainFilters(ChunkPrimer primer, int chunkX, int chunkZ) {
+		validate();
+		Set<IPrimerFilter> filters = new HashSet<>();
+		if (terrainalterations != null && terrainalterations.size() > 0) {
+			for (ITerrainAlteration mod : terrainalterations) {
+				IPrimerFilter filter = mod.getGenerationFilter(this.world, primer, chunkX, chunkZ);
+				if (filter != null) {
+					filters.add(filter);
+				}
+			}
+		}
+		return filters;
 	}
 
 	public void modifyTerrain(int chunkX, int chunkZ, ChunkPrimer primer) {
