@@ -3,6 +3,7 @@ package com.xcompwiz.mystcraft.world.gen.feature;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
@@ -28,8 +29,16 @@ public class WorldGenMystCrystalFormation extends WorldGeneratorAdv {
 	private void generateLine(Random rand) {
 		float angle1 = (rand.nextFloat() * 140.0F + 15.0F);
 		int length = rand.nextInt(7) + 6;
-		int[] end = new int[] { crystalPos.getX() + (int) (length * Math.cos(angle1 * Math.PI / 180)), crystalPos.getY() + (int) (length * Math.cos(angle1 * Math.PI / 180)), crystalPos.getZ() + rand.nextInt(7) - 3 };
-		int[] start = new int[] { crystalPos.getX(), crystalPos.getY(), crystalPos.getZ() };
+		int[] end = new int[] {
+				crystalPos.getX() + (int) (length * Math.cos(angle1 * Math.PI / 180)),
+				crystalPos.getY() + (int) (length * Math.sin(angle1 * Math.PI / 180)),
+				crystalPos.getZ() + rand.nextInt(7) - 3
+		};
+		int[] start = new int[] {
+				crystalPos.getX(),
+				crystalPos.getY(),
+				crystalPos.getZ()
+		};
 		placeBlockLine(start, end, block);
 	}
 
@@ -75,7 +84,7 @@ public class WorldGenMystCrystalFormation extends WorldGeneratorAdv {
 	}
 
 	private void setBlock(BlockPos pos, IBlockState state) {
-		if (worldObj.getBlockState(pos).getBlock().equals(Blocks.BEDROCK)) {
+		if (!worldObj.getBlockState(pos).getBlock().equals(Blocks.BEDROCK)) {
 			placeBlock(worldObj, pos, state, 3);
 		}
 	}
@@ -97,18 +106,17 @@ public class WorldGenMystCrystalFormation extends WorldGeneratorAdv {
 
 	private boolean validLocation() {
 		IBlockState state = worldObj.getBlockState(crystalPos);
-		if (state.getBlock().equals(Blocks.AIR)) {
+		while (state.getMaterial() != Material.AIR) {
 			crystalPos = crystalPos.up();
 			if (crystalPos.getY() > worldObj.getHeight()) {
 				return false;
 			}
 			state = worldObj.getBlockState(crystalPos);
 		}
-		if (!state.getBlock().equals(Blocks.WATER) && !state.getBlock().equals(Blocks.AIR)) {
+		while (!state.getMaterial().isLiquid() && state.getMaterial() != Material.AIR) {
 			crystalPos = crystalPos.up();
-			state = worldObj.getBlockState(crystalPos);
 		}
 		crystalPos = crystalPos.down(2);
-		return !worldObj.getBlockState(crystalPos).getBlock().equals(Blocks.AIR);
+		return worldObj.getBlockState(crystalPos).getMaterial() != Material.AIR;
 	}
 }
