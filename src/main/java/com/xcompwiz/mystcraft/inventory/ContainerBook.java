@@ -5,9 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.entity.EntityLinkbook;
@@ -36,6 +33,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ContainerBook extends ContainerBase implements IGuiMessageHandler, IBookContainer {
 
@@ -188,13 +188,17 @@ public class ContainerBook extends ContainerBase implements IGuiMessageHandler, 
 				this.inventorySlots.clear();
 				this.inventoryItemStacks.clear();
 				IItemHandlerModifiable other = getCurrentOtherInventory();
-				addSlotToContainer(new SlotFiltered(other, other instanceof InventoryFilter ? (InventoryFilter) other : null, 0, 41, 21));
+				if (other != null) {
+					addSlotToContainer(new SlotFiltered(other, other instanceof InventoryFilter ? (InventoryFilter) other : null, 0, 41, 21));
+				}
 			} else if ((book.isEmpty() && getCurrentOtherInventorySize() == 1 && this.inventorySlots.size() != 37)) {
 				this.inventorySlots.clear();
 				this.inventoryItemStacks.clear();
 				addInventorySlots();
 				IItemHandlerModifiable other = getCurrentOtherInventory();
-				addSlotToContainer(new SlotFiltered(other, other instanceof InventoryFilter ? (InventoryFilter) other : bookTile, 0, 80, 35));
+				if (other != null) {
+					addSlotToContainer(new SlotFiltered(other, other instanceof InventoryFilter ? (InventoryFilter) other : bookTile, 0, 80, 35));
+				}
 			} else if ((book.isEmpty() && getCurrentOtherInventorySize() == 0 && this.inventorySlots.size() != 36)) {
 				this.inventorySlots.clear();
 				this.inventoryItemStacks.clear();
