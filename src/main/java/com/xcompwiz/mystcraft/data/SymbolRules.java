@@ -10,7 +10,6 @@ import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolBase;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.util.CollectionUtils;
-
 import net.minecraft.util.ResourceLocation;
 
 public class SymbolRules {
