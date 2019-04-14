@@ -48,7 +48,8 @@ public class LinkListenerBasic {
 			event.setCanceled(true); //We'll need to override isLinkPermitted handling for unestablished links
 		} else if (entity.isDead || entity.world != world || entity.isBeingRidden()) {
 			event.setCanceled(true);
-		} else if (entity.world.provider.getDimension() == dimid && !info.getFlag(LinkPropertyAPI.FLAG_INTRA_LINKING)) {
+		} else if (entity.world.provider.getDimension() == dimid &&
+				!info.getFlag(LinkPropertyAPI.FLAG_INTRA_LINKING) && !info.getFlag(LinkPropertyAPI.FLAG_INTRA_LINKING_ONLY)) {
 			event.setCanceled(true);
 		} else if (entity.world.provider.getDimension() != dimid && info.getFlag(LinkPropertyAPI.FLAG_INTRA_LINKING_ONLY)) {
 			event.setCanceled(true);
