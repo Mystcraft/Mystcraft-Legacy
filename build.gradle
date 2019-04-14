@@ -1,4 +1,4 @@
-ext.forgeversion     = "1.12.2-14.23.5.2770"
+ext.forgeversion     = "1.12.2-14.23.3.2768"
 group                = "com.xcompwiz.mystcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 ext.archivesBaseName = "mystcraft"
 ext.nameCased        = "Mystcraft"
@@ -73,11 +73,8 @@ repositories {
 	}
 }
 
-if (!project.smallChangelog.exists()) {
-	smallChangelog.write ""
-}
-if (!project.releaseChangelog.exists()) {
-	releaseChangelog.write ""
+dependencies {
+	deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.17.536"
 }
 
 if (file('locations.gradle').exists()) {
