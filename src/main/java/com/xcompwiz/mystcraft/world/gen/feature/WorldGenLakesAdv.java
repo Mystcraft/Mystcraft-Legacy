@@ -78,7 +78,7 @@ public class WorldGenLakesAdv extends WorldGeneratorAdv {
 							return false;
 						}
 
-						if (i2 < 4 && !material.isSolid() && !worldObj.getBlockState(posAt).getBlock().equals(state.getBlock())) {
+						if (i2 < 4 && !material.isSolid() && !worldObj.getBlockState(posAt).equals(state)) {
 							return false;
 						}
 					}
