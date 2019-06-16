@@ -2,8 +2,7 @@ package com.xcompwiz.mystcraft.linking;
 
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAllow;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventEnd;
-import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventEnterWorld;
-import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventExitWorld;
+import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventFailed;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventStart;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 
@@ -24,16 +23,10 @@ public class LinkListenerManager {
 		MinecraftForge.EVENT_BUS.post(event);
 	}
 
-	public static void onExitWorld(Entity entity, ILinkInfo info) {
-		Event event = new LinkEventExitWorld(entity, info.clone());
+	public static void onLinkFailed(World origin, Entity entity, ILinkInfo info) {
+		Event event = new LinkEventFailed(origin, entity, info.clone());
 		MinecraftForge.EVENT_BUS.post(event);
 	}
-
-	public static void onEnterWorld(World origin, World destination, Entity entity, ILinkInfo info) {
-		Event event = new LinkEventEnterWorld(origin, destination, entity, info.clone());
-		MinecraftForge.EVENT_BUS.post(event);
-	}
-
 	public static void onLinkEnd(World origin, World destination, Entity entity, ILinkInfo info) {
 		Event event = new LinkEventEnd(origin, destination, entity, info.clone());
 		MinecraftForge.EVENT_BUS.post(event);

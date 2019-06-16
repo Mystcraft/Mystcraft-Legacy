@@ -56,7 +56,7 @@ public abstract class LinkEvent extends Event {
 	}
 
 	/**
-	 * Called before the entity is linked
+	 * Called before the entity is linked. Does not guarantee the entity will actually change dimensions/location.
 	 */
 	public static class LinkEventStart extends LinkEvent {
 		public LinkEventStart(World origin, Entity entity, ILinkInfo info) {
@@ -65,8 +65,19 @@ public abstract class LinkEvent extends Event {
 	}
 
 	/**
-	 * Called when the entity leaves their current world but has not yet entered the next
+	 * Fires if the entity failed to change dimensions after LinkEventStart was fired.
 	 */
+	public static class LinkEventFailed extends LinkEvent {
+		public LinkEventFailed(World origin, Entity entity, ILinkInfo info) {
+			super(origin, null, entity, info);
+		}
+	}
+
+	/**
+	 * Called when the entity leaves their current world but has not yet entered the next
+	 * @Deprecated Mystcraft now uses the vanilla Entity.changeDimension call, so this event no longer fires.
+	 */
+	@Deprecated
 	public static class LinkEventExitWorld extends LinkEvent {
 		public LinkEventExitWorld(Entity entity, ILinkInfo info) {
 			super(null, null, entity, info);
@@ -76,7 +87,9 @@ public abstract class LinkEvent extends Event {
 	/**
 	 * Called when the entity enters the new world and their position has been approximated. The entity is not fully associated or tuned with the world yet, and
 	 * players have not been sent server-side information such as weather and time.
+	 * @Deprecated Mystcraft now uses the vanilla Entity.changeDimension call, so this event no longer fires.
 	 */
+	@Deprecated
 	public static class LinkEventEnterWorld extends LinkEvent {
 		public LinkEventEnterWorld(World origin, World destination, Entity entity, ILinkInfo info) {
 			super(origin, destination, entity, info);
