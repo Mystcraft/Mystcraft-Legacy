@@ -5,8 +5,6 @@ import java.util.Random;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAllow;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventAlter;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventEnd;
-import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventEnterWorld;
-import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventExitWorld;
 import com.xcompwiz.mystcraft.api.event.LinkEvent.LinkEventStart;
 import com.xcompwiz.mystcraft.api.hook.LinkPropertyAPI;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
@@ -114,7 +112,7 @@ public class LinkListenerBasic {
 	}
 
 	@SubscribeEvent
-	public void onExitWorld(LinkEventExitWorld event) {
+	public void handleMomentum(LinkEventEnd event) {
 		Entity entity = event.entity;
 		ILinkInfo info = event.info;
 
@@ -122,13 +120,11 @@ public class LinkListenerBasic {
 	}
 
 	@SubscribeEvent
-	public void onEnterWorld(LinkEventEnterWorld event) {
+	public void checkForQuinnAchievement(LinkEventEnd event) {
 		Entity entity = event.entity;
 		World world = event.destination;
 
-		if (world.provider instanceof WorldProviderMyst && entity instanceof EntityPlayer) {
-			if (!(entity instanceof EntityPlayerMP))
-				return;
+		if (world.provider instanceof WorldProviderMyst && entity instanceof EntityPlayerMP) {
 			EntityPlayerMP player = (EntityPlayerMP) entity;
 			for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
 				ItemStack itemstack = player.inventory.getStackInSlot(i);
