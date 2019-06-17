@@ -8,12 +8,13 @@
         },
         "description": {
             "translate": "achievement.myst.quinn.desc"
-        }
+        },
+        "hidden": true
     },
-    "parent": "mystcraft:root",
+    "parent": "mystcraft:agebook",
     "criteria": {
-        "myst_write_desk_in_inventory": {
-            "trigger": "mystcraft:enter_myst_dimension"
+        "myst_quinn_trigger": {
+            "trigger": "mystcraft:enter_myst_dimension_quinn"
         }
     }
 }

@@ -129,9 +129,12 @@ public class LinkListenerBasic {
 			for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
 				ItemStack itemstack = player.inventory.getStackInSlot(i);
 				if (!itemstack.isEmpty() && itemstack.getItem() instanceof ItemLinkbook)
+				{
+					ModAchievements.TRIGGER_ENTER_MYST_DIM_SAFE.trigger((EntityPlayerMP) player);
 					return;
+				}
 			}
-			ModAchievements.TRIGGER_ENTER_MYST_DIM.trigger((EntityPlayerMP) player);
+			ModAchievements.TRIGGER_ENTER_MYST_DIM_QUINN.trigger((EntityPlayerMP) player);
 		}
 	}
 

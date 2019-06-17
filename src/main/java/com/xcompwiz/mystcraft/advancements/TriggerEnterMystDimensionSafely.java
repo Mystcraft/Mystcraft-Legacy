@@ -16,9 +16,9 @@ import net.minecraft.advancements.critereon.AbstractCriterionInstance;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 
-public class TriggerEnterMystDimension implements ICriterionTrigger<TriggerEnterMystDimension.Instance> {
+public class TriggerEnterMystDimensionSafely implements ICriterionTrigger<TriggerEnterMystDimensionSafely.Instance> {
 
-	public static ResourceLocation ID = new ResourceLocation(MystObjects.MystcraftModId, "enter_myst_dimension");
+	public static ResourceLocation ID = new ResourceLocation(MystObjects.MystcraftModId, "enter_myst_dimension_safe");
 	private final Map<PlayerAdvancements, Listeners> listeners = Maps.newHashMap();
 
 	@Override

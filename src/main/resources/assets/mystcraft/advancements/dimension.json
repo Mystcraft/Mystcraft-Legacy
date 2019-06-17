@@ -1,0 +1,19 @@
+{
+    "display": {
+        "icon": {
+            "item": "mystcraft:linkbook"
+        },
+        "title": {
+            "translate": "achievement.myst.safe"
+        },
+        "description": {
+            "translate": "achievement.myst.safe.desc"
+        }
+    },
+    "parent": "mystcraft:linkbook",
+    "criteria": {
+        "myst_safe_travel_trigger": {
+            "trigger": "mystcraft:enter_myst_dimension_safe"
+        }
+    }
+}
