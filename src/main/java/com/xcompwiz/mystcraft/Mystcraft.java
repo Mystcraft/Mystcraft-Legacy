@@ -292,14 +292,14 @@ public class Mystcraft {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
 		// Init TileEntities
-		GameRegistry.registerTileEntity(TileEntityLectern.class, MystObjects.MystcraftModId + ":linkbook_lectern");
-		GameRegistry.registerTileEntity(TileEntityBookstand.class, MystObjects.MystcraftModId + ":linkbook_stand");
-		GameRegistry.registerTileEntity(TileEntityStarFissure.class, MystObjects.MystcraftModId + ":starfissure");
-		GameRegistry.registerTileEntity(TileEntityDesk.class, MystObjects.MystcraftModId + ":writingdesk");
-		GameRegistry.registerTileEntity(TileEntityBookReceptacle.class, MystObjects.MystcraftModId + ":crystal_receptacle");
-		GameRegistry.registerTileEntity(TileEntityLinkModifier.class, MystObjects.MystcraftModId + ":linkmodifier");
-		GameRegistry.registerTileEntity(TileEntityBookBinder.class, MystObjects.MystcraftModId + ":bookbinder");
-		GameRegistry.registerTileEntity(TileEntityInkMixer.class, MystObjects.MystcraftModId + ":inkmixer");
+		GameRegistry.registerTileEntity(TileEntityLectern.class, new ResourceLocation(MystObjects.MystcraftModId, "linkbook_lectern"));
+		GameRegistry.registerTileEntity(TileEntityBookstand.class, new ResourceLocation(MystObjects.MystcraftModId, "linkbook_stand"));
+		GameRegistry.registerTileEntity(TileEntityStarFissure.class, new ResourceLocation(MystObjects.MystcraftModId, "starfissure"));
+		GameRegistry.registerTileEntity(TileEntityDesk.class, new ResourceLocation(MystObjects.MystcraftModId, "writingdesk"));
+		GameRegistry.registerTileEntity(TileEntityBookReceptacle.class, new ResourceLocation(MystObjects.MystcraftModId, "crystal_receptacle"));
+		GameRegistry.registerTileEntity(TileEntityLinkModifier.class, new ResourceLocation(MystObjects.MystcraftModId, "linkmodifier"));
+		GameRegistry.registerTileEntity(TileEntityBookBinder.class, new ResourceLocation(MystObjects.MystcraftModId, "bookbinder"));
+		GameRegistry.registerTileEntity(TileEntityInkMixer.class, new ResourceLocation(MystObjects.MystcraftModId, "inkmixer"));
 
 		// Init Entities
 		EntityRegistry.registerModEntity(new ResourceLocation(MystObjects.MystcraftModId, "myst.book"), EntityLinkbook.class, "myst.book", 0, instance, 64, 1, true);
