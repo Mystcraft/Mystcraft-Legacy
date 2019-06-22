@@ -98,6 +98,8 @@ public class BlockBookReceptacle extends BlockContainer {
 		switch (state.getValue(ROTATION)) {
 		case UP:
 			return new AxisAlignedBB(0, 0, 0, 1, 0.375, 1);
+		case DOWN:
+			return new AxisAlignedBB(0, 1 - 0.375, 0, 1, 1, 1);
 		case NORTH:
 			return new AxisAlignedBB(0, 0, 1 - 0.375, 1, 1, 1);
 		case SOUTH:
