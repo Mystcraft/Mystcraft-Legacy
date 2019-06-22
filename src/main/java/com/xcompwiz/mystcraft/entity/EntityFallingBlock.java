@@ -121,7 +121,7 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 
 		NBTTagCompound data = new NBTTagCompound();
 
-		List drops = posState.getBlock().getDrops(world, pos, posState, 0);
+		List<ItemStack> drops = posState.getBlock().getDrops(world, pos, posState, 0);
 		data.setTag(NBT_Drops, NBTUtils.writeItemStackCollection(new NBTTagList(), drops));
 		if (world.getTileEntity(pos) != null) {
 			NBTTagCompound tedata = new NBTTagCompound();
