@@ -122,14 +122,10 @@ public class CloudRendererMyst extends IRenderHandler {
 		float f12 = f3 * 0.8F;
 		float f13 = f4 * 0.8F;
 		float f14 = f5 * 0.8F;
-		float f15 = 0.00390625F;
 		float f16 = (float) MathHelper.floor(d1) * 0.00390625F;
 		float f17 = (float) MathHelper.floor(d2) * 0.00390625F;
 		float f18 = (float) (d1 - (double) MathHelper.floor(d1));
 		float f19 = (float) (d2 - (double) MathHelper.floor(d2));
-		int k = 8;
-		int l = 4;
-		float f20 = 9.765625E-4F;
 		GlStateManager.scale(12.0F, 1.0F, 12.0F);
 
 		for (int i1 = 0; i1 < 2; ++i1) {

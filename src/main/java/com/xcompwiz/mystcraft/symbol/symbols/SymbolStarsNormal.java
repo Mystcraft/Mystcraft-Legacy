@@ -151,10 +151,8 @@ public class SymbolStarsNormal extends SymbolBase {
 					double d16 = Math.cos(d14);
 
 					for (int j = 0; j < 4; ++j) {
-						double d17 = 0.0D;
 						double d18 = (double) ((j & 2) - 1) * d3;
 						double d19 = (double) ((j + 1 & 2) - 1) * d3;
-						double d20 = 0.0D;
 						double d21 = d18 * d16 - d19 * d15;
 						double d22 = d19 * d16 + d18 * d15;
 						double d23 = d21 * d12 + 0.0D * d13;

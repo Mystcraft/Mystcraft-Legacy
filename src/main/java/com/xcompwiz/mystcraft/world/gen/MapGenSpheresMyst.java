@@ -138,8 +138,6 @@ public class MapGenSpheresMyst extends MapGenAdvanced {
 						double xfactorSq = xfactor * xfactor;
 
 						if (xfactorSq + zfactorSq < 1.0D) {
-							int coords = localY << 8 | localZ << 4 | localX;
-
 							double total = xfactorSq + yfactorSq + zfactorSq;
 							if (total < 1.0D) {
 								placeBlock(primer, localX, localY, localZ);

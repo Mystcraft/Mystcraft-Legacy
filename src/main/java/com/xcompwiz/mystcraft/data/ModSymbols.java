@@ -118,7 +118,7 @@ public class ModSymbols {
 			Biome biome = iterator.next();
 			if (biome == null)
 				continue;
-			ResourceLocation biomeID = biome.getRegistryName();
+			//ResourceLocation biomeID = biome.getRegistryName();
 			//if (biome.getBiomeName() == null) { //If it is null, we have bigger problems..
 			//	LoggerUtils.warn("Biome (id " + biomeID.toString() + ") has null name, could not build symbol");
 			//	continue;

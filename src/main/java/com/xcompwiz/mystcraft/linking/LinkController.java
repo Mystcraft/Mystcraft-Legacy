@@ -76,12 +76,10 @@ public class LinkController {
 	private static class LinkTeleporter implements ITeleporter {
 		private final BlockPos targetPos;
 		private final float yaw;
-		private final ILinkInfo info;
 
 		private LinkTeleporter(BlockPos spawn, float yaw, ILinkInfo info) {
 			this.targetPos = spawn;
 			this.yaw = yaw;
-			this.info = info;
 		}
 
 		@Override

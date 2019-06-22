@@ -114,7 +114,6 @@ public class MapGenRavineMyst extends MapGenAdvanced {
 					for (int localY = maxY + 1; !foundwater && localY >= minY - 1; --localY) {
 						for (int localZ = minZ; !foundwater && localZ < maxZ; ++localZ) {
 							for (int localX = minX; !foundwater && localX < maxX; ++localX) {
-								int coords = localY << 8 | localZ << 4 | localX;
 
 								if (localY >= 0 && localY < layers) {
 									IBlockState state = primer.getBlockState(localX, localY, localZ);
@@ -140,8 +139,6 @@ public class MapGenRavineMyst extends MapGenAdvanced {
 								for (int localX = minX; localX < maxX; ++localX) {
 									double xfactor = ((localX + chunkX * 16) + 0.5D - baseX) / var53;
 									double xfactorSq = xfactor * xfactor;
-
-									int coords = localY << 8 | localZ << 4 | localX;
 
 									if (xfactorSq + zfactorSq < 1.0D) {
 										if ((xfactorSq + zfactorSq) * this.field_75046_d[localY] + yfactorSq / 6.0D < 1.0D) {

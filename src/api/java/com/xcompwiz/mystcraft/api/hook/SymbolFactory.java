@@ -6,7 +6,6 @@ import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
 
 /**
  * Provides methods for generating boilerplate {@link IAgeSymbol}s. These methods do not register the symbol directly. Use the

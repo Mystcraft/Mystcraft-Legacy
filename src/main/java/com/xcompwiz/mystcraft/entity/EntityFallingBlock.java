@@ -49,7 +49,6 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 	public IBlockState falltile;
 	public int fallTime;
 	private NBTTagCompound data;
-	private ArrayList collidingBoundingBoxes = new ArrayList();
 
 	public EntityFallingBlock(World world) {
 		super(world);
@@ -210,10 +209,6 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 			this.resetPositionToBB();
 		} else {
 			this.world.profiler.startSection("move");
-			double d10 = this.posX;
-			double d11 = this.posY;
-			double d1 = this.posZ;
-
 			if (this.isInWeb) {
 				this.isInWeb = false;
 				x *= 0.25D;
@@ -266,7 +261,6 @@ public class EntityFallingBlock extends Entity implements IEntityAdditionalSpawn
 				}
 			}
 
-			boolean flag = this.onGround || d3 != y && d3 < 0.0D;
 			this.world.profiler.endSection();
 			this.world.profiler.startSection("rest");
 			this.resetPositionToBB();

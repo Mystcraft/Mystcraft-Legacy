@@ -15,7 +15,6 @@ import com.xcompwiz.mystcraft.api.item.IItemRenameable;
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 import com.xcompwiz.mystcraft.data.ModGUIs;
 import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.inventory.InventoryFolder;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 

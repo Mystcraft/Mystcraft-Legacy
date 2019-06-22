@@ -11,7 +11,6 @@ import com.xcompwiz.mystcraft.inventory.CreativeTabBanners;
 import com.xcompwiz.mystcraft.inventory.CreativeTabMyst;
 import com.xcompwiz.mystcraft.world.profiling.InstabilityDataCalculator;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.BannerPattern;

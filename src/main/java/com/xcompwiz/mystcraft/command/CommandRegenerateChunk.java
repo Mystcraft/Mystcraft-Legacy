@@ -1,7 +1,6 @@
 package com.xcompwiz.mystcraft.command;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.command.CommandException;
@@ -134,7 +133,6 @@ public class CommandRegenerateChunk extends CommandBaseAdv {
 	}
 
 	private void sendToAllPlayersWatchingChunk(WorldServer worldObj, ChunkPos chunkLocation, Packet pkt) {
-		Collection<EntityPlayer> players = worldObj.playerEntities;
 		PlayerChunkMapEntry entry = worldObj.getPlayerChunkMap().getEntry(chunkLocation.x, chunkLocation.z);
 		if (entry != null) {
 			entry.sendPacket(pkt);

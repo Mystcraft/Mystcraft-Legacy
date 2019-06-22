@@ -2,8 +2,6 @@ package com.xcompwiz.mystcraft.data;
 
 import com.xcompwiz.mystcraft.config.MystConfig;
 
-import net.minecraft.item.crafting.IRecipe;
-
 public class ModRecipes {
 
 	private static boolean Linkbook;
@@ -13,7 +11,6 @@ public class ModRecipes {
 	}
 
 	public static void addRecipes() {
-		IRecipe recipe;
 		// Linking Book
 		if (Linkbook) {
 			ModRegistryPrimer.queueForRegistration(new RecipeLinkingbook());

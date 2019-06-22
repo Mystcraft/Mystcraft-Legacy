@@ -34,7 +34,6 @@ public class EffectLightning implements IEnvironmentalEffect {
 		int coords;
 		int x;
 		int z;
-		int y;
 
 		EntityLightningBoltAdv bolt = null;
 		if (worldObj.isRaining() && worldObj.isThundering() && worldObj.rand.nextInt(5000) == 0) {
