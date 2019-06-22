@@ -381,6 +381,7 @@ public class SymbolRemappings {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> List<T> remap(List<T> collection) {
 		for (int i = 0; i < collection.size();) {
 			T element = collection.remove(i);

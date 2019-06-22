@@ -30,6 +30,7 @@ public class ModRegistryPrimer {
 		INSTANCE.bufferedRegistry.computeIfAbsent(registryType, k -> new LinkedList<>()).add(entry);
 	}
 
+	@SuppressWarnings("unchecked")
 	private <V extends IForgeRegistryEntry<V>> void addToRegistry(IForgeRegistry<V> registry) {
 		List<IForgeRegistryEntry<?>> entries = bufferedRegistry.get(registry.getRegistrySuperType());
 		if (entries != null) {

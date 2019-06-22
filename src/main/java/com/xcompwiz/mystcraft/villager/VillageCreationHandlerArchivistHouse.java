@@ -20,6 +20,7 @@ public class VillageCreationHandlerArchivistHouse implements IVillageCreationHan
 		return ComponentVillageArchivistHouse.buildComponent(startPiece, pieces, random, x, y, z, facing, p5);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public PieceWeight getVillagePieceWeight(Random random, int i) {
 		return new PieceWeight((Class<? extends StructureVillagePieces.Village>) getComponentClass(), 20, MathHelper.getInt(random, i, i + 1));
