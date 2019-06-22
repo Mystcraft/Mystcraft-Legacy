@@ -255,21 +255,6 @@ public class TileEntityInkMixer extends TileEntityBase implements IItemBuilder, 
 		return ModLinkEffects.isPropertyAllowed(property);
 	}
 
-	private void addTraitWithProbability(String trait, float prob) {
-		float inverse = 1 - prob;
-		for (Entry<String, Float> entry : ink_probabilities.entrySet()) {
-			entry.setValue(entry.getValue() * inverse);
-		}
-		if (trait.equals("")) {
-			return;
-		}
-		Float f = ink_probabilities.get(trait);
-		if (f != null) {
-			prob += f;
-		}
-		ink_probabilities.put(trait, prob);
-	}
-
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.inventory.hasCapability(facing);

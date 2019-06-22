@@ -165,10 +165,5 @@ public class SymbolStarsNormal extends SymbolBase {
 			}
 			tes.draw();
 		}
-
-		private void setStarColor(int var3, Tessellator var2) {
-			//Hellfire> apply at renderStars, change vertex format to POSITION_COLOR and supply .color to the vertex after .pos
-			// var2.setColorRGBA_F(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), rand.nextFloat()*0.8F+0.2F);
-		}
 	}
 }
