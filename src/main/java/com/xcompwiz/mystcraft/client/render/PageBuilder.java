@@ -348,10 +348,10 @@ public class PageBuilder {
 			float resRed = fRed * srcAlpha + targetRed * (1 - srcAlpha);
 			float resGreen = fGreen * srcAlpha + targetGreen * (1 - srcAlpha);
 			float resBlue = fBlue * srcAlpha + targetBlue * (1 - srcAlpha);
-			resRed = MathHelper.clamp(resRed, 0, 1);
-			resGreen = MathHelper.clamp(resGreen, 0, 1);
-			resBlue = MathHelper.clamp(resBlue, 0, 1);
-			return new Color(MathHelper.clamp((int) resRed * 255, 0, 255), MathHelper.clamp((int) resGreen * 255, 0, 255), MathHelper.clamp((int) resBlue * 255, 0, 255), 255).getRGB();
+			resRed = MathHelper.clamp(resRed, 0, 1) * 255;
+			resGreen = MathHelper.clamp(resGreen, 0, 1) * 255;
+			resBlue = MathHelper.clamp(resBlue, 0, 1) * 255;
+			return new Color(MathHelper.clamp((int) resRed, 0, 255), MathHelper.clamp((int) resGreen, 0, 255), MathHelper.clamp((int) resBlue, 0, 255), 255).getRGB();
 		}
 
 		//48 offset is centered
