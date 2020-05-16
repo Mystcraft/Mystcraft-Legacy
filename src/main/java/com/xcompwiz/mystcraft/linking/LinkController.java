@@ -139,6 +139,10 @@ public class LinkController {
 			EntityPlayerMP player = (EntityPlayerMP) entity;
 			player.connection.setPlayerLocation(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5, player.rotationYaw, player.rotationPitch);
 			newworld.updateEntityWithOptionalForce(entity, false);
+			if (player.openContainer != null) {
+				player.closeContainer();
+				player.closeScreen();
+			}
 		}
 
 		LinkListenerManager.onLinkEnd(origin, newworld, entity, info);
