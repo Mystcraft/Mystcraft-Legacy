@@ -41,7 +41,7 @@ public class VillageCreationHandlerArchivistHouse implements IVillageCreationHan
 	}
 
 	@Override
-	public Class<?> getComponentClass() {
+	public Class<? extends net.minecraft.world.gen.structure.StructureComponent> getComponentClass() {
 		return ComponentVillageArchivistHouse.class;
 	}
 

@@ -114,7 +114,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 
-@Mod(modid = MystObjects.MystcraftModId, version = "@VERSION@", name = "Mystcraft", useMetadata = true, dependencies = "required-after:Forge@[10.12.1.1083,)")
+@Mod(modid = MystObjects.MystcraftModId, version = Tags.VERSION, name = "Mystcraft", useMetadata = true, dependencies = "required-after:Forge@[10.12.1.1083,)")
 public class Mystcraft {
 
 	@Instance(MystObjects.MystcraftModId)
