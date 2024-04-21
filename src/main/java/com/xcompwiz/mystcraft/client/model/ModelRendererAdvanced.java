@@ -5,11 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.model.TextureOffset;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 
 import org.lwjgl.opengl.GL11;
+import org.omg.CORBA.Object;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -57,7 +59,7 @@ public class ModelRendererAdvanced {
 		this.isHidden = false;
 		this.elementList = new ArrayList<ModelElement>();
 		this.baseModel = par1ModelBase;
-		par1ModelBase.boxList.add(this);
+		par1ModelBase.boxList.add((ModelRenderer)(Object)this);
 		this.modelName = par2Str;
 		this.setTextureSize(par1ModelBase.textureWidth, par1ModelBase.textureHeight);
 	}

@@ -78,7 +78,11 @@ public class CommandRegenerateChunk extends CommandBaseAdv {
 
 		ChunkProviderServer chunkprovider = (ChunkProviderServer) worldObj.getChunkProvider();
 		List<EntityPlayerMP> players = new ArrayList<EntityPlayerMP>();
-		players.addAll(worldObj.playerEntities);
+		for (EntityPlayer player : worldObj.playerEntities) {
+			if (player instanceof EntityPlayerMP) {
+				players.add((EntityPlayerMP)player);
+			}
+		}
 
 		for (int x = chunkX - range; x <= chunkX + range; ++x) {
 			for (int z = chunkZ - range; z <= chunkZ + range; ++z) {

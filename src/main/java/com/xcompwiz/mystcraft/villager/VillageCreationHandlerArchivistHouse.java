@@ -41,7 +41,7 @@ public class VillageCreationHandlerArchivistHouse implements IVillageCreationHan
 	}
 
 	@Override
-	public Class<?> getComponentClass() {
+	public Class<com.xcompwiz.mystcraft.world.gen.structure.ComponentVillageArchivistHouse> getComponentClass() {
 		return ComponentVillageArchivistHouse.class;
 	}
 
