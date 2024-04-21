@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -185,13 +186,10 @@ public class EntityMeteor extends Entity implements IEntityAdditionalSpawnData {
 		}
 		explosion.doExplosionA();
 		explosion.doExplosionB(false);
-		Iterator<EntityPlayerMP> var11 = worldObj.playerEntities.iterator();
-
-		while (var11.hasNext()) {
-			EntityPlayerMP player = var11.next();
-
-			if (player.getDistanceSq(posX, posY, posZ) < 4096.0D) {
-				player.playerNetServerHandler.sendPacket(MPacketExplosion.createPacket(player, explosion));
+		
+		for (EntityPlayer player : worldObj.playerEntities) {
+			if (player instanceof EntityPlayerMP && player.getDistanceSq(posX, posY, posZ) < 4096.0D) {
+				((EntityPlayerMP)player).playerNetServerHandler.sendPacket(MPacketExplosion.createPacket(player, explosion));
 			}
 		}
 		MinecraftForge.EVENT_BUS.post(new MetorExplosion(this, explosion.blocks));

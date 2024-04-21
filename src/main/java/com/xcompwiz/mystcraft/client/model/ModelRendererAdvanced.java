@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.model.TextureOffset;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
@@ -14,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ModelRendererAdvanced {
+public class ModelRendererAdvanced extends ModelRenderer {
 	/** The size of the texture file's width in pixels. */
 	protected float						textureWidth;
 
@@ -48,6 +49,7 @@ public class ModelRendererAdvanced {
 	protected ModelBase					baseModel;
 
 	public ModelRendererAdvanced(ModelBase par1ModelBase, String par2Str) {
+		super(par1ModelBase, par2Str);
 		this.textureWidth = 64.0F;
 		this.textureHeight = 32.0F;
 		this.compiled = false;
