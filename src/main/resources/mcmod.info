@@ -1,14 +1,21 @@
-[
 {
-  "modid" : "Mystcraft",
-  "name" : "Mystcraft",
-  "description": "Mystcraft brings elements from the Myst series of games and books to Minecraft, as well as allowing players to actually write and travel to their own Ages.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url" : "http://xcompwiz.com",
-  "updateUrl" : "http://xcompwiz.com",
-  "authors": ["XCompWiz"],
-  "logoFile" : "/mystcraft_logo.png",
-  "screenshots": []
+	"modListVersion": 2,
+	"modList": [{
+		"modid": "${modId}",
+		"name": "${modName}",
+		"description": "Mystcraft brings elements from the Myst series of games and books to Minecraft, as well as allowing players to actually write and travel to their own Ages.",
+		"version": "${modVersion}",
+		"mcversion": "${minecraftVersion}",
+		"url": "https://github.com/Mystcraft/Mystcraft-Legacy",
+		"updateUrl": "",
+		"authorList": ["XCompWiz"],
+		"credits": "",
+		"logoFile": "/mystcraft_logo.png",
+		"screenshots": [],
+		"parent": "",
+		"requiredMods": [],
+		"dependencies": [],
+		"dependants": [],
+		"useDependencyInformation": false
+	}]
 }
-]
