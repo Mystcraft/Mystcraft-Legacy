@@ -11,12 +11,11 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 
 import org.lwjgl.opengl.GL11;
-import org.omg.CORBA.Object;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ModelRendererAdvanced {
+public class ModelRendererAdvanced extends ModelRenderer {
 	/** The size of the texture file's width in pixels. */
 	protected float						textureWidth;
 
@@ -50,6 +49,7 @@ public class ModelRendererAdvanced {
 	protected ModelBase					baseModel;
 
 	public ModelRendererAdvanced(ModelBase par1ModelBase, String par2Str) {
+		super(par1ModelBase, par2Str);
 		this.textureWidth = 64.0F;
 		this.textureHeight = 32.0F;
 		this.compiled = false;
@@ -59,7 +59,7 @@ public class ModelRendererAdvanced {
 		this.isHidden = false;
 		this.elementList = new ArrayList<ModelElement>();
 		this.baseModel = par1ModelBase;
-		par1ModelBase.boxList.add((ModelRenderer)(Object)this);
+		par1ModelBase.boxList.add(this);
 		this.modelName = par2Str;
 		this.setTextureSize(par1ModelBase.textureWidth, par1ModelBase.textureHeight);
 	}
